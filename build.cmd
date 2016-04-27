@@ -14,12 +14,17 @@ call :Usage && exit /b 1
 :DoneParsing
 
 set BinariesDirectory=%Root%binaries\%BuildConfiguration%\
+set LogFile=%BinariesDirectory%Build.log
+
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
+call "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat" || goto :BuildFailed
+msbuild /nologo /m /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=detailed /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj"
+if ERRORLEVEL 1 (
+    echo Build failed, for full log see %LogFile%.
+    exit /b 1
+)
 
-call "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat" || :BuildFailed
-
-msbuild /nologo /m /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%BinariesDirectory%Build.log";verbosity=detailed /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj" || :BuildFailed
-
+echo Build completed sucessfully, for full log see %LogFile%
 exit /b 0
 
 :Usage
