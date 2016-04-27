@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
-    <BinariesDirectory>$(RepositoryRootDirectory)binaries\$(Configuration)\</BinariesDirectory>
+    <TestsDirectory>$(RepositoryRootDirectory)binaries\$(Configuration)\Tests\</TestsDirectory>
     <SolutionFileWithoutPath>ProjectSystem.sln</SolutionFileWithoutPath>
     <SolutionFile>$(RepositoryRootDirectory)src\$(SolutionFileWithoutPath)</SolutionFile>
 
@@ -39,14 +39,14 @@
   <Target Name="Test">
 
     <ItemGroup>
-      <TestAssembly Include="$(BinariesDirectory)**\*UnitTests.dll" />
-      <XmlTestFile Include="$(BinariesDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
-      <HtmlTestFile Include="$(BinariesDirectory)TestResults.html" /> <!-- For Humans to read -->
+      <TestAssembly Include="$(TestsDirectory)**\*UnitTests.dll" />
+      <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
+      <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
     
     <Message Text="Running tests for $(SolutionFileWithoutPath) [$(Configuration)]" Importance="high" />
 
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; @(TestAssembly, ' ') -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; @(TestAssembly, '&quot;') -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
