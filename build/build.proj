@@ -41,7 +41,7 @@
   <Target Name="Test">
 
     <ItemGroup>
-      <TestAssembly Include="$(TestsDirectory)**\*UnitTests.dll" />
+      <TestAssembly Include="$(TestsDirectory)*Tests.dll" />
       <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
       <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
