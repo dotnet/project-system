@@ -1,0 +1,60 @@
+<Project
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+  DefaultTargets="Build"
+  ToolsVersion="14.0">
+
+  <PropertyGroup>
+    <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
+    <BinariesDirectory>$(RepositoryRootDirectory)binaries\$(Configuration)\</BinariesDirectory>
+    <SolutionFileName>ProjectSystem.sln</SolutionFileName>
+    <SolutionFilePath>$(RepositoryRootDirectory)src\$(SolutionFileName)</SolutionFilePath>
+
+    <!-- Make note NUGET_PACKAGES is environment variable respected 
+         by NuGet.exe, so don't be tempted to change the name.-->
+    <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
+    
+    <CommonMSBuildGlobalProperties>
+      Configuration=$(Configuration);
+    </CommonMSBuildGlobalProperties>
+  </PropertyGroup>
+
+  <Target Name="RestorePackages">
+
+    <Message Text="Restoring packages for $(SolutionFileName)" Importance="high" />
+    
+    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore -verbosity quiet &quot;$(SolutionFilePath)&quot;" />
+  </Target>
+
+  <Target Name="BuildSolution">
+
+    <Message Text="Building $(SolutionFileName) [$(Configuration)]" Importance="high" />
+    
+    <MSBuild BuildInParallel="true"
+             Projects="$(SolutionFilePath)"
+             Targets="Build"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
+  </Target>
+
+  <Target Name="Test">
+
+    <ItemGroup>
+      <TestAssembly Include="$(BinariesDirectory)**\*UnitTests.dll" />
+    </ItemGroup>
+    
+    <Message Text="Running tests for $(SolutionFileName) [$(Configuration)]" Importance="high" />
+
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; @(TestAssembly, ' ') -quiet -nologo -noshadow -parallel all -xml $(BinariesDirectory)TestResults.xml -html $(BinariesDirectory)TestResults.html"
+          LogStandardErrorAsError="true"
+          IgnoreExitCode="true"
+          />
+
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" >
+
+    <Message Text="Build completed for $(SolutionFileName)" Importance="high" />
+    
+  </Target>
+
+</Project>
