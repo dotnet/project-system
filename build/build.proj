@@ -6,8 +6,8 @@
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
     <BinariesDirectory>$(RepositoryRootDirectory)binaries\$(Configuration)\</BinariesDirectory>
-    <SolutionFileName>ProjectSystem.sln</SolutionFileName>
-    <SolutionFilePath>$(RepositoryRootDirectory)src\$(SolutionFileName)</SolutionFilePath>
+    <SolutionFileWithoutPath>ProjectSystem.sln</SolutionFileWithoutPath>
+    <SolutionFile>$(RepositoryRootDirectory)src\$(SolutionFileWithoutPath)</SolutionFile>
 
     <!-- Make note NUGET_PACKAGES is environment variable respected 
          by NuGet.exe, so don't be tempted to change the name.-->
@@ -20,17 +20,17 @@
 
   <Target Name="RestorePackages">
 
-    <Message Text="Restoring packages for $(SolutionFileName)" Importance="high" />
+    <Message Text="Restoring packages for $(SolutionFileWithoutPath)" Importance="high" />
     
-    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore -verbosity quiet &quot;$(SolutionFilePath)&quot;" />
+    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore -verbosity quiet &quot;$(SolutionFile)&quot;" />
   </Target>
 
   <Target Name="BuildSolution">
 
-    <Message Text="Building $(SolutionFileName) [$(Configuration)]" Importance="high" />
+    <Message Text="Building $(SolutionFileWithoutPath) [$(Configuration)]" Importance="high" />
     
     <MSBuild BuildInParallel="true"
-             Projects="$(SolutionFilePath)"
+             Projects="$(SolutionFile)"
              Targets="Build"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
@@ -40,20 +40,26 @@
 
     <ItemGroup>
       <TestAssembly Include="$(BinariesDirectory)**\*UnitTests.dll" />
+      <XmlTestFile Include="$(BinariesDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
+      <HtmlTestFile Include="$(BinariesDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
     
-    <Message Text="Running tests for $(SolutionFileName) [$(Configuration)]" Importance="high" />
+    <Message Text="Running tests for $(SolutionFileWithoutPath) [$(Configuration)]" Importance="high" />
 
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; @(TestAssembly, ' ') -quiet -nologo -noshadow -parallel all -xml $(BinariesDirectory)TestResults.xml -html $(BinariesDirectory)TestResults.html"
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; @(TestAssembly, ' ') -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
-          />
+          >
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+
+    <Message Text="There were test failures, see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 1" Importance="High" />
 
   </Target>
 
   <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" >
 
-    <Message Text="Build completed for $(SolutionFileName)" Importance="high" />
+    <Message Text="Build completed for $(SolutionFileWithoutPath)" Importance="high" />
     
   </Target>
 
