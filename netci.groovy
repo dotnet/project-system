@@ -24,7 +24,7 @@ def branch = GithubBranchName
         Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
-        if (isPR) {
+        if (isPR) {d
             Utilities.addGithubPRTriggerForBranch(newJob, branch, "Windows ${configuration}")
         }
         else {
