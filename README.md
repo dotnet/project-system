@@ -18,3 +18,9 @@ The new C# and Visual Basic project system, built on top of CPS, will be:
 
 ## What is a project system?
 A project system sits between and coordinates with a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Features that interact with files contained in a project file, almost always do it through the project system.
+
+# How do I engage and contribute?
+We welcome you to try things out (available soon!), file bugs, make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [up-for-grabs issues](https://github.com/dotnet/roslyn/issues?q=is%3Aopen+is%3Aissue+label%3A%22Area-Project+System%22+label%3A%22Up+for+Grabs%22) for a great place to start. Also be sure to check out our contribution guide.
+
+
+
