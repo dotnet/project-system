@@ -2,7 +2,7 @@
 
 To build, deploy and test, clone this repro and open _src\ProjectSystem.sln_.
 
-Alternatively, if you like the command-line, you can run build.cmd which builds, deploys and runs tests.
+Alternatively, if you like the command-line, you can run build.cmd from a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.110).aspx) which builds, deploys and runs tests.
 
 ### Debugging/Deploying
 By default, the project system gets deployed to the _RoslynDev_ experimental instance of Visual Studio, to debug:
