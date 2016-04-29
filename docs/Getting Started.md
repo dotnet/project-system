@@ -9,7 +9,7 @@ By default, the project system gets deployed to the _RoslynDev_ experimental ins
 
 1. Open __src\ProjectSystem.sln__
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
-3. Press F5
+3. Press _F5_
 
 If this is your first launch of the project system, or RoslynDev experimental instance, press CTRL+F5 to pre-prime and avoid a long start up time.
 
