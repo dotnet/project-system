@@ -2,7 +2,7 @@
 
 In the Visual Studio "15" timeframe, the C# and Visual Basic project systems will be rewritten on top of the new [Visual Studio Common Project System ("CPS")](https://blogs.msdn.microsoft.com/visualstudio/2015/06/02/introducing-the-project-system-extensibility-preview/).
 
-The current C# and Visual Basic project systems ("csproj.dll" and "msvbprj.dll"), which first shipped back in Visual Studio .NET nearly 15 years ago, are:
+The current C# and Visual Basic project systems ("csproj.dll" and "msvbprj.dll"), which first shipped back in Visual Studio.net nearly 15 years ago, are:
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
@@ -17,7 +17,9 @@ The new C# and Visual Basic project system, built on top of CPS, will be:
 - Hostable outside of Visual Studio
 
 ## What is a project system?
-A project system sits between and coordinates with a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Features that interact with files contained in a project file, almost always do it through the project system.
+A project system sits between a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Features that interact with files contained in a project file, almost always do it through the project system.
+
+The C# and Visual Basic project system adds C# and Visual Basic language support to CPS via [Roslyn](http://github.com/dotnet/roslyn).
 
 ![image](https://cloud.githubusercontent.com/assets/1103906/14901076/73454a6a-0d48-11e6-8478-472474d55824.png)
 
