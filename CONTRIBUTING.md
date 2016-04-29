@@ -7,5 +7,5 @@ If you want to submit a feature or a substantial code contribution, please discu
 For additional information, see the following:
 
 - [Getting Started](docs/Getting Started.md)
-- [Coding Guidelines](docs/Coding Guidelines.md)
+- [Coding Guidelines](docs/Coding Conventions.md)
 - [Architecture](docs/Architecture.md)
