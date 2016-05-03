@@ -1,6 +1,21 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 
+  
+  <!-- With UseCommonOutputDirectory turned on, any copy-local projects/references break
+       csproj's up-to-date check because they aren't copied to the output directory. 
+       Turn it off. 
+  -->
+  <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+
+    <ProjectReference>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
   <!-- This file is imported by all projects at the end of the project files -->
   <!-- Update common properties -->
   <PropertyGroup>
@@ -36,17 +51,17 @@
              system will finish the strong-name signing. -->
         <When Condition="'$(NonShipping)' != 'true'">
           <Choose>
-              <!-- DelaySign if we're real signing, otherwise public sign -->
-              <When Condition="'$(ShouldSignBuild)' == 'true'">
-                  <PropertyGroup>
-                      <DelaySign>true</DelaySign>
-                  </PropertyGroup>
-              </When>
-              <Otherwise>
-                  <PropertyGroup>
-                      <PublicSign>true</PublicSign>
-                  </PropertyGroup>
-              </Otherwise>
+            <!-- DelaySign if we're real signing, otherwise public sign -->
+            <When Condition="'$(ShouldSignBuild)' == 'true'">
+              <PropertyGroup>
+                <DelaySign>true</DelaySign>
+              </PropertyGroup>
+            </When>
+            <Otherwise>
+              <PropertyGroup>
+                <PublicSign>true</PublicSign>
+              </PropertyGroup>
+            </Otherwise>
           </Choose>
 
           <PropertyGroup>
@@ -94,7 +109,7 @@
       </PropertyGroup>
     </When>
   </Choose>
-  
+
   <Choose>
     <When Condition="'$(ProjectLanguage)' == 'C++'">
       <PropertyGroup>
@@ -112,13 +127,13 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
-  
+
   <Import Project="$(MSBuildTargetsFilePath)" />
 
   <!-- On Mono on *nix the NuGet targets aren't imported by default, so we do that here -->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\NuGet\Microsoft.NuGet.targets"
           Condition="'$(OS)' != 'Windows_NT'" />
-  
+
   <Choose>
     <When Condition="'$(TargetFrameworkIdentifier)' == '.NETPortable' AND
                      '$(TargetFrameworkVersion)' == 'v5.0'">
@@ -167,20 +182,20 @@
   </PropertyGroup>
 
   <Target Name="VerifyBuildFlags">
-    <Error 
+    <Error
         Condition="('$(RealSignBuild)' == 'true' OR '$(SignType)' == 'real') AND '$(BuildVersion)' == '42.42.42.42'"
         Text="Must specify a build version in order to real sign a build." />
 
-    <Error 
+    <Error
         Condition="'$(CheckForOverflowUnderflow)' != '' OR '$(RemoveIntegerChecks)' != ''"
         Text="The following properties cannot be set by individual projects: CheckForOverflowUnderflow and RemoveIntegerChecks" />
-    
+
     <PropertyGroup Condition="'$(ProjectLanguage)' == 'CSharp'">
-        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+      <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(ProjectLanguage)' == 'VB'">
-        <RemoveIntegerChecks>true</RemoveIntegerChecks>
+      <RemoveIntegerChecks>true</RemoveIntegerChecks>
     </PropertyGroup>
   </Target>
 
@@ -402,10 +417,10 @@
     <Message Text="Signing VSIX inputs: using authenticode certificate '%(VsixInputAssembliesToSign.AuthenticodeCertificateName)' for @(VsixInputAssembliesToSign)"/>
 
     <ItemGroup Condition="'$(RunningInMicroBuild)' == 'true'">
-        <VsixInputAssembliesToSign>
-            <Authenticode>%(VsixInputAssembliesToSign.AuthenticodeCertificateName)</Authenticode>
-            <StrongName>72</StrongName>
-        </VsixInputAssembliesToSign>
+      <VsixInputAssembliesToSign>
+        <Authenticode>%(VsixInputAssembliesToSign.AuthenticodeCertificateName)</Authenticode>
+        <StrongName>72</StrongName>
+      </VsixInputAssembliesToSign>
     </ItemGroup>
 
     <SignFiles Condition="'$(RunningInMicroBuild)' == 'true'"
@@ -419,9 +434,9 @@
     <Message Text="Signing VSIX: $(TargetVsixContainer)"/>
 
     <ItemGroup Condition="'$(RunningInMicroBuild)' == 'true'">
-        <VsixToSign Include="$(TargetVsixContainer)">
-            <Authenticode>VsixSHA2</Authenticode>
-        </VsixToSign>
+      <VsixToSign Include="$(TargetVsixContainer)">
+        <Authenticode>VsixSHA2</Authenticode>
+      </VsixToSign>
     </ItemGroup>
 
     <SignFiles Condition="'$(RunningInMicroBuild)' == 'true'"
@@ -430,4 +445,4 @@
                IntermediatesDirectory="$(IntermediateOutputPath)"
                Type="$(SignType)" />
   </Target>
- </Project>
+</Project>

@@ -1,10 +1,8 @@
-<Project DefaultTargets="Build" InitialTargets="RestoreToolsetCheck" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="OutDir;Configuration">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="OutDir;Configuration">
 
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)..\..\</ProjectDir>
     <NuGetToolPath Condition="">$(ProjectDir)nuget.exe</NuGetToolPath>
-    <ToolsetPackagesDir>$(ProjectDir)build\ToolsetPackages\</ToolsetPackagesDir>
-    <ToolsetPackagesSemaphore>$(ToolsetPackagesDir)toolsetpackages.semaphore</ToolsetPackagesSemaphore>
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(NUGET_PACKAGES)</NuGetPackageRoot> <!-- Respect environment variable if set -->
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == '' and
                                  '$(OS)' == 'Windows_NT'">$(UserProfile)\.nuget\packages</NuGetPackageRoot>
@@ -18,31 +16,14 @@
     <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
   </PropertyGroup>
 
+  <Import Project="$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props" Condition="Exists('$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props')" />
+
   <!-- Import the global NuGet packages -->
   <PropertyGroup>
-    <ToolsetCompilerPackageName>Microsoft.Net.Compilers</ToolsetCompilerPackageName>
-    <ToolsetCompilerPropsFilePath>$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.0-rc\build\Microsoft.Net.Compilers.props</ToolsetCompilerPropsFilePath>
     <RoslynDiagnosticsPropsFilePath>$(NuGetPackageRoot)\Microsoft.Net.RoslynDiagnostics\1.1.1-beta1-20150818-01\build\Microsoft.Net.RoslynDiagnostics.props</RoslynDiagnosticsPropsFilePath>
     <RoslynBuildUtilFilePath>$(NuGetPackageRoot)\Roslyn.Build.Util\0.9.4-portable\lib\dotnet\Roslyn.MSBuild.Util.dll</RoslynBuildUtilFilePath>
     <AdditionalFileItemNames>$(AdditionalFileItemNames);PublicAPI</AdditionalFileItemNames>
   </PropertyGroup>
-
-  <!-- 
-    Roslyn uses the WriteCodeFragment task to output generated assembly attributes.  In MSBuild 14.0 update 1 this task 
-    produces non-deterministic output.  This is fixed in update 2 but until that is released we use a hand patched
-    version of the Task that is deterministic.  
-
-    MSBuild bug: https://github.com/Microsoft/msbuild/issues/408
-    Bug tracking removing this: https://github.com/dotnet/roslyn/issues/8421
-  -->
-  <UsingTask TaskName="Roslyn.MSBuild.Util.WriteCodeFragmentEx"
-             AssemblyFile="$(RoslynBuildUtilFilePath)" />
-
-  <Target Name="RestoreToolsetCheck"
-      Condition="'$(BuildingProject)' == 'true'">
-      <Error Text="Toolset packages have not been restored, run Restore.cmd before building"
-             Condition="!Exists('$(ToolsetCompilerPropsFilePath)')" />
-  </Target>
 
   <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
   <PropertyGroup>
@@ -140,51 +121,16 @@
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
 
-  <!-- Import the props files from the toolset NuGet packages if we're not in a bootstrap build -->
-  <ImportGroup Label="GlobalNuGets" Condition="'$(BootstrapBuildPath)' == ''">
-    <Import Project="$(ToolsetCompilerPropsFilePath)"
-            Condition="Exists('$(ToolsetCompilerPropsFilePath)') And '$(OS)' == 'Windows_NT'" />
-  </ImportGroup>
-
   <ImportGroup>
     <Import Project="$(RoslynDiagnosticsPropsFilePath)"
             Condition="Exists('$(RoslynDiagnosticsPropsFilePath)') And ('$(UseRoslynAnalyzers)' == 'true')" />
   </ImportGroup>
 
-  <!-- Otherwise, use the task from the bootstrap location. This is necessary
-       to support new properties on the build task. -->
-  <UsingTask TaskName="Microsoft.CodeAnalysis.BuildTasks.Csc"
-             AssemblyFile="$(BootstrapBuildPath)\Microsoft.Build.Tasks.CodeAnalysis.dll"
-             Condition="'$(BootstrapBuildPath)' != ''" />
-  <UsingTask TaskName="Microsoft.CodeAnalysis.BuildTasks.Vbc"
-             AssemblyFile="$(BootstrapBuildPath)\Microsoft.Build.Tasks.CodeAnalysis.dll"
-             Condition="'$(BootstrapBuildPath)' != ''" />
-
-  <PropertyGroup Condition="'$(BootstrapBuildPath)' != ''">
-    <UseSharedCompilation>true</UseSharedCompilation>
-    <CSharpCoreTargetsPath>$(BootstrapBuildPath)\Microsoft.CSharp.Core.targets</CSharpCoreTargetsPath>
-    <VisualBasicCoreTargetsPath>$(BootstrapBuildPath)\Microsoft.VisualBasic.Core.targets</VisualBasicCoreTargetsPath>
-  </PropertyGroup>
-
-
   <!-- Common project settings -->
   <PropertyGroup>
-    <DeployToSamplesSubfolder Condition="'$(DeployToSamplesSubfolder)' == ''">false</DeployToSamplesSubfolder>
     <FileAlignment>512</FileAlignment>
     <HighEntropyVA>true</HighEntropyVA>
-  </PropertyGroup>
-
-  <!--
-    If TargetNetFX20 is true the project targets Framework 2.0 reference assemblies provided by Microsoft.NetFX20 nuget package.
-    Use the latest Framework toolset to build, but set msbuild properties below
-    so to avoid 4.5 specific artifacts to be added to the compilation (references, attributes).
-  -->
-  <PropertyGroup Condition="'$(TargetNetFX20)' == 'true'">
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
-    <NoStdLib>true</NoStdLib>
-    <FrameworkPathOverride>$(NuGetPackageRoot)\Microsoft.NetFX20\1.0.3\lib\net20</FrameworkPathOverride>
-    <NuGetTargetMoniker>.NETFramework,Version=v2.0</NuGetTargetMoniker>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(ProjectLanguage)' == 'CSharp' AND '$(TargetNetFX20)' == 'true'">
