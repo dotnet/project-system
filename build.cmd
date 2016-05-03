@@ -31,10 +31,12 @@ if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFai
 
 msbuild /nologo /m /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=detailed /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj"
 if ERRORLEVEL 1 (
+    echo.
     echo Build failed, for full log see %LogFile%.
     exit /b 1
 )
 
+echo.
 echo Build completed sucessfully, for full log see %LogFile%
 exit /b 0
 
