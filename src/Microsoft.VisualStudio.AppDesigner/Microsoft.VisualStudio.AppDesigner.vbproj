@@ -212,10 +212,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies\Toolset\Toolset.csproj">
-      <Project>{4d52c1e5-6f4b-4cde-8149-ac374f018245}</Project>
-      <Name>Toolset</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
       <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
       <Name>VisualStudio</Name>

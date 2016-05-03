@@ -16,6 +16,8 @@
     <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
   </PropertyGroup>
 
+  <Import Project="$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props" Condition="Exists('$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props')" />
+
   <!-- Import the global NuGet packages -->
   <PropertyGroup>
     <RoslynDiagnosticsPropsFilePath>$(NuGetPackageRoot)\Microsoft.Net.RoslynDiagnostics\1.1.1-beta1-20150818-01\build\Microsoft.Net.RoslynDiagnostics.props</RoslynDiagnosticsPropsFilePath>

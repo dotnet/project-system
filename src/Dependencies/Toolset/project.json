@@ -1,9 +1,12 @@
 {
-  "supports": {},
+  "supports": { },
   "dependencies": {
-    "Microsoft.Net.Compilers": "1.2.1",
+    "Microsoft.Net.Compilers": {
+      "version": "1.2.1",
+      "exclude": "build"
+    }
   },
   "frameworks": {
-    ".NETPortable,Version=v4.5,Profile=Profile7": {}
+    ".NETPortable,Version=v4.5,Profile=Profile7": { }
   }
 }

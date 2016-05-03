@@ -107,11 +107,5 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dependencies\Toolset\Toolset.csproj">
-      <Project>{4d52c1e5-6f4b-4cde-8149-ac374f018245}</Project>
-      <Name>Toolset</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
