@@ -13,7 +13,7 @@
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <OutDir>$(OutDir)\Tests</OutDir>
+    <OutDir>$(OutDir)Tests\</OutDir>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
