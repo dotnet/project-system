@@ -69,6 +69,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dependencies\Roslyn\Roslyn.csproj">
+      <Project>{cf97a73f-f2f1-4893-960c-9c2b95738870}</Project>
+      <Name>Roslyn</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Project>{19725D6F-4690-412B-934A-FC48D752B802}</Project>
       <Name>Microsoft.VisualStudio.AppDesigner</Name>

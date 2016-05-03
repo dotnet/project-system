@@ -1,0 +1,9 @@
+{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.VisualStudio.LanguageServices": "1.2.0"
+  },
+  "frameworks": {
+    ".NETFramework,Version=v4.6": { }
+  }
+}

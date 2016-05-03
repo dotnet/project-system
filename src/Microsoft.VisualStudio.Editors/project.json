@@ -1,11 +1,7 @@
 ﻿{
   "frameworks": {
-    "net46": {}
+    "net46": { }
   },
   "dependencies": {
-    "Microsoft.VisualStudio.LanguageServices": {
-      "version": "1.2.0",
-      "suppressParent": "all"
-    }
   }
 }
