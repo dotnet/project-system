@@ -58,6 +58,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Description = The C# and Visual Basic project system for Visual Studio "15"
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
