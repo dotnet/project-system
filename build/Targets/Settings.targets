@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" InitialTargets="RestoreToolsetCheck" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="OutDir;Configuration">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="OutDir;Configuration">
 
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)..\..\</ProjectDir>
@@ -26,23 +26,6 @@
     <RoslynBuildUtilFilePath>$(NuGetPackageRoot)\Roslyn.Build.Util\0.9.4-portable\lib\dotnet\Roslyn.MSBuild.Util.dll</RoslynBuildUtilFilePath>
     <AdditionalFileItemNames>$(AdditionalFileItemNames);PublicAPI</AdditionalFileItemNames>
   </PropertyGroup>
-
-  <!-- 
-    Roslyn uses the WriteCodeFragment task to output generated assembly attributes.  In MSBuild 14.0 update 1 this task 
-    produces non-deterministic output.  This is fixed in update 2 but until that is released we use a hand patched
-    version of the Task that is deterministic.  
-
-    MSBuild bug: https://github.com/Microsoft/msbuild/issues/408
-    Bug tracking removing this: https://github.com/dotnet/roslyn/issues/8421
-  -->
-  <UsingTask TaskName="Roslyn.MSBuild.Util.WriteCodeFragmentEx"
-             AssemblyFile="$(RoslynBuildUtilFilePath)" />
-
-  <Target Name="RestoreToolsetCheck"
-      Condition="'$(BuildingProject)' == 'true'">
-      <Error Text="Toolset packages have not been restored, run Restore.cmd before building"
-             Condition="!Exists('$(ToolsetCompilerPropsFilePath)')" />
-  </Target>
 
   <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
   <PropertyGroup>
