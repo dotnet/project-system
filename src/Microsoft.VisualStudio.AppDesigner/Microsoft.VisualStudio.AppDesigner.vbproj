@@ -9,7 +9,6 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{19725D6F-4690-412B-934A-FC48D752B802}</ProjectGuid>
     <AssemblyName>Microsoft.VisualStudio.AppDesigner</AssemblyName>
-    <OutDir>$(OutDir)\ProjectSystem\</OutDir>
     <OutputType>Library</OutputType>
     <RootNamespace>
     </RootNamespace>

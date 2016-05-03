@@ -9,7 +9,6 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}</ProjectGuid>
     <AssemblyName>Microsoft.VisualStudio.Editors</AssemblyName>
-    <OutDir>$(OutDir)\ProjectSystem\</OutDir>
     <OutputType>Library</OutputType>
     <RootNamespace>
     </RootNamespace>

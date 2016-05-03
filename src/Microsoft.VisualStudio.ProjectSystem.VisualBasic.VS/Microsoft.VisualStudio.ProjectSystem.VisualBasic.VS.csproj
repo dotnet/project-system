@@ -15,7 +15,6 @@
     <DeployExtension>false</DeployExtension>
     <UseCodebase>true</UseCodebase>
     <SignAssembly>true</SignAssembly>
-    <OutDir>$(OutDir)\ProjectSystem\</OutDir>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
   </PropertyGroup>
   <ItemGroup>

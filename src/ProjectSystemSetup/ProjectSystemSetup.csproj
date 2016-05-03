@@ -19,7 +19,6 @@
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <OutDir>$(OutDir)\ProjectSystem\</OutDir>
     <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
     <NoDocumentationFile>true</NoDocumentationFile>
