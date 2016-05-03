@@ -3,7 +3,7 @@
   <PropertyGroup>
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>
-  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -273,11 +273,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Common\IVsSqm.vb">
+    <Compile Include="..\Common\IVsSqm.vb">
       <Link>IVsSqm.vb</Link>
     </Compile>
     <Compile Include="StrongNameHelpers.vb" />
-    <Compile Include="..\..\Common\ManagedCodeMarkers.vb">
+    <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
     </Compile>
     <Compile Include="DesignerUI\VisualStudioEditorsID.vb" />
@@ -689,5 +689,5 @@
   <ItemGroup>
     <Folder Include="Resources\Common\" />
   </ItemGroup>
-  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

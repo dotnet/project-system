@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -65,36 +65,30 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\General.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAssemblyReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCOMReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-      <CreateFallbackRule>false</CreateFallbackRule>
     </XamlPropertyRule>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
-  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
