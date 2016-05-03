@@ -55,7 +55,25 @@
     <Compile Include="ProjectSystem\Designers\AbstractAppDesignerFolderProjectTreeModifier.cs" />
     <Compile Include="ProjectSystem\Designers\ProjectTreeExtensions.cs" />
     <Compile Include="ProjectSystem\Designers\AbstractSpecialItemProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\Rules\CSharp.cs">
+      <DependentUpon>CSharp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
+      <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\ProjectProperties.cs" />
+    <Compile Include="ProjectSystem\Rules\ProjectReference.cs">
+      <DependentUpon>ProjectReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedAssemblyReference.cs">
+      <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedCOMReference.cs">
+      <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
+      <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
@@ -65,7 +83,7 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\General.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
