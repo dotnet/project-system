@@ -4,6 +4,7 @@ setlocal enabledelayedexpansion
 set BatchFile=%0
 set Root=%~dp0
 set BuildConfiguration=Debug
+set MSBuildTarget=Build
 set DeveloperCommandPrompt=%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat
 
 :ParseArguments
@@ -11,6 +12,7 @@ if "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
+if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
 :DoneParsing
 
@@ -29,7 +31,7 @@ set BinariesDirectory=%Root%binaries\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
 
-msbuild /nologo /m /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=detailed /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj"
+msbuild /nologo /m /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=detailed /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj"
 if ERRORLEVEL 1 (
     echo.
     echo Build failed, for full log see %LogFile%.
@@ -41,10 +43,11 @@ echo Build completed sucessfully, for full log see %LogFile%
 exit /b 0
 
 :Usage
-echo Usage: %BatchFile% [/debug^|/release]
+echo Usage: %BatchFile% [/debug^|/release] [/rebuild]
 echo.
 echo   /debug   Perform debug build (default)
 echo   /release Perform release build
+echo   /rebuild Perform a clean, then build
 goto :eof
 
 :BuildFailed

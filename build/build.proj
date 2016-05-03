@@ -38,6 +38,17 @@
              />
   </Target>
 
+  <Target Name="RebuildSolution">
+
+    <Message Text="Rebuilding %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
+
+    <MSBuild BuildInParallel="true"
+             Projects="@(SolutionFile)"
+             Targets="Rebuild"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
+  </Target>
+
   <Target Name="Test">
 
     <ItemGroup>
@@ -60,5 +71,6 @@
   </Target>
 
   <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;Test" />
 
 </Project>
