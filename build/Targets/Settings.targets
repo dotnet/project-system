@@ -123,36 +123,13 @@
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
 
-  <!-- Import the props files from the toolset NuGet packages if we're not in a bootstrap build -->
-  <ImportGroup Label="GlobalNuGets" Condition="'$(BootstrapBuildPath)' == ''">
-    <Import Project="$(ToolsetCompilerPropsFilePath)"
-            Condition="Exists('$(ToolsetCompilerPropsFilePath)') And '$(OS)' == 'Windows_NT'" />
-  </ImportGroup>
-
   <ImportGroup>
     <Import Project="$(RoslynDiagnosticsPropsFilePath)"
             Condition="Exists('$(RoslynDiagnosticsPropsFilePath)') And ('$(UseRoslynAnalyzers)' == 'true')" />
   </ImportGroup>
 
-  <!-- Otherwise, use the task from the bootstrap location. This is necessary
-       to support new properties on the build task. -->
-  <UsingTask TaskName="Microsoft.CodeAnalysis.BuildTasks.Csc"
-             AssemblyFile="$(BootstrapBuildPath)\Microsoft.Build.Tasks.CodeAnalysis.dll"
-             Condition="'$(BootstrapBuildPath)' != ''" />
-  <UsingTask TaskName="Microsoft.CodeAnalysis.BuildTasks.Vbc"
-             AssemblyFile="$(BootstrapBuildPath)\Microsoft.Build.Tasks.CodeAnalysis.dll"
-             Condition="'$(BootstrapBuildPath)' != ''" />
-
-  <PropertyGroup Condition="'$(BootstrapBuildPath)' != ''">
-    <UseSharedCompilation>true</UseSharedCompilation>
-    <CSharpCoreTargetsPath>$(BootstrapBuildPath)\Microsoft.CSharp.Core.targets</CSharpCoreTargetsPath>
-    <VisualBasicCoreTargetsPath>$(BootstrapBuildPath)\Microsoft.VisualBasic.Core.targets</VisualBasicCoreTargetsPath>
-  </PropertyGroup>
-
-
   <!-- Common project settings -->
   <PropertyGroup>
-    <DeployToSamplesSubfolder Condition="'$(DeployToSamplesSubfolder)' == ''">false</DeployToSamplesSubfolder>
     <FileAlignment>512</FileAlignment>
     <HighEntropyVA>true</HighEntropyVA>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
