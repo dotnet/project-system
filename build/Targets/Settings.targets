@@ -155,6 +155,7 @@
     <DeployToSamplesSubfolder Condition="'$(DeployToSamplesSubfolder)' == ''">false</DeployToSamplesSubfolder>
     <FileAlignment>512</FileAlignment>
     <HighEntropyVA>true</HighEntropyVA>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <!--
