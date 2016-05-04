@@ -1,12 +1,13 @@
 {
   "supports": { },
   "dependencies": {
-    "Microsoft.VisualStudio.Designer.Interfaces": "1.1.4322",
-    "Microsoft.VisualStudio.Editor": "14.1.24720",
-    "Microsoft.VisualStudio.ImageCatalog": "14.1.24720",
-    "Microsoft.VisualStudio.Shell.Design": "14.1.24720",
-    "Microsoft.VisualStudio.Shell.14.0": "14.1.24720",
-    "Microsoft.VisualStudio.Shell.Interop.10.0": "10.0.30319",
+    "Microsoft.VisualStudio.Editor": "15.0.25123-Dev15Preview",
+    "Microsoft.VisualStudio.ImageCatalog": "15.0.25123-Dev15Preview",
+    "Microsoft.VisualStudio.Shell.Design": "15.0.25123-Dev15Preview",
+    "Microsoft.VisualStudio.Shell.15.0": "15.0.25123-Dev15Preview",
+
+    "Microsoft.VisualStudio.Designer.Interfaces": "1.1.4322",    
+	"Microsoft.VisualStudio.Shell.Interop.10.0": "10.0.30319",
     "Microsoft.VisualStudio.Shell.Interop.11.0": "11.0.61030",
     "Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime": "12.1.30328",
     "Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime": "14.1.24720",

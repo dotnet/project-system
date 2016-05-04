@@ -84,10 +84,15 @@
       <ItemGroup>
 
         <!-- Visual Studio -->
-        <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-        <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-        <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=14.0.0.0" />
-
+        <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE.dll</HintPath>
+        </Reference>
+        <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE80.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
+        </Reference>
         <!-- NuGet Dependencies -->
         <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
           <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
@@ -117,21 +122,46 @@
         <Reference Include="WindowsBase" />
 
         <!-- Visual Studio -->
-        <Reference Include="Microsoft.VisualStudio.VSHelp" />
-        <Reference Include="VSLangProj" />
-        <Reference Include="VSLangProj2" />
-        <Reference Include="VSLangProj80" />
-        <Reference Include="VSLangProj90" />
-        <Reference Include="VSLangProj100" />
+        <Reference Include="VSLangProj">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj.dll</HintPath>
+        </Reference>
+        <Reference Include="VSLangProj2">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj2.dll</HintPath>
+        </Reference>
+        <Reference Include="VSLangProj80">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj80.dll</HintPath>
+        </Reference>
+        <Reference Include="VSLangProj90" >
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj90.dll</HintPath>
+        </Reference>
+        <Reference Include="VSLangProj100">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj100.dll</HintPath>
+        </Reference>
         <Reference Include="VSLangProj110">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj110.dll</HintPath>
           <EmbedInteropTypes>true</EmbedInteropTypes>
         </Reference>
-        <Reference Include="VsWebSite.Interop" />
-        <Reference Include="Microsoft.VSDesigner" />
-        <Reference Include="Microsoft.VSDesigner.WCF" />
-        <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
-        <Reference Include="Microsoft.VisualStudio.XmlEditor" />
-        <Reference Include="Microsoft.VisualStudio.DataDesign.Common" />
+        <Reference Include="VsWebSite.Interop">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\VsWebSite.Interop.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VSDesigner">
+          <HintPath>$(DevEnvDir)\Microsoft.VSDesigner.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VSDesigner.WCF">
+          <HintPath>$(DevEnvDir)\Microsoft.VSDesigner.WCF.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.XmlEditor">
+          <HintPath>$(DevEnvDir)\Xml\Microsoft.VisualStudio.XmlEditor.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.VSHelp">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.VSHelp.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.DataDesign.Common">
+          <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
         </Reference>
