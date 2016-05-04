@@ -24,6 +24,7 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <IncludeMSBuildReferences>true</IncludeMSBuildReferences>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <Prefer32Bit>false</Prefer32Bit>
@@ -35,7 +36,6 @@
     <Reference Include="CustomMarshalers" />
     <Reference Include="EnvDTE" />
     <Reference Include="EnvDTE80" />
-    <Reference Include="Microsoft.Build.Tasks.Core" />
     <Reference Include="Microsoft.VisualStudio.DataDesign.Common" />
     <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
       <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
