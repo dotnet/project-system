@@ -1,13 +1,13 @@
 ### Code 
 
 #### Visual Studio
-From within Visual Studio 2015, simply open _src\ProjectSystem.sln_.
+From within [Visual Studio "15" Preview](http://go.microsoft.com/fwlink/?LinkId=746567), simply open _src\ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, deploy and run tests.
 
 #### Command-line
 
-From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.110).aspx), from the repo root, run:
+From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
 
 ```
 build.cmd
