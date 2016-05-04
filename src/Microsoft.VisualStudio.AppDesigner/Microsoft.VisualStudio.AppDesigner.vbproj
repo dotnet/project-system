@@ -23,6 +23,7 @@
     <VBRuntime>Default</VBRuntime>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
     <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />

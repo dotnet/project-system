@@ -7,6 +7,7 @@
   </PropertyGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectGuid>{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}</ProjectGuid>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutDir>$(OutDir)Tests\</OutDir>

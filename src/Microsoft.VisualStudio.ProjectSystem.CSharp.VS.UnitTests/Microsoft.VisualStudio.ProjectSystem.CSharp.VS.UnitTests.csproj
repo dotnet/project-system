@@ -14,6 +14,7 @@
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
