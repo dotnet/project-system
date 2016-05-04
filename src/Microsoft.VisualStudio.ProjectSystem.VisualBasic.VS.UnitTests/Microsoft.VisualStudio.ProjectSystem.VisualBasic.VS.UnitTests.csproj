@@ -16,6 +16,7 @@
     <OutDir>$(OutDir)Tests\</OutDir>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />

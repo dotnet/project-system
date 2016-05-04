@@ -12,20 +12,13 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutDir>$(OutDir)Tests\</OutDir>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies\Moq.net\Moq.net.csproj">
-      <Project>{a32eab7f-691c-4d00-98c4-f50c37bb4754}</Project>
-      <Name>Moq.net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dependencies\xUnit.net\xUnit.net.csproj">
-      <Project>{8635cb8f-d210-41ed-b4ff-71502cdb475c}</Project>
-      <Name>xUnit.net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Project>{19725d6f-4690-412b-934a-fc48d752b802}</Project>
       <Name>Microsoft.VisualStudio.AppDesigner</Name>

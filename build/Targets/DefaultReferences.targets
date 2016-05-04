@@ -30,6 +30,14 @@
       </PropertyGroup>
     </When>
   </Choose>
+  
+  <Choose>
+    <When Condition="'$(ProjectSystemProjectType)' == 'Test'">
+      <PropertyGroup>
+        <IncludeTestReferences>true</IncludeTestReferences>
+      </PropertyGroup>
+    </When>
+  </Choose>
 
   <!-- Don't be tempted to move this to conditional ItemGroup or <References> csproj/msvbprj do not like this-->
   <Choose>
@@ -127,6 +135,24 @@
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
         </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeTestReferences)' == 'true'">
+      <ItemGroup>
+
+        <ProjectReference Include="..\Dependencies\Moq.net\Moq.net.csproj">
+          <Project>{a32eab7f-691c-4d00-98c4-f50c37bb4754}</Project>
+          <Name>Moq.net</Name>
+        </ProjectReference>
+        
+        <ProjectReference Include="..\Dependencies\xUnit.net\xUnit.net.csproj">
+          <Project>{8635cb8f-d210-41ed-b4ff-71502cdb475c}</Project>
+          <Name>xUnit.net</Name>
+        </ProjectReference>
+
       </ItemGroup>
     </When>
   </Choose>

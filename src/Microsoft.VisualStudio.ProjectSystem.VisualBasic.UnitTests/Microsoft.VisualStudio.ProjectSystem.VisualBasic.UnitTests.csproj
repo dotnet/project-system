@@ -16,6 +16,7 @@
     <OutDir>$(OutDir)Tests\</OutDir>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
