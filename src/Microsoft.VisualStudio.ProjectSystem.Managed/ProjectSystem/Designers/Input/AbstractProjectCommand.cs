@@ -52,8 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Designers.Input
         private static long[] GetCommandIds(AbstractProjectCommand command)
         {
             ProjectCommandAttribute attribute = (ProjectCommandAttribute)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
-            if (attribute == null)
-                return Array.Empty<long>();
+
+            // All ProjectCommand's should be marked with [ProjectCommandAttribute]
+            Assumes.NotNull(attribute);
 
             return attribute.CommandIds;
         }
