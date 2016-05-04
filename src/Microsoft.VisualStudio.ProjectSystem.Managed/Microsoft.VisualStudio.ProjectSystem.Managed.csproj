@@ -13,7 +13,7 @@
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
-    <IncludeMSBuildReferences>true</IncludeMSBuildReferences>
+    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
@@ -31,13 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectSystem\Designers\Imaging\IProjectImageProvider.cs" />
