@@ -20,7 +20,8 @@ def branch = GithubBranchName
                 batchFile("build.cmd /${configuration.toLowerCase()}")
             }
         }
-        
+
+        Utilities.addArchival(newJob, "Binaries/**/*" /* filesToArchive */, "Binaries/Obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
         Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
