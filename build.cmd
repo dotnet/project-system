@@ -5,7 +5,7 @@ set BatchFile=%0
 set Root=%~dp0
 set BuildConfiguration=Debug
 set MSBuildTarget=Build
-set DeveloperCommandPrompt=%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat
+set DeveloperCommandPrompt=%ProgramFiles(x86)%\Microsoft Visual Studio 15.0\Common7\Tools\VsDevCmd.bat
 
 :ParseArguments
 if "%1" == "" goto :DoneParsing
@@ -17,11 +17,11 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%DeveloperCommandPrompt%" (
-  echo In order to build this respository, you need Visual Studio 2015 installed.
+  echo In order to build this respository, you need Visual Studio "15" Preview installed.
   echo.
   echo Visit this page to download:
   echo.
-  echo http://www.visualstudio.com/en-us/downloads/visual-studio-2015-downloads-vs
+  echo http://go.microsoft.com/fwlink/?LinkId=746567
   exit /b 1
 )
 
