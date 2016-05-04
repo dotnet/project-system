@@ -1,24 +1,44 @@
 ### Code 
 
-To build, deploy and test, clone this repro and open _src\ProjectSystem.sln_.
+#### Visual Studio
+From within Visual Studio 2015, simply open _src\ProjectSystem.sln_.
 
-Alternatively, if you like the command-line, you can run build.cmd from a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.110).aspx) which builds, deploys and runs tests.
+Inside Visual Studio, you can build, deploy and run tests.
+
+#### Command-line
+
+From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.110).aspx), from the repo root, run:
+
+```
+build.cmd
+```
+
+This builds, deploys and run tests.
 
 ### Debugging/Deploying
 
+
+#### Visual Studio
 __NOTE__: It is not currently possible to use a public version of Visual Studio to deploy the project system. This will be coming soon, as a part of https://github.com/dotnet/roslyn/issues/9997.
 
-By default, the project system gets deployed to the _RoslynDev_ experimental instance of Visual Studio, to debug:
+By default, the project system gets deployed to the _RoslynDev_ experimental instance of Visual Studio, to start debugging:
 
 1. Open __src\ProjectSystem.sln__
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
 3. Press _F5_
 
-If this is your first launch of the project system, or RoslynDev experimental instance, press _CTRL+F5_ to pre-prime and avoid a long start up time.
+If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a long start up time.
 
-### Testing
+#### Command-line
 
-Currently, no C#/VB projects created by templates are CPS-based so you need to manually create a project, the easiest way:
+From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running:
+
+```
+devenv /rootsuffix RoslynDev
+```
+
+### Testing 
+While the long term goal is to have all C#/VB projects use this project system, currently none do. This means that you need to manually create a project to test this:
 
 1. __File__ -> __New__ -> __Project__ -> __C#__ -> __Templates__ -> __Visual C#__ -> __Windows__ -> __Console Application__
 2. Right-click on the project and choose __Open in File Explorer__
@@ -28,11 +48,10 @@ Currently, no C#/VB projects created by templates are CPS-based so you need to m
 
 ### Code Coverage
 
+#### Visual Studio
+
 You can collect code coverage within Visual Studio, to do so, do the following:
 
 1. __Test__ -> __Test Settings__ -> __Select Test Settings File__
 2. In __Open Settings Files__, browse to and select _src\ProjectSystem.runsettings_. This will exclude files from the coverage run that are not part of the product.
 3. Choose __Test__ -> __Analyze Code Coverage__ -> __All Tests__
-
-
-
