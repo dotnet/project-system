@@ -1551,7 +1551,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
         'For debug tracing
-        <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")> _
+        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Function PreProcessMessage(ByRef msg As System.Windows.Forms.Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
             Return MyBase.PreProcessMessage(msg)

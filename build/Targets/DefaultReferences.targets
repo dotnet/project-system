@@ -1,6 +1,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Choose>
+    <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
+      <PropertyGroup>
+        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
+        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
+        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(ProjectSystemLayer)' == 'HostAgnostic'">
       <PropertyGroup>
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
@@ -24,7 +31,6 @@
     </When>
   </Choose>
 
-
   <!-- Don't be tempted to move this to conditional ItemGroup or <References> csproj/msvbprj do not like this-->
   <Choose>
     <When Condition="'$(IncludeHostAgnosticReferences)' == 'true'">
@@ -43,6 +49,24 @@
         <Reference Include="Microsoft.Build.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
         <Reference Include="Microsoft.Build.Tasks.Core, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
 
+        <!-- NuGet Dependencies -->
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Roslyn\Roslyn.csproj">
+          <Project>{cf97a73f-f2f1-4893-960c-9c2b95738870}</Project>
+          <Name>Roslyn</Name>
+        </ProjectReference>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Composition\Composition.csproj">
+          <Project>{a57ddfe5-ab0e-4371-98e5-11b9218df11c}</Project>
+          <Name>Composition</Name>
+        </ProjectReference>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Immutable\Immutable.csproj">
+          <Project>{dcda908d-ef5e-494b-addc-c26f5fd610ca}</Project>
+          <Name>Immutable</Name>
+        </ProjectReference>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Metadata\Metadata.csproj">
+          <Project>{e6796b97-d5c6-45b2-ae46-351d15dcfc71}</Project>
+          <Name>Metadata</Name>
+        </ProjectReference>
+        
       </ItemGroup>
     </When>
   </Choose>
@@ -55,7 +79,15 @@
         <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
         <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
         <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=14.0.0.0" />
+
+        <!-- NuGet Dependencies -->
+        <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
+          <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
+          <Name>VisualStudio</Name>
+        </ProjectReference>
+        
       </ItemGroup>
+      
     </When>
   </Choose>
 
@@ -91,7 +123,6 @@
         <Reference Include="Microsoft.VSDesigner.WCF" />
         <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
         <Reference Include="Microsoft.VisualStudio.XmlEditor" />
-
         <Reference Include="Microsoft.VisualStudio.DataDesign.Common" />
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>

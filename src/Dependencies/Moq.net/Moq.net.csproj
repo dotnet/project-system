@@ -8,6 +8,7 @@
     <ProjectGuid>{A32EAB7F-691C-4D00-98C4-F50C37BB4754}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>Dependency</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="project.json" />
