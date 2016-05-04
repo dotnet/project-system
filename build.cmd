@@ -39,7 +39,7 @@ if ERRORLEVEL 1 (
 )
 
 echo.
-echo Build completed sucessfully, for full log see %LogFile%
+echo Build completed successfully, for full log see %LogFile%
 exit /b 0
 
 :Usage
