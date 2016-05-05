@@ -29,6 +29,10 @@
       <Name>DeployTestDependencies</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
+      <Project>{23bcbc90-ed65-4ee3-8af1-dd7caefdbee9}</Project>
+      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj">
       <Project>{c7ec63f8-f96a-4a8f-b879-d572516746b4}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests</Name>

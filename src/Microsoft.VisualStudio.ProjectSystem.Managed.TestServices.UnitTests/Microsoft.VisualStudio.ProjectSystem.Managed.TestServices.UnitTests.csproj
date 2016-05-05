@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F81A2B36-6763-42B8-8F4D-5199325D40C1}</ProjectGuid>
+    <ProjectGuid>{369DCA0F-A079-4D0C-8B32-53879199B681}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests</AssemblyName>
+    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
@@ -19,7 +19,11 @@
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
   <ItemGroup>
@@ -28,17 +32,9 @@
       <Name>DeployTestDependencies</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj">
-      <Project>{7d150b7b-ce02-4cd4-8ec9-6a7c18727a36}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.CSharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
       <Project>{23bcbc90-ed65-4ee3-8af1-dd7caefdbee9}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj">
-      <Project>{c7ec63f8-f96a-4a8f-b879-d572516746b4}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
@@ -46,18 +42,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
-      <Link>Properties\AssemblyAttributes.cs</Link>
-    </Compile>
-    <Compile Include="ProjectSystem\PropertiesFolderProjectTreeModifierTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\App.config">
-      <Link>App.config</Link>
-    </None>
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
