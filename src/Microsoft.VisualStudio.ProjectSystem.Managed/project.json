@@ -3,6 +3,5 @@
     "net46": {}
   },
   "dependencies": {
-    "Microsoft.VisualStudio.ProjectSystem.SDK": "14.0.50729-pre"
   }
 }

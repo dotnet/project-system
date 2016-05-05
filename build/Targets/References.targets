@@ -6,6 +6,7 @@
         <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
+        <IncludeCPSReferences>false</IncludeCPSReferences>
       </PropertyGroup>
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'HostAgnostic'">
@@ -13,6 +14,7 @@
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
+        <IncludeCPSReferences>true</IncludeCPSReferences>
       </PropertyGroup>
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'VisualStudio'">
@@ -20,6 +22,7 @@
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>true</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
+        <IncludeCPSReferences>true</IncludeCPSReferences>
       </PropertyGroup>
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'VisualStudioDesigner'">
@@ -27,6 +30,7 @@
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>true</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>true</IncludeVisualStudioDesignerReferences>
+        <IncludeCPSReferences>false</IncludeCPSReferences>
       </PropertyGroup>
     </When>
   </Choose>
@@ -75,6 +79,19 @@
           <Name>Metadata</Name>
         </ProjectReference>
         
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeCPSReferences)' == 'true'">
+      <ItemGroup>
+
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\CPS\CPS.csproj">
+          <Project>{03ab838c-1b9d-4eca-856f-476616c35f0c}</Project>
+          <Name>CPS</Name>
+        </ProjectReference>
+
       </ItemGroup>
     </When>
   </Choose>
