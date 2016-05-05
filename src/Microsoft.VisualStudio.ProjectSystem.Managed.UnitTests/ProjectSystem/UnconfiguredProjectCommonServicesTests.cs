@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var services = new UnconfiguredProjectCommonServices(ThreadingService, activeConfiguredProject, activeConfiguredProjectProperties);
+            var services = new UnconfiguredProjectCommonServices(threadingService, activeConfiguredProject, activeConfiguredProjectProperties);
 
             Assert.Same(threadingService.Value, services.ThreadingService);
         }
