@@ -49,12 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             get;
         }
+
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
+            Requires.NotNull(propertyContext, nameof(propertyContext));
+            Requires.NotNull(propertyValues, nameof(propertyValues));
+
             if (IsSupported && IsCandidateSpecialItem(propertyContext, propertyValues.Flags))
             {
                 propertyValues.Icon = _imageProvider.GetProjectImage(ImageKey);
-                propertyValues.Flags = Flags;
+                propertyValues.Flags = propertyValues.Flags.Union(Flags);
             }
         }
 

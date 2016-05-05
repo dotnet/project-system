@@ -168,12 +168,12 @@ namespace Microsoft.VisualStudio.Testing
 
             IProjectItemTree IProjectTree.Replace(IProjectItemTree subtree)
             {
-                throw new NotImplementedException();
+                return subtree;
             }
 
             IProjectTree IProjectTree.Replace(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                return subtree;
             }
 
             IProjectTree IProjectTree.SetBrowseObjectProperties(IRule browseObjectProperties)
@@ -237,7 +237,9 @@ namespace Microsoft.VisualStudio.Testing
 
             public IProjectTree SetFlags(ProjectTreeFlags flags)
             {
-                throw new NotImplementedException();
+                Flags = flags;
+
+                return this;
             }
         }
     }

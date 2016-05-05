@@ -14,7 +14,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_NullAsImageProvider_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("imageProvider", () => {
-                new ProjectRootImageProjectTreeModifier((IProjectImageProvider)null);
+                new ProjectRootImageProjectTreePropertiesProvider((IProjectImageProvider)null);
+            });
+        }
+
+        [Fact]
+        public void CalculatePropertyValues_NullAsPropertyContext_ThrowsArgumentNull()
+        {
+            var propertyValues = IProjectTreeCustomizablePropertyValuesFactory.Create();
+            var propertiesProvider = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("propertyContext", () => {
+                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null, propertyValues);
+            });
+        }
+
+        [Fact]
+        public void CalculatePropertyValues_NullAsPropertyValues_ThrowsArgumentNull()
+        {
+            var propertyContext = IProjectTreeCustomizablePropertyContextFactory.Create();
+            var propertiesProvider = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("propertyValues", () => {
+                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null);
             });
         }
 
@@ -32,15 +54,14 @@ Root (flags: {Unrecognized ProjectRoot})
 Root (flags: {ProjectRoot})
     Folder (flags: {Folder})
 ")]
-        public void ApplyModifications_ProjectRootAsTree_SetsIconToProjectRoot(string input)
+        public void CalculatePropertyValues_ProjectRootAsTree_SetsIconToProjectRoot(string input)
         {
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
 
-            var modifier = CreateInstance(imageProvider);
+            var propertiesProvider = CreateInstance(imageProvider);
 
             var tree = ProjectTreeParser.Parse(input);
-            var result = modifier.ApplyModifications(tree, (IProjectTree)null, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             Assert.Equal(new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1), tree.Icon);
         }
@@ -62,63 +83,45 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     Folder (flags: {Folder IncludeInProjectCandidate})
 ")]
-        public void ApplyModifications_NonProjectRootAsTree_DoesNotSetIcon(string input)
+        public void CalculatePropertyValues_NonProjectRootAsTree_DoesNotSetIcon(string input)
         {
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
 
-            var modifier = CreateInstance(imageProvider);
+            var propertiesProvider = CreateInstance(imageProvider);
 
             var tree = ProjectTreeParser.Parse(input);
-            var result = modifier.ApplyModifications(tree.Children[0], (IProjectTree)null, projectTreeProvider);
-
-            Assert.Null(tree.Icon);
-        }
-
-        [Theory]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot Unrecognized})
-")]
-        [InlineData(@"
-Root (flags: {Unrecognized ProjectRoot})
-")]
-        public void ApplyModifications_ProjectRootAsTreeWhenPreviousTreeSpecified_DoesNotSetIcon(string input)
-        {
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
-
-            var modifier = CreateInstance(imageProvider);
-
-            var tree = ProjectTreeParser.Parse(input);
-            var result = modifier.ApplyModifications(tree, tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree.Children[0]);
 
             Assert.Null(tree.Icon);
         }
 
         [Fact]
-        public void ApplyModifications_ProjectRootAsTreeWhenImageProviderReturnsNull_DoesNotSetIcon()
+        public void CalculatePropertyValues_ProjectRootAsTreeWhenImageProviderReturnsNull_DoesNotSetIcon()
         {
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage((string key) => null);
 
-            var modifier = CreateInstance(imageProvider);
+            var propertiesProvider = CreateInstance(imageProvider);
 
             var icon = new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1);
             var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             tree = tree.SetIcon(icon);
 
-            var result = modifier.ApplyModifications(tree, (IProjectTree)null, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             Assert.Same(icon, tree.Icon);
         }
 
-        private ProjectRootImageProjectTreeModifier CreateInstance(IProjectImageProvider imageProvider)
+        private ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
-            return new ProjectRootImageProjectTreeModifier(imageProvider);
+            return CreateInstance((IProjectImageProvider)null);
+        }
+
+        private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
+        {
+            imageProvider = imageProvider ?? IProjectImageProviderFactory.Create();
+
+            return new ProjectRootImageProjectTreePropertiesProvider(imageProvider);
         }
     }
 }

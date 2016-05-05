@@ -25,6 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
+            Requires.NotNull(propertyContext, nameof(propertyContext));
+            Requires.NotNull(propertyValues, nameof(propertyValues));
+
             if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.ProjectRoot))
             {
                 ProjectImageMoniker icon = _imageProvider.GetProjectImage(ProjectImageKey.ProjectRoot);

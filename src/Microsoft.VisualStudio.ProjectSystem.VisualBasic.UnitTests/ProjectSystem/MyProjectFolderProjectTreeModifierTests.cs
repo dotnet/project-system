@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
         }
 
-
         [Fact]
         public void Constructor_NullAsDesignerService_ThrowsArgumentNull()
         {
@@ -49,66 +48,39 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void ApplyModifications1_NullAsTree_ThrowsArgumentNull()
+        public void CalculatePropertyValues_NullAsPropertyContext_ThrowsArgumentNull()
         {
-            var modifier = CreateInstance();
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
+            var propertyValues = IProjectTreeCustomizablePropertyValuesFactory.Create();
+            var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("tree", () => {
-
-                modifier.ApplyModifications((IProjectTree)null, projectTreeProvider);
+            Assert.Throws<ArgumentNullException>("propertyContext", () => {
+                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null, propertyValues);
             });
         }
 
         [Fact]
-        public void ApplyModifications2_NullAsTree_ThrowsArgumentNull()
+        public void CalculatePropertyValues_NullAsPropertyValues_ThrowsArgumentNull()
         {
-            var modifier = CreateInstance();
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
+            var propertyContext = IProjectTreeCustomizablePropertyContextFactory.Create();
+            var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("tree", () => {
-
-                modifier.ApplyModifications((IProjectTree)null, (IProjectTree)null, projectTreeProvider);
+            Assert.Throws<ArgumentNullException>("propertyValues", () => {
+                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null);
             });
         }
 
         [Fact]
-        public void ApplyModifications1_NullAsTreeProvider_ThrowsArgumentNull()
-        {
-            var modifier = CreateInstance();
-            var tree = ProjectTreeParser.Parse("Root");
-
-            Assert.Throws<ArgumentNullException>("projectTreeProvider", () => {
-
-                modifier.ApplyModifications(tree, (IProjectTreeProvider)null);
-            });
-        }
-
-        [Fact]
-        public void ApplyModifications2_NullAsTreeProvider_ThrowsArgumentNull()
-        {
-            var modifier = CreateInstance();
-            var tree = ProjectTreeParser.Parse("Root");
-
-            Assert.Throws<ArgumentNullException>("projectTreeProvider", () => {
-
-                modifier.ApplyModifications(tree, (IProjectTree)null, (IProjectTreeProvider)null);
-            });
-        }
-
-        [Fact]
-        public void ApplyModifications_TreeWithMyProjectCandidateButSupportsProjectDesignerFalse_ReturnsUnmodifiedTree()
+        public void ChangePropertyValues_TreeWithMyProjectCandidateButSupportsProjectDesignerFalse_ReturnsUnmodifiedTree()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => false);   // Don't support AppDesigner
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
 ");
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -118,15 +90,14 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     Properties (flags: {Folder})
 ")]
-        public void ApplyModifications_TreeWithPropertiesFolder_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithPropertiesFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -150,15 +121,14 @@ Root (flags: {ProjectRoot})
         AssemblyInfo.cs (flags: {})
     NotMy Project (flags: {Folder})
 ")]
-        public void ApplyModifications_TreeWithoutMyProjectCandidate_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithoutMyProjectCandidate_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => false);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -176,15 +146,14 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     My Project (flags: {Unrecognized NotAFolder})
 ")]
-        public void ApplyModifications_TreeWithFileCalledMyProject_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithFileCalledMyProject_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -202,15 +171,14 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     My Project (flags: {IncludeInProjectCandidate})
 ")]        
-        public void ApplyModifications_TreeWithExcludedMyProjectFolder_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithExcludedMyProjectFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -233,15 +201,14 @@ Root (flags: {ProjectRoot})
     Folder2 (flags: {Folder})
         My Project (flags: {Folder})
 ")]        
-        public void ApplyModifications_TreeWithNestedMyProjectFolder_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithNestedMyProjectFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
 
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -259,14 +226,13 @@ Root(flags: {ProjectRoot})
 Root(flags: {ProjectRoot})
     My Project (flags: {Folder Unrecognized AppDesignerFolder})
 ")]
-        public void ApplyModifications_TreeWithMyProjectCandidateAlreadyMarkedAsAppDesigner_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithMyProjectCandidateAlreadyMarkedAsAppDesigner_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(input);
-            var result = modifier.ApplyModifications(tree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             AssertAreEquivalent(tree, result);
         }
@@ -356,26 +322,24 @@ Root (flags: {ProjectRoot})
             Folder (flags: {Folder VisibleOnlyInShowAllFiles})
                 File (flags: {VisibleOnlyInShowAllFiles})
 ")]
-        public void ApplyModifications_TreeWithMyProjectCandidate_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
+        public void ChangePropertyValues_TreeWithMyProjectCandidate_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService);
+            var propertiesProvider = CreateInstance(designerService);
 
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
             AssertAreEquivalent(expectedTree, result);
         }
 
         [Fact]
-        public void ApplyModifications_ProjectWithNullMyProjectFolder_DefaultsToMyProject()
+        public void ChangePropertyValues_ProjectWithNullMyProjectFolder_DefaultsToMyProject()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService, appDesignerFolder: null);
+            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: null);
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -386,17 +350,16 @@ Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
-            var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
             AssertAreEquivalent(expectedTree, result);
         }
 
         [Fact]
-        public void ApplyModifications_ProjectWithEmptyMyProjectFolder_DefaultsToMyProject()
+        public void ChangePropertyValues_ProjectWithEmptyMyProjectFolder_DefaultsToMyProject()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService, appDesignerFolder: "");
+            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: "");
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -407,17 +370,16 @@ Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
-            var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
             AssertAreEquivalent(expectedTree, result);
         }
 
         [Fact]
-        public void ApplyModifications_ProjectWithNonDefaultMyProjectFolder_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp()
+        public void ChangePropertyValues_ProjectWithNonDefaultMyProjectFolder_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var projectTreeProvider = IProjectTreeProviderFactory.Create();
-            var modifier = CreateInstance(designerService, appDesignerFolder: "FooBar");
+            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: "FooBar");
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -428,7 +390,7 @@ Root (flags: {ProjectRoot})
     FooBar (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
-            var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
             AssertAreEquivalent(expectedTree, result);
         }
