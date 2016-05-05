@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Testing
 {

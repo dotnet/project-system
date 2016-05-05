@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem;
 using static Microsoft.VisualStudio.Testing.Tokenizer;
 
 namespace Microsoft.VisualStudio.Testing
