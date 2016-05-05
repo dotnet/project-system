@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Input
+namespace Microsoft.VisualStudio.ProjectSystem.Input
 {
     /// <summary>
     ///     Specifies the command group and ID of a given <see cref="AbstractProjectCommand"/>.

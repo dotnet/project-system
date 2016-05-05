@@ -4,7 +4,7 @@ using System;
 using Microsoft.VisualStudio.Input;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 {
     [ProjectSystemTrait]
     public class OpenProjectDesignerOnDefaultActionCommandTests : AbstractOpenProjectDesignerCommandTests

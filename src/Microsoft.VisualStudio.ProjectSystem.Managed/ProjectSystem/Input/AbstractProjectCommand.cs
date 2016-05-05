@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Input
+namespace Microsoft.VisualStudio.ProjectSystem.Input
 {
     /// <summary>
     ///     Provides the base <see langword="abstract"/> class for all commands that operate on <see cref="IProjectTree"/> nodes.

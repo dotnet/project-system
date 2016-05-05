@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     /// <summary>
     ///     Aggregates <see cref="IProjectImageProvider"/> instances into a single importable

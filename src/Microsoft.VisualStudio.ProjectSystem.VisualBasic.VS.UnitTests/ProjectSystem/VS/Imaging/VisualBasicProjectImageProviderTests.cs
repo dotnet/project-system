@@ -3,7 +3,7 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     [ProjectSystemTrait]
     public class VisualBasicProjectImageProviderTests

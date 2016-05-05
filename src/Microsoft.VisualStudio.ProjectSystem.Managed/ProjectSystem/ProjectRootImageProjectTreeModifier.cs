@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Designers.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Designers
 {

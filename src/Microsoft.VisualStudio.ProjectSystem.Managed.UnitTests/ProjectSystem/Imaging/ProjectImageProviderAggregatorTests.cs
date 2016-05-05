@@ -3,7 +3,7 @@ using System;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     [ProjectSystemTrait]
     public class ProjectImageProviderAggregatorTests
