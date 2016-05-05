@@ -52,9 +52,9 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="ProjectSystem\Designers\Imaging\VisualBasicProjectImageProviderTests.cs" />
-    <Compile Include="ProjectSystem\Designers\VisualBasicProjectDesignerPageProviderTests.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicCodeDomProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Imaging\VisualBasicProjectImageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProviderTests.cs" />
     <Compile Include="ProjectSystem\VisualBasicProjectGuidProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>

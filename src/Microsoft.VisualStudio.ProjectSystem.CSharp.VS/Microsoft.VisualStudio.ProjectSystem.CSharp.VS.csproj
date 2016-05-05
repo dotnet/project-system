@@ -41,15 +41,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\Designers\CSharpProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\Designers\CSharpProjectDesignerPageProvider.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\CSharpProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\CSharpCodeDomProvider.cs">
+    <Compile Include="ProjectSystem\VS\Designers\CSharpProjectDesignerPage.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\CSharpProjectDesignerPageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Imaging\CSharpProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ProjectSystem\LanguageServices\CSharpLanguageFeaturesProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\CSharpLanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\CSharpProjectGuidProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\CSharpProjectGuidProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

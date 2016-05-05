@@ -44,11 +44,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicLanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\VisualBasicProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\Designers\VisualBasicProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\Designers\VisualBasicProjectDesignerPageProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicCodeDomProvider.cs">
+    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Imaging\VisualBasicProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPage.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectSystem\VisualBasicProjectGuidProvider.cs" />

@@ -50,12 +50,12 @@
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
     <Compile Include="Mocks\IVsHierarchyFactory.cs" />
     <Compile Include="Mocks\IVsProjectFactory.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\OpenProjectDesignerCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectDesignerPageMetadataTests.cs" />
-    <Compile Include="ProjectSystem\UnconfiguredProjectVsServicesTests.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectDesignerServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Input\Commands\OpenProjectDesignerCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\ProjectDesignerPageMetadataTests.cs" />
+    <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
+    <Compile Include="ProjectSystem\VS\Designers\ProjectDesignerServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
