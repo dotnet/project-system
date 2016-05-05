@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -47,8 +47,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -66,8 +66,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
@@ -86,8 +86,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
@@ -105,8 +105,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -124,8 +124,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -143,8 +143,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -164,8 +164,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
@@ -186,8 +186,8 @@ Root (capabilities: {ProjectRoot})
             var command = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder AppDesignerFolder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder AppDesignerFolder})
 ");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);

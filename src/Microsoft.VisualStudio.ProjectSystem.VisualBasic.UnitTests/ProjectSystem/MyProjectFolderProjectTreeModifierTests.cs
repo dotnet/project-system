@@ -104,8 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var modifier = CreateInstance(designerService);
 
             var tree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
 ");
 
             var result = modifier.ApplyModifications(tree, projectTreeProvider);
@@ -115,8 +115,8 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Properties (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Properties (flags: {Folder})
 ")]
         public void ApplyModifications_TreeWithPropertiesFolder_ReturnsUnmodifiedTree(string input)
         {
@@ -133,22 +133,22 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
+Root (flags: {ProjectRoot})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
-        AssemblyInfo.cs (capabilities: {})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
+        AssemblyInfo.cs (flags: {})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
-        AssemblyInfo.cs (capabilities: {})
-    NotMy Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
+        AssemblyInfo.cs (flags: {})
+    NotMy Project (flags: {Folder})
 ")]
         public void ApplyModifications_TreeWithoutMyProjectCandidate_ReturnsUnmodifiedTree(string input)
         {
@@ -165,16 +165,16 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {})
+Root (flags: {ProjectRoot})
+    My Project (flags: {})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {NotFolder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {NotFolder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Unrecognized NotAFolder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Unrecognized NotAFolder})
 ")]
         public void ApplyModifications_TreeWithFileCalledMyProject_ReturnsUnmodifiedTree(string input)
         {
@@ -191,16 +191,16 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder IncludeInProjectCandidate})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder IncludeInProjectCandidate})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {IncludeInProjectCandidate Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {IncludeInProjectCandidate Folder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {IncludeInProjectCandidate})
+Root (flags: {ProjectRoot})
+    My Project (flags: {IncludeInProjectCandidate})
 ")]        
         public void ApplyModifications_TreeWithExcludedMyProjectFolder_ReturnsUnmodifiedTree(string input)
         {
@@ -217,21 +217,21 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
-        My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
+        My Project (flags: {Folder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
-        Folder (capabilities: {Folder})
-            My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
+        Folder (flags: {Folder})
+            My Project (flags: {Folder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder1 (capabilities: {Folder})
-    Folder2 (capabilities: {Folder})
-        My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder1 (flags: {Folder})
+    Folder2 (flags: {Folder})
+        My Project (flags: {Folder})
 ")]        
         public void ApplyModifications_TreeWithNestedMyProjectFolder_ReturnsUnmodifiedTree(string input)
         {
@@ -248,16 +248,16 @@ Root (capabilities: {ProjectRoot})
         
         [Theory]
         [InlineData(@"
-Root(capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root(capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder})
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder})
 ")]
         [InlineData(@"
-Root(capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder Unrecognized AppDesignerFolder})
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder Unrecognized AppDesignerFolder})
 ")]
         public void ApplyModifications_TreeWithMyProjectCandidateAlreadyMarkedAsAppDesigner_ReturnsUnmodifiedTree(string input)
         {
@@ -273,88 +273,88 @@ Root(capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder BubbleUp})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    my project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    my project (flags: {Folder})
 ", @"
-Root (capabilities: {ProjectRoot})
-    my project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    my project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    MY PROJECT (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    MY PROJECT (flags: {Folder})
 ", @"
-Root (capabilities: {ProjectRoot})
-    MY PROJECT (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    MY PROJECT (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder UnrecognizedCapability})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder UnrecognizedCapability})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder UnrecognizedCapability AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder UnrecognizedCapability AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
-        AssemblyInfo.cs (capabilities: {IncludeInProjectCandidate})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (capabilities: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
-        AssemblyInfo.cs (capabilities: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (capabilities: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
-        AssemblyInfo.cs (capabilities: {})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (capabilities: {VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {VisibleOnlyInShowAllFiles})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
-        Folder (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {Folder})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
-        Folder (capabilities: {Folder VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
-        Folder (capabilities: {Folder})
-            Folder (capabilities: {Folder})
-                File (capabilities: {})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
 ", @"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
-        Folder (capabilities: {Folder VisibleOnlyInShowAllFiles})
-            Folder (capabilities: {Folder VisibleOnlyInShowAllFiles})
-                File (capabilities: {VisibleOnlyInShowAllFiles})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder VisibleOnlyInShowAllFiles})
+                File (flags: {VisibleOnlyInShowAllFiles})
 ")]
         public void ApplyModifications_TreeWithMyProjectCandidate_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
         {
@@ -378,12 +378,12 @@ Root (capabilities: {ProjectRoot})
             var modifier = CreateInstance(designerService, appDesignerFolder: null);
 
             var inputTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
 ");
             var expectedTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
             var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
@@ -399,12 +399,12 @@ Root (capabilities: {ProjectRoot})
             var modifier = CreateInstance(designerService, appDesignerFolder: "");
 
             var inputTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
 ");
             var expectedTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    My Project (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
             var result = modifier.ApplyModifications(inputTree, projectTreeProvider);
@@ -420,12 +420,12 @@ Root (capabilities: {ProjectRoot})
             var modifier = CreateInstance(designerService, appDesignerFolder: "FooBar");
 
             var inputTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    FooBar (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    FooBar (flags: {Folder})
 ");
             var expectedTree = ProjectTreeParser.Parse(@"
-Root (capabilities: {ProjectRoot})
-    FooBar (capabilities: {Folder AppDesignerFolder BubbleUp})
+Root (flags: {ProjectRoot})
+    FooBar (flags: {Folder AppDesignerFolder BubbleUp})
 ");
 
             var result = modifier.ApplyModifications(inputTree, projectTreeProvider);

@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Gets the default capabilities that will be applied to the candidate special item.
+        ///     Gets the default flags that will be applied to the candidate special item.
         /// </summary>
         public abstract ProjectTreeFlags Flags
         {

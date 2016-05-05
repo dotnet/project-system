@@ -4,7 +4,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides common well-known project capabilities.
+    ///     Provides common well-known project flags.
     /// </summary>
     internal static class ProjectCapability
     {

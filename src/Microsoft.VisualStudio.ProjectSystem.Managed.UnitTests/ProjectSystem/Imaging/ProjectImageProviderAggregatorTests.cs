@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             var aggregator = CreateInstance(unconfiguredProject);
 
             aggregator.ImageProviders.Add(provider, "CSharp");
-            
+
             var result = aggregator.GetProjectImage("key");
 
             Assert.Null(result);

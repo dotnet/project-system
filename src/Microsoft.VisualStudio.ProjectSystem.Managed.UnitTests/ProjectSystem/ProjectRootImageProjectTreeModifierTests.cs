@@ -20,17 +20,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
+Root (flags: {ProjectRoot})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot Unrecognized})
+Root (flags: {ProjectRoot Unrecognized})
 ")]
         [InlineData(@"
-Root (capabilities: {Unrecognized ProjectRoot})
+Root (flags: {Unrecognized ProjectRoot})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
 ")]
         public void ApplyModifications_ProjectRootAsTree_SetsIconToProjectRoot(string input)
         {
@@ -47,20 +47,20 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    File (capabilities: {})
+Root (flags: {ProjectRoot})
+    File (flags: {})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    File (capabilities: {IncludeInProjectCandidate})
+Root (flags: {ProjectRoot})
+    File (flags: {IncludeInProjectCandidate})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
-    Folder (capabilities: {Folder IncludeInProjectCandidate})
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder IncludeInProjectCandidate})
 ")]
         public void ApplyModifications_NonProjectRootAsTree_DoesNotSetIcon(string input)
         {
@@ -77,13 +77,13 @@ Root (capabilities: {ProjectRoot})
 
         [Theory]
         [InlineData(@"
-Root (capabilities: {ProjectRoot})
+Root (flags: {ProjectRoot})
 ")]
         [InlineData(@"
-Root (capabilities: {ProjectRoot Unrecognized})
+Root (flags: {ProjectRoot Unrecognized})
 ")]
         [InlineData(@"
-Root (capabilities: {Unrecognized ProjectRoot})
+Root (flags: {Unrecognized ProjectRoot})
 ")]
         public void ApplyModifications_ProjectRootAsTreeWhenPreviousTreeSpecified_DoesNotSetIcon(string input)
         {
@@ -107,7 +107,7 @@ Root (capabilities: {Unrecognized ProjectRoot})
             var modifier = CreateInstance(imageProvider);
 
             var icon = new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1);
-            var tree = ProjectTreeParser.Parse("Root (capabilities: {ProjectRoot})");
+            var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             tree = tree.SetIcon(icon);
 
