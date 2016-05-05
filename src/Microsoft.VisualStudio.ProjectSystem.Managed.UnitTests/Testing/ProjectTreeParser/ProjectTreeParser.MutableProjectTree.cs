@@ -231,6 +231,8 @@ namespace Microsoft.VisualStudio.Testing
 
                 if (flags != null)
                     Flags = flags.Value;
+
+                return this;
             }
 
             public IProjectTree SetFlags(ProjectTreeFlags flags)
