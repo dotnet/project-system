@@ -3,7 +3,7 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Provides the base class for <see cref="IProjectTreeModifier"/> objects that handle special items, such as the AppDesigner folder.

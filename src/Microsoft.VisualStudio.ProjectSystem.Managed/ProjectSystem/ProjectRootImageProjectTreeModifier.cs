@@ -3,7 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Modifies the Solution Explorer tree image for the project root.

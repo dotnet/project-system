@@ -3,7 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     A tree modifier that turns "My Project" folder into a special folder.

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.Testing;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ProjectSystemTrait]
     public class MyProjectFolderProjectTreeModifierTests

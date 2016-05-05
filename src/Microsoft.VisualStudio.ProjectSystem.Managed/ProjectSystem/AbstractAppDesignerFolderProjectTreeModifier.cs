@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Provides the base class for tree modifiers that handle the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
