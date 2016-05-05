@@ -42,7 +42,7 @@
     <Compile Include="ProjectSystem\Input\AbstractProjectCommand.cs" />
     <Compile Include="ProjectSystem\Input\ProjectCommandAttribute.cs" />
     <Compile Include="ProjectSystem\AbstractProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\IProjectDesignerService.cs" />
+    <Compile Include="ProjectSystem\Properties\IProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\IUnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\ProjectCapability.cs" />
     <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreeModifier.cs" />

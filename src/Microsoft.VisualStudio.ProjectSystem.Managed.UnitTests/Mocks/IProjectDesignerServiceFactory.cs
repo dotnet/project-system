@@ -3,7 +3,7 @@
 using System;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class IProjectDesignerServiceFactory
     {

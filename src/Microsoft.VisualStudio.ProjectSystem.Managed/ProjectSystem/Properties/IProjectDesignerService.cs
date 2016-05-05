@@ -3,7 +3,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     ///     Provides members for for opening the Project Designer and querying whether it is supported.

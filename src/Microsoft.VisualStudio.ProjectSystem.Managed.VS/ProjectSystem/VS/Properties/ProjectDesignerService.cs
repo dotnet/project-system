@@ -2,11 +2,12 @@
 
 using System;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
     ///     Provides an implementation of <see cref="IProjectDesignerService"/> based on Visual Studio services.

@@ -3,17 +3,17 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     [ProjectSystemTrait]
-    public class CSharpProjectGuidProviderTests
+    public class VisualBasicProjectGuidProviderTests
     {
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
 
-                new CSharpProjectGuidProvider((UnconfiguredProject)null);
+                new VisualBasicProjectGuidProvider((UnconfiguredProject)null);
             });
         }
 
@@ -37,11 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.NotEqual(Guid.Empty, provider.ProjectTypeGuid);
         }
 
-        private static CSharpProjectGuidProvider CreateInstance()
+        private static VisualBasicProjectGuidProvider CreateInstance()
         {
             var unconfiguedProject = IUnconfiguredProjectFactory.Create();
 
-            return new CSharpProjectGuidProvider(unconfiguedProject);
+            return new VisualBasicProjectGuidProvider(unconfiguedProject);
         }
     }
 }

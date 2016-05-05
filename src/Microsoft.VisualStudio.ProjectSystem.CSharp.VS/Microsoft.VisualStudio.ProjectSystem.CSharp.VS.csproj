@@ -41,8 +41,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\VS\CSharpProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\VS\CSharpProjectDesignerPageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPage.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProvider.cs" />
     <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>

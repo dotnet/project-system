@@ -3,19 +3,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
     ///     Provides project designer property pages.
     /// </summary>
     [Export(typeof(IVsProjectDesignerPageProvider))]
-    [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicProjectDesignerPageProvider : IVsProjectDesignerPageProvider
+    [AppliesTo(ProjectCapability.CSharp)]
+    internal class CSharpProjectDesignerPageProvider : IVsProjectDesignerPageProvider
     {
         [ImportingConstructor]
-        internal VisualBasicProjectDesignerPageProvider()
+        internal CSharpProjectDesignerPageProvider()
         {
         }
 
@@ -23,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Designers.VS
         {
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(
                 new IPageMetadata[] {
-                    VisualBasicProjectDesignerPage.Application,
+                    CSharpProjectDesignerPage.Application,
             });
         }
     }
