@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         }
 
         [Fact]
-        public void GetImageKey_ManyImageProviderReturningKey_ReturnsFirstByOrderPrecedence()
+        public void GetImageKey_ManyImageProviderReturningKey_ReturnsFirstByOrder()
         {
             ProjectImageMoniker moniker1 = new ProjectImageMoniker(Guid.NewGuid(), 0);
             ProjectImageMoniker moniker2 = new ProjectImageMoniker(Guid.NewGuid(), 0);

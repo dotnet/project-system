@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     // Opens the Project Designer ("Property Pages") when the user double-clicks or presses ENTER on the AppDesigner folder while its selected
     [ProjectCommand(CommandGroup.UIHierarchyWindow, UIHierarchyWindowCommandId.DoubleClick, UIHierarchyWindowCommandId.EnterKey)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [OrderPrecedence(1000)] 
+    [Order(1000)] 
     internal class OpenProjectDesignerOnDefaultActionCommand : AbstractOpenProjectDesignerCommand
     {
         [ImportingConstructor]
