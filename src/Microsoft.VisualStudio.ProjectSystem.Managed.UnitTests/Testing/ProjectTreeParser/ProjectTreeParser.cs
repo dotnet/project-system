@@ -220,19 +220,19 @@ namespace Microsoft.VisualStudio.Testing
 
             do
             {
-                ReadCapability(tree);
+                ReadFlag(tree);
             }
             while (tokenizer.SkipIf(TokenType.WhiteSpace));
             tokenizer.Skip(TokenType.RightBrace);
         }
 
-        private void ReadCapability(MutableProjectTree tree)
+        private void ReadFlag(MutableProjectTree tree)
         {   // Parses 'AppDesigner' in '{AppDesigner Folder}'
 
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValue);
 
-            string capability = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
-            tree.Capabilities.Add(capability);
+            string flag = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
+            tree.AddFlag(flag);
         }
 
         private void ReadFilePath(MutableProjectTree tree)
