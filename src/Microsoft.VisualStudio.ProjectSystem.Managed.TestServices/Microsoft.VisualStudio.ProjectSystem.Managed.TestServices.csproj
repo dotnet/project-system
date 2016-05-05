@@ -27,7 +27,7 @@
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystemTraitAttribute.cs" />
+    <Compile Include="ProjectSystem\ProjectSystemTraitAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
