@@ -400,7 +400,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ProjectReferenceState state;
             if (_projectReferenceFullPaths.TryGetValue(unconfiguredProject.FullPath, out state))
             {
-                await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
+                await ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
                 if (state.ResolvedPath != null)
                 {
                     Marshal.ThrowExceptionForHR(_intellisenseEngine.RemoveAssemblyReference(state.ResolvedPath));
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ProjectReferenceState state;
             if (_projectReferenceFullPaths.TryGetValue(unconfiguredProject.FullPath, out state))
             {
-                await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
+                await ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
                 Marshal.ThrowExceptionForHR(_intellisenseEngine.RemoveP2PReference(intellisenseProject));
                 state.AsProjectReference = false;
 
@@ -451,14 +451,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             if (disposing)
             {
-                ThreadingService.AsyncPump.Run(async delegate
+                ThreadingService.JoinableTaskFactory.Run(async delegate
                 {
 #pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
                     await LanguageServiceRegister.UnregisterAsync(this);
 #pragma warning restore RS0003 // Do not directly await a Task
                     if (_intellisenseEngine != null)
                     {
-                        await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
+                        await ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
                         Marshal.ThrowExceptionForHR(_intellisenseEngine.StopIntellisenseEngine());
                         Marshal.ThrowExceptionForHR(_intellisenseEngine.Close());
                         _intellisenseEngine = null;
