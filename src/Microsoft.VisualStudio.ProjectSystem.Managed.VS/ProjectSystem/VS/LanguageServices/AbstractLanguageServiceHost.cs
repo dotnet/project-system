@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// The thread handling service.
         /// </summary>
         [Import]
-        private IThreadHandling ThreadHandling
+        private IProjectThreadingService ThreadHandling
         {
             get;
             set;

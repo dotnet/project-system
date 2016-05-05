@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Designers
         protected virtual string GetAppDesignerFolderName()
         {
             // Returns the <AppDesignerFolder> from the project file
-            return _projectServices.ThreadingPolicy.ExecuteSynchronously(async () => {
+            return _projectServices.ThreadingService.ExecuteSynchronously(async () => {
 
                 var generalProperties = await _projectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                                 .ConfigureAwait(false);

@@ -8,14 +8,14 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class IThreadHandlingFactory
+    internal static class IProjectThreadingServiceFactory
     {
-        public static IThreadHandling Create()
+        public static IProjectThreadingService Create()
         {
             return new MockThreadHandling();
         }
 
-        private class MockThreadHandling : IThreadHandling
+        private class MockThreadHandling : IProjectThreadingService
         {
             private readonly JoinableTaskContextNode _context;
             private readonly JoinableTaskFactory _asyncPump;

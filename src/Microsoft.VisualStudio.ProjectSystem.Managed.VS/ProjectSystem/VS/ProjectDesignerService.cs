@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {   // Opened within Visual Studio
 
                 // Can only use Shell APIs on the UI thread
-                await _projectVsServices.ThreadingPolicy.SwitchToUIThread();
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
 
                 HResult hr = frame.Show();
                 if (hr.Failed)

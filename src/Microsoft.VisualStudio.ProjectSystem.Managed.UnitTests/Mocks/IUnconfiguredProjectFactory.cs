@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
-            var threadingPolicy = IThreadHandlingFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
 
             var projectServices = new Mock<IProjectServices>();
-            projectServices.Setup(u => u.ThreadingPolicy)
-                               .Returns(threadingPolicy);
+            projectServices.Setup(u => u.ThreadingService)
+                               .Returns(threadingService);
 
             var service = new Mock<ProjectService>();
             service.Setup(p => p.Services)

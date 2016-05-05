@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get { return (IVsProject4)_unconfiguredProject.Services.HostObject; }
         }
 
-        public IThreadHandling ThreadingPolicy
+        public IProjectThreadingService ThreadingService
         {
-            get { return _commonServices.ThreadingPolicy; }
+            get { return _commonServices.ThreadingService; }
         }
 
         public ConfiguredProject ActiveConfiguredProject

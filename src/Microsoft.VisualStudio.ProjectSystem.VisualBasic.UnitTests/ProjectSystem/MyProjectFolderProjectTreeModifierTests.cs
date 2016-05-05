@@ -453,7 +453,7 @@ Root (capabilities: {ProjectRoot})
         private MyProjectFolderProjectTreeModifier CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService, string appDesignerFolder = "My Project")
         {
             designerService = designerService ?? IProjectDesignerServiceFactory.Create();
-            var threadingPolicy = IThreadHandlingFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject, 
                 new PropertyPageData() {
@@ -462,7 +462,7 @@ Root (capabilities: {ProjectRoot})
                     Value = appDesignerFolder
                 });
 
-            var projectServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingPolicy, projectProperties.ConfiguredProject, projectProperties);
+            var projectServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService, projectProperties.ConfiguredProject, projectProperties);
 
             return new MyProjectFolderProjectTreeModifier(imageProvider ?? IProjectImageProviderFactory.Create(), projectServices, designerService);
         }

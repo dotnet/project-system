@@ -54,15 +54,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void Constructor_ValueAsCommonServices_SetsThreadingPolicyToCommonServicesThreadingPolicy()
+        public void Constructor_ValueAsCommonServices_SetsThreadingServiceToCommonServicesThreadingService()
         {
-            var threadingPolicy = IThreadHandlingFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingPolicy: threadingPolicy);
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService: threadingService);
 
             var vsServices = CreateInstance(unconfiguredProject, commonServices);
 
-            Assert.Same(threadingPolicy, vsServices.ThreadingPolicy);
+            Assert.Same(threadingService, vsServices.ThreadingService);
         }
 
         [Fact]
