@@ -12,23 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectThreadingService Create()
         {
-            return new MockThreadHandling();
+            return new MockProjectThreadingService();
         }
 
-        private class MockThreadHandling : IProjectThreadingService
+        private class MockProjectThreadingService : IProjectThreadingService
         {
             private readonly JoinableTaskContextNode _context;
-            private readonly JoinableTaskFactory _asyncPump;
+            private readonly JoinableTaskFactory _joinableTaskFactory;
 
-            public MockThreadHandling()
+            public MockProjectThreadingService()
             {
                 _context = new JoinableTaskContextNode(new JoinableTaskContext());
-                _asyncPump = _context.Factory;
-            }
-
-            public JoinableTaskFactory AsyncPump
-            {
-                get { return _asyncPump; }
+                _joinableTaskFactory = _context.Factory;
             }
 
             public bool IsOnMainThread
@@ -41,9 +36,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return _context; }
             }
 
+            public JoinableTaskFactory JoinableTaskFactory
+            {
+                get { return _joinableTaskFactory; }
+            }
+
             public JoinableTaskFactory.MainThreadAwaitable SwitchToUIThread(StrongBox<bool> yielded)
             {
-                return AsyncPump.SwitchToMainThreadAsync();
+                return JoinableTaskContext.SwitchToMainThreadAsync();
             }
 
             public void ExecuteSynchronously(Func<Task> asyncAction)
@@ -64,6 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             public void Fork(Func<Task> asyncAction, JoinableTaskFactory factory = null, UnconfiguredProject unconfiguredProject = null, ConfiguredProject configuredProject = null, ErrorReportSettings watsonReportSettings = null, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IDisposable SuppressProjectExecutionContext()
             {
                 throw new NotImplementedException();
             }
