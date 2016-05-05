@@ -2,6 +2,8 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
+using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
