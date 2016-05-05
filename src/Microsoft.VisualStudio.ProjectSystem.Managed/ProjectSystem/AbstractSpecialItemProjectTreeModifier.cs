@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Designers
 {

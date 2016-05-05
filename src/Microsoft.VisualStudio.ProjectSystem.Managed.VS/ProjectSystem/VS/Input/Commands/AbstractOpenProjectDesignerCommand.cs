@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

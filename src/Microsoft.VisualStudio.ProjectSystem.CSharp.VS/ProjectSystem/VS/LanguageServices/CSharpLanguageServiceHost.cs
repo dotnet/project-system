@@ -2,8 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {

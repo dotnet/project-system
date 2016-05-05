@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {

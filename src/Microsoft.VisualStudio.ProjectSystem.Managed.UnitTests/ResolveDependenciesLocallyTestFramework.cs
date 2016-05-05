@@ -3,7 +3,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 

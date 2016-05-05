@@ -3,7 +3,6 @@
 using System.CodeDom.Compiler;
 using System.ComponentModel.Composition;
 using Microsoft.VisualBasic;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {

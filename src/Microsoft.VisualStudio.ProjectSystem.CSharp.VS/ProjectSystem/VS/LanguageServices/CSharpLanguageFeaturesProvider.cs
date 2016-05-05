@@ -5,8 +5,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
