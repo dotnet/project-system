@@ -10,24 +10,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         /// <summary>
         ///     Returns a value indicating whether the specified <see cref="IProjectTree"/> is
-        ///     the project root; that is, has the capability <see cref="ProjectTreeCapabilities.ProjectRoot"/>.
+        ///     the project root; that is, has the flag <see cref="ProjectTreeFlags.Common.ProjectRoot"/>.
         /// </summary>
         public static bool IsProjectRoot(this IProjectTree node)
         {
             Requires.NotNull(node, nameof(node));
 
-            return node.HasCapability(ProjectTreeCapabilities.ProjectRoot);
+            return node.HasFlag(ProjectTreeFlags.Common.ProjectRoot);
         }
 
         /// <summary>
         ///     Returns a value indicating whether the specified <see cref="IProjectTree"/> has
-        ///     the specified capability.
+        ///     the specified flag.
         /// </summary>
-        public static bool HasCapability(this IProjectTree node, string capability)
+        public static bool HasFlag(this IProjectTree node, ProjectTreeFlags.Common flag)
         {
             Requires.NotNull(node, nameof(node));
 
-            return node.Capabilities.Contains(capability); 
+            return node.Flags.Contains(flag); 
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(node, nameof(node));
 
-            return !node.HasCapability(ProjectTreeCapabilities.IncludeInProjectCandidate);
+            return !node.HasFlag(ProjectTreeFlags.Common.IncludeInProjectCandidate);
         }
     }
 }
