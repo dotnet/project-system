@@ -2,18 +2,19 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     A tree modifier that turns "Properties" folder into a special folder.
+    ///     A project tree properties provider that turns "Properties" folder into a special folder.
     /// </summary>
-    [Export(typeof(IProjectTreeModifier))]
+    [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.CSharp)]
-    internal class PropertiesFolderProjectTreeModifier : AbstractAppDesignerFolderProjectTreeModifier
+    internal class PropertiesFolderProjectTreePropertiesProvider : AbstractAppDesignerFolderProjectTreePropertiesProvider
     {
         [ImportingConstructor]
-        public PropertiesFolderProjectTreeModifier([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        public PropertiesFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
             : base(imageProvider, projectServices, designerService)
         {
         }

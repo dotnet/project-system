@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -10,19 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Provides the base class for tree modifiers that handle the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
-    internal abstract class AbstractAppDesignerFolderProjectTreeModifier : AbstractSpecialItemProjectTreeModifier
+    internal abstract class AbstractAppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialItemProjectTreePropertiesProvider
     {
-        /// <summary>
-        /// A common set of project tree capabilities with the case-insensitive comparer.
-        /// </summary>
-        private static readonly ImmutableHashSet<string> DefaultAppDesignerFolderCapabilities =
-                    ProjectTreeCapabilities.EmptyCapabilities.Add(ProjectTreeCapabilities.AppDesignerFolder)
-                                                             .Add(ProjectTreeCapabilities.BubbleUp);
+        private static readonly ProjectTreeFlags DefaultFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectDesignerService _designerService;
 
-        protected AbstractAppDesignerFolderProjectTreeModifier(IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        protected AbstractAppDesignerFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
             : base(imageProvider)
         {
             Requires.NotNull(projectServices, nameof(projectServices));
@@ -37,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _designerService.SupportsProjectDesigner; }
         }
 
-        public override ImmutableHashSet<string> DefaultCapabilities
+        public override ProjectTreeFlags Flags
         {
-            get { return DefaultAppDesignerFolderCapabilities; }
+            get { return DefaultFlags; }
         }
 
         public override string ImageKey
@@ -47,15 +41,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get {  return ProjectImageKey.AppDesignerFolder; }
         }
 
-        protected override sealed IProjectTree FindCandidateSpecialItem(IProjectTree projectRoot)
+        protected override sealed bool IsCandidateSpecialItem(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags)
         {
+            if (!propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.Common.ProjectRoot))
+                return false;
+
+            if (!currentFlags.Contains(ProjectTreeFlags.Common.Folder))
+                return false;
+
             string folderName = GetAppDesignerFolderName();
 
-            IProjectTree candidate = projectRoot.Children.FirstOrDefault(n => StringComparers.Paths.Equals(n.Caption, folderName));
-            if (candidate == null || !candidate.IsFolder || candidate.HasCapability(ProjectTreeCapabilities.AppDesignerFolder) || !candidate.IsIncludedInProject())
-                return null; // Couldn't find a candidate or already have a AppDesigner folder
-
-            return candidate;
+            return StringComparers.Paths.Equals(folderName, propertyContext.ItemName);
         }
 
         protected virtual string GetAppDesignerFolderName()

@@ -6,14 +6,14 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     A tree modifier that turns "My Project" folder into a special folder.
+    ///     A project tree properties provider that turns "My Project" folder into a special folder.
     /// </summary>
-    [Export(typeof(IProjectTreeModifier))]
+    [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class MyProjectFolderProjectTreeModifier : AbstractAppDesignerFolderProjectTreeModifier
+    internal class MyProjectFolderProjectTreePropertiesProvider : AbstractAppDesignerFolderProjectTreePropertiesProvider
     {
         [ImportingConstructor]
-        public MyProjectFolderProjectTreeModifier([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        public MyProjectFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
             : base(imageProvider, projectServices, designerService)
         {
         }

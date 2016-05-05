@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("imageProvider", () => {
 
-                new MyProjectFolderProjectTreeModifier((IProjectImageProvider)null, projectServices, designerService);
+                new MyProjectFolderProjectTreePropertiesProvider((IProjectImageProvider)null, projectServices, designerService);
             });
         }
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("projectServices", () => {
 
-                new MyProjectFolderProjectTreeModifier(imageProvider, (IUnconfiguredProjectCommonServices)null, designerService);
+                new MyProjectFolderProjectTreePropertiesProvider(imageProvider, (IUnconfiguredProjectCommonServices)null, designerService);
             });
         }
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("designerService", () => {
 
-                new MyProjectFolderProjectTreeModifier(imageProvider, projectServices, (IProjectDesignerService)null);
+                new MyProjectFolderProjectTreePropertiesProvider(imageProvider, projectServices, (IProjectDesignerService)null);
             });
         }
 
@@ -441,17 +441,17 @@ Root (capabilities: {ProjectRoot})
             Assert.Equal(expectedAsString, actualAsString);
         }
 
-        private MyProjectFolderProjectTreeModifier CreateInstance()
+        private MyProjectFolderProjectTreePropertiesProvider CreateInstance()
         {
             return CreateInstance((IProjectImageProvider)null, (IProjectDesignerService)null);
         }
 
-        private MyProjectFolderProjectTreeModifier CreateInstance(IProjectDesignerService designerService, string appDesignerFolder = "My Project")
+        private MyProjectFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService, string appDesignerFolder = "My Project")
         {
             return CreateInstance((IProjectImageProvider)null, designerService, appDesignerFolder);
         }
 
-        private MyProjectFolderProjectTreeModifier CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService, string appDesignerFolder = "My Project")
+        private MyProjectFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService, string appDesignerFolder = "My Project")
         {
             designerService = designerService ?? IProjectDesignerServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
@@ -465,7 +465,7 @@ Root (capabilities: {ProjectRoot})
 
             var projectServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService, projectProperties.ConfiguredProject, projectProperties);
 
-            return new MyProjectFolderProjectTreeModifier(imageProvider ?? IProjectImageProviderFactory.Create(), projectServices, designerService);
+            return new MyProjectFolderProjectTreePropertiesProvider(imageProvider ?? IProjectImageProviderFactory.Create(), projectServices, designerService);
         }
     }
 }
