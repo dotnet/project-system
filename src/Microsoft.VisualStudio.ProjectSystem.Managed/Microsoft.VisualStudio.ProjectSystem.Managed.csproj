@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\DisableInboxComponentsProjectCapabilityProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />
