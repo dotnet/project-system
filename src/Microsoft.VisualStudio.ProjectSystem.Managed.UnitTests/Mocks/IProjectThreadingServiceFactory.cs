@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public JoinableTaskFactory.MainThreadAwaitable SwitchToUIThread(StrongBox<bool> yielded)
             {
-                return JoinableTaskContext.SwitchToMainThreadAsync();
+                return JoinableTaskFactory.SwitchToMainThreadAsync();
             }
 
             public void ExecuteSynchronously(Func<Task> asyncAction)
