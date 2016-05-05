@@ -4,7 +4,7 @@ using System;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IUnconfiguredProjectVsServicesFactory
     {
