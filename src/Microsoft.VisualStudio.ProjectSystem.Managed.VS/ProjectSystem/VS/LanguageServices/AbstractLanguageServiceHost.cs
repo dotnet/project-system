@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// The thread handling service.
         /// </summary>
         [Import]
-        private IProjectThreadingService ThreadHandling
+        private IProjectThreadingService ThreadingService
         {
             get;
             set;
@@ -400,7 +400,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ProjectReferenceState state;
             if (_projectReferenceFullPaths.TryGetValue(unconfiguredProject.FullPath, out state))
             {
-                await ThreadHandling.AsyncPump.SwitchToMainThreadAsync();
+                await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
                 if (state.ResolvedPath != null)
                 {
                     Marshal.ThrowExceptionForHR(_intellisenseEngine.RemoveAssemblyReference(state.ResolvedPath));
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ProjectReferenceState state;
             if (_projectReferenceFullPaths.TryGetValue(unconfiguredProject.FullPath, out state))
             {
-                await ThreadHandling.AsyncPump.SwitchToMainThreadAsync();
+                await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
                 Marshal.ThrowExceptionForHR(_intellisenseEngine.RemoveP2PReference(intellisenseProject));
                 state.AsProjectReference = false;
 
@@ -451,14 +451,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             if (disposing)
             {
-                ThreadHandling.AsyncPump.Run(async delegate
+                ThreadingService.AsyncPump.Run(async delegate
                 {
 #pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
                     await LanguageServiceRegister.UnregisterAsync(this);
 #pragma warning restore RS0003 // Do not directly await a Task
                     if (_intellisenseEngine != null)
                     {
-                        await ThreadHandling.AsyncPump.SwitchToMainThreadAsync();
+                        await ThreadingService.AsyncPump.SwitchToMainThreadAsync();
                         Marshal.ThrowExceptionForHR(_intellisenseEngine.StopIntellisenseEngine());
                         Marshal.ThrowExceptionForHR(_intellisenseEngine.Close());
                         _intellisenseEngine = null;
@@ -491,7 +491,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private ProjectItem GetProjectItemForDocumentMoniker(string documentMoniker)
         {
-            ThreadHandling.VerifyOnUIThread();
+            ThreadingService.VerifyOnUIThread();
 
             HierarchyId id = _projectVsServices.Project.GetHierarchyId(documentMoniker);
             if (id.IsNil || id.IsRoot)
@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return HResult.Invoke(
                 delegate
                 {
-                    return ThreadHandling.ExecuteSynchronously(asyncAction);
+                    return ThreadingService.ExecuteSynchronously(asyncAction);
                 },
                 Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider,
                 registerProjectFaultHandlerService ? ProjectFaultHandlerService : null,
@@ -529,7 +529,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// </summary>
         private async System.Threading.Tasks.Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
-            await ThreadHandling.SwitchToUIThread();
+            await ThreadingService.SwitchToUIThread();
             await ProjectAsynchronousTasksService.LoadedProjectAsync(async delegate
             {
                 var sourceFiles = e.Value.ProjectChanges[CSharp.SchemaName];
@@ -609,7 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// </summary>
         private async Task ProjectBuildRuleBlock_Changed(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
-            await ThreadHandling.SwitchToUIThread();
+            await ThreadingService.SwitchToUIThread();
             using (ProjectAsynchronousTasksService.LoadedProject())
             {
                 foreach (var resolvedReferenceChange in e.Value.ProjectChanges.Values)
