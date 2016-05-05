@@ -34,8 +34,6 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />
     <Compile Include="ProjectSystem\VS\ProjectDesignerPageMetadata.cs" />
-    <Compile Include="ProjectSystem\VS\IAddItemTemplatesGuidProvider.cs" />
-    <Compile Include="ProjectSystem\VS\IItemTypeGuidProvider.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
