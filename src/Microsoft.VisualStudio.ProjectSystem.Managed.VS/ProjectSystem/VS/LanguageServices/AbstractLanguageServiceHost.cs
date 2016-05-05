@@ -252,13 +252,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             {
                 var designTimeBuildBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                     ProjectBuildRuleBlock_Changed);
-                _designTimeBuildSubscriptionLink = ActiveConfiguredProjectSubscriptionService.JointRuleBlock.LinkTo(
+                _designTimeBuildSubscriptionLink = ActiveConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     designTimeBuildBlock,
                     ruleNames: WatchedEvaluationRules.Union(WatchedDesignTimeBuildRules));
 
                 var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                     ProjectRuleBlock_ChangedAsync);
-                _evaluationSubscriptionLink = ActiveConfiguredProjectSubscriptionService.ProjectRuleBlock.LinkTo(
+                _evaluationSubscriptionLink = ActiveConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     evaluationBlock,
                     ruleNames: WatchedEvaluationRules);
             }
