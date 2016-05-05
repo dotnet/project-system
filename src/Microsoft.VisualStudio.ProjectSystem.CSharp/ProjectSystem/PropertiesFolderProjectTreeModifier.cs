@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Designers
     ///     A tree modifier that turns "Properties" folder into a special folder.
     /// </summary>
     [Export(typeof(IProjectTreeModifier))]
-    [AppliesTo(ProjectCapabilities.CSharp)]
+    [AppliesTo(ProjectCapability.CSharp)]
     internal class PropertiesFolderProjectTreeModifier : AbstractAppDesignerFolderProjectTreeModifier
     {
         [ImportingConstructor]

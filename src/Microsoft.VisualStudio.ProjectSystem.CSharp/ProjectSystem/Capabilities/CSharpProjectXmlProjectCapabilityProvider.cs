@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Capabilities
     /// </summary>
     [ExcludeFromCodeCoverage] // Temporary class until we start reading capabilities from targets
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectCapabilitiesProvider))]
-    [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
+    [AppliesTo(ProjectCapability.AlwaysApplicable)]
     internal class CSharpProjectXmlProjectCapabilityProvider : ProjectCapabilitiesFromImportXmlProvider
     {
         [ImportingConstructor]

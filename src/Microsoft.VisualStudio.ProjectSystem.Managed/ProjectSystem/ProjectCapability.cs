@@ -8,8 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class ProjectCapability
     {
+        public const string AlwaysAvailable = ProjectCapabilities.AlwaysApplicable;
         public const string CSharp = ProjectCapabilities.CSharp;
-        public const string VisualBasic = ProjectCapabilities.VB;
+        public const string VisualBasic = ProjectCapabilities.VB;        
         public const string VisualBasicLanguageService = ProjectCapabilities.VB + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
