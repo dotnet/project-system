@@ -445,5 +445,5 @@
                BinariesDirectory="$(OutDir)"
                IntermediatesDirectory="$(IntermediateOutputPath)"
                Type="$(SignType)" />
-  </Target>  
+  </Target>
 </Project>
