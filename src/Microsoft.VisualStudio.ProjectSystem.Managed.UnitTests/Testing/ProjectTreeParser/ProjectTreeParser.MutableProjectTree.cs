@@ -229,7 +229,8 @@ namespace Microsoft.VisualStudio.Testing
                 if (visible != null)
                     Visible = visible.Value;
 
-                Flags = flags;
+                if (flags != null)
+                    Flags = flags.Value;
             }
 
             public IProjectTree SetFlags(ProjectTreeFlags flags)
