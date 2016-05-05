@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// <summary>
         /// Invoked when the UnconfiguredProject is first loaded to initialize language services.
         /// </summary>
-        [UnconfiguredProjectAutoLoad(afterInitialActiveConfigurationKnown: true)]
+        [ProjectAutoLoad(ProjectLoadCheckpoint.InitialActiveConfigurationKnown)]
         [AppliesTo(ProjectCapability.CSharpLanguageService)]
         private void Initialize()
         {
