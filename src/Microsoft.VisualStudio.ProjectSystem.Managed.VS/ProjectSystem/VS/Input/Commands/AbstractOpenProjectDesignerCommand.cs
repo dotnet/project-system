@@ -2,6 +2,8 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             // We assume that if the AppDesignerTreeModifier marked an AppDesignerFolder, that we must support the Project Designer
-            if (node.Capabilities.Contains(ProjectTreeCapabilities.AppDesignerFolder))
+            if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -29,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            if (node.Capabilities.Contains(ProjectTreeCapabilities.AppDesignerFolder))
+            if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
             {
                 await _designerService.ShowProjectDesignerAsync()
                                       .ConfigureAwait(false);
