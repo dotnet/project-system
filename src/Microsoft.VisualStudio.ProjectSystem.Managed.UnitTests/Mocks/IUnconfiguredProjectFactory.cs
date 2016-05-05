@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var threadingService = IProjectThreadingServiceFactory.Create();
 
             var projectServices = new Mock<IProjectServices>();
-            projectServices.Setup(u => u.ThreadingService)
+            projectServices.Setup(u => u.ThreadingPolicy)
                                .Returns(threadingService);
 
-            var service = new Mock<ProjectService>();
+            var service = new Mock<IProjectService>();
             service.Setup(p => p.Services)
                    .Returns(projectServices.Object);
 
