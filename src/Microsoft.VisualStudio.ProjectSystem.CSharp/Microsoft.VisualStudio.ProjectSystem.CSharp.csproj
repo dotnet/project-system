@@ -35,12 +35,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\Designers\PropertiesFolderProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\PropertiesFolderProjectTreeModifier.cs" />
     <Compile Include="ProjectSystem\Capabilities\CSharpProjectXmlProjectCapabilityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
- 
 </Project>

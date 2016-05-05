@@ -33,21 +33,21 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\Designers\Imaging\IProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\ProjectImageKey.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\ProjectImageProviderAggregator.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectRootImageProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\GetCommandStatusResult.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\AbstractSingleNodeProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\AbstractProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\ProjectCommandAttribute.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\IProjectDesignerService.cs" />
+    <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
+    <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />
+    <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\Input\GetCommandStatusResult.cs" />
+    <Compile Include="ProjectSystem\Input\AbstractSingleNodeProjectCommand.cs" />
+    <Compile Include="ProjectSystem\Input\AbstractProjectCommand.cs" />
+    <Compile Include="ProjectSystem\Input\ProjectCommandAttribute.cs" />
+    <Compile Include="ProjectSystem\AbstractProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\IProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\IUnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\ProjectCapability.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractAppDesignerFolderProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectTreeExtensions.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractSpecialItemProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeExtensions.cs" />
+    <Compile Include="ProjectSystem\AbstractSpecialItemProjectTreeModifier.cs" />
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>

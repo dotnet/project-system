@@ -52,10 +52,10 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="ProjectSystem\VS\Designers\Imaging\VisualBasicProjectImageProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectDesignerPageProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProviderTests.cs" />
-    <Compile Include="ProjectSystem\VisualBasicProjectGuidProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicLanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\VS\Designers\Imaging\VisualBasicProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\VS\Designers\VisualBasicProjectDesignerPageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectDesignerPage.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectDesignerPageProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>

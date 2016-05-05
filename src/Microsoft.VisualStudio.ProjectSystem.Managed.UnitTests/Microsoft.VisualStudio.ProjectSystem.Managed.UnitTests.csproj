@@ -51,8 +51,8 @@
     <Compile Include="Moq\ReturnsExtensions.cs" />
     <Compile Include="FuncWithOut.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\ProjectImageProviderAggregatorTests.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectRootImageProjectTreeModifierTests.cs" />
+    <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
