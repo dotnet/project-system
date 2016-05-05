@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/> and <see cref="IAddItemTemplatesGuidProvider"/>.

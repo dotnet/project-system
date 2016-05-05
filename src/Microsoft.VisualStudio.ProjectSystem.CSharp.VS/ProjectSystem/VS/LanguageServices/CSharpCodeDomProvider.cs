@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using Microsoft.CSharp;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
     ///     Provides the C# <see cref="CodeDomProvider"/> for use by designers and code generators.

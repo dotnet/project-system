@@ -3,7 +3,7 @@
 using System;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Concrete implementation of <see cref="IPageMetadata"/>.

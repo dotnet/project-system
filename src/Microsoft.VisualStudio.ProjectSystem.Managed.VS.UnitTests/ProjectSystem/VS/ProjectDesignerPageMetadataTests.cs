@@ -3,7 +3,7 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
     public class ProjectDesignerPageMetadataTests

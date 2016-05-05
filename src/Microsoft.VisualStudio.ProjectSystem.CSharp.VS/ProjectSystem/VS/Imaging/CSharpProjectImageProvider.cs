@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
     /// <summary>
     ///     Provides C# project images.

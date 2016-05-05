@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     [ProjectSystemTrait]
     public class VisualBasicCodeDomProviderTests

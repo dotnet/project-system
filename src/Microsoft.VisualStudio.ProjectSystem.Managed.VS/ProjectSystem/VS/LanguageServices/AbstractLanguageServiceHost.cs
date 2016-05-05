@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.OLE.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
     ///     Provides the base <see langword="abstract"/> for language service hosts that integrate the language service with the project system.

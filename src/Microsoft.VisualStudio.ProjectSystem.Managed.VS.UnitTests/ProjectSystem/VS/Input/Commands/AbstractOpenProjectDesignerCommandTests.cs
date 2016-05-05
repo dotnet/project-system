@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Testing;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public abstract class AbstractOpenProjectDesignerCommandTests
     {

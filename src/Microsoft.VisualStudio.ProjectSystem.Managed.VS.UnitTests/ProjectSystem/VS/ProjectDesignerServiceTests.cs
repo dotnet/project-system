@@ -8,7 +8,7 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
     public class ProjectDesignerServiceTests

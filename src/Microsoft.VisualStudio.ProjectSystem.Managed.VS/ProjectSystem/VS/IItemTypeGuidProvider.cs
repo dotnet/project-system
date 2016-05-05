@@ -4,7 +4,7 @@
 // WORKAROUND: Temporary until we can pick up the latest CPS SDK
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     /// Provides support to supply an appropriate value for <code>__VSHPROPID.VSHPROPID_TypeGuid</code>

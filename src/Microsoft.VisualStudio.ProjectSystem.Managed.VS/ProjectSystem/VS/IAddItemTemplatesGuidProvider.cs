@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     /// Provides support to supply an appropriate value for __VSHPROPID2.VSHPROPID_AddItemTemplatesGuid

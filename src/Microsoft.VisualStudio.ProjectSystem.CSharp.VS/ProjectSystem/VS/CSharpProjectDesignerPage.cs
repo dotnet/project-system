@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Provides common well-known C# project property pages.
