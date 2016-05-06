@@ -19,6 +19,8 @@
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
+    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
@@ -28,9 +30,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectSystem\ProjectSystemTraitAttribute.cs" />
+    <Compile Include="ProjectSystem\ProjectSystemTraitDiscover.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\Delimiters.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeFormatError.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeFormatException.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeParser.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeParser.MutableProjectTree.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\StringReader.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.IdentifierParseOptions.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.Token.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.TokenType.cs" />
+    <Compile Include="ProjectSystem\ProjectTreePropertiesProviderExtensions.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeWriter.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeWriterOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

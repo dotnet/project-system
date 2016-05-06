@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer
     {
@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.Testing
 
         public Tokenizer(StringReader reader, ImmutableArray<TokenType> delimiters)
         {
-            Debug.Assert(reader != null);
+            Assumes.NotNull(reader);
 
             _reader = reader;
             _delimiters = delimiters;

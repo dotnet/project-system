@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     partial class ProjectTreeParser
     {

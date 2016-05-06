@@ -62,21 +62,6 @@
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
-    <Compile Include="Testing\ProjectSystemTraitDiscover.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Delimiters.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeFormatError.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeFormatException.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParserTests.cs" />
-    <Compile Include="Testing\ProjectTreePropertiesProviderExtensions.cs" />
-    <Compile Include="Testing\ProjectTreeWriterOptions.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.MutableProjectTree.cs" />
-    <Compile Include="Testing\ProjectTreeWriter.cs" />
-    <Compile Include="Testing\ProjectTreeParser\StringReader.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.IdentifierParseOptions.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.TokenType.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.Token.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.cs" />
     <Compile Include="Trait.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +71,7 @@
     <None Include="App.config" />
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>

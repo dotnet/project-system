@@ -2,7 +2,6 @@
 
 using System;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
-using Microsoft.VisualStudio.Testing;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem

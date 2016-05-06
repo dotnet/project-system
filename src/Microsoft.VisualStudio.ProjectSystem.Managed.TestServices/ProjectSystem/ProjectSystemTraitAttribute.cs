@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio
     /// <summary>
     ///     Indicates that a test is a project system unit test (allowing you to group in Test Explorer).
     /// </summary>
-    [TraitDiscoverer("Microsoft.VisualStudio.Testing.ProjectSystemTraitDiscoverer", "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests")]
+    [TraitDiscoverer("Microsoft.VisualStudio.ProjectSystem.ProjectSystemTraitDiscoverer", "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests")]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class ProjectSystemTraitAttribute : Attribute, ITraitAttribute
     {
