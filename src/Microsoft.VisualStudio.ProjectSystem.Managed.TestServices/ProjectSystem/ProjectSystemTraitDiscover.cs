@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Microsoft.VisualStudio
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ProjectSystemTraitDiscoverer : ITraitDiscoverer
     {
