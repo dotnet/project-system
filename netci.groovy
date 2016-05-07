@@ -23,7 +23,7 @@ def branch = GithubBranchName
 
         Utilities.addArchival(newJob, "Binaries/**/*" /* filesToArchive */, "Binaries/Obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
 
-        job.with {
+        newJob.with {
             label("auto-win2012-20160506")
         }
 
