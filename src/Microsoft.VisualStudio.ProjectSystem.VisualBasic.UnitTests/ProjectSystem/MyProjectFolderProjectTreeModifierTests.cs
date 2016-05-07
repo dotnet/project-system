@@ -237,7 +237,7 @@ Root(flags: {ProjectRoot})
             AssertAreEquivalent(tree, result);
         }
 
-        [Theory]
+        [Theory(Skip = "https://github.com/dotnet/roslyn/issues/11162")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
