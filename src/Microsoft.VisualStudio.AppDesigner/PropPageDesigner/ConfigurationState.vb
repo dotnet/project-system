@@ -143,8 +143,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public Sub Dispose() Implements System.IDisposable.Dispose
             UnadviseEventHandling()
-            Me._project = Nothing
-            Me._vsCfgProvider = Nothing
+            _project = Nothing
+            _vsCfgProvider = Nothing
             _vsSolutionBuildManager = Nothing
         End Sub
 
@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public Sub CheckForModeChanges()
             Common.Switches.TracePDConfigs("CheckForModeChanges")
-            Dim SimplifiedConfigModeCurrent As Boolean = Me.IsSimplifiedConfigMode
+            Dim SimplifiedConfigModeCurrent As Boolean = IsSimplifiedConfigMode
             If SimplifiedConfigModeCurrent <> _simplifiedConfigModeLastKnownValue Then
                 Common.Switches.TracePDConfigs("Simplified Config Mode has changed")
                 _simplifiedConfigModeLastKnownValue = SimplifiedConfigModeCurrent
@@ -781,7 +781,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <remarks></remarks>
             Public ReadOnly Property DisplayName() As String
                 Get
-                    Select Case Me.SelectionType
+                    Select Case SelectionType
                         Case SelectionTypes.Active
                             Return SR.GetString(SR.PPG_ActiveConfigOrPlatformFormatString_1Arg, Name)
                         Case SelectionTypes.All, SelectionTypes.Normal

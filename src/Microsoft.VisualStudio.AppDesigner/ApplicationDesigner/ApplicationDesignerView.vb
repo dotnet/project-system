@@ -51,12 +51,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             'ApplicationDesignerView
             '
-            Me.SuspendLayout()
-            Me.AutoScroll = False
-            Me.BackColor = System.Drawing.SystemColors.ControlLight
-            Me.Name = "ApplicationDesignerView"
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            SuspendLayout()
+            AutoScroll = False
+            BackColor = System.Drawing.SystemColors.ControlLight
+            Name = "ApplicationDesignerView"
+            ResumeLayout(False)
+            PerformLayout()
         End Sub
 
 #End Region
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Sub New(ByVal serviceProvider As IServiceProvider)
             MyBase.New()
-            Me.SuspendLayout()
+            SuspendLayout()
             MyBase.HostingPanel.SuspendLayout()
 
             SetSite(serviceProvider)
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End If
 
             MyBase.HostingPanel.ResumeLayout(False)
-            Me.ResumeLayout(False) 'Don't need to lay out yet - we'll do that at the end of AddTabs
+            ResumeLayout(False) 'Don't need to lay out yet - we'll do that at the end of AddTabs
         End Sub
 
         ''' <summary>
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     'Set View title to allow finding designer in test suites
                     'Title should never be seen
-                    Me.Text = "AppDesigner+" & DTEProject.Name
+                    Text = "AppDesigner+" & DTEProject.Name
 
                     _projectFilePath = DTEProject.FullName
                 End If
@@ -1154,7 +1154,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
                 End Try
 
-                Me.SelectedIndex = Index
+                SelectedIndex = Index
 
                 If ErrorMessage <> "" Then
                     Try
@@ -1200,7 +1200,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Optional ByVal HelpLink As String = Nothing) As DialogResult
 
             Debug.Assert(_serviceProvider IsNot Nothing)
-            Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, Me._messageBoxCaption, _
+            Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, _messageBoxCaption, _
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
@@ -1215,7 +1215,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Optional ByVal HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
 
             Debug.Assert(_serviceProvider IsNot Nothing)
-            AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, Me._messageBoxCaption, HelpLink:=HelpLink)
+            AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, _messageBoxCaption, HelpLink:=HelpLink)
         End Sub
 
 
@@ -1352,7 +1352,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Exit Sub
             End If
 
-            If Not _refreshDirtyIndicatorsQueued AndAlso Me.IsHandleCreated Then
+            If Not _refreshDirtyIndicatorsQueued AndAlso IsHandleCreated Then
                 BeginInvoke(New MethodInvoker(AddressOf RefreshDirtyIndicatorsHelper))
                 _refreshDirtyIndicatorsQueued = True
             End If
@@ -1477,7 +1477,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub SetFrameDirtyIndicator(ByVal Dirty As Boolean)
             If Not _projectDesignerDirtyStateInitialized OrElse _lastProjectDesignerDirtyState <> Dirty Then
-                Dim Frame As IVsWindowFrame = Me.WindowFrame
+                Dim Frame As IVsWindowFrame = WindowFrame
                 If Frame IsNot Nothing Then
                     'VSFPROPID_OverrideDirtyState - this is a tri-state property.  If Empty, we get default behavior.  True/False
                     '  overrides the state.
@@ -1695,7 +1695,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     ' we better set that as the active tab...
                     For Index As Integer = 0 To _designerPanels.Length - 1
                         Dim panel As ApplicationDesignerPanel
-                        panel = Me._designerPanels(Index)
+                        panel = _designerPanels(Index)
                         Debug.Assert(panel IsNot Nothing, "m_DesignerPanels(Index) should not be Nothing")
                         If Object.ReferenceEquals(panel.VsWindowFrame, pFrame) Then
                             ShowTab(Index)
@@ -1810,7 +1810,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Private Sub ApplicationDesignerView_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
-            Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Me.Size.ToString())
+            Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Size.ToString())
         End Sub
 
 #End Region

@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
-            Dim callback As ServiceCreatorCallback = New ServiceCreatorCallback(AddressOf Me.OnCreateService)
+            Dim callback As ServiceCreatorCallback = New ServiceCreatorCallback(AddressOf OnCreateService)
             LoaderHost.AddService(GetType(WindowPaneProviderService), callback)
             LoaderHost.AddService(GetType(DesignerDocDataService), callback)
 
@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If Common.Switches.PDDesignerActivations.Level <> TraceLevel.Off Then
                 _designerEventService = DirectCast(LoaderHost.GetService(GetType(IDesignerEventService)), IDesignerEventService)
                 If _designerEventService IsNot Nothing Then
-                    AddHandler _designerEventService.ActiveDesignerChanged, AddressOf Me.OnActiveDesignerChanged
+                    AddHandler _designerEventService.ActiveDesignerChanged, AddressOf OnActiveDesignerChanged
                 End If
             End If
 #End If
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
                 If _designerEventService IsNot Nothing Then
-                    RemoveHandler _designerEventService.ActiveDesignerChanged, AddressOf Me.OnActiveDesignerChanged
+                    RemoveHandler _designerEventService.ActiveDesignerChanged, AddressOf OnActiveDesignerChanged
                 End If
 #End If
                 Debug.Assert(_punkDocData IsNot Nothing)

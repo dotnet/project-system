@@ -46,8 +46,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Me.SelectedConfigName = SelectedConfigName
             Me.SelectedPlatformName = SelectedPlatformName
 
-            Me.ConfigNames = New String(Objects.Length - 1) {}
-            Me.PlatformNames = New String(Objects.Length - 1) {}
+            ConfigNames = New String(Objects.Length - 1) {}
+            PlatformNames = New String(Objects.Length - 1) {}
             Me.Values = New Object(Objects.Length - 1) {}
 
             For i As Integer = 0 To Objects.Length - 1
@@ -62,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     VsCfgProvider.GetCfgOfName(ConfigName, PlatformName, Cfg2)
                     Debug.Assert(Cfg2 IsNot Nothing AndAlso Cfg2 Is Cfg, "Unable to correctly decode config name and map it back to the config")
 #End If
-                    Me.ConfigNames(i) = ConfigName
-                    Me.PlatformNames(i) = PlatformName
+                    ConfigNames(i) = ConfigName
+                    PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")

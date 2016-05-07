@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Function OnChanged(ByVal dispid As Integer, ByVal wszConfigName As String) As Integer Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
-            DebugSourceName = "[Inactive Config '" & wszConfigName & "'] : " & _debugSourceName
+            DebugSourceName = $"[Inactive Config '{ wszConfigName }'] : { _debugSourceName }"
 #End If
             _propPage.OnExternalPropertyChanged(dispid, DebugSourceName)
         End Function

@@ -11,13 +11,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class SKUMatrix
 
         ' This guid is duplicated in "src\appid\VW8Express\stub\guids.h" and "src\wizard\vbdesigner\Designer\PropPages\SKUMatrix.vb"
-        Private Shared Readonly s_guidShowEnableUnmanagedDebugging As New Guid("2172A533-76E4-483F-BFB9-71D9B8253B13")
+        Private Shared ReadOnly s_guidShowEnableUnmanagedDebugging As New Guid("2172A533-76E4-483F-BFB9-71D9B8253B13")
 
         Private Sub New()
             'Disallow creation
         End Sub
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")> _
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")>
         Public Shared Function IsHidden(ByVal PropertyId As Integer) As Boolean
 
             If VSProductSKU.IsExpress Then
@@ -27,9 +27,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'we do not need to worry about it here).
 
                 Select Case PropertyId
-                    Case VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, _
-                        VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging, _
-                        VsProjPropId.VBPROJPROPID_StartAction
+                    Case VsProjPropId.VBPROJPROPID_RemoteDebugEnabled,
+                         VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging,
+                         VsProjPropId.VBPROJPROPID_StartAction
 
                         Return True
 
@@ -40,19 +40,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'These properties are to be hidden for the VB Express SKU
                 If VSProductSKU.IsVB Then
                     Select Case PropertyId
-                        Case VsProjPropId.VBPROJPROPID_RegisterForComInterop, _
-                         VsProjPropId.VBPROJPROPID_IncrementalBuild, _
-                         VsProjPropId.VBPROJPROPID_DocumentationFile, _
-                         VsProjPropId2.VBPROJPROPID_PreBuildEvent, _
-                         VsProjPropId2.VBPROJPROPID_PostBuildEvent, _
-                         VsProjPropId2.VBPROJPROPID_RunPostBuildEvent
+                        Case VsProjPropId.VBPROJPROPID_RegisterForComInterop,
+                             VsProjPropId.VBPROJPROPID_IncrementalBuild,
+                             VsProjPropId.VBPROJPROPID_DocumentationFile,
+                             VsProjPropId2.VBPROJPROPID_PreBuildEvent,
+                             VsProjPropId2.VBPROJPROPID_PostBuildEvent,
+                             VsProjPropId2.VBPROJPROPID_RunPostBuildEvent
                             Return True
                     End Select
                 End If
             ElseIf VSProductSKU.IsStandard Then
                 Select Case PropertyId
-                    Case VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging, _
-                        VsProjPropId.VBPROJPROPID_RemoteDebugEnabled
+                    Case VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging,
+                         VsProjPropId.VBPROJPROPID_RemoteDebugEnabled
 
                         Return True
                 End Select

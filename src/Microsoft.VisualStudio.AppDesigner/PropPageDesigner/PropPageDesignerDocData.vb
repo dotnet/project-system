@@ -150,23 +150,23 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'It may having something to do with it being defined in an interop assembly.
 
         Public Function Close() As Integer Implements Shell.Interop.IVsPersistDocData.Close
-            Return Me.Close2()
+            Return Close2()
         End Function
 
         Public Function GetGuidEditorType(ByRef pClassID As System.Guid) As Integer Implements Shell.Interop.IVsPersistDocData.GetGuidEditorType
-            Return Me.GetGuidEditorType2(pClassID)
+            Return GetGuidEditorType2(pClassID)
         End Function
 
         Public Function IsDocDataDirty(ByRef pfDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.IsDocDataDirty
-            Return Me.IsDocDataDirty2(pfDirty)
+            Return IsDocDataDirty2(pfDirty)
         End Function
 
         Public Function IsDocDataReloadable(ByRef pfReloadable As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.IsDocDataReloadable
-            Return Me.IsDocDataReloadable2(pfReloadable)
+            Return IsDocDataReloadable2(pfReloadable)
         End Function
 
         Public Function LoadDocData(ByVal pszMkDocument As String) As Integer Implements Shell.Interop.IVsPersistDocData.LoadDocData
-            Return Me.LoadDocData2(pszMkDocument)
+            Return LoadDocData2(pszMkDocument)
         End Function
 
         Public Function OnRegisterDocData(ByVal docCookie As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.OnRegisterDocData
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
         Public Function ReloadDocData(ByVal grfFlags As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.ReloadDocData
-            Return Me.ReloadDocData2(grfFlags)
+            Return ReloadDocData2(grfFlags)
         End Function
 
         Public Function RenameDocData(ByVal grfAttribs As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger, ByVal pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData.RenameDocData
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
         Public Function SetUntitledDocPath(ByVal pszDocDataPath As String) As Integer Implements Shell.Interop.IVsPersistDocData.SetUntitledDocPath
-            Return Me.SetUntitledDocPath2(pszDocDataPath)
+            Return SetUntitledDocPath2(pszDocDataPath)
         End Function
 #End Region
         Public Function Close2() As Integer Implements Shell.Interop.IVsPersistDocData2.Close
