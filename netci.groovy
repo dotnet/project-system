@@ -21,7 +21,7 @@ def branch = GithubBranchName
             }
         }
 
-        Utilities.addArchival(newJob, "Binaries/**/*" /* filesToArchive */, "Binaries/Obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
+        Utilities.addArchival(newJob, "bin/**/*" /* filesToArchive */, "bin/obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
 
         newJob.with {
             label("auto-win2012-20160506")
