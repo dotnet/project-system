@@ -9,3 +9,4 @@ For additional information, see the following:
 - [Getting Started](docs/Getting Started.md)
 - [Coding Guidelines](docs/Coding Conventions.md)
 - [Architecture](docs/Architecture.md)
+- [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
