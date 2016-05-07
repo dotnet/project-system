@@ -1,4 +1,3 @@
-#include "versions.h"
 
 [$RootKey$]
 
@@ -10,114 +9,114 @@
 [$RootKey$\CLSID]
 
 [$RootKey$\CLSID\{00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.WPFApplicationWithMyPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{031911C8-6148-4e25-B1B1-44BCA9A0C45C}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ReferencePathsPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{13dc9681-b779-3d9a-9208-c346fe982b63}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.SettingsGlobalObjects.SettingsGlobalObjectProvider"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.SettingsGlobalObjects.SettingsGlobalObjectProvider"
 
 [$RootKey$\CLSID\{1C25D270-6E41-4360-9221-1D22E4942FAD}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{1E78F8DB-6C07-4d61-A18F-7514010ABD56}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.BuildEventsPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{29255174-ccb9-434d-8489-dae5b912b1d3}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.MyApplication.MyApplicationManager"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.MyApplication.MyApplicationManager"
 
 [$RootKey$\CLSID\{3B4C204A-88A2-3AF8-BCFD-CFCB16399541}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator"
 
 [$RootKey$\CLSID\{43E38D2E-43B8-4204-8225-9357316137A4}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ServicesPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{4D35B437-4197-4241-8D24-8AC3AB6F0E0C}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.MyApplication.MyApplicationCodeGenerator"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.MyApplication.MyApplicationCodeGenerator"
 
 [$RootKey$\CLSID\{4E43F4AB-9F03-4129-95BF-B8FF870AF6AB}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{5E9A8AC2-4F34-4521-858F-4C248BA31532}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.CSharpApplicationPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{6185191F-1008-4FB2-A715-3A4E4F27E610}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{8998E48E-B89A-4034-B66E-353D8C1FDC2E}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ApplicationWithMyPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{940f36b5-a42e-435e-8ef4-20b9d4801d22}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.SettingsDesigner.PublicSettingsSingleFileGenerator"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.SettingsDesigner.PublicSettingsSingleFileGenerator"
 
 [$RootKey$\CLSID\{9AF66DCA-14CC-42C1-A52D-F403A4A43076}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.VersionPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{A54AD834-9219-4aa6-B589-607AF21C3E26}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{EDA661EA-DC61-4750-B3A5-F6E9C74060F5}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
 [$RootKey$\CLSID\{F24459FC-E883-4a8e-9DA2-AEF684F0E1F4}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.MyExtensibilityPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
@@ -227,7 +226,7 @@
 [$RootKey$\Packages]
 
 [$RootKey$\Packages\{67909B06-91E9-4F3E-AB50-495046BE9A9A}]
-"Assembly"=MICROSOFT_VISUALSTUDIO_EDITORS_ASSEMBLY_IDENTITY_REF_A
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.VBPackage"
 "InprocServer32"="$System$\mscoree.dll"
 @="Visual Studio Settings and Project Designers Package"
@@ -282,67 +281,67 @@
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.CoreUtility.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{23CE624F-EEE1-4126-80AF-B502FA3E8694}]
 "name"="Microsoft.VisualStudio.Editor"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Editor.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{621BC84A-352C-441E-B470-49B25F71500A}]
 "name"="Microsoft.VisualStudio.Editor.Implementation"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Editor.Implementation.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{1F924920-6F91-4608-8BC3-D79ED1949C50}]
 "name"="Microsoft.VisualStudio.Language.Intellisense"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Language.Intellisense.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{906581C8-C206-43E9-8ADE-53E4DE8CDBFC}]
 "name"="Microsoft.VisualStudio.Language.StandardClassification"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Language.StandardClassification.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{FD62A86C-2D71-4643-9EA5-61FA06AFA47C}]
 "name"="Microsoft.VisualStudio.Platform.VSEditor"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Platform.VSEditor.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{627992F2-D716-47C1-BD21-953745497727}]
 "name"="Microsoft.VisualStudio.Text.Data"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Text.Data.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{C682B6F4-DA1B-41DC-9B48-727C00443E77}]
 "name"="Microsoft.VisualStudio.Text.Logic"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Text.Logic.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{E92C2365-E2E8-4D58-8C85-56B45B3891EC}]
 "name"="Microsoft.VisualStudio.Text.UI"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Text.UI.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"
 
 [$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{CB802132-15B8-4050-928A-7CECD49FC88F}]
 "name"="Microsoft.VisualStudio.Text.UI.Wpf"
 "codeBase"="$PackageFolder$\Microsoft.VisualStudio.Text.UI.Wpf.dll"
 "publicKeyToken"="b03f5f7f11d50a3a"
 "culture"="neutral"
-"version"=VSLATEST_VERSION_A
+"version"="15.0.0.0"

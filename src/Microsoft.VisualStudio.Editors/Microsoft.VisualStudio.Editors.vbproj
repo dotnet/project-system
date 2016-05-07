@@ -639,17 +639,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <ManagedPreprocessAndFilterFile Include="Microsoft.VisualStudio.Editors.pkgdef">
-      <Includes>$(VersionIncPath)\full</Includes>
-      <SuppressLineNumbers>true</SuppressLineNumbers>
-      <KeepComments>false</KeepComments>
-      <OutputFileExtension>.pkgdef</OutputFileExtension>
-      <FilterRegExFile>$(ToolsPath)\FiltersForPkgdefPreprocessing.txt</FilterRegExFile>
-      <FinalOutputPath>$(OutputPath)</FinalOutputPath>
-      <Compile>false</Compile>
-    </ManagedPreprocessAndFilterFile>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\Common\" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
