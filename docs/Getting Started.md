@@ -19,8 +19,6 @@ This builds, deploys and run tests.
 
 
 #### Visual Studio
-__NOTE: It is not currently possible to use a public version of Visual Studio to deploy the project system. This will be coming soon as a part of https://github.com/dotnet/roslyn/issues/9997.__
-
 By default, the project system gets deployed to the _RoslynDev_ experimental instance of Visual Studio, to start debugging:
 
 1. Open __src\ProjectSystem.sln__
