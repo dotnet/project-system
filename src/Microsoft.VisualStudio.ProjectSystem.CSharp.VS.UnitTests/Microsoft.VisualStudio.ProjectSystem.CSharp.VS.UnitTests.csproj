@@ -14,22 +14,12 @@
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
@@ -65,10 +55,10 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="ProjectSystem\Designers\CSharpProjectDesignerPageProviderTests.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\CSharpProjectImageProviderTests.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\CSharpCodeDomProviderTests.cs" />
-    <Compile Include="ProjectSystem\CSharpProjectGuidProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\App.config">

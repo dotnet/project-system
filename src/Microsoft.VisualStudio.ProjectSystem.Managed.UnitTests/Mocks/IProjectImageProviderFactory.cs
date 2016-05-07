@@ -3,7 +3,7 @@
 using System;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     internal static class IProjectImageProviderFactory
     {

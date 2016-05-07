@@ -13,13 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
-            var threadingPolicy = IThreadHandlingFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
 
             var projectServices = new Mock<IProjectServices>();
             projectServices.Setup(u => u.ThreadingPolicy)
-                               .Returns(threadingPolicy);
+                               .Returns(threadingService);
 
-            var service = new Mock<ProjectService>();
+            var service = new Mock<IProjectService>();
             service.Setup(p => p.Services)
                    .Returns(projectServices.Object);
 
@@ -33,14 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProject.Setup(u => u.Services)
                                .Returns(unconfiguredProjectServices.Object);
-
-            unconfiguredProject.Setup(u => u.IsProjectCapabilityPresent(It.IsIn(capabilities)))
-                               .Returns(true);
-
-            var comparable = Mock.Of<IComparable>();
-
-            unconfiguredProject.Setup(u => u.Version)
-                               .Returns(comparable);
 
             return unconfiguredProject.Object;
         }

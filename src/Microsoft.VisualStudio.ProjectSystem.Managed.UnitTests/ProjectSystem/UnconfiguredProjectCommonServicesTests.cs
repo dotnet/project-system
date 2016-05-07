@@ -9,68 +9,68 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class UnconfiguredProjectCommonServicesTests
     {
         [Fact]
-        public void Constructor_NullAsThreadingPolicy_ThrowsArgumentNull()
+        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
         {
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            Assert.Throws<ArgumentNullException>("threadingPolicy", () => {
-                new UnconfiguredProjectCommonServices((Lazy<IThreadHandling>)null, activeConfiguredProject, activeConfiguredProjectProperties);
+            Assert.Throws<ArgumentNullException>("threadingService", () => {
+                new UnconfiguredProjectCommonServices((Lazy<IProjectThreadingService>)null, activeConfiguredProject, activeConfiguredProjectProperties);
             });
         }
 
         [Fact]
         public void Constructor_NullAsActiveConfiguredProject_ThrowsArgumentNull()
         {
-            var threadingPolicy = new Lazy<IThreadHandling>(() => IThreadHandlingFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             Assert.Throws<ArgumentNullException>("activeConfiguredProject", () => {
-                new UnconfiguredProjectCommonServices(threadingPolicy, (ActiveConfiguredProject<ConfiguredProject>)null, activeConfiguredProjectProperties);
+                new UnconfiguredProjectCommonServices(threadingService, (ActiveConfiguredProject<ConfiguredProject>)null, activeConfiguredProjectProperties);
             });
         }
 
         [Fact]
         public void Constructor_NullAsActiveConfguredProjectProperties_ThrowsArgumentNull()
         {
-            var threadingPolicy = new Lazy<IThreadHandling>(() => IThreadHandlingFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
 
             Assert.Throws<ArgumentNullException>("activeConfiguredProjectProperties", () => {
-                new UnconfiguredProjectCommonServices(threadingPolicy, activeConfiguredProject, (ActiveConfiguredProject<ProjectProperties>)null);
+                new UnconfiguredProjectCommonServices(threadingService, activeConfiguredProject, (ActiveConfiguredProject<ProjectProperties>)null);
             });
         }
 
         [Fact]
-        public void Constructor_ValueAsThreadingPolicy_SetsThreadingPolicyProperty()
+        public void Constructor_ValueAsThreadingService_SetsThreadingServiceProperty()
         {
-            var threadingPolicy = new Lazy<IThreadHandling>(() => IThreadHandlingFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var services = new UnconfiguredProjectCommonServices(threadingPolicy, activeConfiguredProject, activeConfiguredProjectProperties);
+            var services = new UnconfiguredProjectCommonServices(threadingService, activeConfiguredProject, activeConfiguredProjectProperties);
 
-            Assert.Same(threadingPolicy.Value, services.ThreadingPolicy);
+            Assert.Same(threadingService.Value, services.ThreadingService);
         }
 
         [Fact]
         public void Constructor_ValueAsActiveConfiguredProject_SetsActiveConfiguredProjectProperty()
         {
-            var threadingPolicy = new Lazy<IThreadHandling>(() => IThreadHandlingFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var services = new UnconfiguredProjectCommonServices(threadingPolicy, activeConfiguredProject, activeConfiguredProjectProperties);
+            var services = new UnconfiguredProjectCommonServices(threadingService, activeConfiguredProject, activeConfiguredProjectProperties);
 
             Assert.Same(projectProperties.ConfiguredProject, services.ActiveConfiguredProject);
         }
@@ -78,13 +78,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void Constructor_ValueAsActiveConfiguredProjectProperties_SetsActiveConfiguredProjectPropertiesProperty()
         {
-            var threadingPolicy = new Lazy<IThreadHandling>(() => IThreadHandlingFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
             var activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = IActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var services = new UnconfiguredProjectCommonServices(threadingPolicy, activeConfiguredProject, activeConfiguredProjectProperties);
+            var services = new UnconfiguredProjectCommonServices(threadingService, activeConfiguredProject, activeConfiguredProjectProperties);
 
             Assert.Same(projectProperties, services.ActiveConfiguredProjectProperties);
         }

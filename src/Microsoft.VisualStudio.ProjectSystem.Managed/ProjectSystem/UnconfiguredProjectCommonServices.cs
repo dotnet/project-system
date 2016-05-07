@@ -11,25 +11,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IUnconfiguredProjectCommonServices))]
     internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonServices
     {
-        private readonly Lazy<IThreadHandling> _threadingPolicy;
+        private readonly Lazy<IProjectThreadingService> _threadingService;
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(Lazy<IThreadHandling> threadingPolicy, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
+        public UnconfiguredProjectCommonServices(Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
         {
-            Requires.NotNull(threadingPolicy, nameof(threadingPolicy));
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(activeConfiguredProjectProperties, nameof(activeConfiguredProjectProperties));
 
-            _threadingPolicy = threadingPolicy;
+            _threadingService = threadingService;
             _activeConfiguredProject = activeConfiguredProject;
             _activeConfiguredProjectProperties = activeConfiguredProjectProperties;
         }
 
-        public IThreadHandling ThreadingPolicy
+        public IProjectThreadingService ThreadingService
         {
-            get { return _threadingPolicy.Value; }
+            get { return _threadingService.Value; }
         }
 
         public ConfiguredProject ActiveConfiguredProject

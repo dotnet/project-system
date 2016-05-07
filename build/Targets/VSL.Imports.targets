@@ -128,6 +128,7 @@
     </Otherwise>
   </Choose>
 
+  <Import Project="References.targets" />
   <Import Project="$(MSBuildTargetsFilePath)" />
 
   <!-- On Mono on *nix the NuGet targets aren't imported by default, so we do that here -->

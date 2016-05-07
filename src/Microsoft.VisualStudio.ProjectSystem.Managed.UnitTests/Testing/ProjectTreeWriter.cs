@@ -3,7 +3,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.ProjectSystem.Designers;
+using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Testing
 {
@@ -87,9 +87,9 @@ namespace Microsoft.VisualStudio.Testing
         private void WriteProperties(IProjectTree tree)
         {
             bool visibility = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
-            bool capabilities = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
+            bool flags = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
 
-            if (!visibility && !capabilities)
+            if (!visibility && !flags)
                 return;
 
             _builder.Append(' ');
@@ -101,8 +101,8 @@ namespace Microsoft.VisualStudio.Testing
                 _builder.Append(", ");
             }
 
-            if (capabilities)
-                WriteCapabilities(tree);
+            if (flags)
+                WriteFlags(tree);
 
             _builder.Append(')');
         }
@@ -138,14 +138,14 @@ namespace Microsoft.VisualStudio.Testing
             }
         }
 
-        private void WriteCapabilities(IProjectTree tree)
+        private void WriteFlags(IProjectTree tree)
         {
-            _builder.Append("capabilities: ");
+            _builder.Append("flags: ");
             _builder.Append('{');
 
             bool writtenCapability = false;
 
-            foreach (string capability in tree.Capabilities.OrderBy(c => c, StringComparer.InvariantCultureIgnoreCase))
+            foreach (string capability in tree.Flags.OrderBy(c => c, StringComparer.InvariantCultureIgnoreCase))
             {
                 if (writtenCapability)
                     _builder.Append(" ");

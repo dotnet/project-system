@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
@@ -31,30 +33,22 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ProjectSystem\Designers\Imaging\IProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\ProjectImageKey.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\ProjectImageProviderAggregator.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectRootImageProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\GetCommandStatusResult.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\AbstractSingleNodeProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\AbstractProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\ProjectCommandAttribute.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\IProjectDesignerService.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\DisableInboxComponentsProjectCapabilityProvider.cs" />
+    <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
+    <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />
+    <Compile Include="ProjectSystem\ProjectRootImageProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Input\GetCommandStatusResult.cs" />
+    <Compile Include="ProjectSystem\Input\AbstractSingleNodeProjectCommand.cs" />
+    <Compile Include="ProjectSystem\Input\AbstractProjectCommand.cs" />
+    <Compile Include="ProjectSystem\Input\ProjectCommandAttribute.cs" />
+    <Compile Include="ProjectSystem\Properties\IProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\IUnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\ProjectCapability.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractAppDesignerFolderProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectTreeExtensions.cs" />
-    <Compile Include="ProjectSystem\Designers\AbstractSpecialItemProjectTreeModifier.cs" />
+    <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeExtensions.cs" />
+    <Compile Include="ProjectSystem\AbstractSpecialItemProjectTreePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>

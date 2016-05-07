@@ -7,35 +7,18 @@
   </PropertyGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectGuid>{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}</ProjectGuid>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutDir>$(OutDir)Tests\</OutDir>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies\Composition\Composition.csproj">
-      <Project>{a57ddfe5-ab0e-4371-98e5-11b9218df11c}</Project>
-      <Name>Composition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dependencies\Immutable\Immutable.csproj">
-      <Project>{dcda908d-ef5e-494b-addc-c26f5fd610ca}</Project>
-      <Name>Immutable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dependencies\Moq.net\Moq.net.csproj">
-      <Project>{a32eab7f-691c-4d00-98c4-f50c37bb4754}</Project>
-      <Name>Moq.net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
-      <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
-      <Name>VisualStudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dependencies\xUnit.net\xUnit.net.csproj">
-      <Project>{8635cb8f-d210-41ed-b4ff-71502cdb475c}</Project>
-      <Name>xUnit.net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Project>{19725d6f-4690-412b-934a-fc48d752b802}</Project>
       <Name>Microsoft.VisualStudio.AppDesigner</Name>

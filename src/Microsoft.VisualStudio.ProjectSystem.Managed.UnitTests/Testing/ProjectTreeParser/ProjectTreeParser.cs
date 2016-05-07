@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Designers;
+using Microsoft.VisualStudio.ProjectSystem;
 using static Microsoft.VisualStudio.Testing.Tokenizer;
 
 namespace Microsoft.VisualStudio.Testing
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.Testing
         }
 
         private void ReadProjectItemProperties(MutableProjectTree tree)
-        {   // Parse "Root (visibility: visible, capabilities: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt"
+        {   // Parse "Root (visibility: visible, flags: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt"
 
             ReadCaption(tree);
             ReadProperties(tree);
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.Testing
         }
 
         private void ReadProperties(MutableProjectTree tree)
-        {   // Parses "(visibility: visible, capabilities: {ProjectRoot})"
+        {   // Parses "(visibility: visible, flags: {ProjectRoot})"
 
             // Properties section is optional
             if (!_tokenizer.SkipIf(TokenType.LeftParenthesis))
@@ -176,14 +176,14 @@ namespace Microsoft.VisualStudio.Testing
                     ReadVisibility(tree);
                     break;
 
-                case "capabilities":
+                case "flags":
                     tokenizer.Skip(TokenType.Colon);
                     tokenizer.Skip(TokenType.WhiteSpace);
                     ReadCapabilities(tree);
                     break;
 
                 default:
-                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, "Expected 'visibility' or 'capabilities', but encountered '{propertyName}'.");
+                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, "Expected 'visibility' or 'flags', but encountered '{propertyName}'.");
             }
         }
 
@@ -214,25 +214,25 @@ namespace Microsoft.VisualStudio.Testing
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValueBlock);
             tokenizer.Skip(TokenType.LeftBrace);
 
-            // Empty capabilities
+            // Empty flags
             if (tokenizer.SkipIf(TokenType.RightBrace))
                 return;
 
             do
             {
-                ReadCapability(tree);
+                ReadFlag(tree);
             }
             while (tokenizer.SkipIf(TokenType.WhiteSpace));
             tokenizer.Skip(TokenType.RightBrace);
         }
 
-        private void ReadCapability(MutableProjectTree tree)
+        private void ReadFlag(MutableProjectTree tree)
         {   // Parses 'AppDesigner' in '{AppDesigner Folder}'
 
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValue);
 
-            string capability = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
-            tree.Capabilities.Add(capability);
+            string flag = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
+            tree.AddFlag(flag);
         }
 
         private void ReadFilePath(MutableProjectTree tree)

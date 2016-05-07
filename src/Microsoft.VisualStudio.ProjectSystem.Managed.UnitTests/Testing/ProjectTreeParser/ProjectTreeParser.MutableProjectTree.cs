@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Designers;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.Designers;
 
 namespace Microsoft.VisualStudio.Testing
 {
@@ -18,7 +16,6 @@ namespace Microsoft.VisualStudio.Testing
             public MutableProjectTree()
             {
                 Children = new Collection<MutableProjectTree>();
-                Capabilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 Visible = true;
             }
 
@@ -33,14 +30,15 @@ namespace Microsoft.VisualStudio.Testing
                 set;
             }
 
-            public HashSet<string> Capabilities
+            public ProjectTreeFlags Flags
             {
                 get;
+                set;
             }
 
             public bool IsFolder
             {
-                get { return Capabilities.Contains(ProjectTreeCapabilities.Folder); }
+                get { return Flags.Contains(ProjectTreeFlags.Common.Folder); }
             }
 
             public string FilePath
@@ -72,11 +70,6 @@ namespace Microsoft.VisualStudio.Testing
                 {
                     throw new NotImplementedException();
                 }
-            }
-
-            IImmutableSet<string> IProjectTree.Capabilities
-            {
-                get { return ImmutableHashSet.CreateRange(Capabilities); }
             }
 
             IReadOnlyList<IProjectTree> IProjectTree.Children
@@ -122,10 +115,10 @@ namespace Microsoft.VisualStudio.Testing
             }
 
 
-            public IProjectTree AddCapability(string capability)
+            public IProjectTree AddFlag(string flag)
             {
-                if (!Capabilities.Contains(capability))
-                    Capabilities.Add(capability);
+                if (!Flags.Contains(flag))
+                    Flags = Flags.Add(flag);
 
                 return this;
             }
@@ -144,11 +137,6 @@ namespace Microsoft.VisualStudio.Testing
             }
 
             IProjectTree IProjectTree.Add(IProjectTree subtree)
-            {
-                throw new NotImplementedException();
-            }
-
-            IProjectTree IProjectTree.AddCapability(IEnumerable<string> capabilities)
             {
                 throw new NotImplementedException();
             }
@@ -178,32 +166,17 @@ namespace Microsoft.VisualStudio.Testing
                 throw new NotImplementedException();
             }
 
-            IProjectTree IProjectTree.RemoveCapability(IEnumerable<string> capabilities)
-            {
-                throw new NotImplementedException();
-            }
-
-            IProjectTree IProjectTree.RemoveCapability(string capability)
-            {
-                throw new NotImplementedException();
-            }
-
             IProjectItemTree IProjectTree.Replace(IProjectItemTree subtree)
             {
-                throw new NotImplementedException();
+                return subtree;
             }
 
             IProjectTree IProjectTree.Replace(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                return subtree;
             }
 
             IProjectTree IProjectTree.SetBrowseObjectProperties(IRule browseObjectProperties)
-            {
-                throw new NotImplementedException();
-            }
-
-            IProjectTree IProjectTree.SetCapabilities(IEnumerable<string> capabilities)
             {
                 throw new NotImplementedException();
             }
@@ -230,27 +203,6 @@ namespace Microsoft.VisualStudio.Testing
                 throw new NotImplementedException();
             }
 
-            IProjectTree IProjectTree.SetProperties(string caption, string filePath, IRule browseObjectProperties, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, bool? visible, IEnumerable<string> capabilities, IProjectPropertiesContext context, IPropertySheet propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon)
-            {
-                if (caption != null)
-                    Caption = caption;
-
-                if (FilePath != null)
-                    FilePath = filePath;
-
-                if (visible != null)
-                    Visible = visible.Value;
-
-                Capabilities.Clear();
-                
-                foreach (string capability in capabilities)
-                {
-                    Capabilities.Add(capability);
-                }
-
-                return this;
-            }
-
             IProjectTree IProjectTree.SetVisible(bool visible)
             {
                 throw new NotImplementedException();
@@ -264,6 +216,30 @@ namespace Microsoft.VisualStudio.Testing
             bool IProjectTree.TryFindImmediateChild(string caption, out IProjectTree subtree)
             {
                 throw new NotImplementedException();
+            }
+
+            public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? visible = default(bool?), ProjectTreeFlags? flags = default(ProjectTreeFlags?), IProjectPropertiesContext context = null, IPropertySheet propertySheet = null, bool? isLinked = default(bool?), bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
+            {
+                if (caption != null)
+                    Caption = caption;
+
+                if (FilePath != null)
+                    FilePath = filePath;
+
+                if (visible != null)
+                    Visible = visible.Value;
+
+                if (flags != null)
+                    Flags = flags.Value;
+
+                return this;
+            }
+
+            public IProjectTree SetFlags(ProjectTreeFlags flags)
+            {
+                Flags = flags;
+
+                return this;
             }
         }
     }

@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Semi-standard IDisposable implementation
         ''' </summary>
         ''' <remarks>MyBase.Dispose called since base does not implement IDisposable</remarks>
-        <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")> _
+        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overloads Overrides Sub Dispose() Implements System.IDisposable.Dispose
             Dispose(True)
             MyBase.Dispose() 'Necessary because the base does not implement IDisposable

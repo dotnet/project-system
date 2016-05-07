@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.Testing
         [InlineData(@"Root (visibility:  ")]
         [InlineData(@"Root (visibility: visible,  ")]
         [InlineData(@"Root (visibility: visible,   ")]
-        [InlineData(@"Root (capabilities: { ")]
-        [InlineData(@"Root (capabilities: {  ")]
+        [InlineData(@"Root (flags: { ")]
+        [InlineData(@"Root (flags: {  ")]
         public void Parse_IdExpected_EncounteredDelimiter_ThrowsFormat(string input)
         {   
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredDelimiter);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Testing
         [InlineData(@"Root (")]
         [InlineData(@"Root (visibility: ")]
         [InlineData(@"Root (visibility: visible, ")]
-        [InlineData(@"Root (capabilities: {")]
+        [InlineData(@"Root (flags: {")]
         public void Parse_IdExpected_EncounteredEndOfString_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredEndOfString);
@@ -69,10 +69,10 @@ namespace Microsoft.VisualStudio.Testing
         [InlineData(@"Root (),")]
         [InlineData(@"Root (visibility")]
         [InlineData(@"Root (visibility:")]
-        [InlineData(@"Root (capabilities")]
-        [InlineData(@"Root (capabilities:")]
-        [InlineData(@"Root (capabilities: ")]
-        [InlineData(@"Root (capabilities: {}")]
+        [InlineData(@"Root (flags")]
+        [InlineData(@"Root (flags:")]
+        [InlineData(@"Root (flags: ")]
+        [InlineData(@"Root (flags: {}")]
         public void Parse_DelimiterExpected_EncounteredEndOfString_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.DelimiterExpected_EncounteredEndOfString);
@@ -131,17 +131,17 @@ namespace Microsoft.VisualStudio.Testing
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"R",                                                                           @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""" )]
-        [InlineData(@"Ro",                                                                          @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root",                                                                        @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project:Root",                                                                @"Project:Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root",                                                                @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root",                                                    @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R, FilePath: """"",                                                           @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro, FilePath: """"",                                                          @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root, FilePath: """"",                                                        @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root, FilePath: """"",                                                @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root, FilePath: """"",                                    @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R",                                                                           @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""" )]
+        [InlineData(@"Ro",                                                                          @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root",                                                                        @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project:Root",                                                                @"Project:Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root",                                                                @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root",                                                    @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R, FilePath: """"",                                                           @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro, FilePath: """"",                                                          @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root, FilePath: """"",                                                        @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root, FilePath: """"",                                                @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root, FilePath: """"",                                    @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         public void Parse_RootWithNoProperties_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
@@ -149,26 +149,26 @@ namespace Microsoft.VisualStudio.Testing
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"R()",                                                                         @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro()",                                                                        @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root()",                                                                      @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root()",                                                              @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root()",                                                  @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R ()",                                                                        @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro ()",                                                                       @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root ()",                                                                     @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root ()",                                                             @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root ()",                                                 @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R(), FilePath: """"",                                                         @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro(), FilePath: """"",                                                        @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root(), FilePath: """"",                                                      @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root(), FilePath: """"",                                              @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root(), FilePath: """"",                                  @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R (), FilePath: """"",                                                        @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro (), FilePath: """"",                                                       @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root (), FilePath: """"",                                                     @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root (), FilePath: """"",                                 @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R()",                                                                         @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro()",                                                                        @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root()",                                                                      @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root()",                                                              @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root()",                                                  @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R ()",                                                                        @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro ()",                                                                       @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root ()",                                                                     @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root ()",                                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root ()",                                                 @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R(), FilePath: """"",                                                         @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro(), FilePath: """"",                                                        @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root(), FilePath: """"",                                                      @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root(), FilePath: """"",                                              @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root(), FilePath: """"",                                  @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R (), FilePath: """"",                                                        @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro (), FilePath: """"",                                                       @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root (), FilePath: """"",                                                     @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root (), FilePath: """"",                                 @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         
         public void Parse_RootWithEmptyProperties_CanParse(string input, string expected)
         {
@@ -177,26 +177,26 @@ namespace Microsoft.VisualStudio.Testing
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"R(visibility: visible)",                                                      @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro(visibility: visible)",                                                     @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root(visibility: visible)",                                                   @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root(visibility: visible)",                                           @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root(visibility: visible)",                               @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R (visibility: visible)",                                                     @"R[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro (visibility: visible)",                                                    @"Ro[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root (visibility: visible)",                                                  @"Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (visibility: visible)",                                          @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root (visibility: visible)",                              @"This is the project root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R(visibility: invisible)",                                                    @"R[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro(visibility: invisible)",                                                   @"Ro[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root(visibility: invisible)",                                                 @"Root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root(visibility: invisible)",                                         @"Project Root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root(visibility: invisible)",                             @"This is the project root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"R (visibility: invisible)",                                                   @"R[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Ro (visibility: invisible)",                                                  @"Ro[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Root (visibility: invisible)",                                                @"Root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (visibility: invisible)",                                        @"Project Root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"This is the project root (visibility: invisible)",                            @"This is the project root[caption] (visibility: invisible, capabilities: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R(visibility: visible)",                                                      @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro(visibility: visible)",                                                     @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root(visibility: visible)",                                                   @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root(visibility: visible)",                                           @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root(visibility: visible)",                               @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R (visibility: visible)",                                                     @"R[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro (visibility: visible)",                                                    @"Ro[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root (visibility: visible)",                                                  @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (visibility: visible)",                                          @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root (visibility: visible)",                              @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R(visibility: invisible)",                                                    @"R[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro(visibility: invisible)",                                                   @"Ro[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root(visibility: invisible)",                                                 @"Root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root(visibility: invisible)",                                         @"Project Root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root(visibility: invisible)",                             @"This is the project root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"R (visibility: invisible)",                                                   @"R[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Ro (visibility: invisible)",                                                  @"Ro[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Root (visibility: invisible)",                                                @"Root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (visibility: invisible)",                                        @"Project Root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"This is the project root (visibility: invisible)",                            @"This is the project root[caption] (visibility: invisible, flags: {}), FilePath: ""[filepath]""")]
         public void Parse_RootWithVisibility_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
@@ -204,16 +204,16 @@ namespace Microsoft.VisualStudio.Testing
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"Project Root (capabilities: {})",                                             @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {A})",                                            @"Project Root[caption] (visibility: visible, capabilities: {A[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {A B})",                                          @"Project Root[caption] (visibility: visible, capabilities: {A[capability] B[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {A B C})",                                        @"Project Root[caption] (visibility: visible, capabilities: {A[capability] B[capability] C[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {Folder})",                                       @"Project Root[caption] (visibility: visible, capabilities: {Folder[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {Folder IncludeInProjectCandidate})",             @"Project Root[caption] (visibility: visible, capabilities: {Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {AppDesigner Folder IncludeInProjectCandidate})", @"Project Root[caption] (visibility: visible, capabilities: {AppDesigner[capability] Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {App:Designer})",                                 @"Project Root[caption] (visibility: visible, capabilities: {App:Designer[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (visibility: visible, capabilities: {App:Designer})",            @"Project Root[caption] (visibility: visible, capabilities: {App:Designer[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (capabilities: {App:Designer}, visibility: visible)",            @"Project Root[caption] (visibility: visible, capabilities: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {})",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A})",                                            @"Project Root[caption] (visibility: visible, flags: {A[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A B})",                                          @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A B C})",                                        @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability] C[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {Folder})",                                       @"Project Root[caption] (visibility: visible, flags: {Folder[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {Folder IncludeInProjectCandidate})",             @"Project Root[caption] (visibility: visible, flags: {Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {AppDesigner Folder IncludeInProjectCandidate})", @"Project Root[caption] (visibility: visible, flags: {AppDesigner[capability] Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {App:Designer})",                                 @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (visibility: visible, flags: {App:Designer})",            @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {App:Designer}, visibility: visible)",            @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
         public void Parse_RootWithCapabilities_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
@@ -221,15 +221,15 @@ namespace Microsoft.VisualStudio.Testing
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""C""",                                            @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""C[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""C:""",                                           @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""C:[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""C:\""",                                          @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""C:\[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""C:\Project""",                                   @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""C:\Project[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""C:\Project Root""",                              @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""C:\Project Root[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""Project Root""",                                 @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""Project Root[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""Project Root.csproj""",                          @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""Project Root.csproj[filepath]""")]
-        [InlineData(@"Project Root (), FilePath: ""Folder\Project Root.csproj""",                   @"Project Root[caption] (visibility: visible, capabilities: {}), FilePath: ""Folder\Project Root.csproj[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""C""",                                            @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""C[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""C:""",                                           @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""C:[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""C:\""",                                          @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""C:\[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""C:\Project""",                                   @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""C:\Project[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""C:\Project Root""",                              @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""C:\Project Root[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""Project Root""",                                 @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""Project Root[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""Project Root.csproj""",                          @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""Project Root.csproj[filepath]""")]
+        [InlineData(@"Project Root (), FilePath: ""Folder\Project Root.csproj""",                   @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""Folder\Project Root.csproj[filepath]""")]
         public void Parse_RootWithFilePath_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);

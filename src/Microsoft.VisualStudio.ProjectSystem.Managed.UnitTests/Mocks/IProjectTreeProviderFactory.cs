@@ -2,7 +2,7 @@
 
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Designers
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectTreeProviderFactory
     {

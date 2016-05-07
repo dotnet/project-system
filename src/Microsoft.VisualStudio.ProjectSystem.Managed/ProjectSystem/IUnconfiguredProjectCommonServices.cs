@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IUnconfiguredProjectCommonServices
     {
         /// <summary>
-        ///     Gets the <see cref="IThreadHandling"/> for the current <see cref="UnconfiguredProject"/>.
+        ///     Gets the <see cref="IProjectThreadingService"/> for the current <see cref="UnconfiguredProject"/>.
         /// </summary>
-        IThreadHandling ThreadingPolicy
+        IProjectThreadingService ThreadingService
         {
             get;
         }

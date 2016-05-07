@@ -4,7 +4,7 @@ using System;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IUnconfiguredProjectVsServicesFactory
     {
@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(h => h.Hierarchy)
                 .Returns(hierarchyCreator);
 
-            mock.SetupGet(h => h.ThreadingPolicy)
-                .Returns(IThreadHandlingFactory.Create());
+            mock.SetupGet(h => h.ThreadingService)
+                .Returns(IProjectThreadingServiceFactory.Create());
 
             if (projectCreator != null)
             {

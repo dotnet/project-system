@@ -16,6 +16,8 @@
     <UseCodebase>true</UseCodebase>
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
@@ -27,25 +29,14 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System.ComponentModel.Composition" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\Designers\MyProjectFolderProjectTreeModifier.cs" />
-    <Compile Include="ProjectSystem\Capabilities\VisualBasicProjectEvalProjectCapabilityProvider.cs" />
-    <Compile Include="ProjectSystem\Capabilities\VisualBasicProjectXmlProjectCapabilityProvider.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\MyProjectFolderProjectTreePropertiesProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

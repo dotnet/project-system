@@ -16,6 +16,8 @@
     <UseCodebase>true</UseCodebase>
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
@@ -23,18 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
@@ -54,11 +44,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicLanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\Designers\Imaging\VisualBasicProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\Designers\VisualBasicProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\Designers\VisualBasicProjectDesignerPageProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicCodeDomProvider.cs">
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPage.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPageProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectSystem\VisualBasicProjectGuidProvider.cs" />

@@ -14,24 +14,14 @@
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
@@ -60,12 +50,12 @@
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
     <Compile Include="Mocks\IVsHierarchyFactory.cs" />
     <Compile Include="Mocks\IVsProjectFactory.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\OpenProjectDesignerCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectDesignerPageMetadataTests.cs" />
-    <Compile Include="ProjectSystem\UnconfiguredProjectVsServicesTests.cs" />
-    <Compile Include="ProjectSystem\Designers\ProjectDesignerServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
+    <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
