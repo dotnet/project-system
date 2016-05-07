@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDPerfBegin("ApplicationDesignerView.InitView")
 
             ' Whenever we open the project designer, we ping SQM...
-            AddSqmItemToStream(VsSqmDataPoint.DATAID_STRM_VB_EDITOR_PROJPROPSHOW, AppDesCommon.SQMData.DEFAULT_PAGE)
+            AddSqmItemToStream(VsSqmDataPoint.DATAID.STRM_VB_EDITOR_PROJPROPSHOW, AppDesCommon.SQMData.DEFAULT_PAGE)
 
             ' Store the vbpackage instance in utils to share within the assembly
             Common.Utils.VBPackageInstance = Package
@@ -1054,7 +1054,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End If
                         End If
 #End If
-                        AddSqmItemToStream(VsSqmDataPoint.DATAID_STRM_VB_EDITOR_PROJPROPSHOW, PageId)
+                        AddSqmItemToStream(VsSqmDataPoint.DATAID.STRM_VB_EDITOR_PROJPROPSHOW, PageId)
                     End If
 
                     _activePanelIndex = Index

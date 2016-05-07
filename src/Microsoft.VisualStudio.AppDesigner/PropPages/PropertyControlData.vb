@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Public Overridable ReadOnly Property RawPropertiesObjects() As Object()
             Get
-                Debug.Assert(m_PropPage IsNot Nothing, $"{NameOf(PropertyControlData} not initialized?")
+                Debug.Assert(m_PropPage IsNot Nothing, $"{NameOf(PropertyControlData)} not initialized?")
                 Debug.Assert(m_PropPage.m_Objects IsNot Nothing)
                 Return m_PropPage.m_Objects
             End Get
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     AppDesCommon.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty)} := True ({PropertyName})")
                     Flags = Flags Or ControlDataFlags.Dirty
                 Else
-                    Common.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty) := False ({PropertyName})")
+                    Common.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty)} := False ({PropertyName})")
                     Flags = Flags And (Not ControlDataFlags.Dirty)
                 End If
             End Set
@@ -1218,7 +1218,7 @@ Exception:
 
             If MultiValueGetCallback IsNot Nothing Then
                 If MultiValueGetCallback(FormControl, PropDesc, values) Then
-                    Debug.Assert(values IsNot Nothing, $"{NameOf(MultiValueGetCallback} must return a valid array")
+                    Debug.Assert(values IsNot Nothing, $"{NameOf(MultiValueGetCallback)} must return a valid array")
                     Debug.Assert(values.Length = RawPropertiesObjects.Length, $"{NameOf(MultiValueGetCallback)} must return an array of the same length as {NameOf(RawPropertiesObjects)}")
                     Return values
                 End If
@@ -1839,7 +1839,7 @@ Exception:
         ''' See comments "About 'common' properties"
         ''' </remarks>
         Public Shared Function GetCommonPropertyValueNative(ByVal Descriptor As PropertyDescriptor, ByVal ProjectCommonPropertiesObject As Object) As Object
-            Debug.Assert(Descriptor IsNot Nothing, $"Calling {NameOf(GetCommonPropertyValue}() on a property that could not be found [Descriptor Is Nothing]")
+            Debug.Assert(Descriptor IsNot Nothing, $"Calling {NameOf(GetCommonPropertyValue)}() on a property that could not be found [Descriptor Is Nothing]")
             Debug.Assert(ProjectCommonPropertiesObject IsNot Nothing)
             Return Descriptor.GetValue(ProjectCommonPropertiesObject)
         End Function
@@ -2166,7 +2166,7 @@ Exception:
                                 Common.Switches.TracePDProperties(TraceLevel.Info, "  New Value #" & i & ": " & Common.DebugToString(values(i)))
                             Next
                         Else
-                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(ApplyChanges)}: {PropertyName}: NEW VALUE = { Common.DebugToString(value)})"
+                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(ApplyChanges)}: {PropertyName}: NEW VALUE = { Common.DebugToString(value)}")
                         End If
 #End If
 

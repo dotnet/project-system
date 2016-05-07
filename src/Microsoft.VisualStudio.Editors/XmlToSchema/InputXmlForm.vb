@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End If
             _picutreBox.Image = _imageList2.Images(0)
 
-            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_USEWIZARD)
+            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID.SQM_DP_VB_XMLTOSCHEMAWIZARD_USEWIZARD)
         End Sub
 
         Protected Overrides Sub ScaleControl(ByVal factor As System.Drawing.SizeF, ByVal specified As System.Windows.Forms.BoundsSpecified)
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 End If
             End If
 
-            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMFILE)
+            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID.SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMFILE)
         End Sub
 
         Private Sub _addFromWebButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _addFromWebButton.Click
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     End If
                 End If
 
-                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMWEB)
+                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID.SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMWEB)
             End Using
         End Sub
 
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     _listView.Items.Add(item)
                 End If
 
-                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMXML)
+                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID.SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMXML)
             End Using
         End Sub
 
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 If sqmCode < 0 Then
                     sqmCode = sqmCode * -1
                 End If
-                VBPackage.AddSqmItemToStream(Shell.Interop.VsSqmDataPoint.DATAID_SQM_STRM_VB_XMLTOSCHEMAWIZARD_EXCEPTION, CUInt(sqmCode))
+                VBPackage.AddSqmItemToStream(Shell.Interop.VsSqmDataPoint.DATAID.SQM_STRM_VB_XMLTOSCHEMAWIZARD_EXCEPTION, CUInt(sqmCode))
                 If FilterException(ex) Then
                     ShowWarning(String.Format(SR.XmlToSchema_ErrorInXmlInference, ex.Message))
                 Else
