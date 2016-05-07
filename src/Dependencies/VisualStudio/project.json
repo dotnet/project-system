@@ -21,7 +21,7 @@
     "Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime": "14.1.24720",
     "Microsoft.VisualStudio.SDK.EmbedInteropTypes": "14.1.2",
 
-     "Microsoft.VisualStudio.Editor": "15.0.25123-Dev15Preview",
+    "Microsoft.VisualStudio.Editor": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.ImageCatalog": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.Shell.Design": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.Shell.15.0": "15.0.25123-Dev15Preview",

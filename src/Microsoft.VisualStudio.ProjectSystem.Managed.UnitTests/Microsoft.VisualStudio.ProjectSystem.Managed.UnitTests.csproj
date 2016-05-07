@@ -41,6 +41,8 @@
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Testing\ProjectTreeParser\ProjectTreeFormatException.cs" />
     <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.cs" />
     <Compile Include="Testing\ProjectTreeParser\ProjectTreeParserTests.cs" />
+    <Compile Include="Testing\ProjectTreePropertiesProviderExtensions.cs" />
     <Compile Include="Testing\ProjectTreeWriterOptions.cs" />
     <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.MutableProjectTree.cs" />
     <Compile Include="Testing\ProjectTreeWriter.cs" />

@@ -34,14 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             unconfiguredProject.Setup(u => u.Services)
                                .Returns(unconfiguredProjectServices.Object);
 
-            unconfiguredProject.Setup(u => u.IsProjectCapabilityPresent(It.IsIn(capabilities)))
-                               .Returns(true);
-
-            var comparable = Mock.Of<IComparable>();
-
-            unconfiguredProject.Setup(u => u.Version)
-                               .Returns(comparable);
-
             return unconfiguredProject.Object;
         }
     }
