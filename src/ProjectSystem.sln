@@ -60,6 +60,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolset", "Dependencies\Too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPS", "Dependencies\CPS\CPS.csproj", "{03AB838C-1B9D-4ECA-856F-476616C35F0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +171,14 @@ Global
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

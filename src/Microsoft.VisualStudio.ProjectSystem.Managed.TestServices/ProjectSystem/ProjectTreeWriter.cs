@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.ProjectSystem;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeWriter
     {

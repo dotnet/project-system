@@ -1,4 +1,4 @@
-﻿namespace Microsoft.VisualStudio.Testing
+﻿namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer
     {

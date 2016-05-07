@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Testing;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

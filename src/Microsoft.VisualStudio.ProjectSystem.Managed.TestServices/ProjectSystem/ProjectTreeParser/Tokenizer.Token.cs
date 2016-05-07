@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer
     {
@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Testing
 
             private Token(char value, bool isDelimiter)
             {
-                Debug.Assert(value != '\0');
+                Assumes.True(value != '\0');
 
                 _value = value;
                 _isDelimiter = isDelimiter;

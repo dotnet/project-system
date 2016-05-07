@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Flags]
     internal enum ProjectTreeWriterOptions 

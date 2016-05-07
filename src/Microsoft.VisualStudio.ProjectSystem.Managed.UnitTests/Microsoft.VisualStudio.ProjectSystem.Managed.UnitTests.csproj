@@ -32,6 +32,10 @@
       <Name>DeployTestDependencies</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
+      <Project>{23bcbc90-ed65-4ee3-8af1-dd7caefdbee9}</Project>
+      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
@@ -58,23 +62,7 @@
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
-    <Compile Include="Testing\ProjectSystemTraitDiscover.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Delimiters.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeFormatError.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeFormatException.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParserTests.cs" />
-    <Compile Include="Testing\ProjectTreePropertiesProviderExtensions.cs" />
-    <Compile Include="Testing\ProjectTreeWriterOptions.cs" />
-    <Compile Include="Testing\ProjectTreeParser\ProjectTreeParser.MutableProjectTree.cs" />
-    <Compile Include="Testing\ProjectTreeWriter.cs" />
-    <Compile Include="Testing\ProjectTreeParser\StringReader.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.IdentifierParseOptions.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.TokenType.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.Token.cs" />
-    <Compile Include="Testing\ProjectTreeParser\Tokenizer.cs" />
     <Compile Include="Trait.cs" />
-    <Compile Include="ProjectSystemTraitAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -83,6 +71,7 @@
     <None Include="App.config" />
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>

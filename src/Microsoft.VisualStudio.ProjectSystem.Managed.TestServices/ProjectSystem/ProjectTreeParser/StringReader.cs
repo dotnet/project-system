@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     // Simple, cheap, forward-only string reader
     internal class StringReader
@@ -17,10 +17,10 @@ namespace Microsoft.VisualStudio.Testing
 
         private StringReader(string input, int startIndex)
         {
-            Debug.Assert(input != null);
-            Debug.Assert(input.Length > 0);
-            Debug.Assert(startIndex >= 0);
-            Debug.Assert(startIndex <= input.Length);
+            Assumes.NotNull(input);
+            Assumes.True(input.Length > 0);
+            Assumes.True(startIndex >= 0);
+            Assumes.True(startIndex <= input.Length);
 
             _input = input;
             _position = startIndex;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.Testing
 
         public char Peek()
         {
-            Debug.Assert(CanRead);
+            Assumes.True(CanRead);
 
             return PeekChar();
         }

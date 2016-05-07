@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.Testing
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeFormatException : FormatException
     {
