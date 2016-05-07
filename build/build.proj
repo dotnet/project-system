@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
-    <TestsDirectory>$(RepositoryRootDirectory)binaries\$(Configuration)\Tests\</TestsDirectory>
+    <TestsDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\Tests\</TestsDirectory>
 
     <!-- Make note NUGET_PACKAGES is environment variable respected 
          by NuGet.exe, so don't be tempted to change the name.-->

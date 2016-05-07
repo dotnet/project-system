@@ -1,7 +1,9 @@
 ﻿{
   "dependencies": {
     "xunit.runner.visualstudio": "2.1.0",
-    "xunit.runner.console": "2.1.0"
+    "xunit.runner.console": "2.1.0",
+
+	"Microsoft.VisualStudio.Shell.14.0": "14.1.24720"
   },
   "frameworks": {
     "net46": { }
