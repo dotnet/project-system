@@ -48,7 +48,7 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="ProjectSystem\PropertiesFolderProjectTreeModifierTests.cs" />
+    <Compile Include="ProjectSystem\PropertiesFolderProjectTreePropertiesProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\App.config">
