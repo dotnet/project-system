@@ -1180,7 +1180,6 @@ Exception:
             Dim prop As PropertyDescriptor = PropDesc
             '            If prop Is Nothing Then Return GetControlValue(FormControl, Nothing)
             Return GetControlValue(FormControl, prop?.Converter)
-            End If
         End Function
 
 
