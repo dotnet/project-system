@@ -66,19 +66,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  of the configuration provider of the project.
                 'From there, we can QI for ProjectConfigurationProperties, which implements IConnectionPointContainer for IPropertyNotifySink
                 Dim VsCfgProviderObject As Object = Nothing
+
                 If VSErrorHandler.Succeeded(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, VsCfgProviderObject)) AndAlso VsCfgProviderObject IsNot Nothing Then
                     Dim VsExtensibleObject As IVsExtensibleObject = TryCast(VsCfgProviderObject, IVsExtensibleObject)
                     Debug.Assert(VsExtensibleObject IsNot Nothing, "Expected IVsCfgProvider object to implement IVsExtensibleObject")
+
                     If VsExtensibleObject IsNot Nothing Then
                         Dim Dispatch As Object = Nothing
                         Dim ConfigFullName As String = Nothing
                         DirectCast(EventSource, IVsCfg).get_DisplayName(ConfigFullName)
                         Debug.Assert(ConfigFullName <> "", "Unable to get display name of config")
+
                         If ConfigFullName <> "" Then
                             VsExtensibleObject.GetAutomationObject(ConfigFullName, Dispatch)
                             Debug.Assert(Dispatch IsNot Nothing, "Couldn't get automation object for configuration")
+
                             Dim ConfigProperties As VSLangProj.ProjectConfigurationProperties = TryCast(Dispatch, VSLangProj.ProjectConfigurationProperties)
                             Debug.Assert(ConfigProperties IsNot Nothing, "Couldn't get ProjectConfigurationProperties from config")
+
                             If ConfigProperties IsNot Nothing Then
                                 EventSource = ConfigProperties
                                 Debug.Assert(SupportsConnectionPointContainer(EventSource), "Unable to get connection point container from configuration")
@@ -91,8 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If SupportsConnectionPointContainer(EventSource) Then
-                Dim CookieActiveCfg As NativeMethods.ConnectionPointCookie = Nothing
-                Dim CookieInactiveCfg As NativeMethods.ConnectionPointCookie = Nothing
+                Dim CookieActiveCfg, CookieInactiveCfg As NativeMethods.ConnectionPointCookie
                 Try
                     Dim Listener As New PropertyListener(PropPage, EventSource, DebugSourceName)
 
@@ -120,12 +124,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     AppDesCommon.RethrowIfUnrecoverable(ex)
                     Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown: " & ex.ToString)
                 Finally
-                    If CookieActiveCfg IsNot Nothing Then
-                        CookieActiveCfg.Disconnect()
-                    End If
-                    If CookieInactiveCfg IsNot Nothing Then
-                        CookieInactiveCfg.Disconnect()
-                    End If
+                    CookieActiveCfg?.Disconnect()
+                    CookieInactiveCfg?.Disconnect()
                 End Try
             Else
                 Common.Switches.TracePDProperties(TraceLevel.Info, "...  Not supported")
@@ -189,14 +189,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EventSource"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function SupportsConnectionPointContainer( EventSource As Object) As Boolean
-            If EventSource IsNot Nothing Then
-                If TypeOf EventSource Is OLE.Interop.IConnectionPointContainer OrElse TypeOf EventSource Is ComTypes.IConnectionPointContainer Then
-                    Return True
-                End If
-            End If
-
-            Return False
+        Private Shared Function SupportsConnectionPointContainer(EventSource As Object) As Boolean
+            If EventSource Is Nothing Then Return False
+            Return (TypeOf EventSource Is OLE.Interop.IConnectionPointContainer) OrElse (TypeOf EventSource Is ComTypes.IConnectionPointContainer)
         End Function
 
 

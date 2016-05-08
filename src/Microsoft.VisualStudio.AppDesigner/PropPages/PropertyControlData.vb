@@ -470,9 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
             Set( Value As Boolean)
                 If Value Then
-                    If m_PropPage.m_fInsideInit OrElse m_Initializing Then
-                        Return
-                    End If
+                    If m_PropPage.m_fInsideInit OrElse m_Initializing Then Return
 
                     If m_isCommitingChange Then
                         ' we should prevent committing change twice because, we could pop error message boxes, or check-out box at that time, which could cause LostFocus...
@@ -722,13 +720,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="AllInitialValues"></param>
         ''' <remarks></remarks>
-        Public Sub SetInitialValues( AllInitialValues As Object())
-            If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException(NameOf(AllInitialValues))
-            End If
-            If AllInitialValues.Length = 0 Then
-                Throw AppDesCommon.CreateArgumentException(NameOf(AllInitialValues))
-            End If
+        Public Sub SetInitialValues(AllInitialValues As Object())
+            If AllInitialValues Is Nothing Then Throw New ArgumentNullException(NameOf(AllInitialValues))
+            If AllInitialValues.Length = 0 Then Throw AppDesCommon.CreateArgumentException(NameOf(AllInitialValues))
 
             _initialValue = GetValueOrIndeterminateFromArray(AllInitialValues)
             _allInitialValues = AllInitialValues
@@ -778,9 +772,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 End If
 
-                If PropDesc Is Nothing Then
-                    Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(PropertyControlData.Initialize)}({ PropertyName }): ** Not found, will be disabled **")
-                End If
+                If PropDesc Is Nothing Then Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(PropertyControlData.Initialize)}({ PropertyName }): ** Not found, will be disabled **")
                 AppDesCommon.Switches.TracePDPerfEnd($"Property Initialize: {PropertyName}")
             Finally
                 m_Initializing = False
@@ -894,9 +886,8 @@ Exception:
                     '  current value, so we let the other If cases go through after this.
                     _controlsCanBeEnabled = False
 
-                    If FormControl IsNot Nothing Then
-                        SetControlsReadOnly(New Control() {FormControl})
-                    End If
+                    If FormControl IsNot Nothing Then SetControlsReadOnly(New Control() {FormControl})
+
                     SetControlsReadOnly(AssociatedControls)
                 End If
 
@@ -975,16 +966,12 @@ Exception:
         '''   enables a control when it has been disabled by a project flavor).
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub EnableControls( Enabled As Boolean)
+        Public Sub EnableControls(Enabled As Boolean)
             'Enable or disable the main control
-            If FormControl IsNot Nothing Then
-                EnableAssociatedControl(FormControl, Enabled)
-            End If
+            If FormControl IsNot Nothing Then EnableAssociatedControl(FormControl, Enabled)
 
             '... and associated controls
-            If AssociatedControls IsNot Nothing Then
-                EnableAssociatedControls(AssociatedControls, Enabled)
-            End If
+            If AssociatedControls IsNot Nothing Then EnableAssociatedControls(AssociatedControls, Enabled)
         End Sub
 
 
@@ -1080,9 +1067,7 @@ Exception:
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
         '''   obtained from the control).</remarks>
         Protected Overridable Function WriteUserDefinedProperty( PropertyName As String,  Value As Object) As Boolean
-            If m_PropPage.WriteUserDefinedProperty(Me.PropertyName, Value) Then
-                Return True
-            End If
+            If m_PropPage.WriteUserDefinedProperty(Me.PropertyName, Value) Then Return True
 
             Debug.Fail("Must implement in derived class for UserDefined properties")
             Return True
@@ -1091,11 +1076,7 @@ Exception:
 #Region "Control getter/setter helpers"
         Public ReadOnly Property IsReadOnly() As Boolean
             Get
-                If PropDesc IsNot Nothing Then
-                    Return PropDesc.IsReadOnly
-                End If
-
-                Return False
+                Return PropDesc?.IsReadOnly
             End Get
         End Property
 
@@ -1103,9 +1084,7 @@ Exception:
             Dim control As System.Windows.Forms.Control = FormControl
             Dim _TypeConverter As TypeConverter = Nothing
 
-            If PropDesc IsNot Nothing Then
-                _TypeConverter = PropDesc.Converter
-            End If
+            If PropDesc IsNot Nothing Then _TypeConverter = PropDesc.Converter
 
             Debug.Assert(control IsNot Nothing, "Unexpected null argument")
 
@@ -1199,10 +1178,8 @@ Exception:
 
         Public Overridable Function GetControlValue() As Object
             Dim prop As PropertyDescriptor = PropDesc
-            If prop Is Nothing Then
-                Return GetControlValue(FormControl, Nothing)
-            Else
-                Return GetControlValue(FormControl, prop.Converter)
+            '            If prop Is Nothing Then Return GetControlValue(FormControl, Nothing)
+            Return GetControlValue(FormControl, prop?.Converter)
             End If
         End Function
 
@@ -1251,11 +1228,7 @@ Exception:
 
             Debug.Assert(MultiValueGetCallback Is Nothing, $"{NameOf(GetControlValue)} doesn't support {NameOf(MultiValueGetCallback)}")
 
-            If GetCallback IsNot Nothing Then
-                If GetCallback(FormControl, PropDesc, value) Then
-                    Return value
-                End If
-            End If
+            If (GetCallback IsNot Nothing) AndAlso GetCallback(FormControl, PropDesc, value) Then Return value
 
             value = Nothing
 
@@ -1265,11 +1238,7 @@ Exception:
 
                 Debug.Assert(Not ExtendedPropertiesObjects Is Nothing, $"{NameOf(ExtendedPropertiesObjects)} was null!")
                 If ExtendedPropertiesObjects IsNot Nothing Then
-                    If ExtendedPropertiesObjects.Length > 1 _
-                    AndAlso TypeOf InitialValue Is String _
-                    AndAlso Not IsDirty _
-                    AndAlso Not IsCommonProperty _
-                    Then
+                    If (ExtendedPropertiesObjects.Length > 1) AndAlso (TypeOf InitialValue Is String) AndAlso (Not IsDirty) AndAlso (Not IsCommonProperty) Then
                         'We are showing multiple configurations, and the text has not been changed by the user 
                         '  - return indeterminate value
                         value = PropertyControlData.Indeterminate
@@ -1349,11 +1318,8 @@ Exception:
 
         Public Function GetControlValueNative() As Object
             Dim prop As PropertyDescriptor = PropDesc
-            If prop Is Nothing Then
-                Return GetControlValue(FormControl, Nothing)
-            Else
-                Return GetControlValue(FormControl, prop.Converter)
-            End If
+            Return GetControlValue(FormControl, prop?.Converter)
+
         End Function
 
 
@@ -1367,15 +1333,14 @@ Exception:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overridable Function TryGetPropertyValueNative( Extenders As Object()) As Object
-            If IsCommonProperty Then
-                Try
+            If Not IsCommonProperty Then Return TryGetNonCommonPropertyValueNative(PropDesc, Extenders)
+
+            Try
                     Return GetCommonPropertyValueNative(PropDesc, CommonPropertiesObject)
                 Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
                     Return PropertyControlData.MissingProperty
                 End Try
-            Else
-                Return TryGetNonCommonPropertyValueNative(PropDesc, Extenders)
-            End If
+
         End Function
 
 
@@ -1392,9 +1357,7 @@ Exception:
         Public Shared Function TryGetNonCommonPropertyValueNative( Descriptor As PropertyDescriptor,  Extenders As Object()) As Object
             Dim Value As Object = Nothing
 
-            If Descriptor Is Nothing Then
-                Return MissingProperty
-            End If
+            If Descriptor Is Nothing Then Return MissingProperty
 
             If Extenders.Length = 1 Then
                 Try
@@ -1447,14 +1410,12 @@ Exception:
             Values = Nothing
             ValueOrIndeterminate = Nothing
 
-            If Extenders Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Extenders))
-            End If
+            If Extenders Is Nothing Then Throw New ArgumentNullException(NameOf(Extenders))
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
             If Descriptor Is Nothing Then
-                Debug.Fail($"Why is {NameOf(GetAllPropertyValues)}() being called for a missing property?")
+                Debug.Fail($"Why is {NameOf(GetAllPropertyValuesNative)}() being called for a missing property?")
                 ValueOrIndeterminate = MissingProperty
                 Values = ReturnValues 'Return the array of Nothing values (defensive)
                 Return
@@ -1493,10 +1454,8 @@ Exception:
             Dim Value As Object = Values(0)
             For i As Integer = 0 + 1 To Values.Length - 1
                 'Perform object comparison
-                If (Value Is Nothing OrElse Values(i) Is Nothing) Then
-                    If Value IsNot Values(i) Then
-                        Return PropertyControlData.Indeterminate
-                    End If
+                If ((Value Is Nothing) OrElse (Values(i) Is Nothing)) Then
+                    If Value IsNot Values(i) Then Return PropertyControlData.Indeterminate
                 ElseIf Not Value.Equals(Values(i)) Then
                     Return PropertyControlData.Indeterminate
                 End If
@@ -1519,11 +1478,7 @@ Exception:
         ''' <remarks></remarks>
         Public Overridable Function GetPropertyValueNative( Extender As Object) As Object
             Debug.Assert(PropDesc IsNot Nothing, $"Calling {NameOf(GetPropertyValueNative)}() on a property that could not be found [{NameOf(PropDesc)} Is Nothing]")
-
-            If IsCommonProperty Then
-                Return GetCommonPropertyValueNative()
-            End If
-
+            If IsCommonProperty Then Return GetCommonPropertyValueNative()
             Return GetNonCommonPropertyValueNative(PropDesc, Extender)
         End Function
 
@@ -1557,10 +1512,7 @@ Exception:
             m_PropPage.SuspendPropertyChangeListening(DispId)
             Try
 
-                If Value Is PropertyControlData.Indeterminate Then
-                    'Don't set any values
-                    Return
-                End If
+                If Value Is PropertyControlData.Indeterminate Then Return 'Don't set any values
 
                 If IsUserPersisted Then
                     WriteUserDefinedProperty(PropertyName, Value)
@@ -1568,13 +1520,10 @@ Exception:
                 Else
                     Dim _TypeConverter As TypeConverter = Nothing
 
-                    If PropDesc IsNot Nothing Then
-                        _TypeConverter = PropDesc.Converter
-                    End If
+                    If PropDesc IsNot Nothing Then _TypeConverter = PropDesc.Converter
 
-                    If (_TypeConverter IsNot Nothing) AndAlso _TypeConverter.GetStandardValuesSupported Then
-                        Value = _TypeConverter.ConvertFrom(Value)
-                    End If
+
+                    If (_TypeConverter IsNot Nothing) AndAlso _TypeConverter.GetStandardValuesSupported Then Value = _TypeConverter.ConvertFrom(Value)
 
                     If IsCommonProperty Then
                         SetCommonPropertyValueNative(Value)
@@ -1585,9 +1534,7 @@ Exception:
             Finally
                 m_PropPage.ResumePropertyChangeListening(DispId)
 
-                If RefreshAllPropertiesWhenChanged Then
-                    m_PropPage.RefreshPropertyValues()
-                End If
+                If RefreshAllPropertiesWhenChanged Then m_PropPage.RefreshPropertyValues()
 
             End Try
         End Sub
@@ -1624,9 +1571,7 @@ Exception:
             Finally
                 m_PropPage.ResumePropertyChangeListening(DispId)
 
-                If RefreshAllPropertiesWhenChanged Then
-                    m_PropPage.RefreshPropertyValues()
-                End If
+                If RefreshAllPropertiesWhenChanged Then m_PropPage.RefreshPropertyValues()
 
             End Try
         End Sub
@@ -1660,9 +1605,7 @@ Exception:
                 Debug.Fail("Shouldn't be setting multiple-config values for common properties")
                 Throw New InvalidOperationException
             End If
-            If Objects Is Nothing OrElse Values Is Nothing OrElse Objects.Length <> Values.Length Then
-                Throw AppDesCommon.CreateArgumentException("Objects")
-            End If
+            If (Objects Is Nothing) OrElse (Values Is Nothing) OrElse (Objects.Length <> Values.Length) Then Throw AppDesCommon.CreateArgumentException("Objects")
 
             m_PropPage.SuspendPropertyChangeListening(DispId)
             Try
@@ -1670,9 +1613,8 @@ Exception:
             Finally
                 m_PropPage.ResumePropertyChangeListening(DispId)
 
-                If RefreshAllPropertiesWhenChanged Then
-                    m_PropPage.RefreshPropertyValues()
-                End If
+                If RefreshAllPropertiesWhenChanged Then m_PropPage.RefreshPropertyValues()
+
             End Try
         End Sub
 
@@ -1968,9 +1910,7 @@ Exception:
         ''' </summary>
         ''' <remarks></remarks>
         Public Overridable Sub RestoreInitialValue()
-            If Not IsDirty Then
-                Return
-            End If
+            If Not IsDirty Then Return
 
             InitPropertyUI()
             IsDirty = False
@@ -2263,28 +2203,24 @@ Exception:
                         Dim MyAppProperties As MyApplication.MyApplicationPropertiesBase =
                             DirectCast(m_PropPage.m_ObjectsPropertyDescriptorsArray(0)("MyApplication").GetValue(m_PropPage.m_ExtendedObjects(0)), MyApplication.MyApplicationPropertiesBase)
                         Debug.Assert(MyAppProperties IsNot Nothing)
-                        If MyAppProperties IsNot Nothing Then
-                            Return MyAppProperties.FilesToCheckOut(True)
-                        End If
+                        If MyAppProperties IsNot Nothing Then Return MyAppProperties.FilesToCheckOut(True)
                     Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
                         Debug.Fail("Unable to retrieve MyApplicationProperties to figure out set of files to check out")
                     End Try
+
                 ElseIf (Flags And ControlDataFlags.PersistedInAppManifestFile) <> 0 Then
                     Dim AppManifest As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AppManifest, True)
-                    If AppManifest <> "" Then
-                        Return New String() {AppManifest}
-                    End If
+                    If AppManifest <> "" Then Return New String() {AppManifest}
+
                 ElseIf (Flags And ControlDataFlags.PersistedInAssemblyInfoFile) <> 0 Then
                     Dim AssemblyInfo As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AssemblyInfo, True)
-                    If AssemblyInfo <> "" Then
-                        Return New String() {AssemblyInfo}
-                    End If
+                    If AssemblyInfo <> "" Then Return New String() {AssemblyInfo}
+
                 ElseIf (Flags And ControlDataFlags.PersistedInApplicationDefinitionFile) <> 0 Then
                     Const PSFFILEID_AppXaml As Integer = -1008
                     Dim applicationDefinition As String = GetSpecialFile(PSFFILEID_AppXaml, True)
-                    If applicationDefinition <> "" Then
-                        Return New String() {applicationDefinition}
-                    End If
+                    If applicationDefinition <> "" Then Return New String() {applicationDefinition}
+
                 ElseIf (Flags And ControlDataFlags.NoOptimisticFileCheckout) <> 0 Then
                     Return New String() {}
                 Else
@@ -2319,9 +2255,7 @@ Exception:
             Dim itemId As UInteger
             Dim hr As Integer
             Dim flags As UInteger = CUInt(__PSFFLAGS.PSFF_FullPath)
-            If CreateIfNotExist Then
-                flags = flags Or CUInt(__PSFFLAGS.PSFF_CreateIfNotExist)
-            End If
+            If CreateIfNotExist Then flags = flags Or CUInt(__PSFFLAGS.PSFF_CreateIfNotExist)
 
             hr = SpecialFiles.GetFile(psfFileId, flags, itemId, fileName)
             VSErrorHandler.ThrowOnFailure(hr)
@@ -2341,24 +2275,18 @@ Exception:
         ''' <param name="Object2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function ObjectsAreEqual( Object1 As Object,  Object2 As Object) As Boolean
+        Public Shared Function ObjectsAreEqual(Object1 As Object, Object2 As Object) As Boolean
             If Object1 Is Nothing AndAlso TypeOf Object2 Is String Then
                 Object1 = String.Empty
             ElseIf Object2 Is Nothing AndAlso TypeOf Object1 Is String Then
                 Object2 = String.Empty
             End If
 
-            If IsSpecialValue(Object1) OrElse IsSpecialValue(Object2) Then
-                Return False
-            End If
+            If IsSpecialValue(Object1) OrElse IsSpecialValue(Object2) Then Return False
 
-            If Object1 Is Object2 Then 'Handles reference identity and also Nothing = Nothing
-                Return True
-            ElseIf Object1 IsNot Nothing AndAlso Object2 IsNot Nothing AndAlso Object1.Equals(Object2) Then
-                Return True
-            Else
-                Return False
-            End If
+
+            If Object1 Is Object2 Then Return True 'Handles reference identity and also Nothing = Nothing
+            Return (Object1 IsNot Nothing) AndAlso (Object2 IsNot Nothing) AndAlso (Object1.Equals(Object2))
         End Function
 
         Public Function GetFlags() As ControlDataFlags
