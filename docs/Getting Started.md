@@ -19,7 +19,9 @@ This builds, deploys and run tests.
 
 
 #### Visual Studio
-By default, the project system gets deployed to the _RoslynDev_ experimental instance of Visual Studio, to start debugging:
+By default when you build, the project system and other binaries gets deployed to the _RoslynDev_ experimental instance of Visual Studio. They are setup so that they _override_ any binaries that come with Visual Studio.
+
+To start debugging:
 
 1. Open __src\ProjectSystem.sln__
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
@@ -36,6 +38,8 @@ devenv /rootsuffix RoslynDev
 ```
 
 ### Testing 
+
+#### Project System
 While the long term goal is to have all C#/VB projects use this project system, currently none do. This means that you need to manually create a project to test this:
 
 1. __File__ -> __New__ -> __Project__ -> __C#__ -> __Templates__ -> __Visual C#__ -> __Windows__ -> __Console Application__
@@ -43,6 +47,9 @@ While the long term goal is to have all C#/VB projects use this project system, 
 3. __File__ -> __Close Solution__
 4. In __File Explorer__, rename project from _[project].csproj_ -> _[project].msbuildproj_
 5. __File__ -> __Open__ -> __Project/Solution__ and browse to the project you just renamed and choose __Open__
+
+#### AppDesigner, Settings, Resource Editors and Property Pages
+Unless you you need to test these features within the context of the new project system, the easiest way to test these features are via existing C# and Visual Basic projects.
 
 ### Code Coverage
 
