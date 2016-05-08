@@ -459,22 +459,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub Show(nCmdShow As UInteger)
 
-            If (_propPage Is Nothing) Then
-                Throw New InvalidOperationException("Form not created")
-            End If
+            If (_propPage Is Nothing) Then Throw New InvalidOperationException("Form not created")
 
             ' if we're in native, show/hide our secret scrolling panel too
             ' See Create(hWnd) for more info on where that comes from
             If nCmdShow <> s_SW_HIDE Then
-                If _hostedInNative Then
-                    _propPage.Parent.Show()
-                End If
+                If _hostedInNative Then _propPage.Parent.Show()
                 _propPage.Show()
                 SetHelpContext()
             Else
-                If _hostedInNative Then
-                    _propPage.Parent.Hide()
-                End If
+                If _hostedInNative Then _propPage.Parent.Hide()
                 _propPage.Hide()
             End If
 
@@ -495,12 +489,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If HelpService IsNot Nothing Then
                     Dim HelpKeyword As String = Nothing
                     Dim PropertyPageContext As IPropertyPageInternal = TryCast(_propPage, IPropertyPageInternal)
-                    If PropertyPageContext IsNot Nothing Then
-                        HelpKeyword = PropertyPageContext.GetHelpContextF1Keyword()
-                    End If
-                    If HelpKeyword Is Nothing Then
-                        HelpKeyword = String.Empty
-                    End If
+
+                    If (PropertyPageContext IsNot Nothing) Then HelpKeyword = PropertyPageContext.GetHelpContextF1Keyword()
+
+                    If (HelpKeyword Is Nothing) Then HelpKeyword = String.Empty
+
                     HelpService.AddContextAttribute("Keyword", HelpKeyword, HelpKeywordType.F1Keyword)
                 Else
                     Debug.Fail("Page site doesn't proffer IHelpService")
@@ -535,19 +528,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </returns>
         ''' <remarks></remarks>
         Protected Overridable Function TranslateAccelerator(pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer
-            If pMsg Is Nothing Then
-                Return NativeMethods.E_POINTER
-            End If
+            If (pMsg Is Nothing) Then Return NativeMethods.E_POINTER
 
-            If Not _propPage Is Nothing Then
+            If (_propPage IsNot Nothing) Then
                 Dim m As Message = Message.Create(pMsg(0).hwnd, CType(pMsg(0).message, Integer), pMsg(0).wParam, pMsg(0).lParam)
                 Dim used As Boolean = False
 
                 'Preprocessing should be passed to the control whose handle the message refers to.
                 Dim target As Control = Control.FromChildHandle(m.HWnd)
-                If target IsNot Nothing Then
-                    used = target.PreProcessMessage(m)
-                End If
+                If target IsNot Nothing Then used = target.PreProcessMessage(m)
 
                 If used Then
                     pMsg(0).message = CType(m.Msg, UInteger)
@@ -592,9 +581,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  to properly set its Font before being shown
                 CType(_propPage, IPropertyPageInternal).SetPageSite(CType(Me, IPropertyPageSiteInternal))
 
-                If Not (TypeOf _propPage Is IPropertyPageInternal) Then
-                    Throw New InvalidOperationException("Control must implement IPropertyPageInternal")
-                End If
+                If (TypeOf _propPage IsNot IPropertyPageInternal) Then Throw New InvalidOperationException("Control must implement IPropertyPageInternal")
+
                 _prevParent = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle)
 
                 Common.Switches.TracePDPerf("PropPage.Create: Setting the property page's parent")
@@ -624,9 +612,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 'Site the undo manager if we have one and the page supports it
-                If (_propPageUndoSite IsNot Nothing) AndAlso (TypeOf _propPage Is IVsProjectDesignerPage) Then
-                    CType(_propPage, IVsProjectDesignerPage).SetSite(_propPageUndoSite)
-                End If
+                If (_propPageUndoSite IsNot Nothing) AndAlso (TypeOf _propPage Is IVsProjectDesignerPage) Then CType(_propPage, IVsProjectDesignerPage).SetSite(_propPageUndoSite)
 
                 'If the SetObjects call was cached, we need to do the SetObjects now
                 If (Not _objects Is Nothing) AndAlso (_objects.Length > 0) Then
@@ -655,10 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Function GetProperty(PropertyName As String) As Object Implements IVsProjectDesignerPage.GetProperty
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Return Page.GetProperty(PropertyName)
-            End If
-
+            If (Page IsNot Nothing) Then Return Page.GetProperty(PropertyName)
             Return Nothing
         End Function
 
@@ -672,9 +655,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Sub SetProperty(PropertyName As String, Value As Object) Implements IVsProjectDesignerPage.SetProperty
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If (Page IsNot Nothing) Then
-                Page.SetProperty(PropertyName, Value)
-            End If
+            If (Page IsNot Nothing) Then Page.SetProperty(PropertyName, Value)
         End Sub
 
 
@@ -685,9 +666,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Sub SetSite(site As IVsProjectDesignerPageSite) Implements IVsProjectDesignerPage.SetSite
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Page.SetSite(site)
-            End If
+            If Page IsNot Nothing Then Page.SetSite(site)
             _propPageUndoSite = site
         End Sub
 
@@ -702,11 +681,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Function SupportsMultipleValueUndo(PropertyName As String) As Boolean Implements IVsProjectDesignerPage.SupportsMultipleValueUndo
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Return Page.SupportsMultipleValueUndo(PropertyName)
-            Else
-                Return False
-            End If
+            If Page IsNot Nothing Then Return Page.SupportsMultipleValueUndo(PropertyName)
+            Return False
         End Function
 
 
@@ -724,13 +700,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Function GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Return Page.GetPropertyMultipleValues(PropertyName, Objects, Values)
-            Else
-                Objects = Nothing
-                Values = Nothing
-                Return False
-            End If
+            If Page IsNot Nothing Then Return Page.GetPropertyMultipleValues(PropertyName, Objects, Values)
+            Objects = Nothing
+            Values = Nothing
+            Return False
         End Function
 
 
@@ -746,9 +719,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Sub SetPropertyMultipleValues(PropertyName As String, Objects() As Object, Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Page.SetPropertyMultipleValues(PropertyName, Objects, Values)
-            End If
+            Page?.SetPropertyMultipleValues(PropertyName, Objects, Values)
         End Sub
 
 
@@ -759,10 +730,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Function FinishPendingValidations() As Boolean Implements IVsProjectDesignerPage.FinishPendingValidations
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Return Page.FinishPendingValidations()
-            End If
-            Return True
+            'If Page IsNot Nothing Then
+            Return Page?.FinishPendingValidations()
+            'End If
+            'Return True
         End Function
 
 
@@ -773,9 +744,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub OnWindowActivated(activated As Boolean) Implements IVsProjectDesignerPage.OnActivated
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If Page IsNot Nothing Then
-                Page.OnActivated(activated)
-            End If
+            '           If Page IsNot Nothing Then
+            Page?.OnActivated(activated)
+'            End If
         End Sub
 
 #End Region
@@ -788,10 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function GetDocDataCookies() As UInteger() Implements IVsDocDataContainer.GetDocDataCookies
-            If TypeOf m_PropPage Is IVsDocDataContainer Then
-                Return DirectCast(m_PropPage, IVsDocDataContainer).GetDocDataCookies()
-            End If
-
+            If TypeOf m_PropPage Is IVsDocDataContainer Then Return DirectCast(m_PropPage, IVsDocDataContainer).GetDocDataCookies()
             Return New UInteger() {}
         End Function
 #End Region
