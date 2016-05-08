@@ -730,10 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Function FinishPendingValidations() As Boolean Implements IVsProjectDesignerPage.FinishPendingValidations
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            'If Page IsNot Nothing Then
-            Return Page?.FinishPendingValidations()
-            'End If
-            'Return True
+            Return (Page IsNot Nothing) AndAlso Page.FinishPendingValidations()
         End Function
 
 
