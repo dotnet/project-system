@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NoOverflowCUInt(ByVal obj As Object) As UInteger
+        Public Function NoOverflowCUInt( obj As Object) As UInteger
             Return NoOverflowCUInt(CLng(obj))
         End Function
 
@@ -75,11 +75,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="LongValue"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NoOverflowCUInt(ByVal LongValue As Long) As UInteger
+        Public Function NoOverflowCUInt( LongValue As Long) As UInteger
             Return CUInt(LongValue And UInt32.MaxValue)
         End Function
 
-        Public Function NoOverflowCInt(ByVal LongValue As Long) As Integer
+        Public Function NoOverflowCInt( LongValue As Long) As Integer
             If LongValue <= UInt32.MaxValue Then
                 Return CInt(LongValue)
             End If
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="assembly">Name of the assembly containing the resource</param>
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmap(ByVal BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
+        Public Function GetManifestBitmap( BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
             Return DirectCast(GetManifestImage(BitmapID, assembly), Bitmap)
         End Function
 
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="assembly">Name of the assembly containing the bitmap resource</param>
         ''' <returns>The retrieved transparent bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(ByVal BitmapID As String, ByRef TransparentColor As Color, Optional ByVal assembly As Assembly = Nothing) As Bitmap
+        Public Function GetManifestBitmapTransparent( BitmapID As String, ByRef TransparentColor As Color, Optional  assembly As Assembly = Nothing) As Bitmap
             Dim Bitmap As Bitmap = GetManifestBitmap(BitmapID, assembly)
             If Bitmap IsNot Nothing Then
                 Bitmap.MakeTransparent(TransparentColor)
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="assembly">Name of assembly containing the manifest resource</param>
         ''' <returns>The retrieved transparent bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(ByVal BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
+        Public Function GetManifestBitmapTransparent( BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
             Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor, assembly)
         End Function
 
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="assembly"></param>
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestImage(ByVal ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
+        Public Function GetManifestImage( ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
             Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.AppDesCommon.Utils).Assembly.GetManifestResourceStream(ImageID)
             If Not assembly Is Nothing Then
                 BitmapStream = assembly.GetManifestResourceStream(ImageID)
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   evidence to suggest that the implication is incorrect).
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function Implies(ByVal a As Boolean, ByVal b As Boolean) As Boolean
+        Public Function Implies( a As Boolean,  b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
 
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DebugMessageFromException(ByVal ex As Exception) As String
+        Public Function DebugMessageFromException( ex As Exception) As String
 #If DEBUG Then
             Dim ErrorMessage As String = ex.Message & vbCrLf & vbCrLf & vbCrLf & "[SHOWN IN DEBUG ONLY] STACK TRACE:" & vbCrLf & ex.StackTrace
             If ex.InnerException IsNot Nothing Then
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Value">The value to turn into a displayable string.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DebugToString(ByVal Value As Object) As String
+        Public Function DebugToString( Value As Object) As String
 #If DEBUG Then
             Dim StringValue As String = ""
             Try
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
-        Public Function IsUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False) As Boolean
+        Public Function IsUnrecoverable( ex As Exception, Optional  IgnoreOutOfMemory As Boolean = False) As Boolean
             If TypeOf ex Is NullReferenceException _
                 OrElse (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
                 OrElse TypeOf ex Is StackOverflowException _
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
         ''' <remarks></remarks>
-        Public Function IsCheckoutCanceledException(ByVal ex As Exception) As Boolean
+        Public Function IsCheckoutCanceledException( ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse _
                 (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) _
@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
-        Public Sub RethrowIfUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False)
+        Public Sub RethrowIfUnrecoverable( ex As Exception, Optional  IgnoreOutOfMemory As Boolean = False)
             If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
                 Throw ex
             End If
@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NothingToEmptyString(ByVal Str As String) As String
+        Public Function NothingToEmptyString( Str As String) As String
             If Str Is Nothing Then
                 Return String.Empty
             Else
@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function EmptyStringToNothing(ByVal Str As String) As String
+        Public Function EmptyStringToNothing( Str As String) As String
             If Str Is Nothing OrElse Str.Length = 0 Then
                 Return Nothing
             Else
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="FalseExpression">What to return if the condition is False</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IIf(Of T)(ByVal Condition As Boolean, ByVal TrueExpression As T, ByVal FalseExpression As T) As T
+        Public Function IIf(Of T)( Condition As Boolean,  TrueExpression As T,  FalseExpression As T) As T
             If Condition Then
                 Return TrueExpression
             Else
@@ -328,7 +328,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="ComboBox">The combobox to change the width for</param>
         ''' <remarks></remarks>
-        Public Sub SetComboBoxDropdownWidth(ByVal ComboBox As ComboBox)
+        Public Sub SetComboBoxDropdownWidth( ComboBox As ComboBox)
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
             Else
@@ -344,7 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' This does not take the current cell style into account - it uses the font from the parent datagridview (if any)
         ''' It also makes room for the scrollbar even though it may not be visible...
         ''' </remarks>
-        Public Sub SetComboBoxColumnDropdownWidth(ByVal column As DataGridViewComboBoxColumn)
+        Public Sub SetComboBoxColumnDropdownWidth( column As DataGridViewComboBoxColumn)
             If column IsNot Nothing AndAlso column.DataGridView IsNot Nothing Then
                 column.DropDownWidth = Math.Max(MeasureMaxTextWidth(column.DataGridView, column.Items) + SystemInformation.VerticalScrollBarWidth, column.Width)
             Else
@@ -374,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '@ <param name="hr">error code</param>
         '@ <param name="error message">error message</param>
         '@ <returns></returns>
-        Public Sub SetErrorInfo(ByVal sp As Microsoft.VisualStudio.Shell.ServiceProvider, ByVal hr As Integer, ByVal errorMessage As String)
+        Public Sub SetErrorInfo( sp As Microsoft.VisualStudio.Shell.ServiceProvider,  hr As Integer,  errorMessage As String)
             Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
@@ -399,7 +399,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="HwndParent">The container HWND.</param>
         ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
         ''' <remarks></remarks>
-        Public Function FocusFirstOrLastTabItem(ByVal HwndParent As IntPtr, ByVal First As Boolean) As Boolean
+        Public Function FocusFirstOrLastTabItem( HwndParent As IntPtr,  First As Boolean) As Boolean
             If HwndParent.Equals(IntPtr.Zero) Then
                 Return False
             End If
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Path">The path to add a backslash to.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function AppendBackslash(ByVal Path As String) As String
+        Public Function AppendBackslash( Path As String) As String
             If Path <> "" AndAlso VB.Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso VB.Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
             Else
@@ -473,11 +473,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
         ''' <remarks></remarks>
-        Public Function GetFilesViaBrowse(ByVal ServiceProvider As IServiceProvider, ByVal ParentWindow As IntPtr, _
-                ByVal InitialDirectory As String, ByVal DialogTitle As String, _
-                ByVal Filter As String, ByVal FilterIndex As UInteger, ByVal MutiSelect As Boolean, _
-                Optional ByVal DefaultFileName As String = Nothing, _
-                Optional ByVal NeedThrowError As Boolean = False) As ArrayList
+        Public Function GetFilesViaBrowse( ServiceProvider As IServiceProvider,  ParentWindow As IntPtr, _
+                 InitialDirectory As String,  DialogTitle As String, _
+                 Filter As String,  FilterIndex As UInteger,  MutiSelect As Boolean, _
+                Optional  DefaultFileName As String = Nothing, _
+                Optional  NeedThrowError As Boolean = False) As ArrayList
 
             Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = _
                 CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '@ </summary>
         '@ <param name="Filter">file type filter</param>
         '@ <returns>a native filter string</returns>
-        Private Function GetNativeFilter(ByVal Filter As String) As String
+        Private Function GetNativeFilter( Filter As String) As String
             If Filter IsNot Nothing Then
                 Dim length As Integer = Filter.Length
                 Dim buf As Char() = New Char(length) {}
@@ -591,7 +591,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '@ </summary>
         '@ <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
         '@ <returns>a directory path</returns>
-        Private Function NormalizeInitialDirectory(ByVal InitialDirectory As String) As String
+        Private Function NormalizeInitialDirectory( InitialDirectory As String) As String
             If InitialDirectory IsNot Nothing Then
                 InitialDirectory = Trim(InitialDirectory)
                 If InitialDirectory = "" Then
@@ -619,7 +619,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="items"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function MeasureMaxTextWidth(ByVal ctrl As Control, ByVal items As IEnumerable) As Integer
+        Public Function MeasureMaxTextWidth( ctrl As Control,  items As IEnumerable) As Integer
             Dim MaxEntryWidth As Integer = 0
             Using g As Graphics = ctrl.CreateGraphics()
                 For Each Entry As Object In items
@@ -689,7 +689,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="guid"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Shared Function PageGuidToId(ByVal guid As Guid) As Byte
+            Public Shared Function PageGuidToId( guid As Guid) As Byte
                 For i As Integer = 0 To s_sqmOrder.Length - 1
                     If s_sqmOrder(i).Equals(guid) Then
                         Return CByte(i + 1)

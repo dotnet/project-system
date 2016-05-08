@@ -1652,10 +1652,7 @@ Namespace Microsoft.VisualStudio.Shell.Interop
         End Enum
     End Module
 
-    <ComImport>
-    <ComVisible(False)>
-    <Guid("C1F63D0C-4CAE-4907-BE74-EEB75D386ECB")>
-    <InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, ComVisible(False), Guid("C1F63D0C-4CAE-4907-BE74-EEB75D386ECB"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsSqm
 
         Sub GetSessionStartTime(<Out> ByRef time As ComTypes.FILETIME)
@@ -1748,10 +1745,7 @@ Namespace Microsoft.VisualStudio.Shell.Interop
 
     End Interface
 
-    <ComImport>
-    <ComVisible(False)>
-    <Guid("BE5F55EB-F02D-4217-BCB6-A290800AF6C4")>
-    <InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, ComVisible(False), Guid("BE5F55EB-F02D-4217-BCB6-A290800AF6C4"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsSqm2
 
         Sub SetBoolDatapoint(
@@ -1784,34 +1778,25 @@ Namespace Microsoft.VisualStudio.Shell.Interop
     End Interface
 
 
-    <ComImport>
-    <ComVisible(False)>
-    <Guid("B17A7D4A-C1A3-45A2-B916-826C3ABA067E")>
-    <InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, ComVisible(False), Guid("B17A7D4A-C1A3-45A2-B916-826C3ABA067E"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsSqmMulti
-
 
         Function GetOptInStatus() As <MarshalAs(UnmanagedType.VariantBool)> Boolean
 
         Sub UnloadSessions()
 
-        Sub EndAllSessionsAndAbortUploads(
-                )
+        Sub EndAllSessionsAndAbortUploads()
 
-        Sub BeginSession(
-                <[In], MarshalAs(UnmanagedType.U4)> sessionType As UInt32,
-                <[In], MarshalAs(UnmanagedType.VariantBool)> alwaysSend As System.Boolean,
-                <Out, MarshalAs(UnmanagedType.U4)> ByRef sessionHandle As UInt32
-            )
+        Sub BeginSession(<[In], MarshalAs(UnmanagedType.U4)> sessionType As UInt32,
+                         <[In], MarshalAs(UnmanagedType.VariantBool)> alwaysSend As System.Boolean,
+                         <Out, MarshalAs(UnmanagedType.U4)> ByRef sessionHandle As UInt32
+                         )
 
-        Sub EndSession(
-                <[In], MarshalAs(UnmanagedType.U4)> sessionHandle As UInt32
-            )
+        Sub EndSession(<[In], MarshalAs(UnmanagedType.U4)> sessionHandle As UInt32)
 
-        Sub RegisterSessionHandle(
-                <[In]> ByRef sessionIdentifier As Guid,
-                <[In], MarshalAs(UnmanagedType.U4)> dwSessionHandle As UInteger
-        )
+        Sub RegisterSessionHandle(<[In]> ByRef sessionIdentifier As Guid,
+                                  <[In], MarshalAs(UnmanagedType.U4)> dwSessionHandle As UInteger
+                                 )
 
         Function GetSessionHandleByIdentifier(
                 <[In]> ByRef sessionIdentifier As Guid
@@ -1950,10 +1935,7 @@ Namespace Microsoft.VisualStudio.Shell.Interop
 
 
 
-    <ComImport>
-    <ComVisible(False)>
-    <Guid("16be4288-950b-4265-b0dc-280b89ca9979")>
-    <InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, ComVisible(False), Guid("16be4288-950b-4265-b0dc-280b89ca9979"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsSqmOptinManager
 
         Sub GetOptinStatus(
@@ -1968,9 +1950,7 @@ Namespace Microsoft.VisualStudio.Shell.Interop
     End Interface
 
 
-    <ComImport>
-    <ComVisible(False)>
-    <Guid("2508FDF0-EF80-4366-878E-C9F024B8D981")>
+    <ComImport, ComVisible(False), Guid("2508FDF0-EF80-4366-878E-C9F024B8D981")>
     Friend Interface SVsLog
     End Interface
 End Namespace

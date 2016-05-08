@@ -14,9 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _validationResult As ValidationResult
         Private _control As Control
 
-        Public Sub New(ByVal result As ValidationResult, ByVal message As String, Optional ByVal control As Control = Nothing, Optional ByVal InnerException As Exception = Nothing)
+        Public Sub New(result As ValidationResult, message As String, Optional control As Control = Nothing, Optional InnerException As Exception = Nothing)
             MyBase.New(message, InnerException)
-
             _validationResult = result
             _control = control
         End Sub
@@ -28,12 +27,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Public Sub RestoreFocus()
-            If _control IsNot Nothing Then
-                _control.Focus()
-                If TypeOf _control Is TextBox Then
-                    CType(_control, TextBox).SelectAll()
-                End If
-            End If
+            If _control Is Nothing Then Exit Sub
+            _control.Focus()
+            TryCast(_control, TextBox)?.SelectAll()
         End Sub
     End Class
 End Namespace

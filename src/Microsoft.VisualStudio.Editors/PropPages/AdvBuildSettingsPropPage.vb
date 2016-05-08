@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose( disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function LanguageVersionSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function LanguageVersionSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
 
             Me.cboLanguageVersion.SelectedIndex = -1
 
@@ -376,7 +376,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function LanguageVersionGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function LanguageVersionGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             Dim currentVersion As CSharpLanguageVersion = CType(CType(control, ComboBox).SelectedItem, CSharpLanguageVersion)
             If currentVersion IsNot Nothing Then
@@ -396,7 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function ErrorReportSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function ErrorReportSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function ErrorReportGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function ErrorReportGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (Me.cboReportCompilerErrors.SelectedIndex <> -1) Then
                 value = Me.cboReportCompilerErrors.Text
                 Return True
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function DebugSymbolsSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function DebugSymbolsSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate/IsMissing 
                 m_bDebugSymbols = False
             Else
@@ -449,7 +449,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function DebugSymbolsGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function DebugSymbolsGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = m_bDebugSymbols
             Return True
         End Function
@@ -461,7 +461,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function BaseAddressSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function BaseAddressSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If (IsExeProject()) Then
                 '// EXE's don't support base addresses so just disable the control and set the disabled text to the default for 
                 '// EXE's.
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function BaseAddressGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function BaseAddressGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             Dim StringValue As String = Trim(control.Text)
 
@@ -555,7 +555,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function DebugInfoSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function DebugInfoSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
                 Me.cboDebugInfo.SelectedIndex = -1
             Else
@@ -584,7 +584,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function DebugInfoGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function DebugInfoGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             '// Need to special case pdb-only because the display name has a dash while the actual property value
             '// doesn't have the dash.
@@ -602,7 +602,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub DebugInfo_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboDebugInfo.SelectedIndexChanged
+        Private Sub DebugInfo_SelectedIndexChanged( sender As System.Object,  e As System.EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If Me.cboDebugInfo.SelectedIndex = 0 Then
                 '// user selcted none
                 m_bDebugSymbols = False
@@ -623,7 +623,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function FileAlignmentSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function FileAlignmentSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 Me.cboFileAlignment.SelectedIndex = -1
             Else
@@ -644,7 +644,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function FileAlignmentGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function FileAlignmentGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = Me.cboFileAlignment.Text
             Return True
         End Function
@@ -656,7 +656,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function OverflowUnderflowSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function OverflowUnderflowSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate Then
                 Me.chkOverflow.CheckState = CheckState.Indeterminate
             Else
@@ -672,7 +672,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Function OverflowUnderflowGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function OverflowUnderflowGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = Me.chkOverflow.Checked
             Return True
         End Function

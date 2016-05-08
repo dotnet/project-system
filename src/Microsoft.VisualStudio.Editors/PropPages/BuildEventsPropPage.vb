@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose( disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PostBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPostBuildBuilder.Click
+        Private Sub PostBuildBuilderButton_Click( sender As Object,  e As System.EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPostBuildEventCommandLine.Text
 
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PreBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPreBuildBuilder.Click
+        Private Sub PreBuildBuilderButton_Click( sender As Object,  e As System.EventArgs) Handles btnPreBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPreBuildEventCommandLine.Text
 
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Friend Delegate Function GetTokenValueFunc(ByVal MacroName As String) As String
+        Friend Delegate Function GetTokenValueFunc( MacroName As String) As String
 
 
         ''' <summary>
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="WindowTitleText"></param>
         ''' <param name="CommandLine"></param>
         ''' <remarks></remarks>
-        Private Function LaunchEventBuilder(ByVal Parent As BuildEventsPropPage, ByVal valueHelper As GetTokenValueFunc, ByVal WindowTitleText As String, ByRef CommandLine As String) As Boolean
+        Private Function LaunchEventBuilder( Parent As BuildEventsPropPage,  valueHelper As GetTokenValueFunc,  WindowTitleText As String, ByRef CommandLine As String) As Boolean
 
             Dim frm As New BuildEventCommandLineDialog
             Dim Values() As String = Nothing
@@ -300,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Values"></param>
         ''' <remarks></remarks>        
-        Friend Shared Function GetTokenValues(ByRef Values() As String, ByVal valueHelper As GetTokenValueFunc) As Boolean
+        Friend Shared Function GetTokenValues(ByRef Values() As String,  valueHelper As GetTokenValueFunc) As Boolean
             Dim i As Integer
             Values = CType(Array.CreateInstance(GetType(String), Tokens.Tokens_MAX), String())
 
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="MacroName"></param>
         ''' <remarks></remarks>
-        Private Function GetTokenValue(ByVal MacroName As String) As String
+        Private Function GetTokenValue( MacroName As String) As String
             Dim MacroEval As IVsBuildMacroInfo
             Dim MacroValue As String = Nothing
             Dim Hier As IVsHierarchy = Nothing
