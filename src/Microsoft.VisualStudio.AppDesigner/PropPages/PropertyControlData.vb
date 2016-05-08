@@ -1076,7 +1076,7 @@ Exception:
 #Region "Control getter/setter helpers"
         Public ReadOnly Property IsReadOnly() As Boolean
             Get
-                Return PropDesc?.IsReadOnly
+                Return (PropDesc IsNot Nothing) AndAlso PropDesc.IsReadOnly
             End Get
         End Property
 

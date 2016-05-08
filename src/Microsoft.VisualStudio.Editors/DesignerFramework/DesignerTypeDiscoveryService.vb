@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overridable Function GetProjectOutputs( provider As IServiceProvider,  hierarchy As IVsHierarchy) As String()
             Try
                 Dim buildManager As Microsoft.VisualStudio.Shell.Interop.IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
-                If buildManager Is Nothing Then Return New String() {}
+                If buildManager Is Nothing Then Return Array.Empty(Of String)
 
                 Dim activeConfig(0) As IVsProjectCfg
                 Dim activeConfig2 As IVsProjectCfg2
