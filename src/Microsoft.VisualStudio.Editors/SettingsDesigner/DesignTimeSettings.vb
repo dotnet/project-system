@@ -180,10 +180,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return String.Equals(Id1, Id2, StringComparison.OrdinalIgnoreCase)
         End Function
 
-        Friend Function CreateUniqueName(Optional ByVal Base As String = "Setting") As String
-            If Base = "" Then
-                Debug.Fail("Must give a valid base name or not supply any parameter at all (can't create a unique name from a null or empty string!)")
-                Throw New ArgumentException()
+        Friend Function CreateUniqueName(Optional ByVal Base As String = Nothing) As String
+            If String.IsNullOrEmpty(Base) Then
+                Base = SR.SD_DefaultSettingName
             End If
 
             Dim ExistingNames As New System.Collections.Hashtable
