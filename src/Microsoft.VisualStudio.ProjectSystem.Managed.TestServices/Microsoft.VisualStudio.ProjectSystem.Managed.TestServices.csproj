@@ -29,6 +29,8 @@
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FuncWithOut.cs" />
+    <Compile Include="Moq\ReturnsExtensions.cs" />
     <Compile Include="ProjectSystem\ProjectSystemTraitAttribute.cs" />
     <Compile Include="ProjectSystem\ProjectSystemTraitDiscover.cs" />
     <Compile Include="ProjectSystem\ProjectTreeParser\Delimiters.cs" />
