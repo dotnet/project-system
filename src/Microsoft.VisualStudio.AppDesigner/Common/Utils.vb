@@ -80,10 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Function
 
         Public Function NoOverflowCInt( LongValue As Long) As Integer
-            If LongValue <= UInt32.MaxValue Then
-                Return CInt(LongValue)
-            End If
-            Return CInt(LongValue And UInt32.MaxValue)
+            Return If(LongValue <= UInt32.MaxValue, CInt(LongValue), CInt(LongValue And UInt32.MaxValue))
         End Function
 
         ''' <summary>
@@ -138,14 +135,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage( ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
             Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.AppDesCommon.Utils).Assembly.GetManifestResourceStream(ImageID)
-            If Not assembly Is Nothing Then
-                BitmapStream = assembly.GetManifestResourceStream(ImageID)
-            End If
+            If Not assembly Is Nothing Then BitmapStream = assembly.GetManifestResourceStream(ImageID)
+
             If Not BitmapStream Is Nothing Then
                 Dim Image As Image = Drawing.Image.FromStream(BitmapStream)
-                If Not Image Is Nothing Then
-                    Return Image
-                End If
+                If Not Image Is Nothing Then Return Image
+
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             Else
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
@@ -199,20 +194,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #If DEBUG Then
             Dim StringValue As String = ""
             Try
-                If Value Is Nothing Then
-                    Return "<Nothing>"
-                ElseIf TypeOf Value Is String Then
-                    Return """" & CStr(Value) & """"
-                ElseIf TypeOf Value Is Control Then
-                    Dim c As Control = DirectCast(Value, Control)
-                    If c.Name <> "" Then
-                        Return c.Name & " (Text=""" & c.Text & """)"
-                    Else
-                        Return "[" & c.GetType.Name & "] (Text=""" & c.Text & """)"
-                    End If
-                Else
-                    Return Value.ToString()
-                End If
+                If Value Is Nothing Then Return "<Nothing>"
+                If TypeOf Value Is String Then Return """" & CStr(Value) & """"
+                If TypeOf Value IsNot Control Then Return Value.ToString
+                Dim c As Control = DirectCast(Value, Control)
+                If c.Name <> "" Then Return $"{c.Name} (Text=""{ c.Text}"")"
+                Return $"[{c.GetType.Name}] (Text=""{ c.Text}"")"
+
+
             Catch ex As Exception
                 RethrowIfUnrecoverable(ex)
                 Return "[" & ex.GetType.Name & "]"
@@ -230,16 +219,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
         Public Function IsUnrecoverable( ex As Exception, Optional  IgnoreOutOfMemory As Boolean = False) As Boolean
-            If TypeOf ex Is NullReferenceException _
-                OrElse (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
-                OrElse TypeOf ex Is StackOverflowException _
-                OrElse TypeOf ex Is ThreadAbortException _
-                OrElse TypeOf ex Is AccessViolationException _
-            Then
-                Return True
-            End If
-
-            Return False
+            Return TypeOf ex Is NullReferenceException OrElse
+                   (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) OrElse
+                   TypeOf ex Is StackOverflowException OrElse
+                   TypeOf ex Is ThreadAbortException OrElse
+                   TypeOf ex Is AccessViolationException
         End Function
 
 
@@ -249,16 +233,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException( ex As Exception) As Boolean
-            If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
-                OrElse _
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) _
-            Then
+            If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) OrElse
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) Then
                 Return True
             End If
 
-            If ex.InnerException IsNot Nothing Then
-                Return IsCheckoutCanceledException(ex.InnerException)
-            End If
+            If ex.InnerException IsNot Nothing Then Return IsCheckoutCanceledException(ex.InnerException)
 
             Return False
         End Function
@@ -270,10 +250,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
-        Public Sub RethrowIfUnrecoverable( ex As Exception, Optional  IgnoreOutOfMemory As Boolean = False)
-            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
-                Throw ex
-            End If
+        Public Sub RethrowIfUnrecoverable(ex As Exception, Optional IgnoreOutOfMemory As Boolean = False)
+            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then Throw ex
         End Sub
 
 
@@ -283,12 +261,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NothingToEmptyString( Str As String) As String
-            If Str Is Nothing Then
-                Return String.Empty
-            Else
-                Return Str
-            End If
+        Public Function NothingToEmptyString(Str As String) As String
+            Return If(Str, String.Empty)
         End Function
 
 
@@ -298,12 +272,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function EmptyStringToNothing( Str As String) As String
-            If Str Is Nothing OrElse Str.Length = 0 Then
-                Return Nothing
-            Else
-                Return Str
-            End If
+        Public Function EmptyStringToNothing(Str As String) As String
+            Return If(If(Str, String.Empty).Length = 0, Nothing, Str)
         End Function
 
         ''' <summary>
@@ -314,12 +284,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="FalseExpression">What to return if the condition is False</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IIf(Of T)( Condition As Boolean,  TrueExpression As T,  FalseExpression As T) As T
-            If Condition Then
-                Return TrueExpression
-            Else
-                Return FalseExpression
-            End If
+        Public Function IIf(Of T)(Condition As Boolean, TrueExpression As T, FalseExpression As T) As T
+            Return If(Condition, TrueExpression, FalseExpression)
         End Function
 
 
@@ -377,9 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Sub SetErrorInfo( sp As Microsoft.VisualStudio.Shell.ServiceProvider,  hr As Integer,  errorMessage As String)
             Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
 
-            If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
-            End If
+            If sp IsNot Nothing Then vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
                 vsUIShell = CType(VBPackageInstance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
@@ -400,9 +364,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
         ''' <remarks></remarks>
         Public Function FocusFirstOrLastTabItem( HwndParent As IntPtr,  First As Boolean) As Boolean
-            If HwndParent.Equals(IntPtr.Zero) Then
-                Return False
-            End If
+            If HwndParent.Equals(IntPtr.Zero) Then Return False
 
             Dim c As Control = Control.FromChildHandle(HwndParent)
             If c IsNot Nothing Then

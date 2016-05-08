@@ -85,14 +85,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function GetProjectItemProperty( ProjectItem As ProjectItem,  PropertyName As String) As [Property]
-            If ProjectItem.Properties Is Nothing Then
-                Return Nothing
-            End If
-
+            If ProjectItem.Properties Is Nothing Then Return Nothing
             For Each Prop As [Property] In ProjectItem.Properties
-                If Prop.Name.Equals(PropertyName, StringComparison.OrdinalIgnoreCase) Then
-                    Return Prop
-                End If
+                If Prop.Name.Equals(PropertyName, StringComparison.OrdinalIgnoreCase) Then Return Prop
             Next
 
             Return Nothing
@@ -106,14 +101,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function GetProjectProperty( Project As Project,  PropertyName As String) As [Property]
-            If Project.Properties Is Nothing Then
-                Return Nothing
-            End If
+            If Project.Properties Is Nothing Then Return Nothing
 
             For Each Prop As [Property] In Project.Properties
-                If Prop.Name.Equals(PropertyName, StringComparison.OrdinalIgnoreCase) Then
-                    Return Prop
-                End If
+                If Prop.Name.Equals(PropertyName, StringComparison.OrdinalIgnoreCase) Then Return Prop
             Next
 
             Return Nothing
@@ -164,11 +155,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Item">The ProjectItem on which to set the property</param>
         ''' <remarks></remarks>
-        Public Shared Sub SetBuildAction( Item As ProjectItem,  BuildAction As VSLangProj.prjBuildAction)
+        Public Shared Sub SetBuildAction(Item As ProjectItem, BuildAction As VSLangProj.prjBuildAction)
             Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, s_PROJECTPROPERTY_BUILDACTION)
-            If BuildActionProperty IsNot Nothing Then
-                BuildActionProperty.Value = BuildAction
-            End If
+            If BuildActionProperty IsNot Nothing Then BuildActionProperty.Value = BuildAction
         End Sub
 
         ''' <summary>
@@ -198,9 +187,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Sub SetBuildActionAsString( item As ProjectItem,  buildAction As String)
 
             Dim BuildActionProperty As [Property] = GetProjectItemProperty(item, s_PROJECTPROPERTY_MSBUILD_ITEMTYPE)
-            If BuildActionProperty IsNot Nothing Then
-                BuildActionProperty.Value = buildAction
-            End If
+            If BuildActionProperty IsNot Nothing Then BuildActionProperty.Value = buildAction
+
         End Sub
 
         ''' <summary>
@@ -211,10 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Shared Function GetBuildActionAsString( Item As ProjectItem) As String
             Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, s_PROJECTPROPERTY_MSBUILD_ITEMTYPE)
-            If BuildActionProperty IsNot Nothing Then
-                Return CType(BuildActionProperty.Value, String)
-            End If
-
+            If BuildActionProperty IsNot Nothing Then Return CType(BuildActionProperty.Value, String)
             Return String.Empty
         End Function
 

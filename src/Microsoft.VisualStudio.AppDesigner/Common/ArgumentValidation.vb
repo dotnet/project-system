@@ -11,9 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="parameter"></param>
         ''' <remarks></remarks>
         Public Sub ValidateArgumentNotNothing( argument As Object,  parameter As String)
-            If argument Is Nothing Then
-                Throw New ArgumentNullException(parameter)
-            End If
+            If argument Is Nothing Then Throw New ArgumentNullException(parameter)
         End Sub
 
         ''' <summary>
@@ -23,9 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="parameter"></param>
         ''' <remarks></remarks>
         Public Sub ValidateArgumentNotNothingOrEmptyString( argument As String,  parameter As String)
-            If argument Is Nothing OrElse argument.Length = 0 Then
-                Throw CreateArgumentException(parameter)
-            End If
+            If argument Is Nothing OrElse argument.Length = 0 Then Throw CreateArgumentException(parameter)
         End Sub
 
 

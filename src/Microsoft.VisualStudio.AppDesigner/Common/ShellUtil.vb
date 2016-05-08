@@ -44,9 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             If VsUIShell2 IsNot Nothing Then
                 Dim abgrValue As System.UInt32
                 Dim Hr As Integer = VsUIShell2.GetVSSysColorEx(VsSysColorIndex, abgrValue)
-                If VSErrorHandler.Succeeded(Hr) Then
-                    Return COLORREFToColor(abgrValue)
-                End If
+                If VSErrorHandler.Succeeded(Hr) Then Return COLORREFToColor(abgrValue)
             End If
 
             Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
@@ -63,9 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         rgbaValue = uiShellService.GetThemedColor(themeCategory, themeColorName, CType(colorType, System.UInt32))
                     End Sub)
 
-                If VSErrorHandler.Succeeded(hr) Then
-                    Return RGBAToColor(rgbaValue)
-                End If
+                If VSErrorHandler.Succeeded(hr) Then Return RGBAToColor(rgbaValue)
             End If
 
             Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
@@ -95,9 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Function GetDialogOwnerWindow( serviceProvider As IServiceProvider) As IWin32Window
             Dim dialogOwner As IWin32Window = Nothing
             Dim UIService As IUIService = DirectCast(serviceProvider.GetService(GetType(IUIService)), IUIService)
-            If UIService IsNot Nothing Then
-                dialogOwner = UIService.GetDialogOwnerWindow()
-            End If
+            If UIService IsNot Nothing Then dialogOwner = UIService.GetDialogOwnerWindow()
 
             Debug.Assert(dialogOwner IsNot Nothing, "Couldn't get DialogOwnerWindow")
             Return dialogOwner
@@ -234,17 +228,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function DTEProjectFromHierarchy( ProjectHierarchy As IVsHierarchy) As Project
-            If ProjectHierarchy Is Nothing Then
-                Return Nothing
-            End If
+            If ProjectHierarchy Is Nothing Then Return Nothing
 
             Dim hr As Integer
             Dim Obj As Object = Nothing
             hr = ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, Obj)
-            If VSErrorHandler.Succeeded(hr) Then
-                Return TryCast(Obj, EnvDTE.Project)
-            End If
-
+            If VSErrorHandler.Succeeded(hr) Then Return TryCast(Obj, EnvDTE.Project)
             Return Nothing
         End Function
 
@@ -258,18 +247,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Shared Function VsHierarchyFromDTEProject( sp As IServiceProvider,  project As Project) As IVsHierarchy
             Debug.Assert(sp IsNot Nothing)
-            If sp Is Nothing OrElse project Is Nothing Then
-                Return Nothing
-            End If
+            If sp Is Nothing OrElse project Is Nothing Then Return Nothing
 
             Dim vssolution As IVsSolution = TryCast(sp.GetService(GetType(IVsSolution)), IVsSolution)
             If vssolution IsNot Nothing Then
                 Dim hierarchy As IVsHierarchy = Nothing
-                If VSErrorHandler.Succeeded(vssolution.GetProjectOfUniqueName(project.UniqueName, hierarchy)) Then
-                    Return hierarchy
-                Else
-                    Debug.Fail("Why didn't we get the hierarchy from the project?")
-                End If
+                If VSErrorHandler.Succeeded(vssolution.GetProjectOfUniqueName(project.UniqueName, hierarchy)) Then Return hierarchy
+                Debug.Fail("Why didn't we get the hierarchy from the project?")
             End If
 
             Return Nothing
@@ -284,9 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Function GetConfigProvider( ProjectHierarchy As IVsHierarchy) As IVsCfgProvider2
             'CONSIDER: This will not work for all project types because they do not support this property.
             Dim ConfigProvider As Object = Nothing
-            If VSErrorHandler.Failed(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, ConfigProvider)) Then
-                Return Nothing
-            End If
+            If VSErrorHandler.Failed(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, ConfigProvider)) Then Return Nothing
             Return TryCast(ConfigProvider, IVsCfgProvider2)
         End Function
 
@@ -318,20 +300,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Shared Function IsVenusProject( hierarchy As IVsHierarchy) As [Boolean]
 
-            If hierarchy Is Nothing Then
-                Return False
-            End If
+            If hierarchy Is Nothing Then Return False
 
             Try
                 Dim project As EnvDTE.Project = DTEProjectFromHierarchy(hierarchy)
 
-                If project Is Nothing Then
-                    Return False
-                End If
+                If project Is Nothing Then Return False
 
-                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then
-                    Return True
-                End If
+                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then Return True
+
             Catch ex As Exception
                 ' We failed. Assume that this isn't a web project...
             End Try
@@ -348,9 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Function IsSilverLightProject( hierarchy As IVsHierarchy) As [Boolean]
             Const SilverLightProjectGuid As String = "{A1591282-1198-4647-A2B1-27E5FF5F6F3B}"
 
-            If hierarchy Is Nothing Then
-                Return False
-            End If
+            If hierarchy Is Nothing Then Return False
 
             Try
                 ' VS SilverLight Projects are traditional vb/c# apps, but 'flavored' to add functionality
@@ -371,9 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                             ' Insert Guid to the front
                             Try
                                 Dim flavorGuid As New Guid(guidString)
-                                If SLPGuid.Equals(flavorGuid) Then
-                                    Return True
-                                End If
+                                If SLPGuid.Equals(flavorGuid) Then Return True
                             Catch ex As Exception
                                 System.Diagnostics.Debug.Fail(String.Format("We received a broken guid string from IVsAggregatableProject: '{0}'", guidStrings))
                             End Try
@@ -383,9 +356,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     '  Should not happen, but if they decide to make this project type non-flavored.
                     Dim typeGuid As Guid = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If SLPGuid.Equals(typeGuid) Then
-                        Return True
-                    End If
+                    If SLPGuid.Equals(typeGuid) Then Return True
                 End If
             Catch ex As Exception
                 ' We failed. Assume that this isn't a web project...
@@ -402,14 +373,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Function IsWebProject( hierarchy As IVsHierarchy) As [Boolean]
             Const WebAppProjectGuid As String = "{349c5851-65df-11da-9384-00065b846f21}"
 
-            If hierarchy Is Nothing Then
-                Return False
-            End If
+            If hierarchy Is Nothing Then Return False
 
             Try
-                If IsVenusProject(hierarchy) Then
-                    Return True
-                End If
+                If IsVenusProject(hierarchy) Then Return True
 
                 ' VS WAP Projects are traditional vb/c# apps, but 'flavored' to add functionality
                 ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
@@ -429,9 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                             ' Insert Guid to the front
                             Try
                                 Dim flavorGuid As New Guid(guidString)
-                                If WAPGuid.Equals(flavorGuid) Then
-                                    Return True
-                                End If
+                                If WAPGuid.Equals(flavorGuid) Then Return True
                             Catch ex As Exception
                                 System.Diagnostics.Debug.Fail(String.Format("We received a broken guid string from IVsAggregatableProject: '{0}'", guidStrings))
                             End Try
@@ -441,9 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     '  Should not happen, but if they decide to make this project type non-flavored.
                     Dim typeGuid As Guid = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If Guid.Equals(WAPGuid, typeGuid) Then
-                        Return True
-                    End If
+                    If Guid.Equals(WAPGuid, typeGuid) Then Return True
                 End If
             Catch ex As Exception
                 ' We failed. Assume that this isn't a web project...
@@ -529,9 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Dim result As New List(Of String)
 
-            If projectitem IsNot Nothing AndAlso projectitem.Name <> "" Then
-                result.Add(DTEUtils.FileNameFromProjectItem(projectitem))
-            End If
+            If projectitem IsNot Nothing AndAlso projectitem.Name <> "" Then result.Add(DTEUtils.FileNameFromProjectItem(projectitem))
 
             ' For each child, check if the name matches the filename for the generated file
             If projectitem IsNot Nothing AndAlso projectitem.ProjectItems IsNot Nothing Then
@@ -543,17 +504,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                             Dim childItemName As String = DTEUtils.FileNameFromProjectItem(projectitem.ProjectItems.Item(childNo))
 
                             ' Make sure that the filename matches what we expect.
-                            If String.Equals( _
-                                System.IO.Path.GetFileNameWithoutExtension(childItemName), _
-                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix, _
+                            If String.Equals(
+                                System.IO.Path.GetFileNameWithoutExtension(childItemName),
+                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix,
                                 StringComparison.OrdinalIgnoreCase) _
                             Then
                                 ' If we've got a filter predicate, we remove anything that we've been
                                 ' told we shouldn't check out...
                                 Dim isExcluded As Boolean = exclude IsNot Nothing AndAlso exclude.Invoke(childItemName)
-                                If Not isExcluded Then
-                                    result.Add(childItemName)
-                                End If
+                                If Not isExcluded Then result.Add(childItemName)
                             End If
                         Catch ex As ArgumentException
                             ' If the child name wasn't a file moniker, then we may throw an argument exception here...
@@ -698,7 +657,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="ctrl"></param>
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
-            Public Sub New( sp As IServiceProvider,  ctrl As System.Windows.Forms.Control,  SetFontInitially As Boolean)
+            Public Sub New(sp As IServiceProvider, ctrl As System.Windows.Forms.Control, SetFontInitially As Boolean)
                 MyBase.new(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
@@ -707,9 +666,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 _serviceProvider = sp
                 _control = ctrl
 
-                If SetFontInitially Then
-                    _control.Font = GetDialogFont(sp)
-                End If
+                If SetFontInitially Then _control.Font = GetDialogFont(sp)
             End Sub
 
             ''' <summary>
@@ -726,9 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     If msg = AppDesInterop.win.WM_SETTINGCHANGE Then
                         ' Only set font if it is different from the current font...
                         Dim newFont As Font = GetDialogFont(_serviceProvider)
-                        If Not newFont.Equals(_control.Font) Then
-                            _control.Font = newFont
-                        End If
+                        If Not newFont.Equals(_control.Font) Then _control.Font = newFont
                     End If
                 End If
             End Sub
@@ -742,9 +697,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Get
                     If ServiceProvider IsNot Nothing Then
                         Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(ServiceProvider.GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
-                        If uiSvc IsNot Nothing Then
-                            Return CType(uiSvc.Styles("DialogFont"), Font)
-                        End If
+                        If uiSvc IsNot Nothing Then Return CType(uiSvc.Styles("DialogFont"), Font)
                     End If
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
@@ -783,11 +736,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Dim hr As Integer = sfgFactory.GetGeneratorInformation(customToolName, pbGeneratesDesignTimeSource, pbGeneratesSharedDesignTimeSource, pbUseTempPEFlag, pguidGenerator)
 
-            If VSErrorHandler.Succeeded(hr) Then
-                Return True
-            Else
-                Return False
-            End If
+            Return VSErrorHandler.Succeeded(hr)
         End Function
 
 
@@ -803,28 +752,20 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                                                             proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError), _
                                                             importErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError)) As Integer
 
-            If serviceProvider Is Nothing Then
-                Return VSConstants.S_OK
-            End If
+            If serviceProvider Is Nothing Then Return VSConstants.S_OK
 
             Dim totalNumOfErrors As Integer = 0
 
-            If proxyGenerationErrors IsNot Nothing Then
-                totalNumOfErrors = totalNumOfErrors + proxyGenerationErrors.Count()
-            End If
+            If proxyGenerationErrors IsNot Nothing Then totalNumOfErrors = totalNumOfErrors + proxyGenerationErrors.Count()
 
-            If importErrors IsNot Nothing Then
-                totalNumOfErrors = totalNumOfErrors + importErrors.Count()
-            End If
+            If importErrors IsNot Nothing Then totalNumOfErrors = totalNumOfErrors + importErrors.Count()
 
             Dim vsErrorList As Microsoft.VisualStudio.Shell.Interop.IVsErrorList
             Dim result As Integer = VSConstants.S_OK
             ' Get the service for Error List tab window
             vsErrorList = CType(serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.SVsErrorList)), Microsoft.VisualStudio.Shell.Interop.IVsErrorList)
 
-            If vsErrorList IsNot Nothing AndAlso totalNumOfErrors > 0 Then
-                result = vsErrorList.BringToFront()
-            End If
+            If vsErrorList IsNot Nothing AndAlso totalNumOfErrors > 0 Then result = vsErrorList.BringToFront()
 
             Return result
         End Function
