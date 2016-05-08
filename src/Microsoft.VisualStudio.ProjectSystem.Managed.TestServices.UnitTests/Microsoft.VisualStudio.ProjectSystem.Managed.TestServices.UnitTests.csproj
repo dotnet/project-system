@@ -42,6 +42,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Common\Test\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
