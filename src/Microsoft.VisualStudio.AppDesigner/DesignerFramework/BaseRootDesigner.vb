@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '==========
 
 
-        Protected Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overrides Sub Dispose( Disposing As Boolean)
             If Disposing Then
                 RemoveMenuCommands()
             End If
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="ServiceType">The type of the service being asked for.</param>
         ''' <returns>The requested service, if it exists.</returns>
-        Public Shadows Function GetService(ByVal ServiceType As Type) As Object Implements IServiceProvider.GetService
+        Public Shadows Function GetService( ServiceType As Type) As Object Implements IServiceProvider.GetService
             Return MyBase.GetService(ServiceType)
         End Function
 
@@ -87,13 +87,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '''      FALSE otherwise.</param>
         ''' <remarks>Child root designers call this method to register their own menu commands. 
         '''      See ResourceEditorRootDesigner.</remarks>
-        Public Sub RegisterMenuCommands(ByVal MenuCommands As ArrayList, _
-                Optional ByVal KeepRegisteredMenuCommands As Boolean = True, _
-                Optional ByVal AddCommonMenuCommands As Boolean = True)
+        Public Sub RegisterMenuCommands( MenuCommands As ArrayList, _
+                Optional  KeepRegisteredMenuCommands As Boolean = True, _
+                Optional  AddCommonMenuCommands As Boolean = True)
             ' Clear the list of menu commands if specified.
             If Not KeepRegisteredMenuCommands Then
                 For Each MenuCommand As MenuCommand In Me.MenuCommands
-                    Me.MenuCommandService.RemoveCommand(MenuCommand)
+                    MenuCommandService.RemoveCommand(MenuCommand)
                 Next
                 Me.MenuCommands.Clear()
             End If
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
             ' Register the new ones
             For Each MenuCommand As MenuCommand In MenuCommands
-                Me.MenuCommandService.AddCommand(MenuCommand)
+                MenuCommandService.AddCommand(MenuCommand)
                 Me.MenuCommands.Add(MenuCommand)
             Next
         End Sub
@@ -113,11 +113,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         Public Sub RemoveMenuCommands()
             'Iterate backwards to avoid problems removing while iterating
             For i As Integer = MenuCommands.Count - 1 To 0 Step -1
-                Dim MenuCommand As MenuCommand = DirectCast(Me.MenuCommands(i), MenuCommand)
-                Me.MenuCommandService.RemoveCommand(MenuCommand)
-                Me.MenuCommands.RemoveAt(i)
+                Dim MenuCommand As MenuCommand = DirectCast(MenuCommands(i), MenuCommand)
+                MenuCommandService.RemoveCommand(MenuCommand)
+                MenuCommands.RemoveAt(i)
             Next
-            Debug.Assert(Me.MenuCommands.Count = 0)
+            Debug.Assert(MenuCommands.Count = 0)
         End Sub
 
         ''' <summary>
@@ -128,8 +128,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Y">The Y coordinate to show the context menu.</param>
         ''' <remarks>We don't expose the menu command service so other classes would not call 
         '''      AddCommand, RemoveCommand, etc... easily.</remarks>
-        Public Sub ShowContextMenu(ByVal ContextMenuID As CommandID, ByVal X As Integer, ByVal Y As Integer)
-            Me.MenuCommandService.ShowContextMenu(ContextMenuID, X, Y)
+        Public Sub ShowContextMenu( ContextMenuID As CommandID,  X As Integer,  Y As Integer)
+            MenuCommandService.ShowContextMenu(ContextMenuID, X, Y)
         End Sub
 
         ''' <summary>
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 If _menuCommandService Is Nothing Then
                     SyncLock _syncLockObject
                         If _menuCommandService Is Nothing Then
-                            _menuCommandService = CType(Me.GetService(GetType(IMenuCommandService)), IMenuCommandService)
+                            _menuCommandService = CType(GetService(GetType(IMenuCommandService)), IMenuCommandService)
                             Debug.Assert(Not _menuCommandService Is Nothing, "Cannot get menu command service!")
                         End If
                     End SyncLock

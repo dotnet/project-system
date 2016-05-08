@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose( disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function VersionGet(ByVal control As System.Windows.Forms.Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function VersionGet( control As System.Windows.Forms.Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
             If (control Is Me.FileVersionLayoutPanel) Then
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function VersionSet(ByVal control As System.Windows.Forms.Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function VersionSet( control As System.Windows.Forms.Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             Dim Major As String = Nothing, Minor As String = Nothing, Build As String = Nothing, Revision As String = Nothing
             Dim Version As String
             Dim Values As String()
@@ -459,7 +459,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="WildcardsAllowed">Whether or not wildcards are allowed.</param>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         ''' <remarks></remarks>
-        Private Sub ValidateVersion(ByVal VersionTextboxes As System.Windows.Forms.TextBox(), ByVal MaxVersionPartValue As UInteger, ByVal PropertyName As String, ByVal WildcardsAllowed As Boolean, ByRef version As String)
+        Private Sub ValidateVersion( VersionTextboxes As System.Windows.Forms.TextBox(),  MaxVersionPartValue As UInteger,  PropertyName As String,  WildcardsAllowed As Boolean, ByRef version As String)
             InternalParseVersion(VersionTextboxes(0).Text, _
                 VersionTextboxes(1).Text, _
                 VersionTextboxes(2).Text, _
@@ -498,7 +498,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="MaxValue">The maximum value allowable for the value.</param>
         ''' <returns>True if Value is valid.</returns>
         ''' <remarks></remarks>
-        Private Function ValidateIsNumericVersionPart(ByVal Value As String, ByVal MaxValue As UInteger) As Boolean
+        Private Function ValidateIsNumericVersionPart( Value As String,  MaxValue As UInteger) As Boolean
             Dim numericValue As UInteger
 
             'Must be valid unsigned integer.
@@ -526,7 +526,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="WildcardsAllowed">Whether or not wildcards are allowed.</param>
         ''' <param name="FormattedVersion">[out] The resulting combined version string.</param>
         ''' <remarks></remarks>
-        Private Sub InternalParseVersion(ByVal Major As String, ByVal Minor As String, ByVal Build As String, ByVal Revision As String, ByVal PropertyName As String, ByVal MaxVersionPartValue As UInteger, ByVal WildcardsAllowed As Boolean, ByRef FormattedVersion As String)
+        Private Sub InternalParseVersion( Major As String,  Minor As String,  Build As String,  Revision As String,  PropertyName As String,  MaxVersionPartValue As UInteger,  WildcardsAllowed As Boolean, ByRef FormattedVersion As String)
             Major = Trim(Major)
             Minor = Trim(Minor)
             Build = Trim(Build)
@@ -636,7 +636,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub NeutralLanguageComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles NeutralLanguageComboBox.DropDown
+        Private Sub NeutralLanguageComboBox_DropDown( sender As Object,  e As System.EventArgs) Handles NeutralLanguageComboBox.DropDown
             PopulateNeutralLanguageComboBox()
             Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NeutralLanguageSet(ByVal control As System.Windows.Forms.Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function NeutralLanguageSet( control As System.Windows.Forms.Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             'Value is the abbreviation of a culture, e.g. "de-ch"
             If PropertyControlData.IsSpecialValue(value) Then
                 NeutralLanguageComboBox.SelectedIndex = -1
@@ -684,7 +684,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NeutralLanguageGet(ByVal control As System.Windows.Forms.Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function NeutralLanguageGet( control As System.Windows.Forms.Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If NeutralLanguageComboBox.SelectedIndex < 0 Then
                 'Nothing selected, return the typed-in text - we will try to accept it as is
                 '  (i.e., they might have entered just a culture abbrevation, such as "de-ch", and
@@ -721,11 +721,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropAssemblyInfo
         End Function
 
-        Private Sub AssemblyVersionLayoutPanel_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
+        Private Sub AssemblyVersionLayoutPanel_TextChanged( sender As Object,  e As System.EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
             SetDirty(Me.AssemblyVersionLayoutPanel, False)
         End Sub
 
-        Private Sub FileVersionLayoutPanel_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
+        Private Sub FileVersionLayoutPanel_TextChanged( sender As Object,  e As System.EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
             SetDirty(Me.FileVersionLayoutPanel, False)
         End Sub
 
@@ -737,7 +737,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="returnControl"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function ValidateProperty(ByVal controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
+        Protected Overrides Function ValidateProperty( controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
             If controlData.FormControl Is GuidTextBox Then
                 Try
                     Dim guid As New Guid(Trim(GuidTextBox.Text))

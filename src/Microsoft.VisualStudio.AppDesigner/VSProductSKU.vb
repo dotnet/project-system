@@ -185,11 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Private Shared Sub EnsureInited()
-            If s_productSKU = VSASKUEdition.None Then
-                If Common.Utils.VBPackageInstance IsNot Nothing Then
-                    Init(DirectCast(Common.Utils.VBPackageInstance, IServiceProvider))
-                End If
-            End If
+            If s_productSKU = VSASKUEdition.None AndAlso Common.Utils.VBPackageInstance IsNot Nothing Then Init(DirectCast(Common.Utils.VBPackageInstance, IServiceProvider))
         End Sub
 
 
@@ -198,27 +194,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Private Shared Sub Init(ByVal ServiceProvider As IServiceProvider)
+        Private Shared Sub Init( ServiceProvider As IServiceProvider)
             Dim VsAppIdService As Interop.IVsAppId
             Dim objSKU As Object = Nothing
             Dim objSubSKU As Object = Nothing
             Dim hr As Integer
 
-            If ServiceProvider Is Nothing Then
-                Return
-            End If
+            If ServiceProvider Is Nothing Then Return
+
 
             VsAppIdService = TryCast(ServiceProvider.GetService(GetType(Interop.IVsAppId)), Interop.IVsAppId)
             If VsAppIdService IsNot Nothing Then
                 Try
                     hr = VsAppIdService.GetProperty(s_VSAPROPID_SKUEdition, objSKU)
-                    If hr >= 0 AndAlso (TypeOf objSKU Is Integer) Then
-                        s_productSKU = DirectCast(CInt(objSKU), VSASKUEdition)
-                    End If
+                    If (hr >= 0) AndAlso (TypeOf objSKU Is Integer) Then s_productSKU = DirectCast(CInt(objSKU), VSASKUEdition)
+
                     hr = VsAppIdService.GetProperty(s_VSAPROPID_SubSKUEdition, objSubSKU)
-                    If hr >= 0 AndAlso (TypeOf objSubSKU Is Integer) Then
-                        s_productSubSKU = DirectCast(CInt(objSubSKU), VSASubSKUEdition)
-                    End If
+                    If (hr >= 0) AndAlso (TypeOf objSubSKU Is Integer) Then s_productSubSKU = DirectCast(CInt(objSubSKU), VSASubSKUEdition)
+
                 Catch ex As Exception
                     'ignore for now
                     Debug.Fail("Exception getting SKU from AppId service: " & ex.ToString)
@@ -227,17 +220,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
 #If DEBUG Then
-            Trace.WriteLine("Project Designer: SKU detected as " & s_productSKU.ToString())
-            Trace.WriteLine("Project Designer: Sub-SKU detected as " & s_productSubSKU.ToString())
+            Trace.WriteLine($"Project Designer: SKU detected as { s_productSKU.ToString()}")
+            Trace.WriteLine($"Project Designer: Sub-SKU detected as { s_productSubSKU.ToString()}")
 
             If Common.Switches.PDSku.ValueDefined Then
                 Dim NewSku As VSASKUEdition = Common.Switches.PDSku.Value
-                Trace.WriteLine("****** PROJECT DESIGNER ONLY: OVERRIDING SKU VALUE TO: " & NewSku.ToString())
+                Trace.WriteLine($"****** PROJECT DESIGNER ONLY: OVERRIDING SKU VALUE TO: {NewSku.ToString()}")
                 s_productSKU = NewSku
             End If
             If Common.Switches.PDSubSku.ValueDefined Then
                 Dim NewSubSku As VSASubSKUEdition = Common.Switches.PDSubSku.Value
-                Trace.WriteLine("****** PROJECT DESIGNER ONLY: OVERRIDING SUB-SKU VALUE TO: " & NewSubSku.ToString())
+                Trace.WriteLine($"****** PROJECT DESIGNER ONLY: OVERRIDING SUB-SKU VALUE TO: { NewSubSku.ToString()}")
                 s_productSubSKU = NewSubSku
             End If
 #End If

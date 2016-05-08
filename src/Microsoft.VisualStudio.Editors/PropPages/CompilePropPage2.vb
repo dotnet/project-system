@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose( disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -509,7 +509,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 #Region "Enable / disable controls helpers"
-        Protected Overrides Sub EnableAllControls(ByVal _enabled As Boolean)
+        Protected Overrides Sub EnableAllControls( _enabled As Boolean)
             MyBase.EnableAllControls(_enabled)
 
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile).EnableControls(_enabled)
@@ -520,14 +520,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableDisableWarningControls(_enabled)
         End Sub
 
-        Private Sub EnableDisableWarningControls(ByVal _enabled As Boolean)
+        Private Sub EnableDisableWarningControls( _enabled As Boolean)
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel).EnableControls(_enabled) 'DisableAllWarningsCheckBox
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors).EnableControls(_enabled AndAlso Not DisableAllWarnings())
 
             EnableDisableGridView(_enabled)
         End Sub
 
-        Private Sub EnableDisableGridView(ByVal _enabled As Boolean)
+        Private Sub EnableDisableGridView( _enabled As Boolean)
 
             If GetPropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn).IsMissing _
             OrElse GetPropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors).IsMissing Then
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Custom property getters/setters"
 #Region "Documentation filename getter and setter"
-        Private Function DocumentationFileNameGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function DocumentationFileNameGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Select Case GenerateXMLCheckBox.CheckState
                 Case CheckState.Checked
                     If String.IsNullOrEmpty(TryCast(_generateXmlDocumentation, String)) Then
@@ -608,7 +608,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function DocumentationFileNameSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function DocumentationFileNameSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If _settingGenerateXmlDocumentation Then
                 Return False
             End If
@@ -643,7 +643,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NoWarnGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function NoWarnGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If _noWarn IsNot Nothing Then
                 value = ConcatenateNumbers(_noWarn)
                 Return True
@@ -662,7 +662,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NoWarnSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function NoWarnSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _noWarn = Nothing
             Else
@@ -691,7 +691,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SpecWarnAsErrorGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function SpecWarnAsErrorGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Debug.Assert(_specWarnAsError IsNot Nothing)
             value = ConcatenateNumbers(_specWarnAsError)
             Return True
@@ -707,7 +707,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SpecWarnAsErrorSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function SpecWarnAsErrorSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _specWarnAsError = Nothing
             Else
@@ -734,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function WarningLevelGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function WarningLevelGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Select Case Me.DisableAllWarningsCheckBox.CheckState
                 Case CheckState.Checked
                     value = VSLangProj.prjWarningLevel.prjWarningLevel0 'Warning Level 0 = off
@@ -755,7 +755,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function WarningLevelSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function WarningLevelSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate Then
                 DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate
             Else
@@ -770,7 +770,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 #Region "OptionStrict getter and setter"
-        Private Function OptionStrictGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function OptionStrictGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim strValue As String = CStr(OptionStrictComboBox.SelectedItem)
             If _optionStrictCustomText.Equals(strValue, System.StringComparison.Ordinal) Then
                 value = VSLangProj.prjOptionStrict.prjOptionStrictOff
@@ -780,7 +780,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function OptionStrictSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function OptionStrictSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If value IsNot Nothing Then
                 Try
                     If Not PropertyControlData.IsSpecialValue(value) Then
@@ -806,7 +806,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 #Region "OutputPath getter"
-        Private Function OutputPathGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function OutputPathGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = GetProjectRelativeDirectoryPath(Trim(Me.BuildOutputPathTextBox.Text))
             Return True
         End Function
@@ -817,7 +817,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We need to reset our cached extended objects every time someone calls SetObjects
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Sub SetObjects(ByVal objects() As Object)
+        Public Overrides Sub SetObjects( objects() As Object)
             If _objectCache IsNot Nothing Then
                 _objectCache.Reset(ProjectHierarchy, ServiceProvider, True)
             End If
@@ -970,7 +970,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Public ReadOnly ErrorOnOptionStrict As Boolean
             Public Index As Integer
             Public ReadOnly ErrList As Integer()
-            Public Sub New(ByVal Title As String, ByVal Numbers As String, ByVal Notification As ErrorNotification, ByVal ErrorOnOptionStrict As Boolean, ByVal ErrList As Integer())
+            Public Sub New( Title As String,  Numbers As String,  Notification As ErrorNotification,  ErrorOnOptionStrict As Boolean,  ErrList As Integer())
                 Me.Title = Title
                 Me.Numbers = Numbers
                 Me.Notification = Notification
@@ -1075,7 +1075,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-        Private Sub DisableAllWarningsCheckBox_Checked(ByVal sender As Object, ByVal e As System.EventArgs) Handles DisableAllWarningsCheckBox.CheckStateChanged
+        Private Sub DisableAllWarningsCheckBox_Checked( sender As Object,  e As System.EventArgs) Handles DisableAllWarningsCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
                 EnableDisableWarningControls(Me.Enabled)
@@ -1089,7 +1089,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub WarningsGridView_CellFormatting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
+        Private Sub WarningsGridView_CellFormatting( sender As Object,  e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
             If e.ColumnIndex = s_notifyColumnIndex Then
                 ' If either this is in an indeterminate state because we have different warning levels 
                 ' in different configurations, or if the current value is indeterminate (DBNull) because
@@ -1110,14 +1110,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub WarningsGridView_EditingControlShowing(ByVal sender As Object, ByVal e As DataGridViewEditingControlShowingEventArgs) Handles WarningsGridView.EditingControlShowing
+        Private Sub WarningsGridView_EditingControlShowing( sender As Object,  e As DataGridViewEditingControlShowingEventArgs) Handles WarningsGridView.EditingControlShowing
             With e.CellStyle
                 .BackColor = WarningsGridView.BackgroundColor
                 .ForeColor = WarningsGridView.ForeColor
             End With
         End Sub
 
-        Private Sub WarningsAsErrorCheckBox_Checked(ByVal sender As Object, ByVal e As System.EventArgs) Handles WarningsAsErrorCheckBox.CheckStateChanged
+        Private Sub WarningsAsErrorCheckBox_Checked( sender As Object,  e As System.EventArgs) Handles WarningsAsErrorCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not WarningsAsErrorCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
                 EnableDisableWarningControls(Me.Enabled)
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub RegisterForComInteropCheckBox_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
+        Private Sub RegisterForComInteropCheckBox_CheckedChanged( sender As System.Object,  e As System.EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
             If Not m_fInsideInit Then
                 If RegisterForComInteropCheckBox.Checked Then
                     ' Whenever the user checks the register for Com interop, we should also set the COM visible property
@@ -1153,7 +1153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </returns>
         ''' <remarks>
         ''' </remarks>
-        Private Function ComVisibleGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function ComVisibleGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = _comVisible
             Return True
         End Function
@@ -1166,7 +1166,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ComVisibleSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function ComVisibleSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             _comVisible = value
             Return True
         End Function
@@ -1176,7 +1176,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   project system.  Property changes made directly by an apply or through PropertyControlData will not come
         '''   through this method.
         ''' </summary>
-        Protected Overrides Sub OnExternalPropertyChanged(ByVal DISPID As Integer, ByVal Source As PropertyChangeSource)
+        Protected Overrides Sub OnExternalPropertyChanged( DISPID As Integer,  Source As PropertyChangeSource)
             MyBase.OnExternalPropertyChanged(DISPID, Source)
 
             'If the project's OutputType has changed, the Register for COM Interop control's visibility might need to change
@@ -1278,7 +1278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="numbers"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ConcatenateNumbers(ByVal numbers() As Integer) As String
+        Private Function ConcatenateNumbers( numbers() As Integer) As String
             Dim strNumbers(numbers.Length - 1) As String
             For i As Integer = 0 To numbers.Length - 1
                 strNumbers(i) = numbers(i).ToString()
@@ -1292,7 +1292,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="numberString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SplitToNumbers(ByVal numberString As String) As Integer()
+        Private Function SplitToNumbers( numberString As String) As Integer()
             If numberString Is Nothing Then
                 Debug.Fail("NULL Argument")
                 Throw New ArgumentNullException()
@@ -1319,7 +1319,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="set2"></param>
         ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function Intersect(ByVal set1() As Integer, ByVal set2() As Integer) As Integer()
+        Private Function Intersect( set1() As Integer,  set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
             Dim indexSet2 As Integer = 0
 
@@ -1350,7 +1350,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="set2"></param>
         ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function Union(ByVal set1() As Integer, ByVal set2() As Integer) As Integer()
+        Private Function Union( set1() As Integer,  set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
             Dim indexSet2 As Integer = 0
 
@@ -1396,7 +1396,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="itemsToRemove"></param>
         ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function RemoveItems(ByVal completeSet() As Integer, ByVal itemsToRemove() As Integer) As Integer()
+        Private Function RemoveItems( completeSet() As Integer,  itemsToRemove() As Integer) As Integer()
             Dim indexCompleteSet As Integer = 0
             Dim indexItemsToRemove As Integer = 0
 
@@ -1438,7 +1438,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="SearchForNumbers"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function AreNumbersInList(ByVal CompleteList As Integer(), ByVal SearchForNumbers As Integer()) As TriState
+        Private Function AreNumbersInList( CompleteList As Integer(),  SearchForNumbers As Integer()) As TriState
             Dim foundNumbers As Integer = Intersect(CompleteList, SearchForNumbers).Length
             Dim numberOfItemsToFind As Integer = SearchForNumbers.Length
 
@@ -1452,15 +1452,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 #End Region
 
-        Private Sub AdvancedOptionsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AdvancedOptionsButton.Click
+        Private Sub AdvancedOptionsButton_Click( sender As Object,  e As System.EventArgs) Handles AdvancedOptionsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AdvancedCompilerSettings_Title), GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
         End Sub
 
-        Private Sub BuildEventsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BuildEventsButton.Click
+        Private Sub BuildEventsButton_Click( sender As Object,  e As System.EventArgs) Handles BuildEventsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_BuildEventsTitle), GetType(BuildEventsPropPage))
         End Sub
 
-        Private Sub BuildOutputPathButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BuildOutputPathButton.Click
+        Private Sub BuildOutputPathButton_Click( sender As Object,  e As System.EventArgs) Handles BuildOutputPathButton.Click
             Dim value As String = Nothing
             If GetDirectoryViaBrowseRelativeToProject(Me.BuildOutputPathTextBox.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), value) Then
                 Me.BuildOutputPathTextBox.Text = value
@@ -1468,7 +1468,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub GenerateXMLCheckBox_CheckStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenerateXMLCheckBox.CheckStateChanged
+        Private Sub GenerateXMLCheckBox_CheckStateChanged( sender As Object,  e As System.EventArgs) Handles GenerateXMLCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not _settingGenerateXmlDocumentation Then
                 Me.SetDirty(VsProjPropId.VBPROJPROPID_DocumentationFile, True)
             End If
@@ -1478,7 +1478,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropCompile
         End Function
 
-        Private Function PlatformTargetSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function PlatformTargetSet( control As Control,  prop As PropertyDescriptor,  value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 Me.TargetCPUComboBox.SelectedIndex = -1
             Else
@@ -1492,7 +1492,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function PlatformTargetGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function PlatformTargetGet( control As Control,  prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = Me.TargetCPUComboBox.SelectedItem
             Return True
         End Function
@@ -1625,7 +1625,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Value"></param>
         ''' <remarks></remarks>
-        Private Sub ResetOptionStrictness(ByVal Value As String)
+        Private Sub ResetOptionStrictness( Value As String)
             OptionStrictComboBox.SelectedItem = Value
             Select Case Value
                 Case _optionStrictOnText
@@ -1657,13 +1657,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OptionStrictComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles OptionStrictComboBox.SelectionChangeCommitted
+        Private Sub OptionStrictComboBox_SelectionChangeCommitted( sender As Object,  e As System.EventArgs) Handles OptionStrictComboBox.SelectionChangeCommitted
             If Not m_fInsideInit Then
                 ResetOptionStrictness(TryCast(OptionStrictComboBox.SelectedItem, String))
             End If
         End Sub
 
-        Private Sub TargetCPUComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles TargetCPUComboBox.SelectionChangeCommitted
+        Private Sub TargetCPUComboBox_SelectionChangeCommitted( sender As Object,  e As System.EventArgs) Handles TargetCPUComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1710,7 +1710,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' This code was ported from langutil.cpp (function LuCheckSecurityLevel)
         ''' If that code ever changes, we've gotta update this as well...
         ''' </remarks>
-        Private Function CheckPath(ByVal path As String) As Boolean
+        Private Function CheckPath( path As String) As Boolean
             If path Is Nothing Then
                 Throw New System.ArgumentNullException("path")
             End If
@@ -1784,7 +1784,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComboBoxes_DropDown(ByVal sender As Object, ByVal e As EventArgs) Handles OptionStrictComboBox.DropDown
+        Private Sub ComboBoxes_DropDown( sender As Object,  e As EventArgs) Handles OptionStrictComboBox.DropDown
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
@@ -1794,7 +1794,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub NotificationLevelChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles WarningsGridView.CellValueChanged
+        Private Sub NotificationLevelChanged( sender As Object,  e As DataGridViewCellEventArgs) Handles WarningsGridView.CellValueChanged
             If Not m_fInsideInit AndAlso Not _refreshingWarningsList AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = s_notifyColumnIndex Then
                 UpdatePropertiesFromCurrentState()
             End If
@@ -1809,7 +1809,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub EnsureNotConflictingSettings(ByVal sender As Object, ByVal e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
+        Private Sub EnsureNotConflictingSettings( sender As Object,  e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
             If IndeterminateWarningsState Then
                 'Prompt user for resetting settings...
                 If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, SR.GetString(SR.PPG_Compile_ResetIndeterminateWarningLevels), DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
@@ -1830,7 +1830,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Class InternalDataGridView
             Inherits DesignerFramework.DesignerDataGridView
 
-            Public Overrides Sub NotifyCurrentCellDirty(ByVal dirty As Boolean)
+            Public Overrides Sub NotifyCurrentCellDirty( dirty As Boolean)
                 MyBase.NotifyCurrentCellDirty(dirty)
 
                 If dirty Then
@@ -1869,7 +1869,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Create a new instance of
                 ''' </summary>
-                Friend Sub New(ByVal Hierarchy As IVsHierarchy, ByVal ServiceProvider As IServiceProvider)
+                Friend Sub New( Hierarchy As IVsHierarchy,  ServiceProvider As IServiceProvider)
                     _hierarchy = Hierarchy
                     _serviceProvider = ServiceProvider
                 End Sub
@@ -1877,7 +1877,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Reset our cached values if we have a new hierarchy and/or serviceprovider
                 ''' </summary>
-                Friend Sub Reset(ByVal Hierarchy As IVsHierarchy, ByVal ServiceProvider As IServiceProvider, ByVal forceReset As Boolean)
+                Friend Sub Reset( Hierarchy As IVsHierarchy,  ServiceProvider As IServiceProvider,  forceReset As Boolean)
                     If forceReset OrElse _hierarchy IsNot Hierarchy OrElse _serviceProvider IsNot ServiceProvider Then
                         _hierarchy = Hierarchy
                         _serviceProvider = ServiceProvider
@@ -1949,7 +1949,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private _configurationObjectCache As ConfigurationObjectCache
 
             ' Create a new instance
-            Public Sub New(ByVal ConfigurationObjectCache As ConfigurationObjectCache, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal flags As ControlDataFlags, ByVal AssocControls As System.Windows.Forms.Control())
+            Public Sub New( ConfigurationObjectCache As ConfigurationObjectCache,  id As Integer,  name As String,  control As Control,  setter As SetDelegate,  getter As GetDelegate,  flags As ControlDataFlags,  AssocControls As System.Windows.Forms.Control())
                 MyBase.New(id, name, control, setter, getter, flags, AssocControls)
                 _configurationObjectCache = ConfigurationObjectCache
             End Sub

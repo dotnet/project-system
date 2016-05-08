@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
         ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal VsCfgProvider As IVsCfgProvider2, ByVal Objects() As Object, ByVal Values() As Object, ByVal SelectedConfigName As String, ByVal SelectedPlatformName As String)
+        Public Sub New( VsCfgProvider As IVsCfgProvider2,  Objects() As Object,  Values() As Object,  SelectedConfigName As String,  SelectedPlatformName As String)
             If Values Is Nothing Then
                 Throw New ArgumentNullException("Values")
             ElseIf Objects Is Nothing Then
@@ -46,8 +46,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Me.SelectedConfigName = SelectedConfigName
             Me.SelectedPlatformName = SelectedPlatformName
 
-            Me.ConfigNames = New String(Objects.Length - 1) {}
-            Me.PlatformNames = New String(Objects.Length - 1) {}
+            ConfigNames = New String(Objects.Length - 1) {}
+            PlatformNames = New String(Objects.Length - 1) {}
             Me.Values = New Object(Objects.Length - 1) {}
 
             For i As Integer = 0 To Objects.Length - 1
@@ -62,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     VsCfgProvider.GetCfgOfName(ConfigName, PlatformName, Cfg2)
                     Debug.Assert(Cfg2 IsNot Nothing AndAlso Cfg2 Is Cfg, "Unable to correctly decode config name and map it back to the config")
 #End If
-                    Me.ConfigNames(i) = ConfigName
-                    Me.PlatformNames(i) = PlatformName
+                    ConfigNames(i) = ConfigName
+                    PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="VsCfgProvider"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetObjects(ByVal VsCfgProvider As IVsCfgProvider2) As Object()
+        Public Function GetObjects( VsCfgProvider As IVsCfgProvider2) As Object()
             Debug.Assert(ConfigNames IsNot Nothing AndAlso PlatformNames IsNot Nothing AndAlso Values IsNot Nothing)
             Debug.Assert(Values.Length = ConfigNames.Length AndAlso ConfigNames.Length = PlatformNames.Length, "Huh?")
 
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
         <Conditional("DEBUG")> _
-        Public Sub DebugTrace(ByVal Message As String)
+        Public Sub DebugTrace( Message As String)
 #If DEBUG Then
             Debug.Assert(ConfigNames.Length = PlatformNames.Length AndAlso PlatformNames.Length = Values.Length)
             Common.Switches.TracePDUndo(Message)

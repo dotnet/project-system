@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose( disposing As Boolean)
             If disposing Then
                 If Not (components Is Nothing) Then
                     components.Dispose()
@@ -212,12 +212,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private m_szIntialFormSize As Size
         Private m_helpTopic As String
 
-        Public Function SetFormTitleText(ByVal TitleText As String) As Boolean
+        Public Function SetFormTitleText( TitleText As String) As Boolean
             Me.Text = TitleText
             Return True
         End Function
 
-        Public Function SetTokensAndValues(ByVal Tokens() As String, ByVal Values() As String) As Boolean
+        Public Function SetTokensAndValues( Tokens() As String,  Values() As String) As Boolean
             m_Tokens = Tokens
             m_Values = Values
 
@@ -225,13 +225,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public WriteOnly Property DTE() As EnvDTE.DTE
-            Set(ByVal Value As EnvDTE.DTE)
+            Set( Value As EnvDTE.DTE)
                 m_DTE = Value
             End Set
         End Property
 
         Public WriteOnly Property Page() As PropPageUserControlBase
-            Set(ByVal Value As PropPageUserControlBase)
+            Set( Value As PropPageUserControlBase)
                 m_Page = Value
             End Set
         End Property
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return m_CommandLine
             End Get
-            Set(ByVal Value As String)
+            Set( Value As String)
                 m_CommandLine = Value
                 Me.CommandLine.Text = m_CommandLine
 
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Return m_helpTopic
             End Get
-            Set(ByVal value As String)
+            Set( value As String)
                 m_helpTopic = value
             End Set
         End Property
@@ -278,23 +278,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return m_serviceProvider
             End Get
-            Set(ByVal value As IServiceProvider)
+            Set( value As IServiceProvider)
                 m_serviceProvider = value
             End Set
         End Property
 
-        Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
+        Private Sub OKButton_Click( sender As System.Object,  e As System.EventArgs) Handles OKButton.Click
             '// Store the command line
             m_CommandLine = Me.CommandLine.Text
 
             Me.Close()
         End Sub
 
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub CancelButton_Click( sender As System.Object,  e As System.EventArgs) Handles Cancel_Button.Click
             Me.Close()
         End Sub
 
-        Private Sub UpdateDialog_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub UpdateDialog_HelpButtonClicked( sender As System.Object,  e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             InvokeHelp()
             e.Cancel = True
         End Sub
@@ -314,15 +314,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub HideMacrosButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HideMacrosButton.Click
+        Private Sub HideMacrosButton_Click( sender As System.Object,  e As System.EventArgs) Handles HideMacrosButton.Click
             ShowCollapsedForm()
         End Sub
 
-        Private Sub ShowMacrosButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ShowMacrosButton.Click
+        Private Sub ShowMacrosButton_Click( sender As Object,  e As System.EventArgs) Handles ShowMacrosButton.Click
             ShowExpandedForm()
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub BuildEventCommandLineDialog_Load( sender As System.Object,  e As System.EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
             '// Never let them resize to something smaller than the default form size
@@ -360,17 +360,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub InsertButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertButton.Click
+        Private Sub InsertButton_Click( sender As System.Object,  e As System.EventArgs) Handles InsertButton.Click
             AddCurrentMacroToCommandLine()
         End Sub
 
-        Private Sub TokenList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TokenList.SelectedIndexChanged
+        Private Sub TokenList_SelectedIndexChanged( sender As System.Object,  e As System.EventArgs) Handles TokenList.SelectedIndexChanged
             SetInsertButtonEnableState()
         End Sub
 
 
 
-        Private Sub TokenList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TokenList.DoubleClick
+        Private Sub TokenList_DoubleClick( sender As Object,  e As System.EventArgs) Handles TokenList.DoubleClick
             AddCurrentMacroToCommandLine()
         End Sub
 
@@ -409,7 +409,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_HelpRequested(ByVal sender As System.Object, ByVal hlpevent As System.Windows.Forms.HelpEventArgs) Handles MyBase.HelpRequested
+        Private Sub BuildEventCommandLineDialog_HelpRequested( sender As System.Object,  hlpevent As System.Windows.Forms.HelpEventArgs) Handles MyBase.HelpRequested
             InvokeHelp()
         End Sub
 
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Function SetInsertButtonState(ByVal bEnable As Boolean) As Boolean
+        Private Function SetInsertButtonState( bEnable As Boolean) As Boolean
             'Me.InsertButton.Enabled = bEnable
             SetInsertButtonEnableState()
 
@@ -436,7 +436,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We shadow the original ShowDialog, because the right way to show dialog in VS is to use the IUIService. So the font/size will be set correctly.
         ''' The caller should pass a valid serviceProvider here. The dialog also hold it to invoke the help system
         ''' </Summary>
-        Public Shadows Function ShowDialog(ByVal sp As IServiceProvider) As DialogResult
+        Public Shadows Function ShowDialog( sp As IServiceProvider) As DialogResult
             If sp IsNot Nothing Then
                 ServiceProvider = sp
             End If

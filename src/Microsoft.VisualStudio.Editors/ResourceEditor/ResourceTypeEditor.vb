@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>True if and only if both instances are of the same type.</returns>
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
-        Public NotOverridable Overrides Function Equals(ByVal [Object] As Object) As Boolean
+        Public NotOverridable Overrides Function Equals( [Object] As Object) As Boolean
             Return [Object].GetType Is Me.GetType
         End Function
 
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Editor"></param>
         ''' <returns>True if and only if both instances are of the same type.</returns>
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
-        Public Overloads Function Equals(ByVal Editor As ResourceTypeEditor) As Boolean
+        Public Overloads Function Equals( Editor As ResourceTypeEditor) As Boolean
             Return Me.Equals(CObj(Editor))
         End Function
 
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceTypeEditorNonStringConvertible and ResourceTypeEditorStringConvertible).
         '''  Because the resource file in different platform doesn't support all types, we should pick up the right type for the platform it targets.
         ''' </remarks>
-        Public MustOverride Function GetDefaultResourceTypeName(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public MustOverride Function GetDefaultResourceTypeName( ResourceContentFile As IResourceContentFile) As String
 
         ''' <summary>
         ''' Returns a hash code for this resource type editor.  The algorithm is such that 
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   overriden if this behavior is insufficient.
         ''' Exceptions should be handled by caller.
         '''</remarks>
-        Public Overridable Function LoadResourceFromFile(ByVal FilePath As String, ByVal ResourceContentFile As IResourceContentFile) As Object
+        Public Overridable Function LoadResourceFromFile( FilePath As String,  ResourceContentFile As IResourceContentFile) As Object
             'First, try to get a read lock on the file.  To do that, we open a dummy stream
             '  on the file in read mode.
             Dim DummyStream As FileStream = Nothing
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>True iff the resource type editor supports saving the specific resource value to a file.</returns>
         ''' <remarks></remarks>
-        Public Overridable Function CanSaveResourceToFile(ByVal Resource As IResource) As Boolean
+        Public Overridable Function CanSaveResourceToFile( Resource As IResource) As Boolean
             Return False
         End Function
 
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FilePath">File path and name of the file to save to.</param>
         ''' <remarks>Caller is responsible for handling exceptions raised by this method.
         ''' If the file already exists, it should be overwritten.''' </remarks>
-        Public Overridable Sub SaveResourceToFile(ByVal Resource As IResource, ByVal FilePath As String)
+        Public Overridable Sub SaveResourceToFile( Resource As IResource,  FilePath As String)
             Throw New NotImplementedException
         End Sub
 
@@ -387,7 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This function need not be implemented if CanSaveResourceToFile() is implemented to return False.
         ''' Caller is responsible for handling exceptions.
         ''' </remarks>
-        Public Overridable Sub CreateNewResourceFile(ByVal FilePath As String)
+        Public Overridable Sub CreateNewResourceFile( FilePath As String)
             Throw New NotImplementedException
         End Sub
 
@@ -403,7 +403,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   period.  E.g. ".bmp".  Returns Nothing or an empty string if this is not applicable for 
         '''   this resource.</returns>
         ''' <remarks>The default implementation returns Nothing.</remarks>
-        Public Overridable Function GetResourceFileExtension(ByVal Resource As IResource) As String
+        Public Overridable Function GetResourceFileExtension( Resource As IResource) As String
             Return Nothing
         End Function
 
@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
-        Public Overridable Function GetOpenFileDialogFilter(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overridable Function GetOpenFileDialogFilter( ResourceContentFile As IResourceContentFile) As String
             Return ""
         End Function
 
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Windows metafile (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
-        Public Overridable Function GetSaveFileDialogFilter(ByVal Extension As String) As String
+        Public Overridable Function GetSaveFileDialogFilter( Extension As String) As String
             Return SR.GetString(SR.RSE_Filter_All) & " (*.*)|*.*"
         End Function
 
@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   after the thumbnail image is created).
         ''' Default implementation returns an empty bitmap.
         ''' </remarks>
-        Public Overridable Function GetImageForThumbnail(ByVal Resource As IResource, background As Color) As Image
+        Public Overridable Function GetImageForThumbnail( Resource As IResource, background As Color) As Image
             Return New Bitmap(1, 1)
         End Function
 
@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   should be given to this resource editor.  The higher the value, the higher the priority.
         ''' </returns>
         ''' <remarks>Extension should be checked case-insensitively.</remarks>
-        Public Overridable Function GetExtensionPriority(ByVal Extension As String) As Integer
+        Public Overridable Function GetExtensionPriority( Extension As String) As Integer
             Return ExtensionPriorities.NotHandled
         End Function
 
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
         ''' <remarks></remarks>
-        Public Overridable Function GetResourceFriendlyTypeDescription(ByVal Resource As IResource) As String
+        Public Overridable Function GetResourceFriendlyTypeDescription( Resource As IResource) As String
             Return ""
         End Function
 
@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
         ''' <remarks></remarks>
-        Public Overridable Function GetResourceFriendlySize(ByVal Resource As IResource) As String
+        Public Overridable Function GetResourceFriendlySize( Resource As IResource) As String
             Return ""
         End Function
 
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' The default version of this function calls IResource.GetValue().
         ''' </remarks>
-        Public Overridable Sub CheckValueForErrors(ByVal Resource As IResource)
+        Public Overridable Sub CheckValueForErrors( Resource As IResource)
             Call Resource.GetValue()
         End Sub
 
@@ -543,7 +543,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function TryCanSaveResourceToFile(ByVal Resource As IResource) As Boolean
+        Friend Function TryCanSaveResourceToFile( Resource As IResource) As Boolean
             Try
                 Return CanSaveResourceToFile(Resource)
             Catch ex As Exception
@@ -579,7 +579,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns> The function should return true, if the resource item is valid. Otherwise, it should return False
         ''' </returns>
         ''' <remarks>We need call the function implemented by the base class before it returns true</remarks>
-        Public Overridable Function IsResourceItemValid(ByVal NewResource As IResource, ByVal ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
+        Public Overridable Function IsResourceItemValid( NewResource As IResource,  ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
             Return True
         End Function
 

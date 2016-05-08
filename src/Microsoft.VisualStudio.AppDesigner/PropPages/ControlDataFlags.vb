@@ -8,9 +8,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Flags which help control the behavior of a PropertyControlData instance.
     ''' </summary>
     ''' <remarks></remarks>
-    <Flags()> _
+    <Flags()>
     Public Enum ControlDataFlags
-        None = 0                 'No flags
+        None = 0  'No flags
         UserPersisted = &H10       'Property is persisted using custom code (see ReadUserDefinedProperty, WriteUserDefinedProperty, GetUserDefinedProperty).  Note that this is completely independent of whether a custom getter and setter are defined.
         UserHandledEvents = &H20   'If true, no automatic handling of control events are defined.  By default, some events are handled automatically for the FormControl, based on the type of control (certain common control types are handled). 
         Hidden = &H40              'True if the property should be hidden in the UI.
@@ -27,9 +27,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  This allows for controls to be enabled/disabled, etc., when a property is changed by the user.
         RefreshAllPropertiesWhenChanged = &H2000
         'Internal-use flags
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         Dirty = 1                '(Internal use - property is dirty)
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         CommonProperty = 2       '(Internal use - property is a common property)
     End Enum
 

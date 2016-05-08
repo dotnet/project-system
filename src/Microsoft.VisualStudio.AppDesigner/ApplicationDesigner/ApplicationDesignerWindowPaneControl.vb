@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="forward"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function ProcessTabKey(ByVal forward As Boolean) As Boolean
+        Protected Overrides Function ProcessTabKey( forward As Boolean) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPaneControl.ProcessTabKey")
 
             If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
@@ -38,17 +38,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             'ApplicationDesignerWindowPaneControl
             '
-            Me.Name = "ApplicationDesignerWindowPaneControl"
-            Me.Text = "ApplicationDesignerWindowPaneControl" 'For debugging
+            Name = "ApplicationDesignerWindowPaneControl"
+            Text = "ApplicationDesignerWindowPaneControl" 'For debugging
 
             'We don't want scrollbars to show up on this window
-            Me.AutoScroll = False
+            AutoScroll = False
 
         End Sub
 
 #If DEBUG Then
-        Private Sub ApplicationDesignerWindowPaneControl_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
-            Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerWindowPaneControl_SizeChanged: " & Me.Size.ToString())
+        Private Sub ApplicationDesignerWindowPaneControl_SizeChanged( sender As Object,  e As System.EventArgs) Handles Me.SizeChanged
+            Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerWindowPaneControl_SizeChanged: " & Size.ToString())
         End Sub
 #End If
 
