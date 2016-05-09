@@ -127,10 +127,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblConditionalCompilationSymbols.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 27</value>
+    <value>20, 27</value>
   </data>
   <data name="lblConditionalCompilationSymbols.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 11, 3, 3</value>
+    <value>20, 11, 3, 3</value>
   </data>
   <data name="lblConditionalCompilationSymbols.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 13</value>
@@ -157,13 +157,13 @@
     <value>Left, Right</value>
   </data>
   <data name="txtConditionalCompilationSymbols.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 24</value>
+    <value>184, 24</value>
   </data>
   <data name="txtConditionalCompilationSymbols.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 3, 3</value>
   </data>
   <data name="txtConditionalCompilationSymbols.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 20</value>
+    <value>274, 20</value>
   </data>
   <data name="txtConditionalCompilationSymbols.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -655,10 +655,10 @@
     <value>Left, Right</value>
   </data>
   <data name="txtXMLDocumentationFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 430</value>
+    <value>184, 430</value>
   </data>
   <data name="txtXMLDocumentationFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 20</value>
+    <value>274, 20</value>
   </data>
   <data name="txtXMLDocumentationFile.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -712,13 +712,13 @@
     <value>Left, Right</value>
   </data>
   <data name="txtOutputPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 402</value>
+    <value>184, 402</value>
   </data>
   <data name="txtOutputPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 3, 3</value>
   </data>
   <data name="txtOutputPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 20</value>
+    <value>274, 20</value>
   </data>
   <data name="txtOutputPath.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -742,10 +742,10 @@
     <value>True</value>
   </data>
   <data name="lblOutputPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 406</value>
+    <value>20, 406</value>
   </data>
   <data name="lblOutputPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 11, 3, 3</value>
+    <value>20, 11, 3, 3</value>
   </data>
   <data name="lblOutputPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 13</value>
@@ -805,10 +805,10 @@
     <value>Left, Right</value>
   </data>
   <data name="txtSpecificWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 351</value>
+    <value>184, 351</value>
   </data>
   <data name="txtSpecificWarnings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 20</value>
+    <value>274, 20</value>
   </data>
   <data name="txtSpecificWarnings.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -895,13 +895,13 @@
     <value>Left, Right</value>
   </data>
   <data name="txtSupressWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 248</value>
+    <value>184, 248</value>
   </data>
   <data name="txtSupressWarnings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 11</value>
   </data>
   <data name="txtSupressWarnings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>271, 20</value>
+    <value>274, 20</value>
   </data>
   <data name="txtSupressWarnings.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -925,10 +925,10 @@
     <value>True</value>
   </data>
   <data name="lblSupressWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 251</value>
+    <value>20, 251</value>
   </data>
   <data name="lblSupressWarnings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 3, 3, 11</value>
+    <value>20, 3, 3, 11</value>
   </data>
   <data name="lblSupressWarnings.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 13</value>
@@ -970,7 +970,7 @@
     <value>4</value>
   </data>
   <data name="cboWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 221</value>
+    <value>184, 221</value>
   </data>
   <data name="cboWarningLevel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 3, 3</value>
@@ -1000,10 +1000,10 @@
     <value>True</value>
   </data>
   <data name="lblWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 225</value>
+    <value>20, 225</value>
   </data>
   <data name="lblWarningLevel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 11, 3, 3</value>
+    <value>20, 11, 3, 3</value>
   </data>
   <data name="lblWarningLevel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
@@ -1030,7 +1030,7 @@
     <value>Left</value>
   </data>
   <data name="cboPlatformTarget.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 96</value>
+    <value>184, 96</value>
   </data>
   <data name="cboPlatformTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 21</value>
@@ -1189,10 +1189,10 @@
     <value>True</value>
   </data>
   <data name="lblPlatformTarget.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 100</value>
+    <value>20, 100</value>
   </data>
   <data name="lblPlatformTarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 3, 3, 3</value>
+    <value>20, 3, 3, 3</value>
   </data>
   <data name="lblPlatformTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 13</value>
@@ -1222,10 +1222,10 @@
     <value>True</value>
   </data>
   <data name="lblSGenOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 487</value>
+    <value>20, 483</value>
   </data>
   <data name="lblSGenOption.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 11, 3, 3</value>
+    <value>20, 3, 3, 3</value>
   </data>
   <data name="lblSGenOption.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 13</value>
@@ -1252,7 +1252,7 @@
     <value>Left</value>
   </data>
   <data name="cboSGenOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 479</value>
+    <value>184, 479</value>
   </data>
   <data name="cboSGenOption.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>125, 0</value>
@@ -1282,10 +1282,10 @@
     <value>True</value>
   </data>
   <data name="btnAdvanced.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 506</value>
+    <value>464, 507</value>
   </data>
   <data name="btnAdvanced.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 3</value>
+    <value>3, 3, 0, 0</value>
   </data>
   <data name="btnAdvanced.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -1318,7 +1318,7 @@
     <value>18</value>
   </data>
   <data name="overarchingTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 533</value>
+    <value>539, 531</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
