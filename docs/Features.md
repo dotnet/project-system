@@ -13,7 +13,7 @@ This repository contains the following features:
 ### Application Designer ("AppDesigner")
 [Source](/src/Microsoft.VisualStudio.AppDesigner)
 
-![Visual Basic project system](/docs/images/visualbasicprojectsystem.png?raw=true)
+![Visual Basic project system](/docs/images/appdesigner.png?raw=true)
 
 ### Property Pages
 [Source](/src/Microsoft.VisualStudio.Editors/PropPages)
