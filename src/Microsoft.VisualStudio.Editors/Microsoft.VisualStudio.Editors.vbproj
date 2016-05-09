@@ -73,22 +73,27 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Package\EditorToolsOptionsPanel.resx">
+      <DependentUpon>EditorToolsOptionsPanel.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.Package.EditorToolsOptionsPanel.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\AdvancedServicesDialog.resx">
+      <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvancedServicesDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\AdvBuildSettingsPropPage.resx">
+      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvBuildSettingsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\AdvCompilerSettingsPropPage.resx">
+      <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvCompilerSettingsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ApplicationPropPage.resx">
+      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -97,54 +102,65 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ApplicationPropPageVBBase.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ApplicationPropPageVBWinForms.resx">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\AssemblyInfoPropPage.resx">
+      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AssemblyInfoPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\BuildEventCommandLineDialog.resx">
+      <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventCommandLineDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\BuildEventsPropPage.resx">
+      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\BuildPropPage.resx">
+      <DependentUpon>BuildPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\CompilePropPage2.resx">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\CSharpApplicationPropPage.resx">
+      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CSharpApplicationPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\DebugPropPage.resx">
+      <DependentUpon>DebugPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ReferencePathsPropPage.resx">
+      <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePathsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ReferencePropPage.resx">
+      <DependentUpon>ReferencePropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ServicesAuthenticationForm.resx">
+      <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesAuthenticationForm.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ServicesPropPage.resx">
+      <DependentUpon>ServicesPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -155,22 +171,25 @@
       <LastGenOutput>Strings.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\UnusedReferencePropPage.resx">
+      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.UnusedReferencePropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\WPF\AppDotXamlErrorControl.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\WPF\ApplicationPropPageVBWPF.resx">
       <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ResourceEditor\DialogQueryName.resx">
+      <DependentUpon>DialogQueryName.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.DialogQueryName.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ResourceEditor\OpenFileWarningDialog.resx">
+      <DependentUpon>OpenFileWarningDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.OpenFileWarningDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -211,14 +230,17 @@
     <EmbeddedResource Include="Resources\SettingsDesigner\namespace.bmp" />
     <EmbeddedResource Include="Resources\SettingsDesigner\object.bmp" />
     <EmbeddedResource Include="SettingsDesigner\SettingsDesignerView.resx">
+      <DependentUpon>SettingsDesignerView.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerView.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsDesigner\TypeEditorHostControl.resx">
+      <DependentUpon>TypeEditorHostControl.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypeEditorHostControl.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsDesigner\TypePickerDialog.resx">
+      <DependentUpon>TypePickerDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
