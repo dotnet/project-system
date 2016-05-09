@@ -19,7 +19,7 @@ This repository contains the following features:
 [Source](/src/Microsoft.VisualStudio.Editors/PropPages)
 
 ### Resources Editor
-[Source](/src/Microsoft.VisualStudio.Editors/ResourcesEditor)
+[Source](/src/Microsoft.VisualStudio.Editors/ResourceEditor)
 
 ![Resources Editor](/docs/images/resourceseditor.png?raw=true)
 
