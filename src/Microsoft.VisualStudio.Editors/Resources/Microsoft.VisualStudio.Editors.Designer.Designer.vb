@@ -4220,7 +4220,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("SD_ComboBoxItem_WebUserScope", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Setting.
+        '''</summary>
+        Friend Shared ReadOnly Property SD_DefaultSettingName() As String
+            Get
+                Return ResourceManager.GetString("SD_DefaultSettingName", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Description of the setting..
         '''</summary>
