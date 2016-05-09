@@ -77,15 +77,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Children; }
             }
 
-            ProjectImageMoniker IProjectTree.ExpandedIcon
+            public ProjectImageMoniker Icon
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get;
+                set;
             }
 
-            public ProjectImageMoniker Icon
+            public ProjectImageMoniker ExpandedIcon
             {
                 get;
                 set;
@@ -188,7 +186,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.SetExpandedIcon(ProjectImageMoniker expandedIcon)
             {
-                throw new NotImplementedException();
+                ExpandedIcon = expandedIcon;
+
+                return this;
             }
 
             IProjectTree IProjectTree.SetIcon(ProjectImageMoniker icon)

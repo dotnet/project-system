@@ -79,13 +79,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private int ReadIndentLevel(out int previousIndentLevel)
-        {   
+        {
             // Attempts to read the indent level of the current project item
             //
             // Root              <--- IndentLevel: 0
             //     Parent        <--- IndentLevel: 1
             //         Child     <--- IndentLevel: 2
-            
+
             previousIndentLevel = _indentLevel;
             int indentLevel = 0;
 
@@ -126,11 +126,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private void ReadProjectItemProperties(MutableProjectTree tree)
-        {   // Parse "Root (visibility: visible, flags: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt"
+        {   // Parse "Root (visibility: visible, flags: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt", Icon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}, ExpandedIcon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}
 
             ReadCaption(tree);
             ReadProperties(tree);
-            ReadFilePath(tree);
+            ReadFields(tree);
         }
 
         private void ReadCaption(MutableProjectTree tree)
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private void ReadProperty(MutableProjectTree tree)
-        {   
+        {
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyName);
 
             string propertyName = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
@@ -235,32 +235,48 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tree.AddFlag(flag);
         }
 
-        private void ReadFilePath(MutableProjectTree tree)
-        {   // Parses 'FilePath: "C:\Temp\Foo"'
+        private void ReadFields(MutableProjectTree tree)
+        {   // Parses ', FilePath: "C:\Temp\Foo"'
 
-            // FilePath section is optional
-            if (_tokenizer.SkipIf(TokenType.Comma))
+            // This section is optional
+            while (_tokenizer.SkipIf(TokenType.Comma))
             {
                 _tokenizer.Skip(TokenType.WhiteSpace);
 
-                ReadFilePathPropertyName();
+                Tokenizer tokenizer = Tokenizer(Delimiters.PropertyName);
 
-                tree.FilePath = ReadQuotedPropertyValue();
+                string fieldName = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
+
+                switch (fieldName)
+                {
+                    case "FilePath":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadFilePath(tree);
+                        break;
+
+                    case "Icon":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadIcon(tree, expandedIcon: false);
+                        break;
+
+                    case "ExpandedIcon":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadIcon(tree, expandedIcon: true);
+                        break;
+
+                    default:
+                        throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'FilePath', 'Icon' or 'ExpandedIcon', but encountered '{fieldName}'.");
+                }
             }
         }
 
-        private void ReadFilePathPropertyName()
-        {   // Parses 'FilePath: '
+        private void ReadFilePath(MutableProjectTree tree)
+        {   // Parses ': "C:\Temp\Foo"'
 
-            Tokenizer tokenizer = Tokenizer(Delimiters.PropertyName);
-
-            string filePath = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
-
-            if (!StringComparer.Ordinal.Equals(filePath, "FilePath"))
-                throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'FilePath', but encountered '{filePath}'.");
-
-            tokenizer.Skip(TokenType.Colon);
-            tokenizer.Skip(TokenType.WhiteSpace);
+            tree.FilePath = ReadQuotedPropertyValue();
         }
 
         private string ReadQuotedPropertyValue()
@@ -275,6 +291,51 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tokenizer.Skip(TokenType.Quote);
 
             return value;
+        }
+
+        private void ReadIcon(MutableProjectTree tree, bool expandedIcon)
+        {   // Parses '{1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}'
+
+            Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValueBlock);
+            tokenizer.Skip(TokenType.LeftBrace);
+
+            // Empty icon
+            if (tokenizer.SkipIf(TokenType.RightBrace))
+                return;
+
+            var moniker = ReadProjectImageMoniker();
+
+            if (expandedIcon)
+            {
+                tree.ExpandedIcon = moniker;
+            }
+            else
+            {
+                tree.Icon = moniker;
+            }
+            
+            tokenizer.Skip(TokenType.RightBrace);
+        }
+
+        private ProjectImageMoniker ReadProjectImageMoniker()
+        {
+            Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValue);
+
+            string guidAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
+
+            Guid guid;
+            if (!Guid.TryParseExact(guidAsString, "D", out guid))
+                throw _tokenizer.FormatException(ProjectTreeFormatError.GuidExpected, $"Expected GUID, but encountered '{guidAsString}'");
+
+            tokenizer.Skip(TokenType.WhiteSpace);
+
+            string idAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
+
+            int id;
+            if (!int.TryParse(idAsString, out id))
+                throw _tokenizer.FormatException(ProjectTreeFormatError.IntegerExpected, $"Expected integer, but encountered '{idAsString}'");
+
+            return new ProjectImageMoniker(guid, id);
         }
 
         private Tokenizer Tokenizer(ImmutableArray<TokenType> delimiters)

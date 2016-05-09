@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             WriteCaption(tree);
             WriteProperties(tree);
             WriteFilePath(tree);
+            WriteIcons(tree);
             WriteChildren(tree, indentLevel);
         }
 
@@ -160,6 +161,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             _builder.Append('}');
+        }
+
+        private void WriteIcons(IProjectTree tree)
+        {
+            if (!_options.HasFlag(ProjectTreeWriterOptions.Icons))
+                return;
+
+            WriteIcon("Icon", tree.Icon);
+            WriteIcon("ExpandedIcon", tree.ExpandedIcon);
+        }
+
+        private void WriteIcon(string name, ProjectImageMoniker icon)
+        {
+            _builder.AppendFormat(", {0}: {{", name);
+
+            if (icon != null)
+            {
+                _builder.AppendFormat("{1} {2}", name, icon.Guid.ToString("D").ToUpperInvariant(), icon.Id);
+            }
+
+            if (TagElements)
+            {
+                _builder.Append("[icon]");
+            }
+
+            _builder.Append("}");
         }
     }
 }

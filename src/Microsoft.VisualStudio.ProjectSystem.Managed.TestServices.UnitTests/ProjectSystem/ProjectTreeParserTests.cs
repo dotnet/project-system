@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (visibility: visible,   ")]
         [InlineData(@"Root (flags: { ")]
         [InlineData(@"Root (flags: {  ")]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F }")]
         public void Parse_IdExpected_EncounteredDelimiter_ThrowsFormat(string input)
         {   
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredDelimiter);
@@ -58,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (visibility: ")]
         [InlineData(@"Root (visibility: visible, ")]
         [InlineData(@"Root (flags: {")]
+        [InlineData(@"Root, Icon: {")]
         public void Parse_IdExpected_EncounteredEndOfString_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredEndOfString);
@@ -66,6 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Theory]
         [InlineData(@"Root, FilePath:")]
+        [InlineData(@"Root, FilePath: ""C:\Temp"",")]
         [InlineData(@"Root (),")]
         [InlineData(@"Root (visibility")]
         [InlineData(@"Root (visibility:")]
@@ -103,6 +106,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (), Filepath")]
         [InlineData(@"Root (), filepath")]
         [InlineData(@"Root (), filepath:")]
+        [InlineData(@"Root (), icon:")]
+        [InlineData(@"Root (), expandedIcon:")]
+        [InlineData(@"Root (), Unrecognized:")]
+        [InlineData(@"Root (), Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, unreognized:")]
         public void Parse_UnrecognizedPropertyName_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.UnrecognizedPropertyName);
@@ -121,12 +128,37 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Theory]
-        [InlineData(@"Root, FilePath: ""C:\Temp"",")]
         [InlineData(@"Root, FilePath: ""C:\Temp""""")]
         [InlineData(@"Root, FilePath: ""C:\Temp""A")]
         public void Parse_EndOfStringExpected_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.EndOfStringExpected);
+        }
+
+        [Theory]
+        [InlineData(@"Root, Icon: {1}")]
+        [InlineData(@"Root, Icon: {A}")]
+        [InlineData(@"Root, Icon: {{407FAC73-908A-4477-8176-A3128544AE4F}")]
+        [InlineData(@"Root, ExpandedIcon: {1}")]
+        [InlineData(@"Root, ExpandedIcon: {A}")]
+        [InlineData(@"Root, ExpandedIcon: {{407FAC73-908A-4477-8176-A3128544AE4F}")]
+        [InlineData(@"Root, ExpandedIcon: {1}")]
+        [InlineData(@"Root, ExpandedIcon: {A}")]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {1}")]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {A}")]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {{407FAC73-908A-4477-8176-A3128544AE4F}")]
+        public void Parse_GuidExpected_ThrowsFormat(string input)
+        {
+            AssertThrows(input, ProjectTreeFormatError.GuidExpected);
+        }
+
+        [Theory]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F A}")]
+        [InlineData(@"Root, ExpandedIcon: {407FAC73-908A-4477-8176-A3128544AE4F A}")]
+        [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {407FAC73-908A-4477-8176-A3128544AE4F A}")]
+        public void Parse_IntegerExpected_ThrowsFormat(string input)
+        {
+            AssertThrows(input, ProjectTreeFormatError.IntegerExpected);
         }
 
         // Input                                                                                    // Expected
@@ -204,16 +236,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         // Input                                                                                    // Expected
         [Theory]
-        [InlineData(@"Project Root (flags: {})",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {A})",                                            @"Project Root[caption] (visibility: visible, flags: {A[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {A B})",                                          @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {A B C})",                                        @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability] C[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {Folder})",                                       @"Project Root[caption] (visibility: visible, flags: {Folder[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {Folder IncludeInProjectCandidate})",             @"Project Root[caption] (visibility: visible, flags: {Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {AppDesigner Folder IncludeInProjectCandidate})", @"Project Root[caption] (visibility: visible, flags: {AppDesigner[capability] Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {App:Designer})",                                 @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (visibility: visible, flags: {App:Designer})",            @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
-        [InlineData(@"Project Root (flags: {App:Designer}, visibility: visible)",            @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {})",                                                    @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A})",                                                   @"Project Root[caption] (visibility: visible, flags: {A[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A B})",                                                 @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {A B C})",                                               @"Project Root[caption] (visibility: visible, flags: {A[capability] B[capability] C[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {Folder})",                                              @"Project Root[caption] (visibility: visible, flags: {Folder[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {Folder IncludeInProjectCandidate})",                    @"Project Root[caption] (visibility: visible, flags: {Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {AppDesigner Folder IncludeInProjectCandidate})",        @"Project Root[caption] (visibility: visible, flags: {AppDesigner[capability] Folder[capability] IncludeInProjectCandidate[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {App:Designer})",                                        @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (visibility: visible, flags: {App:Designer})",                   @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
+        [InlineData(@"Project Root (flags: {App:Designer}, visibility: visible)",                   @"Project Root[caption] (visibility: visible, flags: {App:Designer[capability]}), FilePath: ""[filepath]""")]
         public void Parse_RootWithCapabilities_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
@@ -233,6 +265,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Parse_RootWithFilePath_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
+        }
+
+        // Input                                                                                                                                    // Expected
+        [Theory]
+        [InlineData(@"Project Root (), Icon: {}",                                                                                                   @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {}, ExpandedIcon: {}",                                                                                 @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), ExpandedIcon: {}",                                                                                           @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), ExpandedIcon: {}, Icon: {}",                                                                                 @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 0}",                                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 0[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 1}",                                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 1[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 2}",                                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 2[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10}",                                                            @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10[icon]}, ExpandedIcon: {[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10}, ExpandedIcon: {41F80260-959C-4556-852C-F7D1B31DD201 0}",    @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10[icon]}, ExpandedIcon: {41F80260-959C-4556-852C-F7D1B31DD201 0[icon]}")]
+        [InlineData(@"Project Root (), Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10}, ExpandedIcon: {F88CB78E-D07D-4131-8E53-B601CEB30517 0}",    @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {41F80260-959C-4556-852C-F7D1B31DD201 10[icon]}, ExpandedIcon: {F88CB78E-D07D-4131-8E53-B601CEB30517 0[icon]}")]
+        public void Parse_RootWithIcons_CanParse(string input, string expected)
+        {
+            AssertProjectTree(input, expected, ProjectTreeWriterOptions.AllProperties);
         }
 
         [Theory]
