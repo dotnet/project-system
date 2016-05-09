@@ -261,6 +261,7 @@
     <Compile Include="..\Common\IVsSqm.vb">
       <Link>IVsSqm.vb</Link>
     </Compile>
+    <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
     <Compile Include="StrongNameHelpers.vb" />
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
