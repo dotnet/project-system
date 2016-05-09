@@ -1,4 +1,4 @@
-This repository contains the following features:
+This repository contains the following broad features:
 
 ### C# project system for Visual Studio "15"
 [Host Agnostic Source](/src/Microsoft.VisualStudio.ProjectSystem.CSharp) | [Visual Studio Source](/src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS)
