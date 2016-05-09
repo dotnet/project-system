@@ -65,7 +65,7 @@
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\App.config">
+    <None Include="..\Common\Test\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="project.json" />

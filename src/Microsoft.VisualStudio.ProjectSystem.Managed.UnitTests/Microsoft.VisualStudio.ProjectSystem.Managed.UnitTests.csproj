@@ -54,21 +54,20 @@
     <Compile Include="Mocks\IProjectTreeProviderFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
-    <Compile Include="Moq\ReturnsExtensions.cs" />
-    <Compile Include="FuncWithOut.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
-    <Compile Include="Trait.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="..\Common\Test\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup />
