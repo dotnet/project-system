@@ -25,6 +25,7 @@
     <TargetFrameworkProfile />
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <StrongNameCertificate>Microsoft</StrongNameCertificate>
   </PropertyGroup>
   <ItemGroup>
     <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />
