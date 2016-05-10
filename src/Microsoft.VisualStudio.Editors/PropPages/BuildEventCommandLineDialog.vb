@@ -397,13 +397,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     Dim sp As IServiceProvider = ServiceProvider
                     If sp IsNot Nothing Then
-                        Dim vshelp As VsHelp.Help = CType(sp.GetService(GetType(VsHelp.Help)), VsHelp.Help)
+                        Dim vshelp As VSHelp.Help = CType(sp.GetService(GetType(VSHelp.Help)), VSHelp.Help)
                         vshelp.DisplayTopicFromF1Keyword(HelpTopic)
                     Else
                         System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
                     End If
 
-                Catch ex as System.Exception
+                Catch ex As System.Exception
                     System.Diagnostics.Debug.Fail("Unexpected exception during Help invocation " + ex.Message)
                 End Try
             End If

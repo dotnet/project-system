@@ -5,8 +5,8 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
 Imports VSLangProj80
-Imports VSLangProj90
-Imports VsLangProj110
+Imports VslangProj90
+Imports VSLangProj110
 
 'This is the VB version of this page.  BuildPropPage.vb is the C#/J# version.
 
@@ -568,22 +568,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  individually.
                     _objectCache = New FakeAllConfigurationsPropertyControlData.ConfigurationObjectCache(ProjectHierarchy, ServiceProvider)
 
-                    m_ControlData = New PropertyControlData() { _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Nothing, AddressOf Me.NoWarnSet, AddressOf Me.NoWarnGet, ControlDataFlags.UserHandledEvents, Nothing), _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Nothing, AddressOf Me.SpecWarnAsErrorSet, AddressOf Me.SpecWarnAsErrorGet, ControlDataFlags.UserHandledEvents, Nothing), _
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionExplicit, "OptionExplicit", Me.OptionExplicitComboBox, New Control() {Me.OptionExplicitLabel}), _
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionStrict, "OptionStrict", Me.OptionStrictComboBox, AddressOf Me.OptionStrictSet, AddressOf Me.OptionStrictGet, ControlDataFlags.UserHandledEvents, New Control() {Me.OptionStrictLabel}), _
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionCompare, "OptionCompare", Me.OptionCompareComboBox, New Control() {Me.OptionCompareLabel}), _
-                        New PropertyControlData(VBProjPropId90.VBPROJPROPID_OptionInfer, "OptionInfer", Me.OptionInferComboBox, New Control() {Me.OptionInferLabel}), _
-                        New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, _
-                            VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.BuildOutputPathTextBox, Nothing, AddressOf Me.OutputPathGet, ControlDataFlags.None, New Control() {Me.BuildOutputPathLabel}), _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Nothing, AddressOf Me.DocumentationFileNameSet, AddressOf Me.DocumentationFileNameGet, ControlDataFlags.UserHandledEvents, New Control() {Me.GenerateXMLCheckBox}), _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.DisableAllWarningsCheckBox, AddressOf Me.WarningLevelSet, AddressOf Me.WarningLevelGet, ControlDataFlags.UserHandledEvents, Nothing), _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.WarningsAsErrorCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing), _
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.RegisterForComInteropCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing), _
-                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Nothing, AddressOf Me.ComVisibleSet, AddressOf Me.ComVisibleGet, ControlDataFlags.Hidden Or ControlDataFlags.PersistedInAssemblyInfoFile), _
-                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.TargetCPUComboBox, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {TargetCPULabel}), _
-                        New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.Prefer32BitCheckBox, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet) _
+                    m_ControlData = New PropertyControlData() {
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Nothing, AddressOf Me.NoWarnSet, AddressOf Me.NoWarnGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Nothing, AddressOf Me.SpecWarnAsErrorSet, AddressOf Me.SpecWarnAsErrorGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionExplicit, "OptionExplicit", Me.OptionExplicitComboBox, New Control() {Me.OptionExplicitLabel}),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionStrict, "OptionStrict", Me.OptionStrictComboBox, AddressOf Me.OptionStrictSet, AddressOf Me.OptionStrictGet, ControlDataFlags.UserHandledEvents, New Control() {Me.OptionStrictLabel}),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionCompare, "OptionCompare", Me.OptionCompareComboBox, New Control() {Me.OptionCompareLabel}),
+                        New PropertyControlData(VBProjPropId90.VBPROJPROPID_OptionInfer, "OptionInfer", Me.OptionInferComboBox, New Control() {Me.OptionInferLabel}),
+                        New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
+                            VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.BuildOutputPathTextBox, Nothing, AddressOf Me.OutputPathGet, ControlDataFlags.None, New Control() {Me.BuildOutputPathLabel}),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Nothing, AddressOf Me.DocumentationFileNameSet, AddressOf Me.DocumentationFileNameGet, ControlDataFlags.UserHandledEvents, New Control() {Me.GenerateXMLCheckBox}),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.DisableAllWarningsCheckBox, AddressOf Me.WarningLevelSet, AddressOf Me.WarningLevelGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.WarningsAsErrorCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.RegisterForComInteropCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
+                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Nothing, AddressOf Me.ComVisibleSet, AddressOf Me.ComVisibleGet, ControlDataFlags.Hidden Or ControlDataFlags.PersistedInAssemblyInfoFile),
+                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.TargetCPUComboBox, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {TargetCPULabel}),
+                        New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.Prefer32BitCheckBox, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
                     }
                 End If
                 Return m_ControlData
@@ -980,16 +980,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Sub
         End Class
 
-        Private _errorInfos As ErrorInfo() = { _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42016), "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42017_42018_42019), "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42020), "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42104), "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42105_42106_42107), "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42353_42354_42355), "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42024), "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42025), "42025", ErrorNotification.None, False, New Integer() {42025}), _
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42004), "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}), _
+        Private _errorInfos As ErrorInfo() = {
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42016), "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42017_42018_42019), "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42020), "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42104), "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42105_42106_42107), "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42353_42354_42355), "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42024), "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42025), "42025", ErrorNotification.None, False, New Integer() {42025}),
+            New ErrorInfo(SR.GetString(SR.PPG_Compile_42004), "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}),
             New ErrorInfo(SR.GetString(SR.PPG_Compile_42029), "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
@@ -1505,9 +1505,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function IsSameAsOptionStrictOff() As Boolean
-            If _specWarnAsError IsNot Nothing AndAlso _
-               _noWarn IsNot Nothing AndAlso _
-               AreNumbersInList(_noWarn, _optionStrictIDs) = TriState.True AndAlso _
+            If _specWarnAsError IsNot Nothing AndAlso
+               _noWarn IsNot Nothing AndAlso
+               AreNumbersInList(_noWarn, _optionStrictIDs) = TriState.True AndAlso
                AreNumbersInList(_specWarnAsError, _optionStrictIDs) = TriState.False _
             Then
                 Return True
@@ -1523,9 +1523,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function IsSameAsOptionStrictOn() As Boolean
-            If _specWarnAsError IsNot Nothing AndAlso _
-               _noWarn IsNot Nothing AndAlso _
-               AreNumbersInList(_specWarnAsError, _optionStrictIDs) = TriState.True AndAlso _
+            If _specWarnAsError IsNot Nothing AndAlso
+               _noWarn IsNot Nothing AndAlso
+               AreNumbersInList(_specWarnAsError, _optionStrictIDs) = TriState.True AndAlso
                AreNumbersInList(_noWarn, _optionStrictIDs) = TriState.False _
             Then
                 Return True
@@ -1682,10 +1682,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     Dim absPath As String = Path.Combine(GetProjectPath(), GetProjectRelativeDirectoryPath(Trim(BuildOutputPathTextBox.Text)))
                     If Not CheckPath(absPath) Then
-                        If DesignerFramework.DesignerMessageBox.Show(ServiceProvider, _
-                                                                    SR.GetString(SR.PPG_OutputPathNotSecure), _
-                                                                    DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), _
-                                                                    MessageBoxButtons.OKCancel, _
+                        If DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
+                                                                    SR.GetString(SR.PPG_OutputPathNotSecure),
+                                                                    DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
+                                                                    MessageBoxButtons.OKCancel,
                                                                     MessageBoxIcon.Warning) = DialogResult.Cancel _
                         Then
                             ' Set the focus back to the offending control!

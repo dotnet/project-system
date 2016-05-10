@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ServicesPropPage))
             Me.EnableApplicationServices = New System.Windows.Forms.CheckBox
-            Me.HelpLabel = New VsThemedLinklabel
+            Me.HelpLabel = New VSThemedLinkLabel
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.AuthenticationProviderGroupBox = New System.Windows.Forms.GroupBox
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Friend WithEvents HelpLabel As VsThemedLinkLabel
+        Friend WithEvents HelpLabel As VSThemedLinkLabel
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents AuthenticationProviderGroupBox As System.Windows.Forms.GroupBox
         Friend WithEvents AuthenticationServiceUrlLabel As System.Windows.Forms.Label
@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim newDoc As XmlDocument = ServicesPropPageAppConfigHelper.AppConfigXmlDocument(PropertyPageSite, ProjectHierarchy, False)
                 'We want to change the document & properties if stuff has changed.  If both documents are null, Object.Equals will return true and
                 'we don't need to update.  Other than that, we want to update if one of the documents are null or if neither is and their xml differs.
-                If Not _alreadyLoaded OrElse (Not Object.Equals(newDoc, CurrentAppConfigDocument) AndAlso (newDoc Is Nothing OrElse CurrentAppConfigDocument Is Nothing OrElse _
+                If Not _alreadyLoaded OrElse (Not Object.Equals(newDoc, CurrentAppConfigDocument) AndAlso (newDoc Is Nothing OrElse CurrentAppConfigDocument Is Nothing OrElse
                         newDoc.OuterXml <> CurrentAppConfigDocument.OuterXml)) Then
                     _alreadyLoaded = True
                     CurrentAppConfigDocument = newDoc
@@ -258,9 +258,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 DesignerFramework.DesignerMessageBox.Show(ServiceProvider, SR.GetString(SR.PPG_Services_VersionWarning), Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 _ignoreCheckedChanged = True
                 EnableApplicationServices.Checked = False
-            Else If Not EnableApplicationServices.Checked Then
-                Dim result As DialogResult = DesignerFramework.DesignerMessageBox.Show(ServiceProvider, _
-                    SR.GetString(SR.PPG_Services_ConfirmRemoveServices), SR.GetString(SR.PPG_Services_ConfirmRemoveServices_Caption), _
+            ElseIf Not EnableApplicationServices.Checked Then
+                Dim result As DialogResult = DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
+                    SR.GetString(SR.PPG_Services_ConfirmRemoveServices), SR.GetString(SR.PPG_Services_ConfirmRemoveServices_Caption),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2)
                 If result = DialogResult.Cancel Then
                     _ignoreCheckedChanged = True
@@ -485,12 +485,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnsureXmlUpToDate()
         End Sub
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
+        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub InvokeHelp()
             Try
                 Dim sp As IServiceProvider = ServiceProvider
                 If sp IsNot Nothing Then
-                    Dim vshelp As VsHelp.Help = CType(sp.GetService(GetType(VsHelp.Help)), VsHelp.Help)
+                    Dim vshelp As VSHelp.Help = CType(sp.GetService(GetType(VSHelp.Help)), VSHelp.Help)
                     vshelp.DisplayTopicFromF1Keyword(GetF1HelpKeyword)
                 Else
                     System.Diagnostics.Debug.Fail("Can not find ServiceProvider")

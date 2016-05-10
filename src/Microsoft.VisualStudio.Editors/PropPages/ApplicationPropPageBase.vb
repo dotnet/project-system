@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Required by the Windows Form Designer
         Private _components As System.ComponentModel.IContainer
 
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.SuspendLayout()
             Me.ResumeLayout(False)
@@ -181,8 +181,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddExistingFilesTitle), _
-                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddIconFilesFilter), ".ico"), _
+            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddExistingFilesTitle),
+                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddIconFilesFilter), ".ico"),
                         0, False, sFileName)
 
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then

@@ -385,8 +385,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartProgram)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartAction, "StartAction", Nothing, _
-                                AddressOf Me.StartActionSet, AddressOf Me.StartActionGet, ControlDataFlags.PersistedInProjectUserFile, _
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartAction, "StartAction", Nothing,
+                                AddressOf Me.StartActionSet, AddressOf Me.StartActionGet, ControlDataFlags.PersistedInProjectUserFile,
                                 New Control() {startActionTableLayoutPanel, rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse})
                     datalist.Add(data)
 
@@ -418,9 +418,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
             Get
                 If _controlGroup Is Nothing Then
-                    _controlGroup = New Control()() { _
-                        New Control() {rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse}, _
-                        New Control() {RemoteDebugEnabled, StartWorkingDirectory, RemoteDebugMachine, StartWorkingDirectoryBrowse} _
+                    _controlGroup = New Control()() {
+                        New Control() {rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse},
+                        New Control() {RemoteDebugEnabled, StartWorkingDirectory, RemoteDebugMachine, StartWorkingDirectoryBrowse}
                         }
                 End If
                 Return _controlGroup

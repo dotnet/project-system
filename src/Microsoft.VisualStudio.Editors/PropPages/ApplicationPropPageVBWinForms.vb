@@ -437,7 +437,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetCommonControls()
-            m_CommonControls = New CommonControls( _
+            m_CommonControls = New CommonControls(
                 Me.IconCombobox, Me.IconLabel, Me.IconPicturebox)
         End Sub
 
@@ -449,11 +449,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
-                Dim ControlsThatDependOnStartupObjectProperty As Control() = { _
-                    StartupObjectLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox _
+                Dim ControlsThatDependOnStartupObjectProperty As Control() = {
+                    StartupObjectLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox
                 }
-                Dim ControlsThatDependOnOutputTypeProperty As Control() = { _
-                    ApplicationTypeComboBox, ApplicationTypeLabel _
+                Dim ControlsThatDependOnOutputTypeProperty As Control() = {
+                    ApplicationTypeComboBox, ApplicationTypeLabel
                 }
 
                 If m_ControlData Is Nothing Then
@@ -989,7 +989,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             For Each FullName As String In GetFormEntryPoints(IncludeSplashScreen:=True)
                                 Dim SplashForm As String = RemoveCurrentRootNamespace(FullName)
                                 'Only add forms to this list, skip 'Sub Main'
-                                If (Not SplashForm.Equals(Const_MyApplicationEntryPoint, StringComparison.OrdinalIgnoreCase)) AndAlso _
+                                If (Not SplashForm.Equals(Const_MyApplicationEntryPoint, StringComparison.OrdinalIgnoreCase)) AndAlso
                                     (Not SplashForm.Equals(Const_SubMain, StringComparison.OrdinalIgnoreCase)) Then
                                     'We don't allow the splash form and main form to be the same, so don't
                                     '  put the main into the splash form list
@@ -1645,7 +1645,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="AppType"></param>
         ''' <remarks></remarks>
         Private Sub SetMyType(ByVal AppType As ApplicationTypes, ByVal ReadyToApply As Boolean)
-            Debug.Assert(UseApplicationFrameworkCheckBox.CheckState <> CheckState.Indeterminate OrElse Not MyApplicationFrameworkSupported() OrElse MyTypeDisabled(), _
+            Debug.Assert(UseApplicationFrameworkCheckBox.CheckState <> CheckState.Indeterminate OrElse Not MyApplicationFrameworkSupported() OrElse MyTypeDisabled(),
                 "UseApplicationFrameworkCheckbox shouldn't be indeterminate")
             Dim NewMyType As String = MyTypeFromApplicationType(AppType, UseApplicationFrameworkCheckBox.CheckState = CheckState.Unchecked OrElse Not MyApplicationFrameworkSupported() OrElse MyTypeDisabled())
             Debug.Assert(NewMyType IsNot Nothing)

@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")> _
+        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Sub UpdateCustomConnectionStringControlBasedOnCheckState()
             Select Case UseCustomConnectionStringCheckBox.CheckState
                 Case System.Windows.Forms.CheckState.Indeterminate

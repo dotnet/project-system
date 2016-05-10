@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '   Build Event Service Class. Implements SVsBuildEventCommandLineDialogService 
     '   exposed via the IVsBuildEventCommandLineDialogService interface.
     '--------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend NotInheritable Class BuildEventCommandLineDialogService
         Implements Interop.IVsBuildEventCommandLineDialogService
 

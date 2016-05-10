@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <Summary>
     '''  a sub class of DisplayNameAttribute to help localizating the property name...
     ''' </Summary>
-    <AttributeUsage(AttributeTargets.All)> _
+    <AttributeUsage(AttributeTargets.All)>
     Friend Class VBDisplayNameAttribute
         Inherits DisplayNameAttribute
 

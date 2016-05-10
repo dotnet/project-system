@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim flags As UInteger = CUInt(__PSFFLAGS.PSFF_CreateIfNotExist Or __PSFFLAGS.PSFF_FullPath)
 
             Dim ProjSpecialFiles As IVsProjectSpecialFiles = TryCast(hierarchy, IVsProjectSpecialFiles)
-            ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, appConfigItemId, fileName)
+            ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, flags, appConfigItemId, fileName)
 
             Dim sb As New StringBuilder
             Using writer As New XmlTextWriter(New StringWriter(sb, CultureInfo.InvariantCulture))
@@ -137,14 +137,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Shared Function IsCheckoutOrCancelError(ByVal cex As ComException) As Boolean
+        Private Shared Function IsCheckoutOrCancelError(ByVal cex As COMException) As Boolean
             Return cex IsNot Nothing AndAlso (cex.ErrorCode = &H80041004 OrElse cex.ErrorCode = &H8004000C)
         End Function
 
         'This code is stolen from SecurityPropertyPage.  If you don't do this, the document doesn't get written unless it
         'happens to be open
 
-        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")> _
+        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Shared Sub SaveAppConfig(ByVal fileName As String, ByVal provider As IServiceProvider, ByVal hierarchy As IVsHierarchy)
             Dim rdt As IVsRunningDocumentTable = TryCast(provider.GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
             Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Try
                 VSErrorHandler.ThrowOnFailure(hierarchy.ParseCanonicalName(fileName, itemId))
-                VSErrorHandler.ThrowOnFailure(rdt.FindAndLockDocument(CType(_VSRDTFLAGS.RDT_NoLock, UInteger), fileName, hier, itemid, localPunk, docCookie))
+                VSErrorHandler.ThrowOnFailure(rdt.FindAndLockDocument(CType(_VSRDTFLAGS.RDT_NoLock, UInteger), fileName, hier, itemId, localPunk, docCookie))
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
 
             Try
-                VSErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(docCookie, flags, readLocks, editLocks, localFileName, hier, itemid, localPunk))
+                VSErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(docCookie, flags, readLocks, editLocks, localFileName, hier, itemId, localPunk))
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
@@ -665,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Change the input string from "serviceUri" to "ClientSettingsProvider.ServiceUri"
         Private Shared Function AppSettingsName(ByVal inputName As String) As String
-            Return String.Concat(s_clientSettingsProviderPrefix, Char.ToUpperInvariant(inputName(0)), inputName.SubString(1))
+            Return String.Concat(s_clientSettingsProviderPrefix, Char.ToUpperInvariant(inputName(0)), inputName.Substring(1))
         End Function
 
         Private Shared Function EnsureNode(ByVal doc As XmlDocument, ByVal nodeName As String, ByVal parentNode As XmlNode) As XmlNode
@@ -698,7 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function IsClientMembershipProviderType(ByVal fullTypeName As String, Optional ByVal projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return TypesMatch(fullTypeName, GetSupportedType(s_clientFormsMembershipProviderType, projectHierarchy)) OrElse _
+            Return TypesMatch(fullTypeName, GetSupportedType(s_clientFormsMembershipProviderType, projectHierarchy)) OrElse
             TypesMatch(fullTypeName, GetSupportedType(s_clientWindowsMembershipProviderType, projectHierarchy))
         End Function
 
@@ -758,14 +758,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim membershipConnectionStringName As String = GetAttribute(membershipProviderNode, s_connectionStringName)
 
             'If no connection strings are specified, use the default
-            If appSettingsConnectionStringName Is Nothing AndAlso _
-                    roleManagerConnectionStringName Is Nothing AndAlso _
+            If appSettingsConnectionStringName Is Nothing AndAlso
+                    roleManagerConnectionStringName Is Nothing AndAlso
                     membershipConnectionStringName Is Nothing Then
                 connectionStringSpecified = True
                 Return Nothing
             End If
 
-            If appSettingsConnectionStringName <> roleManagerConnectionStringName OrElse _
+            If appSettingsConnectionStringName <> roleManagerConnectionStringName OrElse
                     appSettingsConnectionStringName <> membershipConnectionStringName Then
                 connectionStringSpecified = False
                 Return Nothing
@@ -977,9 +977,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             val = val.Trim()
             If val = String.Empty Then Return String.Empty
             If val.EndsWith("/") Then
-                return val & suffix
+                Return val & suffix
             End If
-            return val & "/" & suffix
+            Return val & "/" & suffix
         End Function
 
         Friend Shared ReadOnly Property AuthenticationSuffix() As String
@@ -1001,7 +1001,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Private Shared Function GetSuffix(ByVal input As String) As String
-            return String.Format("{0}_JSON_AppService.axd", input)
+            Return String.Format("{0}_JSON_AppService.axd", input)
         End Function
 
         Friend Shared Function ClientSettingsProviderName() As String

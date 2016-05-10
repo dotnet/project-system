@@ -55,9 +55,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             MyBase.PageRequiresScaling = False
 
-            _fileVersionTextBoxes = New System.Windows.Forms.TextBox(3) { _
+            _fileVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
                 Me.FileVersionMajorTextBox, Me.FileVersionMinorTextBox, Me.FileVersionBuildTextBox, Me.FileVersionRevisionTextBox}
-            _assemblyVersionTextBoxes = New System.Windows.Forms.TextBox(3) { _
+            _assemblyVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
                 Me.AssemblyVersionMajorTextBox, Me.AssemblyVersionMinorTextBox, Me.AssemblyVersionBuildTextBox, Me.AssemblyVersionRevisionTextBox}
             _neutralLanguageNoneText = SR.GetString(SR.PPG_NeutralLanguage_None)
         End Sub
@@ -460,12 +460,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         ''' <remarks></remarks>
         Private Sub ValidateVersion(ByVal VersionTextboxes As System.Windows.Forms.TextBox(), ByVal MaxVersionPartValue As UInteger, ByVal PropertyName As String, ByVal WildcardsAllowed As Boolean, ByRef version As String)
-            InternalParseVersion(VersionTextboxes(0).Text, _
-                VersionTextboxes(1).Text, _
-                VersionTextboxes(2).Text, _
-                VersionTextboxes(3).Text, _
-                PropertyName, _
-                MaxVersionPartValue, _
+            InternalParseVersion(VersionTextboxes(0).Text,
+                VersionTextboxes(1).Text,
+                VersionTextboxes(2).Text,
+                VersionTextboxes(3).Text,
+                PropertyName,
+                MaxVersionPartValue,
                 WildcardsAllowed, version)
         End Sub
 

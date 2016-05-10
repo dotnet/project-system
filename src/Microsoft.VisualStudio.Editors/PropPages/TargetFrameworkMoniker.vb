@@ -51,8 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Gets the supported target framework monikers from DTAR
         ''' </summary>
         ''' <param name="vsFrameworkMultiTargeting"></param>
-        Public Shared Function GetSupportedTargetFrameworkMonikers( _
-            ByVal vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting, _
+        Public Shared Function GetSupportedTargetFrameworkMonikers(
+            ByVal vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting,
             ByVal currentProject As Project) As IEnumerable(Of TargetFrameworkMoniker)
 
             Dim supportedFrameworksArray As Array = Nothing
@@ -93,10 +93,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                             ' For web projects, filter out frameworks that don't contain System.Web (e.g. client profiles).
                             Dim systemWebPath As String = Nothing
-                            If VSErrorHandler.Failed(vsFrameworkMultiTargeting.ResolveAssemblyPath( _
-                                  "System.Web.dll", _
-                                  moniker, _
-                                  systemWebPath)) OrElse _
+                            If VSErrorHandler.Failed(vsFrameworkMultiTargeting.ResolveAssemblyPath(
+                                  "System.Web.dll",
+                                  moniker,
+                                  systemWebPath)) OrElse
                                String.IsNullOrEmpty(systemWebPath) Then
                                 Continue For
                             End If

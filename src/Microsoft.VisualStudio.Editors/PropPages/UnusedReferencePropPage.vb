@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 ' Are there any unused references?
-                If Status = ReferenceUsageResult.ReferenceUsageOK AndAlso _unusedReferenceListReady AndAlso _
+                If Status = ReferenceUsageResult.ReferenceUsageOK AndAlso _unusedReferenceListReady AndAlso
                     UnusedReferenceList IsNot Nothing AndAlso UnusedReferenceList.Items.Count > 0 Then
                     ' Do initial enabling of remove button
                     EnableRemoveRefs(True)
@@ -379,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 For refIndex As Integer = 0 To UnusedRefsList.Count - 1
                     ' Convert VSLangProj.Reference to formatted list view item and insert into references list
-                    lviRef = ReferencePropPage.ReferenceToListViewItem( _
+                    lviRef = ReferencePropPage.ReferenceToListViewItem(
                         CType(UnusedRefsList(refIndex), VSLangProj.Reference), UnusedRefsList(refIndex))
 
                     lviRef.Checked = True
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Request unused references from 
             Dim UnusedRefPathsString As String = Nothing
-            Dim Result As ReferenceUsageResult = _
+            Dim Result As ReferenceUsageResult =
                 _refUsageProvider.GetUnusedReferences(_hier, UnusedRefPathsString)
 
             Try

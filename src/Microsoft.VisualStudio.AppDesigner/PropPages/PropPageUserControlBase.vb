@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Base class for managed property pages internal used in VisualStudio
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Class PropPageUserControlBase
         Inherits System.Windows.Forms.UserControl
         Implements IPropertyPageInternal
@@ -85,8 +85,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         ' Notify child pages that the project reloaded happened if they are
                         ' listening for such a change
-                        If HostDialog IsNot Nothing AndAlso _
-                           HostDialog.PropPage IsNot Nothing AndAlso _
+                        If HostDialog IsNot Nothing AndAlso
+                           HostDialog.PropPage IsNot Nothing AndAlso
                            HostDialog.PropPage.IsInProjectCheckoutSection Then
 
                             HostDialog.PropPage._projectReloadedDuringCheckout = True
@@ -439,7 +439,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected ReadOnly Property PropertyPageSite() As OLE.Interop.IPropertyPageSite
             Get
                 If _site IsNot Nothing Then
-                    Dim OleSite As OLE.Interop.IPropertyPageSite = _
+                    Dim OleSite As OLE.Interop.IPropertyPageSite =
                         DirectCast(_site.GetService(GetType(OLE.Interop.IPropertyPageSite)), OLE.Interop.IPropertyPageSite)
                     Debug.Assert(OleSite IsNot Nothing, "IPropertyPageSiteInternal didn't provide an IPropertyPageSite through GetService")
                     Return OleSite
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The property name and DISPIDs must both refer to the same property.
         ''' </remarks>
         Protected Function GetCurrentProperty(ByVal dispid As Integer, ByVal PropertyName As String, ByRef obj As Object) As Boolean
-            PropertyName = common.Utils.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
+            PropertyName = Common.Utils.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
 
             'Check current property pages
             If GetPropertyFromRunningPages(Me, dispid, obj) Then
@@ -661,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 Next
 
-                Debug.Assert(IsCommonProperty OrElse IsPropertyOnThisPage, _
+                Debug.Assert(IsCommonProperty OrElse IsPropertyOnThisPage,
                     "GetCurrentProperty: Property was found in an open page, so this time the function will succeed.  However, the property was not " _
                     & "found as a common property or a property on this page, so the same query would fail if the other page were not open.  This probably " _
                     & "indicates an error in the caller.")
@@ -733,7 +733,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks>When the user selects multiple projects, certain functionality is disabled</remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public ReadOnly Property MultiProjectSelect() As Boolean
             Get
                 Return _multiProjectSelect
@@ -745,7 +745,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property ServiceProvider() As Microsoft.VisualStudio.Shell.ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
@@ -771,7 +771,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property DTE() As EnvDTE.DTE
             Get
                 Return _DTE
@@ -783,7 +783,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public ReadOnly Property DTEProject() As EnvDTE.Project
             Get
                 Return _DTEProject
@@ -797,7 +797,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public ReadOnly Property ProjectProperties() As VSLangProj.ProjectProperties
             Get
                 Return _projectPropertiesObject
@@ -815,7 +815,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             For Each pcd As PropertyControlData In Me.ControlData
-                If pcd.FormControl Is control OrElse _
+                If pcd.FormControl Is control OrElse
                 (pcd.AssociatedControls IsNot Nothing AndAlso Array.IndexOf(pcd.AssociatedControls, control) >= 0) Then
                     'The control is associated with this property control data
                     pcd.EnableAssociatedControl(control, enabled)
@@ -1113,7 +1113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="DebugMessage">The message to be printed first to trace output.</param>
         ''' <param name="Properties">The properties to print to trace output.</param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Private Sub TraceTypeDescriptorCollection(ByVal DebugMessage As String, ByVal Properties As PropertyDescriptorCollection)
 #If DEBUG Then
             If Common.Switches.PDExtenders.TraceVerbose Then
@@ -1311,7 +1311,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Get the Extender Objects for the properties
                 'This must done after getting the DTE so that ServiceProvider can be obtained
 
-                Dim aem As Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager = _
+                Dim aem As Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager =
                     Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager.GetAutomationExtenderManager(ServiceProvider)
 
                 '... First for the actual objects passed in to SetObjects
@@ -1482,7 +1482,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>This should normally be overridden in the derived class to provide the page's specific list of
         '''   PropertyControlData.  No need to call the base's default version.
         ''' </remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected Overridable ReadOnly Property ControlData() As PropertyControlData()
             Get
                 Return New PropertyControlData() {}
@@ -1909,7 +1909,7 @@ NextControl:
                     Control = FirstDirtyControl
                 End If
 
-                Throw New ValidationException(ValidationResult.Failed, ex.Message, Control, innerexception:=ex)
+                Throw New ValidationException(ValidationResult.Failed, ex.Message, Control, InnerException:=ex)
             End Try
 
         End Sub
@@ -2070,7 +2070,7 @@ NextControl:
                             If TypeOf ex Is System.Reflection.TargetInvocationException Then
                                 ex = ex.InnerException
                             End If
-                            Throw New ValidationException(ValidationResult.Failed, _controlData.DisplayPropertyName & ":" & vbCrLf & ex.Message, control, innerexception:=ex)
+                            Throw New ValidationException(ValidationResult.Failed, _controlData.DisplayPropertyName & ":" & vbCrLf & ex.Message, control, InnerException:=ex)
                         End Try
                     Next _controlData
 
@@ -2870,7 +2870,7 @@ NextControl:
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property IsDirty() As Boolean
             Get
                 Return m_IsDirty
@@ -2956,8 +2956,8 @@ NextControl:
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <Browsable(False), _
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <Browsable(False),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShellService() As IVsUIShell
             Get
                 If (_UIShellService Is Nothing) Then
@@ -2972,8 +2972,8 @@ NextControl:
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <Browsable(False), _
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <Browsable(False),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShell2Service() As IVsUIShell2
             Get
                 If (_UIShell2Service Is Nothing) Then
@@ -3255,7 +3255,7 @@ NextControl:
             'Const BIF_BROWSEINCLUDEFILES As Integer = &H4000   '    Browsing for Everything
             'Const BIF_SHAREABLE As Integer = &H8000            '    sharable resources displayed (remote shares, requires BIF_USENEWUI)
             '
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = _
+            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
                 CType(ServiceProvider.GetService(GetType(Shell.Interop.IVsUIShell).GUID), Shell.Interop.IVsUIShell)
 
             Dim DirName As String
@@ -4029,7 +4029,7 @@ NextControl:
         End Function
 
 
-        <EditorBrowsable(EditorBrowsableState.Advanced)> _
+        <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = Microsoft.VisualStudio.Editors.AppDesCommon.WmUserConstants.WM_PAGE_POSTVALIDATION Then
 

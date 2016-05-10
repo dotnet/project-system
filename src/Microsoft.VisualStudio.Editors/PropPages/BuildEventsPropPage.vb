@@ -167,26 +167,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Tokens_MAX
         End Enum
 
-        Private Shared ReadOnly s_tokenNames() As String = { _
-            "OutDir", _
-            "ConfigurationName", _
-            "ProjectName", _
-            "TargetName", _
-            "TargetPath", _
-            "ProjectPath", _
-            "ProjectFileName", _
-            "TargetExt", _
-            "TargetFileName", _
-            "DevEnvDir", _
-            "TargetDir", _
-            "ProjectDir", _
-            "SolutionFileName", _
-            "SolutionPath", _
-            "SolutionDir", _
-            "SolutionName", _
-            "PlatformName", _
-            "ProjectExt", _
-            "SolutionExt" _
+        Private Shared ReadOnly s_tokenNames() As String = {
+            "OutDir",
+            "ConfigurationName",
+            "ProjectName",
+            "TargetName",
+            "TargetPath",
+            "ProjectPath",
+            "ProjectFileName",
+            "TargetExt",
+            "TargetFileName",
+            "DevEnvDir",
+            "TargetDir",
+            "ProjectDir",
+            "SolutionFileName",
+            "SolutionPath",
+            "SolutionDir",
+            "SolutionName",
+            "PlatformName",
+            "ProjectExt",
+            "SolutionExt"
         }
 
         ''' <summary>
@@ -197,10 +197,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
-                    m_ControlData = New PropertyControlData() { _
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PreBuildEvent, "PreBuildEvent", Me.txtPreBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPreBuildBuilder, lblPreBuildEventCommandLine}), _
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PostBuildEvent, "PostBuildEvent", Me.txtPostBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPostBuildBuilder, lblPostBuildEventCommandLine}), _
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_RunPostBuildEvent, "RunPostBuildEvent", Me.cboRunPostBuildEvent, New Control() {Me.lblRunPostBuildEvent}) _
+                    m_ControlData = New PropertyControlData() {
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PreBuildEvent, "PreBuildEvent", Me.txtPreBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPreBuildBuilder, lblPreBuildEventCommandLine}),
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PostBuildEvent, "PostBuildEvent", Me.txtPostBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPostBuildBuilder, lblPostBuildEventCommandLine}),
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_RunPostBuildEvent, "RunPostBuildEvent", Me.cboRunPostBuildEvent, New Control() {Me.lblRunPostBuildEvent})
                     }
                 End If
 

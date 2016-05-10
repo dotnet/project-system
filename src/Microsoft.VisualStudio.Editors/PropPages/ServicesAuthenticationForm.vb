@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _serviceProvider As IServiceProvider
         Private _authenticationUrl As String
 
-        <SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")> _
+        <SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")>
         Public Sub New(ByVal authenticationUrl As String, ByVal authenticationHost As String, ByVal serviceProvider As IServiceProvider)
             InitializeComponent()
             AuthenticationServiceUrl.Text = authenticationHost
@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        <SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")> _
+        <SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")>
         Public ReadOnly Property AuthenticationUrl() As String
             Get
                 Return _authenticationUrl
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso _components IsNot Nothing Then
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ServicesAuthenticationForm))
             Me.InnerTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -188,11 +188,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
+        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub ShowHelp()
             Try
                 If _serviceProvider IsNot Nothing Then
-                    Dim vshelp As VsHelp.Help = CType(_serviceProvider.GetService(GetType(VsHelp.Help)), VsHelp.Help)
+                    Dim vshelp As VSHelp.Help = CType(_serviceProvider.GetService(GetType(VSHelp.Help)), VSHelp.Help)
                     vshelp.DisplayTopicFromF1Keyword(HelpKeywords.VBProjPropSettingsLogin)
                 Else
                     System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
