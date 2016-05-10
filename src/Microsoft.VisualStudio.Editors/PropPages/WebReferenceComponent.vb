@@ -20,9 +20,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _projectItem = projectItem
         End Sub
 
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)> _
-        <MergablePropertyAttribute(False)> _
-        <HelpKeyword("Folder Properties.FileName")> _
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)>
+        <MergablePropertyAttribute(False)>
+        <HelpKeyword("Folder Properties.FileName")>
         Public Property Name() As String
             Get
                 Try
@@ -49,9 +49,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorName)> _
-        <VBDescriptionAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)> _
-        <HelpKeyword("Folder Properties.UrlBehavior")> _
+        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
+        <VBDescriptionAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
+        <HelpKeyword("Folder Properties.UrlBehavior")>
         Public Property UrlBehavior() As UrlBehaviorType
             Get
                 Dim prop As EnvDTE.[Property] = GetItemProperty("UrlBehavior")
@@ -78,10 +78,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)> _
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)> _
-        <HelpKeyword("Folder Properties.WebReference")> _
-        <MergablePropertyAttribute(False)> _
+        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)>
+        <HelpKeyword("Folder Properties.WebReference")>
+        <MergablePropertyAttribute(False)>
         Public Property WebReferenceURL() As String
             Get
                 Dim prop As EnvDTE.[Property] = GetItemProperty("WebReference")
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     End Class
 
 #Region "UrlBehaviorType"
-    <TypeConverter(GetType(UrlBehaviorTypeConverter))> _
+    <TypeConverter(GetType(UrlBehaviorTypeConverter))>
     Friend Enum UrlBehaviorType
         [Static]
         Dynamic

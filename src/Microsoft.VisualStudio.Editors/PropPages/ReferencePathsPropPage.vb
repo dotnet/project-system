@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
-                    m_ControlData = New PropertyControlData() { _
+                    m_ControlData = New PropertyControlData() {
                         New PropertyControlData(VsProjPropId.VBPROJPROPID_ReferencePath, "ReferencePath", Nothing, AddressOf Me.ReferencePathSet, AddressOf Me.ReferencePathGet, ControlDataFlags.PersistedInProjectUserFile)}
                 End If
                 Return m_ControlData
@@ -544,9 +544,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If IsJSProject Then
+            If IsJSProject() Then
                 Return HelpKeywords.JSProjPropReferencePaths
-            ElseIf IsCSProject Then
+            ElseIf IsCSProject() Then
                 Return HelpKeywords.CSProjPropReferencePaths
             Else
                 Debug.Assert(IsVBProject, "Unknown project type")

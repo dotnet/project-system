@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <Summary>
     '''  a sub class of DescriptionAttribute to help localizating the description...
     ''' </Summary>
-    <AttributeUsage(AttributeTargets.All)> _
+    <AttributeUsage(AttributeTargets.All)>
     Friend Class VBDescriptionAttribute
         Inherits DescriptionAttribute
 

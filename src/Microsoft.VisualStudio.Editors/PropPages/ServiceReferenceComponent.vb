@@ -22,9 +22,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _referenceGroup = referenceGroup
         End Sub
 
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)> _
-        <MergablePropertyAttribute(False)> _
-        <HelpKeyword("ServiceReference Properties.Namespace")> _
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
+        <MergablePropertyAttribute(False)>
+        <HelpKeyword("ServiceReference Properties.Namespace")>
         Public Property [Namespace]() As String
             Get
                 Return _referenceGroup.GetNamespace()
@@ -39,10 +39,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)> _
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)> _
-        <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")> _
-        <MergablePropertyAttribute(False)> _
+        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
+        <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
+        <MergablePropertyAttribute(False)>
         Public Property ServiceReferenceURL() As String
             Get
                 If _referenceGroup.GetReferenceCount() = 1 Then
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Else
                     If value <> "" Then
                         _referenceGroup.AddReference(Nothing, value)
-                    ENd If
+                    End If
                 End If
             End Set
         End Property

@@ -448,8 +448,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
-                    m_ControlData = New PropertyControlData() { _
-                        New PropertyControlData(1, "ImportList", Me.ImportList, AddressOf Me.ImportListSet, AddressOf Me.ImportListGet, ControlDataFlags.UserPersisted) _
+                    m_ControlData = New PropertyControlData() {
+                        New PropertyControlData(1, "ImportList", Me.ImportList, AddressOf Me.ImportListSet, AddressOf Me.ImportListGet, ControlDataFlags.UserPersisted)
                         }
                 End If
                 Return m_ControlData
@@ -558,7 +558,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' NOTE: 6 is 2 times of the margin we used. The exactly number is not important, because it actually does not make any difference on the page.
-            Return New Size(Math.Max(preferredSize.Width, Math.Max(referenceAreaPreferredSize.Width, importsAreaPreferredSize.Width) + 6), _
+            Return New Size(Math.Max(preferredSize.Width, Math.Max(referenceAreaPreferredSize.Width, importsAreaPreferredSize.Width) + 6),
                     Math.Max(preferredSize.Height, referenceAreaPreferredSize.Height + importsAreaPreferredSize.Height + 6))
         End Function
 
@@ -1422,14 +1422,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim serviceType As ServiceReferenceType = ServiceReferenceType.SRT_WCFReference Or ServiceReferenceType.SRT_ASMXReference
 
                 Try
-                    AddServiceRefDlg.ShowAddWebReferenceDialog( _
-                                ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject), _
-                                Nothing, _
-                                serviceType, _
-                                Nothing, _
-                                Nothing, _
-                                Nothing, _
-                                result, _
+                    AddServiceRefDlg.ShowAddWebReferenceDialog(
+                                ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject),
+                                Nothing,
+                                serviceType,
+                                Nothing,
+                                Nothing,
+                                Nothing,
+                                result,
                                 Cancelled)
                     If Cancelled = 0 Then
                         Debug.Assert(Not _updatingReferences, "We shouldn't be in another updating session")
@@ -1537,7 +1537,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If ((ImportListSelectedItem IsNot Nothing) AndAlso (ImportListSelectedItem.Length > 0)) Then
                         Dim selectedItemIdentity As New ImportIdentity(DirectCast(ImportListSelectedItem, String))
                         If userImportId.Equals(selectedItemIdentity) _
-                                    AndAlso Not ScrubbedUserImportText.Equals(ImportListSelectedItem, _
+                                    AndAlso Not ScrubbedUserImportText.Equals(ImportListSelectedItem,
                                                                                 StringComparison.Ordinal) Then
                             EnableUpdateUserImportButton = True
                         End If
@@ -1895,7 +1895,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' If there are elements in the listview, size the name, version, and path columns by item text if not empty
                 With ReferenceList.Items(0)
                     ' For the first column, if not offset, check the .text property, otherwise check the subitems
-                    If (ColOffset = 0 AndAlso .Text <> "") OrElse _
+                    If (ColOffset = 0 AndAlso .Text <> "") OrElse
                         (ColOffset > 0 AndAlso .SubItems(s_REFCOLUMN_NAME + ColOffset).Text <> "") Then
                         AutoSizeMethod(s_REFCOLUMN_NAME) = Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE
                     End If
@@ -1993,8 +1993,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub UpdateUserImportButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateUserImportButton.Click
 
-            Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso _
-                        ImportListSelectedItem IsNot Nothing AndAlso _
+            Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso
+                        ImportListSelectedItem IsNot Nothing AndAlso
                         ImportListSelectedItem.Length > 0, "Why do we try to update more than one selected item?!")
 
             Dim UserImports As String() = GetCurrentImportsList()
@@ -2409,8 +2409,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim webCompo As WebReferenceComponent = TryCast(ReferenceList.Items(i).Tag, WebReferenceComponent)
                                 Dim serviceCompo As ServiceReferenceComponent = TryCast(ReferenceList.Items(i).Tag, ServiceReferenceComponent)
 
-                                If refCompo IsNot Nothing AndAlso refCompo.CurrentObject Is updateItem.Reference OrElse _
-                                   webCompo IsNot Nothing AndAlso webCompo.WebReference Is updateItem.WebReference OrElse _
+                                If refCompo IsNot Nothing AndAlso refCompo.CurrentObject Is updateItem.Reference OrElse
+                                   webCompo IsNot Nothing AndAlso webCompo.WebReference Is updateItem.WebReference OrElse
                                    serviceCompo IsNot Nothing AndAlso serviceCompo.ReferenceGroup Is updateItem.ServiceReference Then
                                     If updateItem.UpdateType = ReferenceUpdateType.ReferenceRemoved Then
                                         '(Note: we don't want to call IsImplicitlyAddedReference on the reference in this case, because it has already
@@ -2607,13 +2607,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_aliasGroup As String = "(?<" & s_aliasGroupName & ">[^=""'\s]+)"
 
         ' Regular expression for parsing XML imports statement (<xmlns[:Alias]='url'>).
-        Private Shared s_xmlImportRegex As New Regex( _
-            "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & s_aliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$", _
+        Private Shared s_xmlImportRegex As New Regex(
+            "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & s_aliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$",
             RegexOptions.Compiled)
 
         ' Regular expression for parsing VB alias imports statement (Alias=Namespace).
-        Private Shared s_vbImportRegex As New Regex( _
-            "^\s*" & s_aliasGroup & "\s*=\s*.*$", _
+        Private Shared s_vbImportRegex As New Regex(
+            "^\s*" & s_aliasGroup & "\s*=\s*.*$",
             RegexOptions.Compiled)
 
         ' Kind of import - VB regular, VB Alias, xmlns.
@@ -2669,8 +2669,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns>True if both imports are XML (both are non-XML) and identities much case-sensitive (case-insensitive).</returns>
         ''' <remarks>Checks a</remarks>
         Public Shadows Function Equals(ByVal other As ImportIdentity) As Boolean Implements IEquatable(Of ImportIdentity).Equals
-            Return _kind = other._kind AndAlso _
-                _identity.Equals(other._identity, _
+            Return _kind = other._kind AndAlso
+                _identity.Equals(other._identity,
                     Utils.IIf(_kind = ImportKind.XmlNamespace, StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase))
         End Function
     End Structure

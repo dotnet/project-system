@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "ApplicationPropPageComClass (Not directly used, inherited from by J#/C#)"
 
-    <System.Runtime.InteropServices.GuidAttribute("1C25D270-6E41-4360-9221-1D22E4942FAD"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("1C25D270-6E41-4360-9221-1D22E4942FAD"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class ApplicationPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "ApplicationWithMyPropPageComClass (VB Application property page)"
 
     'Note: This is the VB Application page (naming is historical)
-    <System.Runtime.InteropServices.GuidAttribute("8998E48E-B89A-4034-B66E-353D8C1FDC2E"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("8998E48E-B89A-4034-B66E-353D8C1FDC2E"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class ApplicationWithMyPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "WPFApplicationWithMyPropPageComClass (VB Application page for WPF)"
 
-    <System.Runtime.InteropServices.GuidAttribute("00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class WPFApplicationWithMyPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "CSharpApplicationPropPageComClass (C#/J# Application property page)"
 
-    <System.Runtime.InteropServices.GuidAttribute("5E9A8AC2-4F34-4521-858F-4C248BA31532"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("5E9A8AC2-4F34-4521-858F-4C248BA31532"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class CSharpApplicationPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "CompilePropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("EDA661EA-DC61-4750-B3A5-F6E9C74060F5"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("EDA661EA-DC61-4750-B3A5-F6E9C74060F5"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class CompilePropPageComClass
         Inherits VBPropPageBase
 
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "ServicesPropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("43E38D2E-43B8-4204-8225-9357316137A4"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("43E38D2E-43B8-4204-8225-9357316137A4"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class ServicesPropPageComClass
         Inherits VBPropPageBase
 
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "DebugPropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("6185191F-1008-4FB2-A715-3A4E4F27E610"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("6185191F-1008-4FB2-A715-3A4E4F27E610"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class DebugPropPageComClass
         Inherits VBPropPageBase
 
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "VBBasePropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("4E43F4AB-9F03-4129-95BF-B8FF870AF6AB"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("4E43F4AB-9F03-4129-95BF-B8FF870AF6AB"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class ReferencePropPageComClass
         Inherits VBPropPageBase
 
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "BuildPropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("A54AD834-9219-4aa6-B589-607AF21C3E26"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("A54AD834-9219-4aa6-B589-607AF21C3E26"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class BuildPropPageComClass
         Inherits VBPropPageBase
 
@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "BuildEventsPropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("1E78F8DB-6C07-4d61-A18F-7514010ABD56"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("1E78F8DB-6C07-4d61-A18F-7514010ABD56"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class BuildEventsPropPageComClass
         Inherits VBPropPageBase
 
@@ -308,7 +308,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "ReferencePathsPropPageComClass"
 
-    <System.Runtime.InteropServices.GuidAttribute("031911C8-6148-4e25-B1B1-44BCA9A0C45C"), ComVisible(True), CLSCompliantAttribute(False)> _
+    <System.Runtime.InteropServices.GuidAttribute("031911C8-6148-4e25-B1B1-44BCA9A0C45C"), ComVisible(True), CLSCompliantAttribute(False)>
     Public NotInheritable Class ReferencePathsPropPageComClass
         Inherits VBPropPageBase
 

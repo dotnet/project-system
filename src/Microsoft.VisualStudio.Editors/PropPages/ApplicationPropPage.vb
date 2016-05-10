@@ -347,11 +347,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData( _
-                            VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, Const_TargetFrameworkMoniker, _
-                            TargetFramework, _
-                            AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker, _
-                            ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout, _
+                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                            VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, Const_TargetFrameworkMoniker,
+                            TargetFramework,
+                            AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
+                            ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
                             New Control() {Me.TargetFrameworkLabel})
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
@@ -387,8 +387,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
             Get
                 If m_controlGroup Is Nothing Then
-                    m_controlGroup = New Control()() { _
-                        New Control() {IconRadioButton, Win32ResourceRadioButton, ApplicationIcon, ApplicationManifest, Win32ResourceFile, AppIconBrowse, Win32ResourceFileBrowse} _
+                    m_controlGroup = New Control()() {
+                        New Control() {IconRadioButton, Win32ResourceRadioButton, ApplicationIcon, ApplicationManifest, Win32ResourceFile, AppIconBrowse, Win32ResourceFileBrowse}
                         }
                 End If
                 Return m_controlGroup
@@ -1061,11 +1061,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddWin32ResourceTitle), _
-                    Common.CombineDialogFilters( _
-                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddWin32ResourceFilter), "res"), _
-                        Common.Utils.GetAllFilesDialogFilter() _
-                        ), _
+            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddWin32ResourceTitle),
+                    Common.CombineDialogFilters(
+                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddWin32ResourceFilter), "res"),
+                        Common.Utils.GetAllFilesDialogFilter()
+                        ),
                         0, False, sFileName)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = CStr(fileNames(0))
