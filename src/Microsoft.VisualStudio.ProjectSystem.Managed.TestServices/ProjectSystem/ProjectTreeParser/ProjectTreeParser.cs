@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     break;
 
                 default:
-                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, "Expected 'visibility' or 'flags', but encountered '{propertyName}'.");
+                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'visibility' or 'flags', but encountered '{propertyName}'.");
             }
         }
 
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     break;
 
                 default:
-                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, "Expected 'visible' or 'invisible', but encountered '{visibility}'.");
+                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'.");
             }
         }
 
