@@ -57,8 +57,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (IsSupported && IsCandidateSpecialItem(propertyContext, propertyValues.Flags))
             {
-                propertyValues.Icon = _imageProvider.GetProjectImage(ImageKey);
                 propertyValues.Flags = propertyValues.Flags.Union(Flags);
+
+                // Avoid overwriting icon if the image provider didn't provide one
+                ProjectImageMoniker icon = _imageProvider.GetProjectImage(ImageKey);
+                if (icon != null)
+                {
+                    propertyValues.Icon = icon;
+                    propertyValues.ExpandedIcon = icon;
+                }
             }
         }
 

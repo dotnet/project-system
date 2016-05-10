@@ -14,5 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         UnrecognizedPropertyValue,
         IndentTooManyLevels,
         MultipleRoots,
+        IntegerExpected,
+        GuidExpected,
     }
 }
