@@ -643,4 +643,16 @@
     <Folder Include="Resources\Common\" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+
+
+  <!-- We don't generate yet generate pkgdef, but we want it to end up in VSIX,
+       implement the right output group so that ProjectSystemSetup pulls it in -->
+  <Target Name="PkgdefProjectOutputGroup"
+        Outputs="@(PkgdefOutputGroupOutput)">
+
+    <ItemGroup>
+      <PkgdefOutputGroupOutput Include="Microsoft.VisualStudio.Editors.pkgdef" />
+    </ItemGroup>
+
+  </Target>
 </Project>
