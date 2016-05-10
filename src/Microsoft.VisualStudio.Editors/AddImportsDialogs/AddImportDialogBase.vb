@@ -4,8 +4,11 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports VsShell = Microsoft.VisualStudio.Shell.Interop
 Imports VsErrorHandler = Microsoft.VisualStudio.ErrorHandler
+Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
+
+    <TypeDescriptionProvider(GetType(AbstractControlTypeDescriptionProvider(Of AddImportDialogBase, Form)))>
     Friend MustInherit Class AddImportDialogBase
         Inherits Form
 
@@ -29,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                 Dim hostLocale As VsShell.IUIHostLocale2 = CType(_serviceProvider.GetService(GetType(VsShell.SUIHostLocale)), VsShell.IUIHostLocale2)
                 If hostLocale IsNot Nothing Then
                     Dim fonts(1) As VsShell.UIDLGLOGFONT
-                    If VSErrorHandler.Succeeded(hostLocale.GetDialogFont(fonts)) Then
+                    If VsErrorHandler.Succeeded(hostLocale.GetDialogFont(fonts)) Then
                         Return Font.FromLogFont(fonts(0))
                     End If
                 End If

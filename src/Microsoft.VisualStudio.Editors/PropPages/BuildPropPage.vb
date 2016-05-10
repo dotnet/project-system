@@ -102,45 +102,45 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(BuildPropPage))
-            Me.lblConditionalCompilationSymbols = New System.Windows.Forms.Label
-            Me.txtConditionalCompilationSymbols = New System.Windows.Forms.TextBox
-            Me.chkDefineDebug = New System.Windows.Forms.CheckBox
-            Me.chkDefineTrace = New System.Windows.Forms.CheckBox
-            Me.lblPlatformTarget = New System.Windows.Forms.Label
-            Me.cboPlatformTarget = New System.Windows.Forms.ComboBox
-            Me.chkPrefer32Bit = New System.Windows.Forms.CheckBox
-            Me.chkAllowUnsafeCode = New System.Windows.Forms.CheckBox
-            Me.chkOptimizeCode = New System.Windows.Forms.CheckBox
-            Me.lblWarningLevel = New System.Windows.Forms.Label
-            Me.cboWarningLevel = New System.Windows.Forms.ComboBox
-            Me.lblSupressWarnings = New System.Windows.Forms.Label
-            Me.txtSupressWarnings = New System.Windows.Forms.TextBox
-            Me.rbWarningNone = New System.Windows.Forms.RadioButton
-            Me.rbWarningSpecific = New System.Windows.Forms.RadioButton
-            Me.rbWarningAll = New System.Windows.Forms.RadioButton
-            Me.txtSpecificWarnings = New System.Windows.Forms.TextBox
-            Me.lblOutputPath = New System.Windows.Forms.Label
-            Me.txtOutputPath = New System.Windows.Forms.TextBox
-            Me.btnOutputPathBrowse = New System.Windows.Forms.Button
-            Me.chkXMLDocumentationFile = New System.Windows.Forms.CheckBox
-            Me.chkRegisterForCOM = New System.Windows.Forms.CheckBox
-            Me.txtXMLDocumentationFile = New System.Windows.Forms.TextBox
-            Me.btnAdvanced = New System.Windows.Forms.Button
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.outputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.outputLineLabel = New System.Windows.Forms.Label
-            Me.outputLabel = New System.Windows.Forms.Label
-            Me.generalHeaderTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.generalLineLabel = New System.Windows.Forms.Label
-            Me.generalLabel = New System.Windows.Forms.Label
-            Me.treatWarningsAsErrorsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.treatWarningsAsErrorsLineLabel = New System.Windows.Forms.Label
-            Me.treatWarningsAsErrorsLabel = New System.Windows.Forms.Label
-            Me.errorsAndWarningsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.errorsAndWarningsLineLabel = New System.Windows.Forms.Label
-            Me.errorsAndWarningsLabel = New System.Windows.Forms.Label
-            Me.lblSGenOption = New System.Windows.Forms.Label
-            Me.cboSGenOption = New System.Windows.Forms.ComboBox
+            Me.lblConditionalCompilationSymbols = New System.Windows.Forms.Label()
+            Me.txtConditionalCompilationSymbols = New System.Windows.Forms.TextBox()
+            Me.chkDefineDebug = New System.Windows.Forms.CheckBox()
+            Me.chkDefineTrace = New System.Windows.Forms.CheckBox()
+            Me.lblPlatformTarget = New System.Windows.Forms.Label()
+            Me.cboPlatformTarget = New System.Windows.Forms.ComboBox()
+            Me.chkPrefer32Bit = New System.Windows.Forms.CheckBox()
+            Me.chkAllowUnsafeCode = New System.Windows.Forms.CheckBox()
+            Me.chkOptimizeCode = New System.Windows.Forms.CheckBox()
+            Me.lblWarningLevel = New System.Windows.Forms.Label()
+            Me.cboWarningLevel = New System.Windows.Forms.ComboBox()
+            Me.lblSupressWarnings = New System.Windows.Forms.Label()
+            Me.txtSupressWarnings = New System.Windows.Forms.TextBox()
+            Me.rbWarningNone = New System.Windows.Forms.RadioButton()
+            Me.rbWarningSpecific = New System.Windows.Forms.RadioButton()
+            Me.rbWarningAll = New System.Windows.Forms.RadioButton()
+            Me.txtSpecificWarnings = New System.Windows.Forms.TextBox()
+            Me.lblOutputPath = New System.Windows.Forms.Label()
+            Me.txtOutputPath = New System.Windows.Forms.TextBox()
+            Me.btnOutputPathBrowse = New System.Windows.Forms.Button()
+            Me.chkXMLDocumentationFile = New System.Windows.Forms.CheckBox()
+            Me.chkRegisterForCOM = New System.Windows.Forms.CheckBox()
+            Me.txtXMLDocumentationFile = New System.Windows.Forms.TextBox()
+            Me.btnAdvanced = New System.Windows.Forms.Button()
+            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.outputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.outputLineLabel = New System.Windows.Forms.Label()
+            Me.outputLabel = New System.Windows.Forms.Label()
+            Me.generalHeaderTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.generalLineLabel = New System.Windows.Forms.Label()
+            Me.generalLabel = New System.Windows.Forms.Label()
+            Me.treatWarningsAsErrorsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.treatWarningsAsErrorsLineLabel = New System.Windows.Forms.Label()
+            Me.treatWarningsAsErrorsLabel = New System.Windows.Forms.Label()
+            Me.errorsAndWarningsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.errorsAndWarningsLineLabel = New System.Windows.Forms.Label()
+            Me.errorsAndWarningsLabel = New System.Windows.Forms.Label()
+            Me.lblSGenOption = New System.Windows.Forms.Label()
+            Me.cboSGenOption = New System.Windows.Forms.ComboBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.outputTableLayoutPanel.SuspendLayout()
             Me.generalHeaderTableLayoutPanel.SuspendLayout()
@@ -151,33 +151,28 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'lblConditionalCompilationSymbols
             '
             resources.ApplyResources(Me.lblConditionalCompilationSymbols, "lblConditionalCompilationSymbols")
-            Me.lblConditionalCompilationSymbols.Margin = New System.Windows.Forms.Padding(23, 11, 3, 3)
             Me.lblConditionalCompilationSymbols.Name = "lblConditionalCompilationSymbols"
             '
             'txtConditionalCompilationSymbols
             '
             resources.ApplyResources(Me.txtConditionalCompilationSymbols, "txtConditionalCompilationSymbols")
-            Me.txtConditionalCompilationSymbols.Margin = New System.Windows.Forms.Padding(3, 11, 3, 3)
             Me.txtConditionalCompilationSymbols.Name = "txtConditionalCompilationSymbols"
             '
             'chkDefineDebug
             '
             resources.ApplyResources(Me.chkDefineDebug, "chkDefineDebug")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkDefineDebug, 3)
-            Me.chkDefineDebug.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkDefineDebug.Name = "chkDefineDebug"
             '
             'chkDefineTrace
             '
             resources.ApplyResources(Me.chkDefineTrace, "chkDefineTrace")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkDefineTrace, 3)
-            Me.chkDefineTrace.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkDefineTrace.Name = "chkDefineTrace"
             '
             'lblPlatformTarget
             '
             resources.ApplyResources(Me.lblPlatformTarget, "lblPlatformTarget")
-            Me.lblPlatformTarget.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.lblPlatformTarget.Name = "lblPlatformTarget"
             '
             'cboPlatformTarget
@@ -191,27 +186,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.chkPrefer32Bit, "chkPrefer32Bit")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkPrefer32Bit, 3)
-            Me.chkPrefer32Bit.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkPrefer32Bit.Name = "chkPrefer32Bit"
             '
             'chkAllowUnsafeCode
             '
             resources.ApplyResources(Me.chkAllowUnsafeCode, "chkAllowUnsafeCode")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkAllowUnsafeCode, 3)
-            Me.chkAllowUnsafeCode.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkAllowUnsafeCode.Name = "chkAllowUnsafeCode"
             '
             'chkOptimizeCode
             '
             resources.ApplyResources(Me.chkOptimizeCode, "chkOptimizeCode")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkOptimizeCode, 3)
-            Me.chkOptimizeCode.Margin = New System.Windows.Forms.Padding(23, 3, 3, 11)
             Me.chkOptimizeCode.Name = "chkOptimizeCode"
             '
             'lblWarningLevel
             '
             resources.ApplyResources(Me.lblWarningLevel, "lblWarningLevel")
-            Me.lblWarningLevel.Margin = New System.Windows.Forms.Padding(23, 11, 3, 3)
             Me.lblWarningLevel.Name = "lblWarningLevel"
             '
             'cboWarningLevel
@@ -219,40 +210,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboWarningLevel, "cboWarningLevel")
             Me.cboWarningLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboWarningLevel.FormattingEnabled = True
-            Me.cboWarningLevel.Items.AddRange(New Object() {"0", "1", "2", "3", "4"})
-            Me.cboWarningLevel.Margin = New System.Windows.Forms.Padding(3, 11, 3, 3)
+            Me.cboWarningLevel.Items.AddRange(New Object() {resources.GetString("cboWarningLevel.Items"), resources.GetString("cboWarningLevel.Items1"), resources.GetString("cboWarningLevel.Items2"), resources.GetString("cboWarningLevel.Items3"), resources.GetString("cboWarningLevel.Items4")})
             Me.cboWarningLevel.Name = "cboWarningLevel"
             '
             'lblSupressWarnings
             '
             resources.ApplyResources(Me.lblSupressWarnings, "lblSupressWarnings")
-            Me.lblSupressWarnings.Margin = New System.Windows.Forms.Padding(23, 3, 3, 11)
             Me.lblSupressWarnings.Name = "lblSupressWarnings"
             '
             'txtSupressWarnings
             '
             resources.ApplyResources(Me.txtSupressWarnings, "txtSupressWarnings")
-            Me.txtSupressWarnings.Margin = New System.Windows.Forms.Padding(3, 3, 3, 11)
             Me.txtSupressWarnings.Name = "txtSupressWarnings"
             '
             'rbWarningNone
             '
             resources.ApplyResources(Me.rbWarningNone, "rbWarningNone")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.rbWarningNone, 3)
-            Me.rbWarningNone.Margin = New System.Windows.Forms.Padding(23, 11, 3, 3)
             Me.rbWarningNone.Name = "rbWarningNone"
             '
             'rbWarningSpecific
             '
             resources.ApplyResources(Me.rbWarningSpecific, "rbWarningSpecific")
-            Me.rbWarningSpecific.Margin = New System.Windows.Forms.Padding(23, 3, 3, 11)
             Me.rbWarningSpecific.Name = "rbWarningSpecific"
             '
             'rbWarningAll
             '
             resources.ApplyResources(Me.rbWarningAll, "rbWarningAll")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.rbWarningAll, 3)
-            Me.rbWarningAll.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.rbWarningAll.Name = "rbWarningAll"
             '
             'txtSpecificWarnings
@@ -263,32 +248,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'lblOutputPath
             '
             resources.ApplyResources(Me.lblOutputPath, "lblOutputPath")
-            Me.lblOutputPath.Margin = New System.Windows.Forms.Padding(23, 11, 3, 3)
             Me.lblOutputPath.Name = "lblOutputPath"
             '
             'txtOutputPath
             '
             resources.ApplyResources(Me.txtOutputPath, "txtOutputPath")
-            Me.txtOutputPath.Margin = New System.Windows.Forms.Padding(3, 11, 3, 3)
             Me.txtOutputPath.Name = "txtOutputPath"
             '
             'btnOutputPathBrowse
             '
             resources.ApplyResources(Me.btnOutputPathBrowse, "btnOutputPathBrowse")
-            Me.btnOutputPathBrowse.Margin = New System.Windows.Forms.Padding(3, 11, 0, 3)
             Me.btnOutputPathBrowse.Name = "btnOutputPathBrowse"
             '
             'chkXMLDocumentationFile
             '
             resources.ApplyResources(Me.chkXMLDocumentationFile, "chkXMLDocumentationFile")
-            Me.chkXMLDocumentationFile.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkXMLDocumentationFile.Name = "chkXMLDocumentationFile"
             '
             'chkRegisterForCOM
             '
             resources.ApplyResources(Me.chkRegisterForCOM, "chkRegisterForCOM")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkRegisterForCOM, 3)
-            Me.chkRegisterForCOM.Margin = New System.Windows.Forms.Padding(23, 3, 3, 3)
             Me.chkRegisterForCOM.Name = "chkRegisterForCOM"
             '
             'txtXMLDocumentationFile
@@ -299,15 +279,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'btnAdvanced
             '
             resources.ApplyResources(Me.btnAdvanced, "btnAdvanced")
-            Me.btnAdvanced.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
             Me.btnAdvanced.Name = "btnAdvanced"
             '
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 15)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.generalHeaderTableLayoutPanel, 0, 0)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsTableLayoutPanel, 0, 11)
@@ -338,133 +314,91 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSGenOption, 0, 19)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.cboSGenOption, 1, 19)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.btnAdvanced, 2, 20)
-            Me.overarchingTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'outputTableLayoutPanel
             '
             resources.ApplyResources(Me.outputTableLayoutPanel, "outputTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.outputTableLayoutPanel, 3)
-            Me.outputTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.outputTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.outputTableLayoutPanel.Controls.Add(Me.outputLineLabel, 1, 0)
             Me.outputTableLayoutPanel.Controls.Add(Me.outputLabel, 0, 0)
-            Me.outputTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.outputTableLayoutPanel.Name = "outputTableLayoutPanel"
-            Me.outputTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'outputLineLabel
             '
+            Me.outputLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.outputLineLabel, "outputLineLabel")
             Me.outputLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.outputLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.outputLineLabel.Name = "outputLineLabel"
             '
             'outputLabel
             '
             resources.ApplyResources(Me.outputLabel, "outputLabel")
-            Me.outputLabel.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
             Me.outputLabel.Name = "outputLabel"
             '
             'generalHeaderTableLayoutPanel
             '
             resources.ApplyResources(Me.generalHeaderTableLayoutPanel, "generalHeaderTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.generalHeaderTableLayoutPanel, 3)
-            Me.generalHeaderTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.generalHeaderTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.generalHeaderTableLayoutPanel.Controls.Add(Me.generalLineLabel, 1, 0)
             Me.generalHeaderTableLayoutPanel.Controls.Add(Me.generalLabel, 0, 0)
-            Me.generalHeaderTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.generalHeaderTableLayoutPanel.Name = "generalHeaderTableLayoutPanel"
-            Me.generalHeaderTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'generalLineLabel
             '
+            Me.generalLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.generalLineLabel, "generalLineLabel")
             Me.generalLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.generalLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.generalLineLabel.Name = "generalLineLabel"
             '
             'generalLabel
             '
             resources.ApplyResources(Me.generalLabel, "generalLabel")
-            Me.generalLabel.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.generalLabel.Name = "generalLabel"
             '
             'treatWarningsAsErrorsTableLayoutPanel
             '
             resources.ApplyResources(Me.treatWarningsAsErrorsTableLayoutPanel, "treatWarningsAsErrorsTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.treatWarningsAsErrorsTableLayoutPanel, 3)
-            Me.treatWarningsAsErrorsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.treatWarningsAsErrorsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsLineLabel, 1, 0)
             Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsLabel, 0, 0)
-            Me.treatWarningsAsErrorsTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.treatWarningsAsErrorsTableLayoutPanel.Name = "treatWarningsAsErrorsTableLayoutPanel"
-            Me.treatWarningsAsErrorsTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'treatWarningsAsErrorsLineLabel
             '
+            Me.treatWarningsAsErrorsLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.treatWarningsAsErrorsLineLabel, "treatWarningsAsErrorsLineLabel")
             Me.treatWarningsAsErrorsLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.treatWarningsAsErrorsLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.treatWarningsAsErrorsLineLabel.Name = "treatWarningsAsErrorsLineLabel"
             '
             'treatWarningsAsErrorsLabel
             '
             resources.ApplyResources(Me.treatWarningsAsErrorsLabel, "treatWarningsAsErrorsLabel")
-            Me.treatWarningsAsErrorsLabel.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.treatWarningsAsErrorsLabel.Name = "treatWarningsAsErrorsLabel"
             '
             'errorsAndWarningsTableLayoutPanel
             '
             resources.ApplyResources(Me.errorsAndWarningsTableLayoutPanel, "errorsAndWarningsTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.errorsAndWarningsTableLayoutPanel, 3)
-            Me.errorsAndWarningsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.errorsAndWarningsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.errorsAndWarningsLineLabel, 1, 0)
             Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.errorsAndWarningsLabel, 0, 0)
-            Me.errorsAndWarningsTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.errorsAndWarningsTableLayoutPanel.Name = "errorsAndWarningsTableLayoutPanel"
-            Me.errorsAndWarningsTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'errorsAndWarningsLineLabel
             '
+            Me.errorsAndWarningsLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.errorsAndWarningsLineLabel, "errorsAndWarningsLineLabel")
             Me.errorsAndWarningsLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.errorsAndWarningsLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.errorsAndWarningsLineLabel.Name = "errorsAndWarningsLineLabel"
             '
             'errorsAndWarningsLabel
             '
             resources.ApplyResources(Me.errorsAndWarningsLabel, "errorsAndWarningsLabel")
-            Me.errorsAndWarningsLabel.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.errorsAndWarningsLabel.Name = "errorsAndWarningsLabel"
             '
             'lblSGenOption
             '
             resources.ApplyResources(Me.lblSGenOption, "lblSGenOption")
-            Me.lblSGenOption.Margin = New System.Windows.Forms.Padding(23, 11, 3, 3)
             Me.lblSGenOption.Name = "lblSGenOption"
             '
             'cboSGenOption
@@ -472,7 +406,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboSGenOption, "cboSGenOption")
             Me.cboSGenOption.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboSGenOption.FormattingEnabled = True
-            Me.cboSGenOption.MinimumSize = New System.Drawing.Size(125, 0)
             Me.cboSGenOption.Name = "cboSGenOption"
             '
             'BuildPropPage
@@ -538,24 +471,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
-                    m_ControlData = New PropertyControlData() { _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", Me.txtConditionalCompilationSymbols, AddressOf ConditionalCompilationSet, AddressOf ConditionalCompilationGet, ControlDataFlags.None, New Control() {Me.txtConditionalCompilationSymbols, Me.chkDefineDebug, Me.chkDefineTrace, Me.lblConditionalCompilationSymbols}), _
-                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.cboPlatformTarget, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {Me.lblPlatformTarget}), _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_AllowUnsafeBlocks, "AllowUnsafeBlocks", Me.chkAllowUnsafeCode), _
-                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, _
-                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", Me.chkOptimizeCode), _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.cboWarningLevel, AddressOf WarningLevelSet, AddressOf WarningLevelGet, ControlDataFlags.None, New Control() {lblWarningLevel}), _
-                     New PropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Me.txtSupressWarnings, New Control() {Me.lblSupressWarnings}), _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.rbWarningAll, AddressOf TreatWarningsInit, AddressOf TreatWarningsGet), _
-                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Me.txtSpecificWarnings, AddressOf TreatSpecificWarningsInit, AddressOf TreatSpecificWarningsGet), _
-                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, _
-                        VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.txtOutputPath, New Control() {Me.lblOutputPath}), _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Me.txtXMLDocumentationFile, AddressOf Me.XMLDocumentationFileInit, AddressOf Me.XMLDocumentationFileGet, ControlDataFlags.None, New Control() {Me.txtXMLDocumentationFile, Me.chkXMLDocumentationFile}), _
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.chkRegisterForCOM, AddressOf Me.RegisterForCOMInteropSet, AddressOf Me.RegisterForCOMInteropGet), _
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf Me.OutputTypeSet, Nothing), _
-                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, _
-                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", Me.cboSGenOption, New Control() {Me.lblSGenOption}), _
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet) _
+                    m_ControlData = New PropertyControlData() {
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", Me.txtConditionalCompilationSymbols, AddressOf ConditionalCompilationSet, AddressOf ConditionalCompilationGet, ControlDataFlags.None, New Control() {Me.txtConditionalCompilationSymbols, Me.chkDefineDebug, Me.chkDefineTrace, Me.lblConditionalCompilationSymbols}),
+                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.cboPlatformTarget, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {Me.lblPlatformTarget}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_AllowUnsafeBlocks, "AllowUnsafeBlocks", Me.chkAllowUnsafeCode),
+                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
+                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", Me.chkOptimizeCode),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.cboWarningLevel, AddressOf WarningLevelSet, AddressOf WarningLevelGet, ControlDataFlags.None, New Control() {lblWarningLevel}),
+                     New PropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Me.txtSupressWarnings, New Control() {Me.lblSupressWarnings}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.rbWarningAll, AddressOf TreatWarningsInit, AddressOf TreatWarningsGet),
+                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Me.txtSpecificWarnings, AddressOf TreatSpecificWarningsInit, AddressOf TreatSpecificWarningsGet),
+                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
+                        VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.txtOutputPath, New Control() {Me.lblOutputPath}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Me.txtXMLDocumentationFile, AddressOf Me.XMLDocumentationFileInit, AddressOf Me.XMLDocumentationFileGet, ControlDataFlags.None, New Control() {Me.txtXMLDocumentationFile, Me.chkXMLDocumentationFile}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.chkRegisterForCOM, AddressOf Me.RegisterForCOMInteropSet, AddressOf Me.RegisterForCOMInteropGet),
+                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf Me.OutputTypeSet, Nothing),
+                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
+                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", Me.cboSGenOption, New Control() {Me.lblSGenOption}),
+                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
                      }
                 End If
                 Return m_ControlData
@@ -1192,8 +1125,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 If (Path.IsPathRooted(stOutputPath)) Then
                                     '// stOutputPath is an Absolute path so check to see if its within the project path
 
-                                    If (String.Compare(Path.GetFullPath(stProjectDirectory), _
-                                                       Microsoft.VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)), _
+                                    If (String.Compare(Path.GetFullPath(stProjectDirectory),
+                                                       Microsoft.VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
                                                        StringComparison.Ordinal) = 0) Then
 
                                         '// The output path is within the project so suggest the output directory (or suggest just the filename

@@ -12,6 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Base class for the C# / VB build property pages
     ''' </summary>
     ''' <remarks></remarks>
+    <TypeDescriptionProvider(GetType(AbstractControlTypeDescriptionProvider(Of BuildPropPageBase, PropPageUserControlBase)))>
     Friend MustInherit Class BuildPropPageBase
         Inherits PropPageUserControlBase
 
