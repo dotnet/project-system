@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
         public ProjectCommandAttribute(string group, params long[] commandIds)
             : base(typeof(IAsyncCommandGroupHandler))
         {
-            Group = group;
+            Group = new Guid(group);
             CommandIds = commandIds;
         }
 
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             get;
         }
 
-        public string Group
+        public Guid Group
         {
             get;
         }
