@@ -230,8 +230,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
         Public Function IsUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False) As Boolean
-            If TypeOf ex Is NullReferenceException _
-                OrElse (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
+            If (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
                 OrElse TypeOf ex Is StackOverflowException _
                 OrElse TypeOf ex Is ThreadAbortException _
                 OrElse TypeOf ex Is AccessViolationException _
