@@ -1,7 +1,7 @@
-### Code 
+### Code
 
 #### Visual Studio
-From within [Visual Studio "15" Preview](http://go.microsoft.com/fwlink/?LinkId=746567), simply open _src\ProjectSystem.sln_.
+From within [Visual Studio "15" Preview 2](https://www.visualstudio.com/en-us/downloads/visual-studio-next-downloads-vs), simply open _src\ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, deploy and run tests.
 
@@ -27,7 +27,7 @@ To start debugging:
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
 3. Press _F5_
 
-If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a long start up time.
+If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
 
 #### Command-line
 
