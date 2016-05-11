@@ -1068,7 +1068,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub XMLDocumentationEnable_CheckStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
-            Const XML_FILE_EXTENSION As String = ".XML"
+            Const XML_FILE_EXTENSION As String = ".xml"
 
             If Me.chkXMLDocumentationFile.Checked Then
 
