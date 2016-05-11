@@ -53,8 +53,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents rbStartProject As System.Windows.Forms.RadioButton
         Friend WithEvents rbStartProgram As System.Windows.Forms.RadioButton
         Friend WithEvents rbStartURL As System.Windows.Forms.RadioButton
-        Friend WithEvents StartProgram As System.Windows.Forms.TextBox
-        Friend WithEvents StartURL As System.Windows.Forms.TextBox
+        Friend WithEvents StartProgram As TextBoxWithWorkaroundForAutoCompleteAppend
+        Friend WithEvents StartURL As TextBoxWithWorkaroundForAutoCompleteAppend
         Friend WithEvents RemoteDebugEnabled As System.Windows.Forms.CheckBox
         Friend WithEvents StartArguments As MultilineTextBoxRejectsEnter
         Friend WithEvents StartWorkingDirectory As System.Windows.Forms.TextBox
@@ -84,8 +84,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.rbStartProject = New System.Windows.Forms.RadioButton
             Me.rbStartProgram = New System.Windows.Forms.RadioButton
             Me.rbStartURL = New System.Windows.Forms.RadioButton
-            Me.StartProgram = New System.Windows.Forms.TextBox
-            Me.StartURL = New System.Windows.Forms.TextBox
+            Me.StartProgram = New TextBoxWithWorkaroundForAutoCompleteAppend
+            Me.StartURL = New TextBoxWithWorkaroundForAutoCompleteAppend
             Me.StartProgramBrowse = New System.Windows.Forms.Button
             Me.StartOptionsLabelLine = New System.Windows.Forms.Label
             Me.StartOptionsLabel = New System.Windows.Forms.Label
