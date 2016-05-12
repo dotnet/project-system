@@ -14,7 +14,6 @@
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>

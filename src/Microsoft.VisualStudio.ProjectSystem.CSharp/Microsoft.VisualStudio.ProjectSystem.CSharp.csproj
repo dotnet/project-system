@@ -16,7 +16,6 @@
     <UseCodebase>true</UseCodebase>
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>

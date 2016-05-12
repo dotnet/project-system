@@ -23,7 +23,6 @@
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
     <NoDocumentationFile>true</NoDocumentationFile>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

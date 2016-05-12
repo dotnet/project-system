@@ -6,7 +6,6 @@
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <PropertyGroup>
     <ProjectGuid>{CF97A73F-F2F1-4893-960C-9C2B95738870}</ProjectGuid>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>

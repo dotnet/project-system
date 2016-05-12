@@ -23,7 +23,6 @@
     <VBRuntime>Default</VBRuntime>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <StrongNameCertificate>Microsoft</StrongNameCertificate>
   </PropertyGroup>
