@@ -16,6 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal class CSharpProjectCompatibilityProvider : IFlavoredProjectCompatibilityProvider
     {
+        [ImportingConstructor]
+        public CSharpProjectCompatibilityProvider()
+        {
+        }
+
         public Task<bool> IsProjectCompatibleAsync(ProjectRootElement project)
         {
             return Task.FromResult(true);
