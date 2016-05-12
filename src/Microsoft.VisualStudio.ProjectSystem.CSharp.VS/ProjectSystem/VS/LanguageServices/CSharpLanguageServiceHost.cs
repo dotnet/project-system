@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -25,14 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             get { return CSharpIntellisenseProvider; }
         }
 
-        /// <summary>
-        /// Invoked when the UnconfiguredProject is first loaded to initialize language services.
-        /// </summary>
-        [ProjectAutoLoad(ProjectLoadCheckpoint.InitialActiveConfigurationKnown)]
+        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpLanguageService)]
-        private void Initialize()
+        private Task OnProjectFactoryCompleted()
         {
-            var nowait = InitializeAsync();
+            return InitializeAsync();
         }
     }
 }
