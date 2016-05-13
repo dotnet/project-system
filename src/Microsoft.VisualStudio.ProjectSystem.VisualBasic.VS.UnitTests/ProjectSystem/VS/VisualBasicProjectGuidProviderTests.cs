@@ -3,7 +3,7 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
     public class VisualBasicProjectGuidProviderTests

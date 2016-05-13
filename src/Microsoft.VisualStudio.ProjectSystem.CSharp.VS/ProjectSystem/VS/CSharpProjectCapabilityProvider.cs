@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<bool> IsProjectNeedBeUpgradedAsync(ProjectRootElement project)
         {
-            return Task.FromResult(true);
+            // We need to fill this out: https://github.com/dotnet/roslyn/issues/11285
+            return Task.FromResult(false);
         }
     }
 }

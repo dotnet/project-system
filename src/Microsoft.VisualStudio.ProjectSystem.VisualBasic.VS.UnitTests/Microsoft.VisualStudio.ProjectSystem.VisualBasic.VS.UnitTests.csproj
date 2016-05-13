@@ -58,6 +58,7 @@
     <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPageProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectCapabilityProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
