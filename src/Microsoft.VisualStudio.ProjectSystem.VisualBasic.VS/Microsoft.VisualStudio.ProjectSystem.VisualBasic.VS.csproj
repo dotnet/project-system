@@ -53,7 +53,7 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ProjectSystem\VisualBasicProjectGuidProvider.cs" />
+    <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
     <Compile Include="VisualBasicProjectSystemPackage.cs" />
   </ItemGroup>
   <ItemGroup>
