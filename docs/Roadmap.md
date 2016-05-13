@@ -1,4 +1,4 @@
-The first release of the project system will be heavily focused focused on [feature parity](https://github.com/dotnet/roslyn/issues?q=is%3Aopen+label%3A%22Area-Project+System%22+label%3A%22Project+System-Parity%22) with the old project systems in csproj.dll and msvbprj.dll. This ensures there's a seamless upgrade when customers open existing projects in the new project system, things should feel extremely familiar with zero conversions or project "upgrades".
+The first release of the project system will be heavily focused focused on [feature parity](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+label%3A%22Parity%22) with the old project systems in csproj.dll and msvbprj.dll. This ensures there's a seamless upgrade when customers open existing projects in the new project system, things should feel extremely familiar with zero conversions or project "upgrades".
 
 Heading towards the end of the first release, we'll start looking at picking off some [new features](https://github.com/dotnet/roslyn/labels/Project%20System-New%20Feature).
 
