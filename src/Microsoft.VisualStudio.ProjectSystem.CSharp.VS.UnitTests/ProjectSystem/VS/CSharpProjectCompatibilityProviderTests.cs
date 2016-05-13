@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var result = await provider.IsProjectCompatibleAsync(element);
 
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Fact]

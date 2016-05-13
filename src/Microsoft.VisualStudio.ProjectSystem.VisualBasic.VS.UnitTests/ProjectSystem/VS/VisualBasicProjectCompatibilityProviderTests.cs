@@ -8,7 +8,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
-    public class VisualBasicProjectCapabilityProviderTests
+    public class VisualBasicProjectCompatibilityProviderTests
     {
         [Fact]
         public async Task IsProjectCompatibleAsync_ReturnsTrue()
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var result = await provider.IsProjectCompatibleAsync(element);
 
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Fact]
