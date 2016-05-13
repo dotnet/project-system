@@ -67,4 +67,4 @@ NOTE: In Visual Studio "15", there is currently a known issue with code coverage
 '---- System.IO.FileNotFoundException : Could not load file or assembly 'file:///C:\roslyn-project-system\Binaries\Debug\Tests\Microsoft.VisualStudio.CodeCoverage.Shim.dll' or one of its dependencies. The system cannot find the file specified.'
 ```
 
-This will be fixed in a future release.
+This will be fixed in a future release. The workaround is to copy C:\Program Files (x86)\Microsoft Visual Studio 15.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.CodeCoverage.Shim.dll into the tests output directory (bin\Tests).
