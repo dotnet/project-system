@@ -62,6 +62,7 @@
     <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Test\App.config">

@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Checks a legacy C# project for compability with the new project system.
+    ///     Checks a legacy VB project for compability with the new project system.
     /// </summary>
-    [SupportedProjectTypeGuid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid)]
+    [SupportedProjectTypeGuid(CSharpProjectSystemPackage.LegacyProjectTypeGuid)]
     [Export(ExportContractNames.Extensions.SupportedProjectTypeGuid)]
     [Export(typeof(IFlavoredProjectCompatibilityProvider))]
-    [ProjectTypeGuidFilter(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid)]
+    [ProjectTypeGuidFilter(CSharpProjectSystemPackage.LegacyProjectTypeGuid)]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-    internal class VisualBasicProjectCompatibilityProvider : IFlavoredProjectCompatibilityProvider
+    internal class CSharpProjectCompatibilityProvider : IFlavoredProjectCompatibilityProvider
     {
         [ImportingConstructor]
-        public VisualBasicProjectCompatibilityProvider()
+        public CSharpProjectCompatibilityProvider()
         {
         }
 
@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<bool> IsProjectNeedBeUpgradedAsync(ProjectRootElement project)
         {
-            return Task.FromResult(true);
+            // We need to fill this out: https://github.com/dotnet/roslyn/issues/11285
+            return Task.FromResult(false);
         }
     }
 }
