@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
         {
-            this.CodeModelProviders = new OrderPrecedenceImportCollection<ICodeModelProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
+            CodeModelProviders = new OrderPrecedenceImportCollection<ICodeModelProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
         }
 
         /// <summary>
@@ -69,9 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             // Defer acquisition of languageServiceBuildErrorReporter until the build event comes, because Language Service integration is done
             // asynchronously and we do not want to block this component's initialization on that part.
-            if (this._languageServiceBuildErrorReporter == null && this.CodeModelProviders.Any())
+            if (_languageServiceBuildErrorReporter == null && CodeModelProviders.Any())
             {
-                var projectWithIntellisense = this.CodeModelProviders.First().Value as IProjectWithIntellisense;
+                var projectWithIntellisense = CodeModelProviders.First().Value as IProjectWithIntellisense;
                 if (projectWithIntellisense != null && projectWithIntellisense.IntellisenseProject != null)
                 {
                     // TODO: VB's IVsIntellisenseProject::GetExternalErrorReporter() does not return the correct instance which should be QIed from the inner IVbCompilerProject (BUG 1024166),
@@ -79,18 +79,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     IVsReportExternalErrors vsReportExternalErrors;
                     if (projectWithIntellisense.IntellisenseProject.GetExternalErrorReporter(out vsReportExternalErrors) == 0)
                     {
-                        this._languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
+                        _languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
                     }
                 }
             }
 
             bool handled = false;
 
-            if (this._languageServiceBuildErrorReporter != null)
+            if (_languageServiceBuildErrorReporter != null)
             {
                 try
                 {
-                    this._languageServiceBuildErrorReporter.ReportError(
+                    _languageServiceBuildErrorReporter.ReportError(
                         task.Text,
                         details.Code,
                         details.Priority,
@@ -121,9 +121,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         public Task ClearAllAsync()
         {
-            if (this._languageServiceBuildErrorReporter != null)
+            if (_languageServiceBuildErrorReporter != null)
             {
-                this._languageServiceBuildErrorReporter.ClearErrors();
+                _languageServiceBuildErrorReporter.ClearErrors();
             }
 
             return TplExtensions.CompletedTask;
