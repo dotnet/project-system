@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         internal class ErrorListDetails
         {
-            private string _helpKeyword;
+            private readonly string _helpKeyword;
 
             public ErrorListDetails(BuildEventArgs args = null)
             {

@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Threading;
-using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -17,29 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     /// </summary>
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
-    [Order(999)] // One less than the CPS version of this class, until they've removed it
+    [Order(1)] // One less than the CPS version of this class, until they've removed it
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        /// <summary>
-        /// Cache the task so that we do not need to allocate it on each invocation.
-        /// </summary>
         private readonly static Task<AddMessageResult> HandledAndStopProcessingTask = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
-
-        /// <summary>
-        /// Cache the task so that we do not need to allocate it on each invocation.
-        /// </summary>
         private readonly static Task<AddMessageResult> NotHandledTask = Task.FromResult(AddMessageResult.NotHandled);
-
-        /// <summary>
-        /// The instance of <see cref="IVsLanguageServiceBuildErrorReporter"/> being obtained from Language Service.
-        /// </summary>
         private IVsLanguageServiceBuildErrorReporter _languageServiceBuildErrorReporter;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguageServiceErrorListProvider"/> class.
-        /// </summary>
         [ImportingConstructor]
-        private LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
+        public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
         {
             this.CodeModelProviders = new OrderPrecedenceImportCollection<ICodeModelProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
         }
