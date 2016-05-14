@@ -54,7 +54,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
-    <Compile Include="VisualBasicProjectSystemPackage.cs" />
+    <Compile Include="Packaging\VisualBasicProjectSystemPackage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
