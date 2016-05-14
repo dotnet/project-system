@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     // TODO: VB's IVsIntellisenseProject::GetExternalErrorReporter() does not return the correct instance which should be QIed from the inner IVbCompilerProject (BUG 1024166),
                     // so this code works on C# only.
                     IVsReportExternalErrors vsReportExternalErrors;
-                    if (ErrorHandler.Succeeded(projectWithIntellisense.IntellisenseProject.GetExternalErrorReporter(out vsReportExternalErrors)))
+                    if (projectWithIntellisense.IntellisenseProject.GetExternalErrorReporter(out vsReportExternalErrors) == 0)
                     {
                         this._languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
                     }
