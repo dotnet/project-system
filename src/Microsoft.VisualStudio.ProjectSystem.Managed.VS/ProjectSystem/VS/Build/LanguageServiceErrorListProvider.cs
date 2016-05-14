@@ -1,25 +1,24 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Threading;
+using Microsoft.Build.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
-    using System;
-    using System.ComponentModel.Composition;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.ProjectSystem.VS.Build;
-    using Microsoft.VisualStudio.ProjectSystem.VS.Implementation.Package;
-    using Microsoft.VisualStudio.Shell.Interop;
-    using Microsoft.VisualStudio.TextManager.Interop;
-    using Microsoft.VisualStudio.Threading;
-
     /// <summary>
     /// An implemenation of <see cref="IVsErrorListProvider"/> in unconfigured project scope
     /// to take over populating of VB/C# compiler errors and warnings in the error list.
     /// </summary>
-    [AppliesTo("( " + ProjectCapabilities.VB + " | " + ProjectCapabilities.CSharp + " ) & !ManagedLang & " + ProjectCapabilities.LanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
-    [Order(1000)]
-    internal class LanguageServiceErrorListProvider : IVsErrorListProvider
+    [Order(999)] // One less than the CPS version of this class, until they've removed it
+    internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
         /// <summary>
         /// Cache the task so that we do not need to allocate it on each invocation.
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// The instance of <see cref="IVsLanguageServiceBuildErrorReporter"/> being obtained from Language Service.
         /// </summary>
-        private IVsLanguageServiceBuildErrorReporter languageServiceBuildErrorReporter;
+        private IVsLanguageServiceBuildErrorReporter _languageServiceBuildErrorReporter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageServiceErrorListProvider"/> class.
@@ -49,9 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Gets all the code model providers in the system.
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<ICodeModelProvider> CodeModelProviders { get; set; }
-
-        #region IVsErrorListProvider Members
+        private OrderPrecedenceImportCollection<ICodeModelProvider> CodeModelProviders
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// <see cref="IVsErrorListProvider.SuspendRefresh"/>
@@ -74,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             Requires.NotNull(task, nameof(task));
 
-            var details = task.BuildEventArgs.ExtractErrorListDetails();
+            var details = ExtractErrorListDetails(task.BuildEventArgs);
             if (details == null || string.IsNullOrEmpty(details.Code))
             {
                 return NotHandledTask;
@@ -82,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             // Defer acquisition of languageServiceBuildErrorReporter until the build event comes, because Language Service integration is done
             // asynchronously and we do not want to block this component's initialization on that part.
-            if (this.languageServiceBuildErrorReporter == null && this.CodeModelProviders.Any())
+            if (this._languageServiceBuildErrorReporter == null && this.CodeModelProviders.Any())
             {
                 var projectWithIntellisense = this.CodeModelProviders.First().Value as IProjectWithIntellisense;
                 if (projectWithIntellisense != null && projectWithIntellisense.IntellisenseProject != null)
@@ -92,18 +93,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     IVsReportExternalErrors vsReportExternalErrors;
                     if (ErrorHandler.Succeeded(projectWithIntellisense.IntellisenseProject.GetExternalErrorReporter(out vsReportExternalErrors)))
                     {
-                        this.languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
+                        this._languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
                     }
                 }
             }
 
             bool handled = false;
 
-            if (this.languageServiceBuildErrorReporter != null)
+            if (this._languageServiceBuildErrorReporter != null)
             {
                 try
                 {
-                    this.languageServiceBuildErrorReporter.ReportError(
+                    this._languageServiceBuildErrorReporter.ReportError(
                         task.Text,
                         details.Code,
                         details.Priority,
@@ -134,14 +135,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public Task ClearAllAsync()
         {
-            if (this.languageServiceBuildErrorReporter != null)
+            if (this._languageServiceBuildErrorReporter != null)
             {
-                this.languageServiceBuildErrorReporter.ClearErrors();
+                this._languageServiceBuildErrorReporter.ClearErrors();
             }
 
             return TplExtensions.CompletedTask;
         }
 
-        #endregion
+        /// <summary>
+        /// Extracts the details required by the VS Error List from an MSBuild build event.
+        /// </summary>
+        /// <param name="eventArgs">The build event.  May be null.</param>
+        /// <returns>The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</returns>
+        internal static ErrorListDetails ExtractErrorListDetails(BuildEventArgs eventArgs)
+        {
+            BuildErrorEventArgs errorMessage;
+            BuildWarningEventArgs warningMessage;
+            CriticalBuildMessageEventArgs criticalMessage;
+
+            if ((errorMessage = eventArgs as BuildErrorEventArgs) != null)
+            {
+                return new ErrorListDetails(eventArgs)
+                {
+                    ProjectFile = errorMessage.ProjectFile,
+                    File = errorMessage.File,
+                    Subcategory = errorMessage.Subcategory,
+                    LineNumber = errorMessage.LineNumber,
+                    ColumnNumber = errorMessage.ColumnNumber,
+                    Code = errorMessage.Code,
+                    Priority = VSTASKPRIORITY.TP_HIGH,
+                };
+            }
+
+            if ((warningMessage = eventArgs as BuildWarningEventArgs) != null)
+            {
+                return new ErrorListDetails(eventArgs)
+                {
+                    ProjectFile = warningMessage.ProjectFile,
+                    File = warningMessage.File,
+                    Subcategory = warningMessage.Subcategory,
+                    LineNumber = warningMessage.LineNumber,
+                    ColumnNumber = warningMessage.ColumnNumber,
+                    Code = warningMessage.Code,
+                    Priority = VSTASKPRIORITY.TP_NORMAL,
+                };
+            }
+
+            if ((criticalMessage = eventArgs as CriticalBuildMessageEventArgs) != null)
+            {
+                return new ErrorListDetails(eventArgs)
+                {
+                    ProjectFile = criticalMessage.ProjectFile,
+                    File = criticalMessage.File,
+                    Subcategory = criticalMessage.Subcategory,
+                    LineNumber = criticalMessage.LineNumber,
+                    ColumnNumber = criticalMessage.ColumnNumber,
+                    Code = criticalMessage.Code,
+                    Priority = VSTASKPRIORITY.TP_LOW,
+                };
+            }
+
+            return null;
+        }
     }
 }

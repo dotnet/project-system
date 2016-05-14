@@ -3,5 +3,6 @@
     "net46": {}
   },
   "dependencies": {
+	"Microsoft.VisualStudio.Shell.14.0": "14.1.24720"
   }
 }
