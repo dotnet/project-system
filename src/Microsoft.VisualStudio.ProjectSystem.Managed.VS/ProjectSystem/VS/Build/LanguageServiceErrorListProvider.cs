@@ -40,23 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             set;
         }
 
-        /// <summary>
-        /// <see cref="IVsErrorListProvider.SuspendRefresh"/>
-        /// </summary>
         public void SuspendRefresh()
         {
         }
-
-        /// <summary>
-        /// <see cref="IVsErrorListProvider.ResumeRefresh"/>
-        /// </summary>
+   
         public void ResumeRefresh()
         {
         }
-
-        /// <summary>
-        /// <see cref="IVsErrorListProvider.AddMessageAsync"/>
-        /// </summary>
+   
         public Task<AddMessageResult> AddMessageAsync(TargetGeneratedTask task)
         {
             Requires.NotNull(task, nameof(task));
@@ -108,17 +99,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return handled ? HandledAndStopProcessingTask : NotHandledTask;
         }
 
-        /// <summary>
-        /// <see cref="IVsErrorListProvider.ClearMessageFromTargetAsync"/>
-        /// </summary>
         public Task ClearMessageFromTargetAsync(string targetName)
         {
             return TplExtensions.CompletedTask;
         }
 
-        /// <summary>
-        /// <see cref="IVsErrorListProvider.ClearAllAsync"/>
-        /// </summary>
         public Task ClearAllAsync()
         {
             if (_languageServiceBuildErrorReporter != null)
