@@ -15,12 +15,14 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.OLE.Interop;
 using Task = System.Threading.Tasks.Task;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
     ///     Provides the base <see langword="abstract"/> for language service hosts that integrate the language service with the project system.
     /// </summary>
+    [ExcludeFromCodeCoverage] // This is being thrown away: https://github.com/dotnet/roslyn-project-system/issues/131
     internal abstract class AbstractLanguageServiceHost :
         IVsIntellisenseProjectHost,
         IDisposable,
