@@ -39,12 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public string ProjectDisplayName
-            {
-                get;
-                set;
-            }
-
             public string File
             {
                 get;
@@ -118,74 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public TaskPriority TaskPriority
-            {
-                get
-                {
-                    switch (this.Priority)
-                    {
-                        case VSTASKPRIORITY.TP_HIGH:
-                            return Shell.TaskPriority.High;
-                        case VSTASKPRIORITY.TP_LOW:
-                            return Shell.TaskPriority.Low;
-                        case VSTASKPRIORITY.TP_NORMAL:
-                            return Shell.TaskPriority.Normal;
-                        default:
-                            Report.Fail("Unexpected VSTASKPRIORITY value: " + this.Priority);
-                            return Shell.TaskPriority.Normal;
-                    }
-                }
-            }
-
-            public TaskErrorCategory ErrorCategory
-            {
-                get
-                {
-                    switch (this.Priority)
-                    {
-                        case VSTASKPRIORITY.TP_HIGH:
-                            return TaskErrorCategory.Error;
-                        case VSTASKPRIORITY.TP_NORMAL:
-                            return TaskErrorCategory.Warning;
-                        case VSTASKPRIORITY.TP_LOW:
-                        default:
-                            return TaskErrorCategory.Message;
-                    }
-                }
-            }
-
-            public __VSERRORCATEGORY VsErrorCategory
-            {
-                get
-                {
-                    switch (this.Priority)
-                    {
-                        case VSTASKPRIORITY.TP_HIGH:
-                            return __VSERRORCATEGORY.EC_ERROR;
-                        case VSTASKPRIORITY.TP_NORMAL:
-                            return __VSERRORCATEGORY.EC_WARNING;
-                        case VSTASKPRIORITY.TP_LOW:
-                        default:
-                            return __VSERRORCATEGORY.EC_MESSAGE;
-                    }
-                }
-            }
-
             public string HelpKeyword
             {
                 get { return string.IsNullOrEmpty(this._helpKeyword) ? this.Code : this._helpKeyword; }
-            }
-
-            public ErrorTaskMessageIdProvider MessageIdProvider
-            {
-                get;
-                set;
-            }
-
-            public uint MessageId
-            {
-                get;
-                set;
             }
 
             /// <summary>
