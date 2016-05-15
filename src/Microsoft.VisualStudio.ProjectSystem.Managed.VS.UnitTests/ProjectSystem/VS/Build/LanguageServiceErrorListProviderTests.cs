@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [Fact]
         public async void AddMessageAsync_WhenReporterThrowsNotImplemented_ReturnsNotHandled()
         {
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, string bstrFileName) =>
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 throw new NotImplementedException();
             });
@@ -119,19 +119,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenReporterReturnsE_NOTIMPL_ReturnsNotHandled()
+        public async void AddMessageAsync_WhenReporterThrows_Throws()
         {
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, string bstrFileName) =>
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
-                return VSConstants.E_NOTIMPL;
+                throw new Exception();
             });
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
 
-            var result = await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
-
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            await Assert.ThrowsAsync<Exception>(() => {
+                return provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            });
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         //          ErrorMessage                                    Code         
         [Theory]
         [InlineData(null,                                           null)]
-        [InlineData("",                                             "0000")]          
+        [InlineData("",                                             "0000")]
         [InlineData(" ",                                            "1000")]          
         [InlineData("This is an error message.",                    "CA1000")]       
         [InlineData("This is an error message\r\n",                 "CS1000")]
@@ -162,11 +162,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             string errorMessageResult = "NotSet";
             string errorIdResult = "NotSet";
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, string bstrFileName) =>
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 errorMessageResult = bstrErrorMessage;
                 errorIdResult = bstrErrorId;
-                return 0;
             });
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
@@ -195,11 +194,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             int? lineResult = null;
             int? colomnResult = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, string bstrFileName) =>
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 lineResult = iLine;
                 colomnResult = iColumn;
-                return 0;
             });
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
@@ -224,13 +222,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(@"..\Foo.txt",                              @"MyProject.csproj",                    @"")]
         [InlineData(@"..\Foo.txt",                              @"<>",                                  @"")]
         [InlineData(@"<>",                                      @"C:\MyProject.csproj",                 @"")]
+        [InlineData(@"C:\MyProject.csproj",                     @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string file, string projectFile, string expectedFileName)
         {
             string fileNameResult = "NotSet";
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, string bstrFileName) =>
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 fileNameResult = bstrFileName;
-                return 0;
             });
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);

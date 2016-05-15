@@ -8,24 +8,24 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsLanguageServiceBuildErrorReporter2Factory
     {
-        public static IVsLanguageServiceBuildErrorReporter ImplementClearErrors(Func<int> action)
+        public static IVsLanguageServiceBuildErrorReporter2 ImplementClearErrors(Func<int> action)
         {
             var mock = new Mock<IVsReportExternalErrors>();
 
-            var reporter = mock.As<IVsLanguageServiceBuildErrorReporter>();
+            var reporter = mock.As<IVsLanguageServiceBuildErrorReporter2>();
             reporter.Setup(r => r.ClearErrors())
                     .Returns(action);
 
             return reporter.Object;
         }
 
-        public static IVsLanguageServiceBuildErrorReporter ImplementReportError(Func<string, string, VSTASKPRIORITY, int, int, string, int> action)
+        public static IVsLanguageServiceBuildErrorReporter2 ImplementReportError(Action<string, string, VSTASKPRIORITY, int, int, int, int, string> action)
         {
             var mock = new Mock<IVsReportExternalErrors>();
 
-            var reporter = mock.As<IVsLanguageServiceBuildErrorReporter>();
-            reporter.Setup(r => r.ReportError(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
-                    .Returns(action);
+            var reporter = mock.As<IVsLanguageServiceBuildErrorReporter2>();
+            reporter.Setup(r => r.ReportError2(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(),  It.IsAny<int>(), It.IsAny<string>()))                
+                    .Callback(action);
 
             return reporter.Object;
         }

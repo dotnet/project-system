@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     {
         private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private readonly static Task<AddMessageResult> NotHandled = Task.FromResult(AddMessageResult.NotHandled);
-        private IVsLanguageServiceBuildErrorReporter _languageServiceBuildErrorReporter;
+        private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
@@ -49,10 +49,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             Requires.NotNull(task, nameof(task));
 
+            return AddMessageAsyncCore(task);
+        }
+
+        public async Task<AddMessageResult> AddMessageAsyncCore(TargetGeneratedTask task)
+        {
             var details = ExtractErrorListDetails(task.BuildEventArgs);
             if (details == null || string.IsNullOrEmpty(details.Code))
             {
-                return NotHandled;
+                await NotHandled;
             }
 
             InitializeBuildErrorReporter();
@@ -62,15 +67,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 try
                 {
-                    _languageServiceBuildErrorReporter.ReportError(
-                                                details.Message,
-                                                details.Code,
-                                                details.Priority,
-                                                details.LineNumberForErrorList,
-                                                details.ColumnNumberForErrorList,
-                                                details.FileFullPath);
+                    _languageServiceBuildErrorReporter.ReportError2(details.Message,
+                                                                    details.Code,
+                                                                    details.Priority,
+                                                                    details.LineNumberForErrorList,
+                                                                    details.ColumnNumberForErrorList,
+                                                                    details.LineNumberForErrorList,
+                                                                    details.ColumnNumberForErrorList,
+                                                                    details.FileFullPath);
 
-                    handled = true;
                 }
                 catch (NotImplementedException)
                 {   // Language Service doesn't handle it, typically because file 
@@ -78,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? HandledAndStopProcessing : NotHandled;
+            return handled ? await HandledAndStopProcessing : await NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -108,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 IVsReportExternalErrors reportExternalErrors;
                 if (project.Value.IntellisenseProject.GetExternalErrorReporter(out reportExternalErrors) == 0)
                 {
-                    _languageServiceBuildErrorReporter = reportExternalErrors as IVsLanguageServiceBuildErrorReporter;
+                    _languageServiceBuildErrorReporter = reportExternalErrors as IVsLanguageServiceBuildErrorReporter2;
                 }
             }
         }
