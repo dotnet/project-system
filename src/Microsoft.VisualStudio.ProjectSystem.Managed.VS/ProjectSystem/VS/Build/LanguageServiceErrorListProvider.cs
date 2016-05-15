@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [Order(1)] // One less than the CPS version of this class, until they've removed it
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        private readonly static Task<AddMessageResult> HandledAndStopProcessingTask = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
-        private readonly static Task<AddMessageResult> NotHandledTask = Task.FromResult(AddMessageResult.NotHandled);
+        private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
+        private readonly static Task<AddMessageResult> NotHandled = Task.FromResult(AddMessageResult.NotHandled);
         private IVsLanguageServiceBuildErrorReporter _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var details = ExtractErrorListDetails(task.BuildEventArgs);
             if (details == null || string.IsNullOrEmpty(details.Code))
             {
-                return NotHandledTask;
+                return NotHandled;
             }
 
             InitializeBuildErrorReporter();
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? HandledAndStopProcessingTask : NotHandledTask;
+            return handled ? HandledAndStopProcessing : NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
