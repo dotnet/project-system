@@ -53,6 +53,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
+        public async void ClearAllAsync_WhenProjectWithIntellisense_CallsClearErrors()
+        {
+            int callCount = 0;
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
+            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+
+            var provider = CreateInstance(project);
+            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });   // Force initialization
+
+            await provider.ClearAllAsync();
+
+            Assert.Equal(1, callCount);
+        }
+
+
+        [Fact]
         public async void AddMessageAsync_NullAsTask_ThrowsArgumentNull()
         {
             var provider = CreateInstance();
@@ -134,7 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             });
         }
 
-
         [Fact]
         public async void AddMessageAsync_ReturnsHandledAndStopProcessing()
         {
@@ -148,18 +163,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void ClearAllAsync_WhenProjectWithIntellisense_CallsClearErrors()
+        public async void AddMessageAsync_WarningTaskAsTask_PassesTP_NORMALAsPriority()
         {
-            int callCount = 0;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
+            VSTASKPRIORITY? result = null;
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+                result = nPriority;
+            });
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-
             var provider = CreateInstance(project);
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });   // Force initialization
 
-            await provider.ClearAllAsync();
+            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
 
-            Assert.Equal(1, callCount);
+            Assert.Equal(result, VSTASKPRIORITY.TP_NORMAL);
+        }
+
+        [Fact]
+        public async void AddMessageAsync_ErrorTaskAsTask_PassesTP_HIGHAsPriority()
+        {
+            VSTASKPRIORITY? result = null;
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+                result = nPriority;
+            });
+            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var provider = CreateInstance(project);
+
+            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+
+            Assert.Equal(result, VSTASKPRIORITY.TP_HIGH);
+        }
+
+        [Fact]
+        public async void AddMessageAsync_CriticalBuildMessageTaskAsTask_PassesTP_LOWAsPriority()
+        {
+            VSTASKPRIORITY? result = null;
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+                result = nPriority;
+            });
+            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var provider = CreateInstance(project);
+
+            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+
+            Assert.Equal(result, VSTASKPRIORITY.TP_LOW);
         }
 
         //          ErrorMessage                                    Code         
