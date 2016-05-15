@@ -134,6 +134,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             });
         }
 
+
+        [Fact]
+        public async void AddMessageAsync_ReturnsHandledAndStopProcessing()
+        {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
+            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var provider = CreateInstance(project);
+
+            var result = await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+
+            Assert.Equal(result, AddMessageResult.HandledAndStopProcessing);
+        }
+
         [Fact]
         public async void ClearAllAsync_WhenProjectWithIntellisense_CallsCallErrors()
         {

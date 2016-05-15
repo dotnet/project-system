@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                                                                     details.LineNumberForErrorList,
                                                                     details.ColumnNumberForErrorList,
                                                                     details.FileFullPath);
-
+                    handled = true;
                 }
                 catch (NotImplementedException)
                 {   // Language Service doesn't handle it, typically because file 
