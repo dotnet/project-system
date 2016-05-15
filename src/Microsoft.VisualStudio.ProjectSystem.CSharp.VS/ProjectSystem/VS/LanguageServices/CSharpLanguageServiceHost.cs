@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     Integrates the C# language service with the C# project system.
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
+    [Export(typeof(IProjectWithIntellisense))]
     [AppliesTo(ProjectCapability.CSharpLanguageService)]
     internal class CSharpLanguageServiceHost : AbstractLanguageServiceHost
     {

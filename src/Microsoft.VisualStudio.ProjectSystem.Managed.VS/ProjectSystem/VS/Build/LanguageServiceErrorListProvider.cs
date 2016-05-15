@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
     /// <summary>
-    /// An implemenation of <see cref="IVsErrorListProvider"/> in unconfigured project scope
-    /// to take over populating of VB/C# compiler errors and warnings in the error list.
+    ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
+    ///     service so that it de-dup warnings and errors between IntelliSense and build.
     /// </summary>
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
@@ -27,14 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
         {
-            CodeModelProviders = new OrderPrecedenceImportCollection<ICodeModelProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
+            ProjectsWithIntellisense = new OrderPrecedenceImportCollection<IProjectWithIntellisense>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
         }
 
-        /// <summary>
-        /// Gets all the code model providers in the system.
-        /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<ICodeModelProvider> CodeModelProviders
+        public OrderPrecedenceImportCollection<IProjectWithIntellisense> ProjectsWithIntellisense
         {
             get;
             set;
@@ -58,25 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return NotHandledTask;
             }
 
-            // Defer acquisition of languageServiceBuildErrorReporter until the build event comes, because Language Service integration is done
-            // asynchronously and we do not want to block this component's initialization on that part.
-            if (_languageServiceBuildErrorReporter == null && CodeModelProviders.Any())
-            {
-                var projectWithIntellisense = CodeModelProviders.First().Value as IProjectWithIntellisense;
-                if (projectWithIntellisense != null && projectWithIntellisense.IntellisenseProject != null)
-                {
-                    // TODO: VB's IVsIntellisenseProject::GetExternalErrorReporter() does not return the correct instance which should be QIed from the inner IVbCompilerProject (BUG 1024166),
-                    // so this code works on C# only.
-                    IVsReportExternalErrors vsReportExternalErrors;
-                    if (projectWithIntellisense.IntellisenseProject.GetExternalErrorReporter(out vsReportExternalErrors) == 0)
-                    {
-                        _languageServiceBuildErrorReporter = vsReportExternalErrors as IVsLanguageServiceBuildErrorReporter;
-                    }
-                }
-            }
+            InitializeBuildErrorReporter();
 
             bool handled = false;
-
             if (_languageServiceBuildErrorReporter != null)
             {
                 try
@@ -112,6 +93,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             }
 
             return TplExtensions.CompletedTask;
+        }
+
+        private void InitializeBuildErrorReporter()
+        {
+            // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
+            if (_languageServiceBuildErrorReporter == null && ProjectsWithIntellisense.Count > 0)
+            {
+                var project = ProjectsWithIntellisense.First();
+
+                // TODO: VB's IVsIntellisenseProject::GetExternalErrorReporter() does not return the correct instance which should be QIed from the inner IVbCompilerProject (BUG 1024166),
+                // so this code works on C# only.
+                IVsReportExternalErrors reportExternalErrors;
+                if (project.Value.IntellisenseProject.GetExternalErrorReporter(out reportExternalErrors) == 0)
+                {
+                    _languageServiceBuildErrorReporter = reportExternalErrors as IVsLanguageServiceBuildErrorReporter;
+                }
+            }
         }
 
         /// <summary>

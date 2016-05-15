@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     Integrates the Visual Basic language service with the Visual Basic project system.
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
+    [Export(typeof(IProjectWithIntellisense))]
     [AppliesTo(ProjectCapability.VisualBasicLanguageService)]
     internal class VisualBasicLanguageServiceHost : AbstractLanguageServiceHost
     {
