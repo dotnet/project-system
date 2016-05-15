@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(@"..\Foo.txt",                              @"C:\Bar\MyProject.csproj",             @"C:\Foo.txt")]
         [InlineData(@"..\Foo.txt",                              @"MyProject.csproj",                    @"")]
         [InlineData(@"..\Foo.txt",                              @"<>",                                  @"")]
-        [InlineData(@"<>",                                      @"C:\MyProject.csproj",                 @"<>")]
+        [InlineData(@"<>",                                      @"C:\MyProject.csproj",                 @"C:\<>")]
         [InlineData(@"C:\MyProject.csproj",                     @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         [InlineData(@"C:\Foo\..\MyProject.csproj",              @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         [InlineData(@"C:\Foo\Foo.txt",                          @"C:\Bar\MyProject.csproj",             @"C:\Foo\Foo.txt")]

@@ -40,11 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public void SuspendRefresh()
         {
         }
-   
+
         public void ResumeRefresh()
         {
         }
-   
+
         public Task<AddMessageResult> AddMessageAsync(TargetGeneratedTask task)
         {
             Requires.NotNull(task, nameof(task));
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             if (_languageServiceBuildErrorReporter != null)
             {
-                _languageServiceBuildErrorReporter.ClearErrors();                
+                _languageServiceBuildErrorReporter.ClearErrors();
             }
 
             return TplExtensions.CompletedTask;
@@ -131,48 +131,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             if ((errorMessage = eventArgs as BuildErrorEventArgs) != null)
             {
-                return new ErrorListDetails(eventArgs)
+                return new ErrorListDetails()
                 {
                     ProjectFile = errorMessage.ProjectFile,
                     File = errorMessage.File,
-                    Subcategory = errorMessage.Subcategory,
                     LineNumber = errorMessage.LineNumber,
                     EndLineNumber = errorMessage.EndLineNumber,
                     ColumnNumber = errorMessage.ColumnNumber,
                     EndColumnNumber = errorMessage.EndColumnNumber,
                     Code = errorMessage.Code,
+                    Message = errorMessage.Message,
                     Priority = VSTASKPRIORITY.TP_HIGH,
+
                 };
             }
 
             if ((warningMessage = eventArgs as BuildWarningEventArgs) != null)
             {
-                return new ErrorListDetails(eventArgs)
+                return new ErrorListDetails()
                 {
                     ProjectFile = warningMessage.ProjectFile,
                     File = warningMessage.File,
-                    Subcategory = warningMessage.Subcategory,
                     LineNumber = warningMessage.LineNumber,
                     EndLineNumber = warningMessage.EndLineNumber,
                     ColumnNumber = warningMessage.ColumnNumber,
                     EndColumnNumber = warningMessage.EndColumnNumber,
                     Code = warningMessage.Code,
+                    Message = warningMessage.Message,
                     Priority = VSTASKPRIORITY.TP_NORMAL,
                 };
             }
 
             if ((criticalMessage = eventArgs as CriticalBuildMessageEventArgs) != null)
             {
-                return new ErrorListDetails(eventArgs)
+                return new ErrorListDetails()
                 {
                     ProjectFile = criticalMessage.ProjectFile,
                     File = criticalMessage.File,
-                    Subcategory = criticalMessage.Subcategory,
                     LineNumber = criticalMessage.LineNumber,
                     EndLineNumber = criticalMessage.EndLineNumber,
                     ColumnNumber = criticalMessage.ColumnNumber,
                     EndColumnNumber = criticalMessage.EndColumnNumber,
                     Code = criticalMessage.Code,
+                    Message = criticalMessage.Message,
                     Priority = VSTASKPRIORITY.TP_LOW,
                 };
             }

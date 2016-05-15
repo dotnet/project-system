@@ -13,17 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         internal class ErrorListDetails
         {
-            private readonly string _helpKeyword;
-
-            public ErrorListDetails(BuildEventArgs args = null)
+            public ErrorListDetails()
             {
-                this.Priority = VSTASKPRIORITY.TP_NORMAL;
-
-                if (args != null)
-                {
-                    this._helpKeyword = args.HelpKeyword;
-                    this.Message = args.Message;
-                }
             }
 
             public string Message
@@ -55,12 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
                     return string.Empty;
                 }
-            }
-
-            public string Subcategory
-            {
-                get;
-                set;
             }
 
             public int LineNumber
@@ -146,11 +131,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 get;
                 set;
-            }
-
-            public string HelpKeyword
-            {
-                get { return string.IsNullOrEmpty(this._helpKeyword) ? this.Code : this._helpKeyword; }
             }
 
             /// <summary>
