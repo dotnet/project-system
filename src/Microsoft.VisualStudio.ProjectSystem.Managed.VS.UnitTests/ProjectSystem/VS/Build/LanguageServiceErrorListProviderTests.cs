@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void ClearAllAsync_WhenProjectWithIntellisense_CallsCallErrors()
+        public async void ClearAllAsync_WhenProjectWithIntellisense_CallsClearErrors()
         {
             int callCount = 0;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
