@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return AddMessageAsyncCore(task);
         }
 
-        public async Task<AddMessageResult> AddMessageAsyncCore(TargetGeneratedTask task)
+        private async Task<AddMessageResult> AddMessageAsyncCore(TargetGeneratedTask task)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
