@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 {
                     return PathHelper.MakeRooted(basePath, path);
                 }
-                catch (FormatException)
+                catch (ArgumentException)
                 {
                     return string.Empty;
                 }
