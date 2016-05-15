@@ -63,17 +63,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 try
                 {
                     _languageServiceBuildErrorReporter.ReportError(
-                        task.Text,
-                        details.Code,
-                        details.Priority,
-                        details.LineNumberForErrorList,
-                        details.ColumnNumberForErrorList,
-                        details.FileFullPath);
+                                                details.Message,
+                                                details.Code,
+                                                details.Priority,
+                                                details.LineNumberForErrorList,
+                                                details.ColumnNumberForErrorList,
+                                                details.FileFullPath);
+
                     handled = true;
                 }
                 catch (NotImplementedException)
-                {
-                    // Ignore NotImplementedException.
+                {   // Language Service doesn't handle it, typically because file 
+                    // isn't in the project or because it doesn't have line/column
                 }
             }
 
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             if (_languageServiceBuildErrorReporter != null)
             {
-                _languageServiceBuildErrorReporter.ClearErrors();
+                _languageServiceBuildErrorReporter.ClearErrors();                
             }
 
             return TplExtensions.CompletedTask;

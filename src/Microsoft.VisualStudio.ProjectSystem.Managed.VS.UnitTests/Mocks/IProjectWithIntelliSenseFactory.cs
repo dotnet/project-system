@@ -9,6 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class IProjectWithIntellisenseFactory
     {
+        public static IProjectWithIntellisense ImplementGetExternalErrorReporter(IVsLanguageServiceBuildErrorReporter reportExternalErrorsReporter)
+        {
+            return ImplementGetExternalErrorReporter((IVsReportExternalErrors)reportExternalErrorsReporter);
+        }
+
         public static IProjectWithIntellisense ImplementGetExternalErrorReporter(IVsReportExternalErrors reportExternalErrorsReporter)
         {
             var project = new Mock<IVsIntellisenseProject>();
