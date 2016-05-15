@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
         {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+
             ProjectsWithIntellisense = new OrderPrecedenceImportCollection<IProjectWithIntellisense>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
         }
 
@@ -34,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public OrderPrecedenceImportCollection<IProjectWithIntellisense> ProjectsWithIntellisense
         {
             get;
-            set;
         }
 
         public void SuspendRefresh()

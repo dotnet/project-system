@@ -49,10 +49,12 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectVsServicesFactory.cs" />
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
     <Compile Include="Mocks\IVsHierarchyFactory.cs" />
     <Compile Include="Mocks\IVsProjectFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
