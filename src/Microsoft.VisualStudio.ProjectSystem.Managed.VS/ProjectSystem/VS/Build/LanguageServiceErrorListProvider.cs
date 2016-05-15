@@ -54,11 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public async Task<AddMessageResult> AddMessageAsyncCore(TargetGeneratedTask task)
         {
-            var details = ExtractErrorListDetails(task.BuildEventArgs);
-            if (details == null || string.IsNullOrEmpty(details.Code))
-            {
-                await NotHandled;
-            }
+            // We only want to pass compiler, analyzers, etc to the language 
+            // service, so we skip tasks that do not have a code
+            ErrorListDetails details;
+            if (!TryExtractErrorListDetails(task.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
+                return await NotHandled;
 
             InitializeBuildErrorReporter();
 
@@ -119,11 +119,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         /// <summary>
-        /// Extracts the details required by the VS Error List from an MSBuild build event.
+        ///     Attempts to extract the details required by the VS Error List from an MSBuild build event.
         /// </summary>
         /// <param name="eventArgs">The build event.  May be null.</param>
-        /// <returns>The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</returns>
-        internal static ErrorListDetails ExtractErrorListDetails(BuildEventArgs eventArgs)
+        /// <param name="result">The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</param>
+        internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
         {
             BuildErrorEventArgs errorMessage;
             BuildWarningEventArgs warningMessage;
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             if ((errorMessage = eventArgs as BuildErrorEventArgs) != null)
             {
-                return new ErrorListDetails()
+                result = new ErrorListDetails()
                 {
                     ProjectFile = errorMessage.ProjectFile,
                     File = errorMessage.File,
@@ -142,13 +142,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     Code = errorMessage.Code,
                     Message = errorMessage.Message,
                     Priority = VSTASKPRIORITY.TP_HIGH,
-
                 };
+
+                return true;
             }
 
             if ((warningMessage = eventArgs as BuildWarningEventArgs) != null)
             {
-                return new ErrorListDetails()
+                result = new ErrorListDetails()
                 {
                     ProjectFile = warningMessage.ProjectFile,
                     File = warningMessage.File,
@@ -160,11 +161,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     Message = warningMessage.Message,
                     Priority = VSTASKPRIORITY.TP_NORMAL,
                 };
+
+                return true;
             }
 
             if ((criticalMessage = eventArgs as CriticalBuildMessageEventArgs) != null)
             {
-                return new ErrorListDetails()
+                result = new ErrorListDetails()
                 {
                     ProjectFile = criticalMessage.ProjectFile,
                     File = criticalMessage.File,
@@ -176,9 +179,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     Message = criticalMessage.Message,
                     Priority = VSTASKPRIORITY.TP_LOW,
                 };
+
+                return true;
             }
 
-            return null;
+            result = default(ErrorListDetails);
+            return false;
         }
     }
 }

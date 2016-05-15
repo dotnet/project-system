@@ -117,6 +117,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Assert.Equal(result, AddMessageResult.NotHandled);
         }
 
+
+        [Fact]
+        public async void AddMessageAsync_ArgsWithNoCodeAsTask_ReturnsNotHandled()
+        {
+            var provider = CreateInstance();
+
+            var task = new TargetGeneratedTask();
+            task.BuildEventArgs = new BuildErrorEventArgs(null, "" /* Code */, "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender");
+
+            var result = await provider.AddMessageAsync(task);
+
+            Assert.Equal(result, AddMessageResult.NotHandled);
+        }
+
         [Fact]
         public async void AddMessageAsync_WhenReporterThrowsNotImplemented_ReturnsNotHandled()
         {
@@ -209,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         //          ErrorMessage                                    Code         
         [Theory]
-        [InlineData(null,                                           null)]
+        [InlineData(null,                                           "A")]
         [InlineData("",                                             "0000")]
         [InlineData(" ",                                            "1000")]          
         [InlineData("This is an error message.",                    "CA1000")]       

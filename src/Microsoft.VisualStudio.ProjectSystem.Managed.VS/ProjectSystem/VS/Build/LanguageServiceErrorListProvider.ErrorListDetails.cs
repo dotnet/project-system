@@ -11,12 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// <summary>
         /// Captures details from various types of MSBuild events.
         /// </summary>
-        internal class ErrorListDetails
+        internal struct ErrorListDetails
         {
-            public ErrorListDetails()
-            {
-            }
-
             public string Message
             {
                 get;
