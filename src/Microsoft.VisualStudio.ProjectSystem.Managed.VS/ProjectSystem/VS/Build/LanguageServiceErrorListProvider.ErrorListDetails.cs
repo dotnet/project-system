@@ -69,6 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
+
+            public int EndLineNumber
+            {
+                get;
+                set;
+            }
+
             /// <summary>
             /// Gets the line number that should be reported to the VS error list.
             /// (<see cref="LineNumber"/> - 1) to account for +1 that the error list applies.
@@ -83,7 +90,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
+            /// <summary>
+            /// Gets the line number that should be reported to the VS error list.
+            /// (<see cref="LineNumber"/> - 1) to account for +1 that the error list applies.
+            /// </summary>
+            public int EndLineNumberForErrorList
+            {
+                get
+                {
+                    // The VS error list uses 0-based line numbers so a -1 adjustment needs to be made.
+                    // It's weird.  We report "12" and they'll display "13".
+                    return (this.EndLineNumber > LineNumber && this.EndLineNumber > 0) ? this.EndLineNumber - 1 : LineNumberForErrorList;
+                }
+            }
+
             public int ColumnNumber
+            {
+                get;
+                set;
+            }
+
+            public int EndColumnNumber
             {
                 get;
                 set;
@@ -97,6 +124,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             public int ColumnNumberForErrorList
             {
                 get { return this.ColumnNumber > 0 ? this.ColumnNumber - 1 : 0; }
+            }
+
+            /// <summary>
+            /// Gets the column number that should be reported to the VS error list.
+            /// (<see cref="ColumnNumber"/> - 1) to account for +1 that the error list applies.
+            /// See <see cref="LineNumberForErrorList"/>, too.
+            /// </summary>
+            public int EndColumnNumberForErrorList
+            {
+                get { return (this.EndColumnNumber > ColumnNumber && this.EndColumnNumber > 0) ? this.EndColumnNumber - 1 : ColumnNumberForErrorList; }
             }
 
             public string Code

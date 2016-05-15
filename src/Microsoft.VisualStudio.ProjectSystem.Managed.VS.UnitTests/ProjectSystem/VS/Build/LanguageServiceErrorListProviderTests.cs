@@ -191,26 +191,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Assert.Equal(code, errorIdResult);
         }
 
-        //          Line   Column     Expected Line   Expected Column
+        //          Line        Column          Expected Line  Expected Column
         [Theory]
-        [InlineData(   0,      -2,                0,              0)]       // Is this the right behavior? See https://github.com/dotnet/roslyn-project-system/issues/145
-        [InlineData(  -2,       0,                0,              0)]       // Is this the right behavior?
-        [InlineData(   0,      -1,                0,              0)]       // Is this the right behavior?
-        [InlineData(  -1,       0,                0,              0)]       // Is this the right behavior?
-        [InlineData(   0,       0,                0,              0)]       // Is this the right behavior?
-        [InlineData(   1,       0,                0,              0)]
-        [InlineData(   0,       1,                0,              0)]
-        [InlineData(  10,     100,                9,             99)]
-        [InlineData( 100,      10,               99,              9)]
-        [InlineData( 100,     100,               99,             99)]
+        [InlineData(   0,            0,                     0,               0)]       // Is this the right behavior? See https://github.com/dotnet/roslyn-project-system/issues/145
+        [InlineData(   0,           -1,                     0,               0)]       // Is this the right behavior?
+        [InlineData(  -1,            0,                     0,               0)]       // Is this the right behavior?
+        [InlineData(   1,            0,                     0,               0)]
+        [InlineData(   0,            1,                     0,               0)]
+        [InlineData(   2,            2,                     1,               1)]
+        [InlineData(  10,          100,                     9,              99)]
+        [InlineData( 100,           10,                    99,               9)]
+        [InlineData( 100,          100,                    99,              99)]
         public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingLineAndColumnAdjustingBy1(int lineNumber, int columnNumber, int expectedLineNumber, int expectedColumnNumber)
         {
             int? lineResult = null;
-            int? colomnResult = null;
+            int? columnResult = null;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 lineResult = iLine;
-                colomnResult = iColumn;
+                columnResult = iColumn;
             });
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
@@ -220,7 +219,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
 
             Assert.Equal(expectedLineNumber, lineResult);
-            Assert.Equal(expectedColumnNumber, colomnResult);
+            Assert.Equal(expectedColumnNumber, columnResult);
+        }
+
+        //          Line        Column      End Line     End Column             Expected End Line  Expected End Column
+        [Theory]
+        [InlineData(   0,            0,            0,             0,                            0,                   0)]       // Is this the right behavior? See https://github.com/dotnet/roslyn-project-system/issues/145
+        [InlineData(   0,           -1,            0,             0,                            0,                   0)]       // Is this the right behavior?
+        [InlineData(  -1,            0,            0,             0,                            0,                   0)]       // Is this the right behavior?
+        [InlineData(   1,            0,            0,             0,                            0,                   0)]
+        [InlineData(   0,            1,            0,             0,                            0,                   0)]
+        [InlineData(  10,          100,            0,             0,                            9,                  99)]
+        [InlineData( 100,           10,            0,             0,                           99,                   9)]
+        [InlineData( 100,          100,          100,           100,                           99,                  99)]
+        [InlineData( 100,          100,          101,           102,                          100,                 101)]
+        [InlineData( 100,          100,          100,           100,                           99,                  99)]
+        [InlineData( 100,          101,            1,             1,                           99,                 100)]       //  Roslyn's ProjectExternalErrorReporter throws if end is less than start
+        public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingEndLineAndColumn(int lineNumber, int columnNumber, int endLineNumber, int endColumnNumber, int expectedEndLineNumber, int expectedEndColumnNumber)
+        {
+            int? endLineResult = null;
+            int? endColumnResult = null;
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
+                endLineResult = iEndLine;
+                endColumnResult = iEndColumn;
+            });
+
+            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+
+            var provider = CreateInstance(project);
+            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, endLineNumber, endColumnNumber, "ErrorMessage", "HelpKeyword", "Sender") });
+
+
+            Assert.Equal(expectedEndLineNumber, endLineResult);
+            Assert.Equal(expectedEndColumnNumber, endColumnResult);
         }
 
         //          File                                        ProjectFile                             ExpectedFileName

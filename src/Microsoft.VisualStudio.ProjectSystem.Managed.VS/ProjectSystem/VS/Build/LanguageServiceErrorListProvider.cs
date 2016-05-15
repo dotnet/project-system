@@ -72,8 +72,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                                                                     details.Priority,
                                                                     details.LineNumberForErrorList,
                                                                     details.ColumnNumberForErrorList,
-                                                                    details.LineNumberForErrorList,
-                                                                    details.ColumnNumberForErrorList,
+                                                                    details.EndLineNumberForErrorList,
+                                                                    details.EndColumnNumberForErrorList,
                                                                     details.FileFullPath);
                     handled = true;
                 }
@@ -137,7 +137,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     File = errorMessage.File,
                     Subcategory = errorMessage.Subcategory,
                     LineNumber = errorMessage.LineNumber,
+                    EndLineNumber = errorMessage.EndLineNumber,
                     ColumnNumber = errorMessage.ColumnNumber,
+                    EndColumnNumber = errorMessage.EndColumnNumber,
                     Code = errorMessage.Code,
                     Priority = VSTASKPRIORITY.TP_HIGH,
                 };
@@ -151,7 +153,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     File = warningMessage.File,
                     Subcategory = warningMessage.Subcategory,
                     LineNumber = warningMessage.LineNumber,
+                    EndLineNumber = warningMessage.EndLineNumber,
                     ColumnNumber = warningMessage.ColumnNumber,
+                    EndColumnNumber = warningMessage.EndColumnNumber,
                     Code = warningMessage.Code,
                     Priority = VSTASKPRIORITY.TP_NORMAL,
                 };
@@ -165,7 +169,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     File = criticalMessage.File,
                     Subcategory = criticalMessage.Subcategory,
                     LineNumber = criticalMessage.LineNumber,
+                    EndLineNumber = criticalMessage.EndLineNumber,
                     ColumnNumber = criticalMessage.ColumnNumber,
+                    EndColumnNumber = criticalMessage.EndColumnNumber,
                     Code = criticalMessage.Code,
                     Priority = VSTASKPRIORITY.TP_LOW,
                 };
