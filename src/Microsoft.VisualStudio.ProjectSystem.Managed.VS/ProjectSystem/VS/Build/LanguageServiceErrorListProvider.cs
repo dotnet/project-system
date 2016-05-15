@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
