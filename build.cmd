@@ -5,7 +5,7 @@ set BatchFile=%0
 set Root=%~dp0
 set BuildConfiguration=Debug
 set MSBuildTarget=Build
-set DeveloperCommandPrompt=%ProgramFiles(x86)%\Microsoft Visual Studio 15.0\Common7\Tools\VsDevCmd.bat
+set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 
 :ParseArguments
@@ -19,7 +19,7 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%DeveloperCommandPrompt%" (
-  echo In order to build this respository, you need Visual Studio "15" Preview installed.
+  echo In order to build this repository, you need Visual Studio "15" Preview installed.
   echo.
   echo Visit this page to download:
   echo.
@@ -29,7 +29,7 @@ if not exist "%DeveloperCommandPrompt%" (
 
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
-set BinariesDirectory=%Root%binaries\%BuildConfiguration%\
+set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
 
