@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Globalization;
@@ -9,7 +10,7 @@ using System.Linq;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
-    /// Unconfigured project level component to provide C# language specific features.
+    ///     An implementation of <see cref="ILanguageFeaturesProvider"/> to provider C# language-specific features.
     /// </summary>
     [Export(typeof(ILanguageFeaturesProvider))]
     [AppliesTo(ProjectCapabilities.CSharp)]
@@ -39,25 +40,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
         }
 
-        [Import]
-        private UnconfiguredProject UnconfiguredProject
-        {
-            get;
-            set;
-        }
-
         /// <summary>
-        /// Makes a proper identifier from the given string.
+        ///     Makes a proper language identifier from the specified name.
         /// </summary>
-        /// <param name="name">The input string.</param>
-        /// <returns>A proper identifier which meets the C# language spec.</returns>
+        /// <param name="name">
+        ///     A <see cref="String"/> containing the name.
+        /// </param>
+        /// <returns>
+        ///     A proper identifier which meets the C# language specification.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="name"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="name"/> is an empty string ("").
+        /// </exception>
         public string MakeProperIdentifier(string name)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             var identifier = string.Concat(name.Select(c => IsValidIdentifierChar(c) ? c : '_'));
-            if (!IsValidFirstIdentifierChar(identifier.First())
-                || identifier == "_")
+            if (!IsValidFirstIdentifierChar(identifier[0]))
             {
                 identifier = '_' + identifier;
             }
@@ -65,43 +68,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return identifier;
         }
 
+        
         /// <summary>
-        /// Makes a proper namespace from the given string.
+        ///     Makes a proper namespace from the specified name.
         /// </summary>
-        /// <param name="name">The input string.</param>
-        /// <returns>A proper namespace which meets the C# language spec.</returns>
+        /// <param name="name">
+        ///     A <see cref="String"/> containing the name.
+        /// </param>
+        /// <returns>
+        ///     A proper namespace which meets the C# language specification.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="name"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="name"/> is an empty string ("").
+        /// </exception>
         public string MakeProperNamespace(string name)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            var identifiers = from token in name.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
-                              let id = MakeProperIdentifier(token)
-                              where !string.IsNullOrEmpty(id)
-                              select id;
-            return string.Join(".", identifiers);
+            IEnumerable<string> namespaceNames = name.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
+                                                     .Select(MakeProperIdentifier);
+
+            return string.Join(".", namespaceNames);
         }
 
         /// <summary>
-        /// Concatenate multiple namespace names.
+        ///     Concatenates the specified namespace names.
         /// </summary>
-        /// <param name="namespaceNames">The array of namespace names to be concatenated.</param>
-        /// <returns>A concatenated namespace name.</returns>
+        /// <param name="namespaceNames">
+        ///     A <see cref="String"/> array containing the namespace names to be concatented.
+        /// </param>
+        /// <returns>
+        ///     A concatenated namespace name.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="namespaceNames"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="namespaceNames"/> contains no elements.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="namespaceNames"/> contains an element that is <see langword="null"/>.
+        /// </exception>
         public string ConcatNamespaces(params string[] namespaceNames)
         {
-            Requires.NotNull(namespaceNames, nameof(namespaceNames));
+            Requires.NotNullEmptyOrNullElements(namespaceNames, nameof(namespaceNames));
 
-            return string.Join(".", namespaceNames.Where(name => !string.IsNullOrEmpty(name)));
+            return string.Join(".", namespaceNames.Where(name => name.Length > 0));
         }
 
-        private static bool IsValidIdentifierChar(char ch)
+        private static bool IsValidIdentifierChar(char c)
         {
-            var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+            var category = CharUnicodeInfo.GetUnicodeCategory(c);
             return IdentifierCharCategories.Contains(category);
         }
 
-        private static bool IsValidFirstIdentifierChar(char ch)
+        private static bool IsValidFirstIdentifierChar(char c)
         {
-            var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+            var category = CharUnicodeInfo.GetUnicodeCategory(c);
             return FirstIdentifierCharCategories.Contains(category);
         }
     }
