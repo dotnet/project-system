@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
         
-        public override bool IsExpandableByDefault
+        public override bool ContentsVisibleOnlyInShowAllFiles
         {
-            get { return true; }
+            get { return false; }
         }
 
         protected override string GetAppDesignerFolderName()
