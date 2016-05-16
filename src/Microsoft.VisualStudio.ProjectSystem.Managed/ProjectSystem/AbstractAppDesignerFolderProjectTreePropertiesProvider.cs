@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal abstract class AbstractAppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider
     {
-        private static readonly ProjectTreeFlags DefaultFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
+        private static readonly ProjectTreeFlags DefaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectDesignerService _designerService;
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override ProjectTreeFlags FolderFlags
         {
-            get { return DefaultFlags; }
+            get { return DefaultFolderFlags; }
         }
 
         public override string FolderImageKey
@@ -41,17 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get {  return ProjectImageKey.AppDesignerFolder; }
         }
 
-        protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags)
+        protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
         {
-            if (!propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.Common.ProjectRoot))
-                return false;
+            if (propertyContext.ParentNodeFlags.IsProjectRoot() && flags.IsFolder())
+            {
+                string folderName = GetAppDesignerFolderName();
 
-            if (!currentFlags.Contains(ProjectTreeFlags.Common.Folder))
-                return false;
+                return StringComparers.Paths.Equals(folderName, propertyContext.ItemName);
+            }
 
-            string folderName = GetAppDesignerFolderName();
-
-            return StringComparers.Paths.Equals(folderName, propertyContext.ItemName);
+            return false;
         }
 
         protected virtual string GetAppDesignerFolderName()

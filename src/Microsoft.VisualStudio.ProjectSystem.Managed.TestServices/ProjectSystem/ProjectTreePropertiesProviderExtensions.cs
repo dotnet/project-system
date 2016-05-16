@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (IProjectTree child in tree.Children)
             {
-                tree = child.Replace(ChangePropertyValues(propertiesProvider, child)).Parent;
+                tree = child.Replace(ChangePropertyValuesForEntireTree(propertiesProvider, child)).Parent;
             }
-
+            
             return tree;
         }
 

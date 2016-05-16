@@ -236,7 +236,6 @@ Root(flags: {ProjectRoot})
             AssertAreEquivalent(tree, result);
         }
 
-        [Theory(Skip = "https://github.com/dotnet/roslyn/issues/11162")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
@@ -274,21 +273,74 @@ Root (flags: {ProjectRoot})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+[InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        My Project (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        My Project (flags: {Folder VisibleOnlyInShowAllFiles})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
         AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
 ", @"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
 ", @"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate VisibleOnlyInShowAllFiles})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder1 (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+        Folder2 (flags: {Folder})
+            Item.cs (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder1 (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+        Folder2 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Item.cs (flags: {})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Resources.resx (flags: {})
+            Resources.Designer.cs (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Resources.resx (flags: {VisibleOnlyInShowAllFiles})
+            Resources.Designer.cs (flags: {})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
@@ -318,9 +370,29 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
         Folder (flags: {Folder VisibleOnlyInShowAllFiles})
-            Folder (flags: {Folder VisibleOnlyInShowAllFiles})
-                File (flags: {VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
 ")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder1 (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
+        Folder2 (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder1 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
+        Folder2 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
+")]
+        [Theory]
         public void ChangePropertyValues_TreeWithMyProjectCandidate_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
@@ -342,7 +414,7 @@ Root (flags: {ProjectRoot})
 ", @"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}, ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}
-        Folder (flags: {Folder})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
 ")]
         public void ChangePropertyValues_TreeWithPropertiesCandidate_SetsIconAndExpandedIconToAppDesignerFolder(string input, string expected)
         {
@@ -366,7 +438,7 @@ Root (flags: {ProjectRoot})
 ", @"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}, ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 2}
-        Folder (flags: {Folder})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
@@ -375,7 +447,7 @@ Root (flags: {ProjectRoot})
 ", @"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {}, ExpandedIcon: {}
-        Folder (flags: {Folder})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
 ")]
         public void ChangePropertyValues_TreeWithPropertiesCandidateWhenImageProviderReturnsNull_DoesNotSetIconAndExpandedIcon(string input, string expected)
         {

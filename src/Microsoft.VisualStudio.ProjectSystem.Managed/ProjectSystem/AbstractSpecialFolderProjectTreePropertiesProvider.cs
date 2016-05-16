@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the contents of the special folder are only visibile in Show All Files.
+        ///     Gets a value indicating whether the contents of the special folder are only visible in Show All Files.
         /// </summary>
         public abstract bool ContentsVisibleOnlyInShowAllFiles
         {
@@ -55,23 +55,56 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(propertyContext, nameof(propertyContext));
             Requires.NotNull(propertyValues, nameof(propertyValues));
 
-            if (IsSupported && IsCandidateSpecialFolder(propertyContext, propertyValues.Flags))
-            {
-                propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
+            if (!IsSupported)
+                return;
 
-                // Avoid overwriting icon if the image provider didn't provide one
-                ProjectImageMoniker icon = _imageProvider.GetProjectImage(FolderImageKey);
-                if (icon != null)
-                {
-                    propertyValues.Icon = icon;
-                    propertyValues.ExpandedIcon = icon;
-                }
+            if (IsCandidateSpecialFolder(propertyContext, propertyValues.Flags))
+            {
+                ApplySpecialFolderProperties(propertyValues);
+                return;
+            }
+
+            if (ContentsVisibleOnlyInShowAllFiles && IsCandidateSpecialFolderItem(propertyContext, propertyValues.Flags))
+            {
+                ApplySpecialFolderItemProperties(propertyValues);
+                return;
             }
         }
 
         /// <summary>
-        ///     Returns a value indicating whether the specified property context represents the candidate special item.
+        ///     Returns a value indicating whether the specified property context represents the candidate special folder.
         /// </summary>
-        protected abstract bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags);
+        protected abstract bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags);
+
+        private bool IsCandidateSpecialFolderItem(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
+        {
+            // We're a special folder item if our parent is the special folder. We rely on 
+            // the fact that "VisibleOnlyInShowAllFiles" is transitive; that is, if a parent
+            // is marked with it, its children are also implicitly marked with it.
+            if (propertyContext.ParentNodeFlags.Contains(FolderFlags))
+            {
+                return flags.IsIncludedInProject();
+            }
+
+            return false;
+        }
+
+        private void ApplySpecialFolderProperties(IProjectTreeCustomizablePropertyValues propertyValues)
+        {
+            propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
+
+            // Avoid overwriting icon if the image provider didn't provide one
+            ProjectImageMoniker icon = _imageProvider.GetProjectImage(FolderImageKey);
+            if (icon != null)
+            {
+                propertyValues.Icon = icon;
+                propertyValues.ExpandedIcon = icon;
+            }
+        }
+
+        private void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)
+        {
+            propertyValues.Flags = propertyValues.Flags.Add(ProjectTreeFlags.Common.VisibleOnlyInShowAllFiles);
+        }
     }
 }
