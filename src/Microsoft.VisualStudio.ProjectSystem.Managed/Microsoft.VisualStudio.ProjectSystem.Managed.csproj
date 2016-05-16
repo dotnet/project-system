@@ -47,7 +47,7 @@
     <Compile Include="ProjectSystem\ProjectCapability.cs" />
     <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ProjectTreeExtensions.cs" />
-    <Compile Include="ProjectSystem\AbstractSpecialItemProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\AbstractSpecialFolderProjectTreePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>

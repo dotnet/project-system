@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public override bool IsExpandableByDefault
+        public override bool ContentsVisibleOnlyInShowAllFiles
         {
-            get { return false; }   // By default, My Project isn't expandable unless Show All Files is on
+            get { return true; } 
         }
 
         protected override string GetAppDesignerFolderName()

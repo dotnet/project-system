@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Provides the base class for tree modifiers that handle the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
-    internal abstract class AbstractAppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialItemProjectTreePropertiesProvider
+    internal abstract class AbstractAppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider
     {
         private static readonly ProjectTreeFlags DefaultFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
@@ -31,17 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _designerService.SupportsProjectDesigner; }
         }
 
-        public override ProjectTreeFlags Flags
+        public override ProjectTreeFlags FolderFlags
         {
             get { return DefaultFlags; }
         }
 
-        public override string ImageKey
+        public override string FolderImageKey
         {
             get {  return ProjectImageKey.AppDesignerFolder; }
         }
 
-        protected override sealed bool IsCandidateSpecialItem(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags)
+        protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags)
         {
             if (!propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.Common.ProjectRoot))
                 return false;

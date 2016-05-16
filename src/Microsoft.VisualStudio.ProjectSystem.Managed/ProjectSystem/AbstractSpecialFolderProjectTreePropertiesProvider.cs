@@ -7,11 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Provides the base class for <see cref="IProjectTreePropertiesProvider"/> objects that handle special items, such as the AppDesigner folder.
     /// </summary>
-    internal abstract class AbstractSpecialItemProjectTreePropertiesProvider : IProjectTreePropertiesProvider
+    internal abstract class AbstractSpecialFolderProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectImageProvider _imageProvider;
 
-        protected AbstractSpecialItemProjectTreePropertiesProvider(IProjectImageProvider imageProvider)
+        protected AbstractSpecialFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider)
         {
             Requires.NotNull(imageProvider, nameof(imageProvider));
 
@@ -19,23 +19,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Gets the image key that represents the image that will be applied to the candidate special item.
+        ///     Gets the image key that represents the image that will be applied to the special folder.
         /// </summary>
-        public abstract string ImageKey
+        public abstract string FolderImageKey
         {
             get;
         }
 
         /// <summary>
-        ///     Gets the default flags that will be applied to the candidate special item.
+        ///     Gets the default flags that will be applied to the special folder.
         /// </summary>
-        public abstract ProjectTreeFlags Flags
+        public abstract ProjectTreeFlags FolderFlags
         {
             get;
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the special item is supported in this project.
+        ///     Gets a value indicating whether the special folder is supported in this project.
         /// </summary>
         public abstract bool IsSupported
         {
@@ -43,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the special item is expandable by default.
+        ///     Gets a value indicating whether the contents of the special folder are only visibile in Show All Files.
         /// </summary>
-        public abstract bool IsExpandableByDefault
+        public abstract bool ContentsVisibleOnlyInShowAllFiles
         {
             get;
         }
@@ -55,12 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(propertyContext, nameof(propertyContext));
             Requires.NotNull(propertyValues, nameof(propertyValues));
 
-            if (IsSupported && IsCandidateSpecialItem(propertyContext, propertyValues.Flags))
+            if (IsSupported && IsCandidateSpecialFolder(propertyContext, propertyValues.Flags))
             {
-                propertyValues.Flags = propertyValues.Flags.Union(Flags);
+                propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
 
                 // Avoid overwriting icon if the image provider didn't provide one
-                ProjectImageMoniker icon = _imageProvider.GetProjectImage(ImageKey);
+                ProjectImageMoniker icon = _imageProvider.GetProjectImage(FolderImageKey);
                 if (icon != null)
                 {
                     propertyValues.Icon = icon;
@@ -72,6 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Returns a value indicating whether the specified property context represents the candidate special item.
         /// </summary>
-        protected abstract bool IsCandidateSpecialItem(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags);
+        protected abstract bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags currentFlags);
     }
 }
