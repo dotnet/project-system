@@ -58,9 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             int callCount = 0;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-
+            var task = CreateDefaultTask();
             var provider = CreateInstance(project);
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });   // Force initialization
+
+            await provider.AddMessageAsync(task);   // Force initialization
 
             await provider.ClearAllAsync();
 
@@ -141,9 +142,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
+            var task = CreateDefaultTask();
 
-
-            var result = await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            var result = await provider.AddMessageAsync(task);
 
             Assert.Equal(result, AddMessageResult.NotHandled);
         }
@@ -158,9 +159,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
+            var task = CreateDefaultTask();
 
             await Assert.ThrowsAsync<Exception>(() => {
-                return provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+                return provider.AddMessageAsync(task);
             });
         }
 
@@ -170,8 +172,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
+            var task = CreateDefaultTask();
 
-            var result = await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            var result = await provider.AddMessageAsync(task);
 
             Assert.Equal(result, AddMessageResult.HandledAndStopProcessing);
         }
@@ -348,6 +351,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = args });
 
             Assert.Equal(expectedFileName, fileNameResult);
+        }
+
+        private static TargetGeneratedTask CreateDefaultTask()
+        {
+            return new TargetGeneratedTask() {
+                BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")
+            };
         }
 
 
