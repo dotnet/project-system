@@ -204,4 +204,15 @@
     </When>
   </Choose>
 
+  <!-- Alias Microsoft.VisualStudio.Shell.14.0, so that the types don't clash with Microsoft.VisualStudio.Shell.15.0. 
+       See: https://github.com/dotnet/roslyn-project-system/issues/142
+  -->
+  <Target Name="AliasShell14" AfterTargets="ResolveNuGetPackageAssets">
+    <ItemGroup>
+      <Reference Condition="'%(Reference.NuGetPackageId)' == 'Microsoft.VisualStudio.Shell.14.0'">
+        <Aliases>Shell14</Aliases>
+      </Reference>
+    </ItemGroup>
+  </Target>
+
 </Project>

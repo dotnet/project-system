@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
@@ -11,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     Integrates the C# language service with the C# project system.
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
+    [Export(typeof(IProjectWithIntellisense))]
     [AppliesTo(ProjectCapability.CSharpLanguageService)]
     [ExcludeFromCodeCoverage] // This is being thrown away: https://github.com/dotnet/roslyn-project-system/issues/131
     internal class CSharpLanguageServiceHost : AbstractLanguageServiceHost

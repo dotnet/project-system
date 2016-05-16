@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class OrderPrecedenceImportCollectionExtensions
     {
