@@ -142,8 +142,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root, ExpandedIcon: {1}")]
         [InlineData(@"Root, ExpandedIcon: {A}")]
         [InlineData(@"Root, ExpandedIcon: {{407FAC73-908A-4477-8176-A3128544AE4F}")]
-        [InlineData(@"Root, ExpandedIcon: {1}")]
-        [InlineData(@"Root, ExpandedIcon: {A}")]
         [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {1}")]
         [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {A}")]
         [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, ExpandedIcon: {{407FAC73-908A-4477-8176-A3128544AE4F}")]
