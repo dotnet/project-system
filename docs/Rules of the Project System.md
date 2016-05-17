@@ -1,4 +1,4 @@
-#Rules of the project system
+#Rules of the Project System
 
 The following are a set of rules and guidelines that we should follow as we write the new project system
 
