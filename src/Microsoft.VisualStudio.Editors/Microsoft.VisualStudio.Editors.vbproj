@@ -413,6 +413,9 @@
     <Compile Include="proppages\ApplicationPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="PropPages\ApplicationPropPage.Designer.vb">
+      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="proppages\ApplicationPropPageBase.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -666,7 +669,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Common\" />
-  </ItemGroup>
+  </ItemGroup>  
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <!-- We don't generate yet generate pkgdef, but we want it to end up in VSIX,
        implement the right output group so that ProjectSystemSetup pulls it in -->
