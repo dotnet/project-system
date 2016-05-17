@@ -295,7 +295,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData( 100,           10,            0,             0,                           99,                   9)]
         [InlineData( 100,          100,          100,           100,                           99,                  99)]
         [InlineData( 100,          100,          101,           102,                          100,                 101)]
-        [InlineData( 100,          100,          100,           100,                           99,                  99)]
         [InlineData( 100,          101,            1,             1,                           99,                 100)]       //  Roslyn's ProjectExternalErrorReporter throws if end is less than start
         public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingEndLineAndColumn(int lineNumber, int columnNumber, int endLineNumber, int endColumnNumber, int expectedEndLineNumber, int expectedEndColumnNumber)
         {
@@ -333,7 +332,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(@"C:\Foo\..\MyProject.csproj",              @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         [InlineData(@"C:\Foo\Foo.txt",                          @"C:\Bar\MyProject.csproj",             @"C:\Foo\Foo.txt")]
         [InlineData(@"Foo.txt",                                 @"C:\Bar\MyProject.csproj",             @"C:\Bar\Foo.txt")]
-        [InlineData(@"..\Foo.txt",                              @"C:\Bar\MyProject.csproj",             @"C:\Foo.txt")]
         public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string file, string projectFile, string expectedFileName)
         {
             string fileNameResult = "NotSet";
