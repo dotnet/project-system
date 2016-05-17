@@ -34,12 +34,8 @@
         Friend WithEvents ViewUACSettingsButton As System.Windows.Forms.Button
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
 
-        'Required by the Windows Form Designer
         Private _components As System.ComponentModel.IContainer
 
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplicationPropPageVBWinForms))
             Me.TopHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel
