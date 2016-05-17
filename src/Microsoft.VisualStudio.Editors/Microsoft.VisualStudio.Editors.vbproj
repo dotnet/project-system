@@ -262,6 +262,9 @@
       <Link>IVsSqm.vb</Link>
     </Compile>
     <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
+    <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -412,6 +415,9 @@
     </Compile>
     <Compile Include="proppages\ApplicationPropPage.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropPages\ApplicationPropPage.Designer.vb">
+      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
     </Compile>
     <Compile Include="proppages\ApplicationPropPageBase.vb">
       <SubType>UserControl</SubType>
