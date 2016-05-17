@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // service, so we skip tasks that do not have a code
             ErrorListDetails details;
             if (!TryExtractErrorListDetails(task.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
-                return await NotHandled;
+                return await NotHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();
 
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? await HandledAndStopProcessing : await NotHandled;
+            return handled ? await HandledAndStopProcessing.ConfigureAwait(false) : await NotHandled.ConfigureAwait(false);
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
