@@ -7,3 +7,4 @@
 // https://github.com/dotnet/roslyn-analyzers/issues/955
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.OpenProjectDesignerCommand")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.OpenProjectDesignerOnDefaultActionCommand")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Build.LanguageServiceErrorListProvider")]
