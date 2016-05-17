@@ -14,6 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' This exists for shared logic that is not expected to be visible outside of this assembly (unlike
     ''' ApplicationPropPageBase which is public).
     ''' </summary>
+    <TypeDescriptionProvider(GetType(AbstractControlTypeDescriptionProvider(Of ApplicationPropPageInternalBase, ApplicationPropPageBase)))>
     Friend MustInherit Class ApplicationPropPageInternalBase
         Inherits ApplicationPropPageBase
 
