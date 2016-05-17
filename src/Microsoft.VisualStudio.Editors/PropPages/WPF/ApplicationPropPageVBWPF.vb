@@ -20,9 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
     ''' - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class ApplicationPropPageVBWPF
+    Partial Friend Class ApplicationPropPageVBWPF
         Inherits ApplicationPropPageVBBase
-        'Inherits UserControl
 
         'Holds the DocData for the Application.xaml file
         Private WithEvents _applicationXamlDocData As DocData
@@ -153,8 +152,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
-                Dim ControlsThatDependOnStartupObjectOrUriProperty As Control() = { _
-                    StartupObjectOrUriLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox _
+                Dim ControlsThatDependOnStartupObjectOrUriProperty As Control() = {
+                    StartupObjectOrUriLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox
                 }
 
                 If m_ControlData Is Nothing Then
@@ -184,11 +183,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     '  the user to check out files s/he doesn't need to.  This is okay - the property change
                     '  will still cause a file checkout, it just won't be grouped together if there are
                     '  any other files needing to be checked out at the same time.
-                    list.Add(New PropertyControlData( _
-                        s_PROPID_StartupObjectOrUri, s_PROPNAME_StartupObjectOrUri, _
-                        Me.StartupObjectOrUriComboBox, _
-                        AddressOf Me.SetStartupObjectOrUriIntoUI, AddressOf Me.GetStartupObjectOrUriFromUI, _
-                        ControlDataFlags.UserPersisted Or ControlDataFlags.NoOptimisticFileCheckout, _
+                    list.Add(New PropertyControlData(
+                        s_PROPID_StartupObjectOrUri, s_PROPNAME_StartupObjectOrUri,
+                        Me.StartupObjectOrUriComboBox,
+                        AddressOf Me.SetStartupObjectOrUriIntoUI, AddressOf Me.GetStartupObjectOrUriFromUI,
+                        ControlDataFlags.UserPersisted Or ControlDataFlags.NoOptimisticFileCheckout,
                         ControlsThatDependOnStartupObjectOrUriProperty))
 
                     'AssemblyName
@@ -202,31 +201,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     list.Add(data)
 
                     'ShutdownMode (user-defined)
-                    list.Add(New PropertyControlData( _
-                        s_PROPID_ShutDownMode, s_PROPNAME_ShutDownMode, _
-                        Me.ShutdownModeComboBox, _
-                        AddressOf SetShutdownModeIntoUI, AddressOf GetShutdownModeFromUI, _
-                        ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInApplicationDefinitionFile, _
+                    list.Add(New PropertyControlData(
+                        s_PROPID_ShutDownMode, s_PROPNAME_ShutDownMode,
+                        Me.ShutdownModeComboBox,
+                        AddressOf SetShutdownModeIntoUI, AddressOf GetShutdownModeFromUI,
+                        ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInApplicationDefinitionFile,
                         New Control() {ShutdownModeLabel}))
 
                     'UseApplicationFramework (user-defined)
                     'Use RefreshAllPropertiesWhenChanged to force other property controls to get re-enabled/disabled when this changes
-                    list.Add(New PropertyControlData( _
-                        s_PROPID_UseApplicationFramework, s_PROPNAME_UseApplicationFramework, UseApplicationFrameworkCheckBox, _
-                        AddressOf SetUseApplicationFrameworkIntoUI, AddressOf GetUseApplicationFrameworkFromUI, _
-                        ControlDataFlags.UserPersisted Or ControlDataFlags.RefreshAllPropertiesWhenChanged, _
+                    list.Add(New PropertyControlData(
+                        s_PROPID_UseApplicationFramework, s_PROPNAME_UseApplicationFramework, UseApplicationFrameworkCheckBox,
+                        AddressOf SetUseApplicationFrameworkIntoUI, AddressOf GetUseApplicationFrameworkFromUI,
+                        ControlDataFlags.UserPersisted Or ControlDataFlags.RefreshAllPropertiesWhenChanged,
                         New Control() {Me.WindowsAppGroupBox}))
 
                     'HostInBrowser (Avalon flavor extended property)
                     '  Tells whether the project is an XBAP app
-                    list.Add(New PropertyControlData( _
-                        s_PROPID_HostInBrowser, s_PROPNAME_HostInBrowser, Nothing, _
+                    list.Add(New PropertyControlData(
+                        s_PROPID_HostInBrowser, s_PROPNAME_HostInBrowser, Nothing,
                         ControlDataFlags.Hidden))
 
                     ' ApplicationManifest - added simply to enable flavoring visibility of the button
                     list.Add(New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden))
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData( _
+                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                         VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                         ApplicationPropPage.Const_TargetFrameworkMoniker,
                         TargetFrameworkComboBox,
@@ -254,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetCommonControls()
-            m_CommonControls = New CommonControls( _
+            m_CommonControls = New CommonControls(
                 Me.IconCombobox, Me.IconLabel, Me.IconPicturebox)
         End Sub
 
@@ -775,9 +774,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                 Return Nothing
             Catch ex As Exception
-                Throw New PropertyPageException( _
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, ex.Message), _
-                    HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml, _
+                Throw New PropertyPageException(
+                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, ex.Message),
+                    HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml,
                     ex)
             End Try
         End Function
@@ -802,9 +801,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return _applicationXamlDocData
             ElseIf createAppXamlIfDoesNotExist Then
                 Debug.Fail("This function should not have reached here if createAppDotXamlFileIfNotExist was passed in as True.  It should have thrown an exception by now.")
-                Throw New PropertyPageException( _
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, _
-                        My.Resources.Designer.PPG_Unexpected), _
+                Throw New PropertyPageException(
+                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
+                        My.Resources.Designer.PPG_Unexpected),
                     HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml)
             Else
                 Return Nothing
@@ -826,8 +825,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             If docData IsNot Nothing Then
                 Dim vsTextLines As IVsTextLines = TryCast(docData.Buffer, IVsTextLines)
                 If vsTextLines Is Nothing Then
-                    Throw New PropertyPageException( _
-                        My.Resources.Designer.PPG_WPFApp_AppXamlOpenInUnsupportedEditor, _
+                    Throw New PropertyPageException(
+                        My.Resources.Designer.PPG_WPFApp_AppXamlOpenInUnsupportedEditor,
                         HelpKeywords.VBProjPropWPFApp_AppXamlOpenInUnsupportedEditor)
                 End If
                 Dim document As New AppDotXamlDocument(vsTextLines)
@@ -836,9 +835,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             If createAppXamlIfDoesNotExist Then
                 Debug.Fail("This function should not have reached here if createAppDotXamlFileIfNotExist was passed in as True.  It should have thrown an exception by now.")
-                Throw New PropertyPageException( _
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, _
-                        My.Resources.Designer.PPG_Unexpected), _
+                Throw New PropertyPageException(
+                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
+                        My.Resources.Designer.PPG_Unexpected),
                     HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml)
             Else
                 Return Nothing
@@ -874,7 +873,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   checkbox)
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Friend MustInherit Class StartupObjectOrUri
             Private _value As String
             Private _description As String
@@ -930,7 +929,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()> _
+        <Serializable()>
         Friend Class StartupObject
             Inherits StartupObjectOrUri
 
@@ -964,7 +963,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()> _
+        <Serializable()>
         Friend Class StartupObjectNone
             Inherits StartupObject
 
@@ -980,7 +979,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()> _
+        <Serializable()>
         Friend Class StartupUri
             Inherits StartupObjectOrUri
 
@@ -1013,10 +1012,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim populateWithStartupUriInsteadOfStartupObject As Boolean = ShouldStartupUriBeDisplayedInsteadOfStartupObject()
 #If DEBUG Then
             If populateWithStartupUriInsteadOfStartupObject Then
-                Debug.Assert(StartupObjectOrUriComboBox.SelectedItem Is Nothing OrElse TypeOf StartupObjectOrUriComboBox.SelectedItem Is StartupUri, _
+                Debug.Assert(StartupObjectOrUriComboBox.SelectedItem Is Nothing OrElse TypeOf StartupObjectOrUriComboBox.SelectedItem Is StartupUri,
                     "Current entry in the startup object/URI combobox is out of sync with the current state - it was expected to be a startup URI")
             Else
-                Debug.Assert(StartupObjectOrUriComboBox.SelectedItem Is Nothing OrElse TypeOf StartupObjectOrUriComboBox.SelectedItem Is StartupObject, _
+                Debug.Assert(StartupObjectOrUriComboBox.SelectedItem Is Nothing OrElse TypeOf StartupObjectOrUriComboBox.SelectedItem Is StartupObject,
                     "Current entry in the startup object/URI combobox is out of sync with the current state - it was expected to be a startup Object")
             End If
 #End If
@@ -1661,7 +1660,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim newFileName As String = GetExpectedApplicationEventsFileName(parent.Name)
 
             'Find the path to the template
-            Dim templateFileName As String = CType(DTE.Solution, EnvDTE80.Solution2).GetProjectItemTemplate( _
+            Dim templateFileName As String = CType(DTE.Solution, EnvDTE80.Solution2).GetProjectItemTemplate(
                 "InternalWPFApplicationDefinitionUserCode.zip", "VisualBasic")
 
             'Add it as a dependent file
@@ -1717,9 +1716,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     Try
                         dependentVBItem = CreateApplicationEventsFile(appXamlProjectItem)
                     Catch ex As Exception
-                        Throw New PropertyPageException( _
-                            String.Format(My.Resources.Designer.PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg, ex.Message), _
-                            HelpKeywords.VBProjPropWPFApp_CouldntCreateApplicationEventsFile, _
+                        Throw New PropertyPageException(
+                            String.Format(My.Resources.Designer.PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg, ex.Message),
+                            HelpKeywords.VBProjPropWPFApp_CouldntCreateApplicationEventsFile,
                             ex)
                     End Try
                 End If
@@ -1800,7 +1799,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     End If
                 Catch ex As Exception
                     'Problems here should be parsing errors.
-                    Dim message As String = _
+                    Dim message As String =
                         String.Format(My.Resources.Designer.PPG_WPFApp_ErrorControlMessage_1Arg, TryGetAppDotXamlFilename()) _
                         & vbCrLf & vbCrLf _
                         & ex.Message
@@ -1903,271 +1902,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Sub ViewUACSettingsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
-        End Sub
-
-#End Region
-
-        '***************************************************************************
-
-#Region " Windows Form Designer generated code "
-
-
-        Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents AssemblyNameLabel As System.Windows.Forms.Label
-        Friend WithEvents RootNamespaceLabel As System.Windows.Forms.Label
-        Friend WithEvents AssemblyNameTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents RootNamespaceTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents TargetFrameworkLabel As System.Windows.Forms.Label
-        Friend WithEvents TargetFrameworkComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents ApplicationTypeLabel As System.Windows.Forms.Label
-        Friend WithEvents ApplicationTypeComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents AssemblyInfoButton As System.Windows.Forms.Button
-        Friend WithEvents StartupObjectOrUriLabel As System.Windows.Forms.Label
-        Friend WithEvents StartupObjectOrUriComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents UseApplicationFrameworkCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents IconLabel As System.Windows.Forms.Label
-        Friend WithEvents TopHalfLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents IconCombobox As System.Windows.Forms.ComboBox
-        Friend WithEvents IconPicturebox As System.Windows.Forms.PictureBox
-        Friend WithEvents WindowsAppGroupBox As System.Windows.Forms.GroupBox
-        Friend WithEvents BottomHalfLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents EditXamlButton As System.Windows.Forms.Button
-        Friend WithEvents ViewCodeButton As System.Windows.Forms.Button
-        Friend WithEvents ShutdownModeLabel As System.Windows.Forms.Label
-        Friend WithEvents ShutdownModeComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents ButtonsLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents ViewUACSettingsButton As System.Windows.Forms.Button
-
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplicationPropPageVBWPF))
-            Me.TopHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.ButtonsLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.AssemblyInfoButton = New System.Windows.Forms.Button
-            Me.ViewUACSettingsButton = New System.Windows.Forms.Button
-            Me.AssemblyNameLabel = New System.Windows.Forms.Label
-            Me.AssemblyNameTextBox = New System.Windows.Forms.TextBox
-            Me.RootNamespaceLabel = New System.Windows.Forms.Label
-            Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox
-            Me.TargetFrameworkLabel = New System.Windows.Forms.Label
-            Me.TargetFrameworkComboBox = New System.Windows.Forms.ComboBox
-            Me.StartupObjectOrUriComboBox = New System.Windows.Forms.ComboBox
-            Me.StartupObjectOrUriLabel = New System.Windows.Forms.Label
-            Me.ApplicationTypeLabel = New System.Windows.Forms.Label
-            Me.ApplicationTypeComboBox = New System.Windows.Forms.ComboBox
-            Me.UseApplicationFrameworkCheckBox = New System.Windows.Forms.CheckBox
-            Me.IconLabel = New System.Windows.Forms.Label
-            Me.IconPicturebox = New System.Windows.Forms.PictureBox
-            Me.IconCombobox = New System.Windows.Forms.ComboBox
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.WindowsAppGroupBox = New System.Windows.Forms.GroupBox
-            Me.BottomHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.EditXamlButton = New System.Windows.Forms.Button
-            Me.ViewCodeButton = New System.Windows.Forms.Button
-            Me.ShutdownModeLabel = New System.Windows.Forms.Label
-            Me.ShutdownModeComboBox = New System.Windows.Forms.ComboBox
-            Me.TopHalfLayoutPanel.SuspendLayout()
-            Me.ButtonsLayoutPanel.SuspendLayout()
-            CType(Me.IconPicturebox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.overarchingTableLayoutPanel.SuspendLayout()
-            Me.WindowsAppGroupBox.SuspendLayout()
-            Me.BottomHalfLayoutPanel.SuspendLayout()
-            Me.SuspendLayout()
-            '
-            'TopHalfLayoutPanel
-            '
-            resources.ApplyResources(Me.TopHalfLayoutPanel, "TopHalfLayoutPanel")
-            Me.TopHalfLayoutPanel.Controls.Add(Me.ButtonsLayoutPanel, 0, 6)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameLabel, 0, 0)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameTextBox, 0, 1)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceLabel, 1, 0)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceTextBox, 1, 1)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFrameworkLabel, 0, 2)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFrameworkComboBox, 0, 3)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeLabel, 1, 2)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeComboBox, 1, 3)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriComboBox, 0, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriLabel, 0, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.UseApplicationFrameworkCheckBox, 0, 7)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconLabel, 1, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconPicturebox, 2, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconCombobox, 1, 5)
-            Me.TopHalfLayoutPanel.Name = "TopHalfLayoutPanel"
-            '
-            'ButtonsLayoutPanel
-            '
-            resources.ApplyResources(Me.ButtonsLayoutPanel, "ButtonsLayoutPanel")
-            Me.TopHalfLayoutPanel.SetColumnSpan(Me.ButtonsLayoutPanel, 2)
-            Me.ButtonsLayoutPanel.Controls.Add(Me.AssemblyInfoButton, 0, 0)
-            Me.ButtonsLayoutPanel.Controls.Add(Me.ViewUACSettingsButton, 1, 0)
-            Me.ButtonsLayoutPanel.Name = "ButtonsLayoutPanel"
-            '
-            'AssemblyInfoButton
-            '
-            resources.ApplyResources(Me.AssemblyInfoButton, "AssemblyInfoButton")
-            Me.AssemblyInfoButton.Name = "AssemblyInfoButton"
-            '
-            'ViewUACSettingsButton
-            '
-            resources.ApplyResources(Me.ViewUACSettingsButton, "ViewUACSettingsButton")
-            Me.ViewUACSettingsButton.Name = "ViewUACSettingsButton"
-            Me.ViewUACSettingsButton.UseVisualStyleBackColor = True
-            '
-            'AssemblyNameLabel
-            '
-            resources.ApplyResources(Me.AssemblyNameLabel, "AssemblyNameLabel")
-            Me.AssemblyNameLabel.Name = "AssemblyNameLabel"
-            '
-            'AssemblyNameTextBox
-            '
-            resources.ApplyResources(Me.AssemblyNameTextBox, "AssemblyNameTextBox")
-            Me.AssemblyNameTextBox.Name = "AssemblyNameTextBox"
-            '
-            'RootNamespaceLabel
-            '
-            resources.ApplyResources(Me.RootNamespaceLabel, "RootNamespaceLabel")
-            Me.RootNamespaceLabel.Name = "RootNamespaceLabel"
-            '
-            'RootNamespaceTextBox
-            '
-            resources.ApplyResources(Me.RootNamespaceTextBox, "RootNamespaceTextBox")
-            Me.TopHalfLayoutPanel.SetColumnSpan(Me.RootNamespaceTextBox, 2)
-            Me.RootNamespaceTextBox.Name = "RootNamespaceTextBox"
-            '
-            'TargetFrameworkLabel
-            '
-            resources.ApplyResources(Me.TargetFrameworkLabel, "TargetFrameworkLabel")
-            Me.TargetFrameworkLabel.Name = "TargetFrameworkLabel"
-            '
-            'TargetFrameworkComboBox
-            '
-            resources.ApplyResources(Me.TargetFrameworkComboBox, "TargetFrameworkComboBox")
-            Me.TargetFrameworkComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.TargetFrameworkComboBox.FormattingEnabled = True
-            Me.TargetFrameworkComboBox.Name = "TargetFrameworkComboBox"
-            '
-            'StartupObjectOrUriComboBox
-            '
-            resources.ApplyResources(Me.StartupObjectOrUriComboBox, "StartupObjectOrUriComboBox")
-            Me.StartupObjectOrUriComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.StartupObjectOrUriComboBox.FormattingEnabled = True
-            Me.StartupObjectOrUriComboBox.Name = "StartupObjectOrUriComboBox"
-            '
-            'StartupObjectOrUriLabel
-            '
-            resources.ApplyResources(Me.StartupObjectOrUriLabel, "StartupObjectOrUriLabel")
-            Me.StartupObjectOrUriLabel.Name = "StartupObjectOrUriLabel"
-            '
-            'ApplicationTypeLabel
-            '
-            resources.ApplyResources(Me.ApplicationTypeLabel, "ApplicationTypeLabel")
-            Me.ApplicationTypeLabel.Name = "ApplicationTypeLabel"
-            '
-            'ApplicationTypeComboBox
-            '
-            resources.ApplyResources(Me.ApplicationTypeComboBox, "ApplicationTypeComboBox")
-            Me.TopHalfLayoutPanel.SetColumnSpan(Me.ApplicationTypeComboBox, 2)
-            Me.ApplicationTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.ApplicationTypeComboBox.FormattingEnabled = True
-            Me.ApplicationTypeComboBox.Name = "ApplicationTypeComboBox"
-            '
-            'UseApplicationFrameworkCheckBox
-            '
-            resources.ApplyResources(Me.UseApplicationFrameworkCheckBox, "UseApplicationFrameworkCheckBox")
-            Me.TopHalfLayoutPanel.SetColumnSpan(Me.UseApplicationFrameworkCheckBox, 2)
-            Me.UseApplicationFrameworkCheckBox.Name = "UseApplicationFrameworkCheckBox"
-            '
-            'IconLabel
-            '
-            resources.ApplyResources(Me.IconLabel, "IconLabel")
-            Me.IconLabel.Name = "IconLabel"
-            '
-            'IconPicturebox
-            '
-            resources.ApplyResources(Me.IconPicturebox, "IconPicturebox")
-            Me.IconPicturebox.Name = "IconPicturebox"
-            Me.IconPicturebox.TabStop = False
-            '
-            'IconCombobox
-            '
-            resources.ApplyResources(Me.IconCombobox, "IconCombobox")
-            Me.IconCombobox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-            Me.IconCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.IconCombobox.FormattingEnabled = True
-            Me.IconCombobox.Name = "IconCombobox"
-            '
-            'overarchingTableLayoutPanel
-            '
-            resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.TopHalfLayoutPanel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.WindowsAppGroupBox, 0, 1)
-            Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            '
-            'WindowsAppGroupBox
-            '
-            resources.ApplyResources(Me.WindowsAppGroupBox, "WindowsAppGroupBox")
-            Me.WindowsAppGroupBox.Controls.Add(Me.BottomHalfLayoutPanel)
-            Me.WindowsAppGroupBox.Name = "WindowsAppGroupBox"
-            Me.WindowsAppGroupBox.TabStop = False
-            '
-            'BottomHalfLayoutPanel
-            '
-            resources.ApplyResources(Me.BottomHalfLayoutPanel, "BottomHalfLayoutPanel")
-            Me.BottomHalfLayoutPanel.Controls.Add(Me.EditXamlButton, 0, 2)
-            Me.BottomHalfLayoutPanel.Controls.Add(Me.ViewCodeButton, 1, 2)
-            Me.BottomHalfLayoutPanel.Controls.Add(Me.ShutdownModeLabel, 0, 0)
-            Me.BottomHalfLayoutPanel.Controls.Add(Me.ShutdownModeComboBox, 0, 1)
-            Me.BottomHalfLayoutPanel.Name = "BottomHalfLayoutPanel"
-            '
-            'EditXamlButton
-            '
-            resources.ApplyResources(Me.EditXamlButton, "EditXamlButton")
-            Me.EditXamlButton.Name = "EditXamlButton"
-            '
-            'ViewCodeButton
-            '
-            resources.ApplyResources(Me.ViewCodeButton, "ViewCodeButton")
-            Me.ViewCodeButton.Name = "ViewCodeButton"
-            '
-            'ShutdownModeLabel
-            '
-            resources.ApplyResources(Me.ShutdownModeLabel, "ShutdownModeLabel")
-            Me.BottomHalfLayoutPanel.SetColumnSpan(Me.ShutdownModeLabel, 2)
-            Me.ShutdownModeLabel.Name = "ShutdownModeLabel"
-            '
-            'ShutdownModeComboBox
-            '
-            resources.ApplyResources(Me.ShutdownModeComboBox, "ShutdownModeComboBox")
-            Me.BottomHalfLayoutPanel.SetColumnSpan(Me.ShutdownModeComboBox, 2)
-            Me.ShutdownModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.ShutdownModeComboBox.FormattingEnabled = True
-            Me.ShutdownModeComboBox.Name = "ShutdownModeComboBox"
-            '
-            'ApplicationPropPageVBWPF
-            '
-            resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.overarchingTableLayoutPanel)
-            Me.Name = "ApplicationPropPageVBWPF"
-            Me.TopHalfLayoutPanel.ResumeLayout(False)
-            Me.TopHalfLayoutPanel.PerformLayout()
-            Me.ButtonsLayoutPanel.ResumeLayout(False)
-            Me.ButtonsLayoutPanel.PerformLayout()
-            CType(Me.IconPicturebox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.overarchingTableLayoutPanel.ResumeLayout(False)
-            Me.overarchingTableLayoutPanel.PerformLayout()
-            Me.WindowsAppGroupBox.ResumeLayout(False)
-            Me.WindowsAppGroupBox.PerformLayout()
-            Me.BottomHalfLayoutPanel.ResumeLayout(False)
-            Me.BottomHalfLayoutPanel.PerformLayout()
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
-
         End Sub
 
 #End Region
