@@ -2,8 +2,8 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto encoding=UTF-8
-src/Microsoft.VisualStudio.AppDesigner/.*? linguist-vendored
-src/Microsoft.VisualStudio.Editors/.*? linguist-vendored
+src/Microsoft.VisualStudio.AppDesigner/.* linguist-vendored
+src/Microsoft.VisualStudio.Editors/.* linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
