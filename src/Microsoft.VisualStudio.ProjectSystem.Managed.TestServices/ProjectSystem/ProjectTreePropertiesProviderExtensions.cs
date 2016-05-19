@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem;
 using Moq;
@@ -15,13 +16,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static IProjectTree ChangePropertyValuesForEntireTree(this IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree)
         {
-            tree = tree.Replace(ChangePropertyValues(propertiesProvider, tree));
+            // Cheat here, because the IProjectTree that we get from ProjectTreeParser is mutable, we want to clone it
+            // so that any properties providers changes don't affect the "original" tree. If we implemented a completely
+            // immutable tree, then we wouldn't have to do that - but that's currently a lot of work for test-only purposes.
+            string treeAsString = ProjectTreeWriter.WriteToString(tree);
+
+            return ChangePropertyValuesWalkingTree(propertiesProvider, ProjectTreeParser.Parse(treeAsString));
+        }
+
+        private static IProjectTree ChangePropertyValuesWalkingTree(IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree)
+        {
+            tree = ChangePropertyValues(propertiesProvider, tree);
 
             foreach (IProjectTree child in tree.Children)
             {
-                tree = child.Replace(ChangePropertyValuesForEntireTree(propertiesProvider, child)).Parent;
+                tree = ChangePropertyValuesWalkingTree(propertiesProvider, child).Parent;
             }
-            
+
             return tree;
         }
 

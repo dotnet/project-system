@@ -216,24 +216,42 @@ Root (flags: {ProjectRoot})
         [InlineData(@"
 Root(flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
+", @"
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
 Root(flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder})
+", @"
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder BubbleUp})
+", @"
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ")]
         [InlineData(@"
 Root(flags: {ProjectRoot})
     My Project (flags: {Folder Unrecognized AppDesignerFolder})
+", @"
+Root(flags: {ProjectRoot})
+    My Project (flags: {Folder Unrecognized AppDesignerFolder BubbleUp})
 ")]
-        public void ChangePropertyValues_TreeWithMyProjectCandidateAlreadyMarkedAsAppDesigner_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithMyProjectCandidateAlreadyMarkedAsAppDesignerOrBubbleup_AddsRemainingFlags(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
 
-            var tree = ProjectTreeParser.Parse(input);
-            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
 
-            AssertAreEquivalent(tree, result);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
+
+            AssertAreEquivalent(expectedTree, result);
         }
 
         [InlineData(@"
@@ -525,6 +543,8 @@ Root (flags: {ProjectRoot})
 
         private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
         {
+            Assert.NotSame(expected, actual);
+
             string expectedAsString = ProjectTreeWriter.WriteToString(expected);
             string actualAsString = ProjectTreeWriter.WriteToString(actual);
 
