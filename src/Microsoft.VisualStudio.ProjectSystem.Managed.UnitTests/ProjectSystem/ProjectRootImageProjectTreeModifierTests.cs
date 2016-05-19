@@ -62,7 +62,7 @@ Root (flags: {ProjectRoot})
             var tree = ProjectTreeParser.Parse(input);
             var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
-            Assert.Equal(new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1), tree.Icon);
+            Assert.Equal(new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1), result.Icon);
         }
 
         [Theory]

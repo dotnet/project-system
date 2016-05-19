@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
         {
-            if (propertyContext.ParentNodeFlags.IsProjectRoot() && flags.IsFolder())
+            if (propertyContext.ParentNodeFlags.IsProjectRoot() && flags.IsFolder() && flags.IsIncludedInProject())
             {
                 string folderName = GetAppDesignerFolderName();
 
