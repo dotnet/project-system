@@ -31,7 +31,7 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
-    <Compile Include="ProjectSystem\VS\FileRename.cs" />
+    <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />

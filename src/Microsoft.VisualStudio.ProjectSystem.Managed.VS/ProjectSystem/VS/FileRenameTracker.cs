@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IProjectChangeHintReceiver)), Export]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityRenameHint.RenamedFileAsString)]
     [AppliesTo(ProjectCapability.CSharp)]
-    internal class FileRename : IProjectChangeHintReceiver
+    internal class FileRenameTracker : IProjectChangeHintReceiver
     {
 
         protected readonly IUnconfiguredProjectVsServices UnconfiguredProjectVsServices;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected SVsServiceProvider ServiceProvider { get; private set; }
 
         [ImportingConstructor]
-        public FileRename(IUnconfiguredProjectVsServices projectVsServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             UnconfiguredProjectVsServices = projectVsServices;
