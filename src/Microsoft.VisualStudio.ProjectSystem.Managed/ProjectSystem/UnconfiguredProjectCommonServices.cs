@@ -11,17 +11,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IUnconfiguredProjectCommonServices))]
     internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonServices
     {
+        private readonly UnconfiguredProject _project;
         private readonly Lazy<IProjectThreadingService> _threadingService;
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
+        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
         {
+            Requires.NotNull(project, nameof(project));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(activeConfiguredProjectProperties, nameof(activeConfiguredProjectProperties));
 
+            _project = project;
             _threadingService = threadingService;
             _activeConfiguredProject = activeConfiguredProject;
             _activeConfiguredProjectProperties = activeConfiguredProjectProperties;
@@ -30,6 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public IProjectThreadingService ThreadingService
         {
             get { return _threadingService.Value; }
+        }
+
+        public UnconfiguredProject Project
+        {
+            get { return _project;  }
         }
 
         public ConfiguredProject ActiveConfiguredProject

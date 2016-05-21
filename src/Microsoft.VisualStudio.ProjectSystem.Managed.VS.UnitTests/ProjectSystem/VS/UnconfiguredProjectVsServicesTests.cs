@@ -10,57 +10,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class UnconfiguredProjectVsServicesTests
     {
         [Fact]
-        public void Constructor_NullAsUnconfiguedProject_ThrowsArgumentNull()
-        {
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
-                new UnconfiguredProjectVsServices((UnconfiguredProject)null, commonServices);
-            });
-        }
-
-        [Fact]
         public void Constructor_NullAsCommonSevices_ThrowsArgumentNull()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create();
 
             Assert.Throws<ArgumentNullException>("commonServices", () => {
-                new UnconfiguredProjectVsServices(unconfiguredProject, (IUnconfiguredProjectCommonServices)null);
+                new UnconfiguredProjectVsServices((IUnconfiguredProjectCommonServices)null);
             });
         }
 
         [Fact]
-        public void Constructor_ValueAsUnconfiguedProject_SetsHierarchyToHostObject()
+        public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(hostObject:hierarchy);
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create(hostObject:hierarchy);
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
-            var vsServices = CreateInstance(unconfiguredProject, commonServices);
+            var vsServices = CreateInstance(commonServices);
 
-            Assert.Same(hierarchy, vsServices.Hierarchy);
+            Assert.Same(hierarchy, vsServices.VsHierarchy);
         }
 
         [Fact]
-        public void Constructor_ValueAsUnconfiguedProject_SetsProjectToHostObject()
+        public void Constructor_ValueAsUnconfiguedProject_SetsVsProjectToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(hostObject: hierarchy);
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create(hostObject: hierarchy);
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
-            var vsServices = CreateInstance(unconfiguredProject, commonServices);
+            var vsServices = CreateInstance(commonServices);
 
-            Assert.Same(hierarchy, vsServices.Project);
+            Assert.Same(hierarchy, vsServices.VsProject);
+        }
+
+        [Fact]
+        public void Constructor_ValueAsCommonServices_SetsProjectToCommonServicesProject()
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create();
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+
+            var vsServices = CreateInstance(commonServices);
+
+            Assert.Same(project, vsServices.Project);
         }
 
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsThreadingServiceToCommonServicesThreadingService()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService: threadingService);
 
-            var vsServices = CreateInstance(unconfiguredProject, commonServices);
+            var vsServices = CreateInstance(commonServices);
 
             Assert.Same(threadingService, vsServices.ThreadingService);
         }
@@ -68,11 +70,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectProjectToCommonServicesActiveConfiguredProject()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
-            var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
+            var project = IUnconfiguredProjectFactory.Create();
+            var projectProperties = ProjectPropertiesFactory.Create(project);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(configuredProject: projectProperties.ConfiguredProject);
 
-            var vsServices = CreateInstance(unconfiguredProject, commonServices);
+            var vsServices = CreateInstance(commonServices);
 
             Assert.Same(projectProperties.ConfiguredProject, vsServices.ActiveConfiguredProject);
         }
@@ -80,18 +82,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectPropertiesToCommonServicesActiveConfiguredProjectProperties()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
-            var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject);
+            var project = IUnconfiguredProjectFactory.Create();
+            var projectProperties = ProjectPropertiesFactory.Create(project);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
-            var vsServices = CreateInstance(unconfiguredProject, commonServices);
+            var vsServices = CreateInstance(commonServices);
 
             Assert.Same(projectProperties, vsServices.ActiveConfiguredProjectProperties);
         }
 
-        private static UnconfiguredProjectVsServices CreateInstance(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectCommonServices commonServices)
+        private static UnconfiguredProjectVsServices CreateInstance(IUnconfiguredProjectCommonServices commonServices)
         {
-            return new UnconfiguredProjectVsServices(unconfiguredProject, commonServices);
+            return new UnconfiguredProjectVsServices(commonServices);
         }
     }
 }
