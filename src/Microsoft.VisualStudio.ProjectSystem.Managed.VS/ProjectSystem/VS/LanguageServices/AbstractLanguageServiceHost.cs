@@ -82,11 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// <summary>
         /// Gets the unconfigured project.
         /// </summary>
-        [Import]
         public UnconfiguredProject UnconfiguredProject
         {
-            get;
-            private set;
+            get { return _projectVsServices.Project; }
         }
 
         /// <summary>
@@ -315,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 switch (dwPropID)
                 {
                     case (uint)HOSTPROPID.HOSTPROPID_HIERARCHY:
-                        pvar = _projectVsServices.Hierarchy;
+                        pvar = _projectVsServices.VsHierarchy;
                         break;
                     case (uint)HOSTPROPID.HOSTPROPID_PROJECTNAME:
                         pvar = UnconfiguredProject.FullPath;
@@ -388,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         FileCodeModel ICodeModelProvider.GetFileCodeModel(ProjectItem fileItem)
         {
             object result;
-            Marshal.ThrowExceptionForHR(_intellisenseEngine.GetFileCodeModel(_projectVsServices.Hierarchy, fileItem, out result));
+            Marshal.ThrowExceptionForHR(_intellisenseEngine.GetFileCodeModel(_projectVsServices.VsHierarchy, fileItem, out result));
             return (FileCodeModel)result;
         }
 
@@ -495,11 +493,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             ThreadingService.VerifyOnUIThread();
 
-            HierarchyId id = _projectVsServices.Project.GetHierarchyId(documentMoniker);
+            HierarchyId id = _projectVsServices.VsProject.GetHierarchyId(documentMoniker);
             if (id.IsNil || id.IsRoot)
                 return null;
 
-            return _projectVsServices.Hierarchy.GetProperty(id, VsHierarchyPropID.ExtObject, (ProjectItem)null);
+            return _projectVsServices.VsHierarchy.GetProperty(id, VsHierarchyPropID.ExtObject, (ProjectItem)null);
         }
 
         /// <summary>

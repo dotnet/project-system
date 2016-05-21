@@ -13,32 +13,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IUnconfiguredProjectVsServices))]
     internal class UnconfiguredProjectVsServices : IUnconfiguredProjectVsServices
     {
-        private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
 
         [ImportingConstructor]
-        public UnconfiguredProjectVsServices(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectCommonServices commonServices)
+        public UnconfiguredProjectVsServices(IUnconfiguredProjectCommonServices commonServices)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
             Requires.NotNull(commonServices, nameof(commonServices));
 
-            _unconfiguredProject = unconfiguredProject;
             _commonServices = commonServices;
         }
 
-        public IVsHierarchy Hierarchy
+        public IVsHierarchy VsHierarchy
         {
-            get { return (IVsHierarchy)_unconfiguredProject.Services.HostObject; }
+            get { return (IVsHierarchy)_commonServices.Project.Services.HostObject; }
         }
 
-        public IVsProject4 Project
+        public IVsProject4 VsProject
         {
-            get { return (IVsProject4)_unconfiguredProject.Services.HostObject; }
+            get { return (IVsProject4)_commonServices.Project.Services.HostObject; }
         }
 
         public IProjectThreadingService ThreadingService
         {
             get { return _commonServices.ThreadingService; }
+        }
+
+        public UnconfiguredProject Project
+        {
+            get { return _commonServices.Project; }
         }
 
         public ConfiguredProject ActiveConfiguredProject
