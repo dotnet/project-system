@@ -82,11 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// <summary>
         /// Gets the unconfigured project.
         /// </summary>
-        [Import]
         public UnconfiguredProject UnconfiguredProject
         {
-            get;
-            private set;
+            get { return _projectVsServices.Project; }
         }
 
         /// <summary>
