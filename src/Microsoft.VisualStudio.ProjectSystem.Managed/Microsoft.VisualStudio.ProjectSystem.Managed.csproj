@@ -67,6 +67,7 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
@@ -99,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SettingsFile.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
