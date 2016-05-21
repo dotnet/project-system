@@ -102,7 +102,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SettingsFile.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
