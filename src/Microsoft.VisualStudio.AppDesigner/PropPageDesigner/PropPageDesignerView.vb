@@ -1298,7 +1298,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Common.Switches.TracePDUndo("  Value=" & AppDesCommon.DebugToString(Value))
                 Return Value
             Else
-                Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(PropertyPagePropertyDescriptor.GetValue)}() called with unexpected Component type.  Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IProjectDesignerPropertyPageUndoSite)})")
+                Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(PropertyPagePropertyDescriptor.GetValue)}() called with unexpected Component type.  Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IVsProjectDesignerPageSite)})")
                 Throw New ArgumentException
             End If
         End Function

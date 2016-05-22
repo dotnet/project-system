@@ -57,9 +57,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <returns>If it succeeds, a valid listener is created.  If it fails, Nothing is returned.</returns>
         ''' <remarks></remarks>
-        Public Shared Function TryCreate(ByVal PropPage As PropPageUserControlBase, ByVal EventSource As Object, ByVal DebugSourceName As String, ByVal ProjectHierarchy As IVsHierarchy, ByVal ListenToInactiveConfigs As Boolean) As PropertyListener
+        Public Shared Function TryCreate(
+                                          PropPage As PropPageUserControlBase,
+                                          EventSource As Object,
+                                          DebugSourceName As String,
+                                          ProjectHierarchy As IVsHierarchy,
+                                          ListenToInactiveConfigs As Boolean
+                                        ) As PropertyListener
             Debug.Assert(ProjectHierarchy IsNot Nothing)
-            Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & VB.TypeName(EventSource))
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"Attempting to hook up {NameOf(ILangInactiveCfgPropertyNotifySink)} to object '{DebugSourceName}' of type {VB.TypeName(EventSource)}")
 
             If TypeOf EventSource Is IVsCfg Then
                 'We need to get an IDispatch for the configuration, which we can do through IVsExtensibleObject off
@@ -68,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim VsCfgProviderObject As Object = Nothing
                 If VSErrorHandler.Succeeded(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, VsCfgProviderObject)) AndAlso VsCfgProviderObject IsNot Nothing Then
                     Dim VsExtensibleObject As IVsExtensibleObject = TryCast(VsCfgProviderObject, IVsExtensibleObject)
-                    Debug.Assert(VsExtensibleObject IsNot Nothing, "Expected IVsCfgProvider object to implement IVsExtensibleObject")
+                    Debug.Assert(VsExtensibleObject IsNot Nothing, $"Expected {NameOf(IVsCfgProvider)} object to implement {NameOf(IVsExtensibleObject)}")
                     If VsExtensibleObject IsNot Nothing Then
                         Dim Dispatch As Object = Nothing
                         Dim ConfigFullName As String = Nothing
@@ -78,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             VsExtensibleObject.GetAutomationObject(ConfigFullName, Dispatch)
                             Debug.Assert(Dispatch IsNot Nothing, "Couldn't get automation object for configuration")
                             Dim ConfigProperties As VSLangProj.ProjectConfigurationProperties = TryCast(Dispatch, VSLangProj.ProjectConfigurationProperties)
-                            Debug.Assert(ConfigProperties IsNot Nothing, "Couldn't get ProjectConfigurationProperties from config")
+                            Debug.Assert(ConfigProperties IsNot Nothing, $"Couldn't get {NameOf(VSLangProj.ProjectConfigurationProperties)} from config")
                             If ConfigProperties IsNot Nothing Then
                                 EventSource = ConfigProperties
                                 Debug.Assert(SupportsConnectionPointContainer(EventSource), "Unable to get connection point container from configuration")
@@ -86,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
                     End If
                 Else
-                    Debug.Fail("Unable to get IVsCfgProvider from project")
+                    Debug.Fail($"Unable to get {NameOf(IVsCfgProvider)} from project")
                 End If
             End If
 
@@ -109,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Common.Switches.TracePDProperties(TraceLevel.Info, "... Succeeded for inactive configurations")
                         Catch ex As Exception
                             AppDesCommon.RethrowIfUnrecoverable(ex)
-                            Debug.Fail("Unable to get connection point cookie for ILangInactiveCfgPropertyNotifySink")
+                            Debug.Fail("Unable to get connection point cookie for " & NameOf(ILangInactiveCfgPropertyNotifySink))
                             'We ignore if this happens
                             Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown for inactive configurations: " & ex.Message)
                         End Try
@@ -153,8 +159,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _cookieInactiveCfg = Nothing
                 End If
             Else
-                Debug.Assert(_cookieActiveCfg Is Nothing, "PropertyListener didn't get disposed")
-                Debug.Assert(_cookieInactiveCfg Is Nothing, "PropertyListener didn't get disposed")
+                Debug.Assert(_cookieActiveCfg Is Nothing, NameOf(PropertyListener) & " didn't get disposed")
+                Debug.Assert(_cookieInactiveCfg Is Nothing, NameOf(PropertyListener) & " didn't get disposed")
             End If
         End Sub
 
@@ -262,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Function OnChanged(ByVal dispid As Integer, ByVal wszConfigName As String) As Integer Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
-            DebugSourceName = "[Inactive Config '" & wszConfigName & "'] : " & _debugSourceName
+            DebugSourceName = $"[Inactive Config '{wszConfigName}'] : {_debugSourceName}"
 #End If
             _propPage.OnExternalPropertyChanged(dispid, DebugSourceName)
         End Function

@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return View.GetProperty(Me.Name)
             Else
                 Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(GetValue)}() called with unexpected {NameOf(Component)} type.
-Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IProjectDesignerPropertyPageUndoSite)})")
+Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IVsProjectDesignerPageSite)})")
                 Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Function
@@ -114,7 +114,7 @@ Expected that this is also set up through the {NameOf(PropPageDesignerView)} (im
                 View.SetProperty(Me.Name, Value)
             Else
                 Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(SetValue)}() called with unexpected {NameOf(Component)} type.
-Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IProjectDesignerPropertyPageUndoSite)})")
+Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IVsProjectDesignerPageSite)})")
                 Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Sub

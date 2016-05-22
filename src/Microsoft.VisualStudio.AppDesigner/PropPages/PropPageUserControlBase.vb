@@ -575,7 +575,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If _cachedRawPropertiesSuperset Is Nothing Then
                     If m_Objects Is Nothing Then
-                        Debug.Fail("m_Objects is nothing")
+                        Debug.Fail($"{NameOf(m_Objects)} is nothing")
                         Return New Object() {}
                     End If
                     Dim Superset As New Hashtable(m_Objects.Length)
@@ -662,9 +662,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
 
                 Debug.Assert(IsCommonProperty OrElse IsPropertyOnThisPage,
-                    "GetCurrentProperty: Property was found in an open page, so this time the function will succeed.  However, the property was not " _
-                    & "found as a common property or a property on this page, so the same query would fail if the other page were not open.  This probably " _
-                    & "indicates an error in the caller.")
+                    $"{NameOf(GetCurrentProperty)}: Property was found in an open page, so this time the function will succeed.  However, the property was not " &
+                    "found as a common property or a property on this page, so the same query would fail if the other page were not open.  This probably " &
+                    "indicates an error in the caller.")
 #End If
 
                 'Property value successfully retrieved
@@ -810,7 +810,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  will not be changed.
         Protected Sub EnableControl(ByVal control As Control, ByVal enabled As Boolean)
             If control Is Nothing Then
-                Debug.Fail("control is nothing")
+                Debug.Fail(NameOf(control) & " is nothing")
                 Return
             End If
 
@@ -838,7 +838,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub EnterProjectCheckoutSection()
-            Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
+            Debug.Assert(_checkoutSectionCount >= 0, $"Bad {NameOf(_checkoutSectionCount)} count")
             _checkoutSectionCount = _checkoutSectionCount + 1
         End Sub
 
@@ -872,18 +872,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Sub LeaveProjectCheckoutSection()
             _checkoutSectionCount = _checkoutSectionCount - 1
-            Debug.Assert(_checkoutSectionCount >= 0, "Mismatched EnterProjectCheckoutSection/LeaveProjectCheckoutSection calls")
+            Debug.Assert(_checkoutSectionCount >= 0, $"Mismatched {NameOf(EnterProjectCheckoutSection)}/{NameOf(LeaveProjectCheckoutSection)} calls")
             If _checkoutSectionCount = 0 AndAlso _projectReloadedDuringCheckout Then
                 Try
                     Trace.WriteLine("**** Deactivate happened during a checkout.  Now that Apply is finished, queueing a delayed Dispose() call for the page.")
                     If Not IsHandleCreated Then
                         CreateHandle()
                     End If
-                    Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), "We should have a handle still.  Without it, BeginInvoke will fail.")
+                    Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), $"We should have a handle still.  Without it, {NameOf(BeginInvoke)} will fail.")
                     BeginInvoke(New MethodInvoker(AddressOf DelayedDispose))
                 Catch ex As Exception
                     ' At this point, all we can do is to avoid crashing the shell. 
-                    Debug.Fail(String.Format("Failed to queue a delayed Dispose for the property page: {0}", ex))
+                    Debug.Fail($"Failed to queue a delayed {NameOf(Dispose)} for the property page:{ex}")
                 End Try
             End If
         End Sub
@@ -1084,7 +1084,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ElseIf TypeOf ThisObj Is IVsBrowseObject Then
                 VSErrorHandler.ThrowOnFailure(CType(ThisObj, IVsBrowseObject).GetProjectItem(Hier, ItemId))
             Else
-                Debug.Fail("Not an IVsBrowseObject, not an IVsCfgBrowseObject")
+                Debug.Fail($"Not an {NameOf(IVsBrowseObject)}, not an {NameOf(IVsCfgBrowseObject)}")
             End If
 
             Return Hier
@@ -1120,7 +1120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Trace.WriteLine("PDExtenders: " & DebugMessage)
                 Trace.Indent()
                 For Each Prop As PropertyDescriptor In Properties
-                    Trace.WriteLine(Prop.Name & " [" & VB.TypeName(Prop) & "]" & ": " & Prop.PropertyType.Name)
+                    Trace.WriteLine($"{Prop.Name} [{VB.TypeName(Prop)}] : {Prop.PropertyType.Name}")
                 Next
                 Trace.Unindent()
             End If
@@ -1227,7 +1227,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   or they may be something else.
         '''</remarks>
         Public Overridable Sub SetObjects(ByVal objects() As Object)
-            Debug.Assert(_site IsNot Nothing OrElse (objects Is Nothing OrElse objects.Length = 0), "SetObjects() called (with non-null objects), but we are not sited!")
+            Debug.Assert(_site IsNot Nothing OrElse (objects Is Nothing OrElse objects.Length = 0), NameOf(SetObjects) & "() called (with non-null objects), but we are not sited!")
             m_Objects = Nothing
 
             _fConfigurationSpecificPage = False
@@ -1246,7 +1246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If Not TypeOf objects Is Object() Then
-                Debug.Fail("Objects must be an array of Object, not an array of anything else!")
+                Debug.Fail(NameOf(objects) & " must be an array of Object, not an array of anything else!")
                 Throw New ArgumentException
             End If
 
@@ -1278,7 +1278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _fConfigurationSpecificPage = False
                     VSErrorHandler.ThrowOnFailure(CType(ThisObj, IVsBrowseObject).GetProjectItem(Hier, ItemId))
                 Else
-                    Debug.Fail("Object passed in to SetObjects() must be an IVsBrowseObject or IVsCfgBrowseObject")
+                    Debug.Fail($"Object passed in to {NameOf(SetObjects)}() must be an {NameOf(IVsBrowseObject)} or {NameOf(IVsCfgBrowseObject)}")
                     Throw New NotSupportedException
                 End If
                 Debug.Assert(Hier IsNot Nothing, "Should have thrown")
@@ -1847,10 +1847,10 @@ NextControl:
                                 Dim NewValues() As Object = Data.GetControlValueMultipleValues()
 
                                 If OldValues Is Nothing OrElse NewValues Is Nothing Then
-                                    Debug.Fail("OldValues or NewValues is Nothing")
+                                    Debug.Fail($"{NameOf(OldValues)} or {NameOf(NewValues)} is Nothing")
                                 Else
                                     If OldValues.Length <> NewValues.Length Then
-                                        Debug.Fail("OldValues.Length <> NewValues.Length")
+                                        Debug.Fail($"{NameOf(OldValues)}.Length <> {NameOf(NewValues)}.Length")
                                     Else
                                         For i As Integer = 0 To OldValues.Length - 1
                                             If Not PropertyControlData.ObjectsAreEqual(OldValues(i), NewValues(i)) Then
@@ -1862,7 +1862,8 @@ NextControl:
                                 End If
 
                             Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                                Debug.Fail("Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue")
+                                ' TODO: Find the correct nameofs
+                                Debug.Fail($"Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue")
                                 ValueHasChanged = True
                             End Try
 
@@ -1885,7 +1886,7 @@ NextControl:
                     Next
 
                     If SccManager.ManagedFiles.Count > 0 Then
-                        Common.Switches.TracePDProperties(TraceLevel.Warning, "Calling QueryEdit on these files: " & String.Join(", ", SccManager.ManagedFiles.ToArray()))
+                        Common.Switches.TracePDProperties(TraceLevel.Warning, $"Calling QueryEdit on these files: {String.Join(", ", SccManager.ManagedFiles.ToArray())}")
                         SccManager.EnsureFilesEditable()
 
                         If _projectReloadedDuringCheckout Then
@@ -1895,6 +1896,7 @@ NextControl:
                         End If
                     End If
                 Else
+                    ' TODO: Fibnd correct nameofs
                     Debug.Fail("Service provider or hierarchy missing - can't QueryEdit files before property set")
                 End If
 
@@ -1922,10 +1924,10 @@ NextControl:
                 If ProjectMayBeReloadedDuringPropertySet Then
                     APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag = True
                 ElseIf APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag Then
-                    Debug.Fail("Properties with the ProjectMayBeReloadedDuringPropertySet flag should always come last " _
-                        & "in the property list so that they will be set last.  Otherwise there may be " _
-                        & "other property changes requests to be applied which will get ignored if the project " _
-                        & "is reloaded.")
+                    Debug.Fail($"Properties with the {NameOf(ProjectMayBeReloadedDuringPropertySet)} flag should always come last " &
+                               "in the property list so that they will be set last.  Otherwise there may be " &
+                               "other property changes requests to be applied which will get ignored if the project " &
+                               "is reloaded.")
                     Return
                 End If
             Next
@@ -2007,6 +2009,7 @@ NextControl:
                             BatchObject.BeginBatch()
                             BatchObjects(i) = BatchObject
                         Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                            ' TODO: find correct nameofs
                             Debug.Fail("ILangPropertyProvideBatchUpdate.BeginBatch() failed, ignoring: " & ex.ToString)
                         End Try
                     End If
@@ -2019,6 +2022,7 @@ NextControl:
                                 BatchObject.BeginBatch()
                                 BatchObjects(i) = BatchObject
                             Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                                ' TODO: find correct nameofs
                                 Debug.Fail("ILangPropertyProvideBatchUpdate.BeginBatch() failed, ignoring: " & ex.ToString)
                             End Try
                         End If
@@ -2124,7 +2128,8 @@ NextControl:
                                         '  is made.  Normally there will be an error on compilation if an invalid property has been
                                         '  passed to the compiler.  So our best bet is to ignore exceptions if they occur.
 
-                                        Trace.WriteLine("ILangPropertyProvideBatchUpdate.EndBatch failed, ignoring:" & vbCrLf & Common.DebugMessageFromException(ex))
+                                        Trace.WriteLine("ILangPropertyProvideBatchUpdate.BeginBatch) failed, ignoring:  " & vbCrLf & Common.DebugMessageFromException(ex))
+                                        ' TODO: Find correct nameofs
                                     End Try
                                 End If
                             Next
@@ -2417,7 +2422,7 @@ NextControl:
             If commonPropObject IsNot Nothing Then
                 Return PropertyControlData.GetCommonPropertyValueNative(prop, commonPropObject)
             Else
-                Throw New InvalidOperationException("CommonPropertiesObject is not set")
+                Throw New InvalidOperationException(NameOf(CommonPropertiesObject) & " is not set")
             End If
         End Function
 
@@ -2590,7 +2595,7 @@ NextControl:
             End If
             Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
 
-            Common.Switches.TracePDProperties(TraceLevel.Info, "ApplyChanges(" & sender.GetType.Name & ")")
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(ApplyChanges)}({sender.GetType.Name})")
 
             'Save CanApplyNow to reset
             Dim SaveApplyNow As Boolean = CanApplyNow
@@ -2625,8 +2630,7 @@ NextControl:
                 Return
             End If
 
-            Common.Switches.TracePDProperties(TraceLevel.Info, "SetDirty(ReadyToApply:=" & ReadyToApply & ")")
-
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(SetDirty)}({NameOf(ReadyToApply)}:={ReadyToApply})")
             'Save CanApplyNow to reset
             Dim SaveApplyNow As Boolean = CanApplyNow
             CanApplyNow = ReadyToApply
@@ -2654,9 +2658,9 @@ NextControl:
             If m_fInsideInit Then
                 Return
             End If
-            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
+            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected Object type")
 
-            Common.Switches.TracePDProperties(TraceLevel.Info, "SetDirty(<sender>, ReadyToApply:=" & ReadyToApply & ")")
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(SetDirty)}(<{NameOf(sender)}>, {NameOf(ReadyToApply)}:={ReadyToApply})")
 
             'Save CanApplyNow to reset
             Dim SaveApplyNow As Boolean = CanApplyNow
@@ -2724,7 +2728,7 @@ NextControl:
                 Return
             End If
 
-            Common.Switches.TracePDProperties(TraceLevel.Info, "SetDirty(" & dispid & ", ReadyToApply:=" & ReadyToApply & ")")
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(SetDirty)}({dispid}, {NameOf(ReadyToApply)}:={ReadyToApply})")
 
             'Save CanApplyNow to reset
             Dim SaveApplyNow As Boolean = CanApplyNow
@@ -2749,7 +2753,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function GetDirty(ByVal sender As Object) As Boolean
-            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
+            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected Object type")
 
             For Each _controlData As PropertyControlData In ControlData
                 If _controlData.FormControl Is sender Then
@@ -2758,7 +2762,7 @@ NextControl:
                     Return _controlData.IsDirty
                 End If
             Next _controlData
-            Throw Common.CreateArgumentException("sender")
+            Throw Common.CreateArgumentException(NameOf(sender))
         End Function
 
 
@@ -2809,7 +2813,7 @@ NextControl:
             Dim PropIds As New List(Of Integer)
             For Each pcd As PropertyControlData In ControlData
                 If PropIds.Contains(pcd.DispId) Then
-                    Debug.Fail("DISPIDs for the properties on this page are not unique - DISPID=" & pcd.DispId)
+                    Debug.Fail("DISPIDs For the properties On this page are Not unique - DISPID=" & pcd.DispId)
                 Else
                     PropIds.Add(pcd.DispId)
                 End If
@@ -3041,7 +3045,7 @@ NextControl:
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <remarks>Will throw an exception on failure.</remarks>
         Protected Overloads Function AddFileToProject(ByVal ProjectItems As EnvDTE.ProjectItems, ByVal FileName As String, ByVal CopyFile As Boolean) As EnvDTE.ProjectItem
-            Debug.Assert(IO.Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
+            Debug.Assert(IO.Path.IsPathRooted(FileName), "FileName passed To AddFileToProject should be a full path")
 
             'Canonicalize the file name
             FileName = IO.Path.GetFullPath(FileName)
@@ -3429,7 +3433,7 @@ NextControl:
         ''' </remarks>
         Protected ReadOnly Property ProjectKind() As String
             Get
-                Debug.Assert(_DTEProject IsNot Nothing, "Can't get ProjectKind because DTEProject not available")
+                Debug.Assert(_DTEProject IsNot Nothing, $"Can't get {NameOf(ProjectKind)} because {NameOf(DTEProject)} not available")
                 If _DTEProject IsNot Nothing Then
                     Return _DTEProject.Kind
                 Else
@@ -3445,7 +3449,7 @@ NextControl:
         ''' <value></value>
         Protected ReadOnly Property ProjectLanguage() As String
             Get
-                Debug.Assert(_DTEProject IsNot Nothing, "Can't get ProjectLanguage because DTEProject not available")
+                Debug.Assert(_DTEProject IsNot Nothing, $"Can't get {NameOf(ProjectLanguage)} because {NameOf(DTEProject)} not available")
                 If _DTEProject IsNot Nothing Then
                     Dim codeModel As EnvDTE.CodeModel = _DTEProject.CodeModel
                     If codeModel IsNot Nothing Then
@@ -3538,17 +3542,17 @@ NextControl:
             'Return the last saved value, not the current edit
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
-                Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
+                Debug.Fail($"{NameOf(IVsProjectDesignerPage)}.{NameOf(IVsProjectDesignerPage_GetPropertyValue)}: {NameOf(PropertyName)} passed in was not recognized")
                 Throw AppDesCommon.CreateArgumentException("PropertyName")
             End If
 
             Dim Value As Object = Data.InitialValue
             If Value Is PropertyControlData.Indeterminate Then
-                Debug.Fail("IVsProjectDesignerPage.GetProperty() should never return Indeterminate.  Why isn't this property being handled through GetPropertyMultipleValues?")
+                Debug.Fail($"{NameOf(IVsProjectDesignerPage)}.{NameOf(IVsProjectDesignerPage_GetPropertyValue)}() should never return Indeterminate.  Why isn't this property being handled through {NameOf(IVsProjectDesignerPage.GetPropertyMultipleValues)}?")
                 Return Nothing
             End If
             If Value Is PropertyControlData.MissingProperty Then
-                Debug.Fail("IVsProjectDesignerPage.GetProperty() should never return IsMissing.  How did this function get called if the property is missing?")
+                Debug.Fail($"{NameOf(IVsProjectDesignerPage)}.{NameOf(IVsProjectDesignerPage_GetPropertyValue)}() should never return IsMissing.  How did this function get called if the property is missing?")
                 Return Nothing
             End If
             If PropertyControlData.IsSpecialValue(Value) Then
@@ -3588,8 +3592,8 @@ NextControl:
             Debug.Assert(Not PropertyControlData.IsSpecialValue(Value))
             Dim _ControlData As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If _ControlData Is Nothing Then
-                Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Debug.Fail($"{NameOf(IVsProjectDesignerPage)}.{NameOf(IVsProjectDesignerPage_GetPropertyValue)}: {NameOf(PropertyName)} passed in was not recognized")
+                Throw AppDesCommon.CreateArgumentException(NameOf(PropertyName))
             End If
 
 
@@ -3615,7 +3619,7 @@ NextControl:
         Protected Overridable Function IVsProjectDesignerPage_SupportsMultipleValueUndo(ByVal PropertyName As String) As Boolean Implements IVsProjectDesignerPage.SupportsMultipleValueUndo
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
-                Debug.Fail("Couldn't find the requested property in IVsProjectDesignerPage_SupportsMultipleValueUndo")
+                Debug.Fail($"Couldn't find the requested property in {NameOf(IVsProjectDesignerPage_SupportsMultipleValueUndo)}")
                 Return False
             End If
 
@@ -3634,7 +3638,7 @@ NextControl:
         ''' <remarks></remarks>
         Private Function SupportsMultipleValueUndo(ByVal Data As PropertyControlData) As Boolean
             If Data Is Nothing Then
-                Throw New ArgumentNullException
+                Throw New ArgumentNullException(NameOf(Data))
             End If
 
             Return Data.SupportsMultipleValueUndo()
@@ -3656,7 +3660,7 @@ NextControl:
         Protected Overridable Function IVsProjectDesignerPage_GetPropertyMultipleValues(ByVal PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Throw AppDesCommon.CreateArgumentException(NameOf(PropertyName))
             End If
 
             If Not SupportsMultipleValueUndo(Data) Then
@@ -3690,7 +3694,7 @@ NextControl:
         Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValueMultipleValues(ByVal PropertyName As String, ByVal Objects() As Object, ByVal Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
             If Objects Is Nothing OrElse Objects.Length = 0 OrElse Values Is Nothing OrElse Values.Length <> Objects.Length Then
                 Debug.Fail("unexpected")
-                Throw AppDesCommon.CreateArgumentException("Objects, Values")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Objects) & ", " & NameOf(Values))
             End If
 
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
@@ -4138,7 +4142,7 @@ NextControl:
                 If _vsShellForUnadvisingBroadcastMessages IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(_vsShellForUnadvisingBroadcastMessages.AdviseBroadcastMessages(Me, _cookieBroadcastMessages))
                 Else
-                    Debug.Fail("Unable to get IVsShell for broadcast messages")
+                    Debug.Fail($"Unable to get {NameOf(IVsShell)} for broadcast messages")
                 End If
             End If
         End Sub
@@ -4177,7 +4181,7 @@ NextControl:
         ''' <param name="action"></param>
         ''' <remarks></remarks>
         Private Sub BuildBegin(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
-            Debug.Assert(DisableOnBuild, "Why did we get a BuildBegin event when we shouldn't be listening?")
+            Debug.Assert(DisableOnBuild, $"Why did we get a {NameOf(BuildBegin)} event when we shouldn't be listening?")
             _pageEnabledPerBuildMode = False
             SetEnabledState()
         End Sub
@@ -4189,7 +4193,7 @@ NextControl:
         ''' <param name="action"></param>
         ''' <remarks></remarks>
         Private Sub BuildDone(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
-            Debug.Assert(DisableOnBuild, "Why did we get a BuildDone event when we shouldn't be listening?")
+            Debug.Assert(DisableOnBuild, $"Why did we get a {NameOf(BuildDone)} event when we shouldn't be listening?")
             _pageEnabledPerBuildMode = True
             SetEnabledState()
         End Sub
@@ -4375,7 +4379,7 @@ NextControl:
         '''   with the given DISPID.
         ''' </remarks>
         Protected Overridable Sub OnExternalPropertyChanged(ByVal DISPID As Integer, ByVal Source As PropertyChangeSource)
-            Common.Switches.TracePDProperties(TraceLevel.Verbose, "OnExternalPropertyChanged(DISPID=" & DISPID & ", Source=" & Source.ToString() & ")")
+            Common.Switches.TracePDProperties(TraceLevel.Verbose, $"{NameOf(OnExternalPropertyChanged)}({NameOf(DISPID)}={DISPID}, {NameOf(Source)}={Source.ToString()})")
             'Go through all the properties on the page to see if any match the DISPID that changed.
             For Each Data As PropertyControlData In ControlData
                 If Data.DispId = DISPID OrElse DISPID = Interop.win.DISPID_UNKNOWN Then
@@ -4387,7 +4391,7 @@ NextControl:
                     End If
                 End If
             Next
-            Common.Switches.TracePDProperties(TraceLevel.Verbose, "  Did not find matching PropertyControlData on this page - ignoring.")
+            Common.Switches.TracePDProperties(TraceLevel.Verbose, $"  Did not find matching {NameOf(PropertyControlData)} on this page - ignoring.")
         End Sub
 
 
@@ -4415,9 +4419,9 @@ NextControl:
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub CheckPlayCachedPropertyChanges()
-            Common.Switches.TracePDProperties(TraceLevel.Verbose, "PlayCachedPropertyChanges()")
+            Common.Switches.TracePDProperties(TraceLevel.Verbose, NameOf(CheckPlayCachedPropertyChanges) & "()")
             If _fIsApplying OrElse PropertyOnPageBeingChanged() Then
-                Common.Switches.TracePDProperties(TraceLevel.Verbose, "... Ignoring - IsApplying=" & _fIsApplying & ", PropertyOnPageBeingChanged=" & PropertyOnPageBeingChanged())
+                Common.Switches.TracePDProperties(TraceLevel.Verbose, $"... Ignoring - IsApplying = {_fIsApplying}, PropertyOnPageBeingChanged={PropertyOnPageBeingChanged()}")
                 Return
             End If
 
@@ -4470,9 +4474,9 @@ NextControl:
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
-            AppDesCommon.Switches.TracePDPerfBegin(levent, "PropPageUserControlBase.OnLayout()")
+            AppDesCommon.Switches.TracePDPerfBegin(levent, NameOf(PropPageUserControlBase) & "." & NameOf(OnLayout) & "()")
             MyBase.OnLayout(levent)
-            AppDesCommon.Switches.TracePDPerfEnd("PropPageUserControlBase.OnLayout()")
+            AppDesCommon.Switches.TracePDPerfEnd(NameOf(PropPageUserControlBase) & "." & NameOf(OnLayout) & "()")
         End Sub
 
     End Class

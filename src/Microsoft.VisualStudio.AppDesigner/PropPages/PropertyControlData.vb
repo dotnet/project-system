@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Sub New(ByVal id As Integer, ByVal name As String, ByVal FormControl As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal multiValueSetter As MultiValueSetDelegate, ByVal multiValueGetter As MultiValueGetDelegate, ByVal flags As ControlDataFlags, ByVal AssociatedControls As System.Windows.Forms.Control())
             If id < 0 Then 'Don't allow DISPID_UNKNOWN (-1) etc
-                Debug.Fail($"Property {NameOf(id} must be non-negative")
+                Debug.Fail($"Property {NameOf(id)} must be non-negative")
                 Throw AppDesCommon.CreateArgumentException(NameOf(id))
             End If
             Me._dispId = id
@@ -508,10 +508,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
             Set(ByVal Value As Boolean)
                 If Value Then
-                    AppDesCommon.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty) := True ({PropertyName})")
+                    AppDesCommon.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty)} := True ({PropertyName})")
                     Me.Flags = Me.Flags Or ControlDataFlags.Dirty
                 Else
-                    Common.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty) := True ({PropertyName})"
+                    Common.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty)} := True ({PropertyName})")
                     Me.Flags = Me.Flags And (Not ControlDataFlags.Dirty)
                 End If
             End Set
@@ -935,7 +935,7 @@ If this exception is expected, it should be handled in {NameOf(ReadUserDefinedPr
                     Debug.Assert(IsHidden, $"{NameOf(InitPropertyUI)}: Non-hidden property '{PropertyName}: Setting control value was not handled, and FormControl was not specified, so could not be handled automatically.")
                 End If
 
-                AppDesCommon.Switches.TracePDPerfEnd($"{NameOf(InitPropertyUI): { Me.PropertyName}")
+                AppDesCommon.Switches.TracePDPerfEnd($"{NameOf(InitPropertyUI)}: { Me.PropertyName}")
             Finally
                 m_Initializing = SaveInitialized
             End Try
@@ -1193,7 +1193,7 @@ If this exception is expected, it should be handled in {NameOf(ReadUserDefinedPr
                 'Labels don't get disabled
 
             ElseIf control Is Nothing Then
-                Debug.Fail($"{NameOf(PropPageUserControlBase)}::{NameOf(PropPageUserControlBase.InitPage)}(): Unexpected null control value")
+                Debug.Fail($"{NameOf(PropPageUserControlBase)}::InitPage)(): Unexpected null {NameOf(control)} value")
             End If
 
         End Sub
@@ -1326,7 +1326,7 @@ If this exception is expected, it should be handled in {NameOf(ReadUserDefinedPr
                 Debug.Assert(False, "Labels should be ReadOnly and never changed")
 
             ElseIf control Is Nothing Then
-                Debug.Fail($"{NameOf(PropPageUserControlBase)}.{NameOf(PropPageUserControlBase.InitPage)}(): control is Nothing")
+                Debug.Fail($"{NameOf(PropPageUserControlBase)}.InitPage(): {NameOf(control)} is Nothing")
 
             End If
 
@@ -1455,7 +1455,7 @@ If this exception is expected, it should be handled in {NameOf(ReadUserDefinedPr
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
             If Descriptor Is Nothing Then
-                Debug.Fail($"Why is {NameOf(GetAllPropertyValues)}() being called for a missing property?")
+                Debug.Fail($"Why is {NameOf(GetAllPropertyValuesNative)}() being called for a missing property?")
                 ValueOrIndeterminate = MissingProperty
                 Values = ReturnValues 'Return the array of Nothing values (defensive)
                 Return
@@ -2162,7 +2162,7 @@ If this exception is expected, it should be handled in {NameOf(ReadUserDefinedPr
                     If handled Then
 #If DEBUG Then
                         If values IsNot Nothing Then
-                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData).{NameOf(ApplyChanges)}: {Me.PropertyName}: NEW VALUES (multi-value apply):")
+                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(PropertyControlData.ApplyChanges)}: {Me.PropertyName}: NEW VALUES (multi-value apply):")
                             For i As Integer = 0 To values.Length - 1
                                 Common.Switches.TracePDProperties(TraceLevel.Info, $"  New Value #{i}: {Common.DebugToString(values(i))}")
                             Next
