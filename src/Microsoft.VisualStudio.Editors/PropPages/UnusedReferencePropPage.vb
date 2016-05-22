@@ -9,7 +9,6 @@ Imports System.Windows.Forms
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend Class UnusedReferencePropPage
-        'Inherits UserControl
         Inherits PropPageUserControlBase
 
         ' Rate to poll compiler for unused references in milliseconds 
@@ -27,14 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' Timer to poll compiler for unused references list
         Private _getUnusedRefsTimer As Timer
 
-        Friend WithEvents ColHdr_Type As System.Windows.Forms.ColumnHeader
-        Friend WithEvents ColHdr_Path As System.Windows.Forms.ColumnHeader
-        Friend WithEvents UnusedReferenceList As System.Windows.Forms.ListView
-        Friend WithEvents ColHdr_RefName As System.Windows.Forms.ColumnHeader
-        Friend WithEvents ColHdr_Version As System.Windows.Forms.ColumnHeader
-        Friend WithEvents UnusedReferencesListLabel As System.Windows.Forms.Label
-        Friend WithEvents ColHdr_CopyLocal As System.Windows.Forms.ColumnHeader
-
         ' The host dialog...
         Friend WithEvents m_HostDialog As PropPageHostDialog
 
@@ -44,8 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' keep the last status of the last call to GetUnusedReferences...
         ' we only update UI when the status was changed...
         Private _lastStatus As ReferenceUsageResult = ReferenceUsageResult.ReferenceUsageUnknown
-
-#Region " Windows Form Designer generated code "
 
         Public Sub New()
             MyBase.New()
@@ -59,87 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'support sorting
             _referenceSorter = New ListViewComparer()
         End Sub
-
-        'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing Then
-                If Not (_components Is Nothing) Then
-                    _components.Dispose()
-                End If
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
-
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
-
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UnusedReferencePropPage))
-            Me.ColHdr_Type = New System.Windows.Forms.ColumnHeader("")
-            Me.ColHdr_Path = New System.Windows.Forms.ColumnHeader("")
-            Me.UnusedReferenceList = New System.Windows.Forms.ListView
-            Me.ColHdr_RefName = New System.Windows.Forms.ColumnHeader(resources.GetString("UnusedReferenceList.Columns"))
-            Me.ColHdr_Version = New System.Windows.Forms.ColumnHeader(resources.GetString("UnusedReferenceList.Columns1"))
-            Me.ColHdr_CopyLocal = New System.Windows.Forms.ColumnHeader(resources.GetString("UnusedReferenceList.Columns2"))
-            Me.UnusedReferencesListLabel = New System.Windows.Forms.Label
-            Me.SuspendLayout()
-            '
-            'ColHdr_Type
-            '
-            resources.ApplyResources(Me.ColHdr_Type, "ColHdr_Type")
-            '
-            'ColHdr_Path
-            '
-            resources.ApplyResources(Me.ColHdr_Path, "ColHdr_Path")
-            '
-            'UnusedReferenceList
-            '
-            resources.ApplyResources(Me.UnusedReferenceList, "UnusedReferenceList")
-            Me.UnusedReferenceList.AutoArrange = False
-            Me.UnusedReferenceList.BackColor = System.Drawing.SystemColors.Window
-            Me.UnusedReferenceList.CheckBoxes = True
-            Me.UnusedReferenceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColHdr_RefName, Me.ColHdr_Type, Me.ColHdr_Version, Me.ColHdr_CopyLocal, Me.ColHdr_Path})
-            Me.UnusedReferenceList.FullRowSelect = True
-            Me.UnusedReferenceList.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
-            Me.UnusedReferenceList.MultiSelect = False
-            Me.UnusedReferenceList.Name = "UnusedReferenceList"
-            Me.UnusedReferenceList.View = System.Windows.Forms.View.LargeIcon
-            '
-            'ColHdr_RefName
-            '
-            resources.ApplyResources(Me.ColHdr_RefName, "ColHdr_RefName")
-            '
-            'ColHdr_Version
-            '
-            resources.ApplyResources(Me.ColHdr_Version, "ColHdr_Version")
-            '
-            'ColHdr_CopyLocal
-            '
-            resources.ApplyResources(Me.ColHdr_CopyLocal, "ColHdr_CopyLocal")
-            '
-            'UnusedReferencesListLabel
-            '
-            resources.ApplyResources(Me.UnusedReferencesListLabel, "UnusedReferencesListLabel")
-            Me.UnusedReferencesListLabel.Margin = New System.Windows.Forms.Padding(0)
-            Me.UnusedReferencesListLabel.Name = "UnusedReferencesListLabel"
-            '
-            'UnusedReferencePropPage
-            '
-            resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.UnusedReferencesListLabel)
-            Me.Controls.Add(Me.UnusedReferenceList)
-            Me.Name = "UnusedReferencePropPage"
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
-
-        End Sub
-
-#End Region
 
 #Region "Properties "
         ''' <summary>

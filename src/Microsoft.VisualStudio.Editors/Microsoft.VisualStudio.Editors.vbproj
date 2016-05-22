@@ -313,6 +313,9 @@
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PropPages\UnusedReferencePropPage.Designer.vb">
+      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\WPF\ApplicationPropPageVBWPF.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
     </Compile>
