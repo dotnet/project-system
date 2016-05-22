@@ -35,9 +35,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>
         ''' Do not use this constructor in your code!
         ''' </remarks>
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         Public Sub New()
-            Debug.Fail("You should use the constructor with a ServiceProvider paramemter")
+            Debug.Fail("You should use the constructor with a " & NameOf(ServiceProvider) & " paramemter")
         End Sub
 
         '**************************************************************************
@@ -51,10 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   ArgumentNullException: If ServiceProvider is Nothing.
         '**************************************************************************
         Public Sub New(ByVal ServiceProvider As IServiceProvider)
-            Debug.Assert(ServiceProvider IsNot Nothing, "ServiceProvider is NULL.")
-            If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("ServiceProvider")
-            End If
+            Debug.Assert(ServiceProvider IsNot Nothing, NameOf(ServiceProvider) & " is NULL.")
+            If ServiceProvider Is Nothing Then Throw New ArgumentNullException(NameOf(ServiceProvider))
 
             Me._serviceProvider = ServiceProvider
 
@@ -79,18 +77,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   Show the dialog.
         '**************************************************************************
         Public Shadows Function ShowDialog() As DialogResult
-            If Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog Then
-                Me.Icon = Nothing
-            End If
-            If Me._UIService Is Nothing Then
-                Me._UIService = CType(GetService(GetType(IUIService)), IUIService)
-            End If
+            If FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog Then Icon = Nothing
 
-            If Not (Me._UIService Is Nothing) Then
-                Return Me._UIService.ShowDialog(Me)
-            Else
-                Return MyBase.ShowDialog()
-            End If
+            If _UIService Is Nothing Then _UIService = CType(GetService(GetType(IUIService)), IUIService)
+
+            If _UIService IsNot Nothing Then Return _UIService.ShowDialog(Me)
+
+            Return MyBase.ShowDialog()
+
         End Function 'ShowDialog
 
         '= Public =============================================================

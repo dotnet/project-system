@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
-            Me.IconGlyph.Image = SystemIcons.Error.ToBitmap()
+            IconGlyph.Image = SystemIcons.Error.ToBitmap()
 
             ' A label used for determining the preferred size of the text in the textbox
             _sizingLabel = New Label()
@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="Text">The error text to display</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Text As String)
+        Public Sub New(Text As String)
             Me.New()
             Me.Text = Text
         End Sub
@@ -43,8 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Constructor
         ''' </summary>
         ''' <param name="ex">The exception to display</param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal ex As Exception)
+        Public Sub New(ex As Exception)
             Me.New(AppDesCommon.DebugMessageFromException(ex))
         End Sub
 
@@ -53,15 +52,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Constructor
         ''' </summary>
         ''' <param name="errors">A list of exceptions or error messages to display</param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal errors As ICollection)
+        Public Sub New(errors As ICollection)
             Me.New()
 
             Dim TextBuilder As New System.Text.StringBuilder
 
             For Each er As Object In errors
                 TextBuilder.Append(er.ToString())
-                TextBuilder.Append(Microsoft.VisualBasic.vbCrLf)
+                TextBuilder.AppendLine()
             Next
 
             Text = TextBuilder.ToString()
@@ -69,17 +67,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
 
         ''' <summary>
-        ''' Constructor
+        ''' Text
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides Property Text() As String
             Get
                 Return ErrorText.Text
             End Get
             Set(ByVal value As String)
                 MyBase.Text = value
-                Me.ErrorText.Text = value
+                ErrorText.Text = value
             End Set
         End Property
 
@@ -90,12 +86,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ErrorText_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles ErrorText.GotFocus
+        Private Sub ErrorText_GotFocus(sender As Object, e As EventArgs) Handles ErrorText.GotFocus
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
                 '  doesn't really make sense in this case, so set it back to no selection.
-                Me.ErrorText.SelectionLength = 0
-                Me.ErrorText.SelectionStart = Me.ErrorText.Text.Length
+                ErrorText.SelectionLength = 0
+                ErrorText.SelectionStart = ErrorText.Text.Length
                 _firstGotFocus = False
             End If
         End Sub
@@ -105,24 +101,24 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Get the preferred size of the control, expanding 
         ''' </summary>
         ''' <param name="proposedSize"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Overrides Function GetPreferredSize(ByVal proposedSize As System.Drawing.Size) As System.Drawing.Size
-            If proposedSize.Width = 0 Then
-                Return MyBase.GetPreferredSize(proposedSize)
-            End If
+        Public Overrides Function GetPreferredSize(
+                                                  proposedSize As Size
+                                                  ) As Size
+            If proposedSize.Width = 0 Then Return MyBase.GetPreferredSize(proposedSize)
 
-            Dim sizeBeyondTheTextbox As Size = Drawing.Size.Subtract(Me.Size, Me.ErrorText.Size)
+            Dim sizeBeyondTheTextbox = Size - ErrorText.Size
 
             'Use a label of the same size to determine the preferred size.  We use the
             '  suggested width, and expand the height as needed.
-            _sizingLabel.Font = Me.ErrorText.Font
-            _sizingLabel.Text = Me.ErrorText.Text & Microsoft.VisualBasic.vbCrLf & Microsoft.VisualBasic.vbCrLf & " " 'Add an extra line of buffer
-            _sizingLabel.Width = proposedSize.Width - sizeBeyondTheTextbox.Width
-            _sizingLabel.AutoSize = False
+            With _sizingLabel
+                .Font = ErrorText.Font
+                .Text = ErrorText.Text & vbCrLf & vbCrLf & " " 'Add an extra line of buffer
+                .Width = proposedSize.Width - sizeBeyondTheTextbox.Width
+                .AutoSize = False
 
-            Dim textPreferredSize As Size = _sizingLabel.GetPreferredSize(New Size(_sizingLabel.Width, 0))
-            Return Drawing.Size.Add(textPreferredSize, sizeBeyondTheTextbox)
+                Dim textPreferredSize = .GetPreferredSize(New Size(.Width, 0))
+                Return textPreferredSize + sizeBeyondTheTextbox
+            End With
         End Function
 
     End Class

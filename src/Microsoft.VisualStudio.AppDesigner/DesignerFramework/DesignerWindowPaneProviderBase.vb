@@ -34,12 +34,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="provider"></param>
         ''' <param name="SupportToolbox"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal provider As IServiceProvider, ByVal SupportToolbox As Boolean)
-            MyBase.new(provider)
+        Public Sub New(provider As IServiceProvider, SupportToolbox As Boolean)
+            MyBase.New(provider)
             _supportToolbox = SupportToolbox
         End Sub
 
-        Public Overrides Function CreateWindowPane(ByVal surface As DesignSurface) As DesignerWindowPane
+        Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New DesignerWindowPaneBase(surface, _supportToolbox)
         End Function
 
@@ -57,7 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Private _undoEngine As OleUndoEngine
             Private _undoCursor As Cursor
 
-            Private _view As TopLevelControl       ' a TopLevel control is required to handle SystemEvent correctly when it is hosted inside a native window
             ' However, as the comments below, we can not use a Form here. We will have to create a customized control here.
             Private _loadError As Boolean
             Private _host As IDesignerHost
@@ -72,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="surface"></param>
             ''' <param name="SupportToolbox"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal surface As DesignSurface, ByVal SupportToolbox As Boolean)
+            Public Sub New(surface As DesignSurface, SupportToolbox As Boolean)
                 MyBase.New(surface)
 
                 _supportToolbox = SupportToolbox
@@ -95,9 +94,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     PopulateView()
                 End If
 
-                AddHandler surface.Loaded, AddressOf Me.OnLoaded
-                AddHandler surface.Unloading, AddressOf Me.OnSurfaceUnloading
-                AddHandler surface.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                AddHandler surface.Loaded, AddressOf OnLoaded
+                AddHandler surface.Unloading, AddressOf OnSurfaceUnloading
+                AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded
 
             End Sub
 
@@ -107,11 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' </summary>
             ''' <value></value>
             ''' <remarks></remarks>
-            Protected ReadOnly Property View() As Control
-                Get
-                    Return _view
-                End Get
-            End Property
+            Protected ReadOnly Property View() As Control ' a TopLevel control is required to handle SystemEvent correctly when it is hosted inside a native window
 
 
             ''' <summary>
@@ -165,9 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
 
-                    If c IsNot Nothing Then
-                        c.RemoveService(GetType(UndoEngine))
-                    End If
+                    If c IsNot Nothing Then c.RemoveService(GetType(UndoEngine))
 
                     _undoEngine.Dispose()
                     RemoveHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
@@ -200,16 +193,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         DisableUndo()
                         Dim ds As DesignSurface = Surface
                         If (ds IsNot Nothing) Then
-                            RemoveHandler ds.Loaded, AddressOf Me.OnLoaded
-                            RemoveHandler ds.Unloading, AddressOf Me.OnSurfaceUnloading
-                            RemoveHandler ds.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                            RemoveHandler ds.Loaded, AddressOf OnLoaded
+                            RemoveHandler ds.Unloading, AddressOf OnSurfaceUnloading
+                            RemoveHandler ds.Unloaded, AddressOf OnSurfaceUnloaded
                         End If
                     End If
 
                     MyBase.Dispose(disposing)
                 Finally
                     If (disposing AndAlso disposedView IsNot Nothing) Then
-                        RemoveHandler disposedView.GotFocus, AddressOf Me.OnViewFocus
+                        RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                         disposedView.Dispose()
                     End If
                 End Try
@@ -222,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private Sub EnableUndo()
 
-                Debug.Assert(_undoEngine Is Nothing, "EnableUndo should only be called once.  Call DisableUndo before calling this again.")
+                Debug.Assert(_undoEngine Is Nothing, $"{NameOf(EnableUndo)} should only be called once.  Call {NameOf(DisableUndo)} before calling this again.")
 
                 ' Undo requires that IDesignerSerializationService and
                 ' IOleUndoManager are both present.  If they're not,
@@ -230,12 +223,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 '
                 If (GetService(GetType(ComponentSerializationService)) IsNot Nothing) Then
                     _undoEngine = New OleUndoEngine(Surface)
-                    AddHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
-                    AddHandler _undoEngine.Undone, AddressOf Me.OnUndone
+                    AddHandler _undoEngine.Undoing, AddressOf OnUndoing
+                    AddHandler _undoEngine.Undone, AddressOf OnUndone
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
-                    If (c IsNot Nothing) Then
-                        c.AddService(GetType(UndoEngine), _undoEngine)
-                    End If
+
+                    If (c IsNot Nothing) Then c.AddService(GetType(UndoEngine), _undoEngine)
                 End If
             End Sub
 
@@ -260,15 +252,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 MyBase.OnCreate()
 
                 _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
-                If (_host IsNot Nothing AndAlso Not _host.Loading) Then
-                    EnableUndo()
-                End If
+
+                If (_host IsNot Nothing AndAlso Not _host.Loading) Then EnableUndo()
 
                 ' make sure scrollbars in the pane are not themed
                 Dim frame As IVsWindowFrame = TryCast(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
-                If frame IsNot Nothing Then
-                    frame.SetProperty(__VSFPROPID5.VSFPROPID_NativeScrollbarThemeMode, __VSNativeScrollbarThemeMode.NSTM_None)
-                End If
+
+                If frame IsNot Nothing Then frame.SetProperty(__VSFPROPID5.VSFPROPID_NativeScrollbarThemeMode, __VSNativeScrollbarThemeMode.NSTM_None)
             End Sub
 
 
@@ -309,13 +299,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="e"></param>
             ''' <remarks></remarks>
             Private Sub OnSurfaceUnloaded(ByVal sender As Object, ByVal e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
-                    Dim ctrl(_view.Controls.Count - 1) As Control
-                    _view.Controls.CopyTo(ctrl, 0)
-                    For Each c As Control In ctrl
-                        c.Dispose()
-                    Next
-                End If
+                If (_View Is Nothing) OrElse (_View.Controls.Count = 0) Then Exit Sub
+                Dim ctrl(_View.Controls.Count - 1) As Control
+                _View.Controls.CopyTo(ctrl, 0)
+                For Each c As Control In ctrl
+                    c.Dispose()
+                Next
             End Sub
 
 
@@ -327,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndoing(ByVal sender As Object, ByVal e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
+                    NativeMethods.SendMessage(New HandleRef(_View, _View.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
                     Cursor.Current = Cursors.WaitCursor
                 End If
@@ -342,8 +331,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndone(ByVal sender As Object, ByVal e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
-                    _view.Invalidate(True)
+                    NativeMethods.SendMessage(New HandleRef(_View, _View.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
+                    _View.Invalidate(True)
                     Cursor.Current = _undoCursor
                     _undoCursor = Nothing
                 End If
@@ -356,24 +345,25 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnViewFocus(ByVal sender As Object, ByVal e As EventArgs)
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.m_View.OnGotFocus (OnViewFocus)")
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+            Private Sub OnViewFocus(sender As Object, e As EventArgs)
+                Common.Switches.TracePDFocus(TraceLevel.Warning,
+                                             $"{NameOf(DeferrableWindowPaneProviderServiceBase)}.{NameOf(DesignerWindowPaneBase)}.{NameOf(DesignerWindowPaneBase.View)}.{NameOf(OnViewFocus)}({NameOf(OnViewFocus)}")
+                If (_View IsNot Nothing AndAlso _View.Controls.Count > 0) Then
                     'The view's first child should be the designer root view.  Since
                     '  our m_View is simply a Control and not a container control, we
                     '  need to forward focus manually to the designer's root view, otherwise
                     '  it stays unhelpfully on the window pane control.
-                    Dim DesignerRootView As Control = _view.Controls(0)
+                    Dim DesignerRootView As Control = _View.Controls(0)
                     Debug.Assert(DesignerRootView IsNot Nothing)
 
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ...setting focus to view's first child [should be designer root view]: """ & DesignerRootView.Name & """" & " (type """ & DesignerRootView.GetType.Name & """)")
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, $"  ...setting focus to view's first child [should be designer root view]: {""""}{DesignerRootView.Name}{""""} (type {""""}{DesignerRootView.GetType.Name}{""""})")
                     DesignerRootView.Focus()
 #If DEBUG Then
                     Dim h As IntPtr = NativeMethods.GetFocus()
                     If Not DesignerRootView.CanFocus Then
                         Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... root view isn't currently focusable.")
                     End If
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Microsoft.VisualBasic.Hex(h.ToInt32))
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Hex(h.ToInt32))
 #End If
                 End If
             End Sub
@@ -448,12 +438,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private ReadOnly Property GetDialogFont() As Font
                 Get
-                    Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
-                    If uiSvc IsNot Nothing Then
-                        Return CType(uiSvc.Styles("DialogFont"), Font)
-                    End If
+                    Dim uiSvc = CType(GetService(GetType(Design.IUIService)), Design.IUIService)
 
-                    Debug.Fail("Couldn't get a IUIService... cheating instead :)")
+                    If uiSvc IsNot Nothing Then Return CType(uiSvc.Styles("DialogFont"), Font)
+
+                    Debug.Fail("Couldn't get a " & NameOf(Design.IUIService) & "... cheating instead :)")
 
                     Return Form.DefaultFont
                 End Get
@@ -469,13 +458,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' it will forward the command to the view.
             ''' </summary>
             ''' <param name="pfCommitFailed"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
-            Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
+            Public Function IVsWindowPaneCommit_CommitPendingEdit(
+                                                             ByRef pfCommitFailed As Integer
+                                                                 ) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
                 Dim viewAsIVsWindowPaneCommit As IVsWindowPaneCommit = Nothing
-                If Not _loadError AndAlso Surface IsNot Nothing Then
-                    viewAsIVsWindowPaneCommit = TryCast(Surface.View, IVsWindowPaneCommit)
-                End If
+
+                If Not _loadError AndAlso Surface IsNot Nothing Then viewAsIVsWindowPaneCommit = TryCast(Surface.View, IVsWindowPaneCommit)
+
                 If viewAsIVsWindowPaneCommit IsNot Nothing Then
                     ' Let the view helper handle this....
                     viewAsIVsWindowPaneCommit.CommitPendingEdit(pfCommitFailed)
@@ -499,7 +488,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 ''' </summary>
                 Public Sub New()
                     MyBase.New()
-
                     SetTopLevel(True)
                 End Sub
 
