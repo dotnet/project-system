@@ -283,6 +283,9 @@
     <Compile Include="PropPages\BuildEventCommandLineDialog.Designer.vb">
       <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\BuildEventsPropPage.Designer.vb">
+      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
