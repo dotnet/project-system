@@ -8,7 +8,7 @@ Imports VBStrings = Microsoft.VisualBasic.Strings
 Imports VSLangProj80
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend Class AdvCompilerSettingsPropPage
+    Partial Friend Class AdvCompilerSettingsPropPage
         Inherits PropPageUserControlBase
 
         'The state of the DebugSymbols value - true or false

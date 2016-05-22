@@ -8,7 +8,7 @@ Imports Microsoft.VisualStudio.PlatformUI
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend Class DebugPropPage
+    Partial Friend Class DebugPropPage
         Inherits PropPageUserControlBase
 
         Private _controlGroup As Control()()

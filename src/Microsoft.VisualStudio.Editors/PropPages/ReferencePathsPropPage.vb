@@ -10,7 +10,7 @@ Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend Class ReferencePathsPropPage
+    Partial Friend Class ReferencePathsPropPage
         Inherits PropPageUserControlBase
 
         ' We map colors for all bitmap buttons on the page, because the default one is too dark in high-contrast mode, and it is difficult to know whether it is disabled

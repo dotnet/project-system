@@ -12,7 +12,7 @@ Imports VSLangProj110
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend Class CompilePropPage2
+    Partial Friend Class CompilePropPage2
         Inherits BuildPropPageBase
         ' Shared cache of raw and extended configuration objects
         Private _objectCache As FakeAllConfigurationsPropertyControlData.ConfigurationObjectCache

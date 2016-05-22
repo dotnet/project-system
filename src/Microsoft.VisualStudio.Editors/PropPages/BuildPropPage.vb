@@ -14,7 +14,7 @@ Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend NotInheritable Class BuildPropPage
+    Partial Friend NotInheritable Class BuildPropPage
         Inherits BuildPropPageBase
 
         Protected m_stDocumentationFile() As String

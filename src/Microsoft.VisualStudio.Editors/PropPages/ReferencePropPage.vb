@@ -19,7 +19,7 @@ Imports Microsoft.VisualStudio.WCFReference.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Friend Class ReferencePropPage
+    Partial Friend Class ReferencePropPage
         Inherits PropPageUserControlBase
         Implements VSLangProj._dispReferencesEvents
         Implements VSLangProj._dispImportsEvents

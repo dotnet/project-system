@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' C#/J# application property page - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class CSharpApplicationPropPage
+    Partial Friend Class CSharpApplicationPropPage
         Inherits ApplicationPropPage
 
         Public Sub New()

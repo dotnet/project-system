@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' 
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class AdvBuildSettingsPropPage
+    Partial Friend Class AdvBuildSettingsPropPage
         Inherits PropPageUserControlBase
 
         Protected m_bDebugSymbols As Boolean = False
