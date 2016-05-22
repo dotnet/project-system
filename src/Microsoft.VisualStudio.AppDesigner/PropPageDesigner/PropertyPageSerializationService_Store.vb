@@ -120,7 +120,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="info">Serialization info</param>
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
-            Private Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+            Private Sub GetObjectData(
+                                       info As SerializationInfo,
+                                       context As StreamingContext
+                                     ) Implements System.Runtime.Serialization.ISerializable.GetObjectData
                 info.AddValue(s_KEY_STATE, _serializedState)
             End Sub
 
@@ -302,7 +305,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     'Handle each individual Component or property at a time...
                     For Each SerializedObject As SerializedProperty In _serializedState
                         If SerializedObject.IsEntireComponentObject Then
-                            Debug.Fail("Only individual properties should be persisted for PropertyPages")
+                            Debug.Fail("Only individual properties should be persisted for " & NameOf(PropertyPages))
                         Else
                             'We have just a property to deserialize
                             Dim ComponentToSerializeTo As Component = Nothing
@@ -320,11 +323,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                     Debug.Assert(ComponentToSerializeTo IsNot Nothing, "Couldn't find component component to deserialize to")
                                 Else
                                     'Whoops, didn't find it.
-                                    Debug.Fail("Component found in container wasn't a PropPageDesignerRootComponent!")
+                                    Debug.Fail("Component found in container wasn't a " & NameOf(PropPageDesignerRootComponent) & "!")
                                 End If
                             End If
 
-                            Debug.Assert(ComponentToSerializeTo IsNot Nothing, "Should never occur for PropertyPages")
+                            Debug.Assert(ComponentToSerializeTo IsNot Nothing, "Should never occur for " & NameOf(PropertyPages))
 
                             'Deserialize the property value and apply it to the Component instance
                             SetProperty(ComponentToSerializeTo, SerializedObject.PropertyName, SerializedObject.GetPropertyValue())
@@ -366,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     View = CType(component, PropPageDesignerRootComponent).RootDesigner.GetView()
                     View.SetProperty(PropertyName, Value)
                 Else
-                    Throw AppDesCommon.CreateArgumentException("component")
+                    Throw AppDesCommon.CreateArgumentException(NameOf(component))
                 End If
             End Sub
 
@@ -460,16 +463,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <param name="Member">The property (must be a PropertyDescriptor) to be serialized.</param>
                 ''' <remarks></remarks>
                 Public Sub AddPropertyToSerialize(ByVal Member As MemberDescriptor)
-                    If Member Is Nothing Then
-                        Throw New ArgumentNullException("Member")
-                    End If
+                    If Member Is Nothing Then Throw New ArgumentNullException(NameOf(Member))
 
                     If TypeOf Member Is PropertyDescriptor Then
                         Dim Prop As PropertyDescriptor = DirectCast(Member, PropertyDescriptor)
                         Debug.Assert(Prop.PropertyType.IsSerializable)
                         PropertiesToSerialize.Add(Prop)
                     Else
-                        Debug.Fail("Member should have been a property")
+                        Debug.Fail($"{NameOf(Member)} should have been a property")
                     End If
                 End Sub
 
@@ -487,11 +488,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             <Serializable()> _
             Private NotInheritable Class SerializedProperty
 
-                'The name of the component from which this was serialized.
-                Private _componentName As String
+                ''The name of the component from which this was serialized.
+                'Private _componentName As String
 
-                'The name of the property which was serialized (if it's a property)
-                Private _propertyName As String 'Nothing if entire object
+                ''The name of the property which was serialized (if it's a property)
+                'Private _propertyName As String 'Nothing if entire object
 
                 'The serialized property (if m_PropertyName <> "") or Component instance
                 Private _serializedValue As Byte()
@@ -509,9 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Public Sub New(ByVal OwnerComponent As PropPageDesignerRootComponent, ByVal ComponentProperty As PropertyDescriptor)
                     _componentName = OwnerComponent.Name
                     _propertyName = ComponentProperty.Name
-                    If PropertyName = "" Then
-                        Throw AppDesCommon.CreateArgumentException("ComponentProperty")
-                    End If
+                    If PropertyName = "" Then Throw AppDesCommon.CreateArgumentException(NameOf(ComponentProperty))
 
                     Dim PropertyValue As Object = ComponentProperty.GetValue(OwnerComponent)
                     If PropertyValue Is Nothing Then
@@ -541,34 +540,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <summary>
                 ''' Gets the name of the component from which this was serialized.
                 ''' </summary>
-                ''' <value></value>
-                ''' <remarks></remarks>
                 Public ReadOnly Property ComponentName() As String
-                    Get
-                        Return _componentName
-                    End Get
-                End Property
-
 
                 ''' <summary>
                 ''' Gets the name of the property which was serialized (or Nothing if
                 '''   not a property serialization).
                 ''' </summary>
-                ''' <value></value>
-                ''' <remarks></remarks>
                 Public ReadOnly Property PropertyName() As String
-                    Get
-                        Return _propertyName
-                    End Get
-                End Property
 
 
                 ''' <summary>
                 ''' Returns True iff an entire Component object has been serialized, as opposed
                 '''   to just a property from it.
                 ''' </summary>
-                ''' <returns></returns>
-                ''' <remarks></remarks>
                 Public ReadOnly Property IsEntireComponentObject() As Boolean
                     Get
                         Return (PropertyName = "")
@@ -595,9 +579,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <returns></returns>
                 ''' <remarks>Can only be called if IsEntireComponentObject = True</remarks>
                 Public Function GetEntireComponentObject() As PropPageDesignerRootComponent
-                    If Not IsEntireComponentObject() Then
-                        Throw New Package.InternalException
-                    End If
+                    If Not IsEntireComponentObject() Then Throw New Package.InternalException
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), PropPageDesignerRootComponent)
@@ -610,13 +592,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <returns></returns>
                 ''' <remarks>Can only be called if IsEntireComponentObject = False</remarks>
                 Public Function GetPropertyValue() As Object
-                    If IsEntireComponentObject() Then
-                        Throw New Package.InternalException
-                    End If
-
-                    If _serializedValue Is Nothing Then
-                        Return Nothing
-                    End If
+                    If IsEntireComponentObject() Then Throw New Package.InternalException
+                    If _serializedValue Is Nothing Then Return Nothing
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return (New BinaryFormatter).Deserialize(MemoryStream)

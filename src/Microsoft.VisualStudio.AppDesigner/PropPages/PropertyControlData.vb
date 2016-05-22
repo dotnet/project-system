@@ -245,15 +245,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Sub New(ByVal id As Integer, ByVal name As String, ByVal FormControl As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal multiValueSetter As MultiValueSetDelegate, ByVal multiValueGetter As MultiValueGetDelegate, ByVal flags As ControlDataFlags, ByVal AssociatedControls As System.Windows.Forms.Control())
             If id < 0 Then 'Don't allow DISPID_UNKNOWN (-1) etc
-                Debug.Fail("Property ID must be non-negative")
-                Throw AppDesCommon.CreateArgumentException("id")
+                Debug.Fail($"Property {NameOf(id} must be non-negative")
+                Throw AppDesCommon.CreateArgumentException(NameOf(id))
             End If
             Me._dispId = id
             Me._propertyName = name
             Me.m_FormControl = FormControl
             Me.Flags = flags 'Flags must be set before setting IsDirty...
-            Debug.Assert(Not IsCommonProperty, "Should not pass in ControlDataFlags.CommonProperty to the PropertyControlData constructor")
-            Debug.Assert(Not IsDirty, "Should not pass in ControlDataFlags.IsDirty to the PropertyControlData constructor")
+            Debug.Assert(Not IsCommonProperty, $"Should not pass in {NameOf(ControlDataFlags)}.{NameOf(ControlDataFlags.CommonProperty)} to the {NameOf(PropertyControlData)} constructor")
+            Debug.Assert(Not IsDirty, $"Should not pass in {NameOf(ControlDataFlags)}.{NameOf(ControlDataFlags.Dirty)} to the {NameOf(PropertyControlData)} constructor")
             Me.IsCommonProperty = False
             Me.IsDirty = False
             Me.SetCallback = setter
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected ReadOnly Property CommonPropertiesObject() As Object
             Get
-                Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
+                Debug.Assert(m_PropPage IsNot Nothing, NameOf(PropertyControlData) & " not initialized?")
                 Return m_PropPage.CommonPropertiesObject
             End Get
         End Property
@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Public Overridable ReadOnly Property RawPropertiesObjects() As Object()
             Get
-                Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
+                Debug.Assert(m_PropPage IsNot Nothing, NameOf(PropertyControlData) & " not initialized?")
                 Debug.Assert(m_PropPage.m_Objects IsNot Nothing)
                 Return m_PropPage.m_Objects
             End Get
@@ -356,7 +356,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Overridable ReadOnly Property ExtendedPropertiesObjects() As Object()
             Get
-                Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
+                Debug.Assert(m_PropPage IsNot Nothing, NameOf(PropertyControlData) & " not initialized?")
                 Debug.Assert(m_PropPage.m_ExtendedObjects IsNot Nothing, "Extended objects array is Nothing")
                 Return m_PropPage.m_ExtendedObjects
             End Get
@@ -508,10 +508,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
             Set(ByVal Value As Boolean)
                 If Value Then
-                    AppDesCommon.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := True (" & PropertyName & ")")
+                    AppDesCommon.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty) := True ({PropertyName})")
                     Me.Flags = Me.Flags Or ControlDataFlags.Dirty
                 Else
-                    Common.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := False (" & PropertyName & ")")
+                    Common.Switches.TracePDProperties(TraceLevel.Error, $"{NameOf(IsDirty) := True ({PropertyName})"
                     Me.Flags = Me.Flags And (Not ControlDataFlags.Dirty)
                 End If
             End Set
@@ -704,12 +704,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub SetInitialValues(ByVal InitialValue As Object, ByVal AllInitialValues As Object())
             If AllInitialValues IsNot Nothing AndAlso AllInitialValues.Length = 0 Then
-                Throw AppDesCommon.CreateArgumentException("AllInitialValues")
+                Throw AppDesCommon.CreateArgumentException(NameOf(AllInitialValues))
             End If
             Debug.Assert(AllInitialValues IsNot Nothing OrElse InitialValue IsNot Indeterminate)
             Debug.Assert(AllInitialValues Is Nothing _
-                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length), _
-                "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
+                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length),
+              $"{NameOf(AllInitialValues)} should always be the same length as the array returned by {NameOf(RawPropertiesObjects)} and {NameOf(ExtendedPropertiesObjects)}")
 
             _initialValue = InitialValue
             _allInitialValues = AllInitialValues
@@ -720,14 +720,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Sets all the initial values, when multi-value undo/redo is supported.  InitialValue will be automatically
         '''   set as well.
         ''' </summary>
-        ''' <param name="AllInitialValues"></param>
+        ''' <param name="AllInitialValues"></param> 
         ''' <remarks></remarks>
         Public Sub SetInitialValues(ByVal AllInitialValues As Object())
             If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException("AllInitialValues")
+                Throw New ArgumentNullException(NameOf(AllInitialValues))
             End If
             If AllInitialValues.Length = 0 Then
-                Throw AppDesCommon.CreateArgumentException("AllInitialValues")
+                Throw AppDesCommon.CreateArgumentException(NameOf(AllInitialValues))
             End If
 
             _initialValue = GetValueOrIndeterminateFromArray(AllInitialValues)
@@ -746,9 +746,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 m_PropPage = PropertyPage
                 If Me.IsUserPersisted Then
-                    Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.Initialize(" & Me.PropertyName & "): User-persisted")
+                    Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(Initialize)}({PropertyName}): User-persisted")
                     Me.PropDesc = GetUserDefinedPropertyDescriptor()
-                    Debug.Assert(Me.PropDesc IsNot Nothing, "Call to GetUserDefinedPropertyDescriptor() returned Nothing for a user-persisted property.  Did you forget to override GetUserDefinedPropertyDescriptor()?")
+                    Debug.Assert(Me.PropDesc IsNot Nothing, $"Call to {NameOf(GetUserDefinedPropertyDescriptor)}() returned Nothing for a user-persisted property.  Did you forget to override {NameOf(GetUserDefinedPropertyDescriptor)}()?")
 
                 ElseIf (Me.PropertyName Is Nothing AndAlso (Me.GetCallback IsNot Nothing)) Then
                     '
@@ -779,7 +779,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 If Me.PropDesc Is Nothing Then
-                    Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.Initialize(" & Me.PropertyName & "): ** Not found, will be disabled **")
+                    Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(Initialize)}({Me.PropertyName}): ** Not found, will be disabled **")
                 End If
                 AppDesCommon.Switches.TracePDPerfEnd("Property Initialize: " & Me.PropertyName)
             Finally
@@ -800,7 +800,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim SaveInitialized As Boolean = m_Initializing
 
             Debug.Assert(Not m_Initializing, "Unhandled state")
-            AppDesCommon.Switches.TracePDPerfBegin("InitPropertyValue: " & Me.PropertyName)
+            AppDesCommon.Switches.TracePDPerfBegin(NameOf(InitPropertyValue) & ": " & Me.PropertyName)
             m_Initializing = True
             Try
 
@@ -814,9 +814,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Try
                         Handled = Me.ReadUserDefinedProperty(Me.PropertyName, Value)
                     Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                        Debug.Fail("Exception reading user-defined property for initial value.  Will disable the property's control and related controls.  If this exception is expected, it should be handled in ReadUserDefinedProperty() and PropertyControlData.MissingProperty should be returned as the value." & vbCrLf _
-                            & "PropertyName: " & Me.PropertyName & vbCrLf _
-                            & "Exception:" & vbCrLf & ex.ToString())
+                        Debug.Fail(
+$"Exception reading user-defined property for initial value. Will disable the property's control and related controls.
+If this exception is expected, it should be handled in {NameOf(ReadUserDefinedProperty)}() and {NameOf(PropertyControlData)}.{NameOf(MissingProperty)} should be returned as the value.
+{NameOf(PropertyName)}:  {Me.PropertyName}
+{NameOf(Exception)}:
+{ex.ToString()}")
                         Value = PropertyControlData.MissingProperty
                     End Try
 
@@ -859,7 +862,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim value As Object
             Dim Handled As Boolean
             Dim SaveInitialized As Boolean = m_Initializing
-            AppDesCommon.Switches.TracePDPerfBegin("InitPropertyUI: " & Me.PropertyName)
+            AppDesCommon.Switches.TracePDPerfBegin($"{NameOf(InitPropertyUI)}: {Me.PropertyName}")
             Debug.Assert(Not m_Initializing, "Unhandled state")
 
             m_Initializing = True
@@ -917,9 +920,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Else
                             Me.FormControl.Enabled = False
                         End If
-                        Common.Switches.TracePDProperties(TraceLevel.Info, "InitPropertyUI(" & Me.PropertyName & "): not found or hidden, so disabling")
+                        Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(InitPropertyUI)}({Me.PropertyName}): Not found Or hidden, so disabling")
                     Else
-                        Common.Switches.TracePDProperties(TraceLevel.Info, "InitPropertyUI(" & Me.PropertyName & "): not found or hidden, but no control specified, so nothing to disable")
+                        Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(InitPropertyUI)}({Me.PropertyName}): Not found Or hidden, but no control specified, so nothing to disable")
                     End If
 
                 ElseIf Not Handled AndAlso Me.FormControl IsNot Nothing Then
@@ -929,10 +932,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '
                     SetControlValue(value)
                 ElseIf Not Handled Then
-                    Debug.Assert(IsHidden, "InitPropertyUI: Non-hidden property '" & PropertyName & ": Setting control value was not handled, and FormControl was not specified, so could not be handled automatically.")
+                    Debug.Assert(IsHidden, $"{NameOf(InitPropertyUI)}: Non-hidden property '{PropertyName}: Setting control value was not handled, and FormControl was not specified, so could not be handled automatically.")
                 End If
 
-                AppDesCommon.Switches.TracePDPerfEnd("InitPropertyUI: " & Me.PropertyName)
+                AppDesCommon.Switches.TracePDPerfEnd($"{NameOf(InitPropertyUI): { Me.PropertyName}")
             Finally
                 m_Initializing = SaveInitialized
             End Try
@@ -1040,7 +1043,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Protected Overridable Function GetUserDefinedPropertyDescriptor() As PropertyDescriptor
             Dim Prop As PropertyDescriptor = m_PropPage.GetUserDefinedPropertyDescriptor(Me.PropertyName)
-            Debug.Assert(Prop IsNot Nothing, "Must implement GetUserDefinedPropertyDescriptor in derived class for UserDefined properties")
+            Debug.Assert(Prop IsNot Nothing, $"Must implement {NameOf(GetUserDefinedPropertyDescriptor)} in derived class for UserDefined properties")
             Return Prop
         End Function
 
@@ -1190,7 +1193,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Labels don't get disabled
 
             ElseIf control Is Nothing Then
-                Debug.Fail("PropPageUserControlBase::InitPage(): Unexpected null control value")
+                Debug.Fail($"{NameOf(PropPageUserControlBase)}::{NameOf(PropPageUserControlBase.InitPage)}(): Unexpected null control value")
             End If
 
         End Sub
@@ -1216,8 +1219,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If Me.MultiValueGetCallback IsNot Nothing Then
                 If Me.MultiValueGetCallback(Me.FormControl, Me.PropDesc, values) Then
-                    Debug.Assert(values IsNot Nothing, "MultiValueGetCallback must return a valid array")
-                    Debug.Assert(values.Length = RawPropertiesObjects.Length, "MultiValueGetCallback must return an array of the same length as RawPropertiesObjects")
+                    Debug.Assert(values IsNot Nothing, $"{NameOf(MultiValueGetCallback)} must return a valid array")
+                    Debug.Assert(values.Length = RawPropertiesObjects.Length, $"{NameOf(MultiValueGetCallback)} must return an array of the same length as {NameOf(RawPropertiesObjects)}")
                     Return values
                 End If
             End If
@@ -1247,7 +1250,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim value As Object = Nothing
             Dim convertedvalue As Object
 
-            Debug.Assert(MultiValueGetCallback Is Nothing, "GetControlValue doesn't support MultiValueGetCallback")
+            Debug.Assert(MultiValueGetCallback Is Nothing, $"{NameOf(GetControlValue)} doesn't support {NameOf(MultiValueGetCallback)}")
 
             If Me.GetCallback IsNot Nothing Then
                 If Me.GetCallback(Me.FormControl, Me.PropDesc, value) Then
@@ -1261,7 +1264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 StringText = Trim(DirectCast(control, System.Windows.Forms.TextBox).Text)
                 'IF textbox emptied, treat as indeterminate when using multiple objects
 
-                Debug.Assert(Not ExtendedPropertiesObjects Is Nothing, "ExtendedPropertiesObjects was null!")
+                Debug.Assert(Not ExtendedPropertiesObjects Is Nothing, $"{NameOf(ExtendedPropertiesObjects)} was null!")
                 If ExtendedPropertiesObjects IsNot Nothing Then
                     If ExtendedPropertiesObjects.Length > 1 _
                     AndAlso TypeOf InitialValue Is String _
@@ -1323,7 +1326,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Debug.Assert(False, "Labels should be ReadOnly and never changed")
 
             ElseIf control Is Nothing Then
-                Debug.Fail("PropPageUserControlBase.InitPage(): control is Nothing")
+                Debug.Fail($"{NameOf(PropPageUserControlBase)}.{NameOf(PropPageUserControlBase.InitPage)}(): control is Nothing")
 
             End If
 
@@ -1446,13 +1449,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ValueOrIndeterminate = Nothing
 
             If Extenders Is Nothing Then
-                Throw New ArgumentNullException("Extenders")
+                Throw New ArgumentNullException(NameOf(Extenders))
             End If
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
             If Descriptor Is Nothing Then
-                Debug.Fail("Why is GetAllPropertyValues() being called for a missing property?")
+                Debug.Fail($"Why is {NameOf(GetAllPropertyValues)}() being called for a missing property?")
                 ValueOrIndeterminate = MissingProperty
                 Values = ReturnValues 'Return the array of Nothing values (defensive)
                 Return
@@ -1484,8 +1487,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared Function GetValueOrIndeterminateFromArray(ByVal Values() As Object) As Object
             'Determine if all the values are the same or not
             If Values Is Nothing OrElse Values.Length = 0 Then
-                Debug.Fail("Bad Values array")
-                Throw New ArgumentNullException("Values")
+                Debug.Fail($"Bad {NameOf(Values)} array")
+                Throw New ArgumentNullException(NameOf(Values))
             End If
 
             Dim Value As Object = Values(0)
@@ -1536,7 +1539,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Shared Function GetNonCommonPropertyValueNative(ByVal Descriptor As PropertyDescriptor, ByVal Extender As Object) As Object
-            Debug.Assert(Descriptor IsNot Nothing, "Calling GetPropertyValueNative() on a property that could not be found [Descriptor Is Nothing]")
+            Debug.Assert(Descriptor IsNot Nothing, $"Calling {NameOf(GetPropertyValueNative)}() on a property that could not be found [{NameOf(Descriptor)} Is Nothing]")
             Debug.Assert(Extender IsNot Nothing)
 
             'Note: For property get we must pass in the extended object as the component.
@@ -1659,7 +1662,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New InvalidOperationException
             End If
             If Objects Is Nothing OrElse Values Is Nothing OrElse Objects.Length <> Values.Length Then
-                Throw AppDesCommon.CreateArgumentException("Objects")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Objects))
             End If
 
             m_PropPage.SuspendPropertyChangeListening(Me.DispId)
@@ -1740,7 +1743,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         '  current transaction gets cancelled (otherwise the property page may
                         '  show a changed value, and the user may get prompted for additional
                         '  checkouts as we try to process more property changes).
-                        Common.Switches.TracePDProperties(TraceLevel.Warning, "*** SetValue() did not return failure, but also did not fire OnValueChanged.  Assuming a checkout or other cancel occurred.")
+                        Common.Switches.TracePDProperties(TraceLevel.Warning, $"*** {NameOf(SetValue)}() did Not Return failure, but also did Not fire {NameOf(ValueChanged)}.  Assuming a checkout Or other cancel occurred.")
                         Throw CheckoutException.Canceled
                     End If
 
@@ -1756,7 +1759,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' </summary>
             ''' <remarks></remarks>
             Private Sub ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
-                Debug.Assert(Not _valueChangedWasFired, "OnValueChanged() fired multiple times?")
+                Debug.Assert(Not _valueChangedWasFired, $"{NameOf(ValueChanged)}() fired multiple times?")
                 _valueChangedWasFired = True
             End Sub
 
@@ -1790,7 +1793,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-#Region "Common property getter/setter helpers"
+#Region "Common Property getter/setter helpers"
 
 
         '----
@@ -1837,7 +1840,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' See comments "About 'common' properties"
         ''' </remarks>
         Public Shared Function GetCommonPropertyValueNative(ByVal Descriptor As PropertyDescriptor, ByVal ProjectCommonPropertiesObject As Object) As Object
-            Debug.Assert(Descriptor IsNot Nothing, "Calling GetCommonPropertyValue() on a property that could not be found [Descriptor Is Nothing]")
+            Debug.Assert(Descriptor IsNot Nothing, $"Calling {NameOf(GetCommonPropertyValue)}() on a property that could not be found [{NameOf(Descriptor)} Is Nothing]")
             Debug.Assert(ProjectCommonPropertiesObject IsNot Nothing)
             Return Descriptor.GetValue(ProjectCommonPropertiesObject)
         End Function
@@ -1854,7 +1857,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' See comments "About 'common' properties"
         ''' </remarks>
         Private Function GetCommonPropertyValueNative() As Object
-            Debug.Assert(PropDesc IsNot Nothing, "Calling GetCommonPropertyValue() on a property that could not be found [PropDesc Is Nothing]")
+            Debug.Assert(PropDesc IsNot Nothing, $"Calling {NameOf(GetCommonPropertyValue)}() on a property that could not be found [{NameOf(PropDesc)} Is Nothing]")
             Debug.Assert(IsCommonProperty)
             Return GetCommonPropertyValueNative(PropDesc, Me.CommonPropertiesObject)
         End Function
@@ -1872,7 +1875,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' See comments "About 'common' properties"
         ''' </remarks>
         Public Shared Function GetCommonPropertyValue(ByVal Descriptor As PropertyDescriptor, ByVal ProjectCommonPropertiesObject As Object) As Object
-            Debug.Assert(Descriptor IsNot Nothing, "Calling GetCommonPropertyValue() on a property that could not be found [Descriptor Is Nothing]")
+            Debug.Assert(Descriptor IsNot Nothing, $"Calling {NameOf(GetCommonPropertyValue)}() on a property that could not be found [{NameOf(Descriptor)} Is Nothing]")
             Debug.Assert(ProjectCommonPropertiesObject IsNot Nothing)
 
             Dim _TypeConverter As TypeConverter
@@ -1917,7 +1920,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' ''' See comments "About 'common' properties".
         ''' </remarks>
         Private Sub SetCommonPropertyValueNative(ByVal Value As Object)
-            Debug.Assert(PropDesc IsNot Nothing, "Calling SetCommonPropertyValueNative() on a property that could not be found [PropDesc Is Nothing]")
+            Debug.Assert(PropDesc IsNot Nothing, $"Calling {NameOf(SetCommonPropertyValueNative)}() on a property that could not be found [{NameOf(PropDesc)} Is Nothing]")
             Debug.Assert(IsCommonProperty, "Should not call PropertyControlData.SetCommonPropertyValueNative on a non-common property")
             Debug.Assert(m_PropPage IsNot Nothing)
 
@@ -1983,7 +1986,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The default implementation calls InitPropertyValue and InitPropertyUI on the property control data.
         ''' </remarks>
         Public Overridable Sub RefreshValue()
-            Common.Switches.TracePDProperties(TraceLevel.Info, "*** " & PropertyName & ": Updating property from current value")
+            Common.Switches.TracePDProperties(TraceLevel.Info, $"*** {NameOf(PropertyName)}: Updating property from current value")
 
             InitPropertyValue()
             InitPropertyUI()
@@ -2135,15 +2138,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim handled As Boolean
 
             If Me.IsDirty Then
-                Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.ApplyChanges: " & Me.PropertyName)
+                Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(ApplyChanges)}: { Me.PropertyName}")
 
                 If (Me.PropDesc IsNot Nothing) AndAlso (Not Me.PropDesc.IsReadOnly) AndAlso (Not Me.IsMissing) Then
                     'Get the current value from the UI
                     If Me.MultiValueGetCallback IsNot Nothing Then
                         handled = Me.MultiValueGetCallback(Me.FormControl, Me.PropDesc, values)
                         If handled Then
-                            Debug.Assert(values IsNot Nothing, "MultiValueGetCallback must return a valid array")
-                            Debug.Assert(values.Length = RawPropertiesObjects.Length, "MultiValueGetCallback must return an array of the same length as RawPropertiesObjects")
+                            Debug.Assert(values IsNot Nothing, $"{NameOf(MultiValueGetCallback)} must return a valid array")
+                            Debug.Assert(values.Length = RawPropertiesObjects.Length, $"{NameOf(MultiValueGetCallback)} must return an array of the same length as {NameOf(RawPropertiesObjects)}")
                         End If
                     End If
 
@@ -2159,12 +2162,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If handled Then
 #If DEBUG Then
                         If values IsNot Nothing Then
-                            Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.ApplyChanges: " & Me.PropertyName & ": NEW VALUES (multi-value apply):")
+                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData).{NameOf(ApplyChanges)}: {Me.PropertyName}: NEW VALUES (multi-value apply):")
                             For i As Integer = 0 To values.Length - 1
-                                Common.Switches.TracePDProperties(TraceLevel.Info, "  New Value #" & i & ": " & Common.DebugToString(values(i)))
+                                Common.Switches.TracePDProperties(TraceLevel.Info, $"  New Value #{i}: {Common.DebugToString(values(i))}")
                             Next
                         Else
-                            Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.ApplyChanges: " & Me.PropertyName & ": NEW VALUE = " & Common.DebugToString(value))
+                            Common.Switches.TracePDProperties(TraceLevel.Info, $"{NameOf(PropertyControlData)}.{NameOf(ApplyChanges)}: {Me.PropertyName}: NEW VALUE = { Common.DebugToString(value)}")
                         End If
 #End If
 
@@ -2193,7 +2196,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Me.SetInitialValues(value)
                         End If
                     Else
-                        Debug.Fail(Me.PropertyName & " not handled")
+                        Debug.Fail($"{Me.PropertyName} not handled")
                     End If
                     Me.IsDirty = False
 
@@ -2205,9 +2208,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If Me.FormControl IsNot Nothing Then
                         Me.FormControl.Enabled = False
                     End If
-                    Debug.Fail("PropertyDescriptor for '" & Me.PropertyName & "' cannot be found.")
+                    Debug.Fail($"{NameOf(PropertyDescriptor)} for '{Me.PropertyName}' cannot be found.")
                 Else
-                    Common.Switches.TracePDProperties(TraceLevel.Info, "  " & Me.PropertyName & " is ReadOnly or IsMissing and cannot be changed")
+                    Common.Switches.TracePDProperties(TraceLevel.Info, $"  {Me.PropertyName} is ReadOnly or IsMissing and cannot be changed")
                 End If
             Else
                 'Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.ApplyChanges: " & Me.PropertyName & " has not been changed - skipping")
@@ -2249,7 +2252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Most properties are stored in the project file, so that's what we return by default.
             If m_PropPage Is Nothing OrElse m_PropPage.DTEProject Is Nothing OrElse m_PropPage.m_ObjectsPropertyDescriptorsArray Is Nothing OrElse m_PropPage.m_ExtendedObjects Is Nothing Then
-                Debug.Fail("PropertyControlData.FilesToCheckOut: can't determine files to check out because of an uninitialized field")
+                Debug.Fail($"{NameOf(PropertyControlData)}.{NameOf(FilesToCheckOut)}: can't determine files to check out because of an uninitialized field")
             Else
                 'CONSIDER: we should be allowing multiple of these flags to be set at once
                 If (Me.Flags And ControlDataFlags.PersistedInProjectUserFile) <> 0 Then
@@ -2265,7 +2268,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Return MyAppProperties.FilesToCheckOut(True)
                         End If
                     Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                        Debug.Fail("Unable to retrieve MyApplicationProperties to figure out set of files to check out")
+                        Debug.Fail($"Unable to retrieve MyApplicationProperties to figure out set of files to check out")
                     End Try
                 ElseIf (Me.Flags And ControlDataFlags.PersistedInAppManifestFile) <> 0 Then
                     Dim AppManifest As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AppManifest, True)
@@ -2310,7 +2313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim SpecialFiles As IVsProjectSpecialFiles = TryCast(m_PropPage.ProjectHierarchy, IVsProjectSpecialFiles)
             If SpecialFiles Is Nothing Then
-                Debug.Fail("Failed to get IVsProjectSpecialFiles from project")
+                Debug.Fail($"Failed to get {NameOf(IVsProjectSpecialFiles)} from project")
                 Return Nothing
             End If
             Dim fileName As String = Nothing

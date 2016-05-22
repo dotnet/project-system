@@ -23,22 +23,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Implements IVsEditorFactory
 
         'The all important GUIDs 
-        Private Shared ReadOnly s_editorGuid As New Guid("{b270807c-d8c6-49eb-8ebe-8e8d566637a1}")
-        Private Shared ReadOnly s_commandUIGuid As New Guid("{86670efa-3c28-4115-8776-a4d5bb1f27cc}")
+        '    Private Shared ReadOnly s_editorGuid As New Guid("{b270807c-d8c6-49eb-8ebe-8e8d566637a1}")
+        '  Private Shared ReadOnly s_commandUIGuid As New Guid("{86670efa-3c28-4115-8776-a4d5bb1f27cc}")
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property EditorGuid() As Guid
-            Get
-                Return s_editorGuid
-            End Get
-        End Property
+        Public Shared ReadOnly Property EditorGuid() As New Guid("{b270807c-d8c6-49eb-8ebe-8e8d566637a1}")
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property CommandUIGuid() As Guid
-            Get
-                Return s_commandUIGuid
-            End Get
-        End Property
+        Public Shared ReadOnly Property CommandUIGuid() As New Guid("{86670efa-3c28-4115-8776-a4d5bb1f27cc}")
+
 
         Private _site As Object 'The site that owns this editor factory
         Private _siteProvider As Shell.ServiceProvider 'The service provider from m_Site
@@ -59,19 +52,20 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="Canceled">Returns True if user canceled</param>
         ''' <remarks></remarks>
-        Private Sub InternalCreateEditorInstance(ByVal VsCreateEditorFlags As System.UInt32, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal ItemId As System.UInt32, _
-                ByVal ExistingDocData As Object, _
-                ByRef DocView As Object, _
-                ByRef DocData As Object, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
-                ByRef Canceled As Boolean)
+        Private Sub InternalCreateEditorInstance(
+                                                 VsCreateEditorFlags As UInt32,
+                                                 FileName As String,
+                                                 PhysicalView As String,
+                                                 Hierarchy As IVsHierarchy,
+                                                 ItemId As UInt32,
+                                                 ExistingDocData As Object,
+                                           ByRef DocView As Object,
+                                           ByRef DocData As Object,
+                                           ByRef Caption As String,
+                                           ByRef CmdUIGuid As Guid,
+                                           ByRef Canceled As Boolean)
             Canceled = False
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As PropPageDesignerLoader = Nothing
 
@@ -103,10 +97,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If TypeOf DocData Is IObjectWithSite Then
                         CType(DocData, IObjectWithSite).SetSite(_site)
                     Else
-                        Debug.Fail("DocData does not implement IObjectWithSite")
+                        Debug.Fail($"{NameOf(DocData)} does not implement {NameOf(IObjectWithSite)}")
                     End If
 
-                    Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Not (Designer Is Nothing), $"{NameOf(Designer)} service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -114,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Caption = "" ' Leave empty - The property page Title will appear as the caption 'Application|References|Debug etc.'
 
                     'Set the command UI
-                    CmdUIGuid = s_commandUIGuid
+                    CmdUIGuid = CommandUIGuid
                 End Using
 
             Catch ex As Exception
@@ -124,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New System.Exception(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Sub
 
@@ -132,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Disconnect from the owning site
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Close() As Integer Implements Shell.Interop.IVsEditorFactory.Close
             _siteProvider = Nothing
             _site = Nothing
@@ -141,20 +134,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Wrapper of COM interface which delegates to Internal
         ''' </summary>
-        ''' <remarks></remarks>
-        Private Function IVsEditorFactory_CreateEditorInstance( _
-                ByVal vscreateeditorflags As UInteger, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal Itemid As UInteger, _
-                ByVal ExistingDocDataPtr As IntPtr, _
-                ByRef DocViewPtr As IntPtr, _
-                ByRef DocDataPtr As IntPtr, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
-                ByRef FCanceled As Integer) As Integer _
-        Implements IVsEditorFactory.CreateEditorInstance
+        Private Function IVsEditorFactory_CreateEditorInstance(
+                                                                vscreateeditorflags As UInteger,
+                                                                FileName As String,
+                                                                PhysicalView As String,
+                                                                Hierarchy As IVsHierarchy,
+                                                                Itemid As UInteger,
+                                                                ExistingDocDataPtr As IntPtr,
+                                                          ByRef DocViewPtr As IntPtr,
+                                                          ByRef DocDataPtr As IntPtr,
+                                                          ByRef Caption As String,
+                                                          ByRef CmdUIGuid As Guid,
+                                                          ByRef FCanceled As Integer
+                                                               ) As Integer Implements IVsEditorFactory.CreateEditorInstance
 
             Dim ExistingDocData As Object = Nothing
             Dim DocView As Object = Nothing
@@ -170,8 +162,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Caption = Nothing
 
-            InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData, _
-                DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean)
+            InternalCreateEditorInstance(
+                                          vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
+                                          DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean
+                                         )
 
             If CanceledAsBoolean Then
                 FCanceled = 1
@@ -179,12 +173,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 FCanceled = 0
             End If
 
-            If Not (DocView Is Nothing) Then
-                DocViewPtr = Marshal.GetIUnknownForObject(DocView)
-            End If
-            If Not (DocData Is Nothing) Then
-                DocDataPtr = Marshal.GetIUnknownForObject(DocData)
-            End If
+            If (DocView IsNot Nothing) Then DocViewPtr = Marshal.GetIUnknownForObject(DocView)
+            If (DocData IsNot Nothing) Then DocDataPtr = Marshal.GetIUnknownForObject(DocData)
+
         End Function
 
         ''' <summary>
@@ -193,7 +184,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
         ''' <remarks></remarks>
-        Public Function MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) As Integer Implements Shell.Interop.IVsEditorFactory.MapLogicalView
+        Public Function MapLogicalView(
+                                  ByRef rguidLogicalView As Guid,
+                                  ByRef pbstrPhysicalView As String
+                                      ) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
         End Function
 
@@ -201,18 +195,17 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Called by owning site after creation
         ''' </summary>
         ''' <param name="Site"></param>
-        ''' <remarks></remarks>
-        Public Function SetSite(ByVal Site As OLE.Interop.IServiceProvider) As Integer Implements Shell.Interop.IVsEditorFactory.SetSite
+        Public Function SetSite(
+                                Site As IServiceProvider
+                               ) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
-                Exit Function
-            End If
+            If _site Is Site Then Exit Function
             'Site is different - set it
-            Me._site = Site
-            If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _siteProvider = New ServiceProvider(CType(Site, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+            _site = Site
+            If TypeOf Site Is IServiceProvider Then
+                _siteProvider = New ServiceProvider(Site)
             Else
-                Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
+                Debug.Fail($"{NameOf(Site)} IsNot {NameOf(IServiceProvider)}")
             End If
         End Function
 

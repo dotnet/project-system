@@ -13,24 +13,22 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '''   directly to the propdescriptor (and hence the project).  This allows us exact control of undo and redo and how properties
     '''   are set and got.
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class PropertyPagePropertyDescriptor
         Inherits PropertyDescriptor
 
         'The property descriptor for the Project or Config property we wrap
         Private _propDesc As PropertyDescriptor
-        Private _typeConverter As TypeConverter
-        Private _displayName As String
         Private _name As String
-        Private _propertyType As System.Type
-        Private _isReadOnly As Boolean
 
         ''' <summary>
         ''' Constructs a PropertyDescriptor using the wrapped properties property descriptor
         ''' </summary>
         ''' <param name="PropDesc">The property descriptor that is being wrapped.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal PropDesc As PropertyDescriptor, ByVal PropertyName As String)
+        Public Sub New(
+                        PropDesc As PropertyDescriptor,
+                        PropertyName As String
+                      )
             MyBase.New(PropDesc)
 
             Debug.Assert(PropDesc IsNot Nothing)
@@ -39,10 +37,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             If _propDesc.PropertyType.IsEnum Then
                 _propertyType = _propDesc.PropertyType.UnderlyingSystemType
-                _typeConverter = New TypeConverter()
+                _Converter = New TypeConverter()
             Else
                 _propertyType = _propDesc.PropertyType
-                _typeConverter = _propDesc.Converter
+                _Converter = _propDesc.Converter
             End If
             _displayName = _propDesc.DisplayName
             _name = PropertyName
@@ -66,12 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
         ''' <value>True if the property is read-only, False otherwise.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property IsReadOnly() As Boolean
-            Get
-                Return _isReadOnly
-            End Get
-        End Property
 
 
         ''' <summary>
@@ -80,10 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <value>A Type that represents the type of the property.</value>
         ''' <remarks></remarks>
         Public Overrides ReadOnly Property PropertyType() As System.Type
-            Get
-                Return _propertyType
-            End Get
-        End Property
+
 
 
 
@@ -93,14 +83,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Component">The component instance with the property to retrieve the value.</param>
         ''' <returns>The value of the property on the specified component instance.</returns>
         Public Overrides Function GetValue(ByVal Component As Object) As Object
-            Debug.Assert(Component IsNot Nothing, "component is Nothing!!!")
+            Debug.Assert(Component IsNot Nothing, $"{NameOf(Component)} is Nothing!!!")
+
             If TypeOf Component Is PropPageDesignerRootComponent Then
                 Dim View As PropPageDesignerView = DirectCast(Component, PropPageDesignerRootComponent).RootDesigner.GetView()
                 Debug.Assert(View IsNot Nothing)
                 Return View.GetProperty(Me.Name)
             Else
-                Debug.Fail("PropertyPagePropertyDescriptor.GetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
-                Throw AppDesCommon.CreateArgumentException("Component")
+                Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(GetValue)}() called with unexpected {NameOf(Component)} type.
+Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IProjectDesignerPropertyPageUndoSite)})")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Function
 
@@ -112,6 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Value">The new value to set the property to.</param>
         Public Overrides Sub SetValue(ByVal Component As Object, ByVal Value As Object)
             Debug.Fail("This shouldn't get called directly - instead the serialization store should be calling in to the prop page designer view")
+
             If TypeOf Component Is PropPageDesignerRootComponent Then
                 Dim View As PropPageDesignerView
                 Dim PropPageUndo As IVsProjectDesignerPage
@@ -120,8 +113,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Debug.Assert(PropPageUndo IsNot Nothing, "How could this happen?")
                 View.SetProperty(Me.Name, Value)
             Else
-                Debug.Fail("PropertyPagePropertyDescriptor.SetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
-                Throw AppDesCommon.CreateArgumentException("Component")
+                Debug.Fail($"{NameOf(PropertyPagePropertyDescriptor)}.{NameOf(SetValue)}() called with unexpected {NameOf(Component)} type.
+Expected that this is also set up through the {NameOf(PropPageDesignerView)} (implementing {NameOf(IProjectDesignerPropertyPageUndoSite)})")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Sub
 
@@ -150,27 +144,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Component">The component instance with the property value that is to be reset.</param>
         ''' <remarks>Not implemented since there is no 'reset'.</remarks>
-        Public Overrides Sub ResetValue(ByVal Component As Object)
-            Debug.Fail("No ResetValue implementation!!!  Shouldn't have been enabled in the properties window because CanResetValue always returns False.")
+        Public Overrides Sub ResetValue(Component As Object)
+            Debug.Fail($"No {NameOf(ResetValue)} implementation!!!  Shouldn't have been enabled in the properties window because {NameOf(CanResetValue)} always returns False.")
         End Sub
 
         ''' <summary>
         ''' Returns the converter for the contained property
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property Converter() As TypeConverter
-            Get
-                Return _typeConverter
-            End Get
-        End Property
+
 
         ''' <summary>
         ''' Returns the name of the property.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property Name() As String
             Get
                 If _name = "" Then
@@ -186,18 +172,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' be displayed in a properties window.  This will be the same as the property
         ''' name for most properties.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property DisplayName() As String
-            Get
-                Return _displayName
-            End Get
-        End Property
 
-        Public Overrides Function GetChildProperties(ByVal instance As Object, ByVal filter As Attribute()) As PropertyDescriptorCollection
-            If _propDesc IsNot Nothing Then
-                Return _propDesc.GetChildProperties(instance, filter)
-            End If
+
+        Public Overrides Function GetChildProperties(
+                                                     instance As Object,
+                                                     filter As Attribute()
+                                                    ) As PropertyDescriptorCollection
+            If _propDesc IsNot Nothing Then Return _propDesc.GetChildProperties(instance, filter)
             Return Nothing
         End Function
 
@@ -205,12 +187,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Gets an editor of the specified type.
         ''' </summary>
         ''' <param name="editorBaseType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Overrides Function GetEditor(ByVal editorBaseType As Type) As Object
-            If _propDesc IsNot Nothing Then
-                Return _propDesc.GetEditor(editorBaseType)
-            End If
+        Public Overrides Function GetEditor(editorBaseType As Type) As Object
+            If _propDesc IsNot Nothing Then Return _propDesc.GetEditor(editorBaseType)
             Return Nothing
         End Function
 

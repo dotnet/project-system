@@ -29,11 +29,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
             Dim SerializationService As New PropertyPageSerializationService(LoaderHost)
+
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
-            LoaderHost.AddService(GetType(Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService), _
-                New Microsoft.VisualStudio.Editors.PropPageDesigner.DeferrableWindowPaneProviderService(LoaderHost))
-            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing, _
-                "We just made the ComponentSerializationService service available.  Why isn't it there?")
+            LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService), New DeferrableWindowPaneProviderService(LoaderHost))
+            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing, $"We just made the {NameOf(ComponentSerializationService)} service available.  Why isn't it there?")
         End Sub
 
 
@@ -47,14 +46,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="ItemId"></param>
         ''' <param name="punkDocData"></param>
         ''' <remarks></remarks>
-        Public Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
+        Public Sub InitializeEx(
+                                 ServiceProvider As Shell.ServiceProvider,
+                                 Hierarchy As IVsHierarchy,
+                                 ItemId As UInteger,
+                                 punkDocData As Object
+                               )
 
             If punkDocData Is Nothing Then
-                Debug.Fail("Docdata must be supplied")
+                Debug.Fail($"{NameOf(punkDocData)} must be supplied")
                 Throw New InvalidOperationException()
             End If
 
-            Debug.Assert(TypeOf punkDocData Is PropPageDesignerDocData, "Unexpected docdata type")
+            Debug.Assert(TypeOf punkDocData Is PropPageDesignerDocData, $"Unexpected {punkDocData} type")
             If TypeOf punkDocData Is PropPageDesignerDocData Then
                 _punkDocData = punkDocData
             End If
@@ -68,14 +72,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PerformFlush(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
-            Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
+        Protected Overrides Sub PerformFlush(ByVal serializationManager As IDesignerSerializationManager)
+            Debug.Assert(Modified, $"{NameOf(PerformFlush)} shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
                 ' Make sure the property page changes have been flushed from the UI
                 CType(LoaderHost.RootComponent, PropPageDesignerRootComponent).RootDesigner.CommitAnyPendingChanges()
             Else
-                Debug.Fail("LoaderHost.RootComponent is Nothing")
+                Debug.Fail($"{NameOf(LoaderHost)}.{NameOf(LoaderHost.RootComponent)} is Nothing")
             End If
         End Sub
 
@@ -88,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' will automatically be added to the ErrorList by VSDesignerLoader.  If there
         ''' are more specific local exceptions, they can be added to ErrorList manually.
         '''</remarks>
-        Protected Overrides Sub PerformLoad(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformLoad(ByVal serializationManager As IDesignerSerializationManager)
 
             '... BasicDesignerLoader requires that we call SetBaseComponentClassName() during load.
             SetBaseComponentClassName(GetType(PropPageDesignerRootComponent).AssemblyQualifiedName)
@@ -98,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Using New WaitCursor
                 Debug.Assert(LoaderHost IsNot Nothing, "No host")
                 If LoaderHost IsNot Nothing Then
-                    NewPropPageDesignerRoot = CType(LoaderHost.CreateComponent(GetType(PropPageDesignerRootComponent), "PropPageDesignerRootComponent"), PropPageDesignerRootComponent)
+                    NewPropPageDesignerRoot = CType(LoaderHost.CreateComponent(GetType(PropPageDesignerRootComponent), NameOf(PropPageDesignerRootComponent)), PropPageDesignerRootComponent)
                 End If
             End Using
 

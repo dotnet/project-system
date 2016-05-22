@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Dim caption As String = ""
             Dim uiShell As IVsUIShell = Nothing
 
-            If sp IsNot Nothing Then uiShell = DirectCast(sp.GetService(GetType(IVsUIShell)), VsUIShell)
+            If sp IsNot Nothing Then uiShell = DirectCast(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             If uiShell Is Nothing OrElse AppDesInterop.NativeMethods.Failed(uiShell.GetAppName(caption)) Then
                 caption = SR.GetString(SR.DFX_Error_Default_Caption)

@@ -228,7 +228,7 @@ Color Category = {themeCategory.ToString()}, Color Name = {themeColorName}, Colo
                 If ProjAndSolutionProperties IsNot Nothing Then
                     ShowValue = CBool(ProjAndSolutionProperties.Item("ShowAdvancedBuildConfigurations").Value)
                 Else
-                    Debug.Fail($"Couldn't get {NameOf(ProjAndSolutionProperties} property from {NameOf( DTE)}.{NameOf(DTE.Properties)}")
+                    Debug.Fail($"Couldn't get {NameOf(ProjAndSolutionProperties)} property from {NameOf(DTE)}.{NameOf(DTE.Properties)}")
                     ShowValue = True 'If can't get to the property, assume advanced mode
                 End If
             Catch ex As Exception

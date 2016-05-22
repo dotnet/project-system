@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_SaveIfDirty)
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty
                 Case Else
-                    Debug.Fail($"Unexpected save option in {NameOf(IVsWindowFrameNotify3)}.{NameOf(IVsWindowFrameNotify2.OnClose)")
+                    Debug.Fail($"Unexpected save option in {NameOf(IVsWindowFrameNotify3)}.{NameOf(IVsWindowFrameNotify2.OnClose)}")
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave 'defensive
             End Select
 
