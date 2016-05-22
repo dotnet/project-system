@@ -14,375 +14,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend Class CompilePropPage2
         Inherits BuildPropPageBase
-
-#Region " Windows Form Designer generated code "
-
-        Public Sub New()
-            MyBase.New()
-
-            'This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            'Add any initialization after the InitializeComponent() call
-            _notifyError = SR.GetString(SR.PPG_Compile_Notification_Error)
-            _notifyNone = SR.GetString(SR.PPG_Compile_Notification_None)
-            _notifyWarning = SR.GetString(SR.PPG_Compile_Notification_Warning)
-            MyBase.PageRequiresScaling = False
-            MyBase.AutoScaleMode = AutoScaleMode.Font
-
-            AddChangeHandlers()
-
-            Dim optionStrictErrors As New System.Collections.ArrayList
-            For Each ErrorInfo As ErrorInfo In _errorInfos
-                If ErrorInfo.ErrorOnOptionStrict Then
-                    optionStrictErrors.AddRange(ErrorInfo.ErrList)
-                End If
-            Next
-            ReDim _optionStrictIDs(optionStrictErrors.Count - 1)
-            optionStrictErrors.CopyTo(_optionStrictIDs)
-            System.Array.Sort(_optionStrictIDs)
-
-            NotificationColumn.Items.Add(_notifyNone)
-            NotificationColumn.Items.Add(_notifyWarning)
-            NotificationColumn.Items.Add(_notifyError)
-        End Sub
-
-        'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing Then
-                If Not (_components Is Nothing) Then
-                    _components.Dispose()
-                End If
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
-        Friend WithEvents BuildOutputPathLabel As System.Windows.Forms.Label
-        Friend WithEvents BuildOutputPathTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents BuildOutputPathButton As System.Windows.Forms.Button
-        Friend WithEvents AdvancedOptionsButton As System.Windows.Forms.Button
-        Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents buildOutputTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-
-        Private _settingGenerateXmlDocumentation As Boolean
-        Private _generateXmlDocumentation As Object
-        Friend WithEvents CompileOptionsGroupBox As System.Windows.Forms.GroupBox
-        Friend WithEvents CompileOptionsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents OptionExplicitLabel As System.Windows.Forms.Label
-        Friend WithEvents DisableAllWarningsCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents WarningsAsErrorCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents OptionExplicitComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents BuildEventsButton As System.Windows.Forms.Button
-        Friend WithEvents RegisterForComInteropCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents OptionCompareComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents GenerateXMLCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents OptionStrictLabel As System.Windows.Forms.Label
-        Friend WithEvents OptionStrictComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents OptionCompareLabel As System.Windows.Forms.Label
-        Friend WithEvents OptionInferLabel As System.Windows.Forms.Label
-        Friend WithEvents OptionInferComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents WarningsConfigurationsGridViewLabel As System.Windows.Forms.Label
-        Friend WithEvents WarningsGridView As Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.InternalDataGridView
-        Friend WithEvents ConditionColumn As System.Windows.Forms.DataGridViewTextBoxColumn
-        Friend WithEvents NotificationColumn As System.Windows.Forms.DataGridViewComboBoxColumn
-        Friend WithEvents TargetCPULabel As System.Windows.Forms.Label
-        Friend WithEvents TargetCPUComboBox As System.Windows.Forms.ComboBox
-        Friend WithEvents Prefer32BitCheckBox As System.Windows.Forms.CheckBox
-
         ' Shared cache of raw and extended configuration objects
         Private _objectCache As FakeAllConfigurationsPropertyControlData.ConfigurationObjectCache
-        Friend WithEvents AdvancedCompileOptionsLabelLine As System.Windows.Forms.Label
-
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-        'put this bock in
-        'Me.WarningsGridView = New Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.InternalDataGridView
-
-        'PERF: A note about the labels used as lines.  The 3D label is being set to 1 px high,
-        '   so you’re really only using the grey part of it.  Using BorderStyle.Fixed3D seems
-        '   to fire an extra resize OnHandleCreated.  The simple solution is to use BorderStyle.None
-        '   and BackColor = SystemColors.ControlDark.
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CompilePropPage2))
-            Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-            Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-            Me.BuildOutputPathLabel = New System.Windows.Forms.Label
-            Me.BuildOutputPathTextBox = New System.Windows.Forms.TextBox
-            Me.BuildOutputPathButton = New System.Windows.Forms.Button
-            Me.AdvancedOptionsButton = New System.Windows.Forms.Button
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.buildOutputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.CompileOptionsGroupBox = New System.Windows.Forms.GroupBox
-            Me.CompileOptionsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.AdvancedCompileOptionsLabelLine = New System.Windows.Forms.Label
-            Me.OptionExplicitLabel = New System.Windows.Forms.Label
-            Me.DisableAllWarningsCheckBox = New System.Windows.Forms.CheckBox
-            Me.WarningsAsErrorCheckBox = New System.Windows.Forms.CheckBox
-            Me.OptionExplicitComboBox = New System.Windows.Forms.ComboBox
-            Me.BuildEventsButton = New System.Windows.Forms.Button
-            Me.RegisterForComInteropCheckBox = New System.Windows.Forms.CheckBox
-            Me.OptionCompareComboBox = New System.Windows.Forms.ComboBox
-            Me.GenerateXMLCheckBox = New System.Windows.Forms.CheckBox
-            Me.OptionStrictLabel = New System.Windows.Forms.Label
-            Me.OptionStrictComboBox = New System.Windows.Forms.ComboBox
-            Me.OptionCompareLabel = New System.Windows.Forms.Label
-            Me.OptionInferLabel = New System.Windows.Forms.Label
-            Me.OptionInferComboBox = New System.Windows.Forms.ComboBox
-            Me.WarningsConfigurationsGridViewLabel = New System.Windows.Forms.Label
-            Me.WarningsGridView = New Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.InternalDataGridView
-            Me.ConditionColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-            Me.NotificationColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-            Me.TargetCPULabel = New System.Windows.Forms.Label
-            Me.TargetCPUComboBox = New System.Windows.Forms.ComboBox
-            Me.Prefer32BitCheckBox = New System.Windows.Forms.CheckBox
-            Me.overarchingTableLayoutPanel.SuspendLayout()
-            Me.buildOutputTableLayoutPanel.SuspendLayout()
-            Me.CompileOptionsGroupBox.SuspendLayout()
-            Me.CompileOptionsTableLayoutPanel.SuspendLayout()
-            CType(Me.WarningsGridView, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.SuspendLayout()
-            '
-            'BuildOutputPathLabel
-            '
-            resources.ApplyResources(Me.BuildOutputPathLabel, "BuildOutputPathLabel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.BuildOutputPathLabel, 2)
-            Me.BuildOutputPathLabel.Name = "BuildOutputPathLabel"
-            '
-            'BuildOutputPathTextBox
-            '
-            resources.ApplyResources(Me.BuildOutputPathTextBox, "BuildOutputPathTextBox")
-            Me.BuildOutputPathTextBox.Name = "BuildOutputPathTextBox"
-            '
-            'BuildOutputPathButton
-            '
-            resources.ApplyResources(Me.BuildOutputPathButton, "BuildOutputPathButton")
-            Me.BuildOutputPathButton.Name = "BuildOutputPathButton"
-            '
-            'AdvancedOptionsButton
-            '
-            resources.ApplyResources(Me.AdvancedOptionsButton, "AdvancedOptionsButton")
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.AdvancedOptionsButton, 2)
-            Me.AdvancedOptionsButton.Name = "AdvancedOptionsButton"
-            '
-            'overarchingTableLayoutPanel
-            '
-            resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.BuildOutputPathLabel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.buildOutputTableLayoutPanel, 0, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.CompileOptionsGroupBox, 0, 2)
-            Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            '
-            'buildOutputTableLayoutPanel
-            '
-            resources.ApplyResources(Me.buildOutputTableLayoutPanel, "buildOutputTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.buildOutputTableLayoutPanel, 2)
-            Me.buildOutputTableLayoutPanel.Controls.Add(Me.BuildOutputPathTextBox, 0, 0)
-            Me.buildOutputTableLayoutPanel.Controls.Add(Me.BuildOutputPathButton, 1, 0)
-            Me.buildOutputTableLayoutPanel.Name = "buildOutputTableLayoutPanel"
-            '
-            'CompileOptionsGroupBox
-            '
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.CompileOptionsGroupBox, 2)
-            Me.CompileOptionsGroupBox.Controls.Add(Me.CompileOptionsTableLayoutPanel)
-            resources.ApplyResources(Me.CompileOptionsGroupBox, "CompileOptionsGroupBox")
-            Me.CompileOptionsGroupBox.Name = "CompileOptionsGroupBox"
-            Me.CompileOptionsGroupBox.TabStop = False
-            '
-            'CompileOptionsTableLayoutPanel
-            '
-            resources.ApplyResources(Me.CompileOptionsTableLayoutPanel, "CompileOptionsTableLayoutPanel")
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.AdvancedCompileOptionsLabelLine, 0, 14)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionExplicitLabel, 0, 0)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.DisableAllWarningsCheckBox, 0, 10)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.WarningsAsErrorCheckBox, 0, 11)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionExplicitComboBox, 0, 1)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.BuildEventsButton, 1, 13)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.RegisterForComInteropCheckBox, 0, 13)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionCompareComboBox, 0, 3)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.GenerateXMLCheckBox, 0, 12)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionStrictLabel, 1, 0)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionStrictComboBox, 1, 1)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionCompareLabel, 0, 2)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionInferLabel, 1, 2)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.OptionInferComboBox, 1, 3)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.WarningsConfigurationsGridViewLabel, 0, 7)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.WarningsGridView, 0, 8)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.AdvancedOptionsButton, 0, 15)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPULabel, 0, 4)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPUComboBox, 0, 5)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.Prefer32BitCheckBox, 0, 6)
-            Me.CompileOptionsTableLayoutPanel.Name = "CompileOptionsTableLayoutPanel"
-            '
-            'AdvancedCompileOptionsLabelLine
-            '
-            Me.AdvancedCompileOptionsLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic
-            resources.ApplyResources(Me.AdvancedCompileOptionsLabelLine, "AdvancedCompileOptionsLabelLine")
-            Me.AdvancedCompileOptionsLabelLine.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.AdvancedCompileOptionsLabelLine, 2)
-            Me.AdvancedCompileOptionsLabelLine.Name = "AdvancedCompileOptionsLabelLine"
-            '
-            'OptionExplicitLabel
-            '
-            resources.ApplyResources(Me.OptionExplicitLabel, "OptionExplicitLabel")
-            Me.OptionExplicitLabel.Name = "OptionExplicitLabel"
-            '
-            'DisableAllWarningsCheckBox
-            '
-            resources.ApplyResources(Me.DisableAllWarningsCheckBox, "DisableAllWarningsCheckBox")
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.DisableAllWarningsCheckBox, 2)
-            Me.DisableAllWarningsCheckBox.Name = "DisableAllWarningsCheckBox"
-            '
-            'WarningsAsErrorCheckBox
-            '
-            resources.ApplyResources(Me.WarningsAsErrorCheckBox, "WarningsAsErrorCheckBox")
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.WarningsAsErrorCheckBox, 2)
-            Me.WarningsAsErrorCheckBox.Name = "WarningsAsErrorCheckBox"
-            '
-            'OptionExplicitComboBox
-            '
-            resources.ApplyResources(Me.OptionExplicitComboBox, "OptionExplicitComboBox")
-            Me.OptionExplicitComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.OptionExplicitComboBox.FormattingEnabled = True
-            Me.OptionExplicitComboBox.Name = "OptionExplicitComboBox"
-            '
-            'BuildEventsButton
-            '
-            resources.ApplyResources(Me.BuildEventsButton, "BuildEventsButton")
-            Me.BuildEventsButton.MinimumSize = New System.Drawing.Size(91, 0)
-            Me.BuildEventsButton.Name = "BuildEventsButton"
-            '
-            'RegisterForComInteropCheckBox
-            '
-            resources.ApplyResources(Me.RegisterForComInteropCheckBox, "RegisterForComInteropCheckBox")
-            Me.RegisterForComInteropCheckBox.Name = "RegisterForComInteropCheckBox"
-            '
-            'OptionCompareComboBox
-            '
-            resources.ApplyResources(Me.OptionCompareComboBox, "OptionCompareComboBox")
-            Me.OptionCompareComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.OptionCompareComboBox.FormattingEnabled = True
-            Me.OptionCompareComboBox.Name = "OptionCompareComboBox"
-            '
-            'GenerateXMLCheckBox
-            '
-            resources.ApplyResources(Me.GenerateXMLCheckBox, "GenerateXMLCheckBox")
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.GenerateXMLCheckBox, 2)
-            Me.GenerateXMLCheckBox.Name = "GenerateXMLCheckBox"
-            '
-            'OptionStrictLabel
-            '
-            resources.ApplyResources(Me.OptionStrictLabel, "OptionStrictLabel")
-            Me.OptionStrictLabel.Name = "OptionStrictLabel"
-            '
-            'OptionStrictComboBox
-            '
-            resources.ApplyResources(Me.OptionStrictComboBox, "OptionStrictComboBox")
-            Me.OptionStrictComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.OptionStrictComboBox.FormattingEnabled = True
-            Me.OptionStrictComboBox.Name = "OptionStrictComboBox"
-            '
-            'OptionCompareLabel
-            '
-            resources.ApplyResources(Me.OptionCompareLabel, "OptionCompareLabel")
-            Me.OptionCompareLabel.Name = "OptionCompareLabel"
-            '
-            'OptionInferLabel
-            '
-            resources.ApplyResources(Me.OptionInferLabel, "OptionInferLabel")
-            Me.OptionInferLabel.Name = "OptionInferLabel"
-            '
-            'OptionInferComboBox
-            '
-            resources.ApplyResources(Me.OptionInferComboBox, "OptionInferComboBox")
-            Me.OptionInferComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.OptionInferComboBox.FormattingEnabled = True
-            Me.OptionInferComboBox.Name = "OptionInferComboBox"
-            '
-            'WarningsConfigurationsGridViewLabel
-            '
-            resources.ApplyResources(Me.WarningsConfigurationsGridViewLabel, "WarningsConfigurationsGridViewLabel")
-            Me.WarningsConfigurationsGridViewLabel.Name = "WarningsConfigurationsGridViewLabel"
-            '
-            'WarningsGridView
-            '
-            Me.WarningsGridView.AllowUserToAddRows = False
-            Me.WarningsGridView.AllowUserToDeleteRows = False
-            Me.WarningsGridView.AllowUserToResizeRows = False
-            resources.ApplyResources(Me.WarningsGridView, "WarningsGridView")
-            Me.WarningsGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-            Me.WarningsGridView.BackgroundColor = System.Drawing.SystemColors.Window
-            Me.WarningsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.WarningsGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ConditionColumn, Me.NotificationColumn})
-            Me.CompileOptionsTableLayoutPanel.SetColumnSpan(Me.WarningsGridView, 2)
-            Me.WarningsGridView.MinimumSize = New System.Drawing.Size(0, 105)
-            Me.WarningsGridView.MultiSelect = False
-            Me.WarningsGridView.Name = "WarningsGridView"
-            Me.WarningsGridView.RowHeadersVisible = False
-            Me.CompileOptionsTableLayoutPanel.SetRowSpan(Me.WarningsGridView, 2)
-            '
-            'ConditionColumn
-            '
-            Me.ConditionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-            DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-            Me.ConditionColumn.DefaultCellStyle = DataGridViewCellStyle1
-            Me.ConditionColumn.FillWeight = 65.0!
-            resources.ApplyResources(Me.ConditionColumn, "ConditionColumn")
-            Me.ConditionColumn.Name = "ConditionColumn"
-            Me.ConditionColumn.ReadOnly = True
-            Me.ConditionColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
-            'NotificationColumn
-            '
-            Me.NotificationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-            DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-            Me.NotificationColumn.DefaultCellStyle = DataGridViewCellStyle2
-            Me.NotificationColumn.FillWeight = 35.0!
-            resources.ApplyResources(Me.NotificationColumn, "NotificationColumn")
-            Me.NotificationColumn.Name = "NotificationColumn"
-            '
-            'TargetCPULabel
-            '
-            resources.ApplyResources(Me.TargetCPULabel, "TargetCPULabel")
-            Me.TargetCPULabel.Name = "TargetCPULabel"
-            '
-            'TargetCPUComboBox
-            '
-            resources.ApplyResources(Me.TargetCPUComboBox, "TargetCPUComboBox")
-            Me.TargetCPUComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.TargetCPUComboBox.FormattingEnabled = True
-            Me.TargetCPUComboBox.Name = "TargetCPUComboBox"
-            '
-            'Prefer32BitCheckBox
-            '
-            resources.ApplyResources(Me.Prefer32BitCheckBox, "Prefer32BitCheckBox")
-            Me.Prefer32BitCheckBox.Name = "Prefer32BitCheckBox"
-            '
-            'CompilePropPage2
-            '
-            resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.overarchingTableLayoutPanel)
-            Me.MinimumSize = New System.Drawing.Size(455, 437)
-            Me.Name = "CompilePropPage2"
-            Me.overarchingTableLayoutPanel.ResumeLayout(False)
-            Me.overarchingTableLayoutPanel.PerformLayout()
-            Me.buildOutputTableLayoutPanel.ResumeLayout(False)
-            Me.buildOutputTableLayoutPanel.PerformLayout()
-            Me.CompileOptionsGroupBox.ResumeLayout(False)
-            Me.CompileOptionsGroupBox.PerformLayout()
-            Me.CompileOptionsTableLayoutPanel.ResumeLayout(False)
-            Me.CompileOptionsTableLayoutPanel.PerformLayout()
-            CType(Me.WarningsGridView, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.ResumeLayout(False)
-
-        End Sub
-
-#End Region
-
-
+        Private _settingGenerateXmlDocumentation As Boolean
+        Private _generateXmlDocumentation As Object
         ' The list of warning ids that are affected by option strict on/off
         Private _optionStrictIDs() As Integer
 
@@ -425,6 +60,36 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' on the IDLE so that it happens after all the settings have
         ' been set...
         Private _optionStrictComboBoxUpdateQueued As Boolean
+
+        Public Sub New()
+            MyBase.New()
+
+            'This call is required by the Windows Form Designer.
+            InitializeComponent()
+
+            'Add any initialization after the InitializeComponent() call
+            _notifyError = SR.GetString(SR.PPG_Compile_Notification_Error)
+            _notifyNone = SR.GetString(SR.PPG_Compile_Notification_None)
+            _notifyWarning = SR.GetString(SR.PPG_Compile_Notification_Warning)
+            MyBase.PageRequiresScaling = False
+            MyBase.AutoScaleMode = AutoScaleMode.Font
+
+            AddChangeHandlers()
+
+            Dim optionStrictErrors As New System.Collections.ArrayList
+            For Each ErrorInfo As ErrorInfo In _errorInfos
+                If ErrorInfo.ErrorOnOptionStrict Then
+                    optionStrictErrors.AddRange(ErrorInfo.ErrList)
+                End If
+            Next
+            ReDim _optionStrictIDs(optionStrictErrors.Count - 1)
+            optionStrictErrors.CopyTo(_optionStrictIDs)
+            System.Array.Sort(_optionStrictIDs)
+
+            NotificationColumn.Items.Add(_notifyNone)
+            NotificationColumn.Items.Add(_notifyWarning)
+            NotificationColumn.Items.Add(_notifyError)
+        End Sub
 
 #Region "Queued update of text in option strict combobox"
         Private Delegate Sub QueueUpdateOptionStrictComboBoxDelegate()
@@ -485,8 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true if the Register for COM Interop checkbox makes sense in this project context
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function RegisterForComInteropSupported() As Boolean
             If MultiProjectSelect Then
                 Return False
@@ -816,7 +479,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' We need to reset our cached extended objects every time someone calls SetObjects
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub SetObjects(ByVal objects() As Object)
             If _objectCache IsNot Nothing Then
                 _objectCache.Reset(ProjectHierarchy, ServiceProvider, True)
@@ -1086,9 +748,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' We use an empty cell to indicate that levels conflict
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub WarningsGridView_CellFormatting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
             If e.ColumnIndex = s_notifyColumnIndex Then
                 ' If either this is in an indeterminate state because we have different warning levels 
@@ -1129,9 +788,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Make sure we set the Register for COM interop property whenever the
         ''' user checkes the corresponding checkbox on the property page
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub RegisterForComInteropCheckBox_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
             If Not m_fInsideInit Then
                 If RegisterForComInteropCheckBox.Checked Then
@@ -1146,13 +802,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Get the value for ComVisible. 
         ''' </summary>
-        ''' <param name="control"></param>
-        ''' <param name="prop"></param>
-        ''' <param name="value"></param>
-        ''' <returns>
-        ''' </returns>
-        ''' <remarks>
-        ''' </remarks>
         Private Function ComVisibleGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = _comVisible
             Return True
@@ -1161,11 +810,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Set the current value for the COM Visible property
         ''' </summary>
-        ''' <param name="control"></param>
-        ''' <param name="prop"></param>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ComVisibleSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
             _comVisible = value
             Return True
@@ -1275,9 +919,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Concatenate an array of integers into a comma-separated string of numbers
         ''' </summary>
-        ''' <param name="numbers"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ConcatenateNumbers(ByVal numbers() As Integer) As String
             Dim strNumbers(numbers.Length - 1) As String
             For i As Integer = 0 To numbers.Length - 1
@@ -1289,9 +930,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Split a comma-separated string into a sorted array of numbers
         ''' </summary>
-        ''' <param name="numberString"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function SplitToNumbers(ByVal numberString As String) As Integer()
             If numberString Is Nothing Then
                 Debug.Fail("NULL Argument")
@@ -1315,9 +953,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Return the intersection of the two *sorted* arrays set1 and set2
         ''' </summary>
-        ''' <param name="set1"></param>
-        ''' <param name="set2"></param>
-        ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
         Private Function Intersect(ByVal set1() As Integer, ByVal set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
@@ -1346,9 +981,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Return the union of the two *sorted* arrays set1 and set2
         ''' </summary>
-        ''' <param name="set1"></param>
-        ''' <param name="set2"></param>
-        ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
         Private Function Union(ByVal set1() As Integer, ByVal set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
@@ -1392,9 +1024,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Remove any items in itemsToRmove from completeSet
         ''' </summary>
-        ''' <param name="completeSet"></param>
-        ''' <param name="itemsToRemove"></param>
-        ''' <returns></returns>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
         Private Function RemoveItems(ByVal completeSet() As Integer, ByVal itemsToRemove() As Integer) As Integer()
             Dim indexCompleteSet As Integer = 0
@@ -1434,10 +1063,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Check if the numbers specified in SearchForNumbers are all included in the CompleteList
         ''' </summary>
-        ''' <param name="CompleteList"></param>
-        ''' <param name="SearchForNumbers"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function AreNumbersInList(ByVal CompleteList As Integer(), ByVal SearchForNumbers As Integer()) As TriState
             Dim foundNumbers As Integer = Intersect(CompleteList, SearchForNumbers).Length
             Dim numberOfItemsToFind As Integer = SearchForNumbers.Length
@@ -1502,8 +1127,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Check to see if the warnings lists exactly correspond to the
         ''' Option Strict OFF settings
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsSameAsOptionStrictOff() As Boolean
             If _specWarnAsError IsNot Nothing AndAlso
                _noWarn IsNot Nothing AndAlso
@@ -1520,8 +1143,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Check to see if the warnings lists exactly correspond to the
         ''' Option Strict ON settings
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsSameAsOptionStrictOn() As Boolean
             If _specWarnAsError IsNot Nothing AndAlso
                _noWarn IsNot Nothing AndAlso
@@ -1537,8 +1158,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Is this option strict custom?
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsSameAsOptionStrictCustom() As Boolean
             Return Not IsSameAsOptionStrictOn() AndAlso Not IsSameAsOptionStrictOff()
         End Function
@@ -1624,7 +1243,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' option strictness that we have...
         ''' </summary>
         ''' <param name="Value"></param>
-        ''' <remarks></remarks>
         Private Sub ResetOptionStrictness(ByVal Value As String)
             OptionStrictComboBox.SelectedItem = Value
             Select Case Value
@@ -1654,9 +1272,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Whenever the user changes the option strict combobox in the UI, we have to
         ''' update the corresponding project properties
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OptionStrictComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles OptionStrictComboBox.SelectionChangeCommitted
             If Not m_fInsideInit Then
                 ResetOptionStrictness(TryCast(OptionStrictComboBox.SelectedItem, String))
@@ -1676,7 +1291,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override PreApplyPageChanges to validate and potentially warn the user about untrusted output
         ''' path.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub PreApplyPageChanges()
             If Me.GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).IsDirty Then
                 Try
@@ -1781,9 +1395,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Set the drop-down width of comboboxes with user-handled events so they'll fit their contents
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComboBoxes_DropDown(ByVal sender As Object, ByVal e As EventArgs) Handles OptionStrictComboBox.DropDown
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1791,9 +1402,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Event handler for value changed events fired from the warnings grid view
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub NotificationLevelChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles WarningsGridView.CellValueChanged
             If Not m_fInsideInit AndAlso Not _refreshingWarningsList AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = s_notifyColumnIndex Then
                 UpdatePropertiesFromCurrentState()
@@ -1806,9 +1414,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''
         ''' Let's prompt the user so (s)he can make this decision.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub EnsureNotConflictingSettings(ByVal sender As Object, ByVal e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
             If IndeterminateWarningsState Then
                 'Prompt user for resetting settings...
@@ -1826,7 +1431,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' This is a workaround for event notification not being sent by the datagridview when
         ''' the combobox sends SelectionChangeCommitted
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class InternalDataGridView
             Inherits DesignerFramework.DesignerDataGridView
 
@@ -1843,7 +1447,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' PropertyControlData that always acts as if you have selected the "all configurations/all platforms"
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class FakeAllConfigurationsPropertyControlData
             Inherits PropertyControlData
 
@@ -1890,8 +1493,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Private getter for the IVsCfgProvider2 for the associated proppage's hierarchy
                 ''' </summary>
-                ''' <value></value>
-                ''' <remarks></remarks>
                 Private ReadOnly Property VsCfgProvider() As IVsCfgProvider2
                     Get
                         If _vscfgprovider Is Nothing Then
@@ -1958,8 +1559,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the raw config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Overrides ReadOnly Property RawPropertiesObjects() As Object()
                 Get
                     Return _configurationObjectCache.ConfigRawPropertiesObjects()
@@ -1970,8 +1569,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the extended config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Overrides ReadOnly Property ExtendedPropertiesObjects() As Object()
                 Get
                     Return _configurationObjectCache.ConfigExtendedPropertiesObjects()
