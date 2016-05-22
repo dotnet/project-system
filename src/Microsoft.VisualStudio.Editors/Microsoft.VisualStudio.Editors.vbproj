@@ -292,6 +292,9 @@
     <Compile Include="PropPages\CompilePropPage2.Designer.vb">
       <DependentUpon>CompilePropPage2.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\CSharpApplicationPropPage.Designer.vb">
+      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
