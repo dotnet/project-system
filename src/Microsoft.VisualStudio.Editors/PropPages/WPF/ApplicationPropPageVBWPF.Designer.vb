@@ -1,4 +1,6 @@
-﻿Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
     Partial Class ApplicationPropPageVBWPF
 
         Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
@@ -26,10 +28,10 @@
         Friend WithEvents ShutdownModeComboBox As System.Windows.Forms.ComboBox
         Friend WithEvents ButtonsLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents ViewUACSettingsButton As System.Windows.Forms.Button
-
         Private _components As System.ComponentModel.IContainer
 
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
+        <System.Diagnostics.DebuggerNonUserCode()>
+        Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplicationPropPageVBWPF))
             Me.TopHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.ButtonsLayoutPanel = New System.Windows.Forms.TableLayoutPanel
