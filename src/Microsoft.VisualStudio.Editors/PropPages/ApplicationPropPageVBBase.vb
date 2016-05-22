@@ -8,8 +8,6 @@ Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Editors.Common
 Imports VSLangProj80
 
-
-
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
@@ -20,29 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <remarks></remarks>
     Friend Class ApplicationPropPageVBBase
         Inherits ApplicationPropPageInternalBase
-
-#Region " Windows Form Designer generated code "
-
-        'Required by the Windows Form Designer
-        'Private components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()>
-        Private Sub InitializeComponent()
-            Me.SuspendLayout()
-            '
-            'ApplicationPropPageVBBase
-            '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Name = "ApplicationPropPageVBBase"
-            Me.ResumeLayout(False)
-
-        End Sub
-
-#End Region
 
 #Region "Common Controls"
         'We should be able to use visual inheritance, but there have been
@@ -79,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub New()
             MyBase.New()
 
-            'This call is required by the Windows Form Designer.
             InitializeComponent()
 
             m_IconBrowseText = SR.GetString(SR.PPG_BrowseText)
@@ -153,11 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Sets the icon path for the textbox
         ''' </summary>
-        ''' <param name="control"></param>
-        ''' <param name="prop"></param>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function ApplicationIconSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 m_CommonControls.IconCombobox.SelectedIndex = -1
@@ -183,8 +152,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Handles the DropDown event for the icon combobox.  Must be called by the 
         '''   inherited page.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <remarks></remarks>
         Protected Sub HandleIconComboboxDropDown(ByVal sender As Object)
             If GetPropertyControlData(Const_ApplicationIcon).IsDirty() Then
                 UpdateIconImage(True)
@@ -200,8 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If we close the drop down list, and the text is currently Browse... then we should revert
         ''' to the last set value...
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <remarks></remarks>
         Protected Sub HandleIconComboboxDropDownClosed(ByVal sender As Object)
             Dim IconCombobox As ComboBox = CType(sender, ComboBox)
 
@@ -213,8 +178,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Handles dirtying the icon property when the dropdown's value is changed
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <remarks></remarks>
         Protected Sub HandleIconComboboxSelectionChangeCommitted(ByVal sender As Object)
             Dim IconCombobox As ComboBox = CType(sender, ComboBox)
 
@@ -234,9 +197,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true if the text is the special "Browse" text for the icon combobox
         ''' </summary>
-        ''' <param name="EntryText"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function IconEntryIsBrowse(ByVal EntryText As String) As Boolean
             Return EntryText IsNot Nothing AndAlso EntryText.Equals(m_IconBrowseText, StringComparison.OrdinalIgnoreCase)
         End Function
@@ -248,9 +208,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Retrieves the current root namespace property value
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected ReadOnly Property CurrentRootNamespace() As String
             Get
                 Return DirectCast(GetControlValue(Const_RootNamespace), String)
@@ -261,11 +218,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Called after a property is changed through UI on this property page
         ''' </summary>
-        ''' <param name="PropertyName"></param>
-        ''' <param name="PropDesc"></param>
-        ''' <param name="OldValue"></param>
-        ''' <param name="NewValue"></param>
-        ''' <remarks></remarks>
         Public Overrides Sub OnPropertyChanged(ByVal PropertyName As String, ByVal PropDesc As System.ComponentModel.PropertyDescriptor, ByVal OldValue As Object, ByVal NewValue As Object)
             MyBase.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
 
@@ -281,9 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' This gets called whenever the root namespace is changed via the property pages.  We have
         '''   fix-ups that have to be done in this case.
         ''' </summary>
-        ''' <param name="OldRootNamespace"></param>
-        ''' <param name="NewRootNamespace"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnRootNamespaceChanged(ByVal Project As EnvDTE.Project, ByVal ServiceProvider As IServiceProvider, ByVal OldRootNamespace As String, ByVal NewRootNamespace As String)
             Try
                 If Project Is Nothing Then
@@ -333,9 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a class name, adds the current root namespace, if any.  If the class given is empty,
         '''   returns empty.
         ''' </summary>
-        ''' <param name="ClassName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function AddCurrentRootNamespace(ByVal ClassName As String) As String
             Debug.Assert(Not GetPropertyControlData(Const_RootNamespace).IsMissing, "Control should not have been enabled to allow this")
             Dim RootNamespace As String = Trim(DirectCast(GetPropertyControlData(Const_RootNamespace).InitialValue, String))
@@ -345,9 +291,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Removes the current root namespace from a class name.
         ''' </summary>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function RemoveCurrentRootNamespace(ByVal value As String) As String
             Debug.Assert(Not GetPropertyControlData(Const_RootNamespace).IsMissing, "Control should not have been enabled to allow this")
             Dim RootNamespace As String = Trim(DirectCast(GetPropertyControlData(Const_RootNamespace).InitialValue, String))
@@ -361,7 +304,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Depending on SKU and project type, populate the icon list...
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub PopulateApplicationTypes(ByVal ApplicationTypeComboBox As ComboBox, ByVal applicationTypesSupportedForThisPage As List(Of ApplicationTypeInfo))
             Dim isExpressSKU As Boolean = VSProductSKU.IsExpress
 
@@ -378,7 +320,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Encapsulate all info for an MyApplicationType
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Class ApplicationTypeInfo
 
             Private _applicationType As MyApplication.ApplicationTypes
@@ -478,9 +419,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Match against a given semicolon separated list of (non-localized) names and optionally if the application type must be supported
             ''' by Express SKUs
             ''' </summary>
-            ''' <param name="SemicolonSeparatedNames"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Shared Function GetSemicolonSeparatedNamesPredicate(ByVal SemicolonSeparatedNames As String, ByVal MustBeSupportedByExpressSKUs As Boolean) As System.Predicate(Of ApplicationTypeInfo)
                 Dim pred As New SemicolonSeparatedNamesPredicate(SemicolonSeparatedNames, MustBeSupportedByExpressSKUs)
                 Return AddressOf pred.Compare
@@ -489,9 +427,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Matches application types
             ''' </summary>
-            ''' <param name="AppType"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Shared Function ApplicationTypePredicate(ByVal AppType As ApplicationTypes) As System.Predicate(Of ApplicationTypeInfo)
                 Dim pred As New AppTypePredicate(AppType)
                 Return AddressOf pred.Compare
@@ -504,7 +439,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Filter out only supported application types based on a semi-colon separated list of (non-localized) names and an optional 
             ''' flag to only allow apptypes supported by Express SKUs
             ''' </summary>
-            ''' <remarks></remarks>
             Private Class SemicolonSeparatedNamesPredicate
                 Public Delegate Function CompareFun(ByVal SemicolonSeparatedNames As String, ByVal Item As ApplicationTypeInfo) As Boolean
 
@@ -528,9 +462,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Does the given item satisfy the requireents?
                 ''' </summary>
-                ''' <param name="Item"></param>
-                ''' <returns></returns>
-                ''' <remarks></remarks>
                 Friend Function Compare(ByVal Item As ApplicationTypeInfo) As Boolean
                     If Not _mustBeSupportedInExpressSKUs OrElse Item.SupportedInExpress Then
                         Return _names.ContainsKey(Item.Name)
@@ -543,7 +474,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Does a given ApplicationTypeInfo instance have the same application type as I was constructed with?
             ''' </summary>
-            ''' <remarks></remarks>
             Private Class AppTypePredicate
                 Private _appTypeToFind As ApplicationTypes
 
@@ -573,7 +503,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enables or disables the UAC Settings button, depending on whether we're in a class
         '''   library or not.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Function UACSettingsButtonSupported(ByVal outputType As VSLangProj.prjOutputType) As Boolean
             If Not ApplicationManifestSupported() Then
                 ' The flavor has requested the "View UAC Settings" button to be disabled
@@ -608,7 +537,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' View the manifest for Vista UAC settings, creating a new file from template if needed
         ''' </summary> 
-        ''' <remarks></remarks>
         Protected Sub ViewUACSettings()
 
             Using New WaitCursor

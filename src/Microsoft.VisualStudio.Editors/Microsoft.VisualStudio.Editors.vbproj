@@ -271,6 +271,9 @@
     <Compile Include="PropPages\AdvCompilerSettingsPropPage.Designer.vb">
       <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\ApplicationPropPageVBBase.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
     </Compile>
