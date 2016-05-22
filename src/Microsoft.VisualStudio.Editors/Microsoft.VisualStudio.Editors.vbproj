@@ -307,6 +307,9 @@
     <Compile Include="PropPages\ServicesAuthenticationForm.Designer.vb">
       <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\ServicesPropPage.Designer.vb">
+      <DependentUpon>ServicesPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
