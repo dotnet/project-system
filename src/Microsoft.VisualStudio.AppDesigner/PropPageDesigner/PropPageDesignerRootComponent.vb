@@ -15,16 +15,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Inherits Component
 
         'Private cache for important data
-        Private _hierarchy As IVsHierarchy
-        Private _itemId As UInt32
         Private _rootDesigner As PropPageDesignerRootDesigner
-        Private _name As String = "PropPageDesignerRootComponent"
 
-        Public ReadOnly Property Name() As String
-            Get
-                Return _name
-            End Get
-        End Property
+        Public ReadOnly Property Name() As String = NameOf(PropPageDesignerRootComponent)
 
 
 
@@ -52,30 +45,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' The IVsHierarchy associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property Hierarchy() As IVsHierarchy
-            Get
-                Return _hierarchy
-            End Get
-            Set(ByVal Value As IVsHierarchy)
-                _hierarchy = Value
-            End Set
-        End Property
+
 
         ''' <summary>
         ''' The ItemId associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property ItemId() As System.UInt32
-            Get
-                Return _itemId
-            End Get
-            Set(ByVal Value As System.UInt32)
-                _itemId = Value
-            End Set
-        End Property
+
 
     End Class
 

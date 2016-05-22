@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     SyncLock _syncLockObject
                         If _selectionService Is Nothing Then
                             _selectionService = CType(MyBase.GetService(GetType(ISelectionService)), ISelectionService)
-                            Debug.Assert(_selectionService IsNot Nothing, "Cannot get ISelectionService!!!")
+                            Debug.Assert(_selectionService IsNot Nothing, "Cannot get " & NameOf(ISelectionService) & "!!!")
                         End If
                     End SyncLock
                 End If
@@ -87,9 +87,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '''      FALSE otherwise.</param>
         ''' <remarks>Child root designers call this method to register their own menu commands. 
         '''      See ResourceEditorRootDesigner.</remarks>
-        Public Sub RegisterMenuCommands(ByVal MenuCommands As ArrayList, _
-                Optional ByVal KeepRegisteredMenuCommands As Boolean = True, _
-                Optional ByVal AddCommonMenuCommands As Boolean = True)
+        Public Sub RegisterMenuCommands(
+                                        MenuCommands As ArrayList,
+                               Optional KeepRegisteredMenuCommands As Boolean = True,
+                               Optional AddCommonMenuCommands As Boolean = True
+                                       )
             ' Clear the list of menu commands if specified.
             If Not KeepRegisteredMenuCommands Then
                 For Each MenuCommand As MenuCommand In Me.MenuCommands
@@ -139,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks></remarks>
         Public Sub RefreshMenuStatus()
             For Each MenuItem As MenuCommand In MenuCommands
-                Debug.Assert(MenuItem IsNot Nothing, "MenuItem IsNot Nothing!")
+                Debug.Assert(MenuItem IsNot Nothing, NameOf(MenuItem) & " Is Nothing!")
                 If TypeOf MenuItem Is DesignerMenuCommand Then
                     CType(MenuItem, DesignerMenuCommand).RefreshStatus()
                 End If
@@ -162,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     SyncLock _syncLockObject
                         If _menuCommandService Is Nothing Then
                             _menuCommandService = CType(Me.GetService(GetType(IMenuCommandService)), IMenuCommandService)
-                            Debug.Assert(Not _menuCommandService Is Nothing, "Cannot get menu command service!")
+                            Debug.Assert(_menuCommandService IsNot Nothing, "Cannot get menu command service!")
                         End If
                     End SyncLock
                 End If

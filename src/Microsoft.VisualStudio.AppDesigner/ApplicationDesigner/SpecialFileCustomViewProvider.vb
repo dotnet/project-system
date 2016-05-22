@@ -28,7 +28,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="SpecialFileId">The special file ID to create when the user clicks the link.</param>
         ''' <param name="LinkText">The text of the link message to display.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal DesignerView As ApplicationDesignerView, ByVal DesignerPanel As ApplicationDesignerPanel, ByVal SpecialFileId As Integer, ByVal LinkText As String)
+        Public Sub New(ByVal DesignerView As ApplicationDesignerView,
+                       ByVal DesignerPanel As ApplicationDesignerPanel,
+                       ByVal SpecialFileId As Integer,
+                       ByVal LinkText As String)
             Debug.Assert(DesignerView IsNot Nothing)
             _designerView = DesignerView
             Debug.Assert(DesignerPanel IsNot Nothing)
@@ -159,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Sub New(ByVal DesignerView As ApplicationDesignerView, ByVal SpecialFileId As Integer)
             If DesignerView Is Nothing Then
-                Throw New ArgumentNullException("DesignerView")
+                Throw New ArgumentNullException(NameOf(DesignerView))
             End If
 
             _specialFileId = SpecialFileId
@@ -170,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Call GetDocumentMoniker()
             Catch ex As Exception
                 AppDesCommon.RethrowIfUnrecoverable(ex)
-                Debug.Fail("Shouldn't be creating a SpecialFileCustomDocumentMonikerProvider instance if the requested special file ID is not supported by the project")
+                Debug.Fail($"Shouldn't be creating a {NameOf(SpecialFileCustomDocumentMonikerProvider)} instance if the requested special file ID is not supported by the project")
             End Try
 #End If
         End Sub
@@ -184,8 +187,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'The file is supported (it doesn't necessarily mean that it exists yet)
                 Return SpecialFilePath
             Else
-                Debug.Fail("Why did the call to IVsProjectSpecialFiles fail?  We shouldn't have created a SpecialFileCustomDocumentMonikerProvider instance in the first place if the project didn't support this special file id" _
-                    & vbCrLf & "Hr = 0x" & Hex(hr))
+                Debug.Fail($"Why did the call to {NameOf(IVsProjectSpecialFiles)} fail?  We shouldn't have created a {NameOf(SpecialFileCustomDocumentMonikerProvider)} instance in the first place if the project didn't support this special file id
+Hr = 0x{Hex(hr)}")
                 Throw New InvalidOperationException(SR.GetString(SR.APPDES_SpecialFileNotSupported))
             End If
         End Function

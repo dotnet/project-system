@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Note: the renderer will position the button, so we don't need to.
             OverflowButton = New ImageButton("Microsoft.VisualStudio.Editors.ApplicationDesigner.OverflowImage", Color.Lime)
             With OverflowButton
-                .Name = "OverflowButton"
+                .Name = NameOf(OverflowButton)
                 .Text = ""
                 .AccessibleName = SR.GetString(SR.APPDES_OverflowButton_AccessibilityName)
                 .FlatAppearance.BorderColor = _defaultOverflowBorderColor
@@ -255,13 +255,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnLayout(ByVal levent As LayoutEventArgs)
-            Common.Switches.TracePDPerfBegin(levent, "DesignerTabControl.OnLayout()")
+            Common.Switches.TracePDPerfBegin(levent, "DesignerTabControl." & NameOf(OnLayout) & "()")
 
             _renderer.PerformLayout() 'This can affect the layout of other controls on this page
             MyBase.OnLayout(levent)
 
             Invalidate()
-            Common.Switches.TracePDPerfEnd("DesignerTabControl.OnLayout()")
+            Common.Switches.TracePDPerfEnd("DesignerTabControl." & NameOf(OnLayout) & "()")
         End Sub 'OnLayout
 
 
@@ -563,7 +563,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
         ''' <remarks></remarks>
-        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(ByVal msg As UInteger, ByVal wParam As System.IntPtr, ByVal lParam As System.IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(ByVal msg As UInteger,
+                                                                    ByVal wParam As System.IntPtr,
+                                                                    ByVal lParam As System.IntPtr
+                                                                    ) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
                     _renderer.CreateGDIObjects(True)
@@ -600,7 +603,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Me.New()
 
                 'Get the image and make it transparent
-                Dim Image As Image = AppDesCommon.GetManifestBitmapTransparent(ImageResourceId, TransparentColor, GetType(Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl).Assembly)
+                Dim Image As Image = AppDesCommon.GetManifestBitmapTransparent(ImageResourceId,
+                                                                               TransparentColor,
+                                                                               GetType(ProjectDesignerTabControl).Assembly)
                 MyBase.Image = Image
             End Sub
 

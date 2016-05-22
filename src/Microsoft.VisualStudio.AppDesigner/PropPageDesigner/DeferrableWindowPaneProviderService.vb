@@ -22,8 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   to create a PropPageDesignerWindowPane when needed (i.e., its creation is deferred).
         ''' </summary>
         ''' <param name="provider"></param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal provider As IServiceProvider)
+        Public Sub New(provider As IServiceProvider)
             MyBase.New(provider, Nothing)
         End Sub
 
@@ -33,9 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   property page designer.
         ''' </summary>
         ''' <param name="surface"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Overrides Function CreateWindowPane(ByVal surface As DesignSurface) As DesignerWindowPane
+        Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New PropPageDesignerWindowPane(surface)
         End Function
 

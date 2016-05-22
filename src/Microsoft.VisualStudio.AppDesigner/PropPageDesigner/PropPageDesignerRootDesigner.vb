@@ -71,13 +71,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
         Private Function RootDesigner_GetView(ByVal Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
-            If Technology <> ViewTechnology.Default Then
-                Throw New ArgumentException("Not a supported view technology", "Technology")
-            End If
+            If Technology <> ViewTechnology.Default Then Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
 
-            If _view Is Nothing Then
-                _view = New PropPageDesignerView(Me)
-            End If
+            If _view Is Nothing Then _view = New PropPageDesignerView(Me)
 
             Return _view
         End Function

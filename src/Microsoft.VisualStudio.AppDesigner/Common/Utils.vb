@@ -27,31 +27,31 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '  unique ID for SQM.  Both cases are optional (we handle getting property pages with GUIDs we don't recognize).
         'PERF: NOTE: Initializing GUIDs from numeric values as below is a lot faster than initializing from strings.
         Public Class KnownPropertyPageGuids
-            Public Shared ReadOnly GuidApplicationPage_VB As Guid = New Guid(&H8998E48EUI, &HB89AUS, &H4034US, &HB6, &H6E, &H35, &H3D, &H8C, &H1F, &HDC, &H2E)
-            Public Shared ReadOnly GuidApplicationPage_VB_WPF As Guid = New Guid(&HAA1F44UI, &H2BA3US, &H4EAAUS, &HB5, &H4A, &HCE, &H18, &H0, &HE, &H6C, &H5D)
-            Public Shared ReadOnly GuidApplicationPage_CS As Guid = New Guid(&H5E9A8AC2UI, &H4F34US, &H4521US, CByte(&H85), CByte(&H8F), CByte(&H4C), CByte(&H24), CByte(&H8B), CByte(&HA3), CByte(&H15), CByte(&H32))
+            Public Shared ReadOnly GuidApplicationPage_VB As New Guid(&H8998E48EUI, &HB89AUS, &H4034US, &HB6, &H6E, &H35, &H3D, &H8C, &H1F, &HDC, &H2E)
+            Public Shared ReadOnly GuidApplicationPage_VB_WPF As New Guid(&HAA1F44UI, &H2BA3US, &H4EAAUS, &HB5, &H4A, &HCE, &H18, &H0, &HE, &H6C, &H5D)
+            Public Shared ReadOnly GuidApplicationPage_CS As New Guid(&H5E9A8AC2UI, &H4F34US, &H4521US, &H85, &H8F, &H4C, &H24, &H8B, &HA3, &H15, &H32)
             Public Shared ReadOnly GuidApplicationPage_JS As Guid = GuidApplicationPage_CS
-            Public Shared ReadOnly GuidSigningPage As Guid = New Guid(&HF8D6553FUI, &HF752US, &H4DBFUS, CByte(&HAC), CByte(&HB6), CByte(&HF2), CByte(&H91), CByte(&HB7), CByte(&H44), CByte(&HA7), CByte(&H92))
-            Public Shared ReadOnly GuidReferencesPage_VB As Guid = New Guid(&H4E43F4ABUI, &H9F03US, &H4129US, CByte(&H95), CByte(&HBF), CByte(&HB8), CByte(&HFF), CByte(&H87), CByte(&HA), CByte(&HF6), CByte(&HAB))
-            Public Shared ReadOnly GuidServicesPropPage As Guid = New Guid(&H43E38D2EUI, &H4EB8US, &H4204US, CByte(&H82), CByte(&H25), CByte(&H93), CByte(&H57), CByte(&H31), CByte(&H61), CByte(&H37), CByte(&HA4))
-            Public Shared ReadOnly GuidSecurityPage As Guid = New Guid(&HDF8F7042UI, &HBB1US, &H47D1US, CByte(&H8E), CByte(&H6D), CByte(&HDE), CByte(&HB3), CByte(&HD0), CByte(&H76), CByte(&H98), CByte(&HBD))
-            Public Shared ReadOnly GuidSecurityPage_WPF As Guid = New Guid(&HA2C8FEUI, &H3844US, &H41BEUS, CByte(&H96), CByte(&H37), CByte(&H16), CByte(&H74), CByte(&H54), CByte(&HA7), CByte(&HF1), CByte(&HA7))
-            Public Shared ReadOnly GuidPublishPage As Guid = New Guid(&HCC4014F5UI, &HB18DUS, &H439CUS, CByte(&H93), CByte(&H52), CByte(&HF9), CByte(&H9D), CByte(&H98), CByte(&H4C), CByte(&HCA), CByte(&H85))
-            Public Shared ReadOnly GuidDebugPage As Guid = New Guid(&H6185191FUI, &H1008US, &H4FB2US, CByte(&HA7), CByte(&H15), CByte(&H3A), CByte(&H4E), CByte(&H4F), CByte(&H27), CByte(&HE6), CByte(&H10))
-            Public Shared ReadOnly GuidCompilePage_VB As Guid = New Guid(&HEDA661EAUI, &HDC61US, &H4750US, CByte(&HB3), CByte(&HA5), CByte(&HF6), CByte(&HE9), CByte(&HC7), CByte(&H40), CByte(&H60), CByte(&HF5))
-            Public Shared ReadOnly GuidBuildPage_CS As Guid = New Guid(&HA54AD834UI, &H9219US, &H4AA6US, CByte(&HB5), CByte(&H89), CByte(&H60), CByte(&H7A), CByte(&HF2), CByte(&H1C), CByte(&H3E), CByte(&H26))
-            Public Shared ReadOnly GuidBuildPage_JS As Guid = New Guid(&H8ADF8DB1UI, &HA8B8US, &H4E04US, CByte(&HA6), CByte(&H16), CByte(&H2E), CByte(&HFC), CByte(&H59), CByte(&H5F), CByte(&H27), CByte(&HF4))
-            Public Shared ReadOnly GuidReferencePathsPage As Guid = New Guid(&H31911C8UI, &H6148US, &H4E25US, CByte(&HB1), CByte(&HB1), CByte(&H44), CByte(&HBC), CByte(&HA9), CByte(&HA0), CByte(&HC4), CByte(&H5C))
-            Public Shared ReadOnly GuidBuildEventsPage As Guid = New Guid(&H1E78F8DBUI, &H6C07US, &H4D61US, CByte(&HA1), CByte(&H8F), CByte(&H75), CByte(&H14), CByte(&H1), CByte(&HA), CByte(&HBD), CByte(&H56))
-            Public Shared ReadOnly GuidDatabasePage_SQL As Guid = New Guid(&H87F6ADCEUI, &H9161US, &H489FUS, CByte(&H90), CByte(&H7E), CByte(&H39), CByte(&H30), CByte(&HA6), CByte(&H42), CByte(&H96), CByte(&H9))
-            Public Shared ReadOnly GuidFxCopPage As Guid = New Guid(&H984AE51AUI, &H4B21US, &H44E7US, CByte(&H82), CByte(&H2C), CByte(&HDD), CByte(&H5E), CByte(&H4), CByte(&H68), CByte(&H93), CByte(&HEF))
-            Public Shared ReadOnly GuidDeployPage As Guid = New Guid(&H29AB1D1BUI, &H10E8US, &H4511US, CByte(&HA3), CByte(&H62), CByte(&HEF), CByte(&H15), CByte(&H71), CByte(&HB8), CByte(&H44), CByte(&H3C))
-            Public Shared ReadOnly GuidDevicesPage_VSD As Guid = New Guid(&H7B74AADFUI, &HACA4US, &H410EUS, CByte(&H8D), CByte(&H4B), CByte(&HAF), CByte(&HE1), CByte(&H19), CByte(&H83), CByte(&H5B), CByte(&H99))
-            Public Shared ReadOnly GuidDebugPage_VSD As Guid = New Guid(&HAC5FAEC7UI, &HD452US, &H4AC1US, CByte(&HBC), CByte(&H44), CByte(&H2D), CByte(&H7E), CByte(&HCE), CByte(&H6D), CByte(&HF0), CByte(&H6C))
-            Public Shared ReadOnly GuidMyExtensionsPage As Guid = New Guid(&HF24459FCUI, &HE883US, &H4A8EUS, CByte(&H9D), CByte(&HA2), CByte(&HAE), CByte(&HF6), CByte(&H84), CByte(&HF0), CByte(&HE1), CByte(&HF4))
-            Public Shared ReadOnly GuidOfficePublishPage As Guid = New Guid(&HCC7369A8UI, &HB9B0US, &H439CUS, CByte(&HB1), CByte(&H36), CByte(&HBA), CByte(&H95), CByte(&H58), CByte(&H19), CByte(&HF7), CByte(&HF8))
-            Public Shared ReadOnly GuidServicesPage As Guid = New Guid(&H43E38D2EUI, &H43B8US, &H4204US, CByte(&H82), CByte(&H25), CByte(&H93), CByte(&H57), CByte(&H31), CByte(&H61), CByte(&H37), CByte(&HA4))
-            Public Shared ReadOnly GuidWAPWebPage As Guid = New Guid(&H909D16B3UI, &HC8E8US, &H43D1US, CByte(&HA2), CByte(&HB8), CByte(&H26), CByte(&HEA), CByte(&HD), CByte(&H4B), CByte(&H6B), CByte(&H57))
+            Public Shared ReadOnly GuidSigningPage As New Guid(&HF8D6553FUI, &HF752US, &H4DBFUS, &HAC, &HB6, &HF2, &H91, &HB7, &H44, &HA7, &H92)
+            Public Shared ReadOnly GuidReferencesPage_VB As New Guid(&H4E43F4ABUI, &H9F03US, &H4129US, &H95, &HBF, &HB8, &HFF, &H87, &HA, &HF6, &HAB)
+            Public Shared ReadOnly GuidServicesPropPage As New Guid(&H43E38D2EUI, &H4EB8US, &H4204US, &H82, &H25, &H93, &H57, &H31, &H61, &H37, &HA4)
+            Public Shared ReadOnly GuidSecurityPage As New Guid(&HDF8F7042UI, &HBB1US, &H47D1US, &H8E, &H6D, &HDE, &HB3, &HD0, &H76, &H98, &HBD)
+            Public Shared ReadOnly GuidSecurityPage_WPF As New Guid(&HA2C8FEUI, &H3844US, &H41BEUS, &H96, &H37, &H16, &H74, &H54, &HA7, &HF1, &HA7)
+            Public Shared ReadOnly GuidPublishPage As New Guid(&HCC4014F5UI, &HB18DUS, &H439CUS, &H93, &H52, &HF9, &H9D, &H98, &H4C, &HCA, &H85)
+            Public Shared ReadOnly GuidDebugPage As New Guid(&H6185191FUI, &H1008US, &H4FB2US, &HA7, &H15, &H3A, &H4E, &H4F, &H27, &HE6, &H10)
+            Public Shared ReadOnly GuidCompilePage_VB As New Guid(&HEDA661EAUI, &HDC61US, &H4750US, &HB3, &HA5, &HF6, &HE9, &HC7, &H40, &H60, &HF5)
+            Public Shared ReadOnly GuidBuildPage_CS As New Guid(&HA54AD834UI, &H9219US, &H4AA6US, &HB5, &H89, &H60, &H7A, &HF2, &H1C, &H3E, &H26)
+            Public Shared ReadOnly GuidBuildPage_JS As New Guid(&H8ADF8DB1UI, &HA8B8US, &H4E04US, &HA6, &H16, &H2E, &HFC, &H59, &H5F, &H27, &HF4)
+            Public Shared ReadOnly GuidReferencePathsPage As New Guid(&H31911C8UI, &H6148US, &H4E25US, &HB1, &HB1, &H44, &HBC, &HA9, &HA0, &HC4, &H5C)
+            Public Shared ReadOnly GuidBuildEventsPage As New Guid(&H1E78F8DBUI, &H6C07US, &H4D61US, &HA1, &H8F, &H75, &H14, &H1, &HA, &HBD, &H56)
+            Public Shared ReadOnly GuidDatabasePage_SQL As New Guid(&H87F6ADCEUI, &H9161US, &H489FUS, &H90, &H7E, &H39, &H30, &HA6, &H42, &H96, &H9)
+            Public Shared ReadOnly GuidFxCopPage As New Guid(&H984AE51AUI, &H4B21US, &H44E7US, &H82, &H2C, &HDD, &H5E, &H4, &H68, &H93, &HEF)
+            Public Shared ReadOnly GuidDeployPage As New Guid(&H29AB1D1BUI, &H10E8US, &H4511US, &HA3, &H62, &HEF, &H15, &H71, &HB8, &H44, &H3C)
+            Public Shared ReadOnly GuidDevicesPage_VSD As New Guid(&H7B74AADFUI, &HACA4US, &H410EUS, &H8D, &H4B, &HAF, &HE1, &H19, &H83, &H5B, &H99)
+            Public Shared ReadOnly GuidDebugPage_VSD As New Guid(&HAC5FAEC7UI, &HD452US, &H4AC1US, &HBC, &H44, &H2D, &H7E, &HCE, &H6D, &HF0, &H6C)
+            Public Shared ReadOnly GuidMyExtensionsPage As New Guid(&HF24459FCUI, &HE883US, &H4A8EUS, &H9D, &HA2, &HAE, &HF6, &H84, &HF0, &HE1, &HF4)
+            Public Shared ReadOnly GuidOfficePublishPage As New Guid(&HCC7369A8UI, &HB9B0US, &H439CUS, &HB1, &H36, &HBA, &H95, &H58, &H19, &HF7, &HF8)
+            Public Shared ReadOnly GuidServicesPage As New Guid(&H43E38D2EUI, &H43B8US, &H4204US, &H82, &H25, &H93, &H57, &H31, &H61, &H37, &HA4)
+            Public Shared ReadOnly GuidWAPWebPage As New Guid(&H909D16B3UI, &HC8E8US, &H43D1US, &HA2, &HB8, &H26, &HEA, &HD, &H4B, &H6B, &H57)
         End Class
 
 
@@ -138,18 +138,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage(ByVal ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
             Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.AppDesCommon.Utils).Assembly.GetManifestResourceStream(ImageID)
-            If Not assembly Is Nothing Then
+            If assembly IsNot Nothing Then
                 BitmapStream = assembly.GetManifestResourceStream(ImageID)
             End If
-            If Not BitmapStream Is Nothing Then
+            If BitmapStream IsNot Nothing Then
                 Dim Image As Image = Drawing.Image.FromStream(BitmapStream)
                 If Not Image Is Nothing Then
                     Return Image
                 End If
-                Debug.Fail("Unable to find image resource from manifest: " & ImageID)
-            Else
-                Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             End If
+            Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             Throw New Package.InternalException(String.Format(SR.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
@@ -176,9 +174,19 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Function DebugMessageFromException(ByVal ex As Exception) As String
 #If DEBUG Then
-            Dim ErrorMessage As String = ex.Message & vbCrLf & vbCrLf & vbCrLf & "[SHOWN IN DEBUG ONLY] STACK TRACE:" & vbCrLf & ex.StackTrace
+            Dim ErrorMessage =
+$"{ex.Message}
+
+
+[SHOWN In DEBUG ONLY] STACK TRACE:
+{ ex.StackTrace}"
             If ex.InnerException IsNot Nothing Then
-                ErrorMessage &= vbCrLf & vbCrLf & "INNER EXCEPTION: " & vbCrLf & vbCrLf & ex.InnerException.ToString()
+                ErrorMessage &=
+$"
+
+INNER EXCEPTION: 
+
+{ex.InnerException.ToString()}"
             End If
 
             Return ErrorMessage
@@ -230,15 +238,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
         Public Function IsUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False) As Boolean
-            If (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
-                OrElse TypeOf ex Is StackOverflowException _
-                OrElse TypeOf ex Is ThreadAbortException _
-                OrElse TypeOf ex Is AccessViolationException _
-            Then
-                Return True
-            End If
-
-            Return False
+            Return (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) OrElse
+                    TypeOf ex Is StackOverflowException OrElse
+                    TypeOf ex Is ThreadAbortException OrElse
+                    TypeOf ex Is AccessViolationException
         End Function
 
 
@@ -248,17 +251,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ByVal ex As Exception) As Boolean
-            If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
-                OrElse _
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) _
-            Then
+            If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) OrElse
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) Then
+
                 Return True
             End If
 
-            If ex.InnerException IsNot Nothing Then
-                Return IsCheckoutCanceledException(ex.InnerException)
-            End If
-
+            If ex.InnerException IsNot Nothing Then Return IsCheckoutCanceledException(ex.InnerException)
             Return False
         End Function
 
@@ -270,9 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
         ''' <remarks></remarks>
         Public Sub RethrowIfUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False)
-            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
-                Throw ex
-            End If
+            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then Throw ex
         End Sub
 
 
@@ -283,11 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function NothingToEmptyString(ByVal Str As String) As String
-            If Str Is Nothing Then
-                Return String.Empty
-            Else
-                Return Str
-            End If
+            Return If(Str, String.Empty)
         End Function
 
 
@@ -298,11 +291,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function EmptyStringToNothing(ByVal Str As String) As String
-            If Str Is Nothing OrElse Str.Length = 0 Then
-                Return Nothing
-            Else
-                Return Str
-            End If
+            If Str Is Nothing OrElse Str.Length = 0 Then Return Nothing
+            Return Str
         End Function
 
         ''' <summary>
@@ -314,11 +304,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IIf(Of T)(ByVal Condition As Boolean, ByVal TrueExpression As T, ByVal FalseExpression As T) As T
-            If Condition Then
-                Return TrueExpression
-            Else
-                Return FalseExpression
-            End If
+            Return If(Condition, TrueExpression, FalseExpression)
         End Function
 
 
@@ -331,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
             Else
-                Debug.Fail("SetComboBoxDropdownWidth: No combobox specified")
+                Debug.Fail($"{NameOf(SetComboBoxDropdownWidth)}: No combobox specified")
             End If
         End Sub
 
@@ -347,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             If column IsNot Nothing AndAlso column.DataGridView IsNot Nothing Then
                 column.DropDownWidth = Math.Max(MeasureMaxTextWidth(column.DataGridView, column.Items) + SystemInformation.VerticalScrollBarWidth, column.Width)
             Else
-                Debug.Fail("SetComboBoxColumnDropdownWidth: No combobox column specified, or the column didn't have a parent datagridview!")
+                Debug.Fail($"{NameOf(SetComboBoxColumnDropdownWidth)}: No combobox column specified, or the column didn't have a parent datagridview!")
             End If
         End Sub
 
@@ -367,27 +353,26 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return False
         End Function
 
-        '@ <summary>
-        '@ Sets error code and error message through IVsUIShell interface
-        '@ </summary>
-        '@ <param name="hr">error code</param>
-        '@ <param name="error message">error message</param>
-        '@ <returns></returns>
-        Public Sub SetErrorInfo(ByVal sp As Microsoft.VisualStudio.Shell.ServiceProvider, ByVal hr As Integer, ByVal errorMessage As String)
-            Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
+        ''' <summary>
+        ''' Sets error code and error message through IVsUIShell interface
+        ''' </summary>
+        ''' <param name="hr">error code</param>
+        ''' <param name="error message">error message</param>
+        Public Sub SetErrorInfo(ByVal sp As Shell.ServiceProvider, ByVal hr As Integer, ByVal errorMessage As String)
+            Dim vsUIShell As Shell.Interop.IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(VBPackageInstance.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
                 vsUIShell.SetErrorInfo(hr, errorMessage, 0, Nothing, Nothing)
             Else
-                System.Diagnostics.Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
+                Debug.Fail("Could not get " & NameOf(Shell.Interop.IVsUIShell) & " from service provider. Can't set specific error message.")
             End If
         End Sub
 
@@ -451,7 +436,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function AppendBackslash(ByVal Path As String) As String
-            If Path <> "" AndAlso VB.Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso VB.Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
+            If Path <> "" AndAlso Path(Path.Length - 1) <> IO.Path.DirectorySeparatorChar AndAlso Path(Path.Length - 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
             Else
                 Return Path
@@ -472,14 +457,19 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
         ''' <remarks></remarks>
-        Public Function GetFilesViaBrowse(ByVal ServiceProvider As IServiceProvider, ByVal ParentWindow As IntPtr, _
-                ByVal InitialDirectory As String, ByVal DialogTitle As String, _
-                ByVal Filter As String, ByVal FilterIndex As UInteger, ByVal MutiSelect As Boolean, _
-                Optional ByVal DefaultFileName As String = Nothing, _
-                Optional ByVal NeedThrowError As Boolean = False) As ArrayList
+        Public Function GetFilesViaBrowse(
+                                          ServiceProvider As IServiceProvider,
+                                          ParentWindow As IntPtr,
+                                          InitialDirectory As String,
+                                          DialogTitle As String,
+                                          Filter As String,
+                                          FilterIndex As UInteger,
+                                          MutiSelect As Boolean,
+                                          Optional DefaultFileName As String = Nothing,
+                                          Optional NeedThrowError As Boolean = False
+                                         ) As ArrayList
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = _
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell = CType(ServiceProvider.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -502,22 +492,24 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
             End If
 
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MaxPathName * 2 + 2)
-            System.Runtime.InteropServices.Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MaxPathName * 2 + 2)
+            Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
                 vsOpenFileName = New Shell.Interop.VSOPENFILENAMEW(0) {}
-                vsOpenFileName(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(vsOpenFileName(0)))
-                vsOpenFileName(0).hwndOwner = ParentWindow
-                vsOpenFileName(0).pwzDlgTitle = DialogTitle
-                vsOpenFileName(0).nMaxFileName = CUInt(MaxPathName)
-                vsOpenFileName(0).pwzFileName = stringMemPtr
-                vsOpenFileName(0).pwzInitialDir = InitialDirectory
-                vsOpenFileName(0).pwzFilter = Filter
-                vsOpenFileName(0).nFilterIndex = FilterIndex
-                vsOpenFileName(0).nFileOffset = 0
-                vsOpenFileName(0).nFileExtension = 0
-                vsOpenFileName(0).dwHelpTopic = 0
+                With vsOpenFileName(0)
+                    .lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
+                    .hwndOwner = ParentWindow
+                    .pwzDlgTitle = DialogTitle
+                    .nMaxFileName = CUInt(MaxPathName)
+                    .pwzFileName = stringMemPtr
+                    .pwzInitialDir = InitialDirectory
+                    .pwzFilter = Filter
+                    .nFilterIndex = FilterIndex
+                    .nFileOffset = 0
+                    .nFileExtension = 0
+                    .dwHelpTopic = 0
+                End With
 
                 If MutiSelect Then
                     vsOpenFileName(0).dwFlags = &H200   'OFN_ALLOWMULTISELECT
@@ -528,7 +520,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Dim hr As Integer = uishell.GetOpenFileNameViaDlg(vsOpenFileName)
                 If VSErrorHandler.Succeeded(hr) Then
                     Dim buffer(MaxPathName) As Char
-                    System.Runtime.InteropServices.Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
+                    Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
                     Dim path As String = Nothing
                     Dim i As Integer = 0
                     For j As Integer = 0 To buffer.Length - 1
@@ -556,7 +548,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     End If
                 End If
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return fileNames
@@ -600,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                         InitialDirectory = Path.GetFullPath(AppendBackslash(InitialDirectory))
                     Catch ex As Exception
-                        AppDesCommon.RethrowIfUnrecoverable(ex)
+                        RethrowIfUnrecoverable(ex)
                         InitialDirectory = String.Empty
                     End Try
                 End If
@@ -651,31 +643,31 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = { _
-                KnownPropertyPageGuids.GuidApplicationPage_VB, _
-                KnownPropertyPageGuids.GuidApplicationPage_CS, _
-                KnownPropertyPageGuids.GuidApplicationPage_JS, _
-                KnownPropertyPageGuids.GuidCompilePage_VB, _
-                KnownPropertyPageGuids.GuidBuildPage_CS, _
-                KnownPropertyPageGuids.GuidBuildPage_JS, _
-                KnownPropertyPageGuids.GuidBuildEventsPage, _
-                KnownPropertyPageGuids.GuidDebugPage, _
-                KnownPropertyPageGuids.GuidReferencesPage_VB, _
-                KnownPropertyPageGuids.GuidReferencePathsPage, _
-                KnownPropertyPageGuids.GuidSigningPage, _
-                KnownPropertyPageGuids.GuidSecurityPage, _
-                KnownPropertyPageGuids.GuidPublishPage, _
-                KnownPropertyPageGuids.GuidDatabasePage_SQL, _
-                KnownPropertyPageGuids.GuidFxCopPage, _
-                KnownPropertyPageGuids.GuidDeployPage, _
-                KnownPropertyPageGuids.GuidDevicesPage_VSD, _
-                KnownPropertyPageGuids.GuidDebugPage_VSD, _
-                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF, _
-                KnownPropertyPageGuids.GuidSecurityPage_WPF, _
-                KnownPropertyPageGuids.GuidMyExtensionsPage, _
-                KnownPropertyPageGuids.GuidOfficePublishPage, _
-                KnownPropertyPageGuids.GuidServicesPage, _
-                KnownPropertyPageGuids.GuidWAPWebPage _
+            Private Shared s_sqmOrder() As Guid = {
+                KnownPropertyPageGuids.GuidApplicationPage_VB,
+                KnownPropertyPageGuids.GuidApplicationPage_CS,
+                KnownPropertyPageGuids.GuidApplicationPage_JS,
+                KnownPropertyPageGuids.GuidCompilePage_VB,
+                KnownPropertyPageGuids.GuidBuildPage_CS,
+                KnownPropertyPageGuids.GuidBuildPage_JS,
+                KnownPropertyPageGuids.GuidBuildEventsPage,
+                KnownPropertyPageGuids.GuidDebugPage,
+                KnownPropertyPageGuids.GuidReferencesPage_VB,
+                KnownPropertyPageGuids.GuidReferencePathsPage,
+                 KnownPropertyPageGuids.GuidSigningPage,
+                KnownPropertyPageGuids.GuidSecurityPage,
+                KnownPropertyPageGuids.GuidPublishPage,
+                KnownPropertyPageGuids.GuidDatabasePage_SQL,
+                KnownPropertyPageGuids.GuidFxCopPage,
+                KnownPropertyPageGuids.GuidDeployPage,
+                KnownPropertyPageGuids.GuidDevicesPage_VSD,
+                KnownPropertyPageGuids.GuidDebugPage_VSD,
+                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF,
+                KnownPropertyPageGuids.GuidSecurityPage_WPF,
+                KnownPropertyPageGuids.GuidMyExtensionsPage,
+                KnownPropertyPageGuids.GuidOfficePublishPage,
+                KnownPropertyPageGuids.GuidServicesPage,
+                KnownPropertyPageGuids.GuidWAPWebPage
             }
 
             Public Const UNKNOWN_PAGE As Byte = &HFF

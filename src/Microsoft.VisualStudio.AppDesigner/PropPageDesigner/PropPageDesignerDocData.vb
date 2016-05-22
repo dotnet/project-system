@@ -62,22 +62,17 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Creates VsTextBuffer if necessary and returns the instance of VsTextBuffer
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
+
         Private ReadOnly Property VsTextStream() As IVsTextBuffer
             Get
-                If _vsTextBuffer IsNot Nothing Then
-                    Return _vsTextBuffer
-                End If
+                If _vsTextBuffer IsNot Nothing Then Return _vsTextBuffer
+
 
                 ' Get the LocalRegistry service and use it to create an instance of the VsTextBuffer class
                 Dim localRegistry As ILocalRegistry = Nothing
-                If _baseProvider IsNot Nothing Then
-                    localRegistry = DirectCast(_baseProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
-                End If
-                If localRegistry Is Nothing Then
-                    Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), AppDesInterop.NativeMethods.E_FAIL)
-                End If
+                If _baseProvider IsNot Nothing Then localRegistry = DirectCast(_baseProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
+
+                If localRegistry Is Nothing Then Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), AppDesInterop.NativeMethods.E_FAIL)
 
                 'CONSIDER: Need to check with FX team about removing assert in MS.VS.Shell.Design.DesignerWindowPane.RegisterView
                 ' If we don't provide VsTextBuffer, we assert over and over again 
@@ -90,14 +85,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         _vsTextBuffer = CType(Marshal.GetObjectForIUnknown(objPtr), IVsTextStream)
                         Marshal.Release(objPtr)
 
-                        Dim ows As Microsoft.VisualStudio.OLE.Interop.IObjectWithSite = TryCast(_vsTextBuffer, Microsoft.VisualStudio.OLE.Interop.IObjectWithSite)
+                        Dim ows As OLE.Interop.IObjectWithSite = TryCast(_vsTextBuffer, OLE.Interop.IObjectWithSite)
                         If (ows IsNot Nothing) Then
-                            Dim sp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = TryCast(_baseProvider.GetService(GetType(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)), Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                            Dim sp As OLE.Interop.IServiceProvider = TryCast(_baseProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                             Debug.Assert(sp IsNot Nothing, "Expected to get a native service provider from our managed service provider")
 
-                            If (sp IsNot Nothing) Then
-                                ows.SetSite(sp)
-                            End If
+                            If (sp IsNot Nothing) Then ows.SetSite(sp)
+
                         End If
                     End If
                 Catch ex As Exception
@@ -114,7 +108,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riidKey"></param>
         ''' <param name="pvtData"></param>
         ''' <remarks></remarks>
-        Public Function GetData(ByRef riidKey As System.Guid, ByRef pvtData As Object) As Integer Implements TextManager.Interop.IVsUserData.GetData
+        Public Function GetData(
+                           ByRef riidKey As Guid,
+                           ByRef pvtData As Object
+                               ) As Integer Implements IVsUserData.GetData
             If riidKey.Equals(GetType(IVsUserData).GUID) Then
                 'IID_IVsUserData (GUID_VsBufferMoniker) is the guid used for retrieving MkDocument (filename)
                 Return NativeMethods.S_OK
@@ -133,12 +130,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riidKey"></param>
         ''' <param name="vtData"></param>
         ''' <remarks></remarks>
-        Public Function SetData(ByRef riidKey As System.Guid, ByVal vtData As Object) As Integer Implements TextManager.Interop.IVsUserData.SetData
-            If _vsTextBuffer IsNot Nothing Then
-                Return CType(_vsTextBuffer, IVsUserData).SetData(riidKey, vtData)
-            Else
-                Return NativeMethods.E_FAIL
-            End If
+        Public Function SetData(
+                           ByRef riidKey As Guid,
+                                 vtData As Object
+                               ) As Integer Implements IVsUserData.SetData
+            If _vsTextBuffer Is Nothing Then Return NativeMethods.E_FAIL
+            Return CType(_vsTextBuffer, IVsUserData).SetData(riidKey, vtData)
         End Function
 #End Region
 
@@ -169,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return Me.LoadDocData2(pszMkDocument)
         End Function
 
-        Public Function OnRegisterDocData(ByVal docCookie As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.OnRegisterDocData
+        Public Function OnRegisterDocData(ByVal docCookie As UInteger, ByVal pHierNew As IVsHierarchy, ByVal itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.OnRegisterDocData
             Return Me.OnRegisterDocData2(docCookie, pHierNew, itemidNew)
         End Function
 
@@ -177,11 +174,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return Me.ReloadDocData2(grfFlags)
         End Function
 
-        Public Function RenameDocData(ByVal grfAttribs As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger, ByVal pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData.RenameDocData
+        Public Function RenameDocData(ByVal grfAttribs As UInteger, ByVal pHierNew As IVsHierarchy, ByVal itemidNew As UInteger, ByVal pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData.RenameDocData
             Return Me.RenameDocData2(grfAttribs, pHierNew, itemidNew, pszMkDocumentNew)
         End Function
 
-        Public Function SaveDocData(ByVal dwSave As Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.SaveDocData
+        Public Function SaveDocData(ByVal dwSave As VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.SaveDocData
             Return Me.SaveDocData2(dwSave, pbstrMkDocumentNew, pfSaveCanceled)
         End Function
 
@@ -189,16 +186,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return Me.SetUntitledDocPath2(pszDocDataPath)
         End Function
 #End Region
-        Public Function Close2() As Integer Implements Shell.Interop.IVsPersistDocData2.Close
+        Public Function Close2() As Integer Implements IVsPersistDocData2.Close
             'Nothing to do here, no real file to close
             Return NativeMethods.S_OK
         End Function
 
-        Public Function GetGuidEditorType2(ByRef pClassID As System.Guid) As Integer Implements Shell.Interop.IVsPersistDocData2.GetGuidEditorType
+        Public Function GetGuidEditorType2(ByRef pClassID As System.Guid) As Integer Implements IVsPersistDocData2.GetGuidEditorType
             pClassID = PropPageDesignerEditorFactory.EditorGuid
         End Function
 
-        Public Function IsDocDataDirty2(ByRef pfDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataDirty
+        Public Function IsDocDataDirty2(ByRef pfDirty As Integer) As Integer Implements IVsPersistDocData2.IsDocDataDirty
             If _isDirty Then
                 pfDirty = 1
             Else
@@ -206,7 +203,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function IsDocDataReadOnly(ByRef pfReadOnly As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataReadOnly
+        Public Function IsDocDataReadOnly(ByRef pfReadOnly As Integer) As Integer Implements IVsPersistDocData2.IsDocDataReadOnly
             If _isReadOnly Then
                 pfReadOnly = 1
             Else
@@ -214,37 +211,41 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function IsDocDataReloadable2(ByRef pfReloadable As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataReloadable
+        Public Function IsDocDataReloadable2(ByRef pfReloadable As Integer) As Integer Implements IVsPersistDocData2.IsDocDataReloadable
             pfReloadable = 0
         End Function
 
-        Public Function LoadDocData2(ByVal pszMkDocument As String) As Integer Implements Shell.Interop.IVsPersistDocData2.LoadDocData
+        Public Function LoadDocData2(ByVal pszMkDocument As String) As Integer Implements IVsPersistDocData2.LoadDocData
             'Nothing to do here, no real file to load
             _mkDocument = pszMkDocument
             RaiseEvent OnLoadCompleted(0) 'FALSE == 0
         End Function
 
-        Public Function OnRegisterDocData2(ByVal docCookie As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData2.OnRegisterDocData
+        Public Function OnRegisterDocData2(
+                                            docCookie As UInteger,
+                                            pHierNew As IVsHierarchy,
+                                            itemidNew As UInteger
+                                          ) As Integer Implements IVsPersistDocData2.OnRegisterDocData
             _docCookie = docCookie
             _vsHierarchy = pHierNew
             _itemId = itemidNew
         End Function
 
-        Public Function ReloadDocData2(ByVal grfFlags As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData2.ReloadDocData
+        Public Function ReloadDocData2(ByVal grfFlags As UInteger) As Integer Implements IVsPersistDocData2.ReloadDocData
             'Should we reload anything?
             RaiseEvent OnLoadCompleted(1) 'TRUE == 1
         End Function
 
-        Public Function RenameDocData2(ByVal grfAttribs As UInteger, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger, ByVal pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData2.RenameDocData
+        Public Function RenameDocData2(ByVal grfAttribs As UInteger, ByVal pHierNew As IVsHierarchy, ByVal itemidNew As UInteger, ByVal pszMkDocumentNew As String) As Integer Implements IVsPersistDocData2.RenameDocData
             Return VSConstants.E_NOTIMPL
         End Function
 
-        Public Function SaveDocData2(ByVal dwSave As Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SaveDocData
+        Public Function SaveDocData2(ByVal dwSave As VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements IVsPersistDocData2.SaveDocData
             pfSaveCanceled = 0
             'Nothing to do since we have no true file backing
         End Function
 
-        Public Function SetDocDataDirty(ByVal fDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SetDocDataDirty
+        Public Function SetDocDataDirty(ByVal fDirty As Integer) As Integer Implements IVsPersistDocData2.SetDocDataDirty
             If fDirty <> 0 Then
                 _isDirty = True
             Else
@@ -252,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function SetDocDataReadOnly(ByVal fReadOnly As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SetDocDataReadOnly
+        Public Function SetDocDataReadOnly(ByVal fReadOnly As Integer) As Integer Implements IVsPersistDocData2.SetDocDataReadOnly
             If fReadOnly <> 0 Then
                 _isReadOnly = True
             Else
@@ -261,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return VSConstants.S_OK
         End Function
 
-        Public Function SetUntitledDocPath2(ByVal pszDocDataPath As String) As Integer Implements Shell.Interop.IVsPersistDocData2.SetUntitledDocPath
+        Public Function SetUntitledDocPath2(ByVal pszDocDataPath As String) As Integer Implements IVsPersistDocData2.SetUntitledDocPath
             Return VSConstants.E_NOTIMPL
         End Function
 #End Region
@@ -299,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="pTextBuffer"></param>
         ''' <remarks></remarks>
         Public Function SetTextBuffer(ByVal pTextBuffer As TextManager.Interop.IVsTextLines) As Integer Implements Shell.Interop.IVsTextBufferProvider.SetTextBuffer
-            Debug.Fail("SetTextBuffer not supported in Application Designer!")
+            Debug.Fail($"{NameOf(SetTextBuffer)} not supported in Application Designer!")
         End Function
 #End Region
 
@@ -310,14 +311,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riid"></param>
         ''' <param name="ppvSite"></param>
         ''' <remarks></remarks>
-        Public Sub GetSite(ByRef riid As System.Guid, ByRef ppvSite As System.IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
+        Public Sub GetSite(
+                      ByRef riid As Guid,
+                      ByRef ppvSite As IntPtr
+                          ) Implements OLE.Interop.IObjectWithSite.GetSite
             Dim punk As IntPtr = Marshal.GetIUnknownForObject(_siteProvider)
             Dim hr As Integer
             hr = Marshal.QueryInterface(punk, riid, ppvSite)
             Marshal.Release(punk)
-            If AppDesInterop.NativeMethods.Failed(hr) Then
-                Marshal.ThrowExceptionForHR(hr)
-            End If
+            If NativeMethods.Failed(hr) Then Marshal.ThrowExceptionForHR(hr)
+
         End Sub
 
         ''' <summary>

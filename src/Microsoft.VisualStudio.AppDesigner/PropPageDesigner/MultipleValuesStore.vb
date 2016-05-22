@@ -32,15 +32,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
         ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal VsCfgProvider As IVsCfgProvider2, ByVal Objects() As Object, ByVal Values() As Object, ByVal SelectedConfigName As String, ByVal SelectedPlatformName As String)
-            If Values Is Nothing Then
-                Throw New ArgumentNullException("Values")
-            ElseIf Objects Is Nothing Then
-                Throw New ArgumentNullException("Objects")
-            End If
+        Public Sub New(
+                        VsCfgProvider As IVsCfgProvider2,
+                        Objects() As Object,
+                        Values() As Object,
+                        SelectedConfigName As String,
+                        SelectedPlatformName As String
+                       )
+            If Values Is Nothing Then Throw New ArgumentNullException(NameOf(Values))
+            If Objects Is Nothing Then Throw New ArgumentNullException(NameOf(Objects))
+
             If Values.Length <> Objects.Length Then
-                Debug.Fail("Bad array length returned from GetPropertyMultipleValues()")
-                Throw Common.CreateArgumentException("Values, Objects")
+                Debug.Fail($"Bad array length returned from {NameOf(Objects)}()")
+                Throw Common.CreateArgumentException($"{NameOf(Values)}, {NameOf(Objects)}")
             End If
 
             Me.SelectedConfigName = SelectedConfigName
@@ -66,12 +70,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Me.PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
                 Else
-                    Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
-                    Throw Common.CreateArgumentException("Values")
+                    Debug.Fail($"Unexpected type passed in to {NameOf(MultipleValuesStore)}.  Currently only {NameOf(IVsCfg)} supported.  If it's a common (non-config) property, why are we creating {NameOf(MultipleValuesStore)} for it?")
+                    Throw Common.CreateArgumentException(NameOf(Values))
                 End If
             Next
 
-            DebugTrace("MultiValues constructor")
+            DebugTrace($"{NameOf(MultipleValuesStore)} constructor")
         End Sub
 
 
@@ -80,13 +84,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   configuration names and platforms.
         ''' </summary>
         ''' <param name="VsCfgProvider"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function GetObjects(ByVal VsCfgProvider As IVsCfgProvider2) As Object()
+
+        Public Function GetObjects(
+                                    VsCfgProvider As IVsCfgProvider2
+                                   ) As Object()
+
             Debug.Assert(ConfigNames IsNot Nothing AndAlso PlatformNames IsNot Nothing AndAlso Values IsNot Nothing)
             Debug.Assert(Values.Length = ConfigNames.Length AndAlso ConfigNames.Length = PlatformNames.Length, "Huh?")
 
-            DebugTrace("MultiValues.GetObjects()")
+            DebugTrace($"{NameOf(MultipleValuesStore)}.{NameOf(GetObjects)}()")
 
             'Figure out the configurations which the config/platform name combinations refer to
             Dim Objects() As Object = New Object(ConfigNames.Length - 1) {}
@@ -112,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Common.Switches.TracePDUndo(Message)
             Trace.Indent()
             For i As Integer = 0 To ConfigNames.Length - 1
-                Common.Switches.TracePDUndo("[" & ConfigNames(i) & "|" & PlatformNames(i) & "] Value=" & Common.DebugToString(Values(i)))
+                Common.Switches.TracePDUndo($"[{ConfigNames(i)}|{PlatformNames(i)}] Value={Common.DebugToString(Values(i))}")
             Next
             Trace.Unindent()
 #End If

@@ -362,7 +362,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub GetPageInfo(ByVal pPageInfo() As PROPPAGEINFO)
 
             If (pPageInfo Is Nothing) Then
-                Throw New ArgumentNullException("pPageInfo")
+                Throw New ArgumentNullException(NameOf(pPageInfo))
             End If
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
@@ -406,7 +406,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
                 End If
             Catch ex As Exception
-                Debug.Fail("Received an exception from IPropertyPageInternal.IsPageDirty" & vbCrLf & ex.ToString())
+                Debug.Fail($"Received an exception from {NameOf(IPropertyPageInternal)}.{NameOf(IPropertyPageInternal.IsPageDirty)}
+{ex.ToString()}")
                 Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.E_FAIL
             End Try
 
@@ -480,7 +481,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub SetPageSite(ByVal PageSite As IPropertyPageSite)
             If PageSite IsNot Nothing AndAlso _pageSite IsNot Nothing Then
-                Throw New COMException("PageSite", NativeMethods.E_UNEXPECTED)
+                Throw New COMException(nameof(PageSite), NativeMethods.E_UNEXPECTED)
             End If
 
             _pageSite = PageSite
@@ -536,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                     HelpService.AddContextAttribute("Keyword", HelpKeyword, HelpKeywordType.F1Keyword)
                 Else
-                    Debug.Fail("Page site doesn't proffer IHelpService")
+                    Debug.Fail("Page site doesn't proffer " + NameOf(IHelpService))
                 End If
             Else
                 Debug.Fail("Page site not a service provider - can't set help context for page")
@@ -626,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 CType(_propPage, IPropertyPageInternal).SetPageSite(CType(Me, IPropertyPageSiteInternal))
 
                 If Not (TypeOf _propPage Is IPropertyPageInternal) Then
-                    Throw New InvalidOperationException("Control must implement IPropertyPageInternal")
+                    Throw New InvalidOperationException("Control must implement " & NameOf(IPropertyPageInternal))
                 End If
                 _prevParent = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle)
 
@@ -639,7 +640,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End If
                 If ParentControl IsNot Nothing AndAlso Not AlwaysUseSetParent Then
                     _propPage.Parent = ParentControl
-                    Debug.Assert(_propPage.Parent IsNot Nothing, "Huh?  Deactivate() logic depends on this.")
+                    Debug.Assert(_propPage.Parent IsNot Nothing, $"Huh?  {NameOf(Deactivate)}() logic depends on this.")
                 Else
                     'Not a managed window, use the win32 api method
                     _hostedInNative = True
@@ -653,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _propPage.Parent = sizingParent
                     Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetParent(sizingParent.Handle, hWndParent)
                     _wasSetParentCalled = True
-                    Debug.Assert(_propPage.Parent Is Nothing OrElse AlwaysUseSetParent, "Huh?  Deactivate() logic depends on this.")
+                    Debug.Assert(_propPage.Parent Is Nothing OrElse AlwaysUseSetParent, $"Huh?  {NameOf(Deactivate)}() logic depends on this.")
                 End If
 
                 'Site the undo manager if we have one and the page supports it

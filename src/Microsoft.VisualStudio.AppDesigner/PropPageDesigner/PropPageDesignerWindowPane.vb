@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overrides Function PreProcessMessage(ByRef m As System.Windows.Forms.Message) As Boolean
-            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerWindowPane.PreProcessMessage", m)
+            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, NameOf(PropPageDesignerWindowPane) & "." & NameOf(PreProcessMessage), m)
 
             If Me.View Is Nothing Then
                 Return False
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Dim KeyCode As Keys = DirectCast(m.WParam.ToInt32(), Keys) And Keys.KeyCode
                 'Is the message intended for a window or control in the property page?
                 If DesignerView.IsNativeHostedPropertyPageActivated AndAlso NativeMethods.IsChild(Me.View.Handle, m.HWnd) Then
-                    Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ... Message is for a child of the property page.  Calling MyBase.PreProcessMessage", m)
+                    Common.Switches.TracePDMessageRouting(TraceLevel.Info, $"  ... Message is for a child of the property page.  Calling MyBase.{NameOf(PreProcessMessage)}", m)
 
                     'First crack goes to the child page, since the HWND for the message belongs to it.
                     Dim HandledByChild As Boolean = MyBase.PreProcessMessage(m)

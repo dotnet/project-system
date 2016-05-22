@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </remarks>
         Private Function RootDesigner_GetView(ByVal Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
-                Throw New ArgumentException("Not a supported view technology", "Technology")
+                Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
             End If
 
             If _view Is Nothing Then

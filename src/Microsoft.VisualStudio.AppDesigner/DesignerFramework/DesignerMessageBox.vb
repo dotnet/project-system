@@ -28,11 +28,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
-        Public Shared Function Show(ByVal RootDesigner As BaseRootDesigner, ByVal Message As String, _
-                ByVal Caption As String, ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon, _
-                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional ByVal HelpLink As String = Nothing _
-        ) As DialogResult
+        Public Shared Function Show(
+                                    RootDesigner As BaseRootDesigner,
+                                    Message As String,
+                                    Caption As String,
+                                    Buttons As MessageBoxButtons,
+                                    Icon As MessageBoxIcon,
+                           Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                           Optional HelpLink As String = Nothing
+                                   ) As DialogResult
             Return Show(DirectCast(RootDesigner, IServiceProvider), Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
 
@@ -45,8 +49,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
-        Public Shared Sub Show(ByVal ServiceProvider As IServiceProvider, ByVal ex As Exception, _
-                ByVal Caption As String, Optional ByVal HelpLink As String = Nothing)
+        Public Shared Sub Show(
+                               ServiceProvider As IServiceProvider,
+                               ex As Exception,
+                               Caption As String,
+                      Optional HelpLink As String = Nothing
+                                 )
             Show(ServiceProvider, Nothing, ex, Caption, HelpLink)
         End Sub
 
@@ -62,13 +70,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>
         ''' The exception's message will be on a second line after errorMessage.
         ''' </remarks>
-        Public Shared Sub Show(ByVal ServiceProvider As IServiceProvider, ByVal Message As String, ByVal ex As Exception, _
-                ByVal Caption As String, Optional ByVal HelpLink As String = Nothing)
+        Public Shared Sub Show(
+                               ServiceProvider As IServiceProvider,
+                               Message As String,
+                               ex As Exception,
+                               Caption As String,
+                      Optional HelpLink As String = Nothing
+                              )
 
-            If ex Is Nothing Then
-                Debug.Fail("ex should not be Nothing")
-                Return
-            End If
+            If ex Is Nothing Then Debug.Fail(NameOf(ex) & " should not be Nothing") : Return
 
             'Pull out the original exception from target invocation exceptions (happen during serialization, etc.)
             If TypeOf ex Is TargetInvocationException Then
@@ -116,11 +126,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Public Shared Function Show(ByVal ServiceProvider As IServiceProvider, ByVal Message As String, _
-                ByVal Caption As String, ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon, _
-                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional ByVal HelpLink As String = Nothing _
-        ) As DialogResult
+        Public Shared Function Show(
+                                    ServiceProvider As IServiceProvider,
+                                    Message As String,
+                                    Caption As String,
+                                    Buttons As MessageBoxButtons,
+                                    Icon As MessageBoxIcon,
+                           Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                           Optional HelpLink As String = Nothing
+                                   ) As DialogResult
             Return ShowHelper(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
 
@@ -136,11 +150,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Private Shared Function ShowHelper(ByVal ServiceProvider As IServiceProvider, ByVal Message As String, _
-                ByVal Caption As String, ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon, _
-                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional ByVal HelpLink As String = Nothing _
-        ) As DialogResult
+        Private Shared Function ShowHelper(
+                                           ServiceProvider As IServiceProvider,
+                                           Message As String,
+                                           Caption As String,
+                                           Buttons As MessageBoxButtons,
+                                           Icon As MessageBoxIcon,
+                                  Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                                  Optional HelpLink As String = Nothing
+                                          ) As DialogResult
 
             If HelpLink = "" Then
                 'Giving an empty string will show the Help button, we don't want it. Null won't.
@@ -153,14 +171,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
             If ServiceProvider IsNot Nothing Then
                 Try
-                    Return ShowInternal(CType(ServiceProvider.GetService(GetType(IUIService)), IUIService), _
-                        CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell), _
-                        Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
+                    Return ShowInternal(
+                                         CType(ServiceProvider.GetService(GetType(IUIService)), IUIService),
+                                         CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell),
+                                         Message, Caption, Buttons, Icon, DefaultButton, HelpLink
+                                        )
                 Catch ex As Exception
                     Debug.Fail(ex.ToString)
                 End Try
             Else
-                Debug.Fail("ServiceProvider is Nothing! Message box won't have parent!")
+                Debug.Fail(NameOf(ServiceProvider) & " is Nothing! Message box won't have parent!")
             End If
 
             ' If there is no IServiceProvider, message box has no parent.
@@ -188,10 +208,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   So instead of this we cut this feature. When no help is needed, a standard MessageBox will be shown 
         '   but parented using the service provider if available, the caption will also be shown normally.
         '**************************************************************************
-        Protected Shared Function ShowInternal(ByVal UIService As IUIService, ByVal VsUIShell As IVsUIShell, _
-                ByVal Message As String, ByVal Caption As String, ByVal Buttons As MessageBoxButtons, _
-                ByVal Icon As MessageBoxIcon, ByVal DefaultButton As MessageBoxDefaultButton, ByVal HelpLink As String) _
-        As DialogResult
+        Protected Shared Function ShowInternal(
+                                                UIService As IUIService,
+                                                VsUIShell As IVsUIShell,
+                                                Message As String,
+                                                Caption As String,
+                                                Buttons As MessageBoxButtons,
+                                                Icon As MessageBoxIcon,
+                                                DefaultButton As MessageBoxDefaultButton,
+                                                HelpLink As String
+                                               ) As DialogResult
             If VsUIShell IsNot Nothing Then
                 Dim Guid As Guid = System.Guid.Empty
 
@@ -212,11 +238,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 '  is the best thing anyway, we shouldn't have to provide a caption (it changes
                 '  by installed SKU/product, for instance).
                 Dim Result As Integer
-                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0, _
+                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0,
                         OLEButtons, OLEDefaultButton, MessageBoxIconToOleIcon(Icon), CInt(False), Result))
                 Return CType(Result, DialogResult)
             Else
-                Debug.Fail("Could not retreive IVsUIShell, message box will not be parented")
+                Debug.Fail("Could not retreive " & NameOf(IVsUIShell) & " message box will not be parented")
             End If
 
             ' Either UIService or VsUIShell does not exist, show message box without parent.

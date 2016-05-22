@@ -169,8 +169,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim hr As Integer
             Dim AppDesignerFileName As String = Nothing
 
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.InitView()")
-            Common.Switches.TracePDPerfBegin("ApplicationDesignerView.InitView")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.InitView) & "()")
+            Common.Switches.TracePDPerfBegin(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.InitView))
 
             ' Whenever we open the project designer, we ping SQM...
             AddSqmItemToStream(VsSqmDataPoint.DATAID_STRM_VB_EDITOR_PROJPROPSHOW, AppDesCommon.SQMData.DEFAULT_PAGE)
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ' Store the vbpackage instance in utils to share within the assembly
             Common.Utils.VBPackageInstance = Package
             WindowFrame = Me.WindowFrame
-            Debug.Assert(WindowFrame IsNot Nothing, "WindowFrame is nothing")
+            Debug.Assert(WindowFrame IsNot Nothing, NameOf(WindowFrame) & " is nothing")
             If WindowFrame IsNot Nothing Then
 
                 'Determine the hierarchy for the project that we need to show properties for.
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         '(Note: we don't expect this code path anymore, as I believe the project designer 
                         '  is always set up using the solution hierarchy because of the fact that it's
                         '  an editor on the project file.)
-                        Debug.Fail("GetNestedHierarchy failed")
+                        Debug.Fail(NameOf(Hierarchy.GetNestedHierarchy) & " failed")
                     End If
 
                     Debug.Assert(TypeOf Hierarchy Is IVsProject, "We didn't get a hierarchy to a project?")
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Debug.Fail("Failed to get project hierarchy")
                     Throw New Package.InternalException()
                 End If
-                Debug.Assert(_specialFiles IsNot Nothing, "Failed to get IVsProjectSpecialFiles for Hierarchy")
+                Debug.Assert(_specialFiles IsNot Nothing, "Failed to get " & NameOf(IVsProjectSpecialFiles) & " for Hierarchy")
 
                 Dim ExtObject As Object = Nothing
                 hr = _projectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ExtObject)
@@ -266,7 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'We'll actually show the initial tab later (in OnInitializationComplete), don't need to do
                 '  it here.
 
-                Common.Switches.TracePDPerfEnd("ApplicationDesignerView.InitView")
+                Common.Switches.TracePDPerfEnd(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.InitView))
             End If
         End Sub
 
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub NotifyShuttingDown()
-            Common.Switches.TracePDFocus(TraceLevel.Info, "NotifyShuttingDown")
+            Common.Switches.TracePDFocus(TraceLevel.Info, NameOf(NotifyShuttingDown))
             _okayToActivatePanelsOnFocus = False
         End Sub
 
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     hr = rdt.GetDocumentInfo(DocCookie, flags, readLocks, editLocks, fileName, Hierarchy, ItemId, localPunk)
                     If NativeMethods.Succeeded(hr) Then
                         Dim obj As Object
-                        Debug.Assert(localPunk <> IntPtr.Zero, "IUnknown for document is NULL")
+                        Debug.Assert(localPunk <> IntPtr.Zero, "IUnknown for document is NULL") ' TODO: Find correct Nameof
                         obj = Marshal.GetObjectForIUnknown(localPunk)
                         If TypeOf obj Is IVsPersistDocData Then
                             Dim dirty As Integer
@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Return dirty <> 0
                             End If
                         Else
-                            Debug.Fail("Unable to determine if DocData is dirty - doesn't support an interface we recognize")
+                            Debug.Fail("Unable to determine if " & NameOf(Shell.Design.Serialization.DocData) & " Is dirty - doesn't support an interface we recognize")
                         End If
                     End If
                 Finally
@@ -489,8 +489,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 _designerPanels(Index) = Nothing
                                 Panel.Dispose()
                             Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                                Trace.WriteLine("Exception trying to dispose ApplicationDesignerPanel: " & vbCrLf & ex.ToString())
-                                Debug.Fail("Exception trying to dispose ApplicationDesignerPanel: " & ex.ToString())
+                                Trace.WriteLine("Exception trying to dispose " & NameOf(ApplicationDesignerPanel) & ": " & vbCrLf & ex.ToString())
+                                Debug.Fail("Exception trying to dispose " & NameOf(ApplicationDesignerPanel) & ": " & ex.ToString())
                             End Try
                         End If
                     Next
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim LocalRegistry As ILocalRegistry
             LocalRegistry = CType(GetService(GetType(ILocalRegistry)), ILocalRegistry)
 
-            Debug.Assert(LocalRegistry IsNot Nothing, "Unabled to obtain ILocalRegistry")
+            Debug.Assert(LocalRegistry IsNot Nothing, "Unabled to obtain " & NameOf(ILocalRegistry))
 
             Dim ConfigPageGuids As Guid() = GetPageGuids(GetActiveConfigBrowseObject())
             Dim CommonPageGuids As Guid() = GetPageGuids(GetProjectBrowseObject())
@@ -633,7 +633,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
 
             Set(ByVal Value As Guid)
-                Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerView: set_ActiveView")
+                Common.Switches.TracePDFocus(TraceLevel.Info, NameOf(ApplicationDesignerView) & ": set_" & NameOf(ActiveView))
                 'Find the guid and switch to that tab
                 'Keep the current tab if guid not found
                 For Index As Integer = 0 To _designerPanels.Length - 1
@@ -665,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             FullPathToProjectItem = Nothing
 
             If _specialFiles Is Nothing Then
-                Debug.Fail("IVsProjectSpecialFiles is Nothing - can't look for the given tab's file - tab will be hidden")
+                Debug.Fail(NameOf(IVsProjectSpecialFiles) & " is Nothing - can't look for the given tab's file - tab will be hidden")
                 Return
             End If
 
@@ -890,15 +890,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Dim Guid As New Guid(CLSID)
                             CLSIDList.Add(Guid)
                         Catch ex As System.FormatException
-                            Debug.Fail("VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format")
+                            Debug.Fail(NameOf(__VSHPROPID2.VSHPROPID_PriorityPropertyPagesCLSIDList) & " returned a string in a bad format")
                         End Try
                     End If
                 Next
 
                 DesiredOrder = CLSIDList.ToArray()
-                Debug.Assert(DesiredOrder.Length > 0, "Got an empty list from VSHPROPID_PriorityPropertyPagesCLSIDList")
+                Debug.Assert(DesiredOrder.Length > 0, "Got an empty list from " & NameOf(__VSHPROPID2.VSHPROPID_PriorityPropertyPagesCLSIDList))
             Else
-                Debug.Fail("Unable to get VSHPROPID_PriorityPropertyPagesCLSIDList from hierarchy")
+                Debug.Fail("Unable to get " & NameOf(__VSHPROPID2.VSHPROPID_PriorityPropertyPagesCLSIDList) & " from hierarchy")
             End If
 
             Dim OldOrder As New ArrayList(DesignerPanels.Length) '(Of ApplicationDesignerPanel)
@@ -1005,9 +1005,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub ShowTab(ByVal Index As Integer, Optional ByVal ForceShow As Boolean = False)
 
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.ShowTab(" & Index & ")")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.ShowTab) & "(" & Index & ")")
             If _inShowTab Then
-                Common.Switches.TracePDFocus(TraceLevel.Warning, " ...Already in ShowTab")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, " ...Already in " & NameOf(ShowTab))
                 Exit Sub
             End If
 
@@ -1016,19 +1016,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If _activePanelIndex = Index AndAlso Not ForceShow Then
                     'PERF: PERFORMANCE SENSITIVE CODE: No need to go through the designer creation again if we're already on the
                     '  correct page.
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Ignoring because Index is already " & Index & " and ForceShow=False")
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, $"  ... Ignoring because {NameOf(Index)} is already {Index} and {NameOf(ForceShow)}=False")
                     Return
                 End If
 
                 ' If current Page can not commit pending changes, we shouldn't go away (but only if we're actually changing tabs)
                 If (Index <> _activePanelIndex) AndAlso Not CommitAnyPendingChanges() Then
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Ignoring because CommitAnyPendingChanges returned False")
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, $"  ... Ignoring because {NameOf(CommitAnyPendingChanges)} returned False")
                     Return
                 End If
 
-                Common.Switches.TracePDPerfBegin("ApplicationDesignerView.ShowTab")
-                Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabBegin")
-                Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabBegin")
+                Common.Switches.TracePDPerfBegin(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.ShowTab))
+                Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsShowTabBegin))
+                Common.Switches.TracePDPerf("CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsShowTabBegin))
                 Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabBegin)
 
                 Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(Index)
@@ -1078,10 +1078,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                     Common.Switches.TracePDFocus(TraceLevel.Error, "  ... LoadException: " & .PropertyPageInfo.LoadException.Message)
                                     ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.LoadException.Message
                                 ElseIf .PropertyPageInfo.ComPropPageInstance Is Nothing OrElse .PropertyPageInfo.Site Is Nothing Then
-                                    Common.Switches.TracePDFocus(TraceLevel.Info, "  ... ComPropPageInstance or the site is Nothing")
+                                    Common.Switches.TracePDFocus(TraceLevel.Info, "  ... " & NameOf(.PropertyPageInfo.ComPropPageInstance) & " or the " & NameOf(.PropertyPageInfo.Site) & " is Nothing")
                                     ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.Guid.ToString()
                                 Else
-                                    Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling CreateDesigner")
+                                    Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling " & NameOf(.CreateDesigner))
                                     HostingPanel.SuspendLayout()
                                     Debug.Assert(HostingPanel.Size.Width <> 0 AndAlso HostingPanel.Size.Height <> 0)
                                     Try
@@ -1144,7 +1144,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         End If
                     End If
 
-                    Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameShow <= 1, "PERFORMANCE/FLICKER WARNING: More than one IVsWindowFrame.Activate() occurred")
+                    Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameShow <= 1, "PERFORMANCE/FLICKER WARNING: More than one IVsWindowFrame.Activate() occurred") ' TODO: Use NameOf
                     Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameBoundsUpdated <= 1, "PERFORMANCE/FLICKER WARNING: Window frame bounds were updated more than once")
 #End If
 
@@ -1172,9 +1172,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 DelayRefreshDirtyIndicators()
 
                 Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabEnd)
-                Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabEnd")
-                Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabEnd")
-                Common.Switches.TracePDPerfEnd("ApplicationDesignerView.ShowTab")
+                Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsShowTabEnd))
+                Common.Switches.TracePDPerf("CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsShowTabEnd))
+                Common.Switches.TracePDPerfEnd(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.ShowTab))
             Finally
                 _inShowTab = False
             End Try
@@ -1245,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="item"></param>
         ''' <remarks></remarks>
         Public Overrides Sub OnItemClick(ByVal item As ProjectDesignerTabButton)
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.OnItemClick")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.OnItemClick))
             MyBase.OnItemClick(item)
             ShowTab(SelectedIndex, ForceShow:=True)
 
@@ -1270,7 +1270,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  as the active designer, and helps us handle the on-click case correctly.
                 'Note: Handling OnGotFocus would not be good enough - we need to keep WinForms from doing their default
                 '  processing on WM_SETFOCUS, and we can't do that by handling OnGotFocus.
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "Preprocess: Stealing ApplicationDesignerView.WM_SETFOCUS handling")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "Preprocess: Stealing " & NameOf(ApplicationDesignerView) & "." & NameOf(AppDesInterop.win.WM_SETFOCUS) & " handling")
                 Common.Switches.TracePDFocus(TraceLevel.Verbose, New Diagnostics.StackTrace().ToString)
 
                 If Not _inShowTab AndAlso _okayToActivatePanelsOnFocus Then
@@ -1280,7 +1280,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             If Panel.VsWindowFrame IsNot Nothing Then
                                 'Activate the currently-active panel's window frame, give it focus, and ensure that 
                                 '  the active document is updated.
-                                Common.Switches.TracePDFocus(TraceLevel.Warning, "... VsWindowFrame.Show()")
+                                Common.Switches.TracePDFocus(TraceLevel.Warning, "... " & NameOf(Panel.VsWindowFrame) & "." & NameOf(Panel.VsWindowFrame.Show) & "()")
                                 Try
                                     _isInPanelWindowFrameShow = True
                                     Panel.VsWindowFrame.Show()
@@ -1311,7 +1311,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub OnInitializationComplete()
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "OnInitializationComplete")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(OnInitializationComplete))
             _initializationComplete = True
 
             'UI initialization is complete.  Now we need to now show the first page.
@@ -1392,7 +1392,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
                 ' VsVhidbey 446720 - if we have messed up the UNDO stack, the m_designerPanels.IsDirty call may 
                 ' throw an exception (when trying to enumerate the UNDO units)
-                Debug.Fail(String.Format("Exception {0} caught when trying to update dirty indicators...", ex))
+                Debug.Fail($"Exception {ex} caught when trying to update dirty indicators...")
             Finally
                 'Allow us to queue refresh requests again
                 _refreshDirtyIndicatorsQueued = False
@@ -1525,7 +1525,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnElementValueChanged(ByVal elementid As UInteger, ByVal varValueOld As Object, ByVal varValueNew As Object) As Integer Implements Shell.Interop.IVsSelectionEvents.OnElementValueChanged
+        Public Function OnElementValueChanged(ByVal elementid As UInteger,
+                                              ByVal varValueOld As Object,
+                                              ByVal varValueNew As Object) As Integer Implements Shell.Interop.IVsSelectionEvents.OnElementValueChanged
             If elementid = 1 AndAlso _designerPanels IsNot Nothing AndAlso varValueOld IsNot varValueNew Then ' WindowFrame changed
                 For Each panel As ApplicationDesignerPanel In _designerPanels
                     If panel.VsWindowFrame Is varValueOld Then
@@ -1574,7 +1576,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnSelectionChanged(ByVal pHierOld As Shell.Interop.IVsHierarchy, ByVal itemidOld As UInteger, ByVal pMISOld As Shell.Interop.IVsMultiItemSelect, ByVal pSCOld As Shell.Interop.ISelectionContainer, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger, ByVal pMISNew As Shell.Interop.IVsMultiItemSelect, ByVal pSCNew As Shell.Interop.ISelectionContainer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnSelectionChanged
+        Public Function OnSelectionChanged(ByVal pHierOld As Shell.Interop.IVsHierarchy,
+                                           ByVal itemidOld As UInteger,
+                                           ByVal pMISOld As Shell.Interop.IVsMultiItemSelect,
+                                           ByVal pSCOld As Shell.Interop.ISelectionContainer,
+                                           ByVal pHierNew As Shell.Interop.IVsHierarchy,
+                                           ByVal itemidNew As UInteger,
+                                           ByVal pMISNew As Shell.Interop.IVsMultiItemSelect,
+                                           ByVal pSCNew As Shell.Interop.ISelectionContainer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnSelectionChanged
             Return NativeMethods.S_OK
         End Function
 
@@ -1666,7 +1675,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function OnAfterSave(ByVal docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
-            Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
+            Debug.Assert(_designerPanels IsNot Nothing, NameOf(_designerPanels) & " should not be Nothing")
             If _designerPanels IsNot Nothing Then
                 'Was the project file saved?
                 If docCookie = GetProjectFileCookie(DTEProject) Then
@@ -1688,7 +1697,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function OnBeforeDocumentWindowShow(ByVal docCookie As UInteger, ByVal fFirstShow As Integer, ByVal pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
-            Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
+            Debug.Assert(_designerPanels IsNot Nothing, NameOf(_designerPanels) & " should not be Nothing")
             If _designerPanels IsNot Nothing Then
                 If Not _inShowTab Then
                     ' If the window frame passed to us belongs to any of our panels,
@@ -1696,7 +1705,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     For Index As Integer = 0 To _designerPanels.Length - 1
                         Dim panel As ApplicationDesignerPanel
                         panel = Me._designerPanels(Index)
-                        Debug.Assert(panel IsNot Nothing, "m_DesignerPanels(Index) should not be Nothing")
+                        Debug.Assert(panel IsNot Nothing, NameOf(_designerPanels) & "(" & NameOf(Index) & ") should not be Nothing")
                         If Object.ReferenceEquals(panel.VsWindowFrame, pFrame) Then
                             ShowTab(Index)
                             Exit For
@@ -1717,7 +1726,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="dwEditLocksRemaining"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeLastDocumentUnlock(ByVal docCookie As UInteger, ByVal dwRDTLockType As UInteger, ByVal dwReadLocksRemaining As UInteger, ByVal dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
+        Public Function OnBeforeLastDocumentUnlock(ByVal docCookie As UInteger,
+                                                   ByVal dwRDTLockType As UInteger,
+                                                   ByVal dwReadLocksRemaining As UInteger,
+                                                   ByVal dwEditLocksRemaining As UInteger
+                                                   ) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
         ''' <summary>
@@ -1728,7 +1741,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="MkDocument"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeFirstDocumentLock(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal MkDocument As String) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
+        Public Function OnBeforeFirstDocumentLock(ByVal Hierarchy As IVsHierarchy,
+                                                  ByVal ItemId As UInteger,
+                                                  ByVal MkDocument As String
+                                                  ) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
             Return NativeMethods.S_OK
         End Function
         ''' <summary>
@@ -1746,10 +1762,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub SetUndoRedoCleanStateOnAllPropertyPages()
-            For i As Integer = 0 To _designerPanels.Length - 1
-                Debug.Assert(_designerPanels(i) IsNot Nothing, "m_DesignerPanels(Index) should not be Nothing")
-                If _designerPanels(i) IsNot Nothing AndAlso _designerPanels(i).IsPropertyPage Then
-                    Dim PropPageView As PropPageDesigner.PropPageDesignerView = TryCast(_designerPanels(i).DocView, PropPageDesigner.PropPageDesignerView)
+            For index As Integer = 0 To _designerPanels.Length - 1
+                Debug.Assert(_designerPanels(index) IsNot Nothing, NameOf(_designerPanels) & "(" & NameOf(index) & ") should not be Nothing")
+                If _designerPanels(index) IsNot Nothing AndAlso _designerPanels(index).IsPropertyPage Then
+                    Dim PropPageView As PropPageDesigner.PropPageDesignerView = TryCast(_designerPanels(index).DocView, PropPageDesigner.PropPageDesignerView)
                     If PropPageView IsNot Nothing Then
                         PropPageView.SetUndoRedoCleanState()
                     End If
@@ -1768,7 +1784,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ClosedWithoutSaving"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterLastDocumentUnlock(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal MkDocument As String, ByVal ClosedWithoutSaving As Integer) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
+        Public Function OnAfterLastDocumentUnlock(ByVal Hierarchy As IVsHierarchy,
+                                                  ByVal ItemId As UInteger,
+                                                  ByVal MkDocument As String,
+                                                  ByVal ClosedWithoutSaving As Integer
+                                                  ) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
 
@@ -1796,21 +1816,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #Region "Debug tracing for OnLayout/Size events..."
 
         Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
-            Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerView.OnLayout()")
+            Common.Switches.TracePDPerfBegin(levent, NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.OnLayout) & "()")
             MyBase.OnLayout(levent)
-            Common.Switches.TracePDPerfEnd("ApplicationDesignerView.OnLayout()")
+            Common.Switches.TracePDPerfEnd(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.OnLayout) & "()")
         End Sub
 
         Private Sub HostingPanel_Layout(ByVal sender As Object, ByVal levent As LayoutEventArgs)
-            Common.Switches.TracePDPerf(levent, "ApplicationDesignerView.HostingPanel_Layout()")
+            Common.Switches.TracePDPerf(levent, NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.HostingPanel_Layout) & "()")
         End Sub
 
         Private Sub HostingPanel_SizeChanged(ByVal sender As Object, ByVal e As EventArgs)
-            Common.Switches.TracePDPerf("ApplicationDesignerView.HostingPanel_SizeChanged: " & HostingPanel.Size.ToString())
+            Common.Switches.TracePDPerf(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.HostingPanel_SizeChanged) & ": " & HostingPanel.Size.ToString())
         End Sub
 
         Private Sub ApplicationDesignerView_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
-            Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Me.Size.ToString())
+            Common.Switches.TracePDPerf(NameOf(ApplicationDesignerView) & "." & NameOf(ApplicationDesignerView.SizeChanged) & ": " & Me.Size.ToString())
         End Sub
 
 #End Region
@@ -1827,7 +1847,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Try
                     Return DirectCast(Package.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.SVsLog)), Microsoft.VisualStudio.Shell.Interop.IVsSqm)
                 Catch Ex As InvalidCastException
-                    Debug.Fail("Failed to cast returned Service to an IVsSqm - SQM logging will be disabled")
+                    Debug.Fail("Failed to cast returned Service to an " & NameOf(IVsSqm) & " - SQM logging will be disabled")
                 End Try
                 Return Nothing
             End Get

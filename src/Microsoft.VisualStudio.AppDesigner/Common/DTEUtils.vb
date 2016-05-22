@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End If
 
             If ProjectItem.FileCount <= 0 Then
-                Debug.Fail("No file associated with ProjectItem (filecount <= 0)")
+                Debug.Fail($"No file associated with {NameOf(ProjectItem)} ({NameOf(ProjectItem.FileCount)} <= 0)")
                 Return Nothing
             End If
 

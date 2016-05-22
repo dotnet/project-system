@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.Initialize")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.Initialize))
 
             Dim WindowFrame As IVsWindowFrame
             WindowFrame = TryCast(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
@@ -101,12 +101,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub OnViewFocus(ByVal sender As Object, ByVal e As EventArgs)
             'Note: this sub never seems to get hit when controls count > 0
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.OnViewFocus (Project Designer's window pane)")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.OnViewFocus) & " (Project Designer's window pane)")
             If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                 Common.Switches.TracePDFocus(TraceLevel.Warning, "  ...setting focus to view's first child: """ & _view.Controls(0).Name & """" & " (view is type """ & _view.GetType.Name & """)")
                 _view.Controls(0).Focus()
             Else
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... ignoring - m_View currently has no children")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... ignoring - " & NameOf(_view) & " currently has no children")
             End If
         End Sub
 
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Sub PopulateView(ByVal guidLogicalView As Guid)
             'Debug.Assert(guidLogicalView.Equals(Guid.Empty), "NYI: PopulateView with a non-empty GUID")
 
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.PopulateView")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.PopulateView))
             Using New Common.WaitCursor()
                 _view.Controls.Clear()
                 Dim childView As Control = Nothing
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If TypeOf childView Is ApplicationDesignerView Then
                         Dim childAppDesignerView As ApplicationDesignerView = DirectCast(childView, ApplicationDesignerView)
 
-                        Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... ApplicationDesignerWindowPane.PopulateView: Adding viewChild to view")
+                        Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... " & NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.PopulateView) & ": Adding " & NameOf(childView) & " to view")
                         childAppDesignerView.SuspendLayout()
                         childAppDesignerView.Dock = DockStyle.Fill
                         childAppDesignerView.ResumeLayout(False)
@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         '  activate the project designer or add or activate any of the property page panels.
                         childAppDesignerView.InitView()
                     Else
-                        Throw New InvalidOperationException("Only ApplicationDesignerView should be created by this window pane")
+                        Throw New InvalidOperationException("Only " & NameOf(ApplicationDesignerView) & " should be created by this window pane")
                     End If
                 Catch loadError As Exception
                     Debug.Fail("Got an exception trying to populate the project designer's view: " & loadError.ToString)
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 'If we haven't added the viewChild to m_View yet, do so now.
                 If childView.Parent Is Nothing Then
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... ApplicationDesignerWindowPane.PopulateView: Adding viewChild to view")
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... " & NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.PopulateView) & ": Adding " & NameOf(childView) & " to view")
                     childView.Dock = DockStyle.Fill
                     _view.Controls.Add(childView)
                 End If
@@ -229,8 +229,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Public Function ActivateLogicalView(ByRef rguidLogicalView As System.Guid) As Integer Implements Shell.Interop.IVsMultiViewDocumentView.ActivateLogicalView
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
-            Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart))
+            Common.Switches.TracePDPerf("CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart))
             Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
@@ -246,8 +246,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
-            Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd))
+            Common.Switches.TracePDPerf("CodeMarker: " & NameOf(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd))
         End Function
 
         Public Function GetActiveLogicalView(ByRef pguidLogicalView As System.Guid) As Integer Implements Shell.Interop.IVsMultiViewDocumentView.GetActiveLogicalView
@@ -504,7 +504,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Protected Overrides Function PreProcessMessage(ByRef m As System.Windows.Forms.Message) As Boolean
-            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPane.PreProcessMessage", m)
+            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, NameOf(ApplicationDesignerWindowPane) & "." & NameOf(ApplicationDesignerWindowPane.PreProcessMessage), m)
             Return MyBase.PreProcessMessage(m)
         End Function
 

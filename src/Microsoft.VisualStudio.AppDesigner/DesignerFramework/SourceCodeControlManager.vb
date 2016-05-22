@@ -28,13 +28,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '''   
         ''' </summary>
         ''' <param name="sp"></param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal sp As IServiceProvider, ByVal Hierarchy As IVsHierarchy)
-            If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
-            End If
-
+        Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
+            If sp Is Nothing Then Throw New ArgumentNullException(NameOf(sp))
             _serviceProvider = sp
+            ' NOTE: What about Hierarchy?
         End Sub
 #End Region
 
@@ -44,8 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Add a file to manage SCC status for. 
         ''' </summary>
         ''' <param name="mkDocument"></param>
-        ''' <remarks></remarks>
-        Public Sub ManageFile(ByVal mkDocument As String)
+        Public Sub ManageFile(mkDocument As String)
             _managedFiles(mkDocument) = True
         End Sub
 
@@ -56,17 +52,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>
         ''' It is OK to pass in the name of a file that isn't currently managed...
         ''' </remarks>
-        Public Sub StopManagingFile(ByVal mkDocument As String)
-            Debug.WriteLineIf(AppDesCommon.Switches.MSVBE_SCC.TraceInfo, String.Format("Stop managing {0}'s SCC status", mkDocument))
+        Public Sub StopManagingFile(mkDocument As String)
+            Debug.WriteLineIf(AppDesCommon.Switches.MSVBE_SCC.TraceInfo, $"Stop managing {mkDocument}'s SCC status£")
             _managedFiles.Remove(mkDocument)
         End Sub
 
         ''' <summary>
         ''' Get a list of the files currently managed by this service...
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Property ManagedFiles() As List(Of String)
             Get
                 Return New List(Of String)(_managedFiles.Keys)
@@ -98,8 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Query if all the files are editable. Will not prompt the user - will only report
         ''' if it is OK to edit the file. 
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function AreFilesEditable() As Boolean
             Return QueryEditableFilesInternal(True, False)
         End Function
@@ -112,9 +103,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="checkOnly">If true, only query if it is OK to edit all managed files without actually checking anything out</param>
         ''' <param name="throwOnFailure">If the method should throw a CheckoutException on failure</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function QueryEditableFilesInternal(ByVal checkOnly As Boolean, ByVal throwOnFailure As Boolean) As Boolean
+        Private Function QueryEditableFilesInternal(
+                                                    checkOnly As Boolean,
+                                                    throwOnFailure As Boolean
+                                                   ) As Boolean
             ' Do actual checkout here...
             Return QueryEditableFiles(_serviceProvider, ManagedFiles, throwOnFailure, checkOnly)
         End Function
@@ -130,7 +122,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="checkOnly">Only check if it is OK to edit files (don't actually check out)</param>
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean, ByVal checkOnly As Boolean) As Boolean
+        Public Shared Function QueryEditableFiles(
+                                                  sp As IServiceProvider,
+                                                  files As List(Of String),
+                                                  throwOnFailure As Boolean,
+                                                  checkOnly As Boolean
+                                                 ) As Boolean
             Dim dummy As Boolean
             Return QueryEditableFiles(sp, files, throwOnFailure, checkOnly, dummy)
         End Function
@@ -144,24 +141,24 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <param name="fileReloaded">Out: Set to true if one or more files were reloaded...</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean, ByVal checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional ByVal allowInMemoryEdits As Boolean = True, Optional ByVal allowFileReload As Boolean = True) As Boolean
-            If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
-            End If
+        Public Shared Function QueryEditableFiles(
+                                                  sp As IServiceProvider,
+                                                  files As List(Of String),
+                                                  throwOnFailure As Boolean,
+                                                  checkOnly As Boolean,
+                                            ByRef fileReloaded As Boolean,
+                                         Optional allowInMemoryEdits As Boolean = True,
+                                         Optional allowFileReload As Boolean = True
+                                                 ) As Boolean
+            If sp Is Nothing Then Throw New ArgumentNullException(NameOf(sp))
+            If files Is Nothing Then Throw New ArgumentNullException(NameOf(files))
 
-            If files Is Nothing Then
-                Throw New ArgumentNullException("files")
-            End If
-
-            If files.Count = 0 Then
-                Return True
-            End If
+            If files.Count = 0 Then Return True
 
             ' Clear out parameters
             fileReloaded = False
 
-            Dim qEdit2 As IVsQueryEditQuerySave2
-            qEdit2 = TryCast(sp.GetService(GetType(SVsQueryEditQuerySave)), IVsQueryEditQuerySave2)
+            Dim qEdit2 As IVsQueryEditQuerySave2 = TryCast(sp.GetService(GetType(SVsQueryEditQuerySave)), IVsQueryEditQuerySave2)
 
             If qEdit2 IsNot Nothing Then
                 Dim filesToCheckOut(files.Count - 1) As String
@@ -173,8 +170,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
                 Dim flags As UInteger = 0
 
-                If checkOnly Then flags = flags Or CUInt(Microsoft.VisualStudio.Shell.Interop.tagVSQueryEditFlags.QEF_ReportOnly)
-                If Not allowInMemoryEdits Then flags = flags Or CUInt(Microsoft.VisualStudio.Shell.Interop.tagVSQueryEditFlags.QEF_DisallowInMemoryEdits)
+                If checkOnly Then flags = flags Or CUInt(tagVSQueryEditFlags.QEF_ReportOnly)
+                If Not allowInMemoryEdits Then flags = flags Or CUInt(tagVSQueryEditFlags.QEF_DisallowInMemoryEdits)
 
                 Dim hr As Integer = qEdit2.QueryEditFiles(flags, filesToCheckOut.Length, filesToCheckOut, rgrf, Nothing, editVerdict, result)
                 VSErrorHandler.ThrowOnFailure(hr)
@@ -207,8 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Else
                 Dim result As Integer
                 Dim success As Integer
-                Dim txtManager As Microsoft.VisualStudio.TextManager.Interop.IVsTextManager = _
-                    TryCast(sp.GetService(GetType(Microsoft.VisualStudio.TextManager.Interop.VsTextManagerClass)), Microsoft.VisualStudio.TextManager.Interop.IVsTextManager)
+                Dim txtManager = TryCast(sp.GetService(GetType(TextManager.Interop.VsTextManagerClass)), TextManager.Interop.IVsTextManager)
 
                 If txtManager IsNot Nothing Then
                     For Each fileName As String In files
@@ -235,9 +231,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                                 ' check to see if the failure happened because the user canceled.
                                 '
                                 If (result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0 Then
-                                    Throw System.ComponentModel.Design.CheckoutException.Canceled
+                                    Throw ComponentModel.Design.CheckoutException.Canceled
                                 Else
-                                    Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(SR.DFX_UnableToCheckout))
+                                    Throw New ComponentModel.Design.CheckoutException(SR.GetString(SR.DFX_UnableToCheckout))
                                 End If
                             Else
                                 Return False
@@ -246,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     Next
                     Return True
                 Else
-                    Debug.Fail("Failed to get both IVsQueryEditQuerySave2 and IVsTextManager services - can't check out file!")
+                    Debug.Fail($"Failed to get both {NameOf(IVsQueryEditQuerySave2)} and {NameOf(TextManager.Interop.IVsTextManager)} services - can't check out file!")
                 End If
             End If
 
@@ -260,23 +256,17 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sp">Service provider. Will be QI:ed for IVsQueryEditQuerySave2</param>
         ''' <param name="files">The set of files to check</param>
         ''' <param name="throwOnFailure">Should we throw if the save fails?</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function QuerySave(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean) As Boolean
-            If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
-            End If
+        Public Shared Function QuerySave(
+                                         sp As IServiceProvider,
+                                         files As List(Of String),
+                                         throwOnFailure As Boolean
+                                        ) As Boolean
+            If sp Is Nothing Then Throw New ArgumentNullException(NameOf(sp))
+            If files Is Nothing Then Throw New ArgumentNullException(NameOf(files))
 
-            If files Is Nothing Then
-                Throw New ArgumentNullException("files")
-            End If
+            If files.Count = 0 Then Return True
 
-            If files.Count = 0 Then
-                Return True
-            End If
-
-            Dim qEdit2 As IVsQueryEditQuerySave2
-            qEdit2 = TryCast(sp.GetService(GetType(SVsQueryEditQuerySave)), IVsQueryEditQuerySave2)
+            Dim qEdit2 = TryCast(sp.GetService(GetType(SVsQueryEditQuerySave)), IVsQueryEditQuerySave2)
 
             If qEdit2 IsNot Nothing Then
                 Dim filesToCheckOut(files.Count - 1) As String
@@ -300,16 +290,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         ' check to see if the failure happened because the user canceled.
                         '
                         If ((result And CUInt(tagVSQuerySaveResult.QSR_NoSave_UserCanceled)) <> 0) Then
-                            Throw System.ComponentModel.Design.CheckoutException.Canceled
+                            Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
-                            Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(SR.DFX_UnableToCheckout))
+                            Throw New ComponentModel.Design.CheckoutException(SR.GetString(SR.DFX_UnableToCheckout))
                         End If
                     Else
                         Return False
                     End If
                 End If
             Else
-                Debug.Fail("Failed to get IVsQueryEditQuerySave2 services - can't query save the file!")
+                Debug.Fail($"Failed to get {NameOf(IVsQueryEditQuerySave2)} services - can't query save the file!")
             End If
 
             ' Assume we can save the file...

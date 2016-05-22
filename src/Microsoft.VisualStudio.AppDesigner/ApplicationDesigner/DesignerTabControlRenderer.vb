@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Sub New(ByVal owner As ProjectDesignerTabControl)
             If owner Is Nothing Then
-                Throw New ArgumentNullException("owner")
+                Throw New ArgumentNullException(NameOf(owner))
             End If
             _owner = owner
 
@@ -290,9 +290,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Performs layout for the associated tab control
         ''' </summary>
         Public Sub PerformLayout()
-            Common.Switches.TracePDPerfBegin("DesignerTabControlRenderer.PerformLayout()")
+            Common.Switches.TracePDPerfBegin("DesignerTabControlRenderer." & NameOf(PerformLayout) & "()")
             UpdateCacheState()
-            Common.Switches.TracePDPerfEnd("DesignerTabControlRenderer.PerformLayout()")
+            Common.Switches.TracePDPerfEnd("DesignerTabControlRenderer." & NameOf(PerformLayout) & "()")
         End Sub
 
 
@@ -332,7 +332,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _tabControlRect = rect
 
                 'Reposition the tab panel
-                Dim BoundingRect As Rectangle = Rectangle.FromLTRB(_tabControlRect.Left + _buttonWidth + _buttonPagePadding.Left, _tabControlRect.Top, _tabControlRect.Right, _tabControlRect.Bottom)
+                Dim BoundingRect As Rectangle = Rectangle.FromLTRB(_tabControlRect.Left + _buttonWidth + _buttonPagePadding.Left,
+                                                                   _tabControlRect.Top,
+                                                                   _tabControlRect.Right,
+                                                                   _tabControlRect.Bottom)
                 _owner.HostingPanel.Bounds = BoundingRect
 
                 SetButtonPositions()
@@ -512,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             CreateGDIObjects()
 
             If Not _gradientBrushesCreated Then
-                Debug.Fail("PERF/FLICKER WARNING: ProjectDesignerTabRenderer.RenderBackground() called before fully initialized")
+                Debug.Fail("PERF/FLICKER WARNING: ProjectDesignerTabRenderer." & NameOf(RenderBackground) & "() called before fully initialized")
                 Exit Sub
             End If
 
@@ -588,7 +591,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             Dim textRect As New Rectangle(s_buttonTextLeftOffset, 0, button.Width - s_buttonTextLeftOffset, button.Height)
-            TextRenderer.DrawText(g, button.TextWithDirtyIndicator, button.Font, textRect, foregroundColor, TextFormatFlags.Left Or TextFormatFlags.SingleLine Or TextFormatFlags.VerticalCenter)
+            TextRenderer.DrawText(g,
+                                  button.TextWithDirtyIndicator,
+                                  button.Font,
+                                  textRect,
+                                  foregroundColor,
+                                  TextFormatFlags.Left Or TextFormatFlags.SingleLine Or TextFormatFlags.VerticalCenter)
         End Sub 'RenderButton 
 
 #End Region

@@ -5,7 +5,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
     ' Users can make their classes implement this interface to get access to all
     ' the constants in the Win32 API easily.
-    <System.Runtime.InteropServices.ComVisible(False)> _
+    <System.Runtime.InteropServices.ComVisible(False)>
     Public Class win
         '    Public Const APPCMD_CLIENTONLY As Integer = &H10
         '    Public Const APPCMD_FILTERINITS As Integer = &H20

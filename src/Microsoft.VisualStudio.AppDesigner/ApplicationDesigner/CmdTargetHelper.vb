@@ -66,25 +66,30 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   OLECMDERR_E_CANCELED 
         '''     The user canceled the execution of the command. 
         ''' </remarks>
-        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, ByVal nCmdID As UInteger, ByVal nCmdexecopt As UInteger, ByVal pvaIn As System.IntPtr, ByVal pvaOut As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.Exec
-            Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & nCmdID)
+        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid,
+                                                ByVal nCmdID As UInteger,
+                                                ByVal nCmdexecopt As UInteger,
+                                                ByVal pvaIn As System.IntPtr,
+                                                ByVal pvaOut As System.IntPtr
+                                                ) As Integer Implements OleInterop.IOleCommandTarget.Exec
+            Common.Switches.TracePDCmdTarget(TraceLevel.Info, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_Exec)}: Guid={pguidCmdGroup.ToString}, {NameOf(nCmdID)}={nCmdID}")
 
             If _windowPane Is Nothing Then
-                Debug.Fail("CmdTargetHelper.IOleCommandTarget_Exec(): m_WindowPane shouldn't be Nothing")
+                Debug.Fail($"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_Exec)}(): {NameOf(_windowPane)} shouldn't be Nothing")
                 Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED 'Not much we can do
             End If
 
             'Grab certain commands and handle ourselves
             If pguidCmdGroup.Equals(Microsoft.VisualStudio.Editors.Constants.MenuConstants.guidVSStd97) Then
-                Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=guidVSStd97, nCmdID=" & nCmdID)
+                Common.Switches.TracePDCmdTarget(TraceLevel.Info, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_Exec)}: Guid=guidVSStd97, {NameOf(nCmdID)}={nCmdID}")
                 Select Case nCmdID
                     Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItem
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidSaveProjectItem")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: " & NameOf(Constants.MenuConstants.cmdidSaveProjectItem))
                         'Execute a Save for the App Designer (saves all DocData pages)
                         Return HrSaveProjectDesigner()
 
                     Case s_cmdidSaveSolution
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Peeking: cmdidSaveSolution")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Peeking: " & NameOf(s_cmdidSaveSolution))
 
                         'There are scenarios with some property pages where a page doesn't get saved properly
                         '  with pending changes.  This ensures all pages in the project designer
@@ -111,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'Note: For handling of when the user clicks on the X in the project designer, see IVsWindowFrameNotify3.OnClose
                         '  below.
 
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidFileClose, cmdidCloseDocument")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, $"  Handling: {NameOf(Constants.MenuConstants.cmdidFileClose)}, {NameOf(s_cmdidCloseDocument)}")
 
                         'Prompt for save, and then close the project designer's window frame.  
                         '  Note that this causes us to notified in IVsWindowFrameNotify3.OnClose.
@@ -123,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         '  with pending changes if all documents are closed.  This makes sure things get saved
                         '  properly.
 
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Peeking: cmdidCloseAllDocuments")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Peeking: " & NameOf(s_cmdidCloseAllDocuments))
 
                         _windowPane.ClosePromptSave()
 
@@ -131,12 +136,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
 
                     Case s_cmdidPaneNextTab 'Window.NextTab (CTRL+PGDN by default) - move to the next tab in the project designer
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPaneNextTab")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: " & NameOf(s_cmdidPaneNextTab))
                         Me._windowPane.NextTab()
                         Return NativeMethods.S_OK
 
                     Case s_cmdidPanePrevTab 'Window.PrevTab (CTRL+PGUP by default) - move to the previous tab in the project designer
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPanePrevTab")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: " & NameOf(s_cmdidPanePrevTab))
                         Me._windowPane.PrevTab()
                         Return NativeMethods.S_OK
 
@@ -152,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 End Select
             Else
-                Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & nCmdID)
+                Common.Switches.TracePDCmdTarget(TraceLevel.Info, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_Exec)}: Guid={pguidCmdGroup.ToString}, {NameOf(nCmdID)}={nCmdID}")
             End If
 
             Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
@@ -193,35 +198,39 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' Callers use IOleCommandTarget::QueryStatus to determine which commands are supported by a target object. The caller can then disable unavailable commands that would otherwise be routed to the object. The caller can also use this method to get the name or status of a single command.
         ''' </remarks>
-        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, ByVal cCmds As UInteger, ByVal prgCmds As OLE.Interop.OLECMD(), ByVal pCmdText As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
+        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid,
+                                                       ByVal cCmds As UInteger,
+                                                       ByVal prgCmds As OLE.Interop.OLECMD(),
+                                                       ByVal pCmdText As System.IntPtr
+                                                       ) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
             'Grab certain commands and handle ourselves
 
             Const Supported As UInteger = CUInt(OleInterop.OLECMDF.OLECMDF_SUPPORTED)
             Const Enabled As UInteger = CUInt(OleInterop.OLECMDF.OLECMDF_ENABLED)
             Const Invisible As UInteger = CUInt(OleInterop.OLECMDF.OLECMDF_INVISIBLE)
 
-            Debug.Assert(cCmds = 1, "Unsupported: Multiple commands in QueryStatus") 'I don't think VS is ever supposed to give us more than one at a time
+            Debug.Assert(cCmds = 1, "Unsupported: Multiple commands in " & NameOf(IOleCommandTarget_QueryStatus)) 'I don't think VS is ever supposed to give us more than one at a time
 
             If pguidCmdGroup.Equals(Microsoft.VisualStudio.Editors.Constants.MenuConstants.guidVSStd97) Then
-                Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, "CmdTargetHelper.IOleCommandTarget.QueryStatus: Guid=guidVSStd97, nCmdID=" & prgCmds(0).cmdID)
+                Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_QueryStatus)}: Guid=guidVSStd97, {NameOf(OLE.Interop.OLECMD. cmdID)}={prgCmds(0).cmdID}")
                 Select Case prgCmds(0).cmdID
                     Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItem
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidSaveProjectItem")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: " & NameOf(Constants.MenuConstants.cmdidSaveProjectItem))
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
 
                     Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItemAs
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidSaveProjectItemAs")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: " & NameOf(Constants.MenuConstants.cmdidSaveProjectItemAs))
                         prgCmds(0).cmdf = Supported Or Invisible 'CONSIDER: Invisible doesn't seem to work, but it does at least get disabled
                         Return NativeMethods.S_OK
 
                     Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidFileClose, cmdidCloseDocument")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: " & NameOf(s_cmdidCloseDocument))
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
 
                     Case s_cmdidPaneNextTab, s_cmdidPanePrevTab
-                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidPaneNextTab or cmdidPanePrevTab")
+                        Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: " & NameOf(s_cmdidPaneNextTab) & " or " & NameOf(s_cmdidPanePrevTab))
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
 
@@ -236,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'Case cmdidPrevDocument
                 End Select
             Else
-                Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, "CmdTargetHelper.IOleCommandTarget.QueryStatus: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & prgCmds(0).cmdID)
+                Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.IOleCommandTarget_QueryStatus)}: Guid={pguidCmdGroup.ToString}, {NameOf(OLE.Interop.OLECMD.cmdID)}={  prgCmds(0).cmdID}")
             End If
 
             Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
@@ -277,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '  call, where we handle saving.
 
             If _windowPane Is Nothing Then
-                Debug.Fail("CmdTargetHelper.OnClose(): m_WindowPane shouldn't be Nothing")
+                Debug.Fail($"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.OnClose)}(): {NameOf(_windowPane)} shouldn't be Nothing")
                 Return NativeMethods.S_OK 'Not much we can do
             End If
 
@@ -298,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_SaveIfDirty)
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty
                 Case Else
-                    Debug.Fail("Unexpected save option in IVsWindowFrameNotify3.OnClose")
+                    Debug.Fail($"Unexpected save option in {NameOf(IVsWindowFrameNotify3)}.{NameOf(IVsWindowFrameNotify2.OnClose)}")
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave 'defensive
             End Select
 
@@ -332,7 +341,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnDockableChange(ByVal fDockable As Integer, ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnDockableChange
+        Private Function OnDockableChange(ByVal fDockable As Integer,
+                                          ByVal x As Integer,
+                                          ByVal y As Integer,
+                                          ByVal w As Integer,
+                                          ByVal h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnDockableChange
             Return NativeMethods.S_OK
         End Function
 
@@ -363,11 +376,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
             If fShow <= __FRAMESHOW.FRAMESHOW_AutoHideSlideBegin Then
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & System.Enum.GetName(GetType(__FRAMESHOW), fShow) & ")")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.OnShow)}({[Enum].GetName(GetType(__FRAMESHOW), fShow)})")
             ElseIf fShow <= __FRAMESHOW2.FRAMESHOW_BeforeWinHidden Then
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & System.Enum.GetName(GetType(__FRAMESHOW2), fShow) & ")")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.OnShow)}({[Enum].GetName(GetType(__FRAMESHOW2), fShow)})")
             Else
-                Common.Switches.TracePDFocus(TraceLevel.Error, "CmdTargetHelper.OnShow - unrecognized fShow option")
+                Common.Switches.TracePDFocus(TraceLevel.Error, $"{NameOf(CmdTargetHelper)}.{NameOf(CmdTargetHelper.OnShow)} - unrecognized {NameOf(fShow)} option")
             End If
 #End If
 

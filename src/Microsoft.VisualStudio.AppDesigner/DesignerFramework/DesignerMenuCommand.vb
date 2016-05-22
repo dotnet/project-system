@@ -108,24 +108,27 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   CommandText: If specified (and the TEXTMENUCHANGES flag is set for the command in the CTC file) you can 
         '       supplies your own text for the command. 
         '**************************************************************************
-        Public Sub New(ByVal RootDesigner As BaseRootDesigner, ByVal CommandID As CommandID, _
-                        ByVal CommandHandler As EventHandler, _
-                        Optional ByVal CommandEnabledHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal CommandCheckedHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal CommandVisibleHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal AlwaysCheckStatus As Boolean = False, _
-                        Optional ByVal CommandText As String = Nothing)
+        Public Sub New(
+                       RootDesigner As BaseRootDesigner,
+                       CommandID As CommandID,
+                       CommandHandler As EventHandler,
+                        Optional CommandEnabledHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandCheckedHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandVisibleHandler As CheckCommandStatusHandler = Nothing,
+                        Optional AlwaysCheckStatus As Boolean = False,
+                        Optional CommandText As String = Nothing
+                      )
 
             MyBase.New(CommandHandler, CommandID)
 
-            Me._rootDesigner = RootDesigner
-            Me._commandEnabledHandler = CommandEnabledHandler
-            Me._commandCheckedHandler = CommandCheckedHandler
-            Me._commandVisibleHandler = CommandVisibleHandler
-            Me._alwaysCheckStatus = AlwaysCheckStatus
-            If CommandText <> "" Then
-                Me.Text = CommandText
-            End If
+            _rootDesigner = RootDesigner
+            _commandEnabledHandler = CommandEnabledHandler
+            _commandCheckedHandler = CommandCheckedHandler
+            _commandVisibleHandler = CommandVisibleHandler
+            _alwaysCheckStatus = AlwaysCheckStatus
+
+            If CommandText <> "" Then Text = CommandText
+
             Visible = True
             Enabled = True
 
@@ -157,15 +160,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   Calls the command status handlers (if any) to set the status of the command.
         '**************************************************************************
         Private Sub UpdateStatus()
-            If Not (Me._commandEnabledHandler Is Nothing) Then
-                Enabled = _commandEnabledHandler(Me)
-            End If
-            If Not (Me._commandCheckedHandler Is Nothing) Then
-                Checked = _commandCheckedHandler(Me)
-            End If
-            If Not (Me._commandVisibleHandler Is Nothing) Then
-                Visible = _commandVisibleHandler(Me)
-            End If
+            If _commandEnabledHandler IsNot Nothing Then Enabled = _commandEnabledHandler(Me)
+
+            If _commandCheckedHandler IsNot Nothing Then Checked = _commandCheckedHandler(Me)
+
+            If _commandVisibleHandler IsNot Nothing Then Visible = _commandVisibleHandler(Me)
+
             _statusValid = True
         End Sub 'UpdateStatus
 
