@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
             If (serviceType Is GetType(DesignerDocDataService)) Then
                 If m_DocDataService Is Nothing Then
-                    Debug.Fail("DesignerDocDataService has not been created")
+                    Debug.Fail($"{NameOf(DesignerDocDataService)} has not been created")
                 End If
                 Return m_DocDataService
             End If
@@ -85,12 +85,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
 
             If m_DocDataService IsNot Nothing Then
-                Debug.Fail("InitializeEx() should only be called once!")
+                Debug.Fail($"{NameOf(InitializeEx)}() should only be called once!")
                 Return
             End If
 
             If punkDocData Is Nothing Then
-                Debug.Fail("Docdata must be supplied")
+                Debug.Fail($"{NameOf(DocData)} must be supplied")
                 Throw New InvalidOperationException()
             End If
 
@@ -111,13 +111,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub PerformFlush(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
-            Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
+            Debug.Assert(Modified, NameOf(PerformFlush) & " shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
                 ' Make sure the property page changes have been flushed from the UI
                 CType(LoaderHost.RootComponent, ApplicationDesignerRootComponent).RootDesigner.CommitAnyPendingChanges()
             Else
-                Debug.Fail("LoaderHost.RootComponent is Nothing")
+                Debug.Fail(NameOf(LoaderHost) & "." & NameOf(LoaderHost.RootComponent) & " is Nothing")
             End If
         End Sub
 
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If e.NewDesigner IsNot Nothing AndAlso e.NewDesigner.RootComponent IsNot Nothing Then
                     newDesigner = CType(e.NewDesigner.RootComponent, Object).GetType().FullName()
                 End If
-                s.AppendLine(String.Format("OnActiveDesignerChanged: {0}: #{1}: '{2}' -> '{3}'", Common.Switches.TimeCode, _designerChangeCount, oldDesigner, newDesigner))
+                s.AppendLine($"{NameOf(OnActiveDesignerChanged)}: {Common.Switches.TimeCode}: #{_designerChangeCount}: '{oldDesigner}' -> '{newDesigner}'")
 
                 If Common.Switches.PDDesignerActivations.TraceInfo Then
                     'Print the currently-active designer to the screen DC - that makes it a lot easier to verify that the active designer is

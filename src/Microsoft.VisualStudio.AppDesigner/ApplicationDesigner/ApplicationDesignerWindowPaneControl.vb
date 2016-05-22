@@ -23,10 +23,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overrides Function ProcessTabKey(ByVal forward As Boolean) As Boolean
-            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPaneControl.ProcessTabKey")
+            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, NameOf(ApplicationDesignerWindowPaneControl) & "." & NameOf(ApplicationDesignerWindowPaneControl.ProcessTabKey))
 
             If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
-                Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ...SelectNextControl handled it")
+                Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ..." & NameOf(SelectNextControl) & " handled it")
                 Return True
             End If
 
@@ -38,8 +38,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             'ApplicationDesignerWindowPaneControl
             '
-            Me.Name = "ApplicationDesignerWindowPaneControl"
-            Me.Text = "ApplicationDesignerWindowPaneControl" 'For debugging
+            Me.Name = NameOf(ApplicationDesignerWindowPaneControl)
+            Me.Text = NameOf(ApplicationDesignerWindowPaneControl) 'For debugging
 
             'We don't want scrollbars to show up on this window
             Me.AutoScroll = False
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
         Private Sub ApplicationDesignerWindowPaneControl_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
-            Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerWindowPaneControl_SizeChanged: " & Me.Size.ToString())
+            Common.Switches.TracePDFocus(TraceLevel.Info, NameOf(ApplicationDesignerWindowPaneControl_SizeChanged) & ": " & Me.Size.ToString())
         End Sub
 #End If
 
