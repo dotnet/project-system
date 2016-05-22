@@ -277,6 +277,9 @@
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\AssemblyInfoPropPage.Designer.vb">
+      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
