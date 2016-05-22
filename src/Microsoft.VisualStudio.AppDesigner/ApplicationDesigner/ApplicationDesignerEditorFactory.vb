@@ -90,13 +90,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If ExistingDocData Is Nothing Then
                         'We do not support being loaded without a DocData on the project file being passed to us by
                         '  QI'ing for  IVsHierarchy.
-                        Trace.WriteLine("*** ApplicationDesignerEditorFactory: ExistingDocData = Nothing, returning VS_E_UNSUPPORTEDFORMAT - we shouldn't be called this way")
+                        Trace.WriteLine($"*** {NameOf(ApplicationDesignerEditorFactory)}: {NameOf(ExistingDocData)} = Nothing, returning {NameOf(VSErrorCodes.VS_E_UNSUPPORTEDFORMAT)} - we shouldn't be called this way")
                         Return VSErrorCodes.VS_E_UNSUPPORTEDFORMAT
                     Else
                         'Verify that the DocData passed in to us really is the project file
                         Dim VsHierarchy As IVsHierarchy = TryCast(ExistingDocData, IVsHierarchy)
                         If VsHierarchy Is Nothing Then
-                            Debug.Fail("The DocData passed in to the project designer was not the project file - this is not supported.")
+                            Debug.Fail($"The {NameOf(DocData)} passed in to the project designer was not the project file - this is not supported.")
                             Return VSErrorCodes.VS_E_UNSUPPORTEDFORMAT
                         End If
 
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If TypeOf Site Is OLE.Interop.IServiceProvider Then
                 _siteProvider = New ServiceProvider(CType(Site, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
             Else
-                Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
+                Debug.Fail($"Site IsNot {NameOf(OLE)}.{NameOf(OLE.Interop)}.{NameOf(OLE.Interop.IServiceProvider)}")
             End If
         End Function
 
