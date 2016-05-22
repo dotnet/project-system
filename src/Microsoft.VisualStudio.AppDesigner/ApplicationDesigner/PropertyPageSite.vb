@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
                 If value IsNot Nothing Then
                     Dim NativeServiceProvider As OLE.Interop.IServiceProvider = TryCast(value.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
-                    Debug.Assert(NativeServiceProvider IsNot Nothing, "The managed IServiceProvider passed in to PropertyPageSite constructor does not wrap a native IServiceProvider")
+                    Debug.Assert(NativeServiceProvider IsNot Nothing, $"The managed {NameOf(IServiceProvider)} passed in to {NameOf(PropertyPageSite)} constructor does not wrap a native {NameOf(IServiceProvider)}")
                 End If
 #End If
                 _backingServiceProvider = value
@@ -203,7 +203,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
         Public Function TranslateAccelerator(ByVal pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer Implements OleInterop.IPropertyPageSite.TranslateAccelerator
-            Common.Switches.TracePDMessageRouting(TraceLevel.Error, "PropertyPageSite.TranslateAccelerator")
+            Common.Switches.TracePDMessageRouting(TraceLevel.Error, $"{NameOf(PropertyPageSite)}.{NameOf(TranslateAccelerator)}")
 
             'We're not currently interested in any message filtering from the property pages.
             Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _backingServiceProvider IsNot Nothing Then
                 Return _backingServiceProvider.GetService(serviceType)
             Else
-                Debug.Fail("No service provider has been set in the PropertyPageSite")
+                Debug.Fail($"No service provider has been set in the {NameOf(PropertyPageSite)}")
                 Return Nothing
             End If
         End Function
@@ -287,10 +287,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If NativeServiceProvider IsNot Nothing Then
                     Return NativeServiceProvider.QueryService(guidService, riid, ppvObject)
                 Else
-                    Debug.Fail("Unable to get native IServiceProvider from managed IServiceProvider")
+                    Debug.Fail($"Unable to get native IServiceProvider from managed {NameOf(IServiceProvider)}")
                 End If
             Else
-                Debug.Fail("No service provider has been set in the PropertyPageSite")
+                Debug.Fail($"No service provider has been set in the {NameOf(PropertyPageSite)}")
             End If
 
             Return NativeMethods.E_NOINTERFACE

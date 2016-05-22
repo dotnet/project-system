@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 
         Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
-            Common.Switches.TracePDFocus(TraceLevel.Warning, "ProjectDesignerTabButton.OnGotFocus - forwarding to parent")
+            Common.Switches.TracePDFocus(TraceLevel.Warning, NameOf(ProjectDesignerTabButton) & "." & NameOf(ProjectDesignerTabButton.OnGotFocus) & " - forwarding to " & NameOf(parent))
             MyBase.OnGotFocus(e)
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl

@@ -169,8 +169,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 LocalRegistry = CType(_parentView.GetService(GetType(ILocalRegistry)), ILocalRegistry)
 
                 If LocalRegistry Is Nothing Then
-                    Debug.Fail("Unabled to obtain ILocalRegistry")
-                    _loadException = New ArgumentNullException("ParentView")
+                    Debug.Fail("Unabled to obtain " & NameOf(ILocalRegistry))
+                    _loadException = New ArgumentNullException(NameOf(_parentView))
                     Return
                 End If
 
@@ -207,9 +207,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Verify that loading the property page actually gave us the same title as the
                 '  cached version.
                 If _info.pszTitle IsNot Nothing AndAlso CachedTitle IsNot Nothing Then
-                    Debug.Assert(_info.pszTitle.Equals(CachedTitle), _
-                        "The page title retrieved from cache ('" & CachedTitle & "') was not the same as that retrieved by " _
-                        & "loading the page ('" & _info.pszTitle & "')")
+                    Debug.Assert(_info.pszTitle.Equals(CachedTitle),
+                        $"The page title retrieved from cache ('{CachedTitle}') was not the same as that retrieved by loading the page ('{ _info.pszTitle}')")
                 End If
 #End If
 
@@ -250,17 +249,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If _loadAlreadyAttempted Then
                     If _loadException Is Nothing AndAlso _info.pszTitle <> "" Then
                         Debug.Assert(_loadAlreadyAttempted AndAlso _loadException Is Nothing)
-                        Common.Switches.TracePDPerf("PropertyPageInfo.Title: Property page was already loaded, returning from m_Info: '" & _info.pszTitle & "'")
+                        Common.Switches.TracePDPerf($"{NameOf(PropertyPageInfo)}.{NameOf(Title)}: Property page was already loaded, returning from {NameOf(_info)}: '{ _info.pszTitle}'")
                         Return _info.pszTitle
                     Else
-                        Common.Switches.TracePDPerf("PropertyPageInfo.Title: Previously attempted to load property page and failed, returning empty title")
+                        Common.Switches.TracePDPerf($"{NameOf(PropertyPageInfo)}.{NameOf(Title)}: Previously attempted to load property page and failed, returning empty title")
                         Return String.Empty
                     End If
                 Else
                     'Do we have a cached version?
                     Dim Cached As String = CachedTitle
                     If Cached <> "" Then
-                        Common.Switches.TracePDPerf("PropertyPageInfo.Title: Retrieved page title from cache: " & Cached)
+                        Common.Switches.TracePDPerf($"{NameOf(PropertyPageInfo)}.{NameOf(Title)}: Retrieved page title from cache: {Cached}")
                         Return CachedTitle
                     End If
 

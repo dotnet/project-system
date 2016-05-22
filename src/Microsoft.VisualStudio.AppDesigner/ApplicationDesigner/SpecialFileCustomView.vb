@@ -42,7 +42,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub LinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
+        Private Sub LinkLabel_LinkClicked(ByVal sender As System.Object,
+                                          ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs
+                                          ) Handles LinkLabel.LinkClicked
             CreateNewSpecialFile()
         End Sub
 
@@ -61,11 +63,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     Try
                         'Create the file
-                        VSErrorHandler.ThrowOnFailure( _
-                            _viewProvider.DesignerView.SpecialFiles.GetFile(_viewProvider.SpecialFileId, _
-                                CUInt(__PSFFLAGS.PSFF_FullPath + __PSFFLAGS.PSFF_CreateIfNotExist), _
-                                ItemId, FileName) _
-                            )
+                        VSErrorHandler.ThrowOnFailure(
+                            _viewProvider.DesignerView.SpecialFiles.GetFile(_viewProvider.SpecialFileId,
+                                                                            CUInt(__PSFFLAGS.PSFF_FullPath + __PSFFLAGS.PSFF_CreateIfNotExist),
+                                                                            ItemId,
+                                                                            FileName)
+                                                      )
 
                         'Set the filename
                         _viewProvider.DesignerPanel.MkDocument = FileName
