@@ -265,6 +265,9 @@
     <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\AdvBuildSettingsPropPage.Designer.vb">
+      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
     </Compile>
