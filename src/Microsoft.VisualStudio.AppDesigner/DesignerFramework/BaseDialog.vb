@@ -35,9 +35,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>
         ''' Do not use this constructor in your code!
         ''' </remarks>
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         Public Sub New()
-            Debug.Fail("You should use the constructor with a ServiceProvider paramemter")
+            If LicenseManager.UsageMode <> LicenseUsageMode.Designtime Then
+                Debug.Fail("You should use the constructor with a ServiceProvider parameter")
+            End If
+
         End Sub
 
         '**************************************************************************
@@ -103,7 +106,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Public Property ServiceProvider() As IServiceProvider
             Get
-                Debug.Assert(_serviceProvider IsNot Nothing, "No service provider.  Did you call the wrong constructor?")
                 Return _serviceProvider
             End Get
             Set(ByVal Value As IServiceProvider)
@@ -180,6 +182,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   An Object contains the service.
         '**************************************************************************
         Protected Overrides Function GetService(ByVal ServiceType As Type) As Object
+
+            If (ServiceProvider Is Nothing) Then
+                Return MyBase.GetService(ServiceType)
+            End If
+
             Return ServiceProvider.GetService(ServiceType)
         End Function 'GetService
 
