@@ -31,19 +31,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(BuildEventCommandLineDialog))
-            Me.InsertButton = New System.Windows.Forms.Button
-            Me.OKButton = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.CommandLine = New System.Windows.Forms.TextBox
-            Me.ShowMacrosButton = New System.Windows.Forms.Button
-            Me.MacrosPanel = New System.Windows.Forms.Panel
-            Me.HideMacrosButton = New System.Windows.Forms.Button
-            Me.TokenList = New System.Windows.Forms.ListView
-            Me.Macro = New System.Windows.Forms.ColumnHeader
-            Me.Value = New System.Windows.Forms.ColumnHeader
-            Me.CommandLinePanel = New System.Windows.Forms.Panel
-            Me.insertOkCancelTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            Me.InsertButton = New System.Windows.Forms.Button()
+            Me.OKButton = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.CommandLine = New System.Windows.Forms.TextBox()
+            Me.ShowMacrosButton = New System.Windows.Forms.Button()
+            Me.MacrosPanel = New System.Windows.Forms.Panel()
+            Me.HideMacrosButton = New System.Windows.Forms.Button()
+            Me.TokenList = New System.Windows.Forms.ListView()
+            Me.Macro = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Value = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.CommandLinePanel = New System.Windows.Forms.Panel()
+            Me.insertOkCancelTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.MacrosPanel.SuspendLayout()
             Me.insertOkCancelTableLayoutPanel.SuspendLayout()
             Me.overarchingTableLayoutPanel.SuspendLayout()
