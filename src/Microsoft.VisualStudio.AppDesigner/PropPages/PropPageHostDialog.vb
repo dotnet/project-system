@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
                     End If
 
-                    _propPage.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
+                    _propPage.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
                     _propPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
