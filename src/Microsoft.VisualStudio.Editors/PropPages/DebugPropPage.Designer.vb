@@ -10,11 +10,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents StartURL As TextBoxWithWorkaroundForAutoCompleteAppend
         Friend WithEvents RemoteDebugEnabled As System.Windows.Forms.CheckBox
         Friend WithEvents StartArguments As MultilineTextBoxRejectsEnter
-        Friend WithEvents StartWorkingDirectory As System.Windows.Forms.TextBox
+        Friend WithEvents StartWorkingDirectory As TextBoxWithWorkaroundForAutoCompleteAppend
         Friend WithEvents RemoteDebugMachine As System.Windows.Forms.TextBox
         Friend WithEvents EnableUnmanagedDebugging As System.Windows.Forms.CheckBox
-        Friend WithEvents EnableSQLServerDebugging As System.Windows.Forms.CheckBox
-        Friend WithEvents UseVSHostingProcess As System.Windows.Forms.CheckBox
         Friend WithEvents StartProgramBrowse As System.Windows.Forms.Button
         Friend WithEvents StartWorkingDirectoryBrowse As System.Windows.Forms.Button
         Friend WithEvents StartOptionsLabel As System.Windows.Forms.Label
@@ -29,6 +27,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents startOptionsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents enableDebuggersTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents StartOptionsLabelLine As System.Windows.Forms.Label
+        Friend WithEvents UseVSHostingProcess As Windows.Forms.CheckBox
+        Friend WithEvents EnableSQLServerDebugging As Windows.Forms.CheckBox
         Private _components As System.ComponentModel.IContainer
 
         Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -56,18 +56,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.WorkingDirLabel = New System.Windows.Forms.Label()
             Me.RemoteDebugEnabled = New System.Windows.Forms.CheckBox()
             Me.StartArguments = New Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.MultilineTextBoxRejectsEnter()
-            Me.StartWorkingDirectory = New System.Windows.Forms.TextBox()
+            Me.StartWorkingDirectory = New Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend()
             Me.RemoteDebugMachine = New System.Windows.Forms.TextBox()
             Me.StartWorkingDirectoryBrowse = New System.Windows.Forms.Button()
             Me.EnableDebuggerLabelLine = New System.Windows.Forms.Label()
             Me.EnableDebuggerLabel = New System.Windows.Forms.Label()
             Me.EnableUnmanagedDebugging = New System.Windows.Forms.CheckBox()
-            Me.UseVSHostingProcess = New System.Windows.Forms.CheckBox()
-            Me.EnableSQLServerDebugging = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.startActionTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.startOptionsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.enableDebuggersTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.EnableSQLServerDebugging = New System.Windows.Forms.CheckBox()
+            Me.UseVSHostingProcess = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.startActionTableLayoutPanel.SuspendLayout()
             Me.startOptionsTableLayoutPanel.SuspendLayout()
@@ -187,18 +187,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.EnableUnmanagedDebugging, 2)
             Me.EnableUnmanagedDebugging.Name = "EnableUnmanagedDebugging"
             '
-            'UseVSHostingProcess
-            '
-            resources.ApplyResources(Me.UseVSHostingProcess, "UseVSHostingProcess")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.UseVSHostingProcess, 2)
-            Me.UseVSHostingProcess.Name = "UseVSHostingProcess"
-            '
-            'EnableSQLServerDebugging
-            '
-            resources.ApplyResources(Me.EnableSQLServerDebugging, "EnableSQLServerDebugging")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.EnableSQLServerDebugging, 2)
-            Me.EnableSQLServerDebugging.Name = "EnableSQLServerDebugging"
-            '
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
@@ -208,7 +196,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartProgram, 1, 2)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartProgramBrowse, 2, 2)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.rbStartURL, 0, 3)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.StartURL, 1, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.startOptionsTableLayoutPanel, 0, 4)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.CommandLineArgsLabel, 0, 5)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartArguments, 1, 5)
@@ -216,11 +203,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartWorkingDirectory, 1, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartWorkingDirectoryBrowse, 2, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.RemoteDebugEnabled, 0, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.enableDebuggersTableLayoutPanel, 0, 9)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableUnmanagedDebugging, 0, 10)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.UseVSHostingProcess, 0, 8)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.StartURL, 1, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.RemoteDebugMachine, 1, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.enableDebuggersTableLayoutPanel, 0, 8)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableUnmanagedDebugging, 0, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.UseVSHostingProcess, 0, 11)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
             'startActionTableLayoutPanel
@@ -247,6 +235,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.enableDebuggersTableLayoutPanel.Controls.Add(Me.EnableDebuggerLabelLine, 1, 0)
             Me.enableDebuggersTableLayoutPanel.Name = "enableDebuggersTableLayoutPanel"
             '
+            'EnableSQLServerDebugging
+            '
+            resources.ApplyResources(Me.EnableSQLServerDebugging, "EnableSQLServerDebugging")
+            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.EnableSQLServerDebugging, 2)
+            Me.EnableSQLServerDebugging.Name = "EnableSQLServerDebugging"
+            '
+            'UseVSHostingProcess
+            '
+            resources.ApplyResources(Me.UseVSHostingProcess, "UseVSHostingProcess")
+            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.UseVSHostingProcess, 2)
+            Me.UseVSHostingProcess.Name = "UseVSHostingProcess"
+            '
             'DebugPropPage
             '
             resources.ApplyResources(Me, "$this")
@@ -264,6 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.PerformLayout()
 
         End Sub
+
     End Class
 
 End Namespace
