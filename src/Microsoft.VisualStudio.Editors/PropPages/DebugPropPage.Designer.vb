@@ -42,32 +42,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DebugPropPage))
-            Me.StartActionLabel = New System.Windows.Forms.Label
-            Me.StartActionLabelLine = New System.Windows.Forms.Label
-            Me.rbStartProject = New System.Windows.Forms.RadioButton
-            Me.rbStartProgram = New System.Windows.Forms.RadioButton
-            Me.rbStartURL = New System.Windows.Forms.RadioButton
-            Me.StartProgram = New TextBoxWithWorkaroundForAutoCompleteAppend
-            Me.StartURL = New TextBoxWithWorkaroundForAutoCompleteAppend
-            Me.StartProgramBrowse = New System.Windows.Forms.Button
-            Me.StartOptionsLabelLine = New System.Windows.Forms.Label
-            Me.StartOptionsLabel = New System.Windows.Forms.Label
-            Me.CommandLineArgsLabel = New System.Windows.Forms.Label
-            Me.WorkingDirLabel = New System.Windows.Forms.Label
-            Me.RemoteDebugEnabled = New System.Windows.Forms.CheckBox
-            Me.StartArguments = New MultilineTextBoxRejectsEnter
-            Me.StartWorkingDirectory = New System.Windows.Forms.TextBox
-            Me.RemoteDebugMachine = New System.Windows.Forms.TextBox
-            Me.StartWorkingDirectoryBrowse = New System.Windows.Forms.Button
-            Me.EnableDebuggerLabelLine = New System.Windows.Forms.Label
-            Me.EnableDebuggerLabel = New System.Windows.Forms.Label
-            Me.EnableUnmanagedDebugging = New System.Windows.Forms.CheckBox
-            Me.UseVSHostingProcess = New System.Windows.Forms.CheckBox
-            Me.EnableSQLServerDebugging = New System.Windows.Forms.CheckBox
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.startActionTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.startOptionsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.enableDebuggersTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            Me.StartActionLabel = New System.Windows.Forms.Label()
+            Me.StartActionLabelLine = New System.Windows.Forms.Label()
+            Me.rbStartProject = New System.Windows.Forms.RadioButton()
+            Me.rbStartProgram = New System.Windows.Forms.RadioButton()
+            Me.rbStartURL = New System.Windows.Forms.RadioButton()
+            Me.StartProgram = New Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend()
+            Me.StartURL = New Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend()
+            Me.StartProgramBrowse = New System.Windows.Forms.Button()
+            Me.StartOptionsLabelLine = New System.Windows.Forms.Label()
+            Me.StartOptionsLabel = New System.Windows.Forms.Label()
+            Me.CommandLineArgsLabel = New System.Windows.Forms.Label()
+            Me.WorkingDirLabel = New System.Windows.Forms.Label()
+            Me.RemoteDebugEnabled = New System.Windows.Forms.CheckBox()
+            Me.StartArguments = New Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.MultilineTextBoxRejectsEnter()
+            Me.StartWorkingDirectory = New System.Windows.Forms.TextBox()
+            Me.RemoteDebugMachine = New System.Windows.Forms.TextBox()
+            Me.StartWorkingDirectoryBrowse = New System.Windows.Forms.Button()
+            Me.EnableDebuggerLabelLine = New System.Windows.Forms.Label()
+            Me.EnableDebuggerLabel = New System.Windows.Forms.Label()
+            Me.EnableUnmanagedDebugging = New System.Windows.Forms.CheckBox()
+            Me.UseVSHostingProcess = New System.Windows.Forms.CheckBox()
+            Me.EnableSQLServerDebugging = New System.Windows.Forms.CheckBox()
+            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.startActionTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.startOptionsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.enableDebuggersTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.startActionTableLayoutPanel.SuspendLayout()
             Me.startOptionsTableLayoutPanel.SuspendLayout()
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'StartActionLabelLine
             '
-            Me.StartActionLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic
+            Me.StartActionLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.StartActionLabelLine, "StartActionLabelLine")
             Me.StartActionLabelLine.BackColor = System.Drawing.SystemColors.ControlDark
             Me.StartActionLabelLine.Name = "StartActionLabelLine"
@@ -118,12 +118,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'StartProgramBrowse
             '
             resources.ApplyResources(Me.StartProgramBrowse, "StartProgramBrowse")
-            Me.StartProgramBrowse.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.StartProgramBrowse.Name = "StartProgramBrowse"
             '
             'StartOptionsLabelLine
             '
-            Me.StartOptionsLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic
+            Me.StartOptionsLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.StartOptionsLabelLine, "StartOptionsLabelLine")
             Me.StartOptionsLabelLine.BackColor = System.Drawing.SystemColors.ControlDark
             Me.StartOptionsLabelLine.Name = "StartOptionsLabelLine"
@@ -168,12 +167,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'StartWorkingDirectoryBrowse
             '
             resources.ApplyResources(Me.StartWorkingDirectoryBrowse, "StartWorkingDirectoryBrowse")
-            Me.StartWorkingDirectoryBrowse.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.StartWorkingDirectoryBrowse.Name = "StartWorkingDirectoryBrowse"
             '
             'EnableDebuggerLabelLine
             '
-            Me.EnableDebuggerLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic
+            Me.EnableDebuggerLabelLine.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
             resources.ApplyResources(Me.EnableDebuggerLabelLine, "EnableDebuggerLabelLine")
             Me.EnableDebuggerLabelLine.BackColor = System.Drawing.SystemColors.ControlDark
             Me.EnableDebuggerLabelLine.Name = "EnableDebuggerLabelLine"
@@ -204,9 +202,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.startActionTableLayoutPanel, 0, 0)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.rbStartProject, 0, 1)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.rbStartProgram, 0, 2)
@@ -227,59 +222,35 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 10)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.UseVSHostingProcess, 0, 11)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'startActionTableLayoutPanel
             '
             resources.ApplyResources(Me.startActionTableLayoutPanel, "startActionTableLayoutPanel")
-            Me.startActionTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.startActionTableLayoutPanel, 3)
-            Me.startActionTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.startActionTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.startActionTableLayoutPanel.Controls.Add(Me.StartActionLabel, 0, 0)
             Me.startActionTableLayoutPanel.Controls.Add(Me.StartActionLabelLine, 1, 0)
             Me.startActionTableLayoutPanel.Name = "startActionTableLayoutPanel"
-            Me.startActionTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'startOptionsTableLayoutPanel
             '
             resources.ApplyResources(Me.startOptionsTableLayoutPanel, "startOptionsTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.startOptionsTableLayoutPanel, 3)
-            Me.startOptionsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.startOptionsTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.startOptionsTableLayoutPanel.Controls.Add(Me.StartOptionsLabel, 0, 0)
             Me.startOptionsTableLayoutPanel.Controls.Add(Me.StartOptionsLabelLine, 1, 0)
             Me.startOptionsTableLayoutPanel.Name = "startOptionsTableLayoutPanel"
-            Me.startOptionsTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'enableDebuggersTableLayoutPanel
             '
             resources.ApplyResources(Me.enableDebuggersTableLayoutPanel, "enableDebuggersTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.enableDebuggersTableLayoutPanel, 3)
-            Me.enableDebuggersTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.enableDebuggersTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.enableDebuggersTableLayoutPanel.Controls.Add(Me.EnableDebuggerLabel, 0, 0)
             Me.enableDebuggersTableLayoutPanel.Controls.Add(Me.EnableDebuggerLabelLine, 1, 0)
             Me.enableDebuggersTableLayoutPanel.Name = "enableDebuggersTableLayoutPanel"
-            Me.enableDebuggersTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'DebugPropPage
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.overarchingTableLayoutPanel)
-            Me.MaximumSize = New System.Drawing.Size(540, 0)
             Me.Name = "DebugPropPage"
             Me.overarchingTableLayoutPanel.ResumeLayout(False)
             Me.overarchingTableLayoutPanel.PerformLayout()
@@ -290,6 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.enableDebuggersTableLayoutPanel.ResumeLayout(False)
             Me.enableDebuggersTableLayoutPanel.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
     End Class
