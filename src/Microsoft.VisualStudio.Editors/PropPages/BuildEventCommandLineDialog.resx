@@ -238,7 +238,7 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="CommandLine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>4, 4</value>
   </data>
   <data name="CommandLine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 3</value>
@@ -385,7 +385,7 @@
     <value>1</value>
   </data>
   <data name="MacrosPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 133</value>
+    <value>4, 125</value>
   </data>
   <data name="MacrosPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
@@ -436,7 +436,7 @@
     <value>3</value>
   </data>
   <data name="insertOkCancelTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 313</value>
+    <value>224, 305</value>
   </data>
   <data name="insertOkCancelTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 0, 0</value>
@@ -472,19 +472,19 @@
     <value>Fill</value>
   </data>
   <data name="overarchingTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>8, 8</value>
   </data>
   <data name="overarchingTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="overarchingTableLayoutPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>12, 12, 12, 12</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="overarchingTableLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="overarchingTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 377</value>
+    <value>464, 361</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -512,6 +512,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>480, 377</value>
+  </data>
+  <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 8, 8, 8</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
