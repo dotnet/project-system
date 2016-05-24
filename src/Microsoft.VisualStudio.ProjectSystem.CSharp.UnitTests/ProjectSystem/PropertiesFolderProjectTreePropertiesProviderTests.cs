@@ -475,8 +475,8 @@ Root (flags: {ProjectRoot})
             var project = IUnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(project,
                 new PropertyPageData() {
-                    Category = nameof(ConfigurationGeneral),
-                    PropertyName = nameof(ConfigurationGeneral.AppDesignerFolder),
+                    Category = nameof(AppDesigner),
+                    PropertyName = nameof(AppDesigner.FolderName),
                     Value = appDesignerFolder,
                 });
 

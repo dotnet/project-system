@@ -59,11 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // Returns the <AppDesignerFolder> from the project file
             return _projectServices.ThreadingService.ExecuteSynchronously(async () => {
 
-                var generalProperties = await _projectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                .ConfigureAwait(false);
+                var properties = await _projectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync()
+                                                                                         .ConfigureAwait(false);
 
-                return (string)await generalProperties.AppDesignerFolder.GetValueAsync()
-                                                                        .ConfigureAwait(false);
+                return (string)await properties.FolderName.GetValueAsync()
+                                                          .ConfigureAwait(false);
             });
         }
     }

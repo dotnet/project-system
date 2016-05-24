@@ -50,6 +50,9 @@
     <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ProjectTreeFlagsExtensions.cs" />
     <Compile Include="ProjectSystem\AbstractSpecialFolderProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Rules\AppDesigner.xaml.cs">
+      <DependentUpon>AppDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>
@@ -101,6 +104,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
