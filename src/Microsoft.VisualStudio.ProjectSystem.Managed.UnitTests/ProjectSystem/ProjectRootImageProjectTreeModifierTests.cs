@@ -10,10 +10,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class ProjectRootImageProjectTreeModifierTests
     {
         [Fact]
+        public void Constructor_NullAsCapabilities_ThrowsArgumentNull()
+        {
+            var imageProvider = IProjectImageProviderFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("capabilities", () => {
+                new ProjectRootImageProjectTreePropertiesProvider((IProjectCapabilitiesService)null, imageProvider);
+            });
+        }
+
+        [Fact]
         public void Constructor_NullAsImageProvider_ThrowsArgumentNull()
         {
+            var capabilities = IProjectCapabilitiesServiceFactory.Create();
+
             Assert.Throws<ArgumentNullException>("imageProvider", () => {
-                new ProjectRootImageProjectTreePropertiesProvider((IProjectImageProvider)null);
+                new ProjectRootImageProjectTreePropertiesProvider(capabilities, (IProjectImageProvider)null);
             });
         }
 
@@ -41,28 +53,104 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Theory]
         [InlineData(@"
-Root (flags: {ProjectRoot})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot Unrecognized})
+Root (flags: {Unrecognized ProjectRoot})
+", @"
+Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
 ")]
         [InlineData(@"
 Root (flags: {Unrecognized ProjectRoot})
+    Folder (flags: {Folder})
+", @"
+Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+    Folder (flags: {Folder})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})
     Folder (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+    Folder (flags: {Folder})
 ")]
-        public void CalculatePropertyValues_ProjectRootAsTree_SetsIconToProjectRoot(string input)
+        public void CalculatePropertyValues_ProjectRootAsTree_SetsIconToProjectRoot(string input, string expected)
         {
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
 
             var propertiesProvider = CreateInstance(imageProvider);
 
-            var tree = ProjectTreeParser.Parse(input);
-            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
-            Assert.Equal(new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1), result.Icon);
+            AssertAreEquivalent(expectedTree, result);
+        }
+
+        [Theory]
+        [InlineData(@"
+Root (flags: {Unrecognized ProjectRoot})
+", @"
+Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+")]
+        [InlineData(@"
+Root (flags: {Unrecognized ProjectRoot})
+    Folder (flags: {Folder})
+", @"
+Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+    Folder (flags: {Folder})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    Folder (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+    Folder (flags: {Folder})
+")]
+        public void CalculatePropertyValues_WhenSharedProjectRootAsTree_SetsIconToSharedProjectRoot(string input, string expected)
+        {
+            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability => {
+                return capability == ProjectCapabilities.SharedAssetsProject;
+            });
+
+            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.SharedProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
+
+            var propertiesProvider = CreateInstance(capabilities, imageProvider);
+
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
+
+            AssertAreEquivalent(expectedTree, result);
+        }
+
+        [Theory]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    Shared.items (flags: {SharedItemsImportFile})
+", @"
+Root (flags: {ProjectRoot})
+    Shared.items (flags: {SharedItemsImportFile}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    Shared.items (flags: {SharedItemsImportFile Unrecognized})
+", @"
+Root (flags: {ProjectRoot})
+    Shared.items (flags: {SharedItemsImportFile Unrecognized}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+")]
+        public void CalculatePropertyValues_WhenSharedItemsImportFileAsTree_SetsIconToSharedItemsImportFile(string input, string expected)
+        {
+            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability => {
+                return capability == ProjectCapabilities.SharedAssetsProject;
+            });
+
+            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.SharedItemsImportFile, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
+
+            var propertiesProvider = CreateInstance(capabilities, imageProvider);
+
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
+
+            AssertAreEquivalent(expectedTree, result);
         }
 
         [Theory]
@@ -111,6 +199,16 @@ Root (flags: {ProjectRoot})
             Assert.Same(icon, tree.Icon);
         }
 
+        private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
+        {
+            Assert.NotSame(expected, actual);
+
+            string expectedAsString = ProjectTreeWriter.WriteToString(expected);
+            string actualAsString = ProjectTreeWriter.WriteToString(actual);
+
+            Assert.Equal(expectedAsString, actualAsString);
+        }
+
         private ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
             return CreateInstance((IProjectImageProvider)null);
@@ -118,9 +216,15 @@ Root (flags: {ProjectRoot})
 
         private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
         {
+            return CreateInstance((IProjectCapabilitiesService)null, imageProvider);
+        }
+
+        private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService capabilities, IProjectImageProvider imageProvider)
+        {
+            capabilities = capabilities ?? IProjectCapabilitiesServiceFactory.Create();
             imageProvider = imageProvider ?? IProjectImageProviderFactory.Create();
 
-            return new ProjectRootImageProjectTreePropertiesProvider(imageProvider);
+            return new ProjectRootImageProjectTreePropertiesProvider(capabilities, imageProvider);
         }
     }
 }

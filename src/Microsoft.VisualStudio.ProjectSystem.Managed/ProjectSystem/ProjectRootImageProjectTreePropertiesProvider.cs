@@ -13,14 +13,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
+        private readonly IProjectCapabilitiesService _capabilities;
         private readonly IProjectImageProvider _imageProvider;
 
         [ImportingConstructor]
-        public ProjectRootImageProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider)
+        public ProjectRootImageProjectTreePropertiesProvider(IProjectCapabilitiesService capabilities, [Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider)
         {
+            Requires.NotNull(capabilities, nameof(capabilities));
             Requires.NotNull(imageProvider, nameof(imageProvider));
 
+            _capabilities = capabilities;
             _imageProvider = imageProvider;
+        }
+
+        private bool IsSharedProject
+        {
+            get { return _capabilities.Contains(ProjectCapabilities.SharedAssetsProject); }
         }
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
@@ -30,12 +38,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.ProjectRoot))
             {
-                ProjectImageMoniker icon = _imageProvider.GetProjectImage(ProjectImageKey.ProjectRoot);
-                if (icon == null)
-                    return;
-
-                propertyValues.Icon = icon;
+                SetImage(propertyValues, IsSharedProject ? ProjectImageKey.SharedProjectRoot : ProjectImageKey.ProjectRoot);
             }
+            else if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.SharedItemsImportFile))
+            {
+                SetImage(propertyValues, ProjectImageKey.SharedItemsImportFile);
+            }
+        }
+
+        private void SetImage(IProjectTreeCustomizablePropertyValues propertyValues, string imageKey)
+        {
+            ProjectImageMoniker icon = _imageProvider.GetProjectImage(imageKey);
+            if (icon == null)
+                return;
+
+            propertyValues.Icon = icon;
         }
     }
 }
