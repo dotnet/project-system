@@ -10,57 +10,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' C#/J# application property page - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class CSharpApplicationPropPage
-        'Inherits System.Windows.Forms.UserControl
-        ' If you want to be able to use the forms designer to edit this file,
-        ' change the base class from PropPageUserControlBase to UserControl
+    Partial Friend Class CSharpApplicationPropPage
         Inherits ApplicationPropPage
-
-#Region " Windows Form Designer generated code "
 
         Public Sub New()
             MyBase.New()
 
-            'This call is required by the Windows Form Designer.
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
         End Sub
-
-        'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing Then
-                If Not (_components Is Nothing) Then
-                    _components.Dispose()
-                End If
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-            Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(ApplicationPropPage))
-            CType(Me.AppIconImage, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.SuspendLayout()
-            '
-            'ApplicationPropPage
-            '
-            Me.Font = CType(resources.GetObject("$this.Font"), System.Drawing.Font)
-            Me.ImeMode = CType(resources.GetObject("$this.ImeMode"), System.Windows.Forms.ImeMode)
-            Me.Name = "ApplicationPropPage"
-            Me.Size = CType(resources.GetObject("$this.Size"), System.Drawing.Size)
-            CType(Me.AppIconImage, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
-
-        End Sub
-#End Region
 
         ''' <summary>
         ''' Populates the start-up object combobox box dropdown
@@ -132,14 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="control"></param>
-        ''' <param name="prop"></param>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function StartupObjectGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If Not StartUpObjectSupported() Then
                 value = ""

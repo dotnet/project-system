@@ -6,23 +6,12 @@ Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
-
     Friend NotInheritable Class BuildEventsPropPage
         Inherits PropPageUserControlBase
-        'Inherits System.Windows.Forms.UserControl
-        ' If you want to be able to use the forms designer to edit this file,
-        ' change the base class from PropPageUserControlBase to UserControl
-
-#Region " Windows Form Designer generated code "
 
         Public Sub New()
             MyBase.New()
 
-            'This call is required by the Windows Form Designer.
             InitializeComponent()
 
             'Opt out of page scaling since we're using AutoScaleMode
@@ -31,118 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
         End Sub
-
-        'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing Then
-                If Not (_components Is Nothing) Then
-                    _components.Dispose()
-                End If
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
-        Friend WithEvents lblPreBuildEventCommandLine As System.Windows.Forms.Label
-        Friend WithEvents lblPostBuildEventCommandLine As System.Windows.Forms.Label
-        Friend WithEvents lblRunPostBuildEvent As System.Windows.Forms.Label
-        Friend WithEvents txtPreBuildEventCommandLine As System.Windows.Forms.TextBox
-        Friend WithEvents txtPostBuildEventCommandLine As System.Windows.Forms.TextBox
-        Friend WithEvents cboRunPostBuildEvent As System.Windows.Forms.ComboBox
-        Friend WithEvents btnPreBuildBuilder As System.Windows.Forms.Button
-        Friend WithEvents btnPostBuildBuilder As System.Windows.Forms.Button
-        Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(BuildEventsPropPage))
-            Me.lblPreBuildEventCommandLine = New System.Windows.Forms.Label()
-            Me.txtPreBuildEventCommandLine = New System.Windows.Forms.TextBox()
-            Me.btnPreBuildBuilder = New System.Windows.Forms.Button()
-            Me.lblPostBuildEventCommandLine = New System.Windows.Forms.Label()
-            Me.txtPostBuildEventCommandLine = New System.Windows.Forms.TextBox()
-            Me.btnPostBuildBuilder = New System.Windows.Forms.Button()
-            Me.lblRunPostBuildEvent = New System.Windows.Forms.Label()
-            Me.cboRunPostBuildEvent = New System.Windows.Forms.ComboBox()
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.overarchingTableLayoutPanel.SuspendLayout()
-            Me.SuspendLayout()
-            '
-            'lblPreBuildEventCommandLine
-            '
-            resources.ApplyResources(Me.lblPreBuildEventCommandLine, "lblPreBuildEventCommandLine")
-            Me.lblPreBuildEventCommandLine.Name = "lblPreBuildEventCommandLine"
-            '
-            'txtPreBuildEventCommandLine
-            '
-            Me.txtPreBuildEventCommandLine.AcceptsReturn = True
-            resources.ApplyResources(Me.txtPreBuildEventCommandLine, "txtPreBuildEventCommandLine")
-            Me.txtPreBuildEventCommandLine.Name = "txtPreBuildEventCommandLine"
-            '
-            'btnPreBuildBuilder
-            '
-            resources.ApplyResources(Me.btnPreBuildBuilder, "btnPreBuildBuilder")
-            Me.btnPreBuildBuilder.Name = "btnPreBuildBuilder"
-            '
-            'lblPostBuildEventCommandLine
-            '
-            resources.ApplyResources(Me.lblPostBuildEventCommandLine, "lblPostBuildEventCommandLine")
-            Me.lblPostBuildEventCommandLine.Name = "lblPostBuildEventCommandLine"
-            '
-            'txtPostBuildEventCommandLine
-            '
-            Me.txtPostBuildEventCommandLine.AcceptsReturn = True
-            resources.ApplyResources(Me.txtPostBuildEventCommandLine, "txtPostBuildEventCommandLine")
-            Me.txtPostBuildEventCommandLine.Name = "txtPostBuildEventCommandLine"
-            '
-            'btnPostBuildBuilder
-            '
-            resources.ApplyResources(Me.btnPostBuildBuilder, "btnPostBuildBuilder")
-            Me.btnPostBuildBuilder.Name = "btnPostBuildBuilder"
-            '
-            'lblRunPostBuildEvent
-            '
-            resources.ApplyResources(Me.lblRunPostBuildEvent, "lblRunPostBuildEvent")
-            Me.lblRunPostBuildEvent.Name = "lblRunPostBuildEvent"
-            '
-            'cboRunPostBuildEvent
-            '
-            resources.ApplyResources(Me.cboRunPostBuildEvent, "cboRunPostBuildEvent")
-            Me.cboRunPostBuildEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cboRunPostBuildEvent.FormattingEnabled = True
-            Me.cboRunPostBuildEvent.Items.AddRange(New Object() {resources.GetString("cboRunPostBuildEvent.Items"), resources.GetString("cboRunPostBuildEvent.Items1"), resources.GetString("cboRunPostBuildEvent.Items2")})
-            Me.cboRunPostBuildEvent.Name = "cboRunPostBuildEvent"
-            '
-            'overarchingTableLayoutPanel
-            '
-            resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPreBuildEventCommandLine, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtPostBuildEventCommandLine, 0, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboRunPostBuildEvent, 0, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtPreBuildEventCommandLine, 0, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblRunPostBuildEvent, 0, 6)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPostBuildEventCommandLine, 0, 3)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnPostBuildBuilder, 0, 5)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnPreBuildBuilder, 0, 2)
-            Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            '
-            'BuildEventsPropPage
-            '
-            resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.overarchingTableLayoutPanel)
-            Me.Name = "BuildEventsPropPage"
-            Me.overarchingTableLayoutPanel.ResumeLayout(False)
-            Me.overarchingTableLayoutPanel.PerformLayout()
-            Me.ResumeLayout(False)
-
-        End Sub
-
-#End Region
 
         Public Enum Tokens
             OutDir = 0
@@ -189,11 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             "SolutionExt"
         }
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
@@ -216,12 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PostBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPostBuildEventCommandLine.Text
@@ -234,12 +100,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PreBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPreBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPreBuildEventCommandLine.Text
@@ -254,13 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Friend Delegate Function GetTokenValueFunc(ByVal MacroName As String) As String
 
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="WindowTitleText"></param>
-        ''' <param name="CommandLine"></param>
-        ''' <remarks></remarks>
         Private Function LaunchEventBuilder(ByVal Parent As BuildEventsPropPage, ByVal valueHelper As GetTokenValueFunc, ByVal WindowTitleText As String, ByRef CommandLine As String) As Boolean
 
             Dim frm As New BuildEventCommandLineDialog
@@ -294,12 +147,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="Values"></param>
-        ''' <remarks></remarks>        
         Friend Shared Function GetTokenValues(ByRef Values() As String, ByVal valueHelper As GetTokenValueFunc) As Boolean
             Dim i As Integer
             Values = CType(Array.CreateInstance(GetType(String), Tokens.Tokens_MAX), String())
@@ -311,11 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="MacroName"></param>
-        ''' <remarks></remarks>
         Private Function GetTokenValue(ByVal MacroName As String) As String
             Dim MacroEval As IVsBuildMacroInfo
             Dim MacroValue As String = Nothing
