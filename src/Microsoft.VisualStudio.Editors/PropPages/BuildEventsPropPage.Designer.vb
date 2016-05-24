@@ -26,6 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(BuildEventsPropPage))
+            Dim runPostBuildEventPanel As System.Windows.Forms.TableLayoutPanel
             Me.lblPreBuildEventCommandLine = New System.Windows.Forms.Label()
             Me.txtPreBuildEventCommandLine = New System.Windows.Forms.TextBox()
             Me.btnPreBuildBuilder = New System.Windows.Forms.Button()
@@ -35,7 +36,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.lblRunPostBuildEvent = New System.Windows.Forms.Label()
             Me.cboRunPostBuildEvent = New System.Windows.Forms.ComboBox()
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            runPostBuildEventPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.overarchingTableLayoutPanel.SuspendLayout()
+            runPostBuildEventPanel.SuspendLayout()
             Me.SuspendLayout()
             '
             'lblPreBuildEventCommandLine
@@ -88,13 +91,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPreBuildEventCommandLine, 0, 0)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.txtPostBuildEventCommandLine, 0, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboRunPostBuildEvent, 0, 7)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.txtPreBuildEventCommandLine, 0, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblRunPostBuildEvent, 0, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPostBuildEventCommandLine, 0, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.btnPostBuildBuilder, 0, 5)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.btnPreBuildBuilder, 0, 2)
+            Me.overarchingTableLayoutPanel.Controls.Add(runPostBuildEventPanel, 0, 7)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
+            '
+            'runPostBuildEventPanel
+            '
+            resources.ApplyResources(runPostBuildEventPanel, "runPostBuildEventPanel")
+            runPostBuildEventPanel.Controls.Add(Me.lblRunPostBuildEvent, 0, 0)
+            runPostBuildEventPanel.Controls.Add(Me.cboRunPostBuildEvent, 1, 0)
+            runPostBuildEventPanel.Name = "runPostBuildEventPanel"
             '
             'BuildEventsPropPage
             '
@@ -104,6 +113,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Name = "BuildEventsPropPage"
             Me.overarchingTableLayoutPanel.ResumeLayout(False)
             Me.overarchingTableLayoutPanel.PerformLayout()
+            runPostBuildEventPanel.ResumeLayout(False)
+            runPostBuildEventPanel.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
