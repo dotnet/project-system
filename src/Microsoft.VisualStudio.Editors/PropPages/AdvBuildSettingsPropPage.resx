@@ -218,15 +218,19 @@
   </data>
   <data name="cboReportCompilerErrors.Items" xml:space="preserve">
     <value>none</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items1" xml:space="preserve">
     <value>prompt</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items2" xml:space="preserve">
     <value>send</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items3" xml:space="preserve">
     <value>queue</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 46</value>
@@ -290,12 +294,15 @@
   </data>
   <data name="cboDebugInfo.Items" xml:space="preserve">
     <value>none</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items1" xml:space="preserve">
     <value>full</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items2" xml:space="preserve">
     <value>pdb-only</value>
+    <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 115</value>
