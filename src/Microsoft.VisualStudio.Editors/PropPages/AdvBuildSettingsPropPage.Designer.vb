@@ -34,24 +34,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvBuildSettingsPropPage))
-            Me.lblLanguageVersion = New System.Windows.Forms.Label
-            Me.lblReportCompilerErrors = New System.Windows.Forms.Label
-            Me.cboLanguageVersion = New System.Windows.Forms.ComboBox
-            Me.cboReportCompilerErrors = New System.Windows.Forms.ComboBox
-            Me.lblDebugInfo = New System.Windows.Forms.Label
-            Me.cboDebugInfo = New System.Windows.Forms.ComboBox
-            Me.lblFileAlignment = New System.Windows.Forms.Label
-            Me.cboFileAlignment = New System.Windows.Forms.ComboBox
-            Me.lblDLLBase = New System.Windows.Forms.Label
-            Me.txtDLLBase = New System.Windows.Forms.TextBox
-            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.outputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.outputLabel = New System.Windows.Forms.Label
-            Me.outputLineLabel = New System.Windows.Forms.Label
-            Me.generalTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.generalLabel = New System.Windows.Forms.Label
-            Me.generalLineLabel = New System.Windows.Forms.Label
-            Me.chkOverflow = New System.Windows.Forms.CheckBox
+            Me.lblLanguageVersion = New System.Windows.Forms.Label()
+            Me.lblReportCompilerErrors = New System.Windows.Forms.Label()
+            Me.cboLanguageVersion = New System.Windows.Forms.ComboBox()
+            Me.cboReportCompilerErrors = New System.Windows.Forms.ComboBox()
+            Me.lblDebugInfo = New System.Windows.Forms.Label()
+            Me.cboDebugInfo = New System.Windows.Forms.ComboBox()
+            Me.lblFileAlignment = New System.Windows.Forms.Label()
+            Me.cboFileAlignment = New System.Windows.Forms.ComboBox()
+            Me.lblDLLBase = New System.Windows.Forms.Label()
+            Me.txtDLLBase = New System.Windows.Forms.TextBox()
+            Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.outputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.outputLabel = New System.Windows.Forms.Label()
+            Me.outputLineLabel = New System.Windows.Forms.Label()
+            Me.generalTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.generalLabel = New System.Windows.Forms.Label()
+            Me.generalLineLabel = New System.Windows.Forms.Label()
+            Me.chkOverflow = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.outputTableLayoutPanel.SuspendLayout()
             Me.generalTableLayoutPanel.SuspendLayout()
@@ -60,36 +60,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'lblLanguageVersion
             '
             resources.ApplyResources(Me.lblLanguageVersion, "lblLanguageVersion")
-            Me.lblLanguageVersion.Margin = New System.Windows.Forms.Padding(9, 3, 3, 3)
             Me.lblLanguageVersion.Name = "lblLanguageVersion"
+            '
+            'lblReportCompilerErrors
+            '
+            resources.ApplyResources(Me.lblReportCompilerErrors, "lblReportCompilerErrors")
+            Me.lblReportCompilerErrors.Name = "lblReportCompilerErrors"
             '
             'cboLanguageVersion
             '
             resources.ApplyResources(Me.cboLanguageVersion, "cboLanguageVersion")
             Me.cboLanguageVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboLanguageVersion.FormattingEnabled = True
-            Me.cboLanguageVersion.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
             Me.cboLanguageVersion.Name = "cboLanguageVersion"
-            '
-            'lblReportCompilerErrors
-            '
-            resources.ApplyResources(Me.lblReportCompilerErrors, "lblReportCompilerErrors")
-            Me.lblReportCompilerErrors.Margin = New System.Windows.Forms.Padding(9, 3, 3, 3)
-            Me.lblReportCompilerErrors.Name = "lblReportCompilerErrors"
             '
             'cboReportCompilerErrors
             '
             resources.ApplyResources(Me.cboReportCompilerErrors, "cboReportCompilerErrors")
             Me.cboReportCompilerErrors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboReportCompilerErrors.FormattingEnabled = True
-            Me.cboReportCompilerErrors.Items.AddRange(New Object() {"none", "prompt", "send", "queue"})
-            Me.cboReportCompilerErrors.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
+            Me.cboReportCompilerErrors.Items.AddRange(New Object() {resources.GetString("cboReportCompilerErrors.Items"), resources.GetString("cboReportCompilerErrors.Items1"), resources.GetString("cboReportCompilerErrors.Items2"), resources.GetString("cboReportCompilerErrors.Items3")})
             Me.cboReportCompilerErrors.Name = "cboReportCompilerErrors"
             '
             'lblDebugInfo
             '
             resources.ApplyResources(Me.lblDebugInfo, "lblDebugInfo")
-            Me.lblDebugInfo.Margin = New System.Windows.Forms.Padding(9, 3, 3, 3)
             Me.lblDebugInfo.Name = "lblDebugInfo"
             '
             'cboDebugInfo
@@ -97,14 +92,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboDebugInfo, "cboDebugInfo")
             Me.cboDebugInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboDebugInfo.FormattingEnabled = True
-            Me.cboDebugInfo.Items.AddRange(New Object() {"none", "full", "pdb-only"})
-            Me.cboDebugInfo.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
+            Me.cboDebugInfo.Items.AddRange(New Object() {resources.GetString("cboDebugInfo.Items"), resources.GetString("cboDebugInfo.Items1"), resources.GetString("cboDebugInfo.Items2")})
             Me.cboDebugInfo.Name = "cboDebugInfo"
             '
             'lblFileAlignment
             '
             resources.ApplyResources(Me.lblFileAlignment, "lblFileAlignment")
-            Me.lblFileAlignment.Margin = New System.Windows.Forms.Padding(9, 3, 3, 3)
             Me.lblFileAlignment.Name = "lblFileAlignment"
             '
             'cboFileAlignment
@@ -112,27 +105,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboFileAlignment, "cboFileAlignment")
             Me.cboFileAlignment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboFileAlignment.FormattingEnabled = True
-            Me.cboFileAlignment.Items.AddRange(New Object() {"512", "1024", "2048", "4096", "8192"})
-            Me.cboFileAlignment.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
+            Me.cboFileAlignment.Items.AddRange(New Object() {resources.GetString("cboFileAlignment.Items"), resources.GetString("cboFileAlignment.Items1"), resources.GetString("cboFileAlignment.Items2"), resources.GetString("cboFileAlignment.Items3"), resources.GetString("cboFileAlignment.Items4")})
             Me.cboFileAlignment.Name = "cboFileAlignment"
             '
             'lblDLLBase
             '
             resources.ApplyResources(Me.lblDLLBase, "lblDLLBase")
-            Me.lblDLLBase.Margin = New System.Windows.Forms.Padding(9, 3, 3, 0)
             Me.lblDLLBase.Name = "lblDLLBase"
             '
             'txtDLLBase
             '
             resources.ApplyResources(Me.txtDLLBase, "txtDLLBase")
-            Me.txtDLLBase.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
             Me.txtDLLBase.Name = "txtDLLBase"
             '
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 4)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.txtDLLBase, 1, 7)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.generalTableLayoutPanel, 0, 0)
@@ -146,79 +134,57 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOverflow, 0, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblReportCompilerErrors, 0, 2)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblLanguageVersion, 0, 1)
-            Me.overarchingTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'outputTableLayoutPanel
             '
             resources.ApplyResources(Me.outputTableLayoutPanel, "outputTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.outputTableLayoutPanel, 2)
-            Me.outputTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.outputTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.outputTableLayoutPanel.Controls.Add(Me.outputLabel)
             Me.outputTableLayoutPanel.Controls.Add(Me.outputLineLabel)
-            Me.outputTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0, 3, 0, 3)
             Me.outputTableLayoutPanel.Name = "outputTableLayoutPanel"
-            Me.outputTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'outputLabel
             '
             resources.ApplyResources(Me.outputLabel, "outputLabel")
-            Me.outputLabel.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.outputLabel.Name = "outputLabel"
             '
             'outputLineLabel
             '
             resources.ApplyResources(Me.outputLineLabel, "outputLineLabel")
             Me.outputLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.outputLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.outputLineLabel.Name = "outputLineLabel"
             '
             'generalTableLayoutPanel
             '
             resources.ApplyResources(Me.generalTableLayoutPanel, "generalTableLayoutPanel")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.generalTableLayoutPanel, 2)
-            Me.generalTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.generalTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.generalTableLayoutPanel.Controls.Add(Me.generalLabel, 0, 0)
             Me.generalTableLayoutPanel.Controls.Add(Me.generalLineLabel, 1, 0)
-            Me.generalTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
             Me.generalTableLayoutPanel.Name = "generalTableLayoutPanel"
-            Me.generalTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'generalLabel
             '
             resources.ApplyResources(Me.generalLabel, "generalLabel")
-            Me.generalLabel.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.generalLabel.Name = "generalLabel"
             '
             'generalLineLabel
             '
             resources.ApplyResources(Me.generalLineLabel, "generalLineLabel")
             Me.generalLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.generalLineLabel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.generalLineLabel.Name = "generalLineLabel"
             '
             'chkOverflow
             '
             resources.ApplyResources(Me.chkOverflow, "chkOverflow")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkOverflow, 2)
-            Me.chkOverflow.Margin = New System.Windows.Forms.Padding(9, 3, 3, 3)
             Me.chkOverflow.Name = "chkOverflow"
             '
             'AdvBuildSettingsPropPage
             '
+            resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.overarchingTableLayoutPanel)
             Me.Name = "AdvBuildSettingsPropPage"
-            resources.ApplyResources(Me, "$this")
             Me.overarchingTableLayoutPanel.ResumeLayout(False)
             Me.overarchingTableLayoutPanel.PerformLayout()
             Me.outputTableLayoutPanel.ResumeLayout(False)
@@ -226,6 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.generalTableLayoutPanel.ResumeLayout(False)
             Me.generalTableLayoutPanel.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
     End Class
