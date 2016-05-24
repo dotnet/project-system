@@ -2,9 +2,9 @@
 
 There are two types of properties, items and item metadata that are stored in MSBuild project, targets and props files. 
 
-- [Build  Properties, Items andItem  Metadata](#build-properties,-items-and-item-metadata)
+- [Build  Properties, Items and Item  Metadata](#build-properties-items-and-item-metadata)
 
-- [Designer Properties, Items and Item Metadata](#designer-properties,-items-and-item-metadata)
+- [Designer Properties, Items and Item Metadata](#designer-properties-items-and-item-metadata)
 
 ## __Build Properties, Items and Item Metadata__
 These properties, items and item metadata can be used to influence builds.
