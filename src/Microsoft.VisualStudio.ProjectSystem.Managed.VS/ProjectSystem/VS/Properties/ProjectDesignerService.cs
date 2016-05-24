@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public bool SupportsProjectDesigner
         {
-            get { return _projectVsServices.Hierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false); }
+            get { return _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false); }
         }
 
         public Task ShowProjectDesignerAsync()
@@ -42,9 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private async Task OpenProjectDesignerAsyncCore()
         {
-            Guid projectDesignerGuid = _projectVsServices.Hierarchy.GetGuidProperty(VsHierarchyPropID.ProjectDesignerEditor);
+            Guid projectDesignerGuid = _projectVsServices.VsHierarchy.GetGuidProperty(VsHierarchyPropID.ProjectDesignerEditor);
 
-            IVsWindowFrame frame = _projectVsServices.Project.OpenItemWithSpecific(HierarchyId.Root, projectDesignerGuid);
+            IVsWindowFrame frame = _projectVsServices.VsProject.OpenItemWithSpecific(HierarchyId.Root, projectDesignerGuid);
             if (frame != null)
             {   // Opened within Visual Studio
 
