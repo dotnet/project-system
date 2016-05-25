@@ -155,27 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
-
-        ''' <summary>
-        ''' Attempts to obtain a point to an IVsUIShell2 interface.
-        ''' </summary>
-        ''' <value>The IVsUIShell2 service if found, otherwise null</value>
-        ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
-        Private ReadOnly Property VsUIShell2Service() As IVsUIShell2
-            Get
-                Dim sp As IServiceProvider = ServiceProvider
-                If sp IsNot Nothing Then
-                    Dim vsUiShell As IVsUIShell = DirectCast(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
-                    If vsUiShell IsNot Nothing Then
-                        Dim uIShell2Service As IVsUIShell2 = DirectCast(vsUiShell, IVsUIShell2)
-                        Return uIShell2Service
-                    End If
-                End If
-
-                Return Nothing
-            End Get
-        End Property
-
         ''' <summary>
         ''' Attempts to obtain the IVsUIShell5 interface.
         ''' </summary>
