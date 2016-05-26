@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectSystem.SpecialFileProvider
             }
 
             // We haven't found the file but return the default file path as that's the contract.
-            string rootFilePath = Path.GetFullPath(ProjectTreeService.CurrentTree.ProjectSnapshot.Value.FullPath);
+            string rootFilePath = PhysicalProjectTreeProvider.Value.GetPath(rootNode);
             string fullPath = Path.Combine(rootFilePath, specialFileName);
             return Task.FromResult(fullPath);
         }
