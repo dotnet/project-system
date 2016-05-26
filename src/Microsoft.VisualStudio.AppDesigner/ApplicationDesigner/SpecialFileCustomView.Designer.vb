@@ -24,47 +24,41 @@
         'Required by the Control Designer
         Private components As System.ComponentModel.IContainer
 
-        Public WithEvents LinkLabel As VsThemedLinkLabel
+        Public WithEvents LinkLabel As VSThemedLinkLabel
 
         ' NOTE: The following procedure is required by the Component Designer
         ' It can be modified using the Component Designer.  Do not modify it
         ' using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
-            Private Sub InitializeComponent()
+        <System.Diagnostics.DebuggerStepThrough()>
+        Private Sub InitializeComponent()
+            Dim CenterPanel As System.Windows.Forms.TableLayoutPanel
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SpecialFileCustomView))
-            Me.LinkLabel = New FocusableLinkLabel
+            Me.LinkLabel = New VSThemedLinkLabel()
+            CenterPanel = New System.Windows.Forms.TableLayoutPanel()
+            CenterPanel.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'CenterPanel
+            '
+            resources.ApplyResources(CenterPanel, "CenterPanel")
+            CenterPanel.Controls.Add(Me.LinkLabel, 1, 0)
+            CenterPanel.Name = "CenterPanel"
             '
             'LinkLabel
             '
             resources.ApplyResources(Me.LinkLabel, "LinkLabel")
             Me.LinkLabel.Name = "LinkLabel"
-            Me.LinkLabel.TabStop = True
             '
             'SpecialFileCustomView
             '
-            Me.Controls.Add(Me.LinkLabel)
+            Me.Controls.Add(CenterPanel)
             Me.Name = "SpecialFileCustomView"
             resources.ApplyResources(Me, "$this")
+            CenterPanel.ResumeLayout(False)
+            CenterPanel.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
-
-        ''' <summary>
-        ''' Overrides the default behavior of the LinkLabel to show focus
-        ''' </summary>
-        Private Class FocusableLinkLabel
-            Inherits VsThemedLinkLabel
-
-            ''' <summary>
-            ''' Overrides the default behavior of the LinkLabel to show focus
-            ''' </summary>
-            Protected Overrides ReadOnly Property ShowFocusCues() As Boolean
-                Get
-                    Return True
-                End Get
-            End Property
-        End Class
 
     End Class
 
