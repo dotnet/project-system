@@ -10,15 +10,15 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
-  
+
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
-</PropertyGroup>
+  </PropertyGroup>
 
   <ItemGroup>
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
   </ItemGroup>
-  
+
 </Project>
