@@ -11,4 +11,4 @@ For additional information, see the following:
 - [Features](docs/repo/Features.md)
 - [Architecture](docs/repo/Architecture.md)
 - [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
-- [Rules of the Project System](docs/Rules%20of%20the%20Project%20System.md)
+- [Rules of the Project System](docs/repo/Rules%20of%20the%20Project%20System.md)
