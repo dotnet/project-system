@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectDesignerService _designerService;
 
         [ImportingConstructor]
-        public AppDesignerFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        public AppDesignerFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
             : base(imageProvider)
         {
             Requires.NotNull(projectServices, nameof(projectServices));
