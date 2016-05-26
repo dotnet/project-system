@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ProjectSystemTrait]
-    public class PropertiesFolderProjectTreePropertiesProviderTests
+    public class AppDesignerFolderProjectTreePropertiesProviderTests
     {
         [Fact]
         public void Constructor_NullAsImageProvider_ThrowsArgumentNull()
@@ -18,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("imageProvider", () => {
 
-                new PropertiesFolderProjectTreePropertiesProvider((IProjectImageProvider)null, projectServices, designerService);
+                new AppDesignerFolderProjectTreePropertiesProvider((IProjectImageProvider)null, projectServices, designerService);
             });
         }
 
@@ -30,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("projectServices", () => {
 
-                new PropertiesFolderProjectTreePropertiesProvider(imageProvider, (IUnconfiguredProjectCommonServices)null, designerService);
+                new AppDesignerFolderProjectTreePropertiesProvider(imageProvider, (IUnconfiguredProjectCommonServices)null, designerService);
             });
         }
 
@@ -42,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("designerService", () => {
 
-                new PropertiesFolderProjectTreePropertiesProvider(imageProvider, projectServices, (IProjectDesignerService)null);
+                new AppDesignerFolderProjectTreePropertiesProvider(imageProvider, projectServices, (IProjectDesignerService)null);
             });
         }
 
@@ -69,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void ChangePropertyValues_TreeWithPropertiesCandidateButSupportsProjectDesignerFalse_ReturnsUnmodifiedTree()
+        public void ChangePropertyValues_TreeWithAppDesignerFolderButSupportsProjectDesignerFalse_ReturnsUnmodifiedTree()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => false);   // Don't support AppDesigner
             var propertiesProvider = CreateInstance(designerService);
@@ -90,7 +92,8 @@ Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
 ")]
         public void ChangePropertyValues_TreeWithMyProjectFolder_ReturnsUnmodifiedTree(string input)
-        {
+        {   // "Properties" is the default, so we shouldn't find "My Project"
+
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
 
@@ -120,7 +123,7 @@ Root (flags: {ProjectRoot})
         AssemblyInfo.cs (flags: {})
     NotProperties (flags: {Folder})
 ")]
-        public void ChangePropertyValues_TreeWithoutPropertiesCandidate_ReturnsUnmodifiedTree(string input)
+        public void ChangePropertyValues_TreeWithoutAppDesignerFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => false);
             var propertiesProvider = CreateInstance(designerService);
@@ -169,8 +172,8 @@ Root (flags: {ProjectRoot})
         [InlineData(@"
 Root (flags: {ProjectRoot})
     Properties (flags: {IncludeInProjectCandidate})
-")]        
-        public void ChangePropertyValues_TreeWithExcludedPropertiesFolder_ReturnsUnmodifiedTree(string input)
+")]
+        public void ChangePropertyValues_TreeWithExcludedAppDesignerFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
@@ -199,8 +202,8 @@ Root (flags: {ProjectRoot})
     Folder1 (flags: {Folder})
     Folder2 (flags: {Folder})
         Properties (flags: {Folder})
-")]        
-        public void ChangePropertyValues_TreeWithNestedPropertiesFolder_ReturnsUnmodifiedTree(string input)
+")]
+        public void ChangePropertyValues_TreeWithNestedAppDesignerFolder_ReturnsUnmodifiedTree(string input)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
@@ -211,7 +214,7 @@ Root (flags: {ProjectRoot})
 
             AssertAreEquivalent(tree, result);
         }
-        
+
         [Theory]
         [InlineData(@"
 Root(flags: {ProjectRoot})
@@ -241,7 +244,7 @@ Root(flags: {ProjectRoot})
 Root(flags: {ProjectRoot})
     Properties (flags: {Folder Unrecognized AppDesignerFolder BubbleUp})
 ")]
-        public void ChangePropertyValues_TreeWithPropertiesCandidateAlreadyMarkedAsAppDesignerOrBubbleup_AddsRemainingFlags(string input, string expected)
+        public void ChangePropertyValues_TreeWithAppDesignerFolderAlreadyMarkedAsAppDesignerOrBubbleup_AddsRemainingFlags(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
@@ -317,7 +320,7 @@ Root (flags: {ProjectRoot})
     Properties (flags: {Folder AppDesignerFolder BubbleUp})
         Folder (flags: {Folder})
 ")]
-        public void ChangePropertyValues_TreeWithPropertiesCandidate_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
+        public void ChangePropertyValues_TreeWithAppDesignerFolder_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
@@ -341,7 +344,7 @@ Root (flags: {ProjectRoot})
     Properties (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}, ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}
         Folder (flags: {Folder})
 ")]
-        public void ChangePropertyValues_TreeWithPropertiesCandidate_SetsIconAndExpandedIconToAppDesignerFolder(string input, string expected)
+        public void ChangePropertyValues_TreeWithAppDesignerFolder_SetsIconAndExpandedIconToAppDesignerFolder(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.AppDesignerFolder, new ProjectImageMoniker(new Guid("AE27A6B0-E345-4288-96DF-5EAF394EE369"), 1));
@@ -374,7 +377,7 @@ Root (flags: {ProjectRoot})
     Properties (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {}, ExpandedIcon: {}
         Folder (flags: {Folder})
 ")]
-        public void ChangePropertyValues_TreeWithPropertiesCandidateWhenImageProviderReturnsNull_DoesNotSetIconAndExpandedIcon(string input, string expected)
+        public void ChangePropertyValues_TreeWithAppDesignerFolderWhenImageProviderReturnsNull_DoesNotSetIconAndExpandedIcon(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.AppDesignerFolder, null);
@@ -389,10 +392,10 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public void ChangePropertyValues_ProjectWithNullPropertiesFolder_DefaultsToProperties()
+        public void ChangePropertyValues_ProjectWithNoAppDesignerFolderProperty_DefaultsToProperties()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: null);
+            var propertiesProvider = CreateInstance(designerService, folderName: null);
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -409,10 +412,10 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public void ChangePropertyValues_ProjectWithEmptyPropertiesFolder_DefaultsToProperties()
+        public void ChangePropertyValues_ProjectWithEmptyAppDesignerFolderProperty_DefaultsToProperties()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: "");
+            var propertiesProvider = CreateInstance(designerService, folderName: "");
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -429,10 +432,10 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public void ChangePropertyValues_ProjectWithNonDefaultPropertiesFolder_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp()
+        public void ChangePropertyValues_ProjectWithNonDefaultAppDesignerFolderProperty_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp()
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var propertiesProvider = CreateInstance(designerService, appDesignerFolder: "FooBar");
+            var propertiesProvider = CreateInstance(designerService, folderName: "FooBar");
 
             var inputTree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -442,6 +445,177 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     FooBar (flags: {Folder AppDesignerFolder BubbleUp})
 ");
+
+            var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
+
+            AssertAreEquivalent(expectedTree, result);
+        }
+
+        [Theory]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder BubbleUp})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    my project (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    my project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    MY PROJECT (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    MY PROJECT (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder UnrecognizedCapability})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder UnrecognizedCapability AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        My Project (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        My Project (flags: {Folder VisibleOnlyInShowAllFiles})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder1 (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+        Folder2 (flags: {Folder})
+            Item.cs (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder1 (flags: {IncludeInProjectCandidate})
+            Item.cs (flags: {IncludeInProjectCandidate})
+        Folder2 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Item.cs (flags: {})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Resources.resx (flags: {})
+            Resources.Designer.cs (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Resources.resx (flags: {VisibleOnlyInShowAllFiles})
+            Resources.Designer.cs (flags: {})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        AssemblyInfo.cs (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        AssemblyInfo.cs (flags: {VisibleOnlyInShowAllFiles})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {Folder})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
+")]
+        [InlineData(@"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder})
+        Folder1 (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
+        Folder2 (flags: {Folder})
+            Folder (flags: {Folder})
+                File (flags: {})
+", @"
+Root (flags: {ProjectRoot})
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})
+        Folder1 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
+        Folder2 (flags: {Folder VisibleOnlyInShowAllFiles})
+            Folder (flags: {Folder})
+                File (flags: {})
+")]
+        public void ChangePropertyValues_TreeWithMyProjectCandidateAndContentVisibleOnlyInShowAllFiles_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
+        {   // Mimic's Visual Basic projects
+
+            var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
+            var propertiesProvider = CreateInstance(designerService, folderName:"My Project", contentOnlyVisibleInShowAllFiles:true);
+
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
 
             var result = propertiesProvider.ChangePropertyValuesForEntireTree(inputTree);
 
@@ -458,31 +632,50 @@ Root (flags: {ProjectRoot})
             Assert.Equal(expectedAsString, actualAsString);
         }
 
-        private PropertiesFolderProjectTreePropertiesProvider CreateInstance()
+        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance()
         {
             return CreateInstance((IProjectImageProvider)null, (IProjectDesignerService)null);
         }
 
-        private PropertiesFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService, string appDesignerFolder = "Properties")
+        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService, string folderName = "Properties", bool? contentOnlyVisibleInShowAllFiles = null)
         {
-            return CreateInstance((IProjectImageProvider)null, designerService, appDesignerFolder);
+            return CreateInstance((IProjectImageProvider)null, designerService, folderName, contentOnlyVisibleInShowAllFiles);
         }
 
-        private PropertiesFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService, string appDesignerFolder = "Properties")
+        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService, string folderName = "Properties", bool? contentOnlyVisibleInShowAllFiles = null)
         {
             designerService = designerService ?? IProjectDesignerServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
             var project = IUnconfiguredProjectFactory.Create();
-            var projectProperties = ProjectPropertiesFactory.Create(project,
-                new PropertyPageData() {
-                    Category = nameof(AppDesigner),
-                    PropertyName = nameof(AppDesigner.FolderName),
-                    Value = appDesignerFolder,
-                });
+            var properties = CreatePropertyPageData(folderName, contentOnlyVisibleInShowAllFiles);
+            var projectProperties = ProjectPropertiesFactory.Create(project, properties.ToArray());               
 
             var services = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, projectProperties.ConfiguredProject, projectProperties);
 
-            return new PropertiesFolderProjectTreePropertiesProvider(imageProvider ?? IProjectImageProviderFactory.Create(), services, designerService);
+            return new AppDesignerFolderProjectTreePropertiesProvider(imageProvider ?? IProjectImageProviderFactory.Create(), services, designerService);
+        }
+
+        private IEnumerable<PropertyPageData> CreatePropertyPageData(string folderName, bool? contentOnlyVisibleInShowAllFiles)
+        {
+            //if (folderName != null)
+            //{
+                yield return new PropertyPageData()
+                {
+                    Category = AppDesigner.SchemaName,
+                    PropertyName = AppDesigner.FolderNameProperty,
+                    Value = folderName,
+                };
+            //}
+
+            //if (contentOnlyVisibleInShowAllFiles != null)
+            //{
+                yield return new PropertyPageData()
+                {
+                    Category = AppDesigner.SchemaName,
+                    PropertyName = AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty,
+                    Value = contentOnlyVisibleInShowAllFiles ?? false,
+                };
+            //}
         }
     }
 }

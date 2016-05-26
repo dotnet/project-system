@@ -1,23 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides the base class for tree modifiers that handle the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
+    ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
-    internal abstract class AbstractAppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider
+    [Export(typeof(IProjectTreePropertiesProvider))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider
     {
         private static readonly ProjectTreeFlags DefaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectDesignerService _designerService;
 
-        protected AbstractAppDesignerFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        [ImportingConstructor]
+        public AppDesignerFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
             : base(imageProvider)
         {
             Requires.NotNull(projectServices, nameof(projectServices));
@@ -40,6 +42,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public override string FolderImageKey
         {
             get {  return ProjectImageKey.AppDesignerFolder; }
+        }
+
+        public override bool ContentsVisibleOnlyInShowAllFiles
+        {
+            get
+            {
+                // Returns the <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> from the project file
+                return _projectServices.ThreadingService.ExecuteSynchronously(async () => {
+
+                    var properties = await _projectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync()
+                                                                                             .ConfigureAwait(false);
+
+                    bool? value = (bool?)await properties.ContentsVisibleOnlyInShowAllFiles.GetValueAsync()
+                                                                                           .ConfigureAwait(false);
+
+                    return value ?? false;
+                });
+            }
         }
 
         protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)

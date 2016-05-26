@@ -55,6 +55,7 @@
     <Compile Include="Mocks\IUnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
+    <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
