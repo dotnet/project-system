@@ -67,6 +67,7 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />

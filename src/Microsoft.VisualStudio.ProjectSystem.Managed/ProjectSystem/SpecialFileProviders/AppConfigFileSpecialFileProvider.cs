@@ -11,26 +11,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectSystem.SpecialFileProvider
 {
     [ExportSpecialFileProvider(SpecialFiles.AppConfig)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class AppConfigFileSpecialFileProvider : ISpecialFileProvider
+    internal class AppConfigFileSpecialFileProvider : AbstractSpecialFileProvider
     {
-        /// <summary>
-        /// Gets or sets the project tree service.
-        /// </summary>
-        [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]
-        private IProjectTreeService ProjectTreeService { get; set; }
-
-        public Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
+        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
         {
             Assert(fileId == SpecialFiles.AppConfig);
-            
-            IProjectTree settingsNode;
-            ProjectTreeService.CurrentTree.Tree.TryFindImmediateChild("App.config", out settingsNode);
-
-            return Task.FromResult(settingsNode?.FilePath);
-
-            //string rootDir = Path.GetDirectoryName(this.ProjectTreeService.CurrentTree.ProjectSnapshot.Value.FullPath);
-            //string settingsPath = Path.Combine(rootDir, "Settings.settings");
-            //return settingsPath;
+            return "App.config";
         }
+
+        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
+        {
+            Assert(fileId == SpecialFiles.AppConfig);
+            return "AppConfigurationInternal.zip";
+        }
+
+        protected override bool ShouldLookInAppDesignerFolder => false;
     }
 }
