@@ -54,65 +54,18 @@ namespace Microsoft.VisualStudio.Shell.Interop
             // NOTE: We consider it a bug in the underlying project system or the caller if this cast fails
             return (T)resultObject;
         }
-
-        /// <summary>
-        /// Returns EnvDTE.ProjectItem object for the given filename. Returns null if file is not in the project
-        /// or fails.
-        /// </summary>
-        public static EnvDTE.ProjectItem GetDTEProjectItemForFile(this IVsHierarchy hierarchy, string mkDocument)
-        {
-            return hierarchy.GetHierarchyPropertyForFile<EnvDTE.ProjectItem>((int)__VSHPROPID.VSHPROPID_ExtObject, mkDocument);
-        }
-
-        /// <summary>
-        /// Returns any hierarhcy property for a file
-        /// </summary>
-        public static T GetHierarchyPropertyForFile<T>(this IVsHierarchy hierarchy, int property, string mkDocument) where T : class
-        {
-            //UIThreadHelper.VerifyOnUIThread();
-            object propertyValue;
-            IVsProject proj = hierarchy as IVsProject;
-            if (proj != null)
-            {
-                int hr;
-                int isFound = 0;
-                uint itemid = VSConstants.VSITEMID_NIL;
-                VSDOCUMENTPRIORITY[] priority = new VSDOCUMENTPRIORITY[1];
-                hr = proj.IsDocumentInProject(mkDocument, out isFound, priority, out itemid);
-
-                if (ErrorHandler.Succeeded(hr) && isFound != 0 && itemid != VSConstants.VSITEMID_NIL)
-                {
-                    if (ErrorHandler.Succeeded(hierarchy.GetProperty(itemid, property, out propertyValue)))
-                    {
-                        return propertyValue as T;
-                    }
-                }
-            }
-            return null;
-        }
-
+                
         /// <summary>
         /// Returns EnvDTE.Project object for the hierarchy
         /// </summary>
         public static EnvDTE.Project GetDTEProject(this IVsHierarchy hierarchy)
         {
-
-            //UIThreadHelper.VerifyOnUIThread();
             object extObject;
             if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out extObject)))
             {
                 return extObject as EnvDTE.Project;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Returns the default namespace for the given filename. Returns null if file is not in the project
-        /// or fails.
-        /// </summary>
-        public static string GetDefaultNamespaceForFile(this IVsHierarchy hierarchy, string mkDocument)
-        {
-            return hierarchy.GetHierarchyPropertyForFile<string>((int)__VSHPROPID.VSHPROPID_DefaultNamespace, mkDocument);
         }
     }
 }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RenameSymbolFailed" xml:space="preserve">
-    <value>Renaming the code element {0} failed with the following error. {1}</value>
+    <value>Renaming the code element {0} failed.</value>
   </data>
   <data name="RenameSymbolPrompt" xml:space="preserve">
     <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element {0}?</value>

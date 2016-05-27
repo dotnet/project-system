@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Renaming the code element {0} failed with the following error. {1}.
+        ///   Looks up a localized string similar to Renaming the code element {0} failed..
         /// </summary>
         internal static string RenameSymbolFailed {
             get {
