@@ -44,6 +44,10 @@
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
+    <Compile Include="SpecialFileProviders\AbstractSpecialFileProvider.cs" />
+    <Compile Include="SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
+    <Compile Include="SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
+    <Compile Include="SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
