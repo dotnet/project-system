@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.Diagnostics.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectSystem.SpecialFileProviders
+namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppConfig)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
@@ -25,6 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectSystem.SpecialFileProvider
             return "AppConfigurationInternal.zip";
         }
 
-        protected override bool ShouldLookInAppDesignerFolder => false;
+        protected override bool CreatedByDefaultUnderAppDesignerFolder => false;
     }
 }

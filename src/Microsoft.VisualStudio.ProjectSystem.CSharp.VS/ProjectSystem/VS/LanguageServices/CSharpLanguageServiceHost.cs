@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     Integrates the C# language service with the C# project system.
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
+    [Export(typeof(IProjectCodeModelProvider))]
     [Export(typeof(IProjectWithIntellisense))]
     [AppliesTo(ProjectCapability.CSharpLanguageService)]
     [ExcludeFromCodeCoverage] // This is being thrown away: https://github.com/dotnet/roslyn-project-system/issues/131

@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         IVsIntellisenseProjectHost,
         IDisposable,
         ICodeModelProvider,
+        IProjectCodeModelProvider,
         IProjectWithIntellisense
     {
         /// <summary>
@@ -392,6 +393,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return (FileCodeModel)result;
         }
 
+        #endregion
+
+        #region IProjectCodeModelProvider Members
+
+        CodeModel IProjectCodeModelProvider.GetCodeModel(Project project)
+        {
+            object result;
+            Marshal.ThrowExceptionForHR(_intellisenseEngine.GetProjectCodeModel(project, out result));
+            return (CodeModel)result;
+        }
         #endregion
 
         #region LanguageServiceRegister.IProjectWithIntellisense Methods

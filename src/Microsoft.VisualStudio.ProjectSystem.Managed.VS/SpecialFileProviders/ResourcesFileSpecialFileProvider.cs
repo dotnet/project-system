@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.Diagnostics.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectSystem.SpecialFileProviders
+namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyResource)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
