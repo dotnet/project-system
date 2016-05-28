@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
-using Shell = Microsoft.VisualStudio.Shell;
+using EnvDTE;
+using EnvDTE80;
+using Diagnostics = System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
 {
     internal abstract class AbstractSpecialFileProvider : ISpecialFileProvider
     {
-        /// <summary>
-        /// Gets the physical tree provider.
-        /// </summary>
-        [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]
-        private Lazy<IProjectTreeProvider> PhysicalProjectTreeProvider { get; set; }
-
         /// <summary>
         /// Gets or sets the project tree service.
         /// </summary>
@@ -26,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
         private IProjectTreeService ProjectTreeService { get; set; }
 
         [Import]
-        private IUnconfiguredProjectVsServices UnconfiguredProjectVsServices { get; set; }
+        private IUnconfiguredProjectVsServices ProjectVsServices { get; set; }
 
         protected virtual bool CreatedByDefaultUnderAppDesignerFolder => true;
 
@@ -51,6 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
                 {
                     // TODO
                     // parentNodeFilePath = Path.Get(fileNode.FilePath);
+                }
+                
+                if (!fileNode.Flags.IsIncludedInProject())
+                {
+                    return null;
                 }
 
                 // TODO : if in project check?
@@ -98,30 +97,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
             return null;
         }
 
+        private string GetTemplateLanguage(Project project)
+        {
+            switch (project.CodeModel.Language)
+            {
+                case CodeModelLanguageConstants.vsCMLanguageCSharp:
+                    return "CSharp";
+                case CodeModelLanguageConstants.vsCMLanguageVB:
+                    return "VisualBasic";
+                default:
+                    throw new NotSupportedException("Unrecognized language");
+            }
+        }
+
         private string CreateFile(SpecialFiles fileId, string specialFileName)
         {
             string templateFile = GetTemplateForSpecialFile(fileId);
 
-            EnvDTE.Project project = UnconfiguredProjectVsServices.Hierarchy.GetProperty<EnvDTE.Project>(Shell.VsHierarchyPropID.ExtObject, null);
-            var solution = project.DTE.Solution as EnvDTE80.Solution2;
-            string language = project.CodeModel.Language == EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp ? "CSharp" : "VisualBasic";
-            string templateFilePath = solution.GetProjectItemTemplate(templateFile, language);
+            Project project = ProjectVsServices.Hierarchy.GetProperty<EnvDTE.Project>(Shell.VsHierarchyPropID.ExtObject, null);
+            var solution = project.DTE.Solution as Solution2;
+
+            string templateFilePath = solution.GetProjectItemTemplate(templateFile, GetTemplateLanguage(project));
 
             // Create file.
             if (templateFilePath != null)
             {
-
                 IProjectTree rootNode = ProjectTreeService.CurrentTree.Tree;
                 IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
 
-                IProjectTree parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder : rootNode;
-                if (parentNode == null)
+                if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder)
                 {
                     return null;
                 }
 
+                var parentId = CreatedByDefaultUnderAppDesignerFolder ? (uint)(appDesignerFolder.Identity) : (uint)VSConstants.VSITEMID.Root;
                 var result = new VSADDRESULT[1];
-                UnconfiguredProjectVsServices.Project.AddItemWithSpecific((uint)parentNode.Identity, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
+                ProjectVsServices.Project.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)
                 {
@@ -132,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
                     {
                         return specialFilePath;
                     }
+                    Diagnostics.Debug.Fail("We added the file successfully but didn't find it!");
                 }
             }
 
@@ -173,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFileProviders
             }
 
             // We haven't found the file but return the default file path as that's the contract.
-            string rootFilePath = UnconfiguredProjectVsServices.ActiveConfiguredProject.UnconfiguredProject.FullPath; // PhysicalProjectTreeProvider.Value.GetPath(rootNode);
+            string rootFilePath = ProjectVsServices.ActiveConfiguredProject.UnconfiguredProject.FullPath; // PhysicalProjectTreeProvider.Value.GetPath(rootNode);
             string fullPath = Path.Combine(rootFilePath, specialFileName);
             return Task.FromResult(fullPath);
         }
