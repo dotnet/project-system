@@ -34,13 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             if (SupportsProjectDesigner)
             {
-                return OpenProjectDesignerAsyncCore();
+                return OpenProjectDesignerCoreAsync();
             }
 
             throw new InvalidOperationException("This project does not support the Project Designer (SupportsProjectDesigner is false).");
         }
 
-        private async Task OpenProjectDesignerAsyncCore()
+        private async Task OpenProjectDesignerCoreAsync()
         {
             Guid projectDesignerGuid = _projectVsServices.VsHierarchy.GetGuidProperty(VsHierarchyPropID.ProjectDesignerEditor);
 

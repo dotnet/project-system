@@ -251,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             using (ProjectAsynchronousTasksService.LoadedProject())
             {
                 var designTimeBuildBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    ProjectBuildRuleBlock_Changed);
+                    ProjectBuildRuleBlock_ChangedAsync);
                 _designTimeBuildSubscriptionLink = ActiveConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     designTimeBuildBlock,
                     ruleNames: WatchedEvaluationRules.Union(WatchedDesignTimeBuildRules));
@@ -607,7 +607,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// Handles the <see cref="IActiveConfiguredProjectSubscriptionService"/> callback on the active configured project's
         /// design-time build change notification service.
         /// </summary>
-        private async Task ProjectBuildRuleBlock_Changed(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private async Task ProjectBuildRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             await ThreadingService.SwitchToUIThread();
             using (ProjectAsynchronousTasksService.LoadedProject())
