@@ -3,7 +3,6 @@
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -49,10 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             Requires.NotNull(task, nameof(task));
 
-            return AddMessageAsyncCore(task);
+            return AddMessageCoreAsync(task);
         }
 
-        private async Task<AddMessageResult> AddMessageAsyncCore(TargetGeneratedTask task)
+        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedTask task)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
@@ -88,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task ClearMessageFromTargetAsync(string targetName)
         {
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         public Task ClearAllAsync()
@@ -98,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 _languageServiceBuildErrorReporter.ClearErrors();
             }
 
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private void InitializeBuildErrorReporter()
