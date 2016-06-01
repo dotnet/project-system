@@ -9,12 +9,18 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    /// <summary>
+    /// This service creates a file from a given file template.
+    /// </summary>
     [Export(typeof(ICreateFileFromTemplateService))]
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
         [Import]
         private IUnconfiguredProjectVsServices ProjectVsServices { get; set; }
 
+        /// <summary>
+        /// Get the language string to pass to the VS APIs for getting a template.
+        /// </summary>
         private string GetTemplateLanguage(Project project)
         {
             switch (project.CodeModel.Language)
@@ -28,16 +34,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
+        /// <summary>
+        /// Create a file with the given template file and add it to the parent node.
+        /// </summary>
+        /// <param name="templateFile">The name of the template zip file.</param>
+        /// <param name="parentNode">The node to which the new file will be added.</param>
+        /// <param name="specialFileName">The name of the file to be created.</param>
+        /// <returns>true if file is added successfully.</returns>
         public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string specialFileName)
         {
             Project project = ProjectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
-            var solution = project.DTE.Solution as Solution2;
+            var solution = project?.DTE?.Solution as Solution2;
+            if (solution == null)
+            {
+                return false;
+            }
 
             await ProjectVsServices.ThreadingService.SwitchToUIThread();
 
             string templateFilePath = solution.GetProjectItemTemplate(templateFile, GetTemplateLanguage(project));
 
-            // Create file.
             if (templateFilePath != null)
             {
                 var parentId = parentNode.IsRoot() ? (uint)VSConstants.VSITEMID.Root : (uint)parentNode.Identity;
