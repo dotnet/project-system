@@ -1,11 +1,10 @@
-﻿//--------------------------------------------------------------------------------------------
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+//--------------------------------------------------------------------------------------------
 // FileRenameTracker
 //
 // Exports an IProjectChangeHintReceiver to listen to file renames. If the file being renamed
 // is a code file, it will prompt the user to rename the class to match. The rename is done
-// using code model
-//
-// Copyright(c) 2015 Microsoft Corporation
+// using Roslyn Renamer API
 //--------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Immutable;
@@ -29,12 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private IComponentModel _componentModel;
         private VisualStudioWorkspace _visualStudioWorkspace;
-
-        /// <summary>
-        /// The thread handling service.
-        /// </summary>
-        [Import]
-        private IProjectThreadingService ThreadingService { get; set; }
 
         /// <summary>
         /// Gets the VS global service provider.
@@ -65,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task HintingAsync(IProjectChangeHint hint)
         {
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private async Task ScheduleRenameAsync(string oldFilePath, string newFilePath)
@@ -76,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            await ThreadingService.SwitchToUIThread();
+            await _unconfiguredProjectVsServices.ThreadingService.SwitchToUIThread();
 
             if (_visualStudioWorkspace == null)
             {
@@ -93,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 .Projects.Where(p => String.Equals(p.FilePath, project.FullName, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
-            var renamer = new Renamer(_visualStudioWorkspace, ServiceProvider, ThreadingService, myProject, newFilePath, oldFilePath);
+            var renamer = new Renamer(_visualStudioWorkspace, ServiceProvider, _unconfiguredProjectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChanged;
         }
     }

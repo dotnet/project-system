@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -71,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (newDocument == null)
                         return;
 
-                    var root = newDocument.GetSyntaxRootAsync().Result;
+                    var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
                     if (root == null)
                         return;
 
@@ -82,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (declaration == null)
                         return;
 
-                    var semanticModel = newDocument.GetSemanticModelAsync().Result;
+                    var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
                     if (semanticModel == null)
                         return;
 
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     // Now do the rename
                     var optionSet = newDocument.Project.Solution.Workspace.Options;
-                    var renamedSolution = RoslyRenamer.Renamer.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName, optionSet).Result;
+                    var renamedSolution = await RoslyRenamer.Renamer.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName, optionSet).ConfigureAwait(false);
 
                     await _threadingService.SwitchToUIThread();
 
