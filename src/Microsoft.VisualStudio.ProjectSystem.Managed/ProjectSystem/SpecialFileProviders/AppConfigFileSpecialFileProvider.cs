@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     {
         [ImportingConstructor]
         public AppConfigFileSpecialFileProvider([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTreeService,
-                                       [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                       [Import(AllowDefault = true)] ICreateFileFromTemplateService templateFileCreationService,
-                                       IFileSystem fileSystem) 
+                                                [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+                                                [Import(AllowDefault = true)] ICreateFileFromTemplateService templateFileCreationService,
+                                                IFileSystem fileSystem) 
             : base(projectTreeService, sourceItemsProvider, templateFileCreationService, fileSystem)
         {
         }
