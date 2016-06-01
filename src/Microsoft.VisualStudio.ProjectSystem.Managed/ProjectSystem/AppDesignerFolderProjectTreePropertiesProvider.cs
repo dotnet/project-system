@@ -59,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // Retrieves the <AppDesignerFolder> and <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> properties from the project file
             //
             // TODO: Read these default values from the rules themselves
+            // See: https://github.com/dotnet/roslyn-project-system/issues/209
             string folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
             string contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
