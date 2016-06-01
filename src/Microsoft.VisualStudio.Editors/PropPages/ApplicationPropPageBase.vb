@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   See comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
-    Public Class ApplicationPropPageBase
+    Public partial Class ApplicationPropPageBase
         Inherits PropPageUserControlBase
 
         Private _lastIconImage As String
@@ -25,20 +25,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected m_NoManifestText As String
         Protected m_DefaultIcon As Icon
 
-        'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
-
-        <System.Diagnostics.DebuggerStepThrough()>
-        Private Sub InitializeComponent()
-            Me.SuspendLayout()
-            Me.ResumeLayout(False)
-        End Sub
-
         Public Sub New()
             MyBase.New()
-
-            'This call is required by the Windows Form Designer.
-            'InitializeComponent()
 
             m_DefaultIconText = SR.GetString(SR.PPG_Application_DefaultIconText)
             m_DefaultManifestText = SR.GetString(SR.PPG_Application_DefaultManifestText)

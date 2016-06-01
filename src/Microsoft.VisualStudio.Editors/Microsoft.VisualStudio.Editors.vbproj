@@ -262,11 +262,59 @@
       <Link>IVsSqm.vb</Link>
     </Compile>
     <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
+    <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
+      <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\AdvBuildSettingsPropPage.Designer.vb">
+      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\AdvCompilerSettingsPropPage.Designer.vb">
+      <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\ApplicationPropPageVBBase.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\AssemblyInfoPropPage.Designer.vb">
+      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\BuildEventCommandLineDialog.Designer.vb">
+      <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\BuildEventsPropPage.Designer.vb">
+      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\BuildPropPage.Designer.vb">
+      <DependentUpon>BuildPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\CompilePropPage2.Designer.vb">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\CSharpApplicationPropPage.Designer.vb">
+      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\DebugPropPage.Designer.vb">
+      <DependentUpon>DebugPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\ReferencePathsPropPage.Designer.vb">
+      <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\ReferencePropPage.Designer.vb">
+      <DependentUpon>ReferencePropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\ServicesAuthenticationForm.Designer.vb">
+      <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\ServicesPropPage.Designer.vb">
+      <DependentUpon>ServicesPropPage.vb</DependentUpon>
+    </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PropPages\UnusedReferencePropPage.Designer.vb">
+      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
     </Compile>
     <Compile Include="PropPages\WPF\ApplicationPropPageVBWPF.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>

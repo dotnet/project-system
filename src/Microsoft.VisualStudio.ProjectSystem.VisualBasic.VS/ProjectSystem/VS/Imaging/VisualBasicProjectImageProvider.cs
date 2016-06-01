@@ -27,6 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
                 case ProjectImageKey.ProjectRoot:
                     return KnownMonikers.VBProjectNode.ToProjectSystemType();
 
+                case ProjectImageKey.SharedItemsImportFile:
+                case ProjectImageKey.SharedProjectRoot:
+                    return KnownMonikers.VBSharedProject.ToProjectSystemType();
+
                 case ProjectImageKey.AppDesignerFolder:
                     return KnownMonikers.Property.ToProjectSystemType();
 

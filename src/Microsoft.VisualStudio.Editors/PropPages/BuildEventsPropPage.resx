@@ -136,7 +136,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="lblPreBuildEventCommandLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 20</value>
+    <value>149, 13</value>
   </data>
   <data name="lblPreBuildEventCommandLine.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -160,10 +160,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="txtPreBuildEventCommandLine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 23</value>
+    <value>3, 15</value>
   </data>
   <data name="txtPreBuildEventCommandLine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 4</value>
+    <value>3, 2, 1, 3</value>
   </data>
   <data name="txtPreBuildEventCommandLine.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -172,7 +172,7 @@
     <value>Both</value>
   </data>
   <data name="txtPreBuildEventCommandLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>538, 116</value>
+    <value>414, 203</value>
   </data>
   <data name="txtPreBuildEventCommandLine.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +190,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;txtPreBuildEventCommandLine.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="btnPreBuildBuilder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -198,23 +198,20 @@
   <data name="btnPreBuildBuilder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="btnPreBuildBuilder.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="btnPreBuildBuilder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnPreBuildBuilder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>379, 147</value>
+    <value>307, 224</value>
   </data>
   <data name="btnPreBuildBuilder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 4</value>
+    <value>0, 3, 0, 3</value>
   </data>
   <data name="btnPreBuildBuilder.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 0, 15, 0</value>
+    <value>10, 0, 10, 0</value>
   </data>
   <data name="btnPreBuildBuilder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 30</value>
+    <value>111, 23</value>
   </data>
   <data name="btnPreBuildBuilder.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -232,7 +229,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;btnPreBuildBuilder.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -244,13 +241,13 @@
     <value>NoControl</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 185</value>
+    <value>0, 253</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 3, 0, 0</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 20</value>
+    <value>154, 13</value>
   </data>
   <data name="lblPostBuildEventCommandLine.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -268,16 +265,16 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;lblPostBuildEventCommandLine.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="txtPostBuildEventCommandLine.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="txtPostBuildEventCommandLine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 208</value>
+    <value>3, 268</value>
   </data>
   <data name="txtPostBuildEventCommandLine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 4</value>
+    <value>3, 2, 1, 3</value>
   </data>
   <data name="txtPostBuildEventCommandLine.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,7 +283,7 @@
     <value>Both</value>
   </data>
   <data name="txtPostBuildEventCommandLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>538, 116</value>
+    <value>414, 203</value>
   </data>
   <data name="txtPostBuildEventCommandLine.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -312,23 +309,20 @@
   <data name="btnPostBuildBuilder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="btnPostBuildBuilder.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="btnPostBuildBuilder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnPostBuildBuilder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>371, 332</value>
+    <value>302, 477</value>
   </data>
   <data name="btnPostBuildBuilder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 4</value>
+    <value>0, 3, 0, 3</value>
   </data>
   <data name="btnPostBuildBuilder.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 0, 15, 0</value>
+    <value>10, 0, 10, 0</value>
   </data>
   <data name="btnPostBuildBuilder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 30</value>
+    <value>116, 23</value>
   </data>
   <data name="btnPostBuildBuilder.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -346,10 +340,10 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;btnPostBuildBuilder.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="lblRunPostBuildEvent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+    <value>Left, Right</value>
   </data>
   <data name="lblRunPostBuildEvent.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -358,13 +352,13 @@
     <value>NoControl</value>
   </data>
   <data name="lblRunPostBuildEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 370</value>
+    <value>0, 11</value>
   </data>
   <data name="lblRunPostBuildEvent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 3, 0, 0</value>
   </data>
   <data name="lblRunPostBuildEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 20</value>
+    <value>142, 13</value>
   </data>
   <data name="lblRunPostBuildEvent.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -379,10 +373,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblRunPostBuildEvent.Parent" xml:space="preserve">
-    <value>overarchingTableLayoutPanel</value>
+    <value>runPostBuildEventPanel</value>
   </data>
   <data name="&gt;&gt;lblRunPostBuildEvent.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="cboRunPostBuildEvent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -397,13 +391,13 @@
     <value>When the build updates the project output</value>
   </data>
   <data name="cboRunPostBuildEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 393</value>
+    <value>145, 6</value>
   </data>
   <data name="cboRunPostBuildEvent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 10</value>
+    <value>3, 6, 1, 6</value>
   </data>
   <data name="cboRunPostBuildEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>538, 28</value>
+    <value>272, 21</value>
   </data>
   <data name="cboRunPostBuildEvent.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -415,16 +409,55 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cboRunPostBuildEvent.Parent" xml:space="preserve">
-    <value>overarchingTableLayoutPanel</value>
+    <value>runPostBuildEventPanel</value>
   </data>
   <data name="&gt;&gt;cboRunPostBuildEvent.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="overarchingTableLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+    <value>1</value>
   </data>
   <data name="overarchingTableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <metadata name="runPostBuildEventPanel.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="runPostBuildEventPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="runPostBuildEventPanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="runPostBuildEventPanel.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="runPostBuildEventPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 503</value>
+  </data>
+  <data name="runPostBuildEventPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="runPostBuildEventPanel.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="runPostBuildEventPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>418, 33</value>
+  </data>
+  <data name="runPostBuildEventPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;runPostBuildEventPanel.Name" xml:space="preserve">
+    <value>runPostBuildEventPanel</value>
+  </data>
+  <data name="&gt;&gt;runPostBuildEventPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;runPostBuildEventPanel.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;runPostBuildEventPanel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="runPostBuildEventPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblRunPostBuildEvent" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboRunPostBuildEvent" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,34.21053,Percent,65.78947" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="overarchingTableLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -439,7 +472,7 @@
     <value>8</value>
   </data>
   <data name="overarchingTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>538, 431</value>
+    <value>418, 536</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -457,33 +490,27 @@
     <value>0</value>
   </data>
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblPreBuildEventCommandLine" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtPostBuildEventCommandLine" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboRunPostBuildEvent" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtPreBuildEventCommandLine" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblRunPostBuildEvent" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPostBuildEventCommandLine" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnPostBuildBuilder" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnPreBuildBuilder" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50,AutoSize,0,AutoSize,0,Percent,50,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblPreBuildEventCommandLine" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtPostBuildEventCommandLine" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtPreBuildEventCommandLine" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPostBuildEventCommandLine" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnPostBuildBuilder" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnPreBuildBuilder" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="runPostBuildEventPanel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50,AutoSize,0,AutoSize,0,Percent,50,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>9, 20</value>
-  </data>
-  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>538, 398</value>
+    <value>359, 259</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>538, 431</value>
+    <value>418, 536</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BuildEventsPropPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

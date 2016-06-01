@@ -1,0 +1,23 @@
+<!--
+
+  This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
+  
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">My Project</AppDesignerFolder>
+    
+    <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
+    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+  
+</Project>

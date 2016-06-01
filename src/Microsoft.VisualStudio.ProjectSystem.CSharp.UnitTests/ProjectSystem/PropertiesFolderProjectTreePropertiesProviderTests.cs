@@ -472,15 +472,15 @@ Root (flags: {ProjectRoot})
         {
             designerService = designerService ?? IProjectDesignerServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
-            var projectProperties = ProjectPropertiesFactory.Create(unconfiguredProject,
+            var project = IUnconfiguredProjectFactory.Create();
+            var projectProperties = ProjectPropertiesFactory.Create(project,
                 new PropertyPageData() {
-                    Category = nameof(ConfigurationGeneral),
-                    PropertyName = nameof(ConfigurationGeneral.AppDesignerFolder),
+                    Category = nameof(AppDesigner),
+                    PropertyName = nameof(AppDesigner.FolderName),
                     Value = appDesignerFolder,
                 });
 
-            var services = IUnconfiguredProjectCommonServicesFactory.Create(threadingService, projectProperties.ConfiguredProject, projectProperties);
+            var services = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, projectProperties.ConfiguredProject, projectProperties);
 
             return new PropertiesFolderProjectTreePropertiesProvider(imageProvider ?? IProjectImageProviderFactory.Create(), services, designerService);
         }

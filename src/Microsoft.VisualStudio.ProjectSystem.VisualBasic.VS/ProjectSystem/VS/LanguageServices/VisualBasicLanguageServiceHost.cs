@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.VisualBasicLanguageService)]
-        private Task OnProjectFactoryCompleted()
+        private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }
