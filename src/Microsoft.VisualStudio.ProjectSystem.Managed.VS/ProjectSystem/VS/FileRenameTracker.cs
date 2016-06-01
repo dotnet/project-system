@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo(ProjectCapability.CSharp)]
     internal class FileRenameTracker : IProjectChangeHintReceiver
     {
-        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private IComponentModel _componentModel;
         private VisualStudioWorkspace _visualStudioWorkspace;
 
@@ -34,12 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         [Import]
         protected SVsServiceProvider ServiceProvider { get; private set; }
-
+        
         [ImportingConstructor]
         public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            _unconfiguredProjectVsServices = projectVsServices;
+            _projectVsServices = projectVsServices;
         }
 
         public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            await _unconfiguredProjectVsServices.ThreadingService.SwitchToUIThread();
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             if (_visualStudioWorkspace == null)
             {
@@ -77,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 _visualStudioWorkspace = _componentModel.GetService<VisualStudioWorkspace>();
             }
 
-            IVsHierarchy hierarchy = _unconfiguredProjectVsServices.Hierarchy;
+            IVsHierarchy hierarchy = _projectVsServices.Hierarchy;
 
             EnvDTE.Project project = hierarchy.GetDTEProject();
 
@@ -86,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 .Projects.Where(p => String.Equals(p.FilePath, project.FullName, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
-            var renamer = new Renamer(_visualStudioWorkspace, ServiceProvider, _unconfiguredProjectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
+            var renamer = new Renamer(_visualStudioWorkspace, ServiceProvider, _projectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChanged;
         }
     }

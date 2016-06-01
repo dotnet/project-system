@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     string oldName = Path.GetFileNameWithoutExtension(_oldDocument.FilePath);
                     string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
 
-                    var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(n, oldName)).FirstOrDefault();
+                    var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
                     if (declaration == null)
                         return;
 
@@ -126,51 +126,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private bool HasMatchingSyntaxNode(SyntaxNode syntaxNode, string name)
+        private bool HasMatchingSyntaxNode(Document document, SyntaxNode syntaxNode, string name)
         {
-            if (syntaxNode is BaseTypeDeclarationSyntax || syntaxNode is DelegateDeclarationSyntax)
+            var generator = SyntaxGenerator.GetGenerator(document);
+            var kind = generator.GetDeclarationKind(syntaxNode);
+
+            if (kind == DeclarationKind.Class ||
+                kind == DeclarationKind.Interface ||
+                kind == DeclarationKind.Delegate ||
+                kind == DeclarationKind.Enum ||
+                kind == DeclarationKind.Struct)
             {
-                switch (syntaxNode.Kind())
-                {
-                    case SyntaxKind.ClassDeclaration:
-                        var classDeclSyntax = (ClassDeclarationSyntax)syntaxNode;
-                        if (classDeclSyntax.Identifier.ToString() == name)
-                        {
-                            return true;
-                        }
-                        break;
-                    case SyntaxKind.InterfaceDeclaration:
-                        var interfaceDeclSyntax = (InterfaceDeclarationSyntax)syntaxNode;
-                        if (interfaceDeclSyntax.Identifier.ToString() == name)
-                        {
-                            return true;
-                        }
-                        break;
-                    case SyntaxKind.DelegateDeclaration:
-                        var delegradeDeclSyntax = (DelegateDeclarationSyntax)syntaxNode;
-                        if (delegradeDeclSyntax.Identifier.ToString() == name)
-                        {
-                            return true;
-                        }
-                        break;
-                    case SyntaxKind.EnumDeclaration:
-                        var enumDeclSyntax = (EnumDeclarationSyntax)syntaxNode;
-                        if (enumDeclSyntax.Identifier.ToString() == name)
-                        {
-                            return true;
-                        }
-                        break;
-                    case SyntaxKind.StructDeclaration:
-                        var structDeclSyntax = (StructDeclarationSyntax)syntaxNode;
-                        if (structDeclSyntax.Identifier.ToString() == name)
-                        {
-                            return true;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                return false;
+                return generator.GetName(syntaxNode) == name;
             }
             return false;
         }
