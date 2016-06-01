@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -15,13 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// Gets or sets the project tree service.
         /// </summary>
         [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]
-        private IProjectTreeService ProjectTreeService { get; set; }
+        internal IProjectTreeService ProjectTreeService { get; set; }
 
         [Import(AllowDefault = true)]
-        private ICreateFileFromTemplateService TemplateFileCreationService { get; set; }
+        internal ICreateFileFromTemplateService TemplateFileCreationService { get; set; }
 
         [Import(ExportContractNames.ProjectItemProviders.SourceFiles)]
-        private IProjectItemProvider SourceItemsProvider { get; set; }
+        internal IProjectItemProvider SourceItemsProvider { get; set; }
+
+        [Import]
+        internal IFileSystem FileSystem { get; set; }
 
         protected virtual bool CreatedByDefaultUnderAppDesignerFolder => true;
 
@@ -121,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             // TODO: AssureLocalCheck?
-            if (!File.Exists(specialFileNode.FilePath))
+            if (!FileSystem.Exists(specialFileNode.FilePath))
             {
                 if (forceSync)
                 {
@@ -161,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             {
                 var parentPath = ProjectTreeService.CurrentTree.TreeProvider.GetPath(parentNode);
                 var specialFilePath = Path.Combine(parentPath, specialFileName);
-                File.Create(specialFilePath);
+                FileSystem.Create(specialFilePath);
                 await SourceItemsProvider.AddAsync(specialFilePath);
                 await ProjectTreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
                 fileCreated = true;

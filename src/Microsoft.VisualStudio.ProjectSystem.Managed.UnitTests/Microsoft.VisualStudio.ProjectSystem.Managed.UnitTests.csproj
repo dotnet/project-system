@@ -42,11 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />

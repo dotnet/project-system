@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -215,7 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             bool IProjectTree.TryFindImmediateChild(string caption, out IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                subtree = Children.FirstOrDefault(c => c.Caption == caption);
+                return subtree != null;
             }
 
             public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? visible = default(bool?), ProjectTreeFlags? flags = default(ProjectTreeFlags?), IProjectPropertiesContext context = null, IPropertySheet propertySheet = null, bool? isLinked = default(bool?), bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)

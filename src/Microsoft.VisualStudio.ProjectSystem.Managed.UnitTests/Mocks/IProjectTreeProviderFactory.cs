@@ -10,5 +10,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return Mock.Of<IProjectTreeProvider>();
         }
+
+        public static IProjectTreeProvider CreateWithGetPath()
+        {
+            var mock = new Mock<IProjectTreeProvider>();
+
+            mock.Setup(t => t.GetPath(It.IsAny<IProjectTree>()))
+                .Returns<IProjectTree>(tree => tree.FilePath);
+
+            return mock.Object;
+        }
     }
 }
