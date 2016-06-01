@@ -2,30 +2,32 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner folder, called "Properties" in C# and "My Project" in Visual Basic.
+    ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner 
+    ///     folder, called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
+    [Export(typeof(IProjectTreeSettingsProvider))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider
+    internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider, IProjectTreeSettingsProvider
     {
         private static readonly ProjectTreeFlags DefaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
-        private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectDesignerService _designerService;
 
         [ImportingConstructor]
-        public AppDesignerFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IUnconfiguredProjectCommonServices projectServices, IProjectDesignerService designerService)
+        public AppDesignerFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IProjectDesignerService designerService)
             : base(imageProvider)
         {
-            Requires.NotNull(projectServices, nameof(projectServices));
             Requires.NotNull(designerService, nameof(designerService));
 
-            _projectServices = projectServices;
             _designerService = designerService;
         }
 
@@ -44,29 +46,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get {  return ProjectImageKey.AppDesignerFolder; }
         }
 
-        public override bool ContentsVisibleOnlyInShowAllFiles
+        public ICollection<string> ProjectPropertiesRules
         {
-            get
-            {
-                // Returns the <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> from the project file
-                return _projectServices.ThreadingService.ExecuteSynchronously(async () => {
+            get { return AppDesigner.SchemaNameArray; }
+        }
 
-                    var properties = await _projectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync()
-                                                                                             .ConfigureAwait(false);
+        public void UpdateProjectTreeSettings(IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots, ref IImmutableDictionary<string, string> projectTreeSettings)
+        {
+            Requires.NotNull(ruleSnapshots, nameof(ruleSnapshots));
+            Requires.NotNull(projectTreeSettings, nameof(projectTreeSettings));
 
-                    bool? value = (bool?)await properties.ContentsVisibleOnlyInShowAllFiles.GetValueAsync()
-                                                                                           .ConfigureAwait(false);
+            // Retrieves the <AppDesignerFolder> and <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> properties from the project file
+            //
+            // TODO: Read these default values from the rules themselves
+            string folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
+            string contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
-                    return value ?? false;
-                });
-            }
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName);
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles);
         }
 
         protected override sealed bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
         {
             if (propertyContext.ParentNodeFlags.IsProjectRoot() && flags.IsFolder() && flags.IsIncludedInProject())
             {
-                string folderName = GetAppDesignerFolderName();
+                string folderName = propertyContext.ProjectTreeSettings[AppDesigner.FolderNameProperty];
 
                 return StringComparers.Paths.Equals(folderName, propertyContext.ItemName);
             }
@@ -74,17 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return false;
         }
 
-        protected virtual string GetAppDesignerFolderName()
+        protected override bool AreContentsVisibleOnlyInShowAllFiles(IImmutableDictionary<string, string> projectTreeSettings)
         {
-            // Returns the <AppDesignerFolder> from the project file
-            return _projectServices.ThreadingService.ExecuteSynchronously(async () => {
-
-                var properties = await _projectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync()
-                                                                                         .ConfigureAwait(false);
-
-                return (string)await properties.FolderName.GetValueAsync()
-                                                          .ConfigureAwait(false);
-            });
+            return StringComparers.PropertyValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
         }
     }
 }
