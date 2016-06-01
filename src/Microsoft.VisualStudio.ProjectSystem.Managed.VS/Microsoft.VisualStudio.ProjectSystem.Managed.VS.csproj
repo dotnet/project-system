@@ -39,15 +39,12 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
-    <Compile Include="SpecialFileProviders\AbstractSpecialFileProvider.cs" />
-    <Compile Include="SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
-    <Compile Include="SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
-    <Compile Include="SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
