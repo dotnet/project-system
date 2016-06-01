@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 //--------------------------------------------------------------------------------------------
+// <summary>
 // FileRenameTracker
 //
 // Exports an IProjectChangeHintReceiver to listen to file renames. If the file being renamed
 // is a code file, it will prompt the user to rename the class to match. The rename is done
 // using Roslyn Renamer API
+// </summary>
 //--------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Immutable;
@@ -12,33 +14,29 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using Task = System.Threading.Tasks.Task;
-using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Export(typeof(IProjectChangeHintReceiver)), Export]
+    [Export(typeof(IProjectChangeHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityRenameHint.RenamedFileAsString)]
     [AppliesTo(ProjectCapability.CSharp)]
     internal class FileRenameTracker : IProjectChangeHintReceiver
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private IComponentModel _componentModel;
-        private VisualStudioWorkspace _visualStudioWorkspace;
+        private readonly VisualStudioWorkspace _visualStudioWorkspace;
+        private readonly SVsServiceProvider _serviceProvider;
 
-        /// <summary>
-        /// Gets the VS global service provider.
-        /// </summary>
-        [Import]
-        protected SVsServiceProvider ServiceProvider { get; private set; }
-        
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, SVsServiceProvider serviceProvider)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(visualStudioWorkspace, nameof(VisualStudioWorkspace));
+            Requires.NotNull(serviceProvider, nameof(SVsServiceProvider));
             _projectVsServices = projectVsServices;
+            _visualStudioWorkspace = visualStudioWorkspace;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
@@ -69,23 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
-
-            if (_visualStudioWorkspace == null)
-            {
-                _componentModel = (IComponentModel)ServiceProvider.GetService(typeof(SComponentModel));
-                _visualStudioWorkspace = _componentModel.GetService<VisualStudioWorkspace>();
-            }
-
-            IVsHierarchy hierarchy = _projectVsServices.Hierarchy;
-
-            EnvDTE.Project project = hierarchy.GetDTEProject();
-
+            
             var myProject = _visualStudioWorkspace
                 .CurrentSolution
-                .Projects.Where(p => String.Equals(p.FilePath, project.FullName, StringComparison.OrdinalIgnoreCase))
+                .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                 .FirstOrDefault();
 
-            var renamer = new Renamer(_visualStudioWorkspace, ServiceProvider, _projectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
+            var renamer = new Renamer(_visualStudioWorkspace, _serviceProvider, _projectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChanged;
         }
     }

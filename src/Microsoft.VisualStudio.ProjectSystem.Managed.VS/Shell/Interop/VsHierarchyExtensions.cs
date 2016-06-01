@@ -54,18 +54,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
             // NOTE: We consider it a bug in the underlying project system or the caller if this cast fails
             return (T)resultObject;
         }
-                
-        /// <summary>
-        /// Returns EnvDTE.Project object for the hierarchy
-        /// </summary>
-        public static EnvDTE.Project GetDTEProject(this IVsHierarchy hierarchy)
-        {
-            object extObject;
-            if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out extObject)))
-            {
-                return extObject as EnvDTE.Project;
-            }
-            return null;
-        }
+        
     }
 }

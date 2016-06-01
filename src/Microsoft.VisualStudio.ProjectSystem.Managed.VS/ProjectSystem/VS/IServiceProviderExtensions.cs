@@ -13,18 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             where InterfaceType : class
             where ServiceType : class
         {
-            InterfaceType service = null;
-
-            try
-            {
-                service = sp.GetService(typeof(ServiceType)) as InterfaceType;
-            }
-            catch
-            {
-            }
-
-            return service;
+            return (InterfaceType)sp.GetService(typeof(ServiceType));
         }
     }
 }
-

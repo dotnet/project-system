@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using RoslyRenamer = Microsoft.CodeAnalysis.Rename;
+using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
             _project = project;
             _newFilePath = newFilePath;
-            _oldDocument = (from d in project.Documents where d.FilePath.Equals(oldFilePath, StringComparison.OrdinalIgnoreCase) select d).FirstOrDefault();
+            _oldDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath,oldFilePath) select d).FirstOrDefault();
         }
 
         public void OnWorkspaceChanged(object sender, WorkspaceChangeEventArgs args)
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 Project project = (from p in args.NewSolution.Projects where p.Id.Equals(_project.Id) select p).FirstOrDefault();
                 Document addedDocument = (from d in project.Documents where d.Id.Equals(args.DocumentId) select d).FirstOrDefault();
-                if (addedDocument.FilePath.Equals(_newFilePath, StringComparison.OrdinalIgnoreCase))
+                if (StringComparers.Paths.Equals(addedDocument.FilePath, _newFilePath))
                 {
                     _docAdded = true;
                 }
@@ -67,8 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 _threadingService.JoinableTaskFactory.RunAsync(async () =>
                 {
-                    var myNewProject = _visualStudioWorkspace.CurrentSolution.Projects.Where(p => string.Equals(p.FilePath, _project.FilePath, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                    Document newDocument = (from d in myNewProject.Documents where d.FilePath.Equals(_newFilePath, StringComparison.OrdinalIgnoreCase) select d).FirstOrDefault();
+                    
+                    var myNewProject = _visualStudioWorkspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
+                    Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
                     if (newDocument == null)
                         return;
 
@@ -91,6 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (symbol == null)
                         return;
 
+                    await _threadingService.SwitchToUIThread();
+
                     // We're about to do a symbolic rename.If the user has asked us to prompt, We need to open a dialog and ask them  
                     //  Otherwise go ahead and do the rename.
                     EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
@@ -107,14 +110,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 return;
                             }
                         }
-                    }
+                    }                    
 
                     // Now do the rename
                     var optionSet = newDocument.Project.Solution.Workspace.Options;
-                    var renamedSolution = await RoslyRenamer.Renamer.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName, optionSet).ConfigureAwait(false);
-
-                    await _threadingService.SwitchToUIThread();
-
+                    var renamedSolution = await RoslynRenamer.Renamer.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName, optionSet).ConfigureAwait(true);
+                    
                     if (!newDocument.Project.Solution.Workspace.TryApplyChanges(renamedSolution))
                     {
                         string promptMessage = string.Format(Resources.RenameSymbolFailed, oldName);
