@@ -45,6 +45,7 @@
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectItemProviderFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />

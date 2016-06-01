@@ -24,9 +24,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
-            var provider = new SettingsFileSpecialFileProvider();
-            provider.ProjectTreeService = IProjectTreeServiceFactory.Create(inputTree);
-            provider.FileSystem = IFileSystemFactory.CreateWithExists(path => input.Contains(path));
+            var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
+            var sourceItemsProvider = IProjectItemProviderFactory.Create();
+            var fileSystem = IFileSystemFactory.CreateWithExists(path => input.Contains(path));
+
+            var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
 
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.FullPath);
             Assert.Equal(specialFilePath, filePath);

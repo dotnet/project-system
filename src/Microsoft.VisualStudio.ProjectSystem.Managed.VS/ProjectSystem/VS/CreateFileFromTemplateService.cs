@@ -15,8 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ICreateFileFromTemplateService))]
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
-        [Import]
-        private IUnconfiguredProjectVsServices ProjectVsServices { get; set; }
+        private IUnconfiguredProjectVsServices _projectVsServices;
+
+        [ImportingConstructor]
+        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices)
+        {
+            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+
+            _projectVsServices = projectVsServices;
+        }
 
         /// <summary>
         /// Get the language string to pass to the VS APIs for getting a template.
@@ -43,14 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <returns>true if file is added successfully.</returns>
         public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string specialFileName)
         {
-            Project project = ProjectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            Project project = _projectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
             var solution = project?.DTE?.Solution as Solution2;
             if (solution == null)
             {
                 return false;
             }
-
-            await ProjectVsServices.ThreadingService.SwitchToUIThread();
 
             string templateFilePath = solution.GetProjectItemTemplate(templateFile, GetTemplateLanguage(project));
 
@@ -58,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var parentId = parentNode.IsRoot() ? (uint)VSConstants.VSITEMID.Root : (uint)parentNode.Identity;
                 var result = new VSADDRESULT[1];
-                ProjectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
+                _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)
                 {
