@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string specialFileName)
         {
-            Project project = ProjectVsServices.Hierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
+            Project project = ProjectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
             var solution = project.DTE.Solution as Solution2;
 
             await ProjectVsServices.ThreadingService.SwitchToUIThread();
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var parentId = parentNode.IsRoot() ? (uint)VSConstants.VSITEMID.Root : (uint)parentNode.Identity;
                 var result = new VSADDRESULT[1];
-                ProjectVsServices.Project.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
+                ProjectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)
                 {
