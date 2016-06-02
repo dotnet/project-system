@@ -47,9 +47,10 @@
     <Compile Include="ProjectSystem\Properties\IProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\IUnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\ProjectCapability.cs" />
-    <Compile Include="ProjectSystem\AbstractAppDesignerFolderProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ProjectTreeFlagsExtensions.cs" />
     <Compile Include="ProjectSystem\AbstractSpecialFolderProjectTreePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\ProjectRuleSnapshotExtensions.cs" />
     <Compile Include="ProjectSystem\Rules\AppDesigner.xaml.cs">
       <DependentUpon>AppDesigner.xaml</DependentUpon>
     </Compile>

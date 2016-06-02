@@ -14,31 +14,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Visits the entire tree, calling <see cref="IProjectTreePropertiesProvider.CalculatePropertyValues(IProjectTreeCustomizablePropertyContext, IProjectTreeCustomizablePropertyValues)"/>
         ///     for every node.
         /// </summary>
-        public static IProjectTree ChangePropertyValuesForEntireTree(this IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree)
+        public static IProjectTree ChangePropertyValuesForEntireTree(this IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree, IImmutableDictionary<string, string> projectTreeSettings = null)
         {
             // Cheat here, because the IProjectTree that we get from ProjectTreeParser is mutable, we want to clone it
             // so that any properties providers changes don't affect the "original" tree. If we implemented a completely
             // immutable tree, then we wouldn't have to do that - but that's currently a lot of work for test-only purposes.
             string treeAsString = ProjectTreeWriter.WriteToString(tree);
 
-            return ChangePropertyValuesWalkingTree(propertiesProvider, ProjectTreeParser.Parse(treeAsString));
+            return ChangePropertyValuesWalkingTree(propertiesProvider, ProjectTreeParser.Parse(treeAsString), projectTreeSettings);
         }
 
-        private static IProjectTree ChangePropertyValuesWalkingTree(IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree)
+        private static IProjectTree ChangePropertyValuesWalkingTree(IProjectTreePropertiesProvider propertiesProvider, IProjectTree tree, IImmutableDictionary<string, string> projectTreeSettings)
         {
-            tree = ChangePropertyValues(propertiesProvider, tree);
+            tree = ChangePropertyValues(propertiesProvider, tree, projectTreeSettings);
 
             foreach (IProjectTree child in tree.Children)
             {
-                tree = ChangePropertyValuesWalkingTree(propertiesProvider, child).Parent;
+                tree = ChangePropertyValuesWalkingTree(propertiesProvider, child, projectTreeSettings).Parent;
             }
 
             return tree;
         }
 
-        private static IProjectTree ChangePropertyValues(IProjectTreePropertiesProvider propertiesProvider, IProjectTree child)
+        private static IProjectTree ChangePropertyValues(IProjectTreePropertiesProvider propertiesProvider, IProjectTree child, IImmutableDictionary<string, string> projectTreeSettings)
         {
-            var propertyContextAndValues = new ProjectTreeCustomizablePropertyContextAndValues(child);
+            var propertyContextAndValues = new ProjectTreeCustomizablePropertyContextAndValues(child, projectTreeSettings);
 
             propertiesProvider.CalculatePropertyValues(propertyContextAndValues, propertyContextAndValues);
 
@@ -49,9 +49,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private IProjectTree _tree;
 
-            public ProjectTreeCustomizablePropertyContextAndValues(IProjectTree tree)
+            public ProjectTreeCustomizablePropertyContextAndValues(IProjectTree tree, IImmutableDictionary<string, string> projectTreeSettings)
             {
                 _tree = tree;
+                ProjectTreeSettings = projectTreeSettings;
             }
 
             public IProjectTree Tree
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public IImmutableDictionary<string, string> ProjectTreeSettings
             {
-                get { throw new NotImplementedException(); }
+                get;
             }
         }
     }

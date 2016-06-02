@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -42,14 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
-        /// <summary>
-        ///     Gets a value indicating whether the contents of the special folder are only visible in Show All Files.
-        /// </summary>
-        public abstract bool ContentsVisibleOnlyInShowAllFiles
-        {
-            get;
-        }
-
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
             Requires.NotNull(propertyContext, nameof(propertyContext));
@@ -64,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return;
             }
 
-            if (ContentsVisibleOnlyInShowAllFiles && IsCandidateSpecialFolderItem(propertyContext, propertyValues.Flags))
+            if (AreContentsVisibleOnlyInShowAllFiles(propertyContext.ProjectTreeSettings) && IsCandidateSpecialFolderItem(propertyContext, propertyValues.Flags))
             {
                 ApplySpecialFolderItemProperties(propertyValues);
                 return;
@@ -75,6 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Returns a value indicating whether the specified property context represents the candidate special folder.
         /// </summary>
         protected abstract bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags);
+
+        /// <summary>
+        ///     Returns a value indicating whether the contents of the special folder are only visible in Show All Files.
+        /// </summary>
+        protected abstract bool AreContentsVisibleOnlyInShowAllFiles(IImmutableDictionary<string, string> projectTreeSettings);
 
         private bool IsCandidateSpecialFolderItem(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
         {

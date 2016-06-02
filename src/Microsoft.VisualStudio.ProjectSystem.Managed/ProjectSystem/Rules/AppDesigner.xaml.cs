@@ -7,5 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ExcludeFromCodeCoverage]
     partial class AppDesigner
     {
+        internal static string[] SchemaNameArray = new string[] { SchemaName };
     }
 }

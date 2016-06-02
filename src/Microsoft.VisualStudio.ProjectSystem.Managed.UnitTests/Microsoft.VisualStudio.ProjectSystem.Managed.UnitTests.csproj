@@ -44,6 +44,8 @@
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="Mocks\IUnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
+    <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
