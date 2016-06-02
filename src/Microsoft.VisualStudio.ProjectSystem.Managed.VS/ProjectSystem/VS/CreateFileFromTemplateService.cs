@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ICreateFileFromTemplateService))]
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
-        private IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
 
         [ImportingConstructor]
         public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices)
@@ -53,11 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             Project project = _projectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
-            var solution = project?.DTE?.Solution as Solution2;
-            if (solution == null)
-            {
-                return false;
-            }
+            var solution = project.DTE.Solution as Solution2;
 
             string templateFilePath = solution.GetProjectItemTemplate(templateFile, GetTemplateLanguage(project));
 

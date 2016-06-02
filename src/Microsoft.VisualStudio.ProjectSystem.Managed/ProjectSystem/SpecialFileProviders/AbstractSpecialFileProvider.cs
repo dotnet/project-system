@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -16,9 +17,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     /// </summary>
     internal abstract class AbstractSpecialFileProvider : ISpecialFileProvider
     {
+        private readonly IProjectTreeService _projectTreeService;
+        private readonly IProjectItemProvider _sourceItemsProvider;
+        private readonly IFileSystem _fileSystem;
+
+        /// <summary>
+        /// A service that knows to create a file from a template. In non-VS scenarios
+        /// this might not exist, in which case we provide a default implementation for adding
+        /// a file.
+        /// </summary>
+        private readonly Lazy<ICreateFileFromTemplateService> _templateFileCreationService;
+
         public AbstractSpecialFileProvider([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTreeService,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                           [Import(AllowDefault = true)] ICreateFileFromTemplateService templateFileCreationService,
+                                           [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                            IFileSystem fileSystem)
         {
             Requires.NotNull(projectTreeService, nameof(projectTreeService));
@@ -30,17 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             _templateFileCreationService = templateFileCreationService;
             _fileSystem = fileSystem;
         }
-
-        private IProjectTreeService _projectTreeService;
-        private IProjectItemProvider _sourceItemsProvider;
-        private IFileSystem _fileSystem;
-
-        /// <summary>
-        /// A service that knows to create a file from a template. In non-VS scenarios
-        /// this might not exist, in which case we provide a default implementation for adding
-        /// a file.
-        /// </summary>
-        private ICreateFileFromTemplateService _templateFileCreationService;
 
         /// <summary>
         /// If true, the special file is created under the app designer folder
@@ -110,13 +111,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private IProjectTree FindFile(string specialFileName)
         {
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
-
-            if (specialFileName == null)
-            {
-                return null;
-            }
-
             IProjectTree specialFileNode;
+
             // First, we look in the AppDesigner folder.
             IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
             if (appDesignerFolder != null && CreatedByDefaultUnderAppDesignerFolder)
@@ -146,18 +142,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             IProjectTree fileNode;
             parentNode.TryFindImmediateChild(fileName, out fileNode);
 
-            if (fileNode != null)
+            // The user has created a folder with this name which means we don't have a special file.
+            if (fileNode != null && fileNode.IsFolder)
             {
-                // The user has created a folder with this name which means we don't have a special file.
-                if (fileNode.IsFolder)
-                {
-                    return null;
-                }
-
-                return fileNode;
+                return null;
             }
 
-            return null;
+            return fileNode;
         }
 
         /// <summary>
@@ -228,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                fileCreated = await _templateFileCreationService.CreateFileAsync(templateFile, parentNode, specialFileName);
+                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(templateFile, parentNode, specialFileName);
             }
             else
             {
