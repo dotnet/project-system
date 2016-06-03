@@ -11,4 +11,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharpLanguageServiceHost")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharpProjectDesignerPageProvider")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.CSharpProjectCompatibilityProvider")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.CSharpProjectGuidProvider")]
 
