@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.VisualStudio.LanguageServices;
-using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -26,17 +25,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly VisualStudioWorkspace _visualStudioWorkspace;
-        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IVsEnvironmentServices _vsEnvironmentServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, SVsServiceProvider serviceProvider)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IVsEnvironmentServices vsEnvironmentServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(visualStudioWorkspace, nameof(VisualStudioWorkspace));
-            Requires.NotNull(serviceProvider, nameof(SVsServiceProvider));
+            Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));
+            Requires.NotNull(vsEnvironmentServices, nameof(vsEnvironmentServices));
+
             _projectVsServices = projectVsServices;
             _visualStudioWorkspace = visualStudioWorkspace;
-            _serviceProvider = serviceProvider;
+            _vsEnvironmentServices = vsEnvironmentServices;
         }
 
         public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
@@ -67,13 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
-            
-            var myProject = _visualStudioWorkspace
-                .CurrentSolution
-                .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
-                .FirstOrDefault();
 
-            var renamer = new Renamer(_visualStudioWorkspace, _serviceProvider, _projectVsServices.ThreadingService, myProject, newFilePath, oldFilePath);
+            var myProject = _visualStudioWorkspace
+                 .CurrentSolution
+                 .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
+                 .FirstOrDefault();
+            
+            var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _vsEnvironmentServices, myProject, oldFilePath, newFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChanged;
         }
     }

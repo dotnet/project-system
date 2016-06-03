@@ -1,42 +1,39 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using System;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.VisualStudio.LanguageServices;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class Renamer
     {
-        private readonly VisualStudioWorkspace _visualStudioWorkspace;
+        private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
-        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IVsEnvironmentServices _vsEnvironmentServices;
         private readonly Project _project;
         private readonly Document _oldDocument;
         private readonly string _newFilePath;
+        private readonly string _oldFilePath;
         private bool _docAdded = false;
         private bool _docRemoved = false;
         private bool _docChanged = false;
 
-        internal Renamer(VisualStudioWorkspace visualStudioWorkspace,
-                         SVsServiceProvider serviceProvider,
+        internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
+                         IVsEnvironmentServices vsEnvironmentServices,
                          Project project,
-                         string newFilePath,
-                         string oldFilePath)
+                         string oldFilePath,
+                         string newFilePath)
         {
-            _visualStudioWorkspace = visualStudioWorkspace;
-            _serviceProvider = serviceProvider;
+            _workspace = workspace;
             _threadingService = threadingService;
+            _vsEnvironmentServices = vsEnvironmentServices;
             _project = project;
             _newFilePath = newFilePath;
-            _oldDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath,oldFilePath) select d).FirstOrDefault();
+            _oldFilePath = oldFilePath;
+            _oldDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, oldFilePath) select d).FirstOrDefault();
         }
 
         public void OnWorkspaceChanged(object sender, WorkspaceChangeEventArgs args)
@@ -63,70 +60,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_docAdded && _docRemoved && _docChanged)
             {
-                _visualStudioWorkspace.WorkspaceChanged -= OnWorkspaceChanged;
-
-                _threadingService.JoinableTaskFactory.RunAsync(async () =>
-                {
-                    
-                    var myNewProject = _visualStudioWorkspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
-                    Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
-                    if (newDocument == null)
-                        return;
-
-                    var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
-                    if (root == null)
-                        return;
-
-                    string oldName = Path.GetFileNameWithoutExtension(_oldDocument.FilePath);
-                    string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
-
-                    var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
-                    if (declaration == null)
-                        return;
-
-                    var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
-                    if (semanticModel == null)
-                        return;
-
-                    var symbol = semanticModel.GetDeclaredSymbol(declaration);
-                    if (symbol == null)
-                        return;
-
-                    await _threadingService.SwitchToUIThread();
-
-                    // We're about to do a symbolic rename.If the user has asked us to prompt, We need to open a dialog and ask them  
-                    //  Otherwise go ahead and do the rename.
-                    EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
-                    var props = dte.Properties["Environment", "ProjectsAndSolution"];
-                    if (props != null)
-                    {
-                        if ((bool)props.Item("PromptForRenameSymbol").Value)
-                        {
-                            string promptMessage = string.Format(Resources.RenameSymbolPrompt, oldName);
-                            var result = VsShellUtilities.ShowMessageBox(_serviceProvider, promptMessage, null, OLEMSGICON.OLEMSGICON_QUERY,
-                                                            OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-                            if (result == (int)VSConstants.MessageBoxResult.IDNO)
-                            {
-                                return;
-                            }
-                        }
-                    }                    
-
-                    // Now do the rename
-                    var optionSet = newDocument.Project.Solution.Workspace.Options;
-                    var renamedSolution = await RoslynRenamer.Renamer.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName, optionSet).ConfigureAwait(true);
-                    
-                    if (!newDocument.Project.Solution.Workspace.TryApplyChanges(renamedSolution))
-                    {
-                        string promptMessage = string.Format(Resources.RenameSymbolFailed, oldName);
-                        var result = VsShellUtilities.ShowMessageBox(_serviceProvider, promptMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
-                                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-                    }
-                });
-
+                _workspace.WorkspaceChanged -= OnWorkspaceChanged;
+                var myNewProject = _workspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
+                Rename(myNewProject);
             }
         }
 
+        public void Rename(Project myNewProject)
+        {
+            _threadingService.JoinableTaskFactory.RunAsync(async () =>
+            {
+                Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
+                if (newDocument == null)
+                    return;
+
+                var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
+                if (root == null)
+                    return;
+
+                string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
+                string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
+
+                var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
+                if (declaration == null)
+                    return;
+
+                var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+                if (semanticModel == null)
+                    return;
+
+                var symbol = semanticModel.GetDeclaredSymbol(declaration);
+                if (symbol == null)
+                    return;
+
+                var userPrompted = await _vsEnvironmentServices.CheckPromptForRenameAsync(oldName).ConfigureAwait(false);
+                if (userPrompted)
+                {
+                    var renamedSolution = await _vsEnvironmentServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
+
+                    var renamedSolutionApplied = await _vsEnvironmentServices.ApplyChangesToSolutionAsync(newDocument.Project.Solution.Workspace, renamedSolution).ConfigureAwait(false);
+                    if (!renamedSolutionApplied)
+                    {
+                        string failureMessage = string.Format(Resources.RenameSymbolFailed, oldName);
+                        _vsEnvironmentServices.NotifyFailureAsync(failureMessage);
+                    }
+                }
+            });
+        }
+       
         private bool HasMatchingSyntaxNode(Document document, SyntaxNode syntaxNode, string name)
         {
             var generator = SyntaxGenerator.GetGenerator(document);
@@ -142,5 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             return false;
         }
+        
     }
 }
