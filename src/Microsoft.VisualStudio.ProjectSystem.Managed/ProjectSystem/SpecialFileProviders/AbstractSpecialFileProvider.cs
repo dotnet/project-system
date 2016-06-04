@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// if (asked to create)
         ///      Look in AppDesigner folder
         ///      Look in root folder
-        ///      Force-create in app-designer folder unless it's the app.config file, which
-        ///          the users expect in the root folder.
+        ///      Force-create in app-designer folder unless that file is not created there by default.
+        ///      In that case create under the root node.
         /// </summary>
         public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -163,15 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 if (forceSync)
                 {
                     // Since the file already exists on disk, just include it in the project.
-                    var showAllFilesProvider = _projectTreeService.CurrentTree.TreeProvider as IShowAllFilesProjectTreeProvider;
-
-                    // Cannot include files if tree provider doesn't support it.
-                    if (showAllFilesProvider == null)
-                    {
-                        return false;
-                    }
-
-                    await showAllFilesProvider.IncludeItemsAsync(ImmutableHashSet.Create(specialFileNode));
+                    await _sourceItemsProvider.AddAsync(specialFileNode.FilePath);
                     await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken);
                 }
                 else
