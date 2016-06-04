@@ -13,15 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)
         {
+            var catalog = CreateCatalog(CreateCatalogLookup(data));
             IPropertyPagesCatalogProvider propertyPagesCatalogProvider = CreateCatalogProvider(
                     new Dictionary<string, IPropertyPagesCatalog>
                     {
-                        { "Project", CreateCatalog(CreateCatalogLookup(data)) }
-                    }
+                        { "Project", catalog }
+                    },
+                    catalog
                 );
 
+            IAdditionalRuleDefinitionsService ruleService = Mock.Of<IAdditionalRuleDefinitionsService>();
+
             IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
-                o.PropertyPagesCatalog == propertyPagesCatalogProvider);
+                o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
+                o.AdditionalRuleDefinitions == ruleService);            
 
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == unconfiguredProject &&
@@ -44,12 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return catalog;
         }
 
-        private static IPropertyPagesCatalogProvider CreateCatalogProvider(Dictionary<string, IPropertyPagesCatalog> catalogsByContext)
+        private static IPropertyPagesCatalogProvider CreateCatalogProvider(Dictionary<string, IPropertyPagesCatalog> catalogsByContext, IPropertyPagesCatalog catalog)
         {
             var catalogProvider = new Mock<IPropertyPagesCatalogProvider>();
             catalogProvider
                 .Setup(o => o.GetCatalogsAsync(CancellationToken.None))
                 .ReturnsAsync(catalogsByContext.ToImmutableDictionary());
+
+            catalogProvider
+                .Setup(o => o.GetMemoryOnlyCatalog(It.IsAny<string>()))
+                .Returns(catalog);
 
             return catalogProvider.Object;
         }
@@ -60,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                    .Returns((string schemaName, string file, string itemType, string itemName) => {
 
-                    return rulesBySchemaName[schemaName];
+                       return rulesBySchemaName.Values.First();
                 });
 
             return catalog.Object;
