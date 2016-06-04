@@ -120,11 +120,5 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
   </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
