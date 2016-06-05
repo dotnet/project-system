@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />

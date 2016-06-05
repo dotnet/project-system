@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
@@ -46,7 +47,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
             var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
-            var fileSystem = IFileSystemFactory.CreateWithExists(path => true);
+            var fileSystem = IFileSystemFactory.Create(path => true);
 
             var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
 
@@ -73,7 +74,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
             var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
-            var fileSystem = IFileSystemFactory.CreateWithExists(path => true);
+            var fileSystem = IFileSystemFactory.Create(path => true);
 
             var provider = new AppConfigFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
 
@@ -94,7 +95,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
             var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
-            var fileSystem = IFileSystemFactory.CreateWithExists(path => true);
+            var fileSystem = IFileSystemFactory.Create(path => true);
 
             var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
 
@@ -121,7 +122,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
             var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
-            var fileSystem = IFileSystemFactory.CreateWithExists(path => fileExistsOnDisk);
+            var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk);
 
             var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
 
@@ -133,21 +134,150 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+", @"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Properties\Settings.settings")]
-        public async Task CreateFile_InAppDesignerFolder(string input, string expectedFilePath)
+        public async Task CreateFile_InAppDesignerFolder(string input, string expected, string expectedFilePath)
         {
             var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
 
             var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
-            var sourceItemsProvider = IProjectItemProviderFactory.Create();
-            var fileSystem = IFileSystemFactory.CreateWithExists(path => true);
+            var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
+            var fileSystem = IFileSystemFactory.Create(path => false,
+                                                       path =>
+                                                       {
+                                                           // Verify that file is created on disk.
+                                                           Assert.Equal(expectedFilePath, path);
+                                                           return null;
+                                                       });
 
             var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
-
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
+
             Assert.Equal(expectedFilePath, filePath);
+            AssertAreEquivalent(expectedTree, inputTree);
+        }
+
+        [Theory]
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+", @"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+    App.config, FilePath: ""C:\Foo\App.config""
+", @"C:\Foo\App.config")]
+        public async Task CreateFile_InRootFolder(string input, string expected, string expectedFilePath)
+        {
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+
+            var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
+            var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
+            var fileSystem = IFileSystemFactory.Create(path => false,
+                                                       path =>
+                                                       {
+                                                           // Verify that file is created on disk.
+                                                           Assert.Equal(expectedFilePath, path);
+                                                           return null;
+                                                       });
+
+            var provider = new AppConfigFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
+            var filePath = await provider.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(expectedFilePath, filePath);
+            AssertAreEquivalent(expectedTree, inputTree);
+        }
+
+        [Theory]
+        // A file exists in the tree but not in the file system
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
+", @"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
+", /*fileExistsOnDisk*/ false, @"C:\Foo\Properties\Settings.settings")]
+        // A file exists on disk but is not included in the project.
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings (flags: {IncludeInProjectCandidate}), FilePath: ""C:\Foo\Properties\Settings.settings""
+", @"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
+", /*fileExistsOnDisk*/ true, @"C:\Foo\Properties\Settings.settings")]
+        public async Task CreateFile_NotInSync(string input, string expected, bool fileExistsOnDisk, string expectedFilePath)
+        {
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+
+            var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
+            var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
+            var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk, 
+                                                       path => 
+                                                       {
+                                                           // Verify that file is created on disk.
+                                                           Assert.False(fileExistsOnDisk);
+                                                           Assert.Equal(expectedFilePath, path);
+                                                           return null;
+                                                       });
+
+            var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, null, fileSystem);
+            var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(expectedFilePath, filePath);
+            AssertAreEquivalent(expectedTree, inputTree);
         }
 
 
+        [Theory]
+        // A file exists in the tree but not in the file system
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+", @"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
+", @"C:\Foo\Properties\Settings.settings")]
+        public async Task CreateFile_CallTemplateProvider(string input, string expected, string expectedFilePath)
+        {
+            var inputTree = ProjectTreeParser.Parse(input);
+            var expectedTree = ProjectTreeParser.Parse(expected);
+
+            var projectTreeService = IProjectTreeServiceFactory.Create(inputTree);
+            var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
+            var fileSystem = IFileSystemFactory.Create(path => false,
+                                                       path =>
+                                                       {
+                                                           // Verify that file is created on disk.
+                                                           Assert.False(true, "File system create shouldn't have been called directly.");
+                                                           return null;
+                                                       });
+            var templateProvider = new Lazy<ICreateFileFromTemplateService>(() => ICreateFileFromTemplateServiceFactory.Create());
+
+            var provider = new SettingsFileSpecialFileProvider(projectTreeService, sourceItemsProvider, templateProvider, fileSystem);
+            var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(expectedFilePath, filePath);
+            AssertAreEquivalent(expectedTree, inputTree);
+        }
+
+        private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
+        {
+            Assert.NotSame(expected, actual);
+
+            string expectedAsString = ProjectTreeWriter.WriteToString(expected);
+            string actualAsString = ProjectTreeWriter.WriteToString(actual);
+
+            Assert.Equal(expectedAsString, actualAsString);
+        }
     }
 }

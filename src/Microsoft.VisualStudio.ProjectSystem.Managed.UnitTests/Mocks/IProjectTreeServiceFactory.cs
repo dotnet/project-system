@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Mocks
             treeStateMock.SetupGet(state => state.Tree)
                          .Returns(tree);
             treeStateMock.SetupGet(state => state.TreeProvider)
-                         .Returns(IProjectTreeProviderFactory.CreateWithGetPath());
+                         .Returns(IProjectTreeProviderFactory.Create());
 
             mock.SetupGet(s => s.CurrentTree)
                 .Returns(treeStateMock.Object);

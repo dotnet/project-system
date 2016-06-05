@@ -137,7 +137,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Add(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                var mutableTree = subtree as MutableProjectTree;
+                if (mutableTree != null)
+                {
+                    Children.Add(mutableTree);
+                }
+
+                return this;
             }
 
             IEnumerable<IProjectTreeDiff> IProjectTree.ChangesSince(IProjectTree priorVersion)
@@ -162,7 +168,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Remove(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                var mutableTree = subtree as MutableProjectTree;
+                if (mutableTree != null)
+                {
+                    if (Children.Contains(mutableTree))
+                    {
+                        Children.Remove(mutableTree);
+                    }
+                }
+
+                return this;
             }
 
             IProjectItemTree IProjectTree.Replace(IProjectItemTree subtree)
@@ -225,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (caption != null)
                     Caption = caption;
 
-                if (FilePath != null)
+                if (filePath != null)
                     FilePath = filePath;
 
                 if (visible != null)
