@@ -46,10 +46,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         /// <param name="templateFile">The name of the template zip file.</param>
         /// <param name="parentNode">The node to which the new file will be added.</param>
-        /// <param name="specialFileName">The name of the file to be created.</param>
+        /// <param name="fileName">The name of the file to be created.</param>
         /// <returns>true if file is added successfully.</returns>
-        public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string specialFileName)
+        public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string fileName)
         {
+            Requires.NotNull(templateFile, nameof(templateFile));
+            Requires.NotNull(parentNode, nameof(parentNode));
+            Requires.NotNull(fileName, nameof(fileName));
+
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             Project project = _projectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
@@ -61,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var parentId = parentNode.IsRoot() ? (uint)VSConstants.VSITEMID.Root : (uint)parentNode.Identity;
                 var result = new VSADDRESULT[1];
-                _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, specialFileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
+                _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)
                 {

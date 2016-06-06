@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new IntPtr(Caption.GetHashCode());
                 }
             }
 

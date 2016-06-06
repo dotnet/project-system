@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         /// <param name="templateFile">The name of the template zip file.</param>
         /// <param name="parentNode">The node to which the new file will be added.</param>
-        /// <param name="specialFileName">The name of the file to be created.</param>
+        /// <param name="fileName">The name of the file to be created.</param>
         /// <returns>true if file is added successfully.</returns>
-        Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string specialFileName);
+        Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string fileName);
     }
 }
