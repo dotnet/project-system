@@ -11,6 +11,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ProjectSystemTrait]
     public class SpecialFileProviderTests
     {
+        [Fact]
+        public void Constructor_NullProjectTreeService_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>("projectTreeService", () =>
+            {
+                new SettingsFileSpecialFileProvider(null, IProjectItemProviderFactory.Create(), null, IFileSystemFactory.Create(null));
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullSourceItemsProvider_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>("sourceItemsProvider", () =>
+            {
+                new SettingsFileSpecialFileProvider(IProjectTreeServiceFactory.Create(null), null, null, IFileSystemFactory.Create(null));
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullFileSystem_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>("fileSystem", () =>
+            {
+                new SettingsFileSpecialFileProvider(IProjectTreeServiceFactory.Create(null), IProjectItemProviderFactory.Create(), null, null);
+            });
+        }
+
         [Theory]
         // No file - return default path.
         [InlineData(@"
