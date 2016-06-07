@@ -15,6 +15,12 @@
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
 
+  <!-- Project Capabilities -->
+  <ItemGroup>
+    <ProjectCapability Include="AppDesigner"/>
+  </ItemGroup>
+  
+  <!-- CPS Project Properties -->
   <ItemGroup>
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>

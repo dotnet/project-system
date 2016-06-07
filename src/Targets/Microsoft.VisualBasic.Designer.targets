@@ -14,7 +14,13 @@
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
-  
+
+  <!-- Project Capabilities -->
+  <ItemGroup>
+    <ProjectCapability Include="AppDesigner"/>
+  </ItemGroup>
+
+  <!-- CPS Project Properties -->
   <ItemGroup>
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
