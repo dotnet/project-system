@@ -2,18 +2,19 @@
 
 using System;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Packaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/> and <see cref="IAddItemTemplatesGuidProvider"/>.
     /// </summary>
-    //[Export(typeof(IItemTypeGuidProvider))]
-    //[Export(typeof(IAddItemTemplatesGuidProvider))]
+    [Export(typeof(IItemTypeGuidProvider))]
+    [Export(typeof(IAddItemTemplatesGuidProvider))]
     [AppliesTo(ProjectCapabilities.VB)]
     internal class VisualBasicProjectGuidProvider : IItemTypeGuidProvider, IAddItemTemplatesGuidProvider
     {
-        private static readonly Guid s_visualBasicProjectType = new Guid("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}");
+        private static readonly Guid s_visualBasicProjectType = new Guid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
         public VisualBasicProjectGuidProvider(UnconfiguredProject unconfiguredProject)
