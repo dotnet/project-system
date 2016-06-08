@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     Integrates the Visual Basic language service with the Visual Basic project system.
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
+    [Export(typeof(IProjectCodeModelProvider))]
     [Export(typeof(IProjectWithIntellisense))]
     [AppliesTo(ProjectCapability.VisualBasicLanguageService)]
     [ExcludeFromCodeCoverage] // This is being thrown away: https://github.com/dotnet/roslyn-project-system/issues/131

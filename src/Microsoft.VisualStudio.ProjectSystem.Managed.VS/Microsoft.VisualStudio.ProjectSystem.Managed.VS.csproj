@@ -39,6 +39,7 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
     <Compile Include="Shell\HierarchyId.cs" />

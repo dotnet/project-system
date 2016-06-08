@@ -55,7 +55,10 @@
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
     <Compile Include="Mocks\IVsHierarchyFactory.cs" />
     <Compile Include="Mocks\IVsProjectFactory.cs" />
+    <Compile Include="Mocks\ProjectFactory.cs" />
+    <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />

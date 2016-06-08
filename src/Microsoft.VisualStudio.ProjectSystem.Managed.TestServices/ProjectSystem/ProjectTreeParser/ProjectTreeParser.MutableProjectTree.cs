@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -93,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new IntPtr(Caption.GetHashCode());
                 }
             }
 
@@ -136,7 +137,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Add(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                var mutableTree = subtree as MutableProjectTree;
+                if (mutableTree != null)
+                {
+                    Children.Add(mutableTree);
+                }
+
+                return this;
             }
 
             IEnumerable<IProjectTreeDiff> IProjectTree.ChangesSince(IProjectTree priorVersion)
@@ -161,7 +168,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Remove(IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                var mutableTree = subtree as MutableProjectTree;
+                if (mutableTree != null)
+                {
+                    if (Children.Contains(mutableTree))
+                    {
+                        Children.Remove(mutableTree);
+                    }
+                }
+
+                return this;
             }
 
             IProjectItemTree IProjectTree.Replace(IProjectItemTree subtree)
@@ -215,7 +231,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             bool IProjectTree.TryFindImmediateChild(string caption, out IProjectTree subtree)
             {
-                throw new NotImplementedException();
+                subtree = Children.FirstOrDefault(c => c.Caption == caption);
+                return subtree != null;
             }
 
             public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? visible = default(bool?), ProjectTreeFlags? flags = default(ProjectTreeFlags?), IProjectPropertiesContext context = null, IPropertySheet propertySheet = null, bool? isLinked = default(bool?), bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
@@ -223,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (caption != null)
                     Caption = caption;
 
-                if (FilePath != null)
+                if (filePath != null)
                     FilePath = filePath;
 
                 if (visible != null)
