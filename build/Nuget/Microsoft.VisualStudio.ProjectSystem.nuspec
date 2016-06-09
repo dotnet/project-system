@@ -2,9 +2,6 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.VisualStudio.ProjectSystem</id>
-    <!-- CoreXT - This package is nothing but a zip file of all the assemblies
-         Should this package be a normal package where the dependencies are stated as Nugets as well?
-         The answer I guess is because all of our dependencies are nuget packages as well -->
     <summary>CoreXT package for Microsoft Project System for C# and VB </summary>
     <description>
       This Project system is a re-write of the C# and VB project system in Managed Language
@@ -21,12 +18,22 @@
   </metadata>
   <files>
     <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.AppDesigner.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.Editors.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.Editors.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.xml" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.pkgdef" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.Managed.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.xml" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.pkgdef" target="lib\net46" />
   </files>
 </package>
