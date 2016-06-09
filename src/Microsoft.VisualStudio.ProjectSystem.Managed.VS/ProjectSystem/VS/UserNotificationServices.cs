@@ -2,30 +2,31 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
-using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IVsEnvironmentServices"/> that delegates onto 
+    ///     Provides an implementation of <see cref="IUserNotificationServices"/> that delegates onto 
     /// </summary>
-    [Export(typeof(IVsEnvironmentServices))]
-    internal class VsEnvironmentServices : IVsEnvironmentServices
+    [Export(typeof(IUserNotificationServices))]
+    internal class UserNotificationServices : IUserNotificationServices
     {
         private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
+        private readonly IOptionsSettings _optionsSettings;
 
         [ImportingConstructor]
-        public VsEnvironmentServices(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
+        public UserNotificationServices(IOptionsSettings optionsSettings, SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(optionsSettings, nameof(optionsSettings));
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
+            _optionsSettings = optionsSettings;
         }
 
         public async Task<bool> CheckPromptAsync(string promptMessage)
@@ -48,22 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                     OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
-        public async Task<T> GetEnvironmentSettingAsync<T>(string category, string page, string property, T defaultValue)
-        {
-            await _threadingService.SwitchToUIThread();
-
-            EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
-            var props = dte.Properties[category, page];
-            if (props != null)
-            {
-                return ((T)props.Item(property).Value);
-            }
-            return defaultValue;
-        }
-
         public async Task<bool> CheckPromptForRenameAsync(string oldName)
         {
-            var userSetting = await GetEnvironmentSettingAsync<bool>("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false).ConfigureAwait(false);
+            var userSetting = await _optionsSettings.GetPropertiesValueAsync("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false).ConfigureAwait(false);
             if (userSetting)
             {
                 string promptMessage = string.Format(Resources.RenameSymbolPrompt, oldName);
@@ -72,16 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return false;
         }
 
-        public async Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
+        public void NotifyRenameFailureAsync(string oldName)
         {
-            var optionSet = solution.Workspace.Options;
-            return await RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, optionSet).ConfigureAwait(false);
+            string failureMessage = string.Format(Resources.RenameSymbolFailed, oldName);
+            NotifyFailureAsync(failureMessage);
         }
 
-        public async Task<bool> ApplyChangesToSolutionAsync(Workspace ws, Solution renamedSolution)
-        {
-            await _threadingService.SwitchToUIThread();
-            return ws.TryApplyChanges(renamedSolution);
-        }
     }
 }

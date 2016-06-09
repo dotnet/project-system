@@ -30,7 +30,10 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
-    <Compile Include="ProjectSystem\VS\IVsEnvironmentServices.cs" />
+    <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
+    <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
     <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
@@ -43,6 +46,8 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />

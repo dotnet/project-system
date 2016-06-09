@@ -11,7 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsEnvironmentServices _vsEnvironmentServices;
+        private readonly IUserNotificationServices _userNotificationServices;
+        private readonly IRoslynServices _roslynServices;
         private readonly Project _project;
         private readonly Document _oldDocument;
         private readonly string _newFilePath;
@@ -22,14 +23,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
-                         IVsEnvironmentServices vsEnvironmentServices,
+                         IUserNotificationServices userNotificationServices,
+                         IRoslynServices roslynServices,
                          Project project,
                          string oldFilePath,
                          string newFilePath)
         {
             _workspace = workspace;
             _threadingService = threadingService;
-            _vsEnvironmentServices = vsEnvironmentServices;
+            _userNotificationServices = userNotificationServices;
+            _roslynServices = roslynServices;
             _project = project;
             _newFilePath = newFilePath;
             _oldFilePath = oldFilePath;
@@ -93,16 +96,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (symbol == null)
                     return;
 
-                var userPrompted = await _vsEnvironmentServices.CheckPromptForRenameAsync(oldName).ConfigureAwait(false);
+                var userPrompted = await _userNotificationServices.CheckPromptForRenameAsync(oldName).ConfigureAwait(false);
                 if (userPrompted)
                 {
-                    var renamedSolution = await _vsEnvironmentServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
+                    var renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
 
-                    var renamedSolutionApplied = await _vsEnvironmentServices.ApplyChangesToSolutionAsync(newDocument.Project.Solution.Workspace, renamedSolution).ConfigureAwait(false);
+                    var renamedSolutionApplied = await _roslynServices.ApplyChangesToSolutionAsync(newDocument.Project.Solution.Workspace, renamedSolution).ConfigureAwait(false);
                     if (!renamedSolutionApplied)
                     {
-                        string failureMessage = string.Format(Resources.RenameSymbolFailed, oldName);
-                        _vsEnvironmentServices.NotifyFailureAsync(failureMessage);
+                        _userNotificationServices.NotifyRenameFailureAsync(oldName);
                     }
                 }
             });

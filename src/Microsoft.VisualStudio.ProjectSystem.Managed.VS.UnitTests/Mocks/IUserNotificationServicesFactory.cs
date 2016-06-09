@@ -6,11 +6,11 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal static class IVsEnvironmentServicesFactory
+    internal static class IUserNotificationServicesFactory
     {
-        public static IVsEnvironmentServices Implement(Func<string, Task<bool>> promptForRename)
+        public static IUserNotificationServices Implement(Func<string, Task<bool>> promptForRename)
         {
-            var mock = new Mock<IVsEnvironmentServices>();
+            var mock = new Mock<IUserNotificationServices>();
            
             mock.Setup(h => h.CheckPromptForRenameAsync(It.IsAny<string>()))
                 .Returns(promptForRename);

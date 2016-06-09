@@ -48,10 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, soureCode));
                 Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
 
-                var threadingService = IProjectThreadingServiceFactory.Create();
-                var vsEnvironmentServices = IVsEnvironmentServicesFactory.Implement(f => PromptForRenameAsync(newFilePath));
+                var vsEnvironmentServices = IUserNotificationServicesFactory.Implement(f => PromptForRenameAsync(newFilePath));
 
-                var renamer = new Renamer(ws, threadingService, vsEnvironmentServices, project, oldFilePath, newFilePath);
+                var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), vsEnvironmentServices, null, project, oldFilePath, newFilePath);
                 renamer.Rename(project);
             }
         }
