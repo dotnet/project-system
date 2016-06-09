@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
+    <NugetPackageFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.nuget.proj" />
   </ItemGroup>
 
   <Target Name="RestorePackages">
@@ -36,6 +37,14 @@
              Targets="Build"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
+
+    <Message Text="Building %(NugetPackageFile.Filename) [$(Configuration)]" Importance="high" />
+    
+    <MSBuild BuildInParallel="true"
+             Projects="@(NugetPackageFile)"
+             Targets="Build"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
   </Target>
 
   <Target Name="RebuildSolution">
@@ -44,6 +53,14 @@
 
     <MSBuild BuildInParallel="true"
              Projects="@(SolutionFile)"
+             Targets="Rebuild"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
+
+    <Message Text="Rebuilding %(NugetPackageFile.Filename) [$(Configuration)]" Importance="high" />
+
+    <MSBuild BuildInParallel="true"
+             Projects="@(NugetPackageFile)"
              Targets="Rebuild"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
