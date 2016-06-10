@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
-    <NugetPackageFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.nuget.proj" />
+    <NugetPackageFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.VSInsertionNuget.proj" />
   </ItemGroup>
 
   <Target Name="RestorePackages">
