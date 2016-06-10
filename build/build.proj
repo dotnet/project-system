@@ -37,14 +37,6 @@
              Targets="Build"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
-
-    <Message Text="Building %(NugetPackageFile.Filename) [$(Configuration)]" Importance="high" />
-    
-    <MSBuild BuildInParallel="true"
-             Projects="@(NugetPackageFile)"
-             Targets="Build"
-             Properties="$(CommonMSBuildGlobalProperties)"
-             />
   </Target>
 
   <Target Name="RebuildSolution">
@@ -56,12 +48,15 @@
              Targets="Rebuild"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
+  </Target>
+  
+  <Target Name="BuildVsInsertionNuget">
 
-    <Message Text="Rebuilding %(NugetPackageFile.Filename) [$(Configuration)]" Importance="high" />
+    <Message Text="Building %(NugetPackageFile.Filename)" Importance="high" />
 
     <MSBuild BuildInParallel="true"
              Projects="@(NugetPackageFile)"
-             Targets="Rebuild"
+             Targets="Build"
              Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
@@ -87,7 +82,7 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;Test" />
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildVsInsertionNuget;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;BuildVsInsertionNuget;Test" />
 
 </Project>

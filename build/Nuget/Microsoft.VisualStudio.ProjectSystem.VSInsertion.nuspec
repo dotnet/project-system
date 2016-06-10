@@ -4,7 +4,8 @@
     <id>Microsoft.VisualStudio.ProjectSystem.VSInsertion</id>
     <summary>Visual Studio Insertion package for Microsoft Project System for C# and VB </summary>
     <description>
-      This Project system is a re-write of the C# and VB project system in Managed Language
+      This Project system is a re-write of the C# and VB project system in Managed Language. This is restrictly
+      used for VS insertion purpose only
     </description>  
     <language>en-US</language>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -13,8 +14,8 @@
     <authors>Managed Languages</authors>
     <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=394369</licenseUrl>
     <projectUrl>https://github.com/dotnet/roslyn-project-system</projectUrl>
-    <releaseNotes>Preview of Roslyn based Project System</releaseNotes>
-    <tags>Roslyn ProjectSystem PS CSharp VisualBasic VisualStudio</tags>
+    <releaseNotes>Roslyn based Project System VSInsertion package</releaseNotes>
+    <tags></tags>
   </metadata>
   <files>
     <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib\net46" />
