@@ -9,6 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName);
 
-        Task<bool> ApplyChangesToSolutionAsync(Workspace ws, Solution renamedSolution);
+        bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -12,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
         private readonly IUserNotificationServices _userNotificationServices;
+        private readonly IOptionsSettings _optionsSettings;
         private readonly IRoslynServices _roslynServices;
         private readonly Project _project;
         private readonly Document _oldDocument;
@@ -24,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
                          IUserNotificationServices userNotificationServices,
+                         IOptionsSettings optionsSettings,
                          IRoslynServices roslynServices,
                          Project project,
                          string oldFilePath,
@@ -32,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _workspace = workspace;
             _threadingService = threadingService;
             _userNotificationServices = userNotificationServices;
+            _optionsSettings = optionsSettings;
             _roslynServices = roslynServices;
             _project = project;
             _newFilePath = newFilePath;
@@ -39,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _oldDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, oldFilePath) select d).FirstOrDefault();
         }
 
-        public void OnWorkspaceChanged(object sender, WorkspaceChangeEventArgs args)
+        public async void OnWorkspaceChangedAsync(object sender, WorkspaceChangeEventArgs args)
         {
             if (args.Kind == WorkspaceChangeKind.DocumentAdded && args.ProjectId == _project.Id)
             {
@@ -63,53 +67,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_docAdded && _docRemoved && _docChanged)
             {
-                _workspace.WorkspaceChanged -= OnWorkspaceChanged;
+                _workspace.WorkspaceChanged -= OnWorkspaceChangedAsync;
                 var myNewProject = _workspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
-                Rename(myNewProject);
+                await RenameAsync(myNewProject).ConfigureAwait(false);
             }
         }
 
-        public void Rename(Project myNewProject)
+        public async Task RenameAsync(Project myNewProject)
         {
-            _threadingService.JoinableTaskFactory.RunAsync(async () =>
+            Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
+            if (newDocument == null)
+                return;
+
+            var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
+            if (root == null)
+                return;
+
+            string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
+
+            var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
+            if (declaration == null)
+                return;
+
+            var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+            if (semanticModel == null)
+                return;
+
+            var symbol = semanticModel.GetDeclaredSymbol(declaration);
+            if (symbol == null)
+                return;
+
+            var userConfirmed = true;
+            await _threadingService.SwitchToUIThread();
+            var userNeedPrompt =  _optionsSettings.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+
+            if (userNeedPrompt)
             {
-                Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
-                if (newDocument == null)
-                    return;
+                string renamePromptMessage = string.Format(Resources.RenameSymbolPrompt, oldName);
 
-                var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
-                if (root == null)
-                    return;
+                await _threadingService.SwitchToUIThread();
+                userConfirmed = _userNotificationServices.Confirm(renamePromptMessage);
+            }
+            
+            if (userConfirmed)
+            {
+                var renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
 
-                string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
-                string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
+                await _threadingService.SwitchToUIThread();
+                var renamedSolutionApplied = _roslynServices.ApplyChangesToSolution(newDocument.Project.Solution.Workspace, renamedSolution);
 
-                var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
-                if (declaration == null)
-                    return;
-
-                var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
-                if (semanticModel == null)
-                    return;
-
-                var symbol = semanticModel.GetDeclaredSymbol(declaration);
-                if (symbol == null)
-                    return;
-
-                var userPrompted = await _userNotificationServices.CheckPromptForRenameAsync(oldName).ConfigureAwait(false);
-                if (userPrompted)
+                if (!renamedSolutionApplied)
                 {
-                    var renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
-
-                    var renamedSolutionApplied = await _roslynServices.ApplyChangesToSolutionAsync(newDocument.Project.Solution.Workspace, renamedSolution).ConfigureAwait(false);
-                    if (!renamedSolutionApplied)
-                    {
-                        _userNotificationServices.NotifyRenameFailureAsync(oldName);
-                    }
+                    string failureMessage = string.Format(Resources.RenameSymbolFailed, oldName);
+                    await _threadingService.SwitchToUIThread();
+                    _userNotificationServices.NotifyFailure(failureMessage);
                 }
-            });
+            }
         }
-       
+
         private bool HasMatchingSyntaxNode(Document document, SyntaxNode syntaxNode, string name)
         {
             var generator = SyntaxGenerator.GetGenerator(document);
@@ -125,6 +141,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             return false;
         }
-        
     }
 }

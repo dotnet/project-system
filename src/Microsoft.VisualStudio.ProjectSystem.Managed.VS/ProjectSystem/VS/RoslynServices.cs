@@ -8,36 +8,20 @@ using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    /// <summary>
-    ///     Provides an implementation of <see cref="IRoslynServices"/> that delegates onto 
-    /// </summary>
     [Export(typeof(IRoslynServices))]
     internal class RoslynServices : IRoslynServices
     {
-        private readonly IProjectThreadingService _threadingService;
-       
-        [ImportingConstructor]
-        public RoslynServices(IProjectThreadingService threadingService)
-        {
-            Requires.NotNull(threadingService, nameof(threadingService));
-            _threadingService = threadingService;
-        }
-
         public async Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
         {
             var optionSet = solution.Workspace.Options;
             return await RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, optionSet).ConfigureAwait(false);
         }
-        /// <summary>
-        ///  Applies the provided solution to the workspace 
-        ///  Make sure this is always called from an UI Thread.
-        /// </summary>
-        /// <param name="ws"></param>
-        /// <param name="renamedSolution"></param>
-        /// <returns></returns>
-        public async Task<bool> ApplyChangesToSolutionAsync(Workspace ws, Solution renamedSolution)
+        
+        public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
         {
-            await _threadingService.SwitchToUIThread();
+            // TODO: VerifyONUIThread()
+
+            // Always make sure TryApplyChanges is called from an UI thread.
             return ws.TryApplyChanges(renamedSolution);
         }
     }

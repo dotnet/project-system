@@ -25,19 +25,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly VisualStudioWorkspace _visualStudioWorkspace;
+        private readonly IOptionsSettings _optionsSettings;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IRoslynServices _roslynServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IOptionsSettings optionsSettings,  IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));
+            Requires.NotNull(optionsSettings, nameof(optionsSettings));
             Requires.NotNull(userNotificationServices, nameof(userNotificationServices));
             Requires.NotNull(roslynServices, nameof(roslynServices));
 
             _projectVsServices = projectVsServices;
             _visualStudioWorkspace = visualStudioWorkspace;
+            _optionsSettings = optionsSettings;
             _userNotificationServices = userNotificationServices;
             _roslynServices = roslynServices;
         }
@@ -76,8 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                  .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                  .FirstOrDefault();
             
-            var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices, _roslynServices,  myProject, oldFilePath, newFilePath);
-            _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChanged;
+            var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices,  _optionsSettings, _roslynServices,  myProject, oldFilePath, newFilePath);
+            _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChangedAsync;
         }
     }
 }

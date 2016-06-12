@@ -8,27 +8,21 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    /// <summary>
-    ///     Provides an implementation of <see cref="IOptionsSettings"/> that delegates onto 
-    /// </summary>
     [Export(typeof(IOptionsSettings))]
     internal class OptionsSettings : IOptionsSettings
     {
         private readonly SVsServiceProvider _serviceProvider;
-        private readonly IProjectThreadingService _threadingService;
-       
+        
         [ImportingConstructor]
-        public OptionsSettings(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
+        public OptionsSettings(SVsServiceProvider serviceProvider)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(threadingService, nameof(threadingService));
             _serviceProvider = serviceProvider;
-            _threadingService = threadingService;
         }
 
-        public async Task<T> GetPropertiesValueAsync<T>(string category, string page, string property, T defaultValue)
+        public T GetPropertiesValue<T>(string category, string page, string property, T defaultValue)
         {
-            await _threadingService.SwitchToUIThread();
+            //TODO : VerifyOnUIThread();
 
             EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
             var props = dte.Properties[category, page];
@@ -38,7 +32,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             return defaultValue;
         }
-
-        
     }
 }
