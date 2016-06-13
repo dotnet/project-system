@@ -11,14 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectTreeService>();
 
-            var treeStateMock = new Mock<IProjectTreeServiceState>();
-            treeStateMock.SetupGet(state => state.Tree)
-                         .Returns(tree);
-            treeStateMock.SetupGet(state => state.TreeProvider)
-                         .Returns(IProjectTreeProviderFactory.Create());
+            var treeState = IProjectTreeServiceStateFactory.ImplementTree(() => tree, () => IProjectTreeProviderFactory.Create());
 
             mock.SetupGet(s => s.CurrentTree)
-                .Returns(treeStateMock.Object);
+                .Returns(treeState);
 
             return mock.Object;
         }
