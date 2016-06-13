@@ -12,3 +12,4 @@ For additional information, see the following:
 - [Architecture](docs/repo/Architecture.md)
 - [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
 - [Rules of the Project System](docs/repo/Rules%20of%20the%20Project%20System.md)
+- [Code of Conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md)
