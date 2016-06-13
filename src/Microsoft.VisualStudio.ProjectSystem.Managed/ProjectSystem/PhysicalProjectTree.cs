@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly Lazy<IProjectTreeProvider> _treeProvider;
 
         [ImportingConstructor]
-        public PhysicalProjectTree([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService, [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy < IProjectTreeProvider> treeProvider)
+        public PhysicalProjectTree([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService, 
+                                   [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy < IProjectTreeProvider> treeProvider)
         {
             Requires.NotNull(treeService, nameof(treeService));
             Requires.NotNull(treeProvider, nameof(treeProvider));
