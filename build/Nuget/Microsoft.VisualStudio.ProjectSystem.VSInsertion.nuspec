@@ -22,6 +22,7 @@
     <file src="Microsoft.VisualStudio.AppDesigner.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.Editors.dll" target="lib\net46" />
     <file src="Microsoft.VisualStudio.Editors.xml" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.Editors.pkgdef" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.dll" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll" target="lib\net46" />
@@ -36,5 +37,7 @@
     <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.pkgdef" target="lib\net46" />
+    <file src="ProjectSystem.pkgdef" target="lib\net46" />
+    <file src="source.extension.vsixmanifest" target="lib\net46" />
   </files>
 </package>
