@@ -96,7 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <None Include="source.extension.vsixmanifest" />
+    <None Include="source.extension.vsixmanifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProvideBindingRedirectionAttribute.cs" />
