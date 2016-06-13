@@ -46,13 +46,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsProjectToCommonServicesProject()
         {
-            var threadingService = IProjectThreadingServiceFactory.Create();
             var project = IUnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var vsServices = CreateInstance(commonServices);
 
             Assert.Same(project, vsServices.Project);
+        }
+
+        [Fact]
+        public void Constructor_ValueAsCommonServices_SetsProjectTreeToCommonServicesProjectTree()
+        {
+            var projectTree = IPhysicalProjectTreeFactory.Create();
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectTree: projectTree);
+
+            var vsServices = CreateInstance(commonServices);
+
+            Assert.Same(projectTree, vsServices.ProjectTree);
         }
 
         [Fact]

@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem;
+using System;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectTreeServiceFactory
     {
         public static IProjectTreeService Create(IProjectTree tree)
         {
-            var mock =  new Mock<IProjectTreeService>();
-            
+            var mock = new Mock<IProjectTreeService>();
+
             var treeStateMock = new Mock<IProjectTreeServiceState>();
             treeStateMock.SetupGet(state => state.Tree)
                          .Returns(tree);
@@ -19,6 +19,20 @@ namespace Microsoft.VisualStudio.Mocks
 
             mock.SetupGet(s => s.CurrentTree)
                 .Returns(treeStateMock.Object);
+
+            return mock.Object;
+        }
+
+        public static IProjectTreeService Create()
+        {
+            return Mock.Of<IProjectTreeService>();
+        }
+
+        public static IProjectTreeService ImplementCurrentTree(Func<IProjectTreeServiceState> action)
+        {
+            var mock = new Mock<IProjectTreeService>();
+            mock.SetupGet(s => s.CurrentTree)
+                .Returns(action);
 
             return mock.Object;
         }
