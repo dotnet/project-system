@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
+    <NugetPackageFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.VSInsertionNuget.proj" />
   </ItemGroup>
 
   <Target Name="RestorePackages">
@@ -48,6 +49,17 @@
              Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
+  
+  <Target Name="BuildVsInsertionNuget">
+
+    <Message Text="Building %(NugetPackageFile.Filename)" Importance="high" />
+
+    <MSBuild BuildInParallel="true"
+             Projects="@(NugetPackageFile)"
+             Targets="Build"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
+  </Target>
 
   <Target Name="Test">
 
@@ -70,7 +82,7 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;Test" />
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildVsInsertionNuget;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;BuildVsInsertionNuget;Test" />
 
 </Project>

@@ -40,6 +40,8 @@
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />
+    <Compile Include="ProjectSystem\IPhysicalProjectTree.cs" />
+    <Compile Include="ProjectSystem\PhysicalProjectTree.cs" />
     <Compile Include="ProjectSystem\ProjectCapabilitiesService.cs" />
     <Compile Include="ProjectSystem\IProjectCapabilitiesService.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreePropertiesProvider.cs" />

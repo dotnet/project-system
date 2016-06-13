@@ -12,19 +12,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonServices
     {
         private readonly UnconfiguredProject _project;
+        private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly Lazy<IProjectThreadingService> _threadingService;
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
+        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
         {
             Requires.NotNull(project, nameof(project));
+            Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(activeConfiguredProjectProperties, nameof(activeConfiguredProjectProperties));
 
             _project = project;
+            _projectTree = projectTree;
             _threadingService = threadingService;
             _activeConfiguredProject = activeConfiguredProject;
             _activeConfiguredProjectProperties = activeConfiguredProjectProperties;
@@ -38,6 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public UnconfiguredProject Project
         {
             get { return _project;  }
+        }
+
+        public IPhysicalProjectTree ProjectTree
+        {
+            get { return _projectTree.Value; }
         }
 
         public ConfiguredProject ActiveConfiguredProject
