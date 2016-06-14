@@ -11,20 +11,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class UserNotificationServices : IUserNotificationServices
     {
         private readonly SVsServiceProvider _serviceProvider;
-       
+        private readonly IProjectThreadingService _threadingService;
+
         [ImportingConstructor]
-        public UserNotificationServices(SVsServiceProvider serviceProvider)
+        public UserNotificationServices(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(threadingService, nameof(threadingService));
             _serviceProvider = serviceProvider;
+            _threadingService = threadingService;
         }
 
         public bool Confirm(string message)
         {
-            // TODO:  VerifyOnUIThread
+            _threadingService.VerifyOnUIThread();
 
             var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
-                          OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                         OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             if (result == (int)VSConstants.MessageBoxResult.IDNO)
             {
                 return false;
@@ -34,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void NotifyFailure(string failureMessage)
         {
-            // TODO:  VerifyOnUIThread
+            _threadingService.VerifyOnUIThread();
 
             var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
