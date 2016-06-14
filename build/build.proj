@@ -49,7 +49,6 @@
              Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
-  
   <Target Name="BuildNuGetPackages">
 
     <MSBuild BuildInParallel="true"

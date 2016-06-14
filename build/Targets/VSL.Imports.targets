@@ -40,8 +40,11 @@
 
   <!-- settings for strong name signing -->
   <PropertyGroup>
-    <RunningInMicroBuild Condition="Exists('$(TF_BUILD_BUILDDIRECTORY)\MicroBuild\MicroBuild.Signing.dll')">true</RunningInMicroBuild>
-    <ShouldSignBuild Condition="'$(RealSignBuild)' == 'true' OR ('$(RunningInMicroBuild)' == 'true' AND '$(SignType)' == 'real')">true</ShouldSignBuild>
+    <MicroBuildSigningLibraryV1>$(TF_BUILD_BUILDDIRECTORY)\MicroBuild\MicroBuild.Signing.dll</MicroBuildSigningLibraryV1>
+    <MicroBuildSigningLibraryV2>$(BUILD_ARTIFACTSTAGINGDIRECTORY)\MicroBuild\Plugins\MicroBuild.Plugins.Signing.1.0.200\build\MicroBuild.Signing.dll</MicroBuildSigningLibraryV2>
+    <MicroBuildSigningLibrary Condition="Exists('$(MicroBuildSigningLibraryV1)')">$(MicroBuildSigningLibraryV1)</MicroBuildSigningLibrary>
+    <MicroBuildSigningLibrary Condition="Exists('$(MicroBuildSigningLibraryV2)')">$(MicroBuildSigningLibraryV2)</MicroBuildSigningLibrary>
+    <ShouldSignBuild Condition="'$(RunningInMicroBuild)' == 'true' AND '$(SignType)' == 'real'">true</ShouldSignBuild>
     <StrongNameCertificate Condition="'$(StrongNameCertificate)' == ''">MicrosoftShared</StrongNameCertificate>
   </PropertyGroup>
 
@@ -391,73 +394,55 @@
 
        ==================================================================================== -->
 
-  <UsingTask TaskName="SignFiles" AssemblyFile="$(TF_BUILD_BUILDDIRECTORY)\MicroBuild\MicroBuild.Signing.dll" Condition="'$(RunningInMicroBuild)' == 'true'" />
+  <UsingTask TaskName="SignFiles" AssemblyFile="$(MicroBuildSigningLibrary)" Condition="'$(ShouldSignBuild)' == 'true'"/>
 
+  <!-- The below properties are set so that the SignVsixInputs Target runs right after we Get the VSIX Source items
+       This allows the signing of the components that go into the VSIX, which gets signed through SignVsix Target-->
   <PropertyGroup>
     <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);SignVsixInputs</CreateVsixContainerDependsOn>
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);SignVsix</PrepareForRunDependsOn>
-    <ProducingSignedVsix Condition="'$(ShouldSignBuild)' == 'true' AND '$(NonShipping)' != 'true' AND '$(CreateVsixContainer)' == 'true'">true</ProducingSignedVsix>
+    <ProducingSignedVsix Condition="'$(ShouldSignBuild)' == 'true' AND '$(CreateVsixContainer)' == 'true'">true</ProducingSignedVsix>
   </PropertyGroup>
 
-  <!-- GetTargetPath returns the path under $(OutDir) for each project.
-       This target adds the $(AuthenticodeCertificateName) as metadata. -->
-  <Target Name="GetTargetPathWithAuthenticodeCertificateName" DependsOnTargets="GetTargetPath" Returns="@(TargetPathWithAuthenticodeCertificateName)">
-    <ItemGroup>
-      <TargetPathWithAuthenticodeCertificateName Include="$(TargetPath)">
-        <AuthenticodeCertificateName>$(AuthenticodeCertificateName)</AuthenticodeCertificateName>
-      </TargetPathWithAuthenticodeCertificateName>
-    </ItemGroup>
-  </Target>
-
   <Target Name="SignVsixInputs" Condition="'$(ProducingSignedVsix)' == 'true'" DependsOnTargets="GetVsixSourceItems" BeforeTargets="AfterCompile">
-    <!-- Ensure the build tasks project is already built -->
-    <MSBuild Projects="$(MSBuildThisFileDirectory)..\..\..\Closed\Setup\BuildTasks\BuildTasks.vbproj" Condition="!Exists('$(OutDir)\Roslyn.Setup.BuildTasks.dll') AND '$(RunningInMicroBuild)' != 'true'" />
-
-    <!-- Collect the paths of all dependent projects. GetTargetPath returns the path under $(OutDir) for each project. -->
     <MSBuild Projects="@(ProjectReferenceWithConfiguration)"
-             Targets="GetTargetPathWithAuthenticodeCertificateName"
+             Targets="GetTargetPath"
              BuildInParallel="$(BuildInParallel)"
              Properties="%(ProjectReferenceWithConfiguration.SetConfiguration); %(ProjectReferenceWithConfiguration.SetPlatform)"
-             Condition="'%(ProjectReferenceWithConfiguration.Private)' != 'false'"
              >
-
       <Output TaskParameter="TargetOutputs" ItemName="VsixInputAssembliesToSign" />
     </MSBuild>
 
-    <!-- Include the assembly we just built if we're also including it in the VSIX-->
+    <!-- The below check is to decide if the assembly produced by the VSIX project should be included in the VSIX-->
     <ItemGroup>
-      <VsixInputAssembliesToSign Include="@(IntermediateAssembly)" Condition="'$(IncludeAssemblyInVSIXContainer)' == 'true'">
-        <AuthenticodeCertificateName>$(AuthenticodeCertificateName)</AuthenticodeCertificateName>
-      </VsixInputAssembliesToSign>
+      <VsixInputAssembliesToSign Include="@(IntermediateAssembly)" Condition="'$(IncludeAssemblyInVSIXContainer)' == 'true'" />
     </ItemGroup>
 
-    <Message Text="Signing VSIX inputs: using authenticode certificate '%(VsixInputAssembliesToSign.AuthenticodeCertificateName)' for @(VsixInputAssembliesToSign)"/>
+    <Message Text="Signing VSIX inputs: using authenticode certificate Microsoft for %(VsixInputAssembliesToSign.Identity)"/>
 
-    <ItemGroup Condition="'$(RunningInMicroBuild)' == 'true'">
+    <ItemGroup>
       <VsixInputAssembliesToSign>
-        <Authenticode>%(VsixInputAssembliesToSign.AuthenticodeCertificateName)</Authenticode>
+        <Authenticode>Microsoft</Authenticode>
         <StrongName>72</StrongName>
       </VsixInputAssembliesToSign>
     </ItemGroup>
 
-    <SignFiles Condition="'$(RunningInMicroBuild)' == 'true'"
-               Files="@(VsixInputAssembliesToSign)"
+    <SignFiles Files="@(VsixInputAssembliesToSign)"
                BinariesDirectory="$(OutDir)"
                IntermediatesDirectory="$(IntermediateOutputPath)"
                Type="$(SignType)" />
   </Target>
 
-  <Target Name="SignVsix"  Condition="'$(ProducingSignedVsix)' == 'true'" DependsOnTargets="CreateVsixContainer">
+  <Target Name="SignVsix" Condition="'$(ProducingSignedVsix)' == 'true'" DependsOnTargets="CreateVsixContainer">
     <Message Text="Signing VSIX: $(TargetVsixContainer)"/>
 
-    <ItemGroup Condition="'$(RunningInMicroBuild)' == 'true'">
+    <ItemGroup>
       <VsixToSign Include="$(TargetVsixContainer)">
         <Authenticode>VsixSHA2</Authenticode>
       </VsixToSign>
     </ItemGroup>
 
-    <SignFiles Condition="'$(RunningInMicroBuild)' == 'true'"
-               Files="@(VsixToSign)"
+    <SignFiles Files="@(VsixToSign)"
                BinariesDirectory="$(OutDir)"
                IntermediatesDirectory="$(IntermediateOutputPath)"
                Type="$(SignType)" />

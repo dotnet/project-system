@@ -24,7 +24,6 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
-    <StrongNameCertificate>Microsoft</StrongNameCertificate>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <Prefer32Bit>false</Prefer32Bit>
