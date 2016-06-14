@@ -30,18 +30,32 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
+    <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
+    <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.cs" />
+    <Compile Include="ProjectSystem\VS\IServiceProviderExtensions.cs" />
     <Compile Include="ProjectSystem\VS\PreferedProjectFactoryRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
@@ -58,6 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

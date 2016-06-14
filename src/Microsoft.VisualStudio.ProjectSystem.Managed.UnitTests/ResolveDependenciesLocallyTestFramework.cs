@@ -59,11 +59,20 @@ namespace Microsoft.VisualStudio
 
         private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string directoryPath = Path.GetDirectoryName(GetType().Assembly.Location);
+            try
+            {
 
-            AssemblyName name = new AssemblyName(args.Name);
+                string directoryPath = Path.GetDirectoryName(GetType().Assembly.Location);
 
-            return Assembly.LoadFrom(Path.Combine(directoryPath, name.Name + ".dll"));
+                AssemblyName name = new AssemblyName(args.Name);
+
+                return Assembly.LoadFrom(Path.Combine(directoryPath, name.Name + ".dll"));
+            }
+            catch (FileNotFoundException)
+            {
+            }
+
+            return null;
         }
     }
 }

@@ -54,5 +54,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
             // NOTE: We consider it a bug in the underlying project system or the caller if this cast fails
             return (T)resultObject;
         }
+        
     }
 }
