@@ -33,6 +33,8 @@
     <Delete Files="%(NuSpec.NuPkgOutput)" />
   </Target>
 
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
   <Target Name="LogOutput">
     <Message Importance="High" Text="%(NuSpec.Identity) -> %(NuSpec.NuPkgOutput)'" />
   </Target>
