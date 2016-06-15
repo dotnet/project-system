@@ -12,13 +12,16 @@
     <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.VSInsertion.nuspec">
       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(NuGetVersion).nupkg</NuPkgOutput>
     </NuSpec>
-  </ItemGroup>
 
-  <ItemGroup>
-    <NuPkgOutput Include="@(NuSpec -> '%(Filename).nupkg'" />
+    <!-- Make note, without actually knowing what's included in the NuSpec, 
+         we just assume that everything in the output dir is, and treat them
+         as inputs so that we rerun packaging if they change. 
+         Long term we'll want to use a packaging project, such as NuProj where 
+         the NuSpec is auto-generated based on the inputs. -->
+    <PackageAssets Include="$(OutDir)\*.*" Exclude="*.log" />
   </ItemGroup>
-  
-  <Target Name="Build" Inputs="@(NuSpec)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
+ 
+  <Target Name="Build" Inputs="@(NuSpec);@(PackageAssets)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
     
     <PropertyGroup>
       <NuGetArguments>-prop currentVersion="$(NuGetVersion)"</NuGetArguments>
