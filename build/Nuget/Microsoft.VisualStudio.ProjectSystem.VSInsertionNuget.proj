@@ -1,26 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="Settings">
-    <Import Project="..\Targets\Settings.targets" />
-  </ImportGroup>
+  <Import Project="..\Targets\Settings.targets" />
+  
   <PropertyGroup>
     <NuGetVersion>1.0.0.0</NuGetVersion>
     <NuGetVersionType>InsertionPurposeOnly</NuGetVersionType>
+    <NuGetOutDir>$(OutDir)NuGet\$(NuGetVersionType)\</NuGetOutDir>
   </PropertyGroup>
-  <ItemGroup Label="Redist">
-    <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.VSInsertion.nuspec" />
+  
+  <ItemGroup>
+    <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.VSInsertion.nuspec">
+      <NuPkgOutput>$(NuGetOutDir)%(FileName).$(NuGetVersion).nupkg</NuPkgOutput>
+    </NuSpec>
+
+    <!-- Make note, without actually knowing what's included in the NuSpec, 
+         we just assume that everything in the output dir is, and treat them
+         as inputs so that we rerun packaging if they change. 
+         Long term we'll want to use a packaging project, such as NuProj where 
+         the NuSpec is auto-generated based on the inputs. -->
+    <PackageAssets Include="$(OutDir)\*.*" Exclude="*.log" />
   </ItemGroup>
-  <Target Name="Build" Inputs="@(NuSpec)" Outputs="@(NuSpec-&gt;NuGet\$(NuGetVersionType)\%(Identity).$(NuGetVersion).nupkg">
+ 
+  <Target Name="Build" Inputs="@(NuSpec);@(PackageAssets)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
+    
     <PropertyGroup>
       <NuGetArguments>-prop currentVersion="$(NuGetVersion)"</NuGetArguments>
-      <NuGetOutDir>$(OutDir)NuGet\$(NuGetVersionType)</NuGetOutDir>
     </PropertyGroup>
-    <!-- clean our output directory -->
-    <MakeDir Directories="$(NuGetOutDir)" Condition="!Exists('$(NuGetOutDir)')" />
-    <!-- package! -->
-    <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir)&quot; $(NuGetArguments)" />
+    
+    <MakeDir Directories="$(NuGetOutDir)" />
+    
+    <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; $(NuGetArguments)" />
   </Target>
+  
   <Target Name="Clean">
-    <RemoveDir Directories="$(OutDir)NuGet" />
+    <Delete Files="%(NuSpec.NuPkgOutput)" />
   </Target>
+
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+  <Target Name="LogOutput">
+    <Message Importance="High" Text="%(NuSpec.Identity) -> %(NuSpec.NuPkgOutput)'" />
+  </Target>
+  
 </Project>
