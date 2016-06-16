@@ -9,7 +9,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.VSInsertion.nuspec">
+    <NuSpec Include="*.nuspec">
       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(NuGetVersion).nupkg</NuPkgOutput>
     </NuSpec>
 

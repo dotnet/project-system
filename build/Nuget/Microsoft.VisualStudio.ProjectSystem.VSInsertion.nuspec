@@ -15,14 +15,9 @@
     <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=394369</licenseUrl>
     <projectUrl>https://github.com/dotnet/roslyn-project-system</projectUrl>
     <releaseNotes>Roslyn based Project System VSInsertion package</releaseNotes>
-    <tags></tags>
+    <tags>exapis</tags>
   </metadata>
   <files>
-    <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib\net46" />
-    <file src="Microsoft.VisualStudio.AppDesigner.xml" target="lib\net46" />
-    <file src="Microsoft.VisualStudio.Editors.dll" target="lib\net46" />
-    <file src="Microsoft.VisualStudio.Editors.xml" target="lib\net46" />
-    <file src="Microsoft.VisualStudio.Editors.pkgdef" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.dll" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll" target="lib\net46" />
