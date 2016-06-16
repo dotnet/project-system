@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                         End If
                     End If
 
-                    Await Task.Delay(pollInterval)
+                    Await Task.Delay(pollInterval).ConfigureAwait(False)
                     iteration += 1
                 End While
             Else
