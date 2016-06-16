@@ -2262,12 +2262,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Sub Update()
     End Interface
 
+#Disable Warning CA1067 ' This type hides Equals by name to implement IEquatable and hence can't override Equals.
     ''' <summary>
     ''' Parses and compares identities of VB Imports statements.
     ''' For XML imports, the identity is the XML namespace name (could be empty).
     ''' For VB imports, the identity is the alias name if present and the namespace itself otherwise.
     ''' </summary>
     Friend Structure ImportIdentity
+#Enable Warning CA1067 ' Override Object.Equals(object) when implementing IEquatable<T>
         Implements IEquatable(Of ImportIdentity)
 
         Private Const s_aliasGroupName As String = "Alias"

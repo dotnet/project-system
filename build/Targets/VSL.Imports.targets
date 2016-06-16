@@ -103,6 +103,20 @@
     </When>
   </Choose>
 
+<!-- Enable IOperation feature for IOperation based analyzers. --> 
+  <Choose> 
+    <When Condition="$(Features) == ''"> 
+      <PropertyGroup> 
+        <Features>IOperation</Features> 
+      </PropertyGroup> 
+    </When> 
+    <Otherwise> 
+      <PropertyGroup> 
+        <Features>IOperation,$(Features)</Features> 
+  </PropertyGroup> 
+    </Otherwise> 
+  </Choose> 
+
   <!-- Because https://github.com/dotnet/roslyn/issues/7812 is not yet fixed, the IDE doesn't know if we set the PublicSign
        flag. As a result, all design-time builds will thing we're real-signing, which causes semantics to get all screwed up.
        The workaround for now is, for design-time builds only, to pass the DelaySign flag since that's "good enough". This
