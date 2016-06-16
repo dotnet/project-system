@@ -3,14 +3,18 @@
   <Import Project="..\Targets\Settings.targets" />
   
   <PropertyGroup>
-    <NuGetVersion>1.0.0.0</NuGetVersion>
-    <NuGetVersionType>InsertionPurposeOnly</NuGetVersionType>
-    <NuGetOutDir>$(OutDir)NuGet\$(NuGetVersionType)\</NuGetOutDir>
+    <NuGetOutDir>$(OutDir)DevDivPackages\Roslyn\</NuGetOutDir>
   </PropertyGroup>
   
   <ItemGroup>
-    <NuSpec Include="*.nuspec">
-      <NuPkgOutput>$(NuGetOutDir)%(FileName).$(NuGetVersion).nupkg</NuPkgOutput>
+    <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.AppDesigner.nuspec">
+      <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+    </NuSpec>
+    <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.Editors.nuspec">
+      <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+    </NuSpec>
+    <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.ProjectSystem.nuspec">
+      <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
     </NuSpec>
 
     <!-- Make note, without actually knowing what's included in the NuSpec, 

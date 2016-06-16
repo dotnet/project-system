@@ -48,6 +48,8 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
+    <VSSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">15.0.0</VSSemanticVersion>
+
     <BuildNumberSuffix Condition="('$(TF_BUILD_BUILDNUMBER)' != '')
                      and ($(TF_BUILD_BUILDNUMBER.Split('_').Length) == 2)">$(TF_BUILD_BUILDNUMBER.Split('_')[1])</BuildNumberSuffix>
     <BuildNumberPart1 Condition="'$(BuildNumberSuffix)' != ''">
@@ -58,14 +60,12 @@
     </BuildNumberPart2>
 
     <!-- Only set when building RTM with no dependencies on pre-release packages
-    <NuGetReleaseVersion>$(RoslynSemanticVersion)</NuGetReleaseVersion>
+    <*NuGetReleaseVersion>$(RoslynSemanticVersion)</*NuGetReleaseVersion>
     -->
-    <NuGetPreReleaseVersion>$(RoslynSemanticVersion)-beta1</NuGetPreReleaseVersion>
-    <NuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberSuffix)' != ''">$(NuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</NuGetPerBuildPreReleaseVersion>
-
-    <!-- TODO: change to a fixed version once we move this component to a separate repo -->
-    <MicrosoftDiaSymReaderPortablePdbVersion>1.1.0-beta1</MicrosoftDiaSymReaderPortablePdbVersion>
-    <MicrosoftDiaSymReaderPortablePdbVersion Condition="'$(BuildNumber)' != ''">$(MicrosoftDiaSymReaderPortablePdbVersion)-$(BuildNumber.Split('.')[0])-$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</MicrosoftDiaSymReaderPortablePdbVersion>
+    <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-beta1</RoslynNuGetPreReleaseVersion>
+    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberSuffix)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
+    <VSNuGetPreReleaseVersion>$(VSSemanticVersion)-beta1</VSNuGetPreReleaseVersion>
+    <VSNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberSuffix)' != ''">$(VSNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</VSNuGetPerBuildPreReleaseVersion>
   </PropertyGroup>
   
 </Project>
