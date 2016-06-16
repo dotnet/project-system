@@ -24,6 +24,7 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <StrongNameCertificate>Microsoft</StrongNameCertificate>
   </PropertyGroup>
   <ItemGroup>
     <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />
