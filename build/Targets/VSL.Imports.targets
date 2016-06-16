@@ -40,9 +40,7 @@
 
   <!-- settings for strong name signing -->
   <PropertyGroup>
-    <MicroBuildSigningLibraryV1>$(TF_BUILD_BUILDDIRECTORY)\MicroBuild\MicroBuild.Signing.dll</MicroBuildSigningLibraryV1>
     <MicroBuildSigningLibraryV2>$(BUILD_ARTIFACTSTAGINGDIRECTORY)\MicroBuild\Plugins\MicroBuild.Plugins.Signing.1.0.200\build\MicroBuild.Signing.dll</MicroBuildSigningLibraryV2>
-    <MicroBuildSigningLibrary Condition="Exists('$(MicroBuildSigningLibraryV1)')">$(MicroBuildSigningLibraryV1)</MicroBuildSigningLibrary>
     <MicroBuildSigningLibrary Condition="Exists('$(MicroBuildSigningLibraryV2)')">$(MicroBuildSigningLibraryV2)</MicroBuildSigningLibrary>
     <ShouldSignBuild Condition="'$(RunningInMicroBuild)' == 'true' AND '$(SignType)' == 'real'">true</ShouldSignBuild>
     <StrongNameCertificate Condition="'$(StrongNameCertificate)' == ''">MicrosoftShared</StrongNameCertificate>
