@@ -8,6 +8,7 @@ For additional information, see the following:
 
 - [Getting Started](docs/repo/Getting Started.md)
 - [Coding Guidelines](docs/repo/Coding Conventions.md)
+- [Debugging Tips](docs/repo/Debugging Tips.md)
 - [Features](docs/repo/Features.md)
 - [Architecture](docs/repo/Architecture.md)
 - [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
