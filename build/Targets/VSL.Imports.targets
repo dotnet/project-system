@@ -423,9 +423,7 @@
 
     <!-- The below check is to decide if the assembly produced by the VSIX project should be included in the VSIX-->
     <ItemGroup>
-      <VsixInputAssembliesToSign Include="@(IntermediateAssembly)" Condition="'$(IncludeAssemblyInVSIXContainer)' == 'true'">
-        <StrongName>72</StrongName>
-      </VsixInputAssembliesToSign>
+      <VsixInputAssembliesToSign Include="@(IntermediateAssembly)" Condition="'$(IncludeAssemblyInVSIXContainer)' == 'true'" />
     </ItemGroup>
 
     <Message Text="Signing VSIX inputs: using authenticode certificate Microsoft for %(VsixInputAssembliesToSign.Identity)"/>
