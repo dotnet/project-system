@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>VS.ExternalAPIs.Microsoft.VisualStudio.AppDesigner.VSInsertion</id>
+    <id>VS.ExternalAPIs.Microsoft.VisualStudio.AppDesigner</id>
     <summary>Visual Studio Insertion package for Microsoft.VisualStudio.AppDesigner</summary>
     <description>
       This package is purely for insertion purpose only

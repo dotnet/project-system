@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Targets\Settings.targets" />
-  
+  <ImportGroup>
+    <Import Project="..\Targets\Settings.targets" />
+    <Import Project="..\Targets\VSL.Versions.targets" />
+  </ImportGroup>
+
   <PropertyGroup>
     <NuGetOutDir>$(OutDir)DevDivPackages\Roslyn\</NuGetOutDir>
   </PropertyGroup>
@@ -9,12 +12,15 @@
   <ItemGroup>
     <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.AppDesigner.nuspec">
       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+      <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
     </NuSpec>
     <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.Editors.nuspec">
       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+      <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
     </NuSpec>
     <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.ProjectSystem.nuspec">
       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+      <NuGetArguments>-Version "$(RoslynNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
     </NuSpec>
 
     <!-- Make note, without actually knowing what's included in the NuSpec, 
@@ -27,13 +33,9 @@
  
   <Target Name="Build" Inputs="@(NuSpec);@(PackageAssets)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
     
-    <PropertyGroup>
-      <NuGetArguments>-prop currentVersion="$(NuGetVersion)"</NuGetArguments>
-    </PropertyGroup>
-    
     <MakeDir Directories="$(NuGetOutDir)" />
-    
-    <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; $(NuGetArguments)" />
+
+    <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; %(NuSpec.NuGetArguments)" />
   </Target>
   
   <Target Name="Clean">
