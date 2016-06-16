@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Microsoft.VisualStudio.ProjectSystem.VSInsertion</id>
+    <id>VS.ExternalAPIs.Microsoft.VisualStudio.ProjectSystem.VSInsertion</id>
     <summary>Visual Studio Insertion package for Microsoft Project System for C# and VB </summary>
     <description>
       This Project system is a re-write of the C# and VB project system in Managed Language. This is restrictly
