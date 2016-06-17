@@ -31,9 +31,6 @@
     <Import Include="VSConstants=Microsoft.VisualStudio.VSConstants" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\IVsSqm.vb">
-      <Link>IVsSqm.vb</Link>
-    </Compile>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
     </Compile>

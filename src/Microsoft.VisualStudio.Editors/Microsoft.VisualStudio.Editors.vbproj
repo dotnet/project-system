@@ -258,9 +258,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\IVsSqm.vb">
-      <Link>IVsSqm.vb</Link>
-    </Compile>
     <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
     <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>

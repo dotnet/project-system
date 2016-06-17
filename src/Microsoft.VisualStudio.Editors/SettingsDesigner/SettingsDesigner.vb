@@ -30,9 +30,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Friend Shared ReadOnly Property TraceSwitch() As Diagnostics.TraceSwitch
+        Friend Shared ReadOnly Property TraceSwitch() As TraceSwitch
             Get
-                Static MyTraceSwitch As New Diagnostics.TraceSwitch("SettingsDesigner", "Tracing for settings designer")
+                Static MyTraceSwitch As New TraceSwitch("SettingsDesigner", "Tracing for settings designer")
                 Return MyTraceSwitch
             End Get
         End Property

@@ -12,6 +12,7 @@ Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Telemetry
 Imports Microsoft.VSDesigner
 Imports GelUtilities = Microsoft.Internal.VisualStudio.PlatformUI.Utilities
 Imports VB = Microsoft.VisualBasic
@@ -1660,5 +1661,27 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
+#Region "Telemetry"
+        Public Class TelemetryLogger
+
+            Private Const InputXmlFormEventName As String = "vs/projectsystem/editors/inputxmlform"
+            Public Enum InputXmlFormEvent
+                FormOpened
+                FromFileButtonClicked
+                FromWebButtonClicked
+                AsTextButtonClicked
+            End Enum
+
+            Public Shared Sub LogInputXmlFormEvent(ByVal eventValue As InputXmlFormEvent)
+                Dim userTask = New UserTaskEvent(InputXmlFormEventName, TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.editors.inputxmlform") = eventValue
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
+            Public Shared Sub LogInputXmlFormException(ByVal ex As Exception)
+                TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
+            End Sub
+        End Class
+#End Region
     End Module
 End Namespace

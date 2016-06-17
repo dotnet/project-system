@@ -1,22 +1,23 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Editors.AppDesCommon.Utils
-Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
-Imports System.Drawing
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
+Imports System.Diagnostics.CodeAnalysis
+Imports System.Drawing
 Imports System.Runtime.InteropServices
-Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Editors.ApplicationDesigner
-Imports Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
-Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
-Imports Microsoft.VisualStudio.PlatformUI
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+Imports Microsoft.VisualStudio.Editors.AppDesCommon
+Imports Microsoft.VisualStudio.Editors.AppDesCommon.Utils
+Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
+Imports Microsoft.VisualStudio.Editors.ApplicationDesigner
+Imports Microsoft.VisualStudio.Editors.PropertyPages
+Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
+Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Shell.Interop
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
@@ -1551,7 +1552,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
         'For debug tracing
-        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
+        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Function PreProcessMessage(ByRef msg As System.Windows.Forms.Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
             Return MyBase.PreProcessMessage(msg)
