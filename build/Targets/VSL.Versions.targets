@@ -57,9 +57,6 @@
       $(BUILD_BUILDNUMBER.Split('.')[1].PadLeft(2,'0'))
     </BuildNumberPart2>
 
-    <!-- Only set when building RTM with no dependencies on pre-release packages
-    <*NuGetReleaseVersion>$(RoslynSemanticVersion)</*NuGetReleaseVersion>
-    -->
     <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-beta1</RoslynNuGetPreReleaseVersion>
     <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
     <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(RoslynNuGetPerBuildPreReleaseVersion)' == ''">1.0.0.0</RoslynNuGetPerBuildPreReleaseVersion>
