@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>VS.ExternalAPIs.Microsoft.VisualStudio.AppDesigner</id>
+    <summary>Visual Studio Insertion package for Microsoft.VisualStudio.AppDesigner</summary>
+    <description>
+      This package is purely for insertion purpose only
+    </description>  
+    <language>en-US</language>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <!-- Since VS is the only consumer, now, the version is set to 1.0.0.0-->
+    <version>1.0.0.0</version>
+    <authors>Managed Languages</authors>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=394369</licenseUrl>
+    <projectUrl>https://github.com/dotnet/roslyn-project-system</projectUrl>
+    <tags>exapis</tags>
+  </metadata>
+  <files>
+    <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib\net46" />
+    <file src="Microsoft.VisualStudio.AppDesigner.xml" target="lib\net46" />
+  </files>
+</package>
