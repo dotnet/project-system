@@ -18,6 +18,7 @@
   <!-- Project Capabilities -->
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
+    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
   </ItemGroup>
   
   <!-- CPS Project Properties -->
