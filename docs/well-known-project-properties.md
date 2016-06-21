@@ -53,8 +53,8 @@ Specifies the conditions for the command in _PostBuildEvent_ to run.
 | Value           | Description    |
 |-----------------| ---------------|
 | Always          | Post-build event will run regardless of whether the build succeeds.     |
-| OnOutputUpdated | Post-build event will run if the build succeeds, regardless of whether the project output is up-to-date.|
-| OnBuildSuccess  | Post-build event will only when the project output is different than the previous output. |
+| OnOutputUpdated | Post-build event will only when the project output is different than the previous output.|
+| OnBuildSuccess  | Post-build event will run if the build succeeds, regardless of whether the project output is up-to-date.|
 
 ##### __Example__
 ``` XML
