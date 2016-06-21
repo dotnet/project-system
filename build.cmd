@@ -29,6 +29,11 @@ if not exist "%DeveloperCommandPrompt%" (
   exit /b 1
 )
 
+if not exist "%VSSDK150Install%" (
+  echo In order to build this repository, you need to modify your Visual Studio installation to include "Visual Studio Extensibility Tools".
+  exit /b 1
+)
+
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
