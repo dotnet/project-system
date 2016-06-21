@@ -34,7 +34,6 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
-    <Compile Include="ProjectSystem\DisableInboxComponentsProjectCapabilityProvider.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
