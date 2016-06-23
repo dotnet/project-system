@@ -7,6 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IOptionsSettingsFactory
     {
+        public static IOptionsSettings Create()
+        {
+            return Mock.Of<IOptionsSettings>();
+        }
+
         public static IOptionsSettings Implement<T>(Func<string, string, string, T, T> optionsSettingsValue)
         {
             var mock = new Mock<IOptionsSettings>();

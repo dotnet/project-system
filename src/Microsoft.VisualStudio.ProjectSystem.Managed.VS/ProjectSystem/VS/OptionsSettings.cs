@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
 
@@ -12,17 +11,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class OptionsSettings : IOptionsSettings
     {
         private readonly SVsServiceProvider _serviceProvider;
-        
+        private readonly IProjectThreadingService _threadingService;
+
         [ImportingConstructor]
-        public OptionsSettings(SVsServiceProvider serviceProvider)
+        public OptionsSettings(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(threadingService, nameof(threadingService));
             _serviceProvider = serviceProvider;
+            _threadingService = threadingService;
         }
 
         public T GetPropertiesValue<T>(string category, string page, string property, T defaultValue)
         {
-            //TODO : VerifyOnUIThread();
+            _threadingService.VerifyOnUIThread();
 
             EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
             var props = dte.Properties[category, page];

@@ -11,6 +11,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IRoslynServices))]
     internal class RoslynServices : IRoslynServices
     {
+        private readonly IProjectThreadingService _threadingService;
+
+        [ImportingConstructor]
+        public RoslynServices(IProjectThreadingService threadingService)
+        {
+            Requires.NotNull(threadingService, nameof(threadingService));
+            _threadingService = threadingService;
+        }
+
         public async Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
         {
             var optionSet = solution.Workspace.Options;
@@ -19,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
         {
-            // TODO: VerifyONUIThread()
+            _threadingService.VerifyOnUIThread();
 
             // Always make sure TryApplyChanges is called from an UI thread.
             return ws.TryApplyChanges(renamedSolution);
