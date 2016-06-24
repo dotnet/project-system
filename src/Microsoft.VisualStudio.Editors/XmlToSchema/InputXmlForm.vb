@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End If
             _picutreBox.Image = _imageList2.Images(0)
 
-            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_USEWIZARD)
+            Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FormOpened)
         End Sub
 
         Protected Overrides Sub ScaleControl(ByVal factor As System.Drawing.SizeF, ByVal specified As System.Windows.Forms.BoundsSpecified)
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 End If
             End If
 
-            VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMFILE)
+            Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromFileButtonClicked)
         End Sub
 
         Private Sub _addFromWebButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _addFromWebButton.Click
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     End If
                 End If
 
-                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMWEB)
+                Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromWebButtonClicked)
             End Using
         End Sub
 
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     _listView.Items.Add(item)
                 End If
 
-                VBPackage.IncrementSqmDatapoint(Shell.Interop.VsSqmDataPoint.DATAID_SQM_DP_VB_XMLTOSCHEMAWIZARD_FROMXML)
+                Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.AsTextButtonClicked)
             End Using
         End Sub
 
@@ -163,11 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     _project.ProjectItems.AddFromFile(schemaFilePath)
                 Next
             Catch ex As Exception
-                Dim sqmCode = ex.GetType.FullName.GetHashCode
-                If sqmCode < 0 Then
-                    sqmCode = sqmCode * -1
-                End If
-                VBPackage.AddSqmItemToStream(Shell.Interop.VsSqmDataPoint.DATAID_SQM_STRM_VB_XMLTOSCHEMAWIZARD_EXCEPTION, CUInt(sqmCode))
+                Common.TelemetryLogger.LogInputXmlFormException(ex)
                 If FilterException(ex) Then
                     ShowWarning(String.Format(SR.XmlToSchema_ErrorInXmlInference, ex.Message))
                 Else

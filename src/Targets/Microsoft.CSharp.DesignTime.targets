@@ -1,6 +1,6 @@
 <!--
 
-  This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
+  This file contains C# Visual Studio and designer-related properties and items for C# projects.
   
 -->
 
@@ -8,9 +8,9 @@
 
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-    <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">My Project</AppDesignerFolder>
-    <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
-    
+    <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
+    <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
+
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
@@ -18,13 +18,14 @@
   <!-- Project Capabilities -->
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
+    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
   </ItemGroup>
-
+  
   <!-- CPS Project Properties -->
   <ItemGroup>
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
   </ItemGroup>
-  
+
 </Project>

@@ -24,6 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
+        ///     Gets physical project tree in Solution Explorer.
+        /// </summary>
+        IPhysicalProjectTree ProjectTree
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Gets the current active <see cref="ConfiguredProject"/>.
         /// </summary>
         ConfiguredProject ActiveConfiguredProject

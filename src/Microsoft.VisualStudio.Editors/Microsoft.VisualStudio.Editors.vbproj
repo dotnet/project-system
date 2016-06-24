@@ -258,9 +258,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\IVsSqm.vb">
-      <Link>IVsSqm.vb</Link>
-    </Compile>
     <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
     <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
@@ -716,7 +713,9 @@
     <None Include="project.json" />
     <None Include="Resources\Native\ResX.ico" />
     <None Include="Resources\Native\Settings.ico" />
-    <None Include="Microsoft.VisualStudio.Editors.pkgdef" />
+    <None Include="Microsoft.VisualStudio.Editors.pkgdef">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />

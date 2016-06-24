@@ -37,6 +37,8 @@ From the command-line, after you've run `build.cmd`, you can launch a Visual Stu
 devenv /rootsuffix RoslynDev
 ```
 
+For tips, see [Debugging Tips](Debugging Tips.md)
+
 ### Testing 
 
 #### Project System

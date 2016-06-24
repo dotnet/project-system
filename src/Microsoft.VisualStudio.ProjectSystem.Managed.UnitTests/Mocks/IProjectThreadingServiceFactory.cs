@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private readonly JoinableTaskContextNode _context;
             private readonly JoinableTaskFactory _joinableTaskFactory;
-
+           
             public MockProjectThreadingService()
             {
                 _context = new JoinableTaskContextNode(new JoinableTaskContext());
@@ -60,7 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public void VerifyOnUIThread()
             {
-                throw new NotImplementedException();
+                if (Thread.CurrentThread != _context.MainThread)
+                {
+                    throw new COMException("This operation should only take place on the UI thread");
+                }
             }
 
             public void Fork(Func<Task> asyncAction, JoinableTaskFactory factory = null, UnconfiguredProject unconfiguredProject = null, ConfiguredProject configuredProject = null, ErrorReportSettings watsonReportSettings = null, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)

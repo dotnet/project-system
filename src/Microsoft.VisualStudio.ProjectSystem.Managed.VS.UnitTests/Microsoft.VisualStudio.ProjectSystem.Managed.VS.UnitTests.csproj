@@ -49,7 +49,10 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
+    <Compile Include="Mocks\IOptionsSettingsFactory.cs" />
     <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
+    <Compile Include="Mocks\IUserNotificationServicesFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectVsServicesFactory.cs" />
     <Compile Include="Mocks\IVsLanguageServiceBuildErrorReporter2Factory.cs" />
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
@@ -62,7 +65,9 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
+    <Compile Include="ProjectSystem\VS\RenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />

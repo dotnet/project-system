@@ -1,6 +1,7 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
+Imports System.Diagnostics.CodeAnalysis
 
 Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
@@ -34,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   We also update the status of this menu item in this property based on 
         '   m_AlwaysCheckStatus and m_StatusValid flag.
         '**************************************************************************
-        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
+        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides ReadOnly Property OleStatus() As Integer
             Get
                 If _alwaysCheckStatus OrElse Not _statusValid Then
@@ -57,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   which refreshes the status of all the menus the designer knows about.
         '**************************************************************************
 
-        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
+        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke()
             MyBase.Invoke()
 
@@ -66,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 _rootDesigner.RefreshMenuStatus()
             End If
         End Sub 'Invoke
-        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
+        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke(ByVal inArg As Object, ByVal outArg As System.IntPtr)
             MyBase.Invoke(inArg, outArg)
 
@@ -76,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
         End Sub
 
-        <Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
+        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke(ByVal inArg As Object)
             MyBase.Invoke(inArg)
 

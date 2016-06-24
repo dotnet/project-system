@@ -62,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End Region
 
 #If DEBUG Then
-        private Shared s_applicationDesignerViewCount As Integer = 0
-        private Shared s_instanceCount As Integer = 0
+        Private Shared s_applicationDesignerViewCount As Integer = 0
+        Private Shared s_instanceCount As Integer = 0
         Private _myInstanceCount As Integer
 #End If
 
@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDPerfBegin("ApplicationDesignerView.InitView")
 
             ' Whenever we open the project designer, we ping SQM...
-            AddSqmItemToStream(VsSqmDataPoint.DATAID_STRM_VB_EDITOR_PROJPROPSHOW, AppDesCommon.SQMData.DEFAULT_PAGE)
+            Common.TelemetryLogger.LogAppDesignerDefaultPageOpened()
 
             ' Store the vbpackage instance in utils to share within the assembly
             Common.Utils.VBPackageInstance = Package
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If _designerPanels IsNot Nothing Then
                     For Index As Integer = 0 To _designerPanels.Length - 1
                         'If the designer was opened, then add it to the list for saving
-                        If _designerPanels(Index) IsNot Nothing AndAlso _
+                        If _designerPanels(Index) IsNot Nothing AndAlso
                             _designerPanels(Index).VsWindowFrame IsNot Nothing Then
                             DocCookie = _designerPanels(Index).DocCookie
                             If IsDocDataDirty(DocCookie, Hierarchy, ItemId) Then
@@ -1042,19 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Try
                     If _activePanelIndex <> Index Then
                         LastShownTab = Index
-                        Dim PageId As Byte = AppDesCommon.Utils.SQMData.PageGuidToId(NewCurrentPanel.ActualGuid)
-#If DEBUG Then
-                        If PageId = AppDesCommon.SQMData.UNKNOWN_PAGE Then
-#If 0 Then
-                            Debug.Fail("We've encountered a property page GUID we don't recognize.  This is fine, but it means that this page " _
-                            & "will show up as UNKNOWN_PAGE in SQM data.  Please enter a pri 3 bug with the page name, context and GUID against " _
-                            & "the path ""\VBPU\Designers\App Designer""." _
-                            & vbCrLf & "Property page caption: " & NewCurrentPanel.EditorCaption _
-                            & vbCrLf & "Property page guid: " & NewCurrentPanel.ActualGuid.ToString())
-#End If
-                        End If
-#End If
-                        AddSqmItemToStream(VsSqmDataPoint.DATAID_STRM_VB_EDITOR_PROJPROPSHOW, PageId)
+                        Common.TelemetryLogger.LogAppDesignerPageOpened(NewCurrentPanel.ActualGuid)
                     End If
 
                     _activePanelIndex = Index
@@ -1271,7 +1259,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Note: Handling OnGotFocus would not be good enough - we need to keep WinForms from doing their default
                 '  processing on WM_SETFOCUS, and we can't do that by handling OnGotFocus.
                 Common.Switches.TracePDFocus(TraceLevel.Warning, "Preprocess: Stealing ApplicationDesignerView.WM_SETFOCUS handling")
-                Common.Switches.TracePDFocus(TraceLevel.Verbose, New Diagnostics.StackTrace().ToString)
+                Common.Switches.TracePDFocus(TraceLevel.Verbose, New StackTrace().ToString)
 
                 If Not _inShowTab AndAlso _okayToActivatePanelsOnFocus Then
                     If _activePanelIndex >= 0 AndAlso _activePanelIndex < _designerPanels.Length Then
@@ -1813,61 +1801,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Me.Size.ToString())
         End Sub
 
-#End Region
-
-#Region "SQM helpers"
-        ''' <summary>
-        ''' In case you want to get hold of a IVsSqm service, but you don't have a service provider around
-        ''' this is a nice helper method...
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks>May return nothing if the package can't find the service</remarks>
-        Friend ReadOnly Property VsLog() As Microsoft.VisualStudio.Shell.Interop.IVsSqm
-            Get
-                Try
-                    Return DirectCast(Package.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.SVsLog)), Microsoft.VisualStudio.Shell.Interop.IVsSqm)
-                Catch Ex As InvalidCastException
-                    Debug.Fail("Failed to cast returned Service to an IVsSqm - SQM logging will be disabled")
-                End Try
-                Return Nothing
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Log a SQM datapoint. Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Friend Sub LogSqmDatapoint(ByVal dataPointId As UInteger, ByVal value As UInteger)
-            If VsLog IsNot Nothing Then
-                VsLog.SetDatapoint(dataPointId, value)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Increment a SQM datapoint.Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Friend Sub IncrementSqmDatapoint(ByVal dataPointId As UInteger, Optional ByVal value As UInteger = 1)
-            If VsLog IsNot Nothing Then
-                VsLog.IncrementDatapoint(dataPointId, value)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Add an item to a SQM stream. Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Friend Sub AddSqmItemToStream(ByVal dataPointId As UInteger, Optional ByVal value As UInteger = 1)
-            If VsLog IsNot Nothing Then
-                VsLog.AddItemToStream(dataPointId, value)
-            End If
-        End Sub
 #End Region
 
     End Class

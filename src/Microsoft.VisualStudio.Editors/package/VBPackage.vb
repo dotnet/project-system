@@ -230,63 +230,6 @@ Namespace Microsoft.VisualStudio.Editors
             End Get
         End Property
 
-#Region "SQM helpers"
-        ''' <summary>
-        ''' In case you want to get hold of a IVsSqm service, but you don't have a service provider around
-        ''' this is a nice helper method...
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks>May return nothing if the package can't find the service</remarks>
-        Friend Shared ReadOnly Property VsLog() As Microsoft.VisualStudio.Shell.Interop.IVsSqm
-            Get
-                Try
-                    If Instance IsNot Nothing Then
-                        Return DirectCast(Instance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.SVsLog)), Microsoft.VisualStudio.Shell.Interop.IVsSqm)
-                    End If
-                Catch Ex As InvalidCastException
-                    Debug.Fail("Failed to cast returned Service to an IVsSqm - SQM logging will be disabled")
-                End Try
-                Return Nothing
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Log a SQM datapoint. Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Friend Shared Sub LogSqmDatapoint(ByVal dataPointId As UInteger, ByVal value As UInteger)
-            If VsLog IsNot Nothing Then
-                VsLog.SetDatapoint(dataPointId, value)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Increment a SQM datapoint.Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Friend Shared Sub IncrementSqmDatapoint(ByVal dataPointId As UInteger, Optional ByVal value As UInteger = 1)
-            If VsLog IsNot Nothing Then
-                VsLog.IncrementDatapoint(dataPointId, value)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Add an item to a SQM stream. Helps out so you don't have to have a service provider around
-        ''' </summary>
-        ''' <param name="dataPointId"></param>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Public Shared Sub AddSqmItemToStream(ByVal dataPointId As UInteger, Optional ByVal value As UInteger = 1)
-            If VsLog IsNot Nothing Then
-                VsLog.AddItemToStream(dataPointId, value)
-            End If
-        End Sub
-#End Region
-
         'Used for accessing global services before a component in this assembly gets sited
         Public Shadows ReadOnly Property GetService(ByVal serviceType As Type) As Object Implements Editors.IVBPackage.GetService
             Get

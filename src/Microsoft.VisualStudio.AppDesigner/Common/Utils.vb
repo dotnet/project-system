@@ -8,6 +8,7 @@ Imports System.Windows.Forms
 Imports VB = Microsoft.VisualBasic
 Imports System.Reflection
 Imports System.Threading
+Imports Microsoft.VisualStudio.Telemetry
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
@@ -639,15 +640,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return MaxEntryWidth
         End Function
 
-#Region "SQM data point helpers"
-        Public Class SQMData
-
-            Private Sub New()
-                ' Non-creatable class
-            End Sub
+#Region "Telemetry"
+        Public Class TelemetryLogger
 
             'A list of known editor guids
-            ' Each property page will be reported back to SQM with the 1-based index in which it is present 
+            ' Each property page will be reported back to telemetry with the 1-based index in which it is present 
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
@@ -678,17 +675,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 KnownPropertyPageGuids.GuidWAPWebPage _
             }
 
-            Public Const UNKNOWN_PAGE As Byte = &HFF
-            Public Const DEFAULT_PAGE As Byte = 0
+            Private Const UNKNOWN_PAGE As Byte = &HFF
+            Private Const DEFAULT_PAGE As Byte = 0
 
             ''' <summary>
-            ''' Map a known property page or designer id to a unique unsigned char in order
-            ''' to report back to SQM what the values are...
+            ''' Map a known property page or designer id to telemetry display name to log.
             ''' </summary>
             ''' <param name="guid"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Shared Function PageGuidToId(ByVal guid As Guid) As Byte
+            Private Shared Function PageGuidToId(ByVal guid As Guid) As Byte
                 For i As Integer = 0 To s_sqmOrder.Length - 1
                     If s_sqmOrder(i).Equals(guid) Then
                         Return CByte(i + 1)
@@ -697,6 +693,20 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return UNKNOWN_PAGE
             End Function
 
+            Public Shared Sub LogAppDesignerDefaultPageOpened()
+                LogAppDesignerPageOpened(DEFAULT_PAGE)
+            End Sub
+
+            Public Shared Sub LogAppDesignerPageOpened(ByVal pageGuid As Guid)
+                Dim pageId = PageGuidToId(pageGuid)
+                LogAppDesignerPageOpened(pageId)
+            End Sub
+
+            Private Shared Sub LogAppDesignerPageOpened(ByVal pageId As Byte)
+                Dim userTask = New UserTaskEvent("vs/projectsystem/appdesigner/page-opened", TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.appdesigner.page-opened") = pageId
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
         End Class
 #End Region
 

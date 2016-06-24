@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             IProjectTree specialFileNode = FindFile(specialFileName);
             if (specialFileNode != null)
             {
-                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken))
+                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken).ConfigureAwait(false))
                 {
                     return specialFileNode.FilePath;
                 }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // File doesn't exist. Create it if we've been asked to.
             if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
-                string createdFilePath = await CreateFileAsync(fileId, specialFileName);
+                string createdFilePath = await CreateFileAsync(fileId, specialFileName).ConfigureAwait(false);
                 if (createdFilePath != null)
                 {
                     return createdFilePath;
@@ -163,8 +163,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 if (forceSync)
                 {
                     // Since the file already exists on disk, just include it in the project.
-                    await _sourceItemsProvider.AddAsync(specialFileNode.FilePath);
-                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken);
+                    await _sourceItemsProvider.AddAsync(specialFileNode.FilePath).ConfigureAwait(false);
+                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
@@ -179,8 +179,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 {
                     // Just remove the entry from the project so that we get to a clean state and then we can 
                     // create the file as usual.
-                    await _projectTreeService.CurrentTree.TreeProvider.RemoveAsync(ImmutableHashSet.Create(specialFileNode));
-                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken);
+                    await _projectTreeService.CurrentTree.TreeProvider.RemoveAsync(ImmutableHashSet.Create(specialFileNode)).ConfigureAwait(false);
+                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 }
 
                 return false;
@@ -211,18 +211,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(templateFile, parentNode, specialFileName);
+                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(templateFile, parentNode, specialFileName).ConfigureAwait(false);
             }
             else
             {
                 var parentPath = _projectTreeService.CurrentTree.TreeProvider.GetPath(parentNode);
                 var specialFilePath = Path.Combine(parentPath, specialFileName);
                 _fileSystem.Create(specialFilePath);
-                IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath);
+                IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
                 {
                     fileCreated = true;
-                    await _projectTreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
+                    await _projectTreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
                 }
             }
 
