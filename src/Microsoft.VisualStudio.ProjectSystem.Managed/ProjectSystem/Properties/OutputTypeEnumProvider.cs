@@ -7,6 +7,11 @@ using Microsoft.Build.Framework.XamlTypes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// Provides the mapping between OutputType msbuild property (exposed in the browse object through OutputTypeEx)
+    /// and OutputType property on the BrowseObject.
+    /// Winmdobj and appcontainerexe need to be mapped to dll and exe respectively for the OutputTypeproperty.
+    /// </summary>
     [ExportDynamicEnumValuesProvider("OutputTypeEnumProvider")]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class OutputTypeEnumProvider : IDynamicEnumValuesProvider
@@ -31,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
+                // CPS doesn't like it if we have duplicate values in the list of possible values. So take just
+                // the first three which are not duplicates.
                 return Task.FromResult<ICollection<IEnumValue>>(_outputTypeValues.Values.Take(3).ToList());
             }
 
