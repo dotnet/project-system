@@ -26,6 +26,13 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)General.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
   </ItemGroup>
-  
 </Project>
