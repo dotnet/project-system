@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 { "dll",             new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
                 { "exe",             new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) },
                 { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe", DisplayName = "2" }) },
-                { "winmdobj",        new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "0" }) },
-                { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "winexe", DisplayName = "1" }) }
+                { "winmdobj",        new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
+                { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) }
             };
 
             public bool AllowCustomValues => false;
