@@ -15,8 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [ImportingConstructor]
         public SourceFilePropertiesProvider(UnconfiguredProject unconfiguredProject,
                                             [Import("Microsoft.VisualStudio.ProjectSystem.ProjectFile")] IProjectPropertiesProvider defaultProjectFilePropertiesProvider,
-                                            VisualStudioWorkspace workspace) :
-            base(unconfiguredProject, defaultProjectFilePropertiesProvider, workspace)
+                                            VisualStudioWorkspace workspace,
+                                            IProjectThreadingService threadingService) :
+            base(unconfiguredProject, defaultProjectFilePropertiesProvider, workspace, threadingService)
         {
         }
     }

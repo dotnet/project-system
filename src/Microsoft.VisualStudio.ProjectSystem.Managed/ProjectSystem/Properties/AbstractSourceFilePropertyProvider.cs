@@ -11,14 +11,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IProjectPropertiesProvider _defaultProjectFilePropertiesProvider;
         private readonly Workspace _workspace;
+        private readonly IProjectThreadingService _threadingService;
 
         public AbstractSourceFilePropertyProvider(UnconfiguredProject unconfiguredProject,
                                               [Import("Microsoft.VisualStudio.ProjectSystem.ProjectFile")] IProjectPropertiesProvider defaultProjectFilePropertiesProvider,
-                                              Workspace workspace)
+                                              Workspace workspace,
+                                              IProjectThreadingService threadingService)
         {
             _unconfiguredProject = unconfiguredProject;
             _defaultProjectFilePropertiesProvider = defaultProjectFilePropertiesProvider;
             _workspace = workspace;
+            _threadingService = threadingService;
         }
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging;
@@ -44,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public IProjectProperties GetProperties(string file, string itemType, string item)
         {
-            return new SourceFileProperties(ProjectPropertiesContext.GetContext(_unconfiguredProject, itemType, item), _workspace);
+            return new SourceFileProperties(ProjectPropertiesContext.GetContext(_unconfiguredProject, itemType, item), _workspace, _threadingService);
         }
     }
 }
