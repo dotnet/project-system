@@ -72,7 +72,7 @@
 
   <StringProperty Name="Copyright" DisplayName="Copyright header">
       <StringProperty.DataSource>
-          <DataSource Persistence="AssemblyInfo" HasConfigurationCondition="False" />
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
 </Rule>
