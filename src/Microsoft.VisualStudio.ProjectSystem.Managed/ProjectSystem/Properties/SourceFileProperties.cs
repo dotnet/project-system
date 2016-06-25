@@ -13,6 +13,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly IProjectPropertiesContext _projectPropertiesContext;
         private readonly Workspace _workspace;
 
+        private readonly Dictionary<string, string> _attributeNameMap = new Dictionary<string, string>
+        {
+            { "Title",                      "System.Reflection.AssemblyTitleAttribute" },
+            { "Description",                "System.Reflection.AssemblyDescriptionAttribute" },
+            { "Company",                    "System.Reflection.AssemblyCompanyAttribute" },
+            { "Product",                    "System.Reflection.AssemblyProductAttribute" },
+            { "Copyright",                  "System.Reflection.AssemblyCopyrightAttribute" },
+            { "Trademark",                  "System.Reflection.AssemblyTrademarkAttribute" },
+            { "AssemblyVersion",            "System.Reflection.AssemblyVersionAttribute" },
+            { "AssemblyFileVersion",        "System.Reflection.AssemblyFileVersionAttribute" },
+            { "NeutralResourcesLanguage",   "System.Resources.NeutralResourcesLanguageAttribute" },
+            { "AssemblyGuid",               "System.Runtime.InteropServices.GuidAttribute" },
+            { "ComVisible",                 "System.Runtime.InteropServices.ComVisibleAttribute" }
+        };
+
         public SourceFileProperties(IProjectPropertiesContext projectPropertiesContext, Workspace workspace)
         {
             _projectPropertiesContext = projectPropertiesContext;
@@ -45,22 +60,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
-            var currentProject = _workspace
-                                 .CurrentSolution
-                                 .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
-                                 .FirstOrDefault();
-            var compilation = await currentProject.GetCompilationAsync().ConfigureAwait(false);
-            var assemblyAttributes = compilation.Assembly.GetAttributes();
-
-            if (propertyName.Equals("Copyright"))
+            if (_attributeNameMap.ContainsKey(propertyName))
             {
-                var assemblyCopyrightAttributeSymbol = compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute");
-                var attribute = assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(assemblyCopyrightAttributeSymbol));
-                if (attribute != null)
+                var currentProject = _workspace
+                                     .CurrentSolution
+                                     .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
+                                     .FirstOrDefault();
+                if (currentProject == null)
                 {
-                    var copyright = attribute.ConstructorArguments.FirstOrDefault().Value as string;
-                    return copyright;
+                    return null;
                 }
+
+                var compilation = await currentProject.GetCompilationAsync().ConfigureAwait(false);
+                var assemblyAttributes = compilation.Assembly.GetAttributes();
+
+                var attributeTypeSymbol = compilation.GetTypeByMetadataName(_attributeNameMap[propertyName]);
+                if (attributeTypeSymbol == null)
+                {
+                    return null;
+                }
+
+                var attribute = assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(attributeTypeSymbol));
+                if (attribute == null)
+                {
+                    return null;
+                }
+
+                return attribute.ConstructorArguments.FirstOrDefault().Value?.ToString();
             }
 
             return null;
