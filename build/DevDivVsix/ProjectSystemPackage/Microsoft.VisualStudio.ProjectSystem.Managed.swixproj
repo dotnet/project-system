@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Package Include="Microsoft.CodeAnalysis.ProjectSystem.Managed.swr" />
+    <Package Include="Microsoft.VisualStudio.ProjectSystem.Managed.swr" />
   </ItemGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
