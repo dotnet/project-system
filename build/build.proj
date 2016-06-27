@@ -21,7 +21,6 @@
     <NuGetProjectFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.VSInsertionNuget.proj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)build\DevDivVsix\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)build\DevDivVsix\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)build\DevDivVsix\CommonFilesPackage\Microsoft.VisualStudio.ProjectSystem.CommonFiles.vsmanproj" />
   </ItemGroup>
 
   <Target Name="RestorePackages">
