@@ -1,0 +1,16 @@
+use vs
+
+package name=Microsoft.VisualStudio.ProjectSystem.Managed
+        version=$(Version)
+        vs.package.chip=neutral
+        vs.package.language=en-us
+        vs.package.type=vsix
+        vs.package.vsixId=EDDCB5BE-3C18-444E-8E50-AE06CD345872
+
+vs.localizedResources
+  vs.localizedResource language=en-us
+                       title="Microsoft VisualStudio Managed Project System"
+                       description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
+
+vs.payloads
+  vs.payload source=$(OutputPath)\ProjectSystemSetup.vsix

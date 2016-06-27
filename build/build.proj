@@ -19,6 +19,8 @@
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
     <NuGetProjectFile Include="$(RepositoryRootDirectory)build\Nuget\Microsoft.VisualStudio.ProjectSystem.VSInsertionNuget.proj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)build\DevDivVsix\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)build\DevDivVsix\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
 
   <Target Name="RestorePackages">
@@ -66,6 +68,21 @@
              Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
+  <Target Name="BuildModernVsixPackages">
+
+    <MSBuild Projects="@(VsManProjectFile)"
+             Targets="Build"
+             Condition="'$(RunningInMicroBuild)' == 'true'"
+             />
+  </Target>
+
+  <Target Name="RebuildModernVsixPackages">
+
+    <MSBuild Projects="@(VsManProjectFile)"
+             Targets="Rebuild"
+             Condition="'$(RunningInMicroBuild)' == 'true'"
+             />
+  </Target>
 
   <Target Name="Test">
 
@@ -88,7 +105,7 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;BuildModernVsixPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;RebuildModernVsixPackages;Test" />
 
 </Project>

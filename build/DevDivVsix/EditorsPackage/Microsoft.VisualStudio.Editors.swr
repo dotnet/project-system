@@ -1,0 +1,16 @@
+use vs
+
+package name=Microsoft.VisualStudio.Editors
+        version=$(Version)
+        vs.package.chip=neutral
+        vs.package.language=en-us
+        vs.package.type=vsix
+        vs.package.vsixId=F6B5EACA-7FA1-4591-8D40-A38234763621
+
+vs.localizedResources
+  vs.localizedResource language=en-us
+                       title="Microsoft VisualStudio Editors"
+                       description="Editors implementation for Project Properties"
+
+vs.payloads
+  vs.payload source=$(OutputPath)\VisualStudioEditorsSetup.vsix

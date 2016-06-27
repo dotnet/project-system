@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\Targets\ProducesNoOutput.Settings.targets" />
+  <Import Project="..\..\Targets\VSL.Versions.targets" />
+
+  <PropertyGroup>
+    <OutputArchitecture>neutral</OutputArchitecture>
+    <OutputLocalized>false</OutputLocalized>
+    <OutputType>vsix</OutputType>
+    <IsPackage>true</IsPackage>
+  </PropertyGroup>
+
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
+
+  <PropertyGroup>
+    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(AssemblyVersion);OutputPath=$(OutDir);LicenseUri=http://www.microsoft.com</PackagePreprocessorDefinitions>
+    <OutputPath>$(OutDir)</OutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Package Include="Microsoft.CodeAnalysis.Editors.swr" />
+  </ItemGroup>
+
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
+</Project>
