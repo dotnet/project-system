@@ -49,6 +49,7 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\IRoslynServicesFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
     <Compile Include="Mocks\IOptionsSettingsFactory.cs" />
     <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
