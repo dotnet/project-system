@@ -218,15 +218,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             AppConfigDocData = DocDataService.GetFileDocData(AppConfigFileName, Access, Nothing)
                         Catch ex As System.ComponentModel.Design.CheckoutException
                             Throw
-                        Catch Ex As Exception
-                            Debug.Fail(String.Format("DocDataService.GetFileDocData threw exception: {0}", Ex))
+                        Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
                             Throw
                         End Try
                     Else
                         Try
                             AppConfigDocData = New DocData(ServiceProvider, AppConfigFileName)
-                        Catch ex As Exception
-                            Debug.Fail(String.Format("DocData constructor threw exception: {0}", ex))
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
                             Throw
                         End Try
                     End If
@@ -349,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     Debug.Assert(Hierarchy IsNot Nothing, "Must have an IVsHierarchy in order to be able to sync user config files!")
                     SynchronizeUserConfig(SectionName, Hierarchy, ConfigHelperService, Settings, AppConfigDocData)
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception during synchronize user config files", NameOf(AppConfigSerializer))
                     ' Can't do very much here - but we shouldn't abort the save!
                 End Try
             End If
@@ -406,7 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     map.ExeConfigFilename = AppConfigDocData.Name
                     map.LocalUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoamingAndLocal, UnderVsHost, BuildConfig)
                     map.RoamingUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoaming, UnderVsHost, BuildConfig)
-                Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+                Catch ex As Exception When Not Common.Utils.ReportWithoutCrash(ex, NameOf(SynchronizeUserConfig), NameOf(AppConfigSerializer))
                     ' Can't really do anything - synchronize will fail...
                     Return
                 End Try

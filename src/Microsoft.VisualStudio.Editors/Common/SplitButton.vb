@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Dim e As New ShowCustomContextMenuEventArgs
                 Try
                     RaiseEvent ShowCustomContextMenu(e)
-                Catch ex As Exception
+                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenuOrContextMenuStrip), NameOf(SplitButton), considerExceptionAsRecoverable:=True)
                 End Try
 
                 If e.Handled Then

@@ -86,8 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             If (itemProperty IsNot Nothing) Then
                                 Try
                                     itemProperty.Value = value
-                                Catch ex As Exception
-                                    Debug.Fail("Setting property " & name & " to value " & value & " threw: " & ex.Message)
+                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ProjectItemFinishedGenerating), NameOf(ResxItemWizard), debugFail:=True, considerExceptionAsRecoverable:=True)
                                 End Try
                             End If
                         End If

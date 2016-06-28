@@ -185,8 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Icon.Dispose()
                     Catch ex As ArgumentException
                         ShowErrorMessage(SR.GetString(SR.PPG_Application_BadIcon_1Arg, sFileName))
-                    Catch ex As Exception
-                        Common.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(BrowseForAppIcon), NameOf(ApplicationPropPageBase))
                         ShowErrorMessage(ex)
                     End Try
                     If Not ValidIcon Then
@@ -199,8 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim ProjectItem As EnvDTE.ProjectItem = Nothing
                     Try
                         ProjectItem = AddIconFileToProject(sFileName)
-                    Catch ex As Exception
-                        Common.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, SR.GetString(SR.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
                         ShowErrorMessage(SR.GetString(SR.PPG_Application_CantAddIcon), ex)
                     End Try
 
@@ -308,9 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim IconContents As Byte() = IO.File.ReadAllBytes(path)
                     Dim IconStream As New IO.MemoryStream(IconContents, 0, IconContents.Length)
                     ApplicationIconPictureBox.Image = IconToImage(New Icon(IconStream), ApplicationIconPictureBox.ClientSize)
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex, True)
-
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase), ignoreOutOfMemory:=True)
                     'This could mean a bad icon file, I/O problems, etc.  At any rate, it doesn't make sense to
                     '  display an error message (doesn't necessarily mean the user just selected it, it might have
                     '  been in the project file), so we'll just show a blank image
@@ -340,8 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim ProjectItem As EnvDTE.ProjectItem = Nothing
                         Try
                             ProjectItem = AddIconFileToProject(path)
-                        Catch ex As Exception
-                            Common.RethrowIfUnrecoverable(ex)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, SR.GetString(SR.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
                             ShowErrorMessage(SR.GetString(SR.PPG_Application_CantAddIcon), ex)
                             Return False
                         End Try

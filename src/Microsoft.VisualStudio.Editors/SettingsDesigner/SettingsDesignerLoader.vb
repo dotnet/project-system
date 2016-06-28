@@ -443,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                           OrElse ex.ErrorCode = NativeMethods.OLECMDERR_E_CANCELED _
                                                           OrElse ex.ErrorCode = NativeMethods.E_FAIL
                                 ' We should ignore if the customer cancels this or we can not build the project...
-                            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex, True)
+                            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to rename symbol", NameOf(SettingsDesignerLoader), ignoreOutOfMemory:=True)
                                 DesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, DesignerFramework.DesignUtil.GetDefaultCaption(_serviceProvider))
                             Finally
                                 SettingsSingleFileGeneratorBase.AllowSymbolRename = False
@@ -507,13 +507,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 Dim cfgHelper As New ConfigurationHelperService
 
-                Dim objectDirty As AppConfigSerializer.DirtyState = _
-                    AppConfigSerializer.Deserialize(RootComponent, _
-                                                    DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache), _
-                                                    DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache), _
-                                                    cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty), _
-                                                    _appConfigDocData, _
-                                                    AppConfigSerializer.MergeValueMode.Prompt, _
+                Dim objectDirty As AppConfigSerializer.DirtyState =
+                    AppConfigSerializer.Deserialize(RootComponent,
+                                                    DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache),
+                                                    DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache),
+                                                    cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
+                                                    _appConfigDocData,
+                                                    AppConfigSerializer.MergeValueMode.Prompt,
                                                     CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService))
                 If objectDirty <> AppConfigSerializer.DirtyState.NoChange Then
                     ' Set flag if we make changes to the settings object during load that should
@@ -526,8 +526,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Catch ex As System.Configuration.ConfigurationErrorsException
                 ' We failed to load the app config xml document....
                 DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(SR.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
-            Catch Ex As Exception
-                Debug.Fail(String.Format("Failed to load app.config {0}", Ex))
+            Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Throw
             End Try
         End Sub
@@ -569,15 +568,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If AttachAppConfigDocData(True) Then
                 Debug.Assert(_appConfigDocData IsNot Nothing, "Why did AttachAppConfigDocData return true when we don't have an app.config docdata!?")
                 Try
-                    AppConfigSerializer.Serialize(RootComponent, _
-                                DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache), _
-                                DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache), _
-                                GeneratedClassName, _
-                                GeneratedClassNamespace(True), _
-                                _appConfigDocData, _
-                                VsHierarchy, _
+                    AppConfigSerializer.Serialize(RootComponent,
+                                DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache),
+                                DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache),
+                                GeneratedClassName,
+                                GeneratedClassNamespace(True),
+                                _appConfigDocData,
+                                VsHierarchy,
                                 True)
-                Catch Ex As Exception When Not Common.Utils.IsUnrecoverable(Ex)
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Failed to flush values to the app config document", NameOf(SettingsDesignerLoader))
                     ' We failed to flush values to the app config document....
                     DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(SR.SD_FailedToSaveAppConfigValues), HelpIDs.Err_SavingAppConfigFile)
                 End Try
@@ -841,7 +840,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     _vsDebuggerEventsCookie = 0
                     _vsDebugger = Nothing
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DisconnectDebuggerEvents), NameOf(SettingsDesignerLoader))
             End Try
         End Sub
 

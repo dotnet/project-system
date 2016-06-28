@@ -81,10 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
-            Catch ex As Exception
-#If DEBUG Then
-                System.Diagnostics.Debug.Fail(String.Format("Failed to serialize value: {0}", ex))
-#End If
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to serialize value", NameOf(SettingsValueSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
             End Try
 
             ' Make sure we always return a valid string...

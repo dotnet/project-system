@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Expect an IVsHierarchy but if none is provided, attempt to get it from IVsMonitorSelection.
             If projectHierarchy Is Nothing Then
                 Try
-                    Dim vsMonitorSelection As IVsMonitorSelection = TryCast( _
+                    Dim vsMonitorSelection As IVsMonitorSelection = TryCast(
                         _VBPackage.GetService(GetType(IVsMonitorSelection)), IVsMonitorSelection)
 
                     If vsMonitorSelection IsNot Nothing Then
@@ -121,7 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         Dim selectionContainerPointer As IntPtr = IntPtr.Zero
 
                         Try
-                            vsMonitorSelection.GetCurrentSelection( _
+                            vsMonitorSelection.GetCurrentSelection(
                                 vsHierarchyPointer, itemID, vsMultiItemSelect, selectionContainerPointer)
                         Finally
                             If selectionContainerPointer <> IntPtr.Zero Then
@@ -129,14 +129,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                             End If
 
                             If vsHierarchyPointer <> IntPtr.Zero Then
-                                projectHierarchy = TryCast( _
+                                projectHierarchy = TryCast(
                                     Marshal.GetObjectForIUnknown(vsHierarchyPointer), IVsHierarchy)
                                 Marshal.Release(vsHierarchyPointer)
                                 vsHierarchyPointer = IntPtr.Zero
                             End If
                         End Try
                     End If ' If vsMonitorSelection IsNot Nothing
-                Catch ex As Exception
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetProjectService), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
                     ' Ignore exceptions.
                 End Try
             End If

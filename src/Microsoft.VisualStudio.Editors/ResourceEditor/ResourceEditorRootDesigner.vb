@@ -355,9 +355,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     End If
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Return ""
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResXFileNameAndPath), NameOf(ResourceEditorRootDesigner))
+                Return String.Empty
             End Try
 
             Debug.Fail("Couldn't get name of resx file for UI purposes - returning empty string")
@@ -402,9 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '
                         'So, nothing for us to do.
                     End If
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Exception trying to persist editor state: " & ex.ToString())
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner), debugFail:=True)
                     'Ignore error
                 End Try
             End If
@@ -427,9 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If EditorState IsNot Nothing AndAlso EditorState.StatePersisted Then
                         EditorState.DepersistStateInto(_view)
                     End If
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Exception trying to restore editor state after reload: " & ex.ToString)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner), debugFail:=True)
                     'Now ignore the exception
                 End Try
             End If
@@ -489,9 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")
                     End If
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.ToString)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner), debugFail:=True)
             End Try
         End Sub
 
@@ -508,9 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsWindowFrame IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(VsWindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Nothing)))
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.ToString)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner), debugFail:=True)
             End Try
         End Sub
 

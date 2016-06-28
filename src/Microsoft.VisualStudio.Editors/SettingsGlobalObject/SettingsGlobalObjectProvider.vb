@@ -773,8 +773,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim attrs As __VSRDTATTRIB = CType(System.Enum.ToObject(GetType(__VSRDTATTRIB), attributes), __VSRDTATTRIB)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterAttributeChange(" & attrs.ToString("G") & ")...")
-                        Catch ex As Exception
-                            Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterAttributeChange(0x" & attributes.ToString("X8") & ")...")
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterAttributeChange), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
 #End If
@@ -808,8 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterFirstDocumentLock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception
-                            Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterFirstDocumentLock(0x" & lockType.ToString("X8") & ")...")
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterFirstDocumentLock), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
 #End If
@@ -847,8 +845,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnBeforeLastDocumentUnlock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception
-                            Debug.WriteLine("SettingsGlobalObjectProvider.OnBeforeLastDocumentUnlock(0x" & lockType.ToString("x8") & ")...")
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLastDocumentUnlock), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
 #End If
@@ -1137,9 +1134,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If (projItem IsNot Nothing) Then
                         OnProjectItemAdded(projItem)
                     End If
-                Catch Ex As Exception When Not Common.Utils.IsUnrecoverable(Ex)
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider), debugFail:=True)
                     ' Dunno what kind of exceptions ParseCanonicalName or GetProperty may throw....
-                    Debug.Fail("Caught exception while trying to map added/removed files to project items")
                 End Try
             End If
         End Sub
@@ -1398,10 +1394,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '   b/c a VirtualType can't have a property of its own type. So we add a hacked property
             '   by the same name with type Object instead.
             '
-            builder.Properties.Add(SettingsSingleFileGenerator.DefaultInstancePropertyName, _
-                                GetType(Object), _
-                                True, _
-                                New Attribute() {}, _
+            builder.Properties.Add(SettingsSingleFileGenerator.DefaultInstancePropertyName,
+                                GetType(Object),
+                                True,
+                                New Attribute() {},
                                 System.Reflection.MethodAttributes.Public Or System.Reflection.MethodAttributes.Static)
 
             Return builder.CreateType()
@@ -1461,13 +1457,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Catch argEx As System.ArgumentException
                 ' venus throws this since they don't support the CustomTool property, and all we
                 '   can do is catch it and ignore it
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureGeneratingSettingClass), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
                 ' we don't expect to fail randomly, but we also don't really want to propagate
                 '   failures from project systems we don't know about out to the user through
                 '   the global-object-service since users won't really know that we're setting
                 '   the CustomTool property on a .settings file while they're editing a form file
-                '
-                Debug.Fail(ex.ToString())
             End Try
 
         End Sub
@@ -1584,8 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- editLocks=" & editLocks & ", readLocks=" & readLocks & "...")
 #End If
-                Catch Ex As Exception
-                    Debug.Fail(String.Format("Failed to get document info for document {0}", fileName))
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
                     Throw
                 End Try
 
@@ -1628,11 +1621,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             Dim cfgHelper As New ConfigurationHelperService
                             Dim FullyQualifedClassName As String = ProjectUtils.FullyQualifiedClassName(ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _className)
                             Try
-                                AppConfigSerializer.Deserialize(dtSettings, _
-                                                                    _typeCache, _
-                                                                    _valueCache, _
-                                                                    cfgHelper.GetSectionName(FullyQualifedClassName, String.Empty), _
-                                                                    AppConfigDocData, _
+                                AppConfigSerializer.Deserialize(dtSettings,
+                                                                    _typeCache,
+                                                                    _valueCache,
+                                                                    cfgHelper.GetSectionName(FullyQualifedClassName, String.Empty),
+                                                                    AppConfigDocData,
                                                                     AppConfigSerializer.MergeValueMode.UseAppConfigFileValue)
                             Catch ex As System.Configuration.ConfigurationErrorsException
                                 ' App config is broken - not much we can do...
@@ -1828,12 +1821,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             ' reload us while we are saving, and we don't want to get the app.config and .settings files
                             ' out of sync...
                             Dim settingsToSave As DesignTimeSettings = Settings
-                            SettingsSerializer.Serialize(settingsToSave, _
-                                SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid), _
-                                Me._className, _
-                                settingsWriter, _
+                            SettingsSerializer.Serialize(settingsToSave,
+                                SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid),
+                                Me._className,
+                                settingsWriter,
                                 DesignerFramework.DesignUtil.GetEncoding(docDataTemp))
-                            SaveToAppConfig(settingsToSave, SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _
+                            SaveToAppConfig(settingsToSave, SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True),
                                 Me._className)
                         Finally
                             settingsWriter.Close()
@@ -1864,8 +1857,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             If vsProjItem IsNot Nothing Then
                                 Try
                                     vsProjItem.RunCustomTool()
-                                Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                                    Debug.Fail(String.Format("Failed to run custom tool: {0}", ex))
+                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider), debugFail:=True)
                                 End Try
                             End If
                         End If

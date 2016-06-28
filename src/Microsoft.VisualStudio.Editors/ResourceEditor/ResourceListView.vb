@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'See if we're able to check out the file before allowing the user to try to rename the resource.
                 ParentView.RootDesigner.DesignerLoader.ManualCheckOut()
                 ParentView.OnItemBeginEdit()
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLabelEdit), NameOf(ResourceListView), considerExceptionAsRecoverable:=True)
                 e.CancelEdit = True
                 ParentView.DsMsgBox(ex)
             End Try
@@ -553,7 +553,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("Couldn't find resource from index")
                 End If
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterLabelEdit), NameOf(ResourceListView), considerExceptionAsRecoverable:=True)
                 ParentView.DsMsgBox(ex)
             End Try
         End Sub
@@ -1132,9 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 Try
                     ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, Me.BackColor)
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex, IgnoreOutOfMemory:=True)
-
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetThumbnailIndex), NameOf(ResourceListView), ignoreOutOfMemory:=True)
                     'For some reason, we could not get a value for this resource.  So, we use an error glyph for the
                     '  source of the thumbnail image instead.  Note that an alternative would be to have a single
                     '  thumbnail in the thumbnail cache representing an error be used for all error cases.  However,
@@ -1172,8 +1170,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'NOTE: This is a slow operation, we should prevent to do so if it is possible...
                 Thumbnail = CreateThumbnail(ThumbnailSourceImage, ThumbnailSize, DrawBorder, _borderWidth, _selectionBorderWidth, _thumbnailImageList.TransparentColor)
-            Catch ex As Exception
-                Debug.Fail("Failed creating thumbnail")
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed creating thumbnail", NameOf(ResourceListView), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Thumbnail = Nothing
             End Try
             Using Thumbnail

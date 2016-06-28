@@ -239,7 +239,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim templatesWithCustomData As Templates = Nothing
             Try
                 templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, s_CUSTOM_DATA_SIGNATURE)
-            Catch ex As Exception ' Ignore exceptions.
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
+                ' Ignore exceptions.
             End Try
             If templatesWithCustomData Is Nothing OrElse templatesWithCustomData.Count = 0 Then
                 Exit Sub
@@ -282,7 +283,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Dim xmlNode As XmlNode = xmlDocument.ReadNode(xmlReader)
                     xmlDocument.AppendChild(xmlNode)
                 End While
-            Catch ex As Exception ' Ignore exceptions.
+            Catch ex As Exception
+                ' Ignore exceptions.
             Finally
                 If xmlReader IsNot Nothing Then
                     xmlReader.Close()
@@ -345,7 +347,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
                 xmlWriter.WriteEndElement()
                 xmlWriter.WriteEndDocument()
-            Catch ex As Exception ' Ignore write exceptions.
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
+                ' Ignore write exceptions.
             Finally
                 If xmlWriter IsNot Nothing Then
                     xmlWriter.Close()
@@ -410,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If Not StringIsNullEmptyOrBlank(attributeValue) Then
                 Try
                     result = DirectCast(AssemblyOptionConverter.ConvertFromInvariantString(attributeValue), AssemblyOption)
-                Catch ex As Exception When Not Utils.IsUnrecoverable(ex)
+                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ReadAssemblyOptionAttribute), NameOf(MyExtensibilitySettings))
                 End Try
             End If
             Return result
@@ -421,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Write an AssemblyOption value into the specified attribute using the specified XML text writer.
         ''' Try to use TypeConverter.ConvertToInvariantString, if fail, use the numeric value.
         ''' </summary>
-        Private Shared Sub WriteAssemblyOptionAttribute(ByVal writer As XmlTextWriter, _
+        Private Shared Sub WriteAssemblyOptionAttribute(ByVal writer As XmlTextWriter,
                 ByVal attributeName As String, ByVal value As AssemblyOption)
             Debug.Assert(writer IsNot Nothing, "Null writer!")
             Debug.Assert(Not StringIsNullEmptyOrBlank(attributeName), "Null attribute name!")
@@ -431,10 +434,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim text As String = Nothing
             Try
                 text = AssemblyOptionConverter.ConvertToInvariantString(value)
-            Catch ex As Exception When Not Utils.IsUnrecoverable(ex)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Could not convert to invariant string", NameOf(MyExtensibilitySettings))
             End Try
             If text Is Nothing Then
-                Debug.Fail("Could not convert to invariant string!")
                 text = CInt(value).ToString()
             End If
             If text IsNot Nothing Then

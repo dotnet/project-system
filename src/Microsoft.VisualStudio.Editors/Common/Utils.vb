@@ -314,8 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Else
                     Return Value.ToString()
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Not IsUnrecoverableException(ex)
                 Return "[" & ex.GetType.Name & "]"
             End Try
 #Else
@@ -323,26 +322,55 @@ Namespace Microsoft.VisualStudio.Editors.Common
 #End If
         End Function
 
-
-        ''' <summary>
-        ''' Given an exception, returns True if it is an "unrecoverable" exception.
-        ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
-        ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
-        ''' <remarks></remarks>
-        Public Function IsUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False) As Boolean
-            If TypeOf ex Is NullReferenceException _
-                OrElse (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
+        Public Function IsUnrecoverableException(ByVal ex As Exception, Optional ByVal ignoreOutOfMemory As Boolean = False) As Boolean
+            Return TypeOf ex Is NullReferenceException _
+                OrElse (Not ignoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
                 OrElse TypeOf ex Is StackOverflowException _
                 OrElse TypeOf ex Is System.Threading.ThreadAbortException _
-                OrElse TypeOf ex Is AccessViolationException _
-            Then
-                Return True
-            End If
-
-            Return False
+                OrElse TypeOf ex Is AccessViolationException
         End Function
 
+        ''' <summary>
+        ''' Logs the given exception and returns whether or not this is a "recoverable" exception, i.e. exception can be ignored.
+        ''' </summary>
+        ''' <param name="ex">The exception to log and check if it is recoverable.</param>
+        ''' <param name="exceptionEventDescription">Additional description for the cause of the exception.</param>
+        ''' <param name="throwingComponentName">Name of the component that threw that exception, generally the containing type name.</param>
+        ''' <param name="debugFail">If True, then invoke Debug.Fail for recoverable exception.</param>
+        ''' <param name="debugWriteLine">If True, then invoke Debug.WriteLine for recoverable exception.</param>
+        ''' <param name="considerExceptionAsRecoverable">If True, then the given exception is always considered recoverable.
+        ''' Otherwise, invokes <see cref="IsUnrecoverableException(Exception, Boolean)"/> to determine if exception is recoverable or not.</param>
+        ''' <param name="ignoreOutOfMemory">If True, out of memory will be considered recoverable.</param>
+        ''' <remarks></remarks>
+        Public Function ReportWithoutCrash(ByVal ex As Exception,
+                                           ByVal exceptionEventDescription As String,
+                                           Optional ByVal throwingComponentName As String = "general",
+                                           Optional ByVal debugFail As Boolean = False,
+                                           Optional ByVal debugWriteLine As Boolean = False,
+                                           Optional ByVal considerExceptionAsRecoverable As Boolean = False,
+                                           Optional ByVal ignoreOutOfMemory As Boolean = False) As Boolean
+            Debug.Assert(ex IsNot Nothing)
+            Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
+            Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
+
+            TelemetryService.DefaultSession.PostFault(
+                eventName:="vs/projectsystem/editors/" & throwingComponentName.ToLower,
+                description:=exceptionEventDescription,
+                exceptionObject:=ex)
+
+            Dim isRecoverable = considerExceptionAsRecoverable OrElse Not IsUnrecoverableException(ex, ignoreOutOfMemory)
+            If isRecoverable Then
+                If debugFail Then
+                    Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+                End If
+
+                If debugWriteLine Then
+                    Debug.WriteLine(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+                End If
+            End If
+
+            Return isRecoverable
+        End Function
 
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
@@ -363,19 +391,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return False
         End Function
-
-
-        ''' <summary>
-        ''' Given an exception, rethrows it if it is an "unrecoverable" exception.  Otherwise does nothing.
-        ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
-        ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
-        ''' <remarks></remarks>
-        Public Sub RethrowIfUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False)
-            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
-                Throw ex
-            End If
-        End Sub
 
 
         ''' <summary>
@@ -519,7 +534,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' 
         '''       returns the string 
         ''' 
-        '''       "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
+        '''       "Metafiles (*.wmf, * .emf)|*.wmf;*.emf"
         ''' 
         ''' </returns>
         ''' <remarks></remarks>
@@ -801,8 +816,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Try
                         'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                         InitialDirectory = Path.GetFullPath(AppendBackslash(InitialDirectory))
-                    Catch ex As Exception
-                        Common.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Not IsUnrecoverableException(ex)
                         InitialDirectory = String.Empty
                     End Try
                 End If
@@ -1060,10 +1074,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                     g.DrawImage(unmappedBitmap, r, 0, 0, size.Width, size.Height, GraphicsUnit.Pixel, imageAttributes)
                 End Using
-            Catch e As Exception
-                Debug.Fail(e.ToString())
-                Common.RethrowIfUnrecoverable(e)
-
+            Catch e As Exception When Common.ReportWithoutCrash(e, NameOf(MapBitmapColor), NameOf(Utils), debugFail:=True)
                 ' fall-back is to use the unmapped bitmap
                 Return unmappedBitmap
             End Try
@@ -1262,8 +1273,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             Catch ex As System.ArgumentException
                 ' Venus throws when trying to access the CustomToolNamespace property...
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                Debug.Fail(String.Format("Failed to get item.Properties('CustomToolNamespace') {0}", ex))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils), debugFail:=True)
             End Try
 
             ' If we have a custom tool namespace, then we will return this unless we also have a root namespace (VB only)
@@ -1300,15 +1310,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         End If
                     End If
                 Catch ex As System.ArgumentException
-                    Debug.Fail("Why did we get a System.ArgumentException when trying to get the root namespace?")
-                Catch ex As Exception
-                    Debug.Fail(String.Format("Why did we get a {0} when trying to get the root namespace?", ex))
+                Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils), debugFail:=True, considerExceptionAsRecoverable:=True)
                 End Try
             End If
             Try
                 Return DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace)
             Catch ex As ArgumentException
-                Return ""
+                Return String.Empty
             End Try
         End Function
 
@@ -1386,7 +1394,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Not langService = Guid.Empty Then
                     Return langService.Equals(New Guid("{E34ACDC0-BAAE-11D0-88BF-00A0C9110049}"))
                 End If
-            Catch
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVbProject), NameOf(Utils), considerExceptionAsRecoverable:=True)
             End Try
             Return False
         End Function
@@ -1445,33 +1453,33 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = { _
-                KnownPropertyPageGuids.GuidApplicationPage_VB, _
-                KnownPropertyPageGuids.GuidApplicationPage_CS, _
-                KnownPropertyPageGuids.GuidApplicationPage_JS, _
-                KnownPropertyPageGuids.GuidCompilePage_VB, _
-                KnownPropertyPageGuids.GuidBuildPage_CS, _
-                KnownPropertyPageGuids.GuidBuildPage_JS, _
-                KnownPropertyPageGuids.GuidBuildEventsPage, _
-                KnownPropertyPageGuids.GuidDebugPage, _
-                KnownPropertyPageGuids.GuidReferencesPage_VB, _
-                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID, _
-                GetType(ResourceEditor.ResourceEditorFactory).GUID, _
-                KnownPropertyPageGuids.GuidReferencePathsPage, _
-                KnownPropertyPageGuids.GuidSigningPage, _
-                KnownPropertyPageGuids.GuidSecurityPage, _
-                KnownPropertyPageGuids.GuidPublishPage, _
-                KnownPropertyPageGuids.GuidDatabasePage_SQL, _
-                KnownPropertyPageGuids.GuidFxCopPage, _
-                KnownPropertyPageGuids.GuidDeployPage, _
-                KnownPropertyPageGuids.GuidDevicesPage_VSD, _
-                KnownPropertyPageGuids.GuidDebugPage_VSD, _
-                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF, _
-                KnownPropertyPageGuids.GuidSecurityPage_WPF, _
-                KnownPropertyPageGuids.GuidMyExtensionsPage, _
-                KnownPropertyPageGuids.GuidOfficePublishPage, _
-                KnownPropertyPageGuids.GuidServicesPage, _
-                KnownPropertyPageGuids.GuidWAPWebPage _
+            Private Shared s_sqmOrder() As Guid = {
+                KnownPropertyPageGuids.GuidApplicationPage_VB,
+                KnownPropertyPageGuids.GuidApplicationPage_CS,
+                KnownPropertyPageGuids.GuidApplicationPage_JS,
+                KnownPropertyPageGuids.GuidCompilePage_VB,
+                KnownPropertyPageGuids.GuidBuildPage_CS,
+                KnownPropertyPageGuids.GuidBuildPage_JS,
+                KnownPropertyPageGuids.GuidBuildEventsPage,
+                KnownPropertyPageGuids.GuidDebugPage,
+                KnownPropertyPageGuids.GuidReferencesPage_VB,
+                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID,
+                GetType(ResourceEditor.ResourceEditorFactory).GUID,
+                KnownPropertyPageGuids.GuidReferencePathsPage,
+                KnownPropertyPageGuids.GuidSigningPage,
+                KnownPropertyPageGuids.GuidSecurityPage,
+                KnownPropertyPageGuids.GuidPublishPage,
+                KnownPropertyPageGuids.GuidDatabasePage_SQL,
+                KnownPropertyPageGuids.GuidFxCopPage,
+                KnownPropertyPageGuids.GuidDeployPage,
+                KnownPropertyPageGuids.GuidDevicesPage_VSD,
+                KnownPropertyPageGuids.GuidDebugPage_VSD,
+                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF,
+                KnownPropertyPageGuids.GuidSecurityPage_WPF,
+                KnownPropertyPageGuids.GuidMyExtensionsPage,
+                KnownPropertyPageGuids.GuidOfficePublishPage,
+                KnownPropertyPageGuids.GuidServicesPage,
+                KnownPropertyPageGuids.GuidWAPWebPage
             }
 
             Public Const UNKNOWN_PAGE As Byte = &HFF
@@ -1654,8 +1662,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Reference3 IsNot Nothing AndAlso Reference3.AutoReferenced Then
                     Return True
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                Debug.Fail("Reference3.AutoReferenced threw an exception: " & ex.Message)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils), debugFail:=True)
             End Try
 
             Return False

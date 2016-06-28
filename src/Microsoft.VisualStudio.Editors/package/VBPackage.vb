@@ -65,26 +65,22 @@ Namespace Microsoft.VisualStudio.Editors
             'Register editor factories
             Try
                 MyBase.RegisterEditorFactory(New SettingsDesigner.SettingsDesignerEditorFactory)
-            Catch ex As Exception
-                Debug.Fail("Exception registering settings designer editor factory: " & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering settings designer editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New ResourceEditor.ResourceEditorFactory)
-            Catch ex As Exception
-                Debug.Fail("Exception registering registry editor editor factory: " & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory)
-            Catch ex As Exception
-                Debug.Fail("Exception registering application designer editor factory: " & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New PropPageDesigner.PropPageDesignerEditorFactory)
-            Catch ex As Exception
-                Debug.Fail("Exception registering property page designer editor factory: " & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering property page designer editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
                 Throw
             End Try
 
@@ -258,8 +254,7 @@ Namespace Microsoft.VisualStudio.Editors
                         End If
                         _lastViewedProjectDesignerTab(projGuid) = tab
                     End While
-                Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                    Debug.Fail(String.Format("Failed to read settings: {0}", ex))
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to read settings", NameOf(VBPackage), debugFail:=True)
                 End Try
             Else
                 MyBase.OnLoadOptions(key, stream)
@@ -314,9 +309,8 @@ Namespace Microsoft.VisualStudio.Editors
                 If hierarchy IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ProjectIDGuid, projGuid))
                 End If
-            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get project guid", NameOf(VBPackage), debugFail:=True)
                 ' This is a non-vital function - ignore if we fail to get the GUID...
-                Debug.Fail(String.Format("Failed to get project guid: {0}", ex))
             End Try
             Return projGuid
         End Function
@@ -458,10 +452,7 @@ Namespace Microsoft.VisualStudio.Editors
                             End If
                         Loop
                     End If
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-#If DEBUG Then
-                    Debug.Fail(String.Format("Failed when trying to clean up user.config files... {0}", ex))
-#End If
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed when trying to clean up user.config files", NameOf(VBPackage), debugFail:=True)
                 End Try
                 Return Editors.Interop.NativeMethods.S_OK
             End Function

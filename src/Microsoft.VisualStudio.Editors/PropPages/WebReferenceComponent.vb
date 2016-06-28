@@ -27,8 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Try
                     Return _projectItem.Name
-                Catch ex As Exception
-                    Debug.Fail(ex.Message)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Name), NameOf(WebReferenceComponent), debugFail:=True, considerExceptionAsRecoverable:=True)
                     Return String.Empty
                 End Try
             End Get
@@ -119,8 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If properties IsNot Nothing Then
                     Return properties.Item(propertyName)
                 End If
-            Catch e As System.ArgumentException
-                Debug.Fail(e.Message)
+            Catch e As System.ArgumentException When Common.Utils.ReportWithoutCrash(e, NameOf(GetItemProperty), NameOf(WebReferenceComponent), debugFail:=True, considerExceptionAsRecoverable:=True)
             End Try
             Return Nothing
         End Function

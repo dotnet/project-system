@@ -7,8 +7,6 @@ Imports System.ComponentModel
 Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
-Imports Microsoft.VisualStudio.Editors.Common.Utils
-
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -546,8 +544,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Function TryCanSaveResourceToFile(ByVal Resource As IResource) As Boolean
             Try
                 Return CanSaveResourceToFile(Resource)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryCanSaveResourceToFile), NameOf(ResourceTypeEditor))
             End Try
 
             Return False

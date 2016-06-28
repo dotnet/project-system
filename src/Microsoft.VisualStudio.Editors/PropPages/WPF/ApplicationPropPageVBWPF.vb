@@ -354,7 +354,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         ' we're the only person with it open, save the document
                         VSErrorHandler.ThrowOnFailure(rdt.SaveDocuments(CUInt(__VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty), hier, itemId, docCookie))
                     End If
-                Catch ex As Exception
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TrySaveDocDataIfLastEditor), NameOf(ApplicationPropPageVBWPF), considerExceptionAsRecoverable:=True)
                     ShowErrorMessage(ex)
                 End Try
             End If
@@ -1527,7 +1527,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         Else
                             Value = GetStartupObjectOrUriValueFromStorage()
                         End If
-                    Catch ex As Exception
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadUserDefinedProperty), NameOf(ApplicationPropPageVBWPF), considerExceptionAsRecoverable:=True)
                         If ShouldStartupUriBeDisplayedInsteadOfStartupObject() Then
                             Value = New StartupUri("")
                         Else
@@ -1538,14 +1538,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Case s_PROPNAME_ShutDownMode
                     Try
                         Value = GetShutdownModeFromStorage()
-                    Catch ex As Exception
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadUserDefinedProperty), NameOf(ApplicationPropPageVBWPF), considerExceptionAsRecoverable:=True)
                         Value = ""
                     End Try
 
                 Case s_PROPNAME_UseApplicationFramework
                     Try
                         Value = GetUseApplicationFrameworkFromStorage()
-                    Catch ex As Exception
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadUserDefinedProperty), NameOf(ApplicationPropPageVBWPF), considerExceptionAsRecoverable:=True)
                         Value = TriState.Disabled
                     End Try
 
@@ -1617,7 +1617,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 If appXamlProjectItem.Document IsNot Nothing Then
                     appXamlProjectItem.Document.Activate()
                 End If
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryShowXamlEditor), NameOf(ApplicationPropPageVBWPF), considerExceptionAsRecoverable:=True)
                 ShowErrorMessage(ex)
             Finally
                 LeaveProjectCheckoutSection()
@@ -1828,8 +1828,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     RemoveErrorControl()
                     RefreshPropertyValues()
                     DisplayErrorControlIfAppXamlIsInvalid()
-                Catch ex As Exception
-                    Debug.Fail("Unexpected exception in RetryPageLoad(): " & ex.ToString())
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RetryPageLoad), NameOf(ApplicationPropPageVBWPF), debugFail:=True, considerExceptionAsRecoverable:=True)
                 End Try
             End If
         End Sub

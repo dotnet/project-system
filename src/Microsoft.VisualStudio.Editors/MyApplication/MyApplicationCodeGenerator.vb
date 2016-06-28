@@ -468,10 +468,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         End If
                     End If
                 End If
-            Catch ex As Exception
-                Common.RethrowIfUnrecoverable(ex)
-                Debug.WriteLine(ex.ToString())
-                Debug.Fail("These methods should succeed...")
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetRootNamespace), NameOf(MyApplicationCodeGenerator), debugFail:=True)
             End Try
 
             Debug.Fail("Unable to get the project's root namespace from MyApplicationCodeGenerator")
@@ -616,8 +613,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             End If
                         End If
                     End Using
-                Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                    Debug.Fail("Failed to save changes to myapp file")
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to save changes to myapp file", NameOf(MyApplicationCodeGenerator), debugFail:=True)
                 End Try
             End If
 

@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         ProjectReloaded = View.ProjectReloadedDuringCheckout
                     End If
                 End Try
-            Catch ex As Exception
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader), considerExceptionAsRecoverable:=True)
                 Switches.TraceSCC("Checkout failed: " & ex.Message)
 
                 'Check-out has failed.  We need to handle this gracefully at all places in the UI where this could happen.
@@ -639,8 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         vsProj.RunCustomTool()
                     End If
                 End If
-            Catch ex As Exception When Not Utils.IsUnrecoverable(ex)
-                Debug.Fail(String.Format("Failed to run custom tool: {0}", ex))
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader), debugFail:=True)
             End Try
         End Sub
 
@@ -676,8 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim LostFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     LostFocusProjectItem = LostFocus.ProjectItem
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
                 End Try
 
                 If LostFocusProjectItem Is ThisProjectItem Then
@@ -689,8 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim GotFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     GotFocusProjectItem = GotFocus.ProjectItem
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
                 End Try
 
                 If GotFocusProjectItem Is ThisProjectItem Then

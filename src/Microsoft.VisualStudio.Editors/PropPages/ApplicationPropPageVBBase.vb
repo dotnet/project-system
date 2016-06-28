@@ -269,8 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                Debug.Fail("OnRootNamespaceChanged threw an exception: " & ex.ToString)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase), debugFail:=True)
             End Try
         End Sub
 
@@ -688,8 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
                     End If
 
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
                     If Not Me.ProjectReloadedDuringCheckout Then
                         ShowErrorMessage(ex)
                     End If

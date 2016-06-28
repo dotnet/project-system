@@ -367,9 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Fail("Bad unique name prefix - localization bug?")
                     UniqueNamePrefix = ""
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail("Exception calling ResourceTypeEditor.GetSuggestedNamePrefix(): " & ex.Message)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUniqueName), NameOf(ResourceFile), debugFail:=True)
                 UniqueNamePrefix = ""
             End Try
 
@@ -801,9 +799,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _resourcesHash.Remove(Resource.Name.ToUpperInvariant())
             Try
                 Resource.NameRawWithoutUndo = e.NewName
-            Catch ex As Exception
-                Common.RethrowIfUnrecoverable(ex)
-                Debug.Fail("Unexpected error changing the name of the resource")
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile), debugFail:=True)
             End Try
             _resourcesHash.Add(Resource.Name.ToUpperInvariant(), Resource)
 
@@ -813,7 +809,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Fix up the project to use the new name, if we're creating strongly typed resource classes            
             Try
                 View.CallGlobalRename(OldName, e.NewName)
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ComponentChangeService_ComponentRename), NameOf(ResourceFile))
                 RootComponent.RootDesigner.GetView().DsMsgBox(ex)
             End Try
         End Sub
@@ -945,7 +941,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     lastName = Resource.Name
                                 End If
                             End If
-                        Catch ex As Exception
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadResources), NameOf(ResourceFile), considerExceptionAsRecoverable:=True)
                             If Resource IsNot Nothing Then
                                 Resource.Dispose()
                             End If
@@ -1011,10 +1007,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Dim resource As Resource = resourceList(i)
                         Try
                             ResXWriter.AddResource(resource.ResXDataNode.Name, resourceList(i).ResXDataNode)
-                        Catch ex As Exception
-                            ' UNDONE: we should study what we should do if this failed...
-                            RethrowIfUnrecoverable(ex)
-
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(WriteResources), NameOf(ResourceFile))
                             resource.SetTaskFromGetValueException(ex, ex)
                             If failedList IsNot Nothing Then
                                 failedList = SR.GetString(SR.RSE_Err_NameList, failedList, resource.Name)
@@ -1026,7 +1019,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
 
                     If failedList IsNot Nothing Then
-                        RootComponent.RootDesigner.GetView().DsMsgBox(SR.GetString(SR.RSE_Err_CantSaveResouce_1Arg, failedList) & VB.vbCrLf & VB.vbCrLf & extraMessage, _
+                        RootComponent.RootDesigner.GetView().DsMsgBox(SR.GetString(SR.RSE_Err_CantSaveResouce_1Arg, failedList) & VB.vbCrLf & VB.vbCrLf & extraMessage,
                             MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantSaveBadResouceItem)
                     End If
                 End If
@@ -1116,7 +1109,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #If DEBUG Then
                 'Verify that the enums start with zero and are contiguous
                 For Index As Integer = 0 To s_errorTypeCount - 1
-                    Debug.Assert(CInt(System.Enum.GetValues(GetType(ResourceTaskType)).GetValue(Index)) = Index, _
+                    Debug.Assert(CInt(System.Enum.GetValues(GetType(ResourceTaskType)).GetValue(Index)) = Index,
                         "The values in ResourceErrorType must start at 0 and be contiguous")
                 Next
 #End If
@@ -1692,11 +1685,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     ' Let the project system to handle the exactly version...
                                     vsLangProj.References.Add(assmeblyName)
                                 End If
-                            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile), debugFail:=Not TypeOf ex Is CheckoutException)
                                 ' We should ignore the error if the project system failed to do so..
-                                If Not TypeOf ex Is CheckoutException Then
-                                    Debug.Fail("Failed to add reference to assembly contining type: " & resourceType.Name & " Error: " & ex.Message)
-                                End If
 
                                 ' NOTE: we need consider to prompt the user an waring message. But it could be very annoying if we pop up many message boxes in one transaction.
                                 '  We should consider a global service to collect all warning messages, and show in one dialog box when the transaction is commited.
@@ -1790,11 +1780,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If View IsNot Nothing AndAlso View.GetDesignerLoader() IsNot Nothing Then
                 Try
                     View.GetDesignerLoader().RunSingleFileGenerator(True)
-                Catch ex As Exception
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile), considerExceptionAsRecoverable:=True)
                     Try
                         View.DsMsgBox(ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Catch ex2 As exception
-                        Debug.Fail("Unable to show exception message for exception: " & ex.ToString())
+                    Catch ex2 As exception When Common.Utils.ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl), debugFail:=True)
                     End Try
                 End Try
             End If

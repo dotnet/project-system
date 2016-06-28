@@ -832,9 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Marshal.Release(punkVsBrowseObject)
                     End If
                 End Try
-            Catch ex As Exception
-                Debug.WriteLine(ex.ToString())
-                Debug.Fail("Why did we fail to get the DefaultNamespace?" & Microsoft.VisualBasic.vbCrLf & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get the DefaultNamespace", NameOf(SettingsSingleFileGenerator), debugFail:=True, considerExceptionAsRecoverable:=True)
             End Try
 
             Return rootNamespace

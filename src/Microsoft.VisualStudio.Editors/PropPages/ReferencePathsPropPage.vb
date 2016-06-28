@@ -343,8 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Interpret as relative to the project path, and make it absolute
                     FolderText = IO.Path.Combine(GetProjectPath(), FolderText)
                     FolderText = Utils.AppendBackslash(FolderText)
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetCurrentFolderPathAbsolute), NameOf(ReferencePathsPropPage))
                 End Try
             End If
 
