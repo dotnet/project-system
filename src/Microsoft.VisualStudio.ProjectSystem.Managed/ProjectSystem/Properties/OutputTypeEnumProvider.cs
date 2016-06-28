@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
@@ -23,11 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         internal class OutputTypeEnumValuesGenerator : IDynamicEnumValuesGenerator
         {
-            private readonly Dictionary<string, IEnumValue> _outputTypeValues = new Dictionary<string, IEnumValue>
+            private readonly Dictionary<string, IEnumValue> _listedOutputTypeValues = new Dictionary<string, IEnumValue>
             {
                 { "dll",             new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
                 { "exe",             new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) },
-                { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe", DisplayName = "2" }) },
+                { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe", DisplayName = "2" }) }
+            };
+
+            private readonly Dictionary<string, IEnumValue> _mappedOutputTypeValues = new Dictionary<string, IEnumValue>
+            {
                 { "winmdobj",        new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
                 { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) }
             };
@@ -38,14 +43,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 // CPS doesn't like it if we have duplicate values in the list of possible values. So take just
                 // the first three which are not duplicates.
-                return Task.FromResult<ICollection<IEnumValue>>(_outputTypeValues.Values.Take(3).ToList());
+                return Task.FromResult<ICollection<IEnumValue>>(_listedOutputTypeValues.Values);
             }
 
             public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
             {
-                if (_outputTypeValues.ContainsKey(userSuppliedValue))
+                IEnumValue value;
+                if (_listedOutputTypeValues.TryGetValue(userSuppliedValue, out value))
                 {
-                    return Task.FromResult(_outputTypeValues[userSuppliedValue]);
+                    return Task.FromResult(value);
+                }
+
+                if (_mappedOutputTypeValues.TryGetValue(userSuppliedValue, out value))
+                {
+                    return Task.FromResult(value);
                 }
 
                 return Task.FromResult<IEnumValue>(null);
