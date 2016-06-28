@@ -78,7 +78,7 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\General.BrowseObject.cs">
+    <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\Rules\None.cs" >
