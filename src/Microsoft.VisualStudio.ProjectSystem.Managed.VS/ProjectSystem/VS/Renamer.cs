@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -86,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (!renamedSolutionApplied)
             {
-                string failureMessage = string.Format(Resources.RenameSymbolFailed, Path.GetFileNameWithoutExtension(_oldFilePath));
+                string failureMessage = string.Format(CultureInfo.CurrentCulture, Resources.RenameSymbolFailed, Path.GetFileNameWithoutExtension(_oldFilePath));
                 await _threadingService.SwitchToUIThread();
                 _userNotificationServices.NotifyFailure(failureMessage);
             }
@@ -99,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Solution renamedSolution = null;
             string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
 
-            while (true)
+            while (project != null)
             {
                 Document newDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
                 if (newDocument == null)
@@ -122,15 +123,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (symbol == null)
                     return renamedSolution;
 
-                bool userConfirmed = await CheckUserConfirmation();
+                bool userConfirmed = await CheckUserConfirmation().ConfigureAwait(false);
                 if (!userConfirmed)
                     return renamedSolution;
 
                 string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
-
+                
+                // Note that RenameSymbolAsync will return a new snapshot of solution.
                 renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
                 project = renamedSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
             }
+            return null;
         }
 
         private async Task<bool> CheckUserConfirmation()
@@ -144,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var userNeedPrompt = _optionsSettings.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
             if (userNeedPrompt)
             {
-                string renamePromptMessage = string.Format(Resources.RenameSymbolPrompt, Path.GetFileNameWithoutExtension(_oldFilePath));
+                string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, Resources.RenameSymbolPrompt, Path.GetFileNameWithoutExtension(_oldFilePath));
 
                 await _threadingService.SwitchToUIThread();
                 _userConfirmedRename = _userNotificationServices.Confirm(renamePromptMessage);

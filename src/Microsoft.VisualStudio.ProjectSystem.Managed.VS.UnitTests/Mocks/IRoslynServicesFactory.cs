@@ -9,17 +9,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IRoslynServicesFactory
     {
-        public static IRoslynServices Implement(Func<Solution, ISymbol, string, Task<Solution>> renameSymbolAsync, Func<Workspace,Solution,bool> applyChangesToSolution)
+        public static Mock<IRoslynServices> Create()
+        {
+            return new Mock<IRoslynServices>();
+        }
+
+        public static Mock<IRoslynServices> Implement(Solution solution, bool changesApplied)
         {
             var mock = new Mock<IRoslynServices>();
            
             mock.Setup(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()))
-                .Returns(renameSymbolAsync);
+                .Returns(Task.FromResult(solution));
 
             mock.Setup(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()))
-                .Returns(applyChangesToSolution);
+                .Returns(changesApplied);
 
-            return mock.Object;
+            return mock;
         }
     }
 }

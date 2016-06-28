@@ -7,14 +7,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IUserNotificationServicesFactory
     {
-        public static IUserNotificationServices Implement(Func<string, bool> confirmRename)
+        public static Mock<IUserNotificationServices> Create()
+        {
+            return new Mock<IUserNotificationServices>();
+        }
+
+        public static Mock<IUserNotificationServices> Implement(bool confirmRename)
         {
             var mock = new Mock<IUserNotificationServices>();
            
             mock.Setup(h => h.Confirm(It.IsAny<string>()))
                 .Returns(confirmRename);
 
-            return mock.Object;
+            return mock;
         }
     }
 }
