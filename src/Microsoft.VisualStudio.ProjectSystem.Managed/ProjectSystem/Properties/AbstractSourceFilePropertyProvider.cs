@@ -17,6 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                                                   Workspace workspace,
                                                   IProjectThreadingService threadingService)
         {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(workspace, nameof(workspace));
+            Requires.NotNull(threadingService, nameof(threadingService));
+
             _unconfiguredProject = unconfiguredProject;
             _workspace = workspace;
             _threadingService = threadingService;
@@ -27,6 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged;
 
         public string DefaultProjectPath => _unconfiguredProject.FullPath;
+
+        public IProjectProperties GetProperties(string file, string itemType, string item)
+        {
+            return new SourceFileProperties(ProjectPropertiesContext.GetContext(_unconfiguredProject, itemType, item), _workspace, _threadingService);
+        }
 
         public IProjectProperties GetCommonProperties()
         {
@@ -41,11 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public IProjectProperties GetItemTypeProperties(string itemType)
         {
             throw new InvalidOperationException();
-        }
-
-        public IProjectProperties GetProperties(string file, string itemType, string item)
-        {
-            return new SourceFileProperties(ProjectPropertiesContext.GetContext(_unconfiguredProject, itemType, item), _workspace, _threadingService);
         }
     }
 }

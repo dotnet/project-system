@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectFactory
     {
-        public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null)
+        public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null)
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
@@ -33,6 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProject.Setup(u => u.Services)
                                .Returns(unconfiguredProjectServices.Object);
+
+            unconfiguredProject.SetupGet(u => u.FullPath)
+                                .Returns(filePath);
 
             return unconfiguredProject.Object;
         }
