@@ -40,15 +40,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
                 'This is the expected exception if the key could not be found.
-            Catch ex As OutOfMemoryException
-                Throw
-            Catch ex As ThreadAbortException
-                Throw
-            Catch ex As StackOverflowException
-                Throw
-            Catch ex As Exception
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils), debugFail:=True)
                 'Any other error - shouldn't be the case, but it might depend on the project implementation
-                Debug.Fail("Unexpected exception searching for an item in ProjectItems: " & ex.Message)
             End Try
 
             Return Nothing
@@ -149,10 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 'If there are no configurations defined in the project, this call can fail.  In that case, just return
                 '  the first config (there should be a single Debug configuration automatically defined and available).
                 Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception
-                AppDesCommon.RethrowIfUnrecoverable(ex)
-                Debug.Fail("Unexpected exception trying to get the active configuration")
-
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils), debugFail:=True)
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function

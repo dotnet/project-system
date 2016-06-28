@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         _components.Dispose()
                     End If
                     _configurationState = Nothing
-                Catch
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView), considerExceptionAsRecoverable:=True)
                     'Don't throw here trying to cleanup
                 End Try
 #If DEBUG Then
@@ -560,8 +560,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     ' It is a managed control, we should update AutoScrollMinSize
                     If PropertyPagePanel.Controls.Count > 0 Then
                         Dim controlSize As Size = PropertyPagePanel.Controls(0).Size
-                        PropertyPagePanel.AutoScrollMinSize = New Size( _
-                                Math.Min(controlSize.Width + Me.Padding.Right + Me.Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width), _
+                        PropertyPagePanel.AutoScrollMinSize = New Size(
+                                Math.Min(controlSize.Width + Me.Padding.Right + Me.Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width),
                                 Math.Min(controlSize.Height + Me.Padding.Top + Me.Padding.Bottom, PropertyPagePanel.AutoScrollMinSize.Height))
                     End If
 
@@ -581,7 +581,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     SetUndoRedoCleanState()
 
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
                     'There was a problem displaying the property page.  Show the error control.
                     DisplayErrorControl(ex)
                 End Try
@@ -650,8 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Try
                     Page.SetObjects(0, Nothing)
                     Page.Deactivate()
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                    Debug.WriteLine("Exception during m_LoadedPage.Deactivate")
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(UnLoadPage), NameOf(PropPageDesignerView), debugWriteLine:=True)
                 End Try
             End If
             If _errorControl IsNot Nothing Then
@@ -1280,8 +1279,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Else
                                 'GetPropertyMultipleValues returned Nothing.  Try for a single value later.
                             End If
-                        Catch ex As NotSupportedException
-                            Debug.Fail("Prop page said it supported multiple value undo, but then failed with not supported.  Reverting to single-value undo/redo.")
+                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Prop page said it supported multiple value undo, but then failed with not supported", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
                             'Ignore error and try single value instead
                         Catch ex As ArgumentException
                             'Most likely this indicates that Objects were not IVsCfg (this could be the case for non-config-dependent pages).  We shouldn't 
@@ -1365,8 +1363,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Dim Objects As Object() = MultiValues.GetObjects(VsCfgProvider)
                         Try
                             PropPageUndo.SetPropertyMultipleValues(PropertyName, Objects, MultiValues.Values)
-                        Catch ex As NotSupportedException
-                            Debug.Fail("Property page threw not supported exception trying to undo/redo multi-value change")
+                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Property page threw not supported exception trying to undo/redo multi-value change", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
                 Else
@@ -1668,8 +1665,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If UndoManager IsNot Nothing Then
                         Try
                             UndoManager.DiscardFrom(Nothing) 'Causes it to clear all entries in the undo and redo stacks
-                        Catch ex As COMException
-                            Debug.Fail("Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?  Exception:" & vbCrLf & ex.ToString)
+                        Catch ex As COMException When AppDesCommon.ReportWithoutCrash(ex, "Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
                 End If

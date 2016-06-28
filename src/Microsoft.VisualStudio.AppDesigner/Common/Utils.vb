@@ -214,8 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Else
                     Return Value.ToString()
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Not IsUnrecoverable(ex)
                 Return "[" & ex.GetType.Name & "]"
             End Try
 #Else
@@ -242,6 +241,48 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return False
         End Function
 
+        ''' <summary>
+        ''' Logs the given exception and returns whether or not this is a "recoverable" exception, i.e. exception can be ignored.
+        ''' </summary>
+        ''' <param name="ex">The exception to log and check if it is recoverable.</param>
+        ''' <param name="exceptionEventDescription">Additional description for the cause of the exception.</param>
+        ''' <param name="throwingComponentName">Name of the component that threw that exception, generally the containing type name.</param>
+        ''' <param name="debugFail">If True, then invoke Debug.Fail for recoverable exception.</param>
+        ''' <param name="debugWriteLine">If True, then invoke Debug.WriteLine for recoverable exception.</param>
+        ''' <param name="considerExceptionAsRecoverable">If True, then the given exception is always considered recoverable.
+        ''' Otherwise, invokes <see cref="IsUnrecoverable(Exception, Boolean)"/> to determine if exception is recoverable or not.</param>
+        ''' <param name="ignoreOutOfMemory">If True, out of memory will be considered recoverable.</param>
+        ''' <remarks></remarks>
+        Public Function ReportWithoutCrash(ByVal ex As Exception,
+                                           ByVal exceptionEventDescription As String,
+                                           Optional ByVal throwingComponentName As String = "general",
+                                           Optional ByVal debugFail As Boolean = False,
+                                           Optional ByVal debugWriteLine As Boolean = False,
+                                           Optional ByVal considerExceptionAsRecoverable As Boolean = False,
+                                           Optional ByVal ignoreOutOfMemory As Boolean = False) As Boolean
+            Debug.Assert(ex IsNot Nothing)
+            Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
+            Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
+
+            TelemetryService.DefaultSession.PostFault(
+                eventName:="vs/projectsystem/appdesigner/" & throwingComponentName.ToLower,
+                description:=exceptionEventDescription,
+                exceptionObject:=ex)
+
+            Dim isRecoverable = considerExceptionAsRecoverable OrElse Not IsUnrecoverable(ex, ignoreOutOfMemory)
+            If isRecoverable Then
+                If debugFail Then
+                    Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+                End If
+
+                If debugWriteLine Then
+                    Debug.WriteLine(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+                End If
+            End If
+
+            Return isRecoverable
+        End Function
+
 
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
@@ -262,19 +303,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Return False
         End Function
-
-
-        ''' <summary>
-        ''' Given an exception, rethrows it if it is an "unrecoverable" exception.  Otherwise does nothing.
-        ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
-        ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
-        ''' <remarks></remarks>
-        Public Sub RethrowIfUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False)
-            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
-                Throw ex
-            End If
-        End Sub
 
 
         ''' <summary>
@@ -600,8 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Try
                         'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                         InitialDirectory = Path.GetFullPath(AppendBackslash(InitialDirectory))
-                    Catch ex As Exception
-                        AppDesCommon.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Not IsUnrecoverable(ex)
                         InitialDirectory = String.Empty
                     End Try
                 End If

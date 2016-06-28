@@ -168,9 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
             Try
                 Call GetDocumentMoniker()
-            Catch ex As Exception
-                AppDesCommon.RethrowIfUnrecoverable(ex)
-                Debug.Fail("Shouldn't be creating a SpecialFileCustomDocumentMonikerProvider instance if the requested special file ID is not supported by the project")
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Shouldn't be creating a SpecialFileCustomDocumentMonikerProvider instance if the requested special file ID is not supported by the project", NameOf(SpecialFileCustomView), debugFail:=True)
             End Try
 #End If
         End Sub

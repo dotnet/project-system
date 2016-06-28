@@ -150,9 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Else
                         Throw New InvalidOperationException("Only ApplicationDesignerView should be created by this window pane")
                     End If
-                Catch loadError As Exception
-                    Debug.Fail("Got an exception trying to populate the project designer's view: " & loadError.ToString)
-
+                Catch loadError As Exception When AppDesCommon.ReportWithoutCrash(loadError, "Got an exception trying to populate the project designer's view", NameOf(ApplicationDesignerWindowPane), debugFail:=True, considerExceptionAsRecoverable:=True)
                     Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
                         loadError = loadError.InnerException
                     Loop

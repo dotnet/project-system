@@ -488,9 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Dim Panel As ApplicationDesignerPanel = _designerPanels(Index)
                                 _designerPanels(Index) = Nothing
                                 Panel.Dispose()
-                            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                                Trace.WriteLine("Exception trying to dispose ApplicationDesignerPanel: " & vbCrLf & ex.ToString())
-                                Debug.Fail("Exception trying to dispose ApplicationDesignerPanel: " & ex.ToString())
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception trying to dispose ApplicationDesignerPanel", NameOf(ApplicationDesignerView), debugFail:=True)
                             End Try
                         End If
                     Next
@@ -889,8 +887,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Try
                             Dim Guid As New Guid(CLSID)
                             CLSIDList.Add(Guid)
-                        Catch ex As System.FormatException
-                            Debug.Fail("VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format")
+                        Catch ex As System.FormatException When AppDesCommon.ReportWithoutCrash(ex, "VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format", NameOf(ApplicationDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
                         End Try
                     End If
                 Next
@@ -1105,7 +1102,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                         End With
                     End If
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     ErrorMessage = AppDesCommon.DebugMessageFromException(ex)
                 End Try
 
@@ -1136,7 +1133,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameBoundsUpdated <= 1, "PERFORMANCE/FLICKER WARNING: Window frame bounds were updated more than once")
 #End If
 
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     If ErrorMessage = "" Then
                         ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex)
                     End If
@@ -1150,9 +1147,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         NewCurrentPanel.CloseFrame()
                         NewCurrentPanel.CustomViewProvider = New ErrorControlCustomViewProvider(ErrorMessage)
                         NewCurrentPanel.ShowDesigner()
-                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView), debugFail:=True)
                         'If there's an error showing the error control, it's time to give up
-                        Debug.Fail("Error showing error control: " & ex.ToString())
                     End Try
                 End If
 
@@ -1181,14 +1177,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
         ''' <remarks></remarks>
-        Public Function DsMsgBox(ByVal Message As String, _
-                ByVal Buttons As MessageBoxButtons, _
-                ByVal Icon As MessageBoxIcon, _
-                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
+        Public Function DsMsgBox(ByVal Message As String,
+                ByVal Buttons As MessageBoxButtons,
+                ByVal Icon As MessageBoxIcon,
+                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                 Optional ByVal HelpLink As String = Nothing) As DialogResult
 
             Debug.Assert(_serviceProvider IsNot Nothing)
-            Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, Me._messageBoxCaption, _
+            Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, Me._messageBoxCaption,
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
@@ -1199,7 +1195,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ex">The exception whose text should be displayed.</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <remarks></remarks>
-        Public Sub DsMsgBox(ByVal ex As Exception, _
+        Public Sub DsMsgBox(ByVal ex As Exception,
                 Optional ByVal HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
 
             Debug.Assert(_serviceProvider IsNot Nothing)
@@ -1377,10 +1373,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Update the project designer's dirty status
                 SetFrameDirtyIndicator(ProjectDesignerIsDirty)
 
-            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(RefreshDirtyIndicatorsHelper), NameOf(ApplicationDesignerView), debugFail:=True)
                 ' VsVhidbey 446720 - if we have messed up the UNDO stack, the m_designerPanels.IsDirty call may 
                 ' throw an exception (when trying to enumerate the UNDO units)
-                Debug.Fail(String.Format("Exception {0} caught when trying to update dirty indicators...", ex))
             Finally
                 'Allow us to queue refresh requests again
                 _refreshDirtyIndicatorsQueued = False

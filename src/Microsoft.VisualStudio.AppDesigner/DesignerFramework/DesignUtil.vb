@@ -333,8 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         Return System.Text.Encoding.GetEncoding(CInt(oEncoding) And TextManager.Interop.__VSTFF.VSTFF_CPMASK)
                     End If
                 End If
-            Catch ex As Exception
-                AppDesCommon.RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
             End Try
             Return System.Text.Encoding.Default
         End Function
