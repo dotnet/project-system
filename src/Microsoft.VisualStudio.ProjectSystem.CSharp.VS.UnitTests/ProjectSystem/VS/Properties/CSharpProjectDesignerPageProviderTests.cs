@@ -24,9 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var pages = await provider.GetPagesAsync();
 #pragma warning restore RS0003 // Do not directly await a Task
 
-            Assert.Equal(pages.Count(), 2);
+            Assert.Equal(pages.Count(), 5);
             Assert.Same(pages.ElementAt(0), CSharpProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), CSharpProjectDesignerPage.Signing);
+            Assert.Same(pages.ElementAt(1), CSharpProjectDesignerPage.Build);
+            Assert.Same(pages.ElementAt(2), CSharpProjectDesignerPage.BuildEvents);
+            Assert.Same(pages.ElementAt(3), CSharpProjectDesignerPage.ReferencePaths);
+            Assert.Same(pages.ElementAt(4), CSharpProjectDesignerPage.Signing);
         }
 
         private static CSharpProjectDesignerPageProvider CreateInstance()
