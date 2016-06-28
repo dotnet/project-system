@@ -9,12 +9,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IRoslynServicesFactory
     {
-        public static Mock<IRoslynServices> Create()
+        public static IRoslynServices Create()
         {
-            return new Mock<IRoslynServices>();
+           return Mock.Of<IRoslynServices>();
         }
 
-        public static Mock<IRoslynServices> Implement(Solution solution, bool changesApplied)
+        public static IRoslynServices Implement(Solution solution, bool changesApplied)
         {
             var mock = new Mock<IRoslynServices>();
            
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             mock.Setup(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()))
                 .Returns(changesApplied);
 
-            return mock;
+            return mock.Object;
         }
     }
 }

@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Create();
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices.Object, roslynServices.Object);
+            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices);
 
-            userNotificationServices.Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
-            roslynServices.Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
         }
 
         [Theory]
@@ -45,11 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var userNotificationServices = IUserNotificationServicesFactory.Implement(true);
             var roslynServices = IRoslynServicesFactory.Implement(DummySolution(), true);
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices.Object, roslynServices.Object);
+            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices);
 
-            userNotificationServices.Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
-            roslynServices.Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Once);
-            roslynServices.Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Once);
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Once);
+            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Once);
         }
 
 
@@ -66,11 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Create();
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices.Object, roslynServices.Object);
+            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices);
 
-            userNotificationServices.Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
-            roslynServices.Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
-            roslynServices.Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
         private async Task RenameAsync(string soureCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
