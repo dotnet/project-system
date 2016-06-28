@@ -159,9 +159,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' Well, we better return the old value...
                     Return oValue
                 End If
-            Catch ex As Exception When Common.IsUnrecoverableException(ex)
-                'Just throw the exception, caller should handle this.
-                Throw
             Finally
                 If dataConnectionDialog IsNot Nothing Then
                     dataConnectionDialog.Dispose()
