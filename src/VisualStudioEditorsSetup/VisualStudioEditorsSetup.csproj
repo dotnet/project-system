@@ -45,13 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyRedirects.cs" />
-    <Compile Include="ProvideBindingRedirectionAttribute.cs" />
+    <Compile Include="..\Common\ProvideBindingRedirectionAttribute.cs">
+      <Link>ProvideBindingRedirectionAttribute.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

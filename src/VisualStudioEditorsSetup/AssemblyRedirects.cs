@@ -2,5 +2,5 @@
 
 using Microsoft.VisualStudio;
 
-[assembly: ProvideEditorsBindingRedirection("Microsoft.VisualStudio.Editors")]
-[assembly: ProvideEditorsBindingRedirection("Microsoft.VisualStudio.AppDesigner")]
+[assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.Editors")]
+[assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.AppDesigner")]
