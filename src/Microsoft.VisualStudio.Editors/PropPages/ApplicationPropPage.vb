@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 stApplicationIcon = TryCast(obj, String)
 
                 If (Trim(stApplicationIcon) = "") Then
-                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                    If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                         stApplicationIcon = SR.GetString(SR.PPG_Application_DefaultIconText)
                     Else
                         '// ApplicationIcon can be empty for dlls
@@ -318,7 +318,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ElseIf String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_NoManifest, StringComparison.OrdinalIgnoreCase) Then
                     stApplicationManifest = SR.GetString(SR.PPG_Application_NoManifestText)
                 ElseIf String.IsNullOrEmpty(stApplicationManifest) Then
-                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                    If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                         stApplicationManifest = SR.GetString(SR.PPG_Application_DefaultManifestText)
                     Else
                         '// ApplicationManifest can be empty for dlls
@@ -343,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Not ApplicationManifestEntryIsDefault(Me.ApplicationManifest.Text) Then
                     Me.ApplicationManifest.Text = String.Empty
                 End If
-                If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                     EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
                     EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
                 Else
@@ -378,7 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
                 EnableControl(Me.AppIconBrowse, ApplicationIconSupported())
                 Me.IconRadioButton.Checked = True
-                If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                     Me.ApplicationManifest.Text = stApplicationManifest
                     EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
                     EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(Me.ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
                 EnableControl(Me.AppIconBrowse, ApplicationIconSupported())
-                If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                     EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
                     EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
                 Else
@@ -553,7 +553,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Select Case controlData.DispId
                 Case VsProjPropId.VBPROJPROPID_ApplicationIcon
                     If IconRadioButton.Checked Then
-                        If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                        If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                             If Trim(ApplicationIcon.Text).Length = 0 Then
                                 message = SR.GetString(SR.PPG_Application_BadIcon)
                                 Return ValidationResult.Warning
@@ -567,7 +567,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 Case VsProjPropId90.VBPROJPROPID_ApplicationManifest
                     If IconRadioButton.Checked Then
-                        If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                        If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                             If String.IsNullOrEmpty(Trim(ApplicationManifest.Text)) Then
                                 message = SR.GetString(SR.PPG_Application_BadManifest)
                                 Return ValidationResult.Warning
