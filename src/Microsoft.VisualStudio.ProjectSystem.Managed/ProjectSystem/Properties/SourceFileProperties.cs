@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
-        private readonly Dictionary<string, string> _attributeNameMap = new Dictionary<string, string>
+        private readonly ImmutableDictionary<string, string> _attributeNameMap = new Dictionary<string, string>
         {
             { "Title",                      "System.Reflection.AssemblyTitleAttribute" },
             { "Description",                "System.Reflection.AssemblyDescriptionAttribute" },
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             { "NeutralResourcesLanguage",   "System.Resources.NeutralResourcesLanguageAttribute" },
             { "AssemblyGuid",               "System.Runtime.InteropServices.GuidAttribute" },
             { "ComVisible",                 "System.Runtime.InteropServices.ComVisibleAttribute" }
-        };
+        }.ToImmutableDictionary();
 
         public SourceFileProperties(IProjectPropertiesContext projectPropertiesContext, Workspace workspace, IProjectThreadingService threadingService)
         {
@@ -41,30 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public string FileFullPath => _projectPropertiesContext.File;
 
-        public PropertyKind PropertyKind
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Task DeleteDirectPropertiesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> GetPropertyNamesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public PropertyKind PropertyKind => PropertyKind.PropertyGroup;
 
         public Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
@@ -159,6 +137,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             return assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(attributeTypeSymbol));
+        }
+
+        public Task DeleteDirectPropertiesAsync()
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<IEnumerable<string>> GetPropertyNamesAsync()
+        {
+            throw new NotSupportedException();
         }
     }
 }
