@@ -27,7 +27,7 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
   
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)General.BrowseObject.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
   

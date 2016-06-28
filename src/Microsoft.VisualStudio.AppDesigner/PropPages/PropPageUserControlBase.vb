@@ -806,6 +806,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public ReadOnly Property OutputTypeProperty As VSLangProj.prjOutputType
             Get
+                ' csproj.dll and msbprj.dll implement this Property so first try getting the output type
+                ' through the ProjectProperties. The new CPS based project system doesn't implement this 
+                ' interface. The output type is part of the properties on the BrowseObject and so get it from there.
                 If ProjectProperties IsNot Nothing Then
                     Return ProjectProperties.OutputType
                 Else

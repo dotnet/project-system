@@ -32,16 +32,12 @@
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="OutputName" Visible="False" />
-  <EnumProperty Name="OutputType" DisplayName="Output Type">
-    <EnumValue Name="dll" DisplayName="0" />
-    <EnumValue Name="exe" DisplayName="1" />
-    <EnumValue Name="winexe" DisplayName="2" />
-  </EnumProperty>
+  <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" />
   <EnumProperty Name="OutputTypeEx" DisplayName="Output Type">
     <EnumValue Name="dll" DisplayName="0" />
     <EnumValue Name="exe" DisplayName="1" />
     <EnumValue Name="winexe" DisplayName="2" />
-    <EnumValue Name="WinMDObj" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="3" />
     <EnumValue Name="appcontainerexe" DisplayName="4" />
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OutputType" />

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
+    <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
@@ -79,6 +80,12 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
+      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\None.cs" >
+      <DependentUpon>None.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
@@ -97,7 +104,7 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\General.BrowseObject.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
