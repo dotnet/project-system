@@ -55,7 +55,7 @@ If your target has dependencies on items, files or assets produced during the bu
 
 While the results of design-time builds are not directly visible by default, the following symptoms are good indicators that one is failing for a given project:
 
-- Source files in a project are marked as coming from the `Miscellaneous Files' project when opened in the editor
+- Source files in a project are marked as coming from the `Miscellaneous Files` project when opened in the editor
 - IntelliSense shows incomplete and/or incorrect results
 - A normal build succeeds inside and outside of Visual Studio, yet the Error List continues to show build errors
 
