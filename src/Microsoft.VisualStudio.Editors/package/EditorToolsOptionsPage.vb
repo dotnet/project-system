@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                 _dialog.LineNumbers = CBool(textEditorProperties.Item(s_showLineNumbersItem).Value)
 
                 _dialog.Enabled = True
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage))
                 _dialog.Enabled = False
             Finally
                 fontsAndColorsProperties = Nothing
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                 prefs.uTabSize = CUInt(_dialog.TabSize)
                 prefs.fWordWrap = CUInt(_dialog.WordWrap)
                 Apply(prefs)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage))
             End Try
             textEditorProperties = Nothing
             dte = Nothing

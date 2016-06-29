@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         VsProjectsKey.Close()
                     End Try
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception thrown trying to get ResourcesFolderBehavior value from local registry", NameOf(ResourcesFolderService), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception thrown trying to get ResourcesFolderBehavior value from local registry", NameOf(ResourcesFolderService))
                 'Ignore any other exceptions - perhaps the key was the wrong data type, etc.  It will simply be treated as
                 '  if the behavior is AddNone.
             End Try
@@ -768,7 +768,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
                 'This is the expected exception if the key could not be found.
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(ResourcesFolderService), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(ResourcesFolderService))
                 'Any other error - shouldn't be the case, but it might depend on the project implementation
             End Try
 

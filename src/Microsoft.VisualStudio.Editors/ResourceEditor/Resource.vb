@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If _cachedValue.IsAlive AndAlso CurrentCachedValue IsNot Nothing AndAlso TypeOf CurrentCachedValue Is IDisposable Then
                         Try
                             CType(CurrentCachedValue, IDisposable).Dispose()
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Disposing a resource value threw an exception", NameOf(Resource), debugFail:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Disposing a resource value threw an exception", NameOf(Resource))
                         End Try
                     End If
                     _cachedValue = Nothing
@@ -1161,7 +1161,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
                     Return TypeName
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
                     Return SR.GetString(SR.RSE_UnknownType)
                 End Try
             End Get
@@ -1372,7 +1372,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function TryGetValue() As Object
             Try
                 Return GetValue()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryGetValue), NameOf(Resource), ignoreOutOfMemory:=True) 'We ignore OOM - the resource may simply be big.  We're okay dealing with that.
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryGetValue), NameOf(Resource)) 'We ignore OOM - the resource may simply be big.  We're okay dealing with that.
                 Return Nothing
             End Try
         End Function
@@ -1640,13 +1640,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             With _cachedImageProperties
                 Try
                     .FriendlySize = ResourceTypeEditor.GetResourceFriendlySize(Me)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CacheFriendlyTypeAndSize), NameOf(Resource), ignoreOutOfMemory:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CacheFriendlyTypeAndSize), NameOf(Resource))
                     'Ignore exceptions, including out of memory - just use empty string
                 End Try
 
                 Try
                     .FriendlyTypeDescription = ResourceTypeEditor.GetResourceFriendlyTypeDescription(Me)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CacheFriendlyTypeAndSize), NameOf(Resource), ignoreOutOfMemory:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CacheFriendlyTypeAndSize), NameOf(Resource))
                     'Ignore exceptions, including out of memory - just use empty string
                 End Try
             End With
@@ -2052,7 +2052,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     'No exceptions were thrown, so no task list entries should be associated with this.
                     ClearTask(ResourceFile.ResourceTaskType.CantInstantiateResource)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CheckValueForErrors), NameOf(Resource), ignoreOutOfMemory:=True) 'We want task list entries for out of memory loading a resource
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CheckValueForErrors), NameOf(Resource)) 'We want task list entries for out of memory loading a resource
 
                     'Create task list entry
                     SetTaskFromGetValueException(ex, ex)
@@ -2936,7 +2936,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Me.EncodingWithoutUndo = Utility.GuessFileEncoding(Me.AbsoluteLinkPathAndFileName)
                 Catch ex As IOException
                     'Ignore
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected failure in GuessFileEncoding", NameOf(Resource), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected failure in GuessFileEncoding", NameOf(Resource))
                 End Try
             End If
         End Sub

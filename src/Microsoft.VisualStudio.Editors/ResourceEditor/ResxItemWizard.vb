@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             If (itemProperty IsNot Nothing) Then
                                 Try
                                     itemProperty.Value = value
-                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ProjectItemFinishedGenerating), NameOf(ResxItemWizard), debugFail:=True, considerExceptionAsRecoverable:=True)
+                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ProjectItemFinishedGenerating), NameOf(ResxItemWizard))
                                 End Try
                             End If
                         End If

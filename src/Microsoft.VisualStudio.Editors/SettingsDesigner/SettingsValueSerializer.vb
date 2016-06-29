@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to serialize value", NameOf(SettingsValueSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to serialize value", NameOf(SettingsValueSerializer))
             End Try
 
             ' Make sure we always return a valid string...

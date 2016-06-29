@@ -480,7 +480,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         Else
                             projectFilesRemovedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService), considerExceptionAsRecoverable:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
                         ' Ignore exceptions.
                     End Try
                 Next

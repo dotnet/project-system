@@ -891,7 +891,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '  simply throw a general exception of our own text than propagate this to the user.
                 Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), ex)
 
-            Catch ex As Exception When Not Common.Utils.IsUnrecoverableException(ex)
+            Catch ex As Exception
                 'For anything else, combine our error messages.
                 Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace & Microsoft.VisualBasic.vbCrLf & ex.Message))
             End Try

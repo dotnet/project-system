@@ -773,7 +773,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim attrs As __VSRDTATTRIB = CType(System.Enum.ToObject(GetType(__VSRDTATTRIB), attributes), __VSRDTATTRIB)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterAttributeChange(" & attrs.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterAttributeChange), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterAttributeChange), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -807,7 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterFirstDocumentLock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterFirstDocumentLock), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterFirstDocumentLock), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -845,7 +845,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Try
                             Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnBeforeLastDocumentUnlock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLastDocumentUnlock), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLastDocumentUnlock), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -1134,7 +1134,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If (projItem IsNot Nothing) Then
                         OnProjectItemAdded(projItem)
                     End If
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider), debugFail:=True)
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider))
                     ' Dunno what kind of exceptions ParseCanonicalName or GetProperty may throw....
                 End Try
             End If
@@ -1457,7 +1457,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Catch argEx As System.ArgumentException
                 ' venus throws this since they don't support the CustomTool property, and all we
                 '   can do is catch it and ignore it
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureGeneratingSettingClass), NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureGeneratingSettingClass), NameOf(SettingsGlobalObjectProvider))
                 ' we don't expect to fail randomly, but we also don't really want to propagate
                 '   failures from project systems we don't know about out to the user through
                 '   the global-object-service since users won't really know that we're setting
@@ -1578,7 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- editLocks=" & editLocks & ", readLocks=" & readLocks & "...")
 #End If
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
                     Throw
                 End Try
 
@@ -1857,7 +1857,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             If vsProjItem IsNot Nothing Then
                                 Try
                                     vsProjItem.RunCustomTool()
-                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider), debugFail:=True)
+                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider))
                                 End Try
                             End If
                         End If

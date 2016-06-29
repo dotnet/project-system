@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                             End If
                         End Try
                     End If ' If vsMonitorSelection IsNot Nothing
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetProjectService), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetProjectService), NameOf(MyExtensibilitySettings))
                     ' Ignore exceptions.
                 End Try
             End If

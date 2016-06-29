@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 'If there are no configurations defined in the project, this call can fail.  In that case, just return
                 '  the first config (there should be a single Debug configuration automatically defined and available).
                 Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils), debugFail:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function

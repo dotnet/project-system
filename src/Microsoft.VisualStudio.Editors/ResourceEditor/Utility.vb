@@ -576,7 +576,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 Dim Converter As TypeConverter = TypeDescriptor.GetConverter(GetType(Font))
                 Return DirectCast(Converter.ConvertFromInvariantString(FontAsString), Font)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to create requested font {FontAsString}", NameOf(Utility), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to create requested font {FontAsString}", NameOf(Utility))
             End Try
 
             Return Nothing

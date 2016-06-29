@@ -926,7 +926,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Try
                 Return DesignerLoader.EnsureCheckedOut()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureCheckedOut), NameOf(SettingsDesignerView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureCheckedOut), NameOf(SettingsDesignerView))
                 Throw
             End Try
         End Function
@@ -939,7 +939,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Try
                 Return DesignerLoader.InDesignMode
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InDesignMode), NameOf(SettingsDesignerView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InDesignMode), NameOf(SettingsDesignerView))
                 Throw
             End Try
         End Function
@@ -1404,7 +1404,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 vsLangProj.References.Add(newType.Assembly.GetName().Name)
                             End If
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(SettingsDesignerView), debugFail:=Not TypeOf ex Is CheckoutException)
+                    Catch ex As CheckoutException
+                        'Ignore CheckoutException
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(SettingsDesignerView))
                         ' Well, we mostly tried to be nice to the user and automatically add the reference here... 
                         ' If we fail, the user will see an annoying error about undefined types, but it shouldn't be the
                         ' end of the world...
@@ -1496,7 +1498,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         suggestedFileName = "Settings"
                     End If
                     ProjectUtils.OpenAndMaybeAddExtendingFile(FullyQualifedClassName, suggestedFileName, Settings.Site, Hierarchy, ProjectItem, CType(VSMDCodeDomProvider.CodeDomProvider, System.CodeDom.Compiler.CodeDomProvider), Me)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewCode), NameOf(SettingsDesignerView), considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewCode), NameOf(SettingsDesignerView))
                     If Settings IsNot Nothing AndAlso Settings.Site IsNot Nothing Then
                         ' We better tell the user that something went wrong (if we still have a settings/settings.site that is)
                         DesignerFramework.DesignerMessageBox.Show(Settings.Site, ex, DesignerFramework.DesignUtil.GetDefaultCaption(Settings.Site))

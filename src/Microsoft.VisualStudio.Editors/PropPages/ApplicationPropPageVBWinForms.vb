@@ -251,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If MyApplicationProperties IsNot Nothing Then
                 Try
                     MyApplicationProperties.RunCustomTool()
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryRunCustomToolForMyApplication), NameOf(ApplicationPropPageInternalBase), considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryRunCustomToolForMyApplication), NameOf(ApplicationPropPageInternalBase))
                     ShowErrorMessage(ex)
                 End Try
             End If
@@ -795,7 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Fail("Failed to get IVBEntryPointProvider")
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms), debugFail:=True)
+            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
             End Try
 
             Return New String() {}

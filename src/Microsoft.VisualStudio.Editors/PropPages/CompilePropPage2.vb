@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         UpdateWarningList()
                     End If
                     Return True
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Failed to convert {value} to string", NameOf(CompilePropPage2), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Failed to convert {value} to string", NameOf(CompilePropPage2))
                 End Try
             Else
                 Debug.Fail("Why did we get a NULL value for option strict?")
@@ -1344,7 +1344,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Static CLSID_InternetSecurityManager As New System.Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
                     VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.win.CLSCTX_INPROC_SERVER, ObjectPtr))
                     internetSecurityManager = TryCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(ObjectPtr), Interop.IInternetSecurityManager)
-                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2), debugFail:=True)
+                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2))
                 Finally
                     If ObjectPtr <> IntPtr.Zero Then
                         System.Runtime.InteropServices.Marshal.Release(ObjectPtr)

@@ -140,7 +140,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     targetFrameworkSupported = True
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
                 Switches.TracePDProperties(TraceLevel.Warning, ": {0}", ex.ToString())
                 targetFrameworkSupported = False
                 targetFrameworkComboBox.Items.Clear()

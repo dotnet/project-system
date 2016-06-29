@@ -505,7 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Return TryCast(value, String)
                             End If
                         End Using
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView), debugFail:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView))
                     End Try
                 End If
                 Return String.Empty
@@ -523,7 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 registryKey.SetValue("SafeExtensions", value, RegistryValueKind.String)
                             End Using
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView), debugFail:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView))
                     End Try
                 End If
             End Set
@@ -1530,7 +1530,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             selectionService.SetSelectedComponents(Resources, SelectionTypes.Replace)
                         End If
                     End Using
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception in property grid select", NameOf(ResourceEditorView), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception in property grid select", NameOf(ResourceEditorView))
                 End Try
             End If
         End Sub
@@ -1554,7 +1554,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ResourceListView_SelectedIndexChanged), NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ResourceListView_SelectedIndexChanged), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -1572,7 +1572,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     PropertyGridUpdate()
                     RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_RowStateChanged), NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_RowStateChanged), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -1588,7 +1588,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_CellEnter), NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_CellEnter), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -2180,7 +2180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             HighestPriority = Priority
                             Exit For
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceTypeEditorForFileExtension), NameOf(ResourceEditorView), debugWriteLine:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceTypeEditorForFileExtension), NameOf(ResourceEditorView))
                         'Swallow the error and continue to the next candidate resource type editor
                     End Try
                 Next
@@ -2748,8 +2748,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex,
                                                                            $"Failed trying to copy linked or non-linked resource {Resource.Name} to temporary file {TempFileName} - ignoring and moving to next resource",
-                                                                           NameOf(ResourceEditorView),
-                                                                           debugWriteLine:=True)
+                                                                           NameOf(ResourceEditorView))
                     'Swallow the exception and move on to the next resource
                 End Try
             Next
@@ -4467,7 +4466,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(NewResource IsNot Nothing)
                     Try
                         EditOrOpenWith(NewResource, UseOpenWithDialog:=False)
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to open the new resource in a separate editor - ignoring and continuing", NameOf(ResourceEditorView), ignoreOutOfMemory:=True, debugFail:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to open the new resource in a separate editor - ignoring and continuing", NameOf(ResourceEditorView))
                         'Ignore errors trying to open the editor for the file.  That's confusing to the user, because it
                         '  makes it appear that the resource wasn't successfully added, but it was.  Let them double-click
                         '  it if they want to edit, at which point they'll get the error and it will be less confusing.
@@ -4556,7 +4555,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Try
                     Me.RootDesigner.ShowContextMenu(Constants.MenuConstants.ResXContextMenuID, e.X, e.Y)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenu), NameOf(ResourceEditorView), ignoreOutOfMemory:=True, debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenu), NameOf(ResourceEditorView))
                 End Try
             Else
                 Debug.Fail("Wrong mouse button!")
@@ -4745,7 +4744,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If File.Exists(FileName) Then
                         File.Delete(FileName)
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary file: {FileName}", NameOf(ResourceEditorView), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary file: {FileName}", NameOf(ResourceEditorView))
                 End Try
             Next
         End Sub
@@ -4762,7 +4761,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Directory.Exists(FolderName) Then
                         Directory.Delete(FolderName)
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary folder: {FolderName}", NameOf(ResourceEditorView), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary folder: {FolderName}", NameOf(ResourceEditorView))
                 End Try
             Next
         End Sub
@@ -4784,7 +4783,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Directory.CreateDirectory(NewFolder)
                 _deleteFoldersOnEditorExit.Add(NewFolder)
                 Return NewFolder
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't create subfolder under TEMP directory - using TEMP directory itself instead", NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't create subfolder under TEMP directory - using TEMP directory itself instead", NameOf(ResourceEditorView))
             End Try
 
             'Had trouble creating a subfolder of TEMP.  Just return TEMP instead.
@@ -5104,7 +5103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         _typeResolutionServiceCache = DynamicTypeService.GetTypeResolutionService(Hierarchy)
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to retrieve project references", NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to retrieve project references", NameOf(ResourceEditorView))
                 _typeResolutionServiceCache = Nothing
             End Try
 
@@ -5222,7 +5221,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Catch ex As COMException When ex.ErrorCode = win.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = win.OLECMDERR_E_NOTSUPPORTED
                 'Ignore this, if the project does not support this (like SmartPhone project)...
                 Return False
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsDefaultResXFile), NameOf(ResourceEditorView), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsDefaultResXFile), NameOf(ResourceEditorView))
                 'If we hit some other unexpected error, we don't want to bomb out, as not being able to load the
                 '  designer would be worse than having me not recognize the default resx file.
                 Return False
@@ -5409,7 +5408,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                                   OrElse ex.ErrorCode = NativeMethods.OLECMDERR_E_CANCELED _
                                                   OrElse ex.ErrorCode = NativeMethods.E_FAIL
                         ' We should ignore if the customer cancels this or we can not build the project...
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CallGlobalRename), NameOf(ResourceEditorView), ignoreOutOfMemory:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CallGlobalRename), NameOf(ResourceEditorView))
                         DsMsgBox(ex)
                     Finally
                         ResourceEditorRefactorNotify.AllowSymbolRename = False

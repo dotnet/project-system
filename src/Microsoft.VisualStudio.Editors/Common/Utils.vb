@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Else
                     Return Value.ToString()
                 End If
-            Catch ex As Exception When Not IsUnrecoverableException(ex)
+            Catch ex As Exception
                 Return "[" & ex.GetType.Name & "]"
             End Try
 #Else
@@ -322,33 +322,15 @@ Namespace Microsoft.VisualStudio.Editors.Common
 #End If
         End Function
 
-        Public Function IsUnrecoverableException(ByVal ex As Exception, Optional ByVal ignoreOutOfMemory As Boolean = False) As Boolean
-            Return TypeOf ex Is NullReferenceException _
-                OrElse (Not ignoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
-                OrElse TypeOf ex Is StackOverflowException _
-                OrElse TypeOf ex Is System.Threading.ThreadAbortException _
-                OrElse TypeOf ex Is AccessViolationException
-        End Function
-
         ''' <summary>
-        ''' Logs the given exception and returns whether or not this is a "recoverable" exception, i.e. exception can be ignored.
+        ''' Logs the given exception and returns True so it can be used in an exception handler.
         ''' </summary>
-        ''' <param name="ex">The exception to log and check if it is recoverable.</param>
+        ''' <param name="ex">The exception to log.</param>
         ''' <param name="exceptionEventDescription">Additional description for the cause of the exception.</param>
         ''' <param name="throwingComponentName">Name of the component that threw that exception, generally the containing type name.</param>
-        ''' <param name="debugFail">If True, then invoke Debug.Fail for recoverable exception.</param>
-        ''' <param name="debugWriteLine">If True, then invoke Debug.WriteLine for recoverable exception.</param>
-        ''' <param name="considerExceptionAsRecoverable">If True, then the given exception is always considered recoverable.
-        ''' Otherwise, invokes <see cref="IsUnrecoverableException(Exception, Boolean)"/> to determine if exception is recoverable or not.</param>
-        ''' <param name="ignoreOutOfMemory">If True, out of memory will be considered recoverable.</param>
-        ''' <remarks></remarks>
         Public Function ReportWithoutCrash(ByVal ex As Exception,
                                            ByVal exceptionEventDescription As String,
-                                           Optional ByVal throwingComponentName As String = "general",
-                                           Optional ByVal debugFail As Boolean = False,
-                                           Optional ByVal debugWriteLine As Boolean = False,
-                                           Optional ByVal considerExceptionAsRecoverable As Boolean = False,
-                                           Optional ByVal ignoreOutOfMemory As Boolean = False) As Boolean
+                                           Optional ByVal throwingComponentName As String = "general") As Boolean
             Debug.Assert(ex IsNot Nothing)
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
@@ -358,18 +340,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 
-            Dim isRecoverable = considerExceptionAsRecoverable OrElse Not IsUnrecoverableException(ex, ignoreOutOfMemory)
-            If isRecoverable Then
-                If debugFail Then
-                    Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
-                End If
-
-                If debugWriteLine Then
-                    Debug.WriteLine(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
-                End If
-            End If
-
-            Return isRecoverable
+            Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+            Return True
         End Function
 
         ''' <summary>
@@ -534,7 +506,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' 
         '''       returns the string 
         ''' 
-        '''       "Metafiles (*.wmf, * .emf)|*.wmf;*.emf"
+        '''       "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' 
         ''' </returns>
         ''' <remarks></remarks>
@@ -816,7 +788,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Try
                         'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                         InitialDirectory = Path.GetFullPath(AppendBackslash(InitialDirectory))
-                    Catch ex As Exception When Not IsUnrecoverableException(ex)
+                    Catch ex As Exception
                         InitialDirectory = String.Empty
                     End Try
                 End If
@@ -1074,7 +1046,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                     g.DrawImage(unmappedBitmap, r, 0, 0, size.Width, size.Height, GraphicsUnit.Pixel, imageAttributes)
                 End Using
-            Catch e As Exception When Common.ReportWithoutCrash(e, NameOf(MapBitmapColor), NameOf(Utils), debugFail:=True)
+            Catch e As Exception When Common.ReportWithoutCrash(e, NameOf(MapBitmapColor), NameOf(Utils))
                 ' fall-back is to use the unmapped bitmap
                 Return unmappedBitmap
             End Try
@@ -1273,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             Catch ex As System.ArgumentException
                 ' Venus throws when trying to access the CustomToolNamespace property...
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils))
             End Try
 
             ' If we have a custom tool namespace, then we will return this unless we also have a root namespace (VB only)
@@ -1310,7 +1282,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         End If
                     End If
                 Catch ex As System.ArgumentException
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils))
                 End Try
             End If
             Try
@@ -1394,7 +1366,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Not langService = Guid.Empty Then
                     Return langService.Equals(New Guid("{E34ACDC0-BAAE-11D0-88BF-00A0C9110049}"))
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVbProject), NameOf(Utils), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVbProject), NameOf(Utils))
             End Try
             Return False
         End Function
@@ -1662,7 +1634,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Reference3 IsNot Nothing AndAlso Reference3.AutoReferenced Then
                     Return True
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils))
             End Try
 
             Return False

@@ -1055,7 +1055,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
                         Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable), ignoreOutOfMemory:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.
                             e.ErrorText = ex.Message

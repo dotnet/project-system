@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("m_RootComponent is Nothing")
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader))
                 Throw
             End Try
         End Sub

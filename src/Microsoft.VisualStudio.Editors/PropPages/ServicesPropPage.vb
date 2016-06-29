@@ -331,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage))
             End Try
         End Sub
 

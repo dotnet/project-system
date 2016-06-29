@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         End If
                         _isDisposed = True
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument))
                     Throw
                 End Try
             End Sub
@@ -925,7 +925,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim newPropertyValue As String = "(error)"
                 Try
                     newPropertyValue = GetApplicationPropertyValue(propertyName)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
                 End Try
 
                 If (Not value.Equals(newPropertyValue, StringComparison.Ordinal)) Then

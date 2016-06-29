@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                     projectPermissionSet,
                     identityList)
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
             End Try
 
             Return Nothing
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             Return NativeMethods.S_OK
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             If hasTip Then

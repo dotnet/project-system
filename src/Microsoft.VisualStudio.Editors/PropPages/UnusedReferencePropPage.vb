@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' Get reference usage provider interface
                 _refUsageProvider = CType(ServiceProvider.GetService(NativeMethods.VBCompilerGuid), IVBReferenceUsageProvider)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitDialog), NameOf(UnusedReferencePropPage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitDialog), NameOf(UnusedReferencePropPage))
                 Throw
             End Try
 
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Using
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage), debugFail:=True)
+            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage))
                 Result = ReferenceUsageResult.ReferenceUsageError
             Finally
                 ' Report status

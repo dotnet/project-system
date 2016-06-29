@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If Settings.UseSpecialClassName Then
                             Return SettingsDesigner.s_specialClassName
                         End If
-                    Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner), debugFail:=True)
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
                     End Try
                 End If
 
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Not a special case - let's return the "normal" class name which is based on the file name...
                 '
                 Return GeneratedClassNameFromPath(FullPath)
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to determine if we were supposed to use the ""Special"" settings class name", NameOf(SettingsDesigner), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to determine if we were supposed to use the ""Special"" settings class name", NameOf(SettingsDesigner))
             End Try
             Return ""
         End Function

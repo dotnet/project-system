@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                             If projProp IsNot Nothing Then
                                 rootNamespace = CStr(projProp.Value)
                             End If
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get root namespace to remove from class name", NameOf(ProjectUtils), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get root namespace to remove from class name", NameOf(ProjectUtils))
                         End Try
                         ExtendingNamespace = New CodeNamespace(Common.Utils.RemoveRootNamespace(cc2.Namespace.FullName, rootNamespace))
                     Else

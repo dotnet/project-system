@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
             End Try
         End Sub
 

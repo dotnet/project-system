@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '
                         'So, nothing for us to do.
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner))
                     'Ignore error
                 End Try
             End If
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If EditorState IsNot Nothing AndAlso EditorState.StatePersisted Then
                         EditorState.DepersistStateInto(_view)
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner))
                     'Now ignore the exception
                 End Try
             End If
@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsWindowFrame IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(VsWindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Nothing)))
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 

@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         ProjectReloaded = View.ProjectReloadedDuringCheckout
                     End If
                 End Try
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader))
                 Switches.TraceSCC("Checkout failed: " & ex.Message)
 
                 'Check-out has failed.  We need to handle this gracefully at all places in the UI where this could happen.
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         vsProj.RunCustomTool()
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader), debugFail:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
             End Try
         End Sub
 

@@ -367,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Fail("Bad unique name prefix - localization bug?")
                     UniqueNamePrefix = ""
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUniqueName), NameOf(ResourceFile), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUniqueName), NameOf(ResourceFile))
                 UniqueNamePrefix = ""
             End Try
 
@@ -799,7 +799,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _resourcesHash.Remove(Resource.Name.ToUpperInvariant())
             Try
                 Resource.NameRawWithoutUndo = e.NewName
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile))
             End Try
             _resourcesHash.Add(Resource.Name.ToUpperInvariant(), Resource)
 
@@ -941,7 +941,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     lastName = Resource.Name
                                 End If
                             End If
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadResources), NameOf(ResourceFile), considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadResources), NameOf(ResourceFile))
                             If Resource IsNot Nothing Then
                                 Resource.Dispose()
                             End If
@@ -1685,7 +1685,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     ' Let the project system to handle the exactly version...
                                     vsLangProj.References.Add(assmeblyName)
                                 End If
-                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile), debugFail:=Not TypeOf ex Is CheckoutException)
+                            Catch ex As CheckoutException
+                                ' Ignore CheckoutException
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile))
                                 ' We should ignore the error if the project system failed to do so..
 
                                 ' NOTE: we need consider to prompt the user an waring message. But it could be very annoying if we pop up many message boxes in one transaction.
@@ -1780,10 +1782,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If View IsNot Nothing AndAlso View.GetDesignerLoader() IsNot Nothing Then
                 Try
                     View.GetDesignerLoader().RunSingleFileGenerator(True)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile), considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile))
                     Try
                         View.DsMsgBox(ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Catch ex2 As exception When Common.Utils.ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl), debugFail:=True)
+                    Catch ex2 As exception When Common.Utils.ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl))
                     End Try
                 End Try
             End If

@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         Return CanHideConfigurationsForProject(ProjectHierarchy) AndAlso Not ToolsOptionsShowAdvancedBuildConfigurations(Project.DTE)
                     End If
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
             End Try
 
             Return False 'Default to advanced configs
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil), debugFail:=True)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
                 Return True 'default to showing advanced
             End Try
 
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then
                     Return True
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -348,7 +348,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                                 If SLPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil), debugFail:=True, considerExceptionAsRecoverable:=True)
+                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -360,7 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         Return True
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                                 If WAPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil), debugFail:=True, considerExceptionAsRecoverable:=True)
+                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         Return True
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False

@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim IconContents As Byte() = IO.File.ReadAllBytes(path)
                     Dim IconStream As New IO.MemoryStream(IconContents, 0, IconContents.Length)
                     ApplicationIconPictureBox.Image = IconToImage(New Icon(IconStream), ApplicationIconPictureBox.ClientSize)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase), ignoreOutOfMemory:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase))
                     'This could mean a bad icon file, I/O problems, etc.  At any rate, it doesn't make sense to
                     '  display an error message (doesn't necessarily mean the user just selected it, it might have
                     '  been in the project file), so we'll just show a blank image

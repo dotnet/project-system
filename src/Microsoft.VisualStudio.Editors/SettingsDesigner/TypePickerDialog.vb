@@ -351,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Let's report the error and keep the dialog open!
                 ReportError(SR.GetString(SR.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unexpected exception caught when resolving type {TypeName}", NameOf(TypePickerDialog), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unexpected exception caught when resolving type {TypeName}", NameOf(TypePickerDialog))
                 ' We don't know what happened here - let's assume that the type name was bad...
                 ' Let's report the error and keep the dialog open!
                 ReportError(SR.GetString(SR.SD_ERR_InvalidTypeName_1Arg, TypeName))

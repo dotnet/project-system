@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim templatesWithCustomData As Templates = Nothing
             Try
                 templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, s_CUSTOM_DATA_SIGNATURE)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
                 ' Ignore exceptions.
             End Try
             If templatesWithCustomData Is Nothing OrElse templatesWithCustomData.Count = 0 Then
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
                 xmlWriter.WriteEndElement()
                 xmlWriter.WriteEndDocument()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings), considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings))
                 ' Ignore write exceptions.
             Finally
                 If xmlWriter IsNot Nothing Then

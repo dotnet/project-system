@@ -218,13 +218,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             AppConfigDocData = DocDataService.GetFileDocData(AppConfigFileName, Access, Nothing)
                         Catch ex As System.ComponentModel.Design.CheckoutException
                             Throw
-                        Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
                             Throw
                         End Try
                     Else
                         Try
                             AppConfigDocData = New DocData(ServiceProvider, AppConfigFileName)
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
                             Throw
                         End Try
                     End If

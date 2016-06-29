@@ -65,22 +65,22 @@ Namespace Microsoft.VisualStudio.Editors
             'Register editor factories
             Try
                 MyBase.RegisterEditorFactory(New SettingsDesigner.SettingsDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering settings designer editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering settings designer editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New ResourceEditor.ResourceEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
                 MyBase.RegisterEditorFactory(New PropPageDesigner.PropPageDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering property page designer editor factory", NameOf(VBPackage), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering property page designer editor factory", NameOf(VBPackage))
                 Throw
             End Try
 
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors
                         End If
                         _lastViewedProjectDesignerTab(projGuid) = tab
                     End While
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to read settings", NameOf(VBPackage), debugFail:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to read settings", NameOf(VBPackage))
                 End Try
             Else
                 MyBase.OnLoadOptions(key, stream)
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors
                 If hierarchy IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ProjectIDGuid, projGuid))
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get project guid", NameOf(VBPackage), debugFail:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get project guid", NameOf(VBPackage))
                 ' This is a non-vital function - ignore if we fail to get the GUID...
             End Try
             Return projGuid
@@ -452,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors
                             End If
                         Loop
                     End If
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed when trying to clean up user.config files", NameOf(VBPackage), debugFail:=True)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed when trying to clean up user.config files", NameOf(VBPackage))
                 End Try
                 Return Editors.Interop.NativeMethods.S_OK
             End Function

@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Shared Function GetInstance(ByVal serviceProvider As IServiceProvider) As TrackProjectDocumentsEventsHelper
             Try
                 Return New TrackProjectDocumentsEventsHelper(serviceProvider)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Fail to listen to IVsTrackProjectDocumentsEvents2", NameOf(TrackProjectDocumentsEventsHelper), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Fail to listen to IVsTrackProjectDocumentsEvents2", NameOf(TrackProjectDocumentsEventsHelper))
                 Return Nothing
             End Try
         End Function

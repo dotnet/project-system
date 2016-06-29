@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
                     Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), "We should have a handle still.  Without it, BeginInvoke will fail.")
                     BeginInvoke(New MethodInvoker(AddressOf DelayedMyBaseDispose))
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the designer view", NameOf(BaseDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the designer view", NameOf(BaseDesignerView))
                     ' At this point, all we can do is to avoid crashing the shell. 
                 End Try
             End If

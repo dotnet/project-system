@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Marshal.Release(ObjPtr)
                     ObjPtr = IntPtr.Zero
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
                 Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
             End Try
 
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         If ((New IO.FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory), debugFail:=True, considerExceptionAsRecoverable:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
                     End Try
                     Caption = DesignerLoader.GetEditorCaption(CaptionReadOnlyStatus)
 

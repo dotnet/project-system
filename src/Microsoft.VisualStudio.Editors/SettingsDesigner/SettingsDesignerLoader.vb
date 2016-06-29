@@ -443,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                           OrElse ex.ErrorCode = NativeMethods.OLECMDERR_E_CANCELED _
                                                           OrElse ex.ErrorCode = NativeMethods.E_FAIL
                                 ' We should ignore if the customer cancels this or we can not build the project...
-                            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to rename symbol", NameOf(SettingsDesignerLoader), ignoreOutOfMemory:=True)
+                            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to rename symbol", NameOf(SettingsDesignerLoader))
                                 DesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, DesignerFramework.DesignUtil.GetDefaultCaption(_serviceProvider))
                             Finally
                                 SettingsSingleFileGeneratorBase.AllowSymbolRename = False
@@ -526,7 +526,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Catch ex As System.Configuration.ConfigurationErrorsException
                 ' We failed to load the app config xml document....
                 DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(SR.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
-            Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
                 Throw
             End Try
         End Sub
