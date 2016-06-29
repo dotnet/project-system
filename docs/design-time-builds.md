@@ -19,7 +19,7 @@ The design-time targets are typically simple wrappers around their normal target
 
 ## Designing targets for use in design-time builds
 
-Targets that dynamically change references, source files or compilation options _must_ run during design-time builds to avoid unexpected behavior in Visual Studio. In contrast, if a target does not contribute these items, then it should actively avoid running in these builds for performance reasons. Whether a target is run in design-time builds is controlled by a target's `BeforeTargets` and `AfterTargets` attributes and whether it specifies a direct or indirect dependency of the above design-time targets. See [Diagnosing design-time builds](#Diagnosing-design-time-builds) to see logs that help you capture this.
+Targets that dynamically change references, source files or compilation options _must_ run during design-time builds to avoid unexpected behavior in Visual Studio. In contrast, if a target does not contribute these items, then it should actively avoid running in these builds for performance reasons. Whether a target is run in design-time builds is controlled by a target's `BeforeTargets` and `AfterTargets` attributes and whether it specifies a direct or indirect dependency of the above design-time targets. See [Diagnosing design-time builds](#diagnosing-design-time-builds) to see logs that help you capture this.
 
 ### Running in a design-time build
 
