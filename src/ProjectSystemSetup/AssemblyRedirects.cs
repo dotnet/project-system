@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio;
 
-[assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.Editors")]
-[assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.AppDesigner")]
 [assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.CSharp")]
 [assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.CSharp.VS")]
 [assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed")]

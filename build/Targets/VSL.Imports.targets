@@ -468,4 +468,18 @@
                IntermediatesDirectory="$(IntermediateOutputPath)"
                Type="$(SignType)" />
   </Target>
+
+  <!-- ====================================================================================
+
+  Copying vsixmanifest to a separate folder
+
+  ==================================================================================== -->
+
+  <Target Name="AfterBuild" Condition="'$(CreateVsixContainer)' == 'true'">
+     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
+  </Target>
+
+  <Target Name="AfterRebuild" Condition="'$(CreateVsixContainer)' == 'true'">
+     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
+  </Target>
 </Project>
