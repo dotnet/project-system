@@ -6,6 +6,10 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
+    /// <summary>
+    /// A provider for properties that are stored in the source code of the project.
+    /// This is defined in the VS layer so that we can import <see cref="VisualStudioWorkspace"/>.
+    /// </summary>
     [Export("SourceFile", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
     [ExportMetadata("Name", "SourceFile")]

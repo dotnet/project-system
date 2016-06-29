@@ -34,22 +34,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public string DefaultProjectPath => _unconfiguredProject.FullPath;
 
+        /// <summary>
+        /// Gets the properties for a property or item.
+        /// </summary>
         public IProjectProperties GetProperties(string file, string itemType, string item)
         {
             return new SourceFileProperties(ProjectPropertiesContext.GetContext(_unconfiguredProject, itemType, item), _workspace, _threadingService);
         }
 
+        /// <summary>
+        /// Gets the project-level properties
+        /// </summary>
         public IProjectProperties GetCommonProperties()
         {
             return GetProperties(_unconfiguredProject.FullPath, null, null);
         }
         
+        /// <summary>
+        /// Get the properties for an item.
+        /// </summary>
         public IProjectProperties GetItemProperties(string itemType, string item)
         {
             // There aren't any items that are stored in source.
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// Get the properties for an item type.
+        /// </summary>
         public IProjectProperties GetItemTypeProperties(string itemType)
         {
             // There aren't any items that are stored in source.

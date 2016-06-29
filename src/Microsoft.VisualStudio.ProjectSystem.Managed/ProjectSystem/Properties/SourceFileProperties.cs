@@ -41,22 +41,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _threadingService = threadingService;
         }
 
+        /// <summary>
+        /// Gets the context under which this instance was created.
+        /// </summary>
         public IProjectPropertiesContext Context => _projectPropertiesContext;
 
+        /// <summary>
+        /// Gets the full path to the project file.
+        /// </summary>
         public string FileFullPath => _projectPropertiesContext.File;
 
+        /// <summary>
+        /// Gets the kind of properties being get/set using this object.
+        /// </summary>
         public PropertyKind PropertyKind => PropertyKind.PropertyGroup;
 
+        /// <summary>
+        /// Get the unevaluated property value. For source properties there's no
+        /// difference between unevaluated and evaluated properties.
+        /// </summary>
         public Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             return GetEvaluatedPropertyValueAsync(propertyName);
         }
 
-        public Task<bool> IsValueInheritedAsync(string propertyName)
-        {
-            return Task.FromResult(false);
-        }
-
+        /// <summary>
+        /// Get the value of a property
+        /// </summary>
         public async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeNameMap.ContainsKey(propertyName))
@@ -82,6 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return null;
         }
 
+        /// <summary>
+        /// Set the value of a property.
+        /// </summary>
         public async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             if (_attributeNameMap.ContainsKey(propertyName))
@@ -130,6 +144,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
+        /// <summary>
+        /// Get the attribute corresponding to the given property from the given project.
+        /// </summary>
         private async Task<AttributeData> GetAttributeAsync(string propertyName, Project project)
         {
             var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
@@ -142,6 +159,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             return assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(attributeTypeSymbol));
+        }
+
+        /// <summary>
+        /// Is the property inherited from a parent scope
+        /// </summary>
+        public Task<bool> IsValueInheritedAsync(string propertyName)
+        {
+            // Source properties are not inherited from anything.
+            return Task.FromResult(false);
         }
 
         // There aren't any usages of the following methods and so they are unimplemented.
