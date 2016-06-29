@@ -66,49 +66,48 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-
   <!--AssemblyInfo properties-->
-  <StringProperty Name="Title" DisplayName="Title of the assembly">
+  <StringProperty Name="Title" DisplayName="Assembly Title">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Description" DisplayName="Description of the assembly">
+  <StringProperty Name="Description" DisplayName="Assembly Description">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Company" DisplayName="Name of the company">
+  <StringProperty Name="Company" DisplayName="Company">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Product" DisplayName="Name of the product.">
+  <StringProperty Name="Product" DisplayName="Product">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Copyright" DisplayName="Copyright information">
+  <StringProperty Name="Copyright" DisplayName="Copyright">
     <StringProperty.DataSource>
         <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Trademark" DisplayName="Trademark information">
+  <StringProperty Name="Trademark" DisplayName="Trademark">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="AssemblyVersion" DisplayName="Version of the Assembly">
+  <StringProperty Name="AssemblyVersion" DisplayName="Assembly Version">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="AssemblyFileVersion" DisplayName="FileVersion of the Assembly">
+  <StringProperty Name="AssemblyFileVersion" DisplayName="Assembly FileVersion">
     <StringProperty.DataSource>
         <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="AssemblyGuid" DisplayName="Guid of the Assembly">
+  <StringProperty Name="AssemblyGuid" DisplayName="Assembly Guid">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
@@ -118,7 +117,7 @@
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ComVisible" DisplayName="Is visible to COM components">
+  <StringProperty Name="ComVisible" DisplayName="ComVisible">
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>

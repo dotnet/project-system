@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public IProjectProperties GetCommonProperties()
         {
-            return GetProperties(null, null, null);
+            return GetProperties(_unconfiguredProject.FullPath, null, null);
         }
         
         public IProjectProperties GetItemProperties(string itemType, string item)
