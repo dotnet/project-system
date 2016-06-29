@@ -93,9 +93,34 @@ Specifies the name of the _Application Designer_ folder, which by default contai
 
 Specifies whether the contents of the _Application Designer_ folder are only visible when Solution Explorer's _Show All Files_ mode is turned on.
 
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | The __Application Designer__ folder's contents are only visible when Solution Explorer's _Show All Files__ mode is turned on.|
+| _false_ or empty ('') | The __Application Designer__ folder's contents are always visible.|
+
 ##### __Example__
 ``` XML
 <PropertyGroup>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles>true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
 <PropertyGroup>
+```
+
+#### __DesignTimeBuild (bool)__
+
+Specifies whether the current build is a [design-time build](design-time-builds.md).
+
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | The current build is a design-time build.|
+| _false_ or empty ('') | The current build is a normal build.|
+
+##### __Example__
+``` XML
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
+         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
+     </PropertyGroup>
+
+     ...
+  </Target>
 ```
