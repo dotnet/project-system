@@ -488,7 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Dim Panel As ApplicationDesignerPanel = _designerPanels(Index)
                                 _designerPanels(Index) = Nothing
                                 Panel.Dispose()
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception trying to dispose ApplicationDesignerPanel", NameOf(ApplicationDesignerView), debugFail:=True)
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception trying to dispose ApplicationDesignerPanel", NameOf(ApplicationDesignerView))
                             End Try
                         End If
                     Next
@@ -854,24 +854,24 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             'A default list of known editor guids and the order we want when they appear.  We only
             '  use this list if we can't get the order from the IVsHierarchy for some reason.
-            Dim DefaultDesiredOrder() As Guid = { _
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_VB, _
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_CS, _
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_JS, _
-                AppDesCommon.KnownPropertyPageGuids.GuidCompilePage_VB, _
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_CS, _
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_JS, _
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildEventsPage, _
-                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage, _
-                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage_VSD, _
-                AppDesCommon.KnownPropertyPageGuids.GuidReferencesPage_VB, _
-                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID), _
-                AppDesCommon.KnownPropertyPageGuids.GuidServicesPropPage, _
-                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID), _
-                AppDesCommon.KnownPropertyPageGuids.GuidReferencePathsPage, _
-                AppDesCommon.KnownPropertyPageGuids.GuidSigningPage, _
-                AppDesCommon.KnownPropertyPageGuids.GuidSecurityPage, _
-                AppDesCommon.KnownPropertyPageGuids.GuidPublishPage _
+            Dim DefaultDesiredOrder() As Guid = {
+                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_VB,
+                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_CS,
+                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_JS,
+                AppDesCommon.KnownPropertyPageGuids.GuidCompilePage_VB,
+                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_CS,
+                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_JS,
+                AppDesCommon.KnownPropertyPageGuids.GuidBuildEventsPage,
+                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage,
+                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage_VSD,
+                AppDesCommon.KnownPropertyPageGuids.GuidReferencesPage_VB,
+                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID),
+                AppDesCommon.KnownPropertyPageGuids.GuidServicesPropPage,
+                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID),
+                AppDesCommon.KnownPropertyPageGuids.GuidReferencePathsPage,
+                AppDesCommon.KnownPropertyPageGuids.GuidSigningPage,
+                AppDesCommon.KnownPropertyPageGuids.GuidSecurityPage,
+                AppDesCommon.KnownPropertyPageGuids.GuidPublishPage
             }
             Dim DesiredOrder() As Guid = DefaultDesiredOrder
 
@@ -887,7 +887,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Try
                             Dim Guid As New Guid(CLSID)
                             CLSIDList.Add(Guid)
-                        Catch ex As System.FormatException When AppDesCommon.ReportWithoutCrash(ex, "VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format", NameOf(ApplicationDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As System.FormatException When AppDesCommon.ReportWithoutCrash(ex, "VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format", NameOf(ApplicationDesignerView))
                         End Try
                     End If
                 Next
@@ -1147,7 +1147,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         NewCurrentPanel.CloseFrame()
                         NewCurrentPanel.CustomViewProvider = New ErrorControlCustomViewProvider(ErrorMessage)
                         NewCurrentPanel.ShowDesigner()
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView), debugFail:=True)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                         'If there's an error showing the error control, it's time to give up
                     End Try
                 End If
@@ -1373,7 +1373,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Update the project designer's dirty status
                 SetFrameDirtyIndicator(ProjectDesignerIsDirty)
 
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(RefreshDirtyIndicatorsHelper), NameOf(ApplicationDesignerView), debugFail:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(RefreshDirtyIndicatorsHelper), NameOf(ApplicationDesignerView))
                 ' VsVhidbey 446720 - if we have messed up the UNDO stack, the m_designerPanels.IsDirty call may 
                 ' throw an exception (when trying to enumerate the UNDO units)
             Finally

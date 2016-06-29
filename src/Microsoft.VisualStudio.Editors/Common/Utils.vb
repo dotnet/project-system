@@ -1445,33 +1445,33 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = { _
-                KnownPropertyPageGuids.GuidApplicationPage_VB, _
-                KnownPropertyPageGuids.GuidApplicationPage_CS, _
-                KnownPropertyPageGuids.GuidApplicationPage_JS, _
-                KnownPropertyPageGuids.GuidCompilePage_VB, _
-                KnownPropertyPageGuids.GuidBuildPage_CS, _
-                KnownPropertyPageGuids.GuidBuildPage_JS, _
-                KnownPropertyPageGuids.GuidBuildEventsPage, _
-                KnownPropertyPageGuids.GuidDebugPage, _
-                KnownPropertyPageGuids.GuidReferencesPage_VB, _
-                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID, _
-                GetType(ResourceEditor.ResourceEditorFactory).GUID, _
-                KnownPropertyPageGuids.GuidReferencePathsPage, _
-                KnownPropertyPageGuids.GuidSigningPage, _
-                KnownPropertyPageGuids.GuidSecurityPage, _
-                KnownPropertyPageGuids.GuidPublishPage, _
-                KnownPropertyPageGuids.GuidDatabasePage_SQL, _
-                KnownPropertyPageGuids.GuidFxCopPage, _
-                KnownPropertyPageGuids.GuidDeployPage, _
-                KnownPropertyPageGuids.GuidDevicesPage_VSD, _
-                KnownPropertyPageGuids.GuidDebugPage_VSD, _
-                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF, _
-                KnownPropertyPageGuids.GuidSecurityPage_WPF, _
-                KnownPropertyPageGuids.GuidMyExtensionsPage, _
-                KnownPropertyPageGuids.GuidOfficePublishPage, _
-                KnownPropertyPageGuids.GuidServicesPage, _
-                KnownPropertyPageGuids.GuidWAPWebPage _
+            Private Shared s_sqmOrder() As Guid = {
+                KnownPropertyPageGuids.GuidApplicationPage_VB,
+                KnownPropertyPageGuids.GuidApplicationPage_CS,
+                KnownPropertyPageGuids.GuidApplicationPage_JS,
+                KnownPropertyPageGuids.GuidCompilePage_VB,
+                KnownPropertyPageGuids.GuidBuildPage_CS,
+                KnownPropertyPageGuids.GuidBuildPage_JS,
+                KnownPropertyPageGuids.GuidBuildEventsPage,
+                KnownPropertyPageGuids.GuidDebugPage,
+                KnownPropertyPageGuids.GuidReferencesPage_VB,
+                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID,
+                GetType(ResourceEditor.ResourceEditorFactory).GUID,
+                KnownPropertyPageGuids.GuidReferencePathsPage,
+                KnownPropertyPageGuids.GuidSigningPage,
+                KnownPropertyPageGuids.GuidSecurityPage,
+                KnownPropertyPageGuids.GuidPublishPage,
+                KnownPropertyPageGuids.GuidDatabasePage_SQL,
+                KnownPropertyPageGuids.GuidFxCopPage,
+                KnownPropertyPageGuids.GuidDeployPage,
+                KnownPropertyPageGuids.GuidDevicesPage_VSD,
+                KnownPropertyPageGuids.GuidDebugPage_VSD,
+                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF,
+                KnownPropertyPageGuids.GuidSecurityPage_WPF,
+                KnownPropertyPageGuids.GuidMyExtensionsPage,
+                KnownPropertyPageGuids.GuidOfficePublishPage,
+                KnownPropertyPageGuids.GuidServicesPage,
+                KnownPropertyPageGuids.GuidWAPWebPage
             }
 
             Public Const UNKNOWN_PAGE As Byte = &HFF

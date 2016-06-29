@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Return DirectCast(ValueObject, String)
                         End If
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo), debugFail:=True)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If Key IsNot Nothing Then
                         Key.SetValue(CachedTitleValueName, value, Win32.RegistryValueKind.String)
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo), debugFail:=True)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()

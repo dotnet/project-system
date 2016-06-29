@@ -813,7 +813,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let the page handle it
                     Try
                         Handled = Me.ReadUserDefinedProperty(Me.PropertyName, Value)
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception reading user-defined property for initial value", NameOf(PropertyControlData), debugFail:=True)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception reading user-defined property for initial value", NameOf(PropertyControlData))
                         Value = PropertyControlData.MissingProperty
                     End Try
 
@@ -823,7 +823,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ElseIf Me.IsCommonProperty Then
                     Try
                         Value = GetCommonPropertyValueNative()
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(InitPropertyValue), NameOf(PropertyControlData), considerExceptionAsRecoverable:=True)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(InitPropertyValue), NameOf(PropertyControlData))
                         Value = PropertyControlData.MissingProperty
                     End Try
 
@@ -2261,7 +2261,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If MyAppProperties IsNot Nothing Then
                             Return MyAppProperties.FilesToCheckOut(True)
                         End If
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unable to retrieve MyApplicationProperties to figure out set of files to check out", NameOf(PropertyControlData), debugFail:=True)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unable to retrieve MyApplicationProperties to figure out set of files to check out", NameOf(PropertyControlData))
                     End Try
                 ElseIf (Me.Flags And ControlDataFlags.PersistedInAppManifestFile) <> 0 Then
                     Dim AppManifest As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AppManifest, True)

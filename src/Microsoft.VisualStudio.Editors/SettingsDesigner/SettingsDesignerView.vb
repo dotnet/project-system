@@ -1281,8 +1281,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             End If
                         End If
                     Case s_valueColumnNo
-                        Dim cell As DataGridViewUITypeEditorCell = TryCast( _
-                                        m_SettingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex), _
+                        Dim cell As DataGridViewUITypeEditorCell = TryCast(
+                                        m_SettingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex),
                                         DataGridViewUITypeEditorCell)
 
                         ' If the type has been invalidated, we need to make sure that we treat it as a string...
@@ -1389,7 +1389,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Transaction.Commit()
                 End Using
 
-                If newType IsNot Nothing AndAlso _
+                If newType IsNot Nothing AndAlso
                    _settingTypeCache.IsWellKnownType(newType) Then
                     '
                     ' Try to add a reference to the type (if not already in the project)
@@ -1562,10 +1562,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InThisMethod = True
             Try
                 _menuCommands = New ArrayList
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf Me.MenuEditCellEnableHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf Me.MenuEditCellEnableHandler,
                     alwayscheckstatus:=True))
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf Me.MenuAddSettingEnableHandler, commandtext:=SR.GetString(SR.SD_MNU_AddSettingText)))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf Me.MenuRemove, AddressOf Me.MenuRemoveEnableHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf Me.MenuRemove, AddressOf Me.MenuRemoveEnableHandler,
                     alwayscheckstatus:=True, commandtext:=SR.GetString(SR.SD_MNU_RemoveSettingText)))
 
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf Me.MenuViewCode, AddressOf Me.MenuViewCodeEnableHandler))
@@ -1678,13 +1678,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         Private Function MenuViewCodeEnableHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
             If DesignerLoader.IsReadOnly Then
-                return false
+                Return False
             End If
 
             If _cachedCodeProvider Is Nothing Then
                 ' Let's see if we support partial classes?
                 '
-                Dim VSMDCodeDomProvider As Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider = _
+                Dim VSMDCodeDomProvider As Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider =
                             DirectCast(GetService(GetType(Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)), Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)
                 If VSMDCodeDomProvider IsNot Nothing Then
                     _cachedCodeProvider = TryCast(VSMDCodeDomProvider.CodeDomProvider, CodeDom.Compiler.CodeDomProvider)

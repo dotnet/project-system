@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         _components.Dispose()
                     End If
                     _configurationState = Nothing
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView), considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
 #If DEBUG Then
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Try
                     Page.SetObjects(0, Nothing)
                     Page.Deactivate()
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(UnLoadPage), NameOf(PropPageDesignerView), debugWriteLine:=True)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(UnLoadPage), NameOf(PropPageDesignerView))
                 End Try
             End If
             If _errorControl IsNot Nothing Then
@@ -1279,7 +1279,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Else
                                 'GetPropertyMultipleValues returned Nothing.  Try for a single value later.
                             End If
-                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Prop page said it supported multiple value undo, but then failed with not supported", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Prop page said it supported multiple value undo, but then failed with not supported", NameOf(PropPageDesignerView))
                             'Ignore error and try single value instead
                         Catch ex As ArgumentException
                             'Most likely this indicates that Objects were not IVsCfg (this could be the case for non-config-dependent pages).  We shouldn't 
@@ -1363,7 +1363,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Dim Objects As Object() = MultiValues.GetObjects(VsCfgProvider)
                         Try
                             PropPageUndo.SetPropertyMultipleValues(PropertyName, Objects, MultiValues.Values)
-                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Property page threw not supported exception trying to undo/redo multi-value change", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Property page threw not supported exception trying to undo/redo multi-value change", NameOf(PropPageDesignerView))
                         End Try
                     End If
                 Else
@@ -1665,7 +1665,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If UndoManager IsNot Nothing Then
                         Try
                             UndoManager.DiscardFrom(Nothing) 'Causes it to clear all entries in the undo and redo stacks
-                        Catch ex As COMException When AppDesCommon.ReportWithoutCrash(ex, "Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?", NameOf(PropPageDesignerView), debugFail:=True, considerExceptionAsRecoverable:=True)
+                        Catch ex As COMException When AppDesCommon.ReportWithoutCrash(ex, "Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?", NameOf(PropPageDesignerView))
                         End Try
                     End If
                 End If

@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     Return ShowInternal(CType(ServiceProvider.GetService(GetType(IUIService)), IUIService),
                         CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell),
                         Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox), debugFail:=True, considerExceptionAsRecoverable:=True)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox))
                 End Try
             Else
                 Debug.Fail("ServiceProvider is Nothing! Message box won't have parent!")

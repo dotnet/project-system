@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                                         End If
                                                         WantsTab = DirectCast(Method.Invoke(c, New Object() {KeyData}), Boolean)
                                                     End If
-                                                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception calling IsInputKey late-bound", NameOf(PropPageDesignerWindowPane), debugFail:=True)
+                                                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception calling IsInputKey late-bound", NameOf(PropPageDesignerWindowPane))
                                                 End Try
                                             End If
                                         End If

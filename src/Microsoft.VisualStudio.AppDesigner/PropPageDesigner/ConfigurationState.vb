@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameAdded), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameAdded), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -625,7 +625,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameDeleted), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameDeleted), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -647,7 +647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameRenamed), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameRenamed), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -664,7 +664,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameAdded), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameAdded), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -685,7 +685,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameDeleted), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameDeleted), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -715,7 +715,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnActiveProjectCfgChange), NameOf(ConfigurationState), debugFail:=True, considerExceptionAsRecoverable:=True)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnActiveProjectCfgChange), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
