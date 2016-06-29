@@ -10,6 +10,9 @@ using Microsoft.CodeAnalysis.Editing;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// This class represents properties that are stored in the source code of the project.
+    /// </summary>
     internal class SourceFileProperties : IProjectProperties
     {
         private readonly IProjectPropertiesContext _projectPropertiesContext;
@@ -58,7 +61,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_attributeNameMap.ContainsKey(propertyName))
             {
-                var attribute = await GetAttributeAsync(propertyName).ConfigureAwait(false);
+                var project = _workspace
+                              .CurrentSolution
+                              .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
+                              .FirstOrDefault();
+                if (project == null)
+                {
+                    return null;
+                }
+
+                var attribute = await GetAttributeAsync(propertyName, project).ConfigureAwait(false);
                 if (attribute == null)
                 {
                     return null;
@@ -74,25 +86,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_attributeNameMap.ContainsKey(propertyName))
             {
-                var currentProject = _workspace
-                                     .CurrentSolution
-                                     .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
-                                     .FirstOrDefault();
-                if (currentProject == null)
+                var project = _workspace
+                              .CurrentSolution
+                              .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
+                              .FirstOrDefault();
+                if (project == null)
                 {
                     return;
                 }
 
-                var attribute = await GetAttributeAsync(propertyName).ConfigureAwait(false);
+                var attribute = await GetAttributeAsync(propertyName, project).ConfigureAwait(false);
                 if (attribute == null)
                 {
                     return;
                 }
 
                 var attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync().ConfigureAwait(false);
-                var syntaxGenerator = SyntaxGenerator.GetGenerator(currentProject);
+                var syntaxGenerator = SyntaxGenerator.GetGenerator(project);
                 var arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
 
+                // The attributes of interest to us have one argument. If there are more then we have broken code - don't change that.
                 if (arguments.Count == 1)
                 {
                     var argumentNode = arguments[0];
@@ -106,7 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         newNode = syntaxGenerator.AttributeArgument(syntaxGenerator.LiteralExpression(unevaluatedPropertyValue));
                     }
 
-                    var editor = await DocumentEditor.CreateAsync(currentProject.GetDocument(attributeNode.SyntaxTree)).ConfigureAwait(false);
+                    newNode = newNode.WithTriviaFrom(argumentNode);
+                    var editor = await DocumentEditor.CreateAsync(project.GetDocument(attributeNode.SyntaxTree)).ConfigureAwait(false);
                     editor.ReplaceNode(argumentNode, newNode);
 
                     // Apply changes needs to happen on the UI Thread.
@@ -116,18 +130,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
-        private async Task<AttributeData> GetAttributeAsync(string propertyName)
+        private async Task<AttributeData> GetAttributeAsync(string propertyName, Project project)
         {
-            var currentProject = _workspace
-                     .CurrentSolution
-                     .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectPropertiesContext.File))
-                     .FirstOrDefault();
-            if (currentProject == null)
-            {
-                return null;
-            }
-
-            var compilation = await currentProject.GetCompilationAsync().ConfigureAwait(false);
+            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
             var assemblyAttributes = compilation.Assembly.GetAttributes();
 
             var attributeTypeSymbol = compilation.GetTypeByMetadataName(_attributeNameMap[propertyName]);
@@ -139,6 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(attributeTypeSymbol));
         }
 
+        // There aren't any usages of the following methods and so they are unimplemented.
         public Task DeleteDirectPropertiesAsync()
         {
             throw new NotSupportedException();

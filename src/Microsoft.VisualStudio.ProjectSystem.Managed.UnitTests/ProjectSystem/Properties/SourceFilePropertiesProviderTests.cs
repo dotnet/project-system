@@ -76,17 +76,83 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Theory]
-        [InlineData(@"
-[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)]
-", "ComVisible", "true")]
-        public async void SourceFileProperties_GetEvalutedProperty(string code, string propertyName, string expectedValue)
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]", "Title", "MyTitle")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "MyDescription")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyCompanyAttribute(""MyCompany"")]", "Company", "MyCompany")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyProductAttribute(""MyProduct"")]", "Product", "MyProduct")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyCopyrightAttribute(""MyCopyright"")]", "Copyright", "MyCopyright")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTrademarkAttribute(""MyTrademark"")]", "Trademark", "MyTrademark")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyVersionAttribute(""MyVersion"")]", "AssemblyVersion", "MyVersion")]
+        [InlineData(@"[assembly: System.Resources.NeutralResourcesLanguageAttribute(""en-us"")]", "NeutralResourcesLanguage", "en-us")]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.GuidAttribute(""SomeGuid"")]", "AssemblyGuid", "SomeGuid")]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)]", "ComVisible", "True")]
+        // VB
+        [InlineData(@"<Assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")>", "Title", "MyTitle")]
+        [InlineData(@"<Assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)>", "ComVisible", "True")]
+        // Negative cases
+        [InlineData(@"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)]", "SomeProperty", null)]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)]", "Title", null)]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true, false)]", "ComVisible", null)]
+        [InlineData(@"[assembly: System.Runtime.ComVisibleAttribute(true)]", "ComVisible", null)]
+        public async void SourceFileProperties_GetEvalutedPropertyAsync(string code, string propertyName, string expectedValue)
+        {
+            var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
+            var workspace = WorkspaceFactory.Create(code, language);
+            var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            var provider = new TestSourceFilePropertiesProvider(IUnconfiguredProjectFactory.Create(filePath: projectFilePath), workspace, IProjectThreadingServiceFactory.Create());
+
+            var properties = provider.GetProperties(projectFilePath, null, null);
+            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
+
+            Assert.Equal(expectedValue, propertyValue);
+        }
+
+        [Theory]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]", "Title", "NewTitle",
+                    @"[assembly: System.Reflection.AssemblyTitleAttribute(""NewTitle"")]")]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(true)]", "ComVisible", "false",
+                    @"[assembly: System.Runtime.InteropServices.ComVisibleAttribute(false)]")]
+        [InlineData(@"<Assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")>", "Title", "NewTitle",
+                    @"<Assembly: System.Reflection.AssemblyTitleAttribute(""NewTitle"")>")]
+        [InlineData(@"<Assembly: System.Runtime.InteropServices.ComVisibleAttribute(True)>", "ComVisible", "false",
+                    @"<Assembly: System.Runtime.InteropServices.ComVisibleAttribute(False)>")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(/*Trivia*/ ""MyTitle"" /*Trivia*/)]", "Title", "NewTitle",
+                    @"[assembly: System.Reflection.AssemblyTitleAttribute(/*Trivia*/ ""NewTitle"" /*Trivia*/)]")]
+        [InlineData(@"<Assembly: System.Reflection.AssemblyTitleAttribute(    ""MyTitle""     )>", "Title", "NewTitle",
+                    @"<Assembly: System.Reflection.AssemblyTitleAttribute(    ""NewTitle""     )>")]
+        //Negative cases
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]", "Description", "NewTitle",
+                    @"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]", "SomeRandomPropety", "NewTitle",
+                    @"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"", ""MyDescription"")]", "Title", "NewTitle",
+                    @"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"", ""MyDescription"")]")]
+        [InlineData(@"[assembly: System.AssemblyTitleAttribute(""MyTitle"")]", "Title", "NewTitle",
+                    @"[assembly: System.AssemblyTitleAttribute(""MyTitle"")]")]
+        public async void SourceFileProperties_SetPropertyValueAsync(string code, string propertyName, string propertyValue, string expectedCode)
+        {
+            var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
+            var workspace = WorkspaceFactory.Create(code, language);
+            var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            var provider = new TestSourceFilePropertiesProvider(IUnconfiguredProjectFactory.Create(filePath: projectFilePath), workspace, IProjectThreadingServiceFactory.Create());
+
+            var properties = provider.GetProperties(projectFilePath, null, null);
+            await properties.SetPropertyValueAsync(propertyName, propertyValue);
+
+            var newCode = (await workspace.CurrentSolution.Projects.First().Documents.First().GetTextAsync()).ToString();
+            Assert.Equal(expectedCode, newCode);
+        }
+
+        [Theory]
+        [InlineData(@"[assembly: System.Reflection.AssemblyTitleAttribute(""MyTitle"")]", "Title", "MyTitle")]
+        public async void SourceFileProperties_GetUnevalutedPropertyAsync(string code, string propertyName, string expectedValue)
         {
             var workspace = WorkspaceFactory.Create(code);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             var provider = new TestSourceFilePropertiesProvider(IUnconfiguredProjectFactory.Create(filePath: projectFilePath), workspace, IProjectThreadingServiceFactory.Create());
 
             var properties = provider.GetProperties(projectFilePath, null, null);
-            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
+            var propertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
 
             Assert.Equal(expectedValue, propertyValue);
         }

@@ -16,11 +16,10 @@ namespace Microsoft.VisualStudio.Workspaces
         {
             var workspace = new AdhocWorkspace();
 
-            var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "TestProject", "TestProject", language, filePath: "D:\\Test.proj");
-            var project = workspace.AddProject(projectInfo)
-                                   .AddMetadataReference(s_corlibReference)
-                                   .AddMetadataReference(s_systemReference)
-                                   .AddMetadataReference(s_systemCoreReference);
+            var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "TestProject", "TestProject", language, 
+                                                 filePath: "D:\\Test.proj",
+                                                 metadataReferences: new[] { s_corlibReference, s_systemCoreReference, s_systemReference });
+            var project = workspace.AddProject(projectInfo);
 
             var documentInfo = DocumentInfo.Create(DocumentId.CreateNewId(projectInfo.Id), "TestDocument");
             workspace.AddDocument(project.Id, "TestDocument", SourceText.From(text));
