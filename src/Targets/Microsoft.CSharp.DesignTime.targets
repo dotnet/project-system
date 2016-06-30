@@ -26,6 +26,11 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
 </Project>
