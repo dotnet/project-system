@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If FolderText.Length > 0 Then
                 Try
                     'Interpret as relative to the project path, and make it absolute
-                    FolderText = IO.Path.Combine(GetProjectPath(), FolderText)
+                    FolderText = IO.Path.Combine(GetProjectPathProperty(), FolderText)
                     FolderText = Utils.AppendBackslash(FolderText)
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetCurrentFolderPathAbsolute), NameOf(ReferencePathsPropPage))
                 End Try
@@ -353,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub FolderBrowse_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
             If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(SR.PPG_SelectReferencePath), value) Then
-                Folder.Text = GetProjectRelativeDirectoryPath(value)
+                Folder.Text = GetRelativeDirectoryPath(GetProjectPathProperty(), value)
             End If
         End Sub
 

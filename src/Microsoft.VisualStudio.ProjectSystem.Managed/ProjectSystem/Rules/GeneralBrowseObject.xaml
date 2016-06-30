@@ -49,6 +49,11 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
     </StringProperty.DataSource>
   </StringProperty>
+  <StringProperty Name="ReferencePath" DisplayName="Reference Path">
+      <StringProperty.DataSource>
+          <DataSource Persistence="UserFile" PersistedName="ReferencePath" />
+      </StringProperty.DataSource>
+  </StringProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," Visible="False" />
   <StringProperty Name="FileName" DisplayName="Project File" ReadOnly="True">
     <StringProperty.DataSource>
