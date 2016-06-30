@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         /// </summary>
         public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider)
         {
+            Requires.NotNull(provider, nameof(provider));
+
             DelegatedProvider = provider;
         }
 
