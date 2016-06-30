@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectPropertiesFactory
     {
-        public static IProjectProperties CreateWithProperty(string propertyName)
+        public static Mock<IProjectProperties> MockWithProperty(string propertyName)
         {
             var mock = new Mock<IProjectProperties>();
 
@@ -17,24 +17,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(t => t.GetPropertyNamesAsync())
                 .Returns(Task.FromResult(names));
 
-            return mock.Object;
+            return mock;
         }
 
-
-        public static IProjectProperties CreateWithPropertyAndSet(string propertyName, string setValue)
+        public static Mock<IProjectProperties> MockWithPropertyAndSet(string propertyName, string setValue)
         {
-            var mock = new Mock<IProjectProperties>();
-
-            IEnumerable<string> names = new string[] { propertyName };
-            mock.Setup(t => t.GetPropertyNamesAsync())
-                .Returns(Task.FromResult(names));
+            var mock = MockWithProperty(propertyName);
 
             mock.Setup(t => t.SetPropertyValueAsync(
                     It.Is<string>(v => v == propertyName), 
                     It.Is<string>(v => v == setValue), null))
                 .Returns(Task.CompletedTask);
 
-            return mock.Object;
+            return mock;
         }
+
+        public static IProjectProperties CreateWithProperty(string propertyName) 
+            => MockWithProperty(propertyName).Object;
+
+        public static IProjectProperties CreateWithPropertyAndSet(string propertyName, string setValue) 
+            => MockWithPropertyAndSet(propertyName, setValue).Object;
     }
 }

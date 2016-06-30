@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         public override IProjectProperties GetProperties(string file, string itemType, string item)
             => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item));
 
+        /// <summary>
+        /// Implementation of IProjectProperties that avoids writing properties unless they
+        /// already exist (i.e. are being updated) and delegates the rest of its operations
+        /// to another IProjectProperties object
+        /// </summary>
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
             public ImplicitProjectProperties(IProjectProperties properties)
@@ -38,6 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             {
             }
 
+            /// <summary>
+            /// Only set properties that exist in the delegated properties object
+            /// </summary>
             public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
             {
                 var propertyNames = await DelegatedProperties.GetPropertyNamesAsync().ConfigureAwait(false);
