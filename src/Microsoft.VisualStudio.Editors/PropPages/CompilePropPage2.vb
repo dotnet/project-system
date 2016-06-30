@@ -163,9 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Return CUInt(value) = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_Library _
                     AndAlso Not GetPropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop).IsMissing
-            Catch ex As Exception
-                Common.Utils.RethrowIfUnrecoverable(ex)
-
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterForComInteropSupported), NameOf(CompilePropPage2))
                 'If the project doesn't support this property, the answer is no.
                 Return False
             End Try
@@ -457,9 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         UpdateWarningList()
                     End If
                     Return True
-                Catch ex As Exception
-                    Debug.Fail(String.Format("Failed to convert {0} to string ({1})", value, ex))
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Failed to convert {value} to string", NameOf(CompilePropPage2))
                 End Try
             Else
                 Debug.Fail("Why did we get a NULL value for option strict?")
@@ -1348,8 +1344,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Static CLSID_InternetSecurityManager As New System.Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
                     VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.win.CLSCTX_INPROC_SERVER, ObjectPtr))
                     internetSecurityManager = TryCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(ObjectPtr), Interop.IInternetSecurityManager)
-                Catch Ex As Exception When Not Common.IsUnrecoverable(Ex)
-                    Debug.Fail(String.Format("Failed to create Interop.IInternetSecurityManager: {0}", Ex))
+                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2))
                 Finally
                     If ObjectPtr <> IntPtr.Zero Then
                         System.Runtime.InteropServices.Marshal.Release(ObjectPtr)

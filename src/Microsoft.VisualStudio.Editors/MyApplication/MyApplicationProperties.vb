@@ -892,8 +892,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), ex)
 
             Catch ex As Exception
-                Common.Utils.RethrowIfUnrecoverable(ex)
-
                 'For anything else, combine our error messages.
                 Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace & Microsoft.VisualBasic.vbCrLf & ex.Message))
             End Try
@@ -1475,11 +1473,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
                 Dim props3 As VSLangProj80.VBProjectProperties3 = TryCast(obj, VSLangProj80.VBProjectProperties3)
                 If props3 IsNot Nothing Then
-                    Return MyApplicationProperties.ApplicationTypeFromOutputType( _
-                                CUInt(props3.OutputType), _
+                    Return MyApplicationProperties.ApplicationTypeFromOutputType(
+                                CUInt(props3.OutputType),
                                 props3.MyType) = ApplicationTypes.WindowsApp
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
             End Try
             Return False
         End Function

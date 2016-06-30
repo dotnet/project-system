@@ -228,8 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
                     End If
 
-                Catch ex As System.Exception
-                    System.Diagnostics.Debug.Fail("Unexpected exception during Help invocation " + ex.Message)
+                Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(BuildEventCommandLineDialog))
                 End Try
             End If
         End Sub

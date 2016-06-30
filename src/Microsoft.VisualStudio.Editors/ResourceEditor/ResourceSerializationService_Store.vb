@@ -405,8 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Else
                                 StringValue = PropertyValue.ToString()
                             End If
-                        Catch ex As Exception
-                            RethrowIfUnrecoverable(ex)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(DeserializeHelper), NameOf(ResourceSerializationService))
                             StringValue = ex.Message
                         End Try
                         Trace("   ... Resource property: {0} = {1}", SerializedObject.PropertyName, StringValue)

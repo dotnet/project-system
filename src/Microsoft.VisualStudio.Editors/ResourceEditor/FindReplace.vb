@@ -330,8 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                         If Text Is Nothing Then
                                             Text = ""
                                         End If
-                                    Catch ex As Exception
-                                        RethrowIfUnrecoverable(ex)
+                                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Find), NameOf(FindReplace))
                                         Text = ""
                                     End Try
                                 End If

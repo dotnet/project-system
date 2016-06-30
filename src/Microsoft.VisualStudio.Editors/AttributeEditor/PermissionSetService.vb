@@ -7,6 +7,7 @@ Imports System.Security.Permissions
 Imports System.Xml
 Imports System.IO
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
+Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
@@ -84,10 +85,10 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                 If (strManifestFileName IsNot Nothing) AndAlso (strManifestFileName.Length > 0) Then
 
                     Dim manifestInfo As New TrustInfo
-                    manifestInfo.PreserveFullTrustPermissionSet = true
+                    manifestInfo.PreserveFullTrustPermissionSet = True
 
                     Try
-                        Using appManifestDocData as New DocData(_serviceProvider, strManifestFileName)
+                        Using appManifestDocData As New DocData(_serviceProvider, strManifestFileName)
 
                             manifestInfo.ReadManifest(DocDataToStream(appManifestDocData))
 
@@ -113,12 +114,12 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                     identityList = StringToIdentityList(strExcludedPermissions)
                 End If
 
-                Return SecurityUtilities.ComputeZonePermissionSet( _
-                    strTargetZone, _
-                    projectPermissionSet, _
+                Return SecurityUtilities.ComputeZonePermissionSet(
+                    strTargetZone,
+                    projectPermissionSet,
                     identityList)
 
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
             End Try
 
             Return Nothing
@@ -145,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             Return NativeMethods.S_OK
@@ -189,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             If hasTip Then

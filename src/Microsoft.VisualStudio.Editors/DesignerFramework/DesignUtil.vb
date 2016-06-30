@@ -333,8 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         Return System.Text.Encoding.GetEncoding(CInt(oEncoding) And TextManager.Interop.__VSTFF.VSTFF_CPMASK)
                     End If
                 End If
-            Catch ex As Exception
-                Common.RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetEncoding), NameOf(DesignUtil))
             End Try
             Return System.Text.Encoding.Default
         End Function
