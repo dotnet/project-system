@@ -3357,6 +3357,23 @@ NextControl:
         End Function
 
         ''' <summary>
+        ''' Gets the project's path
+        ''' First look in PropertyDescriptor of a common property if not found look in ObjectsPropertyDescriptorsArray
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Protected Function GetProjectPathProperty() As String
+            Dim PropertyName = "FullPath"
+            Dim propertyDescriptor = GetCommonPropertyDescriptor(PropertyName)
+
+            If propertyDescriptor Is Nothing Then
+                propertyDescriptor = GetPropertyDescriptor(PropertyName)
+            End If
+
+            Return CStr(GetCommonPropertyValueNative(propertyDescriptor))
+        End Function
+
+        ''' <summary>
         ''' Returns a project-relative path, given an absolute path.
         ''' </summary>
         ''' <param name="DirectoryPath">File or Directory path to make relative</param>
