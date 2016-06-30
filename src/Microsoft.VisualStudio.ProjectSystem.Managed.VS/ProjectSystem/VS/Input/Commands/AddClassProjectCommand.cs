@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectCommand(CommandGroup.VisualStudioStandard97, 946)]
+    [ProjectCommand(CommandGroup.VisualStudioStandard97, VisualStudioStandard97CommandId.AddClass)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class AddClassProjectCommand : AbstractSingleNodeProjectCommand
     {
@@ -21,6 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [ImportingConstructor]
         public AddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
         {
+            Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
+            Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));
+            Requires.NotNull(serviceProvider, nameof(SVsServiceProvider));
+
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
             _serviceProvider = serviceProvider;

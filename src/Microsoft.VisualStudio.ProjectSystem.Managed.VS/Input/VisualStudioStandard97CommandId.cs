@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.Input
     /// </summary>
     internal static class VisualStudioStandard97CommandId
     {
-        public const long Open = (long)VSConstants.VSStd97CmdID.Open;        
+        public const long Open = (long)VSConstants.VSStd97CmdID.Open;
+        public const long AddClass = (long)VSConstants.VSStd97CmdID.AddClass;
     }
 }
