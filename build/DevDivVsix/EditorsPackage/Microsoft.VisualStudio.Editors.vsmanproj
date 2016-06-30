@@ -9,6 +9,7 @@
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <OutputPath>$(OutDir)</OutputPath>
     <IsPackage>true</IsPackage>
+    <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />

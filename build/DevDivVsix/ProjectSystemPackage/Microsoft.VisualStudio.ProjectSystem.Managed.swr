@@ -1,7 +1,7 @@
 use vs
 
 package name=Microsoft.VisualStudio.ProjectSystem.Managed
-        version=$(Version)
+        version=$(RoslynSemanticVersion)
         vs.package.chip=neutral
         vs.package.language=en-us
         vs.package.type=vsix
