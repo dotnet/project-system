@@ -14,8 +14,8 @@ These properties, items and item metadata can be used to influence builds.
 #### __PreBuildEvent (string)__
 | Language      | Default            |
 |---------------| -------------------|
-| C#            | (empty)            |
-| Visual Basic  | (empty)            |
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
 
 Specifies commands to execute before the build starts.
 
@@ -29,8 +29,8 @@ Specifies commands to execute before the build starts.
 #### __PostBuildEvent (string)__
 | Language      | Default            |
 |---------------| -------------------|
-| C#            | (empty)            |
-| Visual Basic  | (empty)            |
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
 
 Specifies commands to excecute after the build ends. To control whether these commands are run on failed or update-to-date builds, set the _RunPostBuildEvent_ property.
 
@@ -129,8 +129,8 @@ Specifies whether the current build is a [design-time build](design-time-builds.
 
 | Language      | Default            |
 |---------------| -------------------|
-| C#            | (empty)            |
-| Visual Basic  | (empty)            |
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
 
 Specifies a unique key of a project within a Visual Studio solution. In the new [C# and Visual Basic project system](http://github.com/dotnet/roslyn-project-system), this is now optional.
 
