@@ -37,6 +37,7 @@
     <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\ProjectPropertiesProviders\ImplicitProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
@@ -80,6 +81,12 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
+      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\None.cs" >
+      <DependentUpon>None.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
@@ -97,6 +104,14 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>

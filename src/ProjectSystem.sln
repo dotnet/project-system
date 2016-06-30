@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemSetup", "ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioEditorsSetup", "VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}"
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\ReadMe.txt = Dependencies\ReadMe.txt
@@ -188,6 +190,10 @@ Global
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

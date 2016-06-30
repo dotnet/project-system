@@ -1021,7 +1021,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' enable/disable controls based upon the current value of the project's
             '   OutputType (.exe, .dll...)
-            EnableControlSet(ProjectProperties.OutputType)
+            EnableControlSet(OutputTypeProperty)
 
             PopulateIconList(False)
             UpdateIconImage(False)
