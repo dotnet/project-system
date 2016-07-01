@@ -1,10 +1,12 @@
 # Design-time builds
 
+## What is a design-time build?
+
 Design-time builds are special builds that are launched by the project system to gather just enough information to populate the language service and other project services, such as the references node.  Design-time builds are not directly user-initiated, but may be indirectly launched in response to a user action such as changing the project file or build options, or adding/removing source files or references.   
 
 For performance reasons and unlike normal builds, which call the _Build_ target, design-time builds call a limited set of targets. This can lead to custom builds that succeed during a normal build, but end up failing during a design-time build, typically due to custom targets with under-specified dependencies.
 
-## Targets
+## Targets that run during design-time builds
 
 The following design-time targets are called, including any dependencies, during design-time builds in the C#/VB project systems. Other project systems, such as C++ or JavaScript will call different targets. 
 
