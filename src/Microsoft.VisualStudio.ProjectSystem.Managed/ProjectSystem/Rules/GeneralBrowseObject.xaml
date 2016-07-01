@@ -65,4 +65,61 @@
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
     </StringProperty.DataSource>
   </StringProperty>
+
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Title" DisplayName="Assembly Title">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Description" DisplayName="Assembly Description">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="Company">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="Product">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="Copyright">
+    <StringProperty.DataSource>
+        <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Trademark" DisplayName="Trademark">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="Assembly Version">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyFileVersion" DisplayName="Assembly FileVersion">
+    <StringProperty.DataSource>
+        <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyGuid" DisplayName="Assembly Guid">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralResourcesLanguage" DisplayName="Neutral Resources Language">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ComVisible" DisplayName="ComVisible">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
 </Rule>
