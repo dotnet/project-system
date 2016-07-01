@@ -493,7 +493,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IProjectTree sourceFileNode = PhysicalProjectTreeProvider.Value.FindByPath(tree, absolutePath);
             if (sourceFileNode != null)
             {
-                uint itemid = sourceFileNode.GetHierarchyId().Id;
+                uint itemid = sourceFileNode.GetHierarchyId();
                 return new Tuple<string, uint>(absolutePath, itemid);
             }
 

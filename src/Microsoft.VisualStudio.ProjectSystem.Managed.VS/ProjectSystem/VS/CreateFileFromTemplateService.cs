@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (templateFilePath != null)
             {
-                var parentId = parentNode.GetHierarchyId().Id;
+                var parentId = parentNode.GetHierarchyId();
                 var result = new VSADDRESULT[1];
                 _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 

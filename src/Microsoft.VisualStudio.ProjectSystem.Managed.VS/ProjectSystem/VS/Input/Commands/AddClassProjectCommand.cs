@@ -49,24 +49,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return false;
             }
 
-
-            string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
-            IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
-            Assumes.Present(addItemDialog);
-
-            string strFilter = string.Empty;
-            int iDontShowAgain;
-
-            ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            ConfigurationGeneral projectProperties =
+                            await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             Guid guid = new Guid((string)await projectProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false));
 
             __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
 
+            IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
+            Assumes.Present(addItemDialog);
+
+            string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
+
+            string strFilter = string.Empty;
+            int iDontShowAgain;
+
             await _projectVsServices.ThreadingService.SwitchToUIThread();
+            HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref guid, _projectVsServices.VsProject, (uint)uiFlags,
+                Resources.CSharpItemsDirName, Resources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
 
-            var res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId().Id, ref guid, _projectVsServices.VsProject, (uint)uiFlags, Resources.CSharpItemsDirName, Resources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
-
-            // Don't show it again if the user clicked cancel.
+            // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
+            // handler isn't called after we run.
             return res == VSConstants.S_OK || res == VSConstants.OLE_E_PROMPTSAVECANCELLED;
         }
     }
