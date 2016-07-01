@@ -26,15 +26,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             private readonly Dictionary<string, IEnumValue> _listedOutputTypeValues = new Dictionary<string, IEnumValue>
             {
-                { "dll",             new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
-                { "exe",             new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) },
-                { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe", DisplayName = "2" }) }
+                { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe",  DisplayName = "0" }) },
+                { "exe",             new PageEnumValue(new EnumValue {Name = "exe",     DisplayName = "1" }) },
+                { "library",         new PageEnumValue(new EnumValue {Name = "library", DisplayName = "2" }) },
             };
 
             private readonly Dictionary<string, IEnumValue> _mappedOutputTypeValues = new Dictionary<string, IEnumValue>
             {
-                { "winmdobj",        new PageEnumValue(new EnumValue {Name = "dll",    DisplayName = "0" }) },
-                { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "exe",    DisplayName = "1" }) }
+                { "winmdobj",        new PageEnumValue(new EnumValue {Name = "library", DisplayName = "2" }) },
+                { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "exe",     DisplayName = "1" }) }
             };
 
             public bool AllowCustomValues => false;

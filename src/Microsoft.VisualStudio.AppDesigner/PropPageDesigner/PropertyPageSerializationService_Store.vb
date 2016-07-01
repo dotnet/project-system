@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     '  the state won't be perfect.
                     Return New ArrayList(0)
 
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception
                     Trace.WriteLine("*** An exception was thrown during Undo/Redo: " & ex.ToString)
                     Throw
                 End Try

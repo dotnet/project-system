@@ -405,8 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If CType(_propPage, IPropertyPageInternal).IsPageDirty() Then
                     Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
                 End If
-            Catch ex As Exception
-                Debug.Fail("Received an exception from IPropertyPageInternal.IsPageDirty" & vbCrLf & ex.ToString())
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsPageDirty), NameOf(PropPageBase))
                 Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.E_FAIL
             End Try
 

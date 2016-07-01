@@ -46,6 +46,7 @@
     <Compile Include="ProjectSystem\ProjectTreePropertiesProviderExtensions.cs" />
     <Compile Include="ProjectSystem\ProjectTreeWriter.cs" />
     <Compile Include="ProjectSystem\ProjectTreeWriterOptions.cs" />
+    <Compile Include="Workspaces\WorkspaceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

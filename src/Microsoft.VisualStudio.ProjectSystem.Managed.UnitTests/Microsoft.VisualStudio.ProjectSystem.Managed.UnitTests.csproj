@@ -68,6 +68,7 @@
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
+    <Compile Include="ProjectSystem\Properties\SourceFilePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
