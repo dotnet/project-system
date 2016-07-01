@@ -1,5 +1,10 @@
 # Design-time builds
 
+- [What is a design-time build?](#what-is-a-design-time-build)
+- [Targets that run during design-time builds](#targets-that-run-during-design-time-builds)
+- [Designing targets for use in design-time builds](#designing-targets-for-use-in-design-time-builds)
+- [Diagnosing design-time builds](#diagnosing-design-time-builds)
+
 ## What is a design-time build?
 
 Design-time builds are special builds that are launched by the project system to gather just enough information to populate the language service and other project services, such as the references node.  Design-time builds are not directly user-initiated, but may be indirectly launched in response to a user action such as changing the project file or build options, or adding/removing source files or references.   
