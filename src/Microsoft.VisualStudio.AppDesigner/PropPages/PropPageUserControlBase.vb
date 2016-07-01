@@ -813,7 +813,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return ProjectProperties.OutputType
                 Else
                     Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("OutputType"))
-                    Return CType(obj, VSLangProj.prjOutputType)
+                    Try
+                        Return CType(obj, VSLangProj.prjOutputType)
+                    Catch ex As Exception
+                        Return 0
+                    End Try
                 End If
             End Get
         End Property
