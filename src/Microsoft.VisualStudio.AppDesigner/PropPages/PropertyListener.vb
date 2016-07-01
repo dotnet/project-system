@@ -107,17 +107,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Listener._cookieInactiveCfg = CookieInactiveCfg
                             CookieInactiveCfg = Nothing
                             Common.Switches.TracePDProperties(TraceLevel.Info, "... Succeeded for inactive configurations")
-                        Catch ex As Exception
-                            AppDesCommon.RethrowIfUnrecoverable(ex)
-                            Debug.Fail("Unable to get connection point cookie for ILangInactiveCfgPropertyNotifySink")
+                        Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unable to get connection point cookie for ILangInactiveCfgPropertyNotifySink", NameOf(PropertyListener))
                             'We ignore if this happens
                             Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown for inactive configurations: " & ex.Message)
                         End Try
                     End If
 
                     Return Listener
-                Catch ex As Exception
-                    AppDesCommon.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryCreate), NameOf(PropertyListener))
                     Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown: " & ex.ToString)
                 Finally
                     If CookieActiveCfg IsNot Nothing Then

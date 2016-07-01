@@ -209,9 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Catch ex As SystemException
                 _propPage.ShowErrorMessage(ex)
                 Return
-            Catch ex As Exception
-                Debug.Fail(ex.Message)
-                AppDesCommon.RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OK_Click), NameOf(PropPageHostDialog))
                 _propPage.ShowErrorMessage(ex)
                 Return
             End Try
