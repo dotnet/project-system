@@ -19,22 +19,23 @@ The design-time targets are typically simple wrappers around their normal target
 
 ## Designing targets for use in design-time builds
 
-Targets that dynamically change references, source files or compilation options _must_ run during design-time builds to avoid unexpected behavior in Visual Studio. In contrast, if a target does not contribute these items, then it should actively avoid running in these builds for performance reasons. Whether a target is run in design-time builds is controlled by a target's `BeforeTargets` and `AfterTargets` attributes and whether it specifies a direct or indirect dependency of the above design-time targets. See [Diagnosing design-time builds](#diagnosing-design-time-builds) to see logs that help you capture this.
+Targets that dynamically change references, source files or compilation options _must_ run during design-time builds to avoid unexpected behavior in Visual Studio. In contrast, if a target does not contribute these items, then it should actively avoid running in these builds to ensure design-time builds are as fast as possible. Whether a target is run in design-time builds is based on whether a target's `BeforeTargets` and `AfterTargets` attributes specifies a direct or indirect dependency of any of the above  targets. See [Diagnosing design-time builds](#diagnosing-design-time-builds) to see logs that help you figure out if your target is being run or not.
 
 ### Running in a design-time build
 
-If you've determined that your target needs to run in a design-time build, using the above table, set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
+If you've determined that your target needs to run in a design-time build, using the above table set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
 
 ``` XML
   <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
      ...
   </Target>
 ```
-The above target will run both in normal builds _and_ design-time builds, leading to consistent results between them.
+The `AddAdditionalReferences` target will run in both normal builds _and_ design-time builds, leading to consistent results between them.
 
 ### Determining whether a target is run in a design-time build
 
-Use the `DesignTimeBuild` property to differentiate between when a target is run in a design-time build versus a normal build.
+Use the `DesignTimeBuild` property to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
+
 ``` XML
   <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
      <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
@@ -47,7 +48,7 @@ Use the `DesignTimeBuild` property to differentiate between when a target is run
  
 ### Specifying explicit dependencies
 
-If your target has dependencies on items, files or assets produced during the build, it must have an accurate `DependsOnTargets` attribute that indicates the set of targets that produce those items. An under-specified `DependsOnTargets` will lead unexpected behavior, such as targets that fail on first run, or ones that always fail during design-time builds.
+If your target has dependencies on properties, items or files produced during the build, it must have an accurate `DependsOnTargets` attribute that indicates the set of targets that produce those assets. An under-specified `DependsOnTargets` will lead to unexpected behavior, such as targets that fail on the first design-time build or fail during every design-time build.
 
 ## Diagnosing design-time builds
 
@@ -59,7 +60,7 @@ While the results of design-time builds are not directly visible by default, the
 - IntelliSense shows incomplete and/or incorrect results
 - A normal build succeeds inside and outside of Visual Studio, yet the Error List continues to show build errors
 
-### Determining why a design-time build is failing
+### Determining why the design-time build is failing
 
 You can force Visual Studio to show the results of a design-time build using the following instructions:
 
@@ -78,7 +79,7 @@ In Visual Studio "15" there are two C# and Visual Basic project systems. By defa
 If, however, you know that your project opens in the new [project system](http://github.com/dotnet/roslyn-project-system), you can use the following steps to see the results of design-time builds:
 
 1. Under `HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\15.0\CPS`
-create a new DWORD (32-bit) value `"Design-time Build Logging"` set to `1`. If running inside other hives of Visual Studio, replace `15.0` with `15.0[Hive]`, where `[Hive]` is the name of the hive.
+create a new DWORD (32-bit) value `Design-time Build Logging` and set it to `1`. If running inside other hives of Visual Studio, replace `15.0` with `15.0[Hive]`, where `[Hive]` is the name of the hive.
 
 2. Open the solution
 
