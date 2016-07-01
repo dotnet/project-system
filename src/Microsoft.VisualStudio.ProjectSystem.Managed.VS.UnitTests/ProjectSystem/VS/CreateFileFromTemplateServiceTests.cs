@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var vsProject = (IVsProject4)hierarchy;
             vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, files, result) =>
             {
-                Assert.Equal(inputTree.GetHierarchyId(), itemId);
+                Assert.Equal((uint)inputTree.GetHierarchyId(), itemId);
                 Assert.Equal(VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, itemOperation);
                 Assert.Equal(fileName, itemName);
                 Assert.Equal(new string[] { templateFilePath }, files);
