@@ -34,5 +34,9 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
   </ItemGroup>
 </Project>

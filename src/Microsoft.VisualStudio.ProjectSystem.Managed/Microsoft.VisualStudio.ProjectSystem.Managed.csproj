@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
     <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesProviderBase.cs" />
@@ -84,7 +85,7 @@
     <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\None.cs" >
+    <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />

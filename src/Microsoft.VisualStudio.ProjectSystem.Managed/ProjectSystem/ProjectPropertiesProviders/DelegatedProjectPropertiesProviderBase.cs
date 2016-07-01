@@ -34,59 +34,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             DelegatedProvider = provider;
         }
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.DefaultProjectPath"/>
-        /// </summary>
         public virtual string DefaultProjectPath => UnconfiguredProject.FullPath;
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.ProjectPropertyChanged"/>
-        /// </summary>
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
         {
             add { DelegatedProvider.ProjectPropertyChanged += value; }
             remove { DelegatedProvider.ProjectPropertyChanged += value; }
         }
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.ProjectPropertyChangedOnWriter"/>
-        /// </summary>
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter
         {
             add { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
             remove { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
         }
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.ProjectPropertyChanging"/>
-        /// </summary>
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging
         {
             add { DelegatedProvider.ProjectPropertyChanging += value; }
             remove { DelegatedProvider.ProjectPropertyChanging += value; }
         }
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.GetCommonProperties"/>
-        /// </summary>
         public virtual IProjectProperties GetCommonProperties()
             => DelegatedProvider.GetCommonProperties();
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.GetItemProperties"/>
-        /// </summary>
         public virtual IProjectProperties GetItemProperties(string itemType, string item)
             => DelegatedProvider.GetItemProperties(itemType, item);
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.GetItemTypeProperties"/>
-        /// </summary>
         public virtual IProjectProperties GetItemTypeProperties(string itemType)
             => DelegatedProvider.GetItemTypeProperties(itemType);
 
-        /// <summary>
-        /// <see cref="IProjectPropertiesProvider.GetProperties"/>
-        /// </summary>
         public virtual IProjectProperties GetProperties(string file, string itemType, string item)
             => DelegatedProvider.GetProperties(file, itemType, item);
     }

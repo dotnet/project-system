@@ -15,15 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     /// they are already present there, it updates the value to keep in sync with
     /// the external source.
     /// </summary>
-    [Export("Implicit", typeof(IProjectPropertiesProvider))]
+    [Export("ImplicitProjectFile", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
-    [ExportMetadata("Name", "Implicit")]
+    [ExportMetadata("Name", "ImplicitProjectFile")]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
-            [Import("Microsoft.VisualStudio.ProjectSystem.ProjectFile")] IProjectPropertiesProvider provider)
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider)
             : base(provider)
         {
         }

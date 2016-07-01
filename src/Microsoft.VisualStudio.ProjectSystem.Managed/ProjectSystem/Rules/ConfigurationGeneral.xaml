@@ -17,7 +17,7 @@
     <StringListProperty Name="ProjectTypeGuids" Visible="False" />
     <StringProperty Name="ProjectGuid" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="Implicit" Label="Globals" HasConfigurationCondition="False" />
+            <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
     <DynamicEnumProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker" EnumProvider="TargetFrameworkMoniker" />
