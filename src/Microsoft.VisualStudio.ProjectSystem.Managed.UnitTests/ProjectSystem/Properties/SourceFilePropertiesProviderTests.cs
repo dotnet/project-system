@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    internal class TestSourceFilePropertiesProvider : AbstractSourceFilePropertyProvider
+    internal class TestSourceFilePropertiesProvider : AbstractSourceFilePropertiesProvider
     {
         public TestSourceFilePropertiesProvider(UnconfiguredProject unconfiguredProject, Workspace workspace, IProjectThreadingService threadingService) 
             : base(unconfiguredProject, workspace, threadingService)

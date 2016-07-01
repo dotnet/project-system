@@ -9,15 +9,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// <summary>
     /// A provider for properties that are stored in the source code of the project.
     /// </summary>
-    internal abstract class AbstractSourceFilePropertyProvider : IProjectPropertiesProvider
+    internal abstract class AbstractSourceFilePropertiesProvider : IProjectPropertiesProvider
     {
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
-        public AbstractSourceFilePropertyProvider(UnconfiguredProject unconfiguredProject,
-                                                  Workspace workspace,
-                                                  IProjectThreadingService threadingService)
+        public AbstractSourceFilePropertiesProvider(UnconfiguredProject unconfiguredProject,
+                                                    Workspace workspace,
+                                                    IProjectThreadingService threadingService)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
             Requires.NotNull(workspace, nameof(workspace));

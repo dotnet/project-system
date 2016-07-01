@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Export(typeof(IProjectPropertiesProvider))]
     [ExportMetadata("Name", "SourceFile")]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class SourceFilePropertiesProvider : AbstractSourceFilePropertyProvider
+    internal class SourceFilePropertiesProvider : AbstractSourceFilePropertiesProvider
     {
         [ImportingConstructor]
         public SourceFilePropertiesProvider(UnconfiguredProject unconfiguredProject,
