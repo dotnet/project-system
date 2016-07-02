@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

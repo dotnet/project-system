@@ -89,6 +89,8 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeIdTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />

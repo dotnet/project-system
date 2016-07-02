@@ -4,17 +4,67 @@
 
 -->
 
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">    
+  
   <Import Project="Microsoft.Managed.DesignTime.targets" />
 
   <!-- Properties -->
+  <UsingTask TaskName="DependenciesTreeTasks.GetDependenciesData" 
+             AssemblyFile="D:\temp\LockFileTaskSamples\MyTask\DependenciesTreeTasks\DependenciesTreeTasks\bin\Debug\DependenciesTreeTasks.dll" />    
+    
   <PropertyGroup>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
   </PropertyGroup>
+
+    <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
+    <ProjectCapability Include="DependenciesTree" />
+    
+    <!-- 
+      List of capabilities below is adding back common capabilities defined in imported targets.
+      We disabled them with the property DefineCommonCapabilities=false to get rid of default 
+      References capability, but everything else we want back.
+    -->
+    <ProjectCapability Include="LanguageService;
+                                ProjectConfigurationsInferredFromUsage;
+                                AssemblyReferences;
+                                COMReferences;
+                                ProjectReferences;
+                                SharedProjectReferences;
+                                OutputGroups;
+                                AllTargetOutputGroups;
+                                VisualStudioWellKnownOutputGroups;
+                                SingleFileGenerators;
+                                DeclaredSourceItems;
+                                UserSourceItems;" />
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AssemblyReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ComReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)SdkReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedSdkReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)PackageReference.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedPackageReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
 
   <!-- Targets -->
 
@@ -28,6 +78,90 @@
       <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
     </ItemGroup>
 
+  </Target>
+
+  <!-- 
+    Target ResolvePackageReferencesDesignTime called by design time build to get 
+    NuGet package dependencies data. It is referenced from NuGetPackageReference.xaml.
+    
+    Currently it is using ResolveNuGetPackageAssets task (which is loaded already by common imports)
+    and gets only a list of top level direct package dependencies if project.lock.file exists.
+    
+    TODO: Work with native languages team to re-write this task and/or create new tasks that would
+          read project.lock.json and get all data from it:
+            - full workld of dependencies with their corresponding types (similar to what 
+              ProjectModelServer did for existing dotnet project system).
+            - all other assets like content etc
+          Having that task there should be a first level target calling it to get data into project,
+          then this data can be transformed to other formats/item collections by next level targets
+          including ResolveNuGetPackageReferencesDesignTime target.
+  -->
+  <Target
+        Name="ResolvePackageReferencesDesignTime"
+        Returns="@(Packages)"
+        DependsOnTargets="ResolveAssemblyReferencesDesignTime"
+        Condition="exists('$(ProjectLockFile)')">
+
+    <ResolveNuGetPackageAssets AllowFallbackOnTargetSelection="$(DesignTimeBuild)"
+                               ContinueOnError="$(ContinueOnError)"
+                               IncludeFrameworkReferences="$(IncludeFrameworkReferencesFromNuGet)"
+                               NuGetPackagesDirectory="$(NuGetPackagesDirectory)"
+                               RuntimeIdentifier="$(_NuGetRuntimeIdentifierWithoutAot)"
+                               ProjectLanguage="$(Language)"
+                               ProjectLockFile="$(ProjectLockFile)"
+                               ProjectReferencesCreatingPackages="@(ProjectReferenceCreatingPackage)"
+                               ContentPreprocessorValues="@(NuGetPreprocessorValue)"
+                               ContentPreprocessorOutputDirectory="$(IntermediateOutputPath)\NuGet"
+                               TargetMonikers="$(NuGetTargetMoniker);$(_NuGetTargetFallbackMoniker)">
+
+      <Output TaskParameter="ResolvedAnalyzers" ItemName="_Analyzer" />
+      <Output TaskParameter="ResolvedCopyLocalItems" ItemName="_ReferenceCopyLocalPaths" />
+      <Output TaskParameter="ResolvedReferences" ItemName="_ReferencesFromNuGetPackages" />
+      <Output TaskParameter="ReferencedPackages" ItemName="_MyReferencedNuGetPackages" />
+      <Output TaskParameter="ContentItems" ItemName="_NuGetContentItems" />
+      <Output TaskParameter="FileWrites" ItemName="FileWrites" />
+    </ResolveNuGetPackageAssets>
+       
+    <ItemGroup>
+      <Packages Include="@(_MyReferencedNuGetPackages)"/>      
+    </ItemGroup>
+  </Target>
+  
+  <Target Name="RunLockFileToMSBuild">
+    <Message Text="     -> (Raising Lock File: ProjectLockFile=$(ProjectLockFile))" Importance="high"/>
+
+    <LockFileToMSBuild2 
+      ProjectLockFile="$(ProjectLockFile)">
+
+      <Output TaskParameter="TargetDefinitions" ItemName="TargetDefinitions" />
+      <Output TaskParameter="PackageDefinitions" ItemName="PackageDefinitions" />
+      <Output TaskParameter="FileDefinitions" ItemName="FileDefinitions" />
+      <Output TaskParameter="PackageDependencies" ItemName="PackageDependencies" />
+      <Output TaskParameter="FileDependencies" ItemName="FileDependencies" />
+    </LockFileToMSBuild2>
+
+  </Target>
+
+  <Target
+        Name="ResolveDependenciesDesignTime"
+        Returns="@(Packages)"
+        DependsOnTargets="ResolveAssemblyReferencesDesignTime;RunLockFileToMSBuild"
+        Condition="exists('$(ProjectLockFile)')">
+
+    <!--<Message Text="%(FileDefinitions.Identity)" Importance="high" />-->
+    
+    <GetDependenciesData TargetDefinitions="@(TargetDefinitions)"
+                               PackageDefinitions="@(PackageDefinitions)"
+                               FileDefinitions="@(FileDefinitions)"
+                               PackageDependencies="@(PackageDependencies)"
+                               FileDependencies="@(FileDependencies)">
+
+      <Output TaskParameter="DependenciesWorld" ItemName="_DependenciesWorld" />
+    </GetDependenciesData>
+   
+    <ItemGroup>
+      <Packages Include="@(_DependenciesWorld)"/>      
+    </ItemGroup>
   </Target>
 
 </Project>

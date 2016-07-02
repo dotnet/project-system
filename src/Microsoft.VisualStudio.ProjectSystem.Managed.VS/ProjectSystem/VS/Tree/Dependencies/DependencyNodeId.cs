@@ -1,0 +1,160 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Text;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+{
+    /// <summary>
+    /// In order to pass provider type to GrpahProvider we need to serialize provider type
+    /// to nodes id. In addition, since some nodes can have same ItemSpec (as in the case 
+    /// of nuget packages), we need to come up with the way to have unique part in the id.
+    /// Thus to allow ids to have some contract to keep same logic we will use this class,
+    /// to represent a node's id.
+    /// 
+    /// (Why this manipulation with IDs even needed? GraphNode when is created only gets 
+    /// project path and file path from given IVsHierarchy, so unless we change existing 
+    /// logic in progression to allow extensible properties to be added to IDs, the only
+    /// way to pass complex data is by serializiung it in FilePath string, and make sure 
+    /// Uri.IsAbsolute returns true for FilePath after serialization.)
+    /// 
+    /// Note: top level nodes should have only ProviderType and ItemSpec (no inique token) 
+    /// since they are created via regular IProjecTree provider and data comes from Design
+    /// Time build, which send ItemSpec (we just don't known unique tokens at that point).
+    /// 
+    /// However lower level nodes must have a unique token in their ids, since they can 
+    /// repeat. GraphProvider uses ProviderType to find correct provider for given node and
+    /// sends full ID to provider to get a particular node.
+    /// </summary>
+    public class DependencyNodeId : IEquatable<DependencyNodeId>
+    {
+        public DependencyNodeId(string providerType, 
+                                string itemSpec = null, 
+                                string itemType = null, 
+                                string uniqueToken = null)
+        {
+            Requires.NotNullOrEmpty(providerType, nameof(providerType));
+
+            ProviderType = providerType;
+            ItemSpec = itemSpec ?? string.Empty;
+            ItemType = itemType ?? string.Empty;
+            UniqueToken = uniqueToken ?? string.Empty;
+        }
+
+        public string ProviderType { get; private set; }
+
+        /// <summary>
+        /// An explicit unique ID of the node. In most cases, it can be equal to IProjectTree.FilePath
+        /// </summary>
+        public string ItemSpec { get; private set; }
+
+        /// <summary>
+        /// Returns an ItemType that is used to get correct properties schema/rule for given node
+        /// </summary>
+        public string ItemType { get; private set; }
+
+        /// <summary>
+        /// When providers need to make sure that id is unique and itemSpec + itemType is not enough,
+        /// they can provide a unique token.
+        /// </summary>
+        public string UniqueToken { get; private set; }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            // Note: Progression and CPS needs IProjectTree.FilePath to be valid absolute Uri.
+            // Since we pass node IDs through FilePath, we have to serialize IDs as valid 
+            // absolute Uri, thus make sure "file:///" is appended.
+            builder.Append("file:///");
+            builder.Append("[");
+            builder.Append(ProviderType);
+            if (!string.IsNullOrEmpty(ItemSpec))
+            {
+                builder.Append(";");
+                builder.Append(ItemSpec);
+            }
+
+            if (!string.IsNullOrEmpty(ItemType))
+            {
+                builder.Append(";");
+                builder.Append(ItemType);
+            }
+
+            if (!string.IsNullOrEmpty(UniqueToken))
+            {
+                builder.Append(";");
+                builder.Append(UniqueToken);
+            }
+            builder.Append("]");
+
+            return builder.ToString();
+        }
+
+        public static DependencyNodeId FromString(string serializedId)
+        {
+            if (string.IsNullOrEmpty(serializedId))
+            {
+                return null;
+            }
+
+            // Note: Progression and CPS needs IProjectTree.FilePath to be valid absolute Uri.
+            // Since we pass node IDs through FilePath, we have to serialize IDs as valid 
+            // absolute Uri, thus get rid of file:/// in the beginning of the string before parsing.
+            if (serializedId.StartsWith("file:///", StringComparison.OrdinalIgnoreCase))
+            {
+                serializedId = serializedId.Substring(8);
+            }
+
+            if (!serializedId.StartsWith("[") || !serializedId.EndsWith("]"))
+            {
+                return null;
+            }
+
+            serializedId = serializedId.TrimStart('[').TrimEnd(']');
+            var parts = serializedId?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts == null || parts.Length <= 0)
+            {
+                return null;
+            }
+
+            var providerType = parts[0];
+            var itemSpec = parts.Length > 1 ? parts[1] : string.Empty;
+            var itemType = parts.Length > 2 ? parts[2] : string.Empty;
+            var uniqueToken = parts.Length > 3 ? parts[3] : string.Empty;
+
+            var id = new DependencyNodeId(providerType,
+                                          itemSpec,
+                                          itemType,
+                                          uniqueToken);
+            return id;
+        }
+
+        public override int GetHashCode()
+        {
+            return unchecked(ToString().GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            DependencyNodeId other = obj as DependencyNodeId;
+            if (other != null)
+            {
+                return Equals(other);
+            }
+
+            return false;
+        }
+
+        public bool Equals(DependencyNodeId other)
+        {
+            if (other != null &&
+                other.ToString().Equals(ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+}

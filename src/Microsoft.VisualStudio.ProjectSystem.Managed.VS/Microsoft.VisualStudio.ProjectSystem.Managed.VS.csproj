@@ -32,6 +32,8 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Extensibility\ProjectExportProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Extensibility\IProjectExportProvider.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGenerators.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommand.cs" />
@@ -75,10 +77,42 @@
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxResult.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModel.cs" />
     <Compile Include="ProjectSystem\VS\UI\RelayCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\AssemblyDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\AssemblyDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeId.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageFrameworkAssembliesDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAssemblyDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageUnknownDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\SdkDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\SdkDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesProjectTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IEnumerableExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ComDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ComDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\SharedProjectDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\SubTreeRootDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesChange.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependenciesChangeDiff.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\IProjectTreeExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBase.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProjectContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependenciesGraphProjectContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependenciesGraphProjectContext.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\NuGetDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphSchema.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IProjectDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,6 +123,10 @@
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
+      <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
+      <Name>VisualStudio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
