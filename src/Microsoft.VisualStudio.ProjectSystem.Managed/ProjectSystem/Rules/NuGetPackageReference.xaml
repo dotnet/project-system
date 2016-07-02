@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule
+    Name="NuGetPackageReference"
+    DisplayName="NuGet Package"
+    PageTemplate="generic"
+    Description="NuGet Package"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+    
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" ItemType="NuGetPackageReference" HasConfigurationCondition="False" />
+    </Rule.DataSource>
+    
+    <StringProperty Name="Description" 
+                    ReadOnly="True" 
+                    Visible="True"
+                    DisplayName="Description" 
+                    Description="Dependency description." />
+
+    <EnumProperty Name="Type"
+                  ReadOnly="True"
+                  Visible="True"
+                  DisplayName="Dependency Type"
+                  Description="The type of the dependency.">
+        <EnumValue Name="Assembly" DisplayName=".NET assembly" />
+        <EnumValue Name="ActiveX" DisplayName="COM type library" />
+        <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
+    </EnumProperty>
+
+    <StringProperty Name="Version"
+                    ReadOnly="True"
+                    DisplayName="Version"
+                    Description="Version of dependency.">
+    </StringProperty>
+
+    <StringProperty Name="Name" 
+                    Visible="True" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="OriginalItemSpec" 
+                    Visible="False" 
+                    ReadOnly="True" 
+                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+
+    <!-- 
+        TODO first attempt to get hierarchy for given package reference.
+    
+        To get hierarchy we would need two collections of package references:
+           - direct package dependencies (top level)
+           - a world of all package dependencies: list of recursive package dependencies from all levels
+        
+        Each reference will have a list of it's direct dependencies via
+           - Names property containing ; separated list of names
+           - Versions property containig ; separated list of versions
+        number of elements in names and versions should be the same.
+    
+        Thus we get to next level if the hierarchy by getting names and versions of current
+        node dependencies and find them in the "world" to get actual package reference Item 
+        with all remaining properties.
+    
+        Note: there should be a separate class that can process dependency hierarchy in optimal way
+              and get actual objects in design time build subscribers.
+    
+        TODO: is there better way to specify lists of hierarchies in msbuild?
+              - option2: what if we specify json strings? Sounds weird, since we just parsed 
+                project.lock.json to get data and then serialize it again to be deserialized later 
+                one more time?
+    -->
+
+    <!--<StringListProperty Name="Names"
+                        DisplayName="Names"
+                        Visible="false"
+                        Description="A semicolon-delimited list of names to this reference."
+                        Separator=";">
+        <StringListProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="NuGetPackageReference" HasConfigurationCondition="False" />
+        </StringListProperty.DataSource>
+    </StringListProperty>
+
+    <StringListProperty Name="Versions"
+                        DisplayName="Versions"
+                        Visible="false"
+                        Description="A semicolon-delimited list of names to this reference."
+                        Separator=";">
+        <StringListProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="NuGetPackageReference" HasConfigurationCondition="False" />
+        </StringListProperty.DataSource>
+    </StringListProperty>-->
+</Rule>
