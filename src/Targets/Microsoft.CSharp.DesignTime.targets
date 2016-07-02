@@ -4,9 +4,10 @@
   
 -->
 
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">    
   <PropertyGroup>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
@@ -17,8 +18,18 @@
 
   <!-- Project Capabilities -->
   <ItemGroup>
-    <ProjectCapability Include="AppDesigner"/>
-    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
+    <ProjectCapability Include="AppDesigner" />
+    <ProjectCapability Include="ManagedLang" /> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
+    <ProjectCapability Include="LanguageService;
+                                ProjectConfigurationsInferredFromUsage;
+                                AssemblyReferences;
+                                COMReferences;
+                                ProjectReferences;
+                                SharedProjectReferences;
+                                OutputGroups;
+                                AllTargetOutputGroups;
+                                VisualStudioWellKnownOutputGroups;
+                                SingleFileGenerators;" />
   </ItemGroup>
   
   <!-- CPS Project Properties -->
@@ -38,5 +49,79 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AssemblyReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ComReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)SdkReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedSdkReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)NuGetPackageReference.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedNuGetPackageReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
+  
+  <!-- 
+    Target ResolveNuGetPackageReferencesDesignTime called by design time build to get 
+    NuGet package dependencies data. It is referenced from NuGetPackageReference.xaml.
+    
+    Currently it is using ResolveNuGetPackageAssets task (which is loaded already by common imports)
+    and gets only a list of top level direct package dependencies if project.lock.file exists.
+    
+    TODO: Work with native languages team to re-write this task and/or create new tasks that would
+          read project.lock.json and get all data from it:
+            - full workld of dependencies with their corresponding types (similar to what 
+              ProjectModelServer did for existing dotnet project system).
+            - all other assets like content etc
+          Having that task there should be a first level target calling it to get data into project,
+          then this data can be transformed to other formats/item collections by next level targets
+          including ResolveNuGetPackageReferencesDesignTime target.
+  -->
+  <Target
+        Name="ResolveNuGetPackageReferencesDesignTime"
+        Returns="@(Packages)"
+        DependsOnTargets="ResolveAssemblyReferencesDesignTime"
+        Condition="exists('$(ProjectLockFile)')">
+
+    <ResolveNuGetPackageAssets AllowFallbackOnTargetSelection="$(DesignTimeBuild)"
+                               ContinueOnError="$(ContinueOnError)"
+                               IncludeFrameworkReferences="$(IncludeFrameworkReferencesFromNuGet)"
+                               NuGetPackagesDirectory="$(NuGetPackagesDirectory)"
+                               RuntimeIdentifier="$(_NuGetRuntimeIdentifierWithoutAot)"
+                               ProjectLanguage="$(Language)"
+                               ProjectLockFile="$(ProjectLockFile)"
+                               ProjectReferencesCreatingPackages="@(ProjectReferenceCreatingPackage)"
+                               ContentPreprocessorValues="@(NuGetPreprocessorValue)"
+                               ContentPreprocessorOutputDirectory="$(IntermediateOutputPath)\NuGet"
+                               TargetMonikers="$(NuGetTargetMoniker);$(_NuGetTargetFallbackMoniker)">
+
+      <Output TaskParameter="ResolvedAnalyzers" ItemName="_Analyzer" />
+      <Output TaskParameter="ResolvedCopyLocalItems" ItemName="_ReferenceCopyLocalPaths" />
+      <Output TaskParameter="ResolvedReferences" ItemName="_ReferencesFromNuGetPackages" />
+      <Output TaskParameter="ReferencedPackages" ItemName="_MyReferencedNuGetPackages" />
+      <Output TaskParameter="ContentItems" ItemName="_NuGetContentItems" />
+      <Output TaskParameter="FileWrites" ItemName="FileWrites" />
+    </ResolveNuGetPackageAssets>
+       
+    <ItemGroup>          
+      <Packages Include="@(_MyReferencedNuGetPackages)"/>      
+    </ItemGroup>
+
+  </Target>
+  
 </Project>
