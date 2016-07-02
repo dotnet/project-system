@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.OLE.Interop;
 using Task = System.Threading.Tasks.Task;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {

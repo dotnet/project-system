@@ -6,7 +6,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectTreeExtensions
     {
-        public static HierarchyId GetHierarchyId(this IProjectTree tree) =>
-            new HierarchyId(tree.IsRoot() ? VSConstants.VSITEMID_ROOT : unchecked((uint)tree.Identity));
+
     }
 }
