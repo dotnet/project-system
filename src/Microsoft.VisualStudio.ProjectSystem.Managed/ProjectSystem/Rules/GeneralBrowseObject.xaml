@@ -103,6 +103,37 @@
             <DataSource Persistence="ProjectFile" PersistedName="GenerateSerializationAssemblies" />
         </EnumProperty.DataSource>
     </EnumProperty>
+    <EnumProperty Name="LanguageVersion" DisplayName="Language version">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <EnumProperty Name="ErrorReport" DisplayName="Error report">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="ErrorReport" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <EnumProperty Name="DebugInfo" DisplayName="Debug Info">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DebugInfo" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <StringProperty Name="DebugSymbols" DisplayName="Debug symbols">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DebugSymbols" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    
+    <EnumProperty Name="FileAlignment" DisplayName="File Alignment">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="FileAlignment" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <StringProperty Name="BaseAddress" DisplayName="Base address">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="BaseAddress" />
+        </StringProperty.DataSource>
+    </StringProperty>
     <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="PreBuildEvent" />
