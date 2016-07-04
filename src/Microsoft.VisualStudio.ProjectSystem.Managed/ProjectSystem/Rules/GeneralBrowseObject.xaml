@@ -49,6 +49,60 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
     </StringProperty.DataSource>
   </StringProperty>
+    <StringProperty Name="DefineConstants" DisplayName="Define Constants">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DefineConstants" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <EnumProperty Name="PlatformTarget" DisplayName="Platform Target">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="PlatformTarget" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <StringProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="Prefer32Bit" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="AllowUnsafeBlocks" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="Optimize" DisplayName="Optimize">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="Optimize" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <EnumProperty Name="WarningLevel" DisplayName="Warning Level">
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="WarningLevel" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <StringProperty Name="NoWarn" DisplayName="Supress Warning">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="NoWarn" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <BoolProperty Name="TreatWarningsAsErrors" Visible="True"  Default="False" Description="Treat warnings as errors" />
+    <StringProperty Name="OutputPath" DisplayName="Output Path">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="OutputPath" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="DocumentationFile" DisplayName="Documentation file">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DocumentationFile" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies">
+        <EnumValue Name="Auto" DisplayName="Auto" IsDefault="True" />
+        <EnumValue Name="On" DisplayName="On" />
+        <EnumValue Name="Off" DisplayName="Off" />
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="GenerateSerializationAssemblies" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
     <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="PreBuildEvent" />
@@ -61,13 +115,13 @@
     </StringProperty>
     <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post Build Event">
         <EnumValue Name="Always" DisplayName="Always" />
-        <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" />
+        <EnumValue Name="OnBuildSuccess" DisplayName="On successful build"  IsDefault="True" />
         <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
          <EnumProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" />
         </EnumProperty.DataSource>
     </EnumProperty>
-    <StringProperty Name="ReferencePath" DisplayName="Reference Path">
+  <StringProperty Name="ReferencePath" DisplayName="Reference Path">
       <StringProperty.DataSource>
           <DataSource Persistence="UserFile" PersistedName="ReferencePath" />
       </StringProperty.DataSource>
