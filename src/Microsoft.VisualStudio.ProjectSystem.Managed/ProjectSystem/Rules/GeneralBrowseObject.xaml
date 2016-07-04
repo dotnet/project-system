@@ -49,7 +49,25 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ReferencePath" DisplayName="Reference Path">
+    <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="PreBuildEvent" />
+        </StringProperty.DataSource>
+   </StringProperty>
+    <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="PostBuildEvent" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post Build Event">
+        <EnumValue Name="Always" DisplayName="Always" />
+        <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" />
+        <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+         <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" />
+        </EnumProperty.DataSource>
+    </EnumProperty>
+    <StringProperty Name="ReferencePath" DisplayName="Reference Path">
       <StringProperty.DataSource>
           <DataSource Persistence="UserFile" PersistedName="ReferencePath" />
       </StringProperty.DataSource>
