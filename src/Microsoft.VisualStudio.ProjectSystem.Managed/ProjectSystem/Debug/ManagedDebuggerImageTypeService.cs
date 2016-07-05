@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                                  .ConfigureAwait(false);
 
 
-            PageEnumValue outputType = (PageEnumValue)await configuration.OutputType.GetValueAsync()
+            IEnumValue outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
                                                                       .ConfigureAwait(false);
 
             return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.exe);
