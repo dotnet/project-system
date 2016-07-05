@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -35,10 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var configuration = await _properties.GetConfigurationGeneralPropertiesAsync()
                                                  .ConfigureAwait(false);
 
-            string outputType = (string)await configuration.OutputType.GetValueAsync()
+
+            PageEnumValue outputType = (PageEnumValue)await configuration.OutputType.GetValueAsync()
                                                                       .ConfigureAwait(false);
 
-            return StringComparers.PropertyValues.Equals(outputType, ConfigurationGeneral.OutputTypeValues.exe);
+            return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.exe);
         }
 
         
