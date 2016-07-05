@@ -10,27 +10,26 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectSystemTrait]
-    public class AddClassProjectCommandTests
+    public abstract class AbstractAddClassProjectCommandTests
     {
         [Fact]
         public void Constructor_NullAsProjectTree_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new AddClassProjectCommand(null, IUnconfiguredProjectVsServicesFactory.Create(),
+            Assert.Throws<ArgumentNullException>(() => CreateInstance(null, IUnconfiguredProjectVsServicesFactory.Create(),
                 SVsServiceProviderFactory.Create()));
         }
 
         [Fact]
         public void Constructor_NullAsProjectVsService_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new AddClassProjectCommand(IPhysicalProjectTreeFactory.Create(), null,
+            Assert.Throws<ArgumentNullException>(() => CreateInstance(IPhysicalProjectTreeFactory.Create(), null,
                 SVsServiceProviderFactory.Create()));
         }
 
         [Fact]
         public void Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new AddClassProjectCommand(IPhysicalProjectTreeFactory.Create(),
+            Assert.Throws<ArgumentNullException>(() => CreateInstance(IPhysicalProjectTreeFactory.Create(),
                 IUnconfiguredProjectVsServicesFactory.Create(), null));
         }
 
@@ -195,7 +194,7 @@ Root (flags: {ProjectRoot})
             await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.Equal(1, callCount);
-            Assert.Equal("Visual C# Items", dirFilter);
+            Assert.Equal(DirName, dirFilter);
             Assert.Equal("Class", templateFilter);
             Assert.Equal("folderName", browseLocations);
         }
@@ -224,13 +223,17 @@ Root (flags: {ProjectRoot})
 
         internal long GetCommandId() => VisualStudioStandard97CommandId.AddClass;
 
-        internal AddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null, Func<ProjectProperties> properties = null)
+        internal abstract string DirName { get; }
+
+        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null, Func<ProjectProperties> properties = null)
         {
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
             projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: properties);
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create(dlg);
 
-            return new AddClassProjectCommand(projectTree, projectVsServices, serviceProvider);
+            return CreateInstance(projectTree, projectVsServices, serviceProvider);
         }
+
+        internal abstract AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree tree, IUnconfiguredProjectVsServices services, Shell.SVsServiceProvider serviceProvider);
     }
 }

@@ -1,25 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectCommand(CommandGroup.VisualStudioStandard97, VisualStudioStandard97CommandId.AddClass)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class AddClassProjectCommand : AbstractSingleNodeProjectCommand
+    internal abstract class AbstractAddClassProjectCommand : AbstractSingleNodeProjectCommand
     {
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly SVsServiceProvider _serviceProvider;
 
-        [ImportingConstructor]
-        public AddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
+        protected abstract string DirName { get; }
+
+        public AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));
@@ -55,17 +52,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
 
-            IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
-            Assumes.Present(addItemDialog);
-
             string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
 
             string strFilter = string.Empty;
             int iDontShowAgain;
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
+            Assumes.Present(addItemDialog);
             HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref guid, _projectVsServices.VsProject, (uint)uiFlags,
-                Resources.CSharpItemsDirName, Resources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
+                DirName, Resources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
             // handler isn't called after we run.
