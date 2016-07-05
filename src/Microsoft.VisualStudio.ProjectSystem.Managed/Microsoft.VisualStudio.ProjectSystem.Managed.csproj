@@ -83,6 +83,8 @@
     <Compile Include="ProjectSystem\SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
+    <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
   </ItemGroup>

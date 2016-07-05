@@ -46,5 +46,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             get;
         }
+
+        /// <summary>
+        ///     Gets the project lock service     
+        /// </summary>
+        IProjectLockService ProjectLockService
+        {
+            get;
+        }
     }
 }

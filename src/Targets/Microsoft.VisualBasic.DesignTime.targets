@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
+    <ProjectCapability Include="HandlesOwnReload"/>
   </ItemGroup>
 
   <!-- CPS Project Properties -->
