@@ -760,10 +760,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
             Me.AdviseWebReferencesEvents()
             Me.AdviseServiceReferencesEvents()
-            Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            'TODO : Uncomment after GetCurrentImportsList() is implemented 
+            'Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
         End Sub
 
         Private Function GetCurrentImportsList(ByVal _Imports As VSLangProj.Imports) As String()
+            'TODO : Remove the below empty return after GetCurrentImportsList() is implemented 
+            Return New String() {}
+
             Dim UserImports As String()
             Dim ImportsCount As Integer
 
@@ -781,6 +785,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function GetCurrentImportsList() As String()
+            'TODO : Remove the below empty return after GetCurrentImportsList() is implemented 
+            Return New String() {}
+
             Dim theVSProject As VSLangProj.VSProject
             Dim _Imports As VSLangProj.Imports
 
