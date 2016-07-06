@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -9,11 +10,15 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
     /// <summary>
-    /// Provides project properties that normally should not live in the project
-    /// file but may be written from an external source (e.g. the solution file).
-    /// This provider avoids writing these properties to the project file, but if
-    /// they are already present there, it updates the value to keep in sync with
-    /// the external source.
+    /// Provides project properties that normally should not live in the project file but may be 
+    /// written from an external source (e.g. the solution file). This provider avoids writing 
+    /// these properties to the project file, but if they are already present there, it updates 
+    /// the value to keep in sync with the external source.
+    /// Values that are not written are held in memory so they can be read for the lifetime of this
+    /// provider. If the property is changed after loading the project file, the file may be out of 
+    /// sync until a full project reload occurs. Specifically, if provider is managing property in 
+    /// memory, and a property is added the project file, all operations ignore the value in the 
+    /// project file until this property is deleted or a full reload of the project system occurs.
     /// </summary>
     [Export("ImplicitProjectFile", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
@@ -23,8 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     {
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
-            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider)
-            : base(provider)
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider, 
+            UnconfiguredProject unconfiguredProject)
+            : base(provider, unconfiguredProject)
         {
         }
 
@@ -38,13 +44,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         /// </summary>
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
+            private ConcurrentDictionary<string, string> _propertyValues;
+
             public ImplicitProjectProperties(IProjectProperties properties)
                 : base(properties)
             {
+                _propertyValues = new ConcurrentDictionary<string, string>();
             }
 
             /// <summary>
-            /// Only set properties that exist in the delegated properties object
+            /// If a property exists in the delegated properties object, then pass the set
+            /// through (overwrite). Otherwise manage the value in memory in this properties 
+            /// object.
             /// </summary>
             public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
             {
@@ -53,7 +64,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 {
                     // overwrite the property if it exists
                     await DelegatedProperties.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(false);
+                } else
+                {
+                    // store the property in this property object, not in the project file
+                    _propertyValues[propertyName] = unevaluatedPropertyValue;
                 }
+            }
+
+            /// <summary>
+            /// If the property name is one that is implicitly managed here, remove it from
+            /// the value map. Otherwise delegate this request to the backing property.
+            /// </summary>
+            public override Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            {
+                string unevaluatedPropertyValue;
+                if (_propertyValues.TryRemove(propertyName, out unevaluatedPropertyValue))
+                {
+                    return Task.CompletedTask;
+                }
+                return DelegatedProperties.DeletePropertyAsync(propertyName, dimensionalConditions);
+            }
+
+            /// <summary>
+            /// If the property name is one that is implicitly managed here, return the unevaluated value.
+            /// Otherwise delegate this request to the backing property.
+            /// </summary>
+            public override Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
+            {
+                string unevaluatedPropertyValue;
+                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                {
+                    return Task.FromResult(unevaluatedPropertyValue);
+                }
+                return DelegatedProperties.GetEvaluatedPropertyValueAsync(propertyName);
+            }
+
+            /// <summary>
+            /// If the property name is one that is implicitly managed here, return that.
+            /// Otherwise delegate this request to the backing property.
+            /// </summary>
+            public override Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
+            {
+                string unevaluatedPropertyValue;
+                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                {
+                    return Task.FromResult(unevaluatedPropertyValue);
+                }
+                return DelegatedProperties.GetUnevaluatedPropertyValueAsync(propertyName);
             }
         }
     }

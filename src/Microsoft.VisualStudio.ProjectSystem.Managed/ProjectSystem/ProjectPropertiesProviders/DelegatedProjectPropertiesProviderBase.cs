@@ -16,22 +16,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         /// <summary>
         /// Gets the unconfigured project
         /// </summary>
-        [Import]
-        protected internal UnconfiguredProject UnconfiguredProject { get; set; }
+        protected readonly UnconfiguredProject UnconfiguredProject;
 
         /// <summary>
         /// The Project Properties Provider that is delegated to for most operations
         /// </summary>
-        protected internal readonly IProjectPropertiesProvider DelegatedProvider;
+        protected readonly IProjectPropertiesProvider DelegatedProvider;
 
         /// <summary>
         /// Construct using the provider that should be delegated to for most operations
         /// </summary>
-        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider)
+        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(provider, nameof(provider));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
             DelegatedProvider = provider;
+            UnconfiguredProject = unconfiguredProject;
         }
 
         public virtual string DefaultProjectPath => UnconfiguredProject.FullPath;
