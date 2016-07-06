@@ -48,9 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath).Wait();
             propertyValue = properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName).Result;
             Assert.Equal(newKeyFileName, propertyValue);
-            
-            // verify all the setups
-            delegatePropertiesMock.VerifyAll();
         }
     }
 }

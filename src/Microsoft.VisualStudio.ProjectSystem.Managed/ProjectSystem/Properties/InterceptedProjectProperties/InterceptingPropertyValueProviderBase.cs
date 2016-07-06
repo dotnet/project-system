@@ -15,19 +15,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public abstract string GetPropertyName();
 
         /// <inheritdoc />
-        public virtual Task<string> InterceptGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(evaluatedPropertyValue);
         }
 
         /// <inheritdoc />
-        public virtual Task<string> InterceptGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(unevaluatedPropertyValue);
         }
 
         /// <inheritdoc />
-        public virtual Task<string> InterceptSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public virtual Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             return Task.FromResult(unevaluatedPropertyValue);
         }

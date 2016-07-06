@@ -21,22 +21,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             public override string GetPropertyName() => PropertyName;
 
-            public override Task<string> InterceptGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+            public override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
             {
                 GetEvaluatedInvoked = true;
-                return base.InterceptGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties);
+                return base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties);
             }
 
-            public override Task<string> InterceptGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+            public override Task<string> OnGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
             {
                 GetUnevaluatedInvoked = true;
-                return base.InterceptGetUnevaluatedPropertyValueAsync(unevaluatedPropertyValue, defaultProperties);
+                return base.OnGetUnevaluatedPropertyValueAsync(unevaluatedPropertyValue, defaultProperties);
             }
 
-            public override Task<string> InterceptSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
             {
                 SetValueInvoked = true;
-                return base.InterceptSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
+                return base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
             }
         }
 

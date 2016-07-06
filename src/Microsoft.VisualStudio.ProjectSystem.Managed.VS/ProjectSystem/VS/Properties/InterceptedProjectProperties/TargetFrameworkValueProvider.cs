@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override string GetPropertyName() => "TargetFramework";
 
-        public override async Task<string> InterceptGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             Requires.NotNull(_projectVsServices.VsHierarchy, "vsHierarchy");
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 return ((uint)targetFrameworkVersion).ToString();
             }
 
-            return await base.InterceptGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties).ConfigureAwait(false);
+            return await base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties).ConfigureAwait(false);
         }
     }
 }

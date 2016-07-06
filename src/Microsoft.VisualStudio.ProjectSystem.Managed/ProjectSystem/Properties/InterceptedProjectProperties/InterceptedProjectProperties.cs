@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IInterceptingPropertyValueProvider valueProvider;
             if (_valueProviders.TryGetValue(propertyName, out valueProvider))
             {
-                evaluatedProperty = await valueProvider.InterceptGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties).ConfigureAwait(false);
+                evaluatedProperty = await valueProvider.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties).ConfigureAwait(false);
             }
 
             return evaluatedProperty;
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IInterceptingPropertyValueProvider valueProvider;
             if (_valueProviders.TryGetValue(propertyName, out valueProvider))
             {
-                unevaluatedProperty = await valueProvider.InterceptGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties).ConfigureAwait(false);
+                unevaluatedProperty = await valueProvider.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties).ConfigureAwait(false);
             }
 
             return unevaluatedProperty;
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IInterceptingPropertyValueProvider valueProvider;
             if (_valueProviders.TryGetValue(propertyName, out valueProvider))
             {
-                unevaluatedPropertyValue = await valueProvider.InterceptSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions).ConfigureAwait(false);
+                unevaluatedPropertyValue = await valueProvider.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions).ConfigureAwait(false);
             }
 
             await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(false);

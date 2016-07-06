@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         public override string GetPropertyName() => "AssemblyOriginatorKeyFile";
 
-        public override Task<string> InterceptSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             try
             {
