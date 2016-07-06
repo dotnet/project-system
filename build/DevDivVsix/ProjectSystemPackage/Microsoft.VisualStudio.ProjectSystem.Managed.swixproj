@@ -6,7 +6,7 @@
   <PropertyGroup>
     <OutputArchitecture>neutral</OutputArchitecture>
     <OutputLocalized>false</OutputLocalized>
-    <OutputType>vsix</OutputType>
+    <OutputType>manifest</OutputType>
     <IsPackage>true</IsPackage>
   </PropertyGroup>
 
