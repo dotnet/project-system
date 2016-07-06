@@ -7,7 +7,7 @@
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <OutputPath>$(OutDir)</OutputPath>
+    <OutputPath>$(OutDir)\DevDivVsix</OutputPath>
     <IsPackage>true</IsPackage>
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>

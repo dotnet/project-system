@@ -13,4 +13,4 @@ vs.localizedResources
                        description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
 
 vs.payloads
-  vs.payload source=$(OutputPath)\ProjectSystemSetup.vsix
+  vs.payload source=$(OutputPath)\ProjectSystem.vsix

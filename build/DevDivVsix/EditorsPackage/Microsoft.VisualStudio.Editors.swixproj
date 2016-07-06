@@ -8,13 +8,14 @@
     <OutputLocalized>false</OutputLocalized>
     <OutputType>manifest</OutputType>
     <IsPackage>true</IsPackage>
+    <OutputName>Microsoft.VisualStudio.Editors</OutputName>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
 
   <PropertyGroup>
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(AssemblyVersion);OutputPath=$(OutDir);LicenseUri=http://www.microsoft.com</PackagePreprocessorDefinitions>
-    <OutputPath>$(OutDir)</OutputPath>
+    <OutputPath>$(OutDir)\DevDivVsix</OutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
 
