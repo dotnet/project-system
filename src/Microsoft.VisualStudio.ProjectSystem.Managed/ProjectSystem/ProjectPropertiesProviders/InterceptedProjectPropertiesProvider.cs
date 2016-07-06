@@ -19,12 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class InterceptedProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
-        private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider>> _interceptingValueProviders;
+        private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
 
         [ImportingConstructor]
         public InterceptedProjectPropertiesProvider(
             [Import("Microsoft.VisualStudio.ProjectSystem.ProjectFile")] IProjectPropertiesProvider provider,
-            [ImportMany]IEnumerable<Lazy<IInterceptingPropertyValueProvider>> interceptingValueProviders)
+            [ImportMany]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
             : base(provider)
         {
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
@@ -33,10 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         // internal for testing purpose.
         internal InterceptedProjectPropertiesProvider(
             IProjectPropertiesProvider provider,
-            IInterceptingPropertyValueProvider interceptingValueProvider)
+            IInterceptingPropertyValueProvider interceptingValueProvider,
+            IInterceptingPropertyValueProviderMetadata interceptingValueProviderMetadata)
             : base (provider)
         {
-            _interceptingValueProviders = ImmutableArray.Create(new Lazy<IInterceptingPropertyValueProvider>(() => interceptingValueProvider));
+            _interceptingValueProviders = ImmutableArray.Create(new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(() => interceptingValueProvider, interceptingValueProviderMetadata));
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)

@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
@@ -13,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         private const string AssemblyOriginatorKeyFilePropertyName = "AssemblyOriginatorKeyFile";
 
         [Fact]
-        public void VerifySetKeyFileProperty()
+        public async Task VerifySetKeyFilePropertyAsync()
         {
             string projectFolder = @"C:\project\root";
             string projectFullPath = $@"{projectFolder}\project.testproj";
@@ -24,29 +23,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                     { AssemblyOriginatorKeyFilePropertyName, keyFileFullPath }
                 });
 
-            delegatePropertiesMock.SetupGet(t => t.FileFullPath)
-                .Returns(projectFullPath);
-
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
 
             // Verify get key file value without intercepted provider.
             var properties = delegateProvider.GetProperties("path/to/project.testproj", null, null);
-            var propertyValue = properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName).Result;
+            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName);
             Assert.Equal(keyFileFullPath, propertyValue);
 
             // Verify relative path key file value from intercepted key file provider.
-            var keyFileprovider = new AssemblyOriginatorKeyFileValueProvider();
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, keyFileprovider);
-            var propertyNames = properties.GetPropertyNamesAsync().Result;
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFullPath);
+            var keyFileprovider = new AssemblyOriginatorKeyFileValueProvider(unconfiguredProject);
+            var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
+            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, keyFileprovider, providerMetadata);
+            var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Equal(1, propertyNames.Count());
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
-
             properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
             string newKeyFileName = "KeyFile2.snk";
             string newKeyFileFullPath = $@"{projectFolder}\{newKeyFileName}";
-            properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath).Wait();
-            propertyValue = properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName).Result;
+            await properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath);
+            propertyValue = await properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName);
             Assert.Equal(newKeyFileName, propertyValue);
         }
     }

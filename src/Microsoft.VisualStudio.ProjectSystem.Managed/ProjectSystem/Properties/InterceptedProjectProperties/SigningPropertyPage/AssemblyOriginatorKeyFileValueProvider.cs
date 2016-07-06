@@ -1,32 +1,32 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider]
+    [ExportInterceptingPropertyValueProvider("AssemblyOriginatorKeyFile")]
     internal sealed class AssemblyOriginatorKeyFileValueProvider : InterceptingPropertyValueProviderBase
     {
-        public override string GetPropertyName() => "AssemblyOriginatorKeyFile";
+        private readonly UnconfiguredProject _unconfiguredProject;
+
+        [ImportingConstructor]
+        public AssemblyOriginatorKeyFileValueProvider(UnconfiguredProject unconfiguredProject)
+        {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+
+            _unconfiguredProject = unconfiguredProject;
+        }
 
         public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            try
+            string relativePath;
+            if (Path.IsPathRooted(unevaluatedPropertyValue) &&
+                PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out relativePath))
             {
-                var projectFileFullPath = defaultProperties.FileFullPath;
-                if (!string.IsNullOrEmpty(projectFileFullPath) && PathUtilities.IsAbsolute(unevaluatedPropertyValue))
-                {
-                    var projectDirectory = Path.GetDirectoryName(projectFileFullPath);
-                    unevaluatedPropertyValue = FilePathUtilities.GetRelativePath(projectDirectory, unevaluatedPropertyValue);
-                }
-            }
-            catch(Exception)
-            {
-                // Ignore exceptions.
+                unevaluatedPropertyValue = relativePath;
             }
 
             return Task.FromResult(unevaluatedPropertyValue);

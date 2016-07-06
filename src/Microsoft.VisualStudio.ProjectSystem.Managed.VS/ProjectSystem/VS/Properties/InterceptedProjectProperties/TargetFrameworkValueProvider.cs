@@ -1,36 +1,39 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ExportInterceptingPropertyValueProvider]
+    [ExportInterceptingPropertyValueProvider("TargetFramework")]
     internal sealed class TargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public TargetFrameworkValueProvider(IUnconfiguredProjectVsServices projectVsServices)
+        public TargetFrameworkValueProvider(ProjectProperties properties)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(properties, nameof(properties));
 
-            _projectVsServices = projectVsServices;
+            _properties = properties;
         }
-
-        public override string GetPropertyName() => "TargetFramework";
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            Requires.NotNull(_projectVsServices.VsHierarchy, "vsHierarchy");
-
-            // Fetch the target framework version from the VSHierarchy.
-            object targetFrameworkVersion;
-            if (ErrorHandler.Succeeded(_projectVsServices.VsHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)Shell.VsHierarchyPropID.TargetFrameworkVersion, out targetFrameworkVersion)))
+            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            var targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(false);
+            if (targetFrameworkMoniker != null)
             {
-                return ((uint)targetFrameworkVersion).ToString();
+                var targetFramework = new FrameworkName(targetFrameworkMoniker);
+
+                // define MAKETARGETFRAMEWORKVERSION(maj, min, rev) (TARGETFRAMEWORKVERSION)((maj) << 16 | (rev) << 8 | (min))
+                var maj = targetFramework.Version.Major;
+                var min = targetFramework.Version.Minor;
+                var rev = targetFramework.Version.Revision >= 0 ? targetFramework.Version.Revision : 0;
+                var propertyValue = unchecked((uint)((maj << 16) | (rev << 8) | min));
+                return propertyValue.ToString();
             }
 
             return await base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties).ConfigureAwait(false);

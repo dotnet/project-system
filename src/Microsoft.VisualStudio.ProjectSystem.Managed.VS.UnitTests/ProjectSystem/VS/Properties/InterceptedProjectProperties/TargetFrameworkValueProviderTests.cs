@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
@@ -16,21 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";
 
-        private static IProjectProperties GetMockInterceptedProperties(bool configureHierarchy, uint? configuredTargetFramework)
+        private InterceptedProjectPropertiesProvider CreateInstance(FrameworkName configuredTargetFramework)
         {
-            IUnconfiguredProjectVsServices projectVsServices;
-            if (configureHierarchy)
+            var data = new PropertyPageData()
             {
-                Assert.NotNull(configuredTargetFramework);
-                var hierarchy = IVsHierarchyFactory.Create();
-                hierarchy.ImplementGetProperty(Shell.VsHierarchyPropID.TargetFrameworkVersion, result: (uint)0x50000);
-                projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
-            }
-            else
-            {
-                Assert.Null(configuredTargetFramework);
-                projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            }
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.TargetFrameworkMonikerProperty,
+                Value = configuredTargetFramework.FullName
+            };
+
+            var project = IUnconfiguredProjectFactory.Create();
+            var properties = ProjectPropertiesFactory.Create(project, data);
 
             var delegatePropertiesMock = IProjectPropertiesFactory
                 .MockWithProperty(TargetFrameworkPropertyName);
@@ -38,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
 
-            var targetFrameworkProvider = new TargetFrameworkValueProvider(projectVsServices);
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, targetFrameworkProvider);
-            return interceptedProvider.GetProperties("path/to/project.testproj", null, null);
+            var targetFrameworkProvider = new TargetFrameworkValueProvider(properties);
+            var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
+            return new InterceptedProjectPropertiesProvider(delegateProvider, targetFrameworkProvider, providerMetadata);
         }
 
         [Fact]
@@ -48,30 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new TargetFrameworkValueProvider(projectVsServices: null);
+                new TargetFrameworkValueProvider(properties: null);
             });
         }
 
         [Fact]
-        public async Task CreateTargetProvider_WithInvalidHierarchy_Throws()
+        public async Task VerifyGetTargetFrameworkPropertyAsync()
         {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var properties = GetMockInterceptedProperties(configureHierarchy: false, configuredTargetFramework: null);
-            await Assert.ThrowsAsync<ArgumentNullException>("vsHierarchy", async () =>
-            {
-                await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);
-            });
-        }
-
-        [Fact]
-        public void VerifyGetTargetFrameworkProperty()
-        {
-            var configuredTargetFramework = (uint)0x50000;
-            var properties = GetMockInterceptedProperties(configureHierarchy: true, configuredTargetFramework: configuredTargetFramework);
-            var propertyValueStr = properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName).Result;
+            var configuredTargetFramework = new FrameworkName(".NETFramework", new Version(4, 5));
+            var expectedTargetFrameworkPropertyValue = (uint)0x40005;
+            var provider = CreateInstance(configuredTargetFramework);
+            var properties = provider.GetProperties("path/to/project.testproj", null, null);
+            var propertyValueStr = await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);
             uint propertyValue;
             Assert.True(uint.TryParse(propertyValueStr, out propertyValue));
-            Assert.Equal(configuredTargetFramework, propertyValue);
+            Assert.Equal(expectedTargetFrameworkPropertyValue, propertyValue);
         }
     }
 }

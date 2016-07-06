@@ -12,12 +12,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     public sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
     {
+        public string PropertyName { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/> class.
         /// </summary>
-        public ExportInterceptingPropertyValueProviderAttribute()
+        public ExportInterceptingPropertyValueProviderAttribute(string propertyName)
             : base(typeof(IInterceptingPropertyValueProvider))
         {
+            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+
+            PropertyName = propertyName;
         }
     }
 }

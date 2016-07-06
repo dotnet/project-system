@@ -12,9 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal abstract class InterceptingPropertyValueProviderBase : IInterceptingPropertyValueProvider
     {
         /// <inheritdoc />
-        public abstract string GetPropertyName();
-
-        /// <inheritdoc />
         public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(evaluatedPropertyValue);

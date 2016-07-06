@@ -1,75 +1,48 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using Xunit;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
     [ProjectSystemTrait]
     public class InterceptedProjectPropertiesProviderTests
     {
-        private class MockInterceptedProjectPropertyProvider : InterceptingPropertyValueProviderBase
-        {
-            public const string PropertyName = "MockProperty";
-
-            public bool GetEvaluatedInvoked;
-            public bool GetUnevaluatedInvoked;
-            public bool SetValueInvoked;
-
-            public override string GetPropertyName() => PropertyName;
-
-            public override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
-            {
-                GetEvaluatedInvoked = true;
-                return base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties);
-            }
-
-            public override Task<string> OnGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
-            {
-                GetUnevaluatedInvoked = true;
-                return base.OnGetUnevaluatedPropertyValueAsync(unevaluatedPropertyValue, defaultProperties);
-            }
-
-            public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
-            {
-                SetValueInvoked = true;
-                return base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
-            }
-        }
+        private const string MockPropertyName = "MockProperty";
 
         [Fact]
-        public void VerifyInterceptedPropertiesProvider()
+        public async Task VerifyInterceptedPropertiesProviderAsync()
         {
             var delegatePropertiesMock = IProjectPropertiesFactory
                 .MockWithPropertiesAndGetSet(new Dictionary<string, string>() {
-                    { MockInterceptedProjectPropertyProvider.PropertyName, "DummyValue" }
+                    { MockPropertyName, "DummyValue" }
                 });
             
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var mockPropertyProvider = new MockInterceptedProjectPropertyProvider();
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, mockPropertyProvider);
+
+            bool getEvaluatedInvoked = false;
+            bool getUnevaluatedInvoked = false;
+            bool setValueInvoked = false;
+
+            var mockPropertyProvider = IInterceptingPropertyValueProviderFactory.Create(MockPropertyName,
+                onGetEvaluatedPropertyValue: (v, p) => { getEvaluatedInvoked = true; return v; },
+                onGetUnevaluatedPropertyValue: (v, p) => { getUnevaluatedInvoked = true; return v; },
+                onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
+
+            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
-            // Verify defaults
-            Assert.False(mockPropertyProvider.GetEvaluatedInvoked);
-            Assert.False(mockPropertyProvider.GetUnevaluatedInvoked);
-            Assert.False(mockPropertyProvider.SetValueInvoked);
-
             // Verify interception for GetEvaluatedPropertyValueAsync.
-            var propertyValue = properties.GetEvaluatedPropertyValueAsync(MockInterceptedProjectPropertyProvider.PropertyName).Result;
-            Assert.True(mockPropertyProvider.GetEvaluatedInvoked);
+            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
+            Assert.True(getEvaluatedInvoked);
 
             // Verify interception for GetUnevaluatedPropertyValueAsync.
-            propertyValue = properties.GetUnevaluatedPropertyValueAsync(MockInterceptedProjectPropertyProvider.PropertyName).Result;
-            Assert.True(mockPropertyProvider.GetUnevaluatedInvoked);
+            propertyValue = await properties.GetUnevaluatedPropertyValueAsync(MockPropertyName);
+            Assert.True(getUnevaluatedInvoked);
 
             // Verify interception for SetPropertyValueAsync.
-            properties.SetPropertyValueAsync(MockInterceptedProjectPropertyProvider.PropertyName, "NewValue", null);
-            Assert.True(mockPropertyProvider.SetValueInvoked);
+            await properties.SetPropertyValueAsync(MockPropertyName, "NewValue", null);
+            Assert.True(setValueInvoked);
         }
     }
 }
