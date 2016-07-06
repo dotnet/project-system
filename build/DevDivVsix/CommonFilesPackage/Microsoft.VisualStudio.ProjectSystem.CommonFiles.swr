@@ -13,11 +13,11 @@ vs.localizedResources
                        description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\v15.0\Managed"
-  file source="$(SourcePath)\Targets\Microsoft.CSharp.DesignTime.targets"
-  file source="$(SourcePath)\Targets\Microsoft.VisualBasic.DesignTime.targets"
+  file source="$(OutputPath)\..\..\src\Targets\Microsoft.CSharp.DesignTime.targets"
+  file source="$(OutputPath)\..\..\src\Targets\Microsoft.VisualBasic.DesignTime.targets"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\v15.0\Managed"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\AppDesigner.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\ConfigurationGeneral.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\GeneralBrowseObject.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\None.xaml"
+  file source="$(OutputPath)\..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\AppDesigner.xaml"
+  file source="$(OutputPath)\..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\ConfigurationGeneral.xaml"
+  file source="$(OutputPath)\..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\GeneralBrowseObject.xaml"
+  file source="$(OutputPath)\..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\None.xaml"
