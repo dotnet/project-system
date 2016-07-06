@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(
                 new IPageMetadata[] {
                     VisualBasicProjectDesignerPage.Application,
+                    VisualBasicProjectDesignerPage.References,
             });
         }
     }

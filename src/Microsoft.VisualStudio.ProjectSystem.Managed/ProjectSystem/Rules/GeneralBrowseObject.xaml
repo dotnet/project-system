@@ -84,7 +84,11 @@
             <DataSource Persistence="ProjectFile" PersistedName="NoWarn" />
         </StringProperty.DataSource>
     </StringProperty>
-    <BoolProperty Name="TreatWarningsAsErrors" Visible="True"  Default="False" Description="Treat warnings as errors" />
+    <BoolProperty Name="TreatWarningsAsErrors" Visible="True"  Default="False" Description="Treat warnings as errors" >
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TreatWarningsAsErrors" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
     <StringProperty Name="OutputPath" DisplayName="Output Path">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="OutputPath" />
@@ -115,7 +119,7 @@
     </EnumProperty>
     <EnumProperty Name="DebugInfo" DisplayName="Debug Info">
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="DebugInfo" />
+            <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
         </EnumProperty.DataSource>
     </EnumProperty>
     <StringProperty Name="DebugSymbols" DisplayName="Debug symbols">
@@ -123,17 +127,12 @@
             <DataSource Persistence="ProjectFile" PersistedName="DebugSymbols" />
         </StringProperty.DataSource>
     </StringProperty>
-    
     <EnumProperty Name="FileAlignment" DisplayName="File Alignment">
         <EnumProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="FileAlignment" />
         </EnumProperty.DataSource>
     </EnumProperty>
-    <StringProperty Name="BaseAddress" DisplayName="Base address">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="BaseAddress" />
-        </StringProperty.DataSource>
-    </StringProperty>
+    <StringProperty Name="BaseAddress" DisplayName="Base address" />
     <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="PreBuildEvent" />
