@@ -143,9 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                 'And navigate...
                 TextPoint.Parent.Selection.MoveToPoint(TextPoint)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail("Navigate to function '" & Func.Name & "' failed: " & ex.ToString)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, $"Navigate to function '{Func.Name}' failed", NameOf(CodeModelUtils))
             End Try
         End Sub
 

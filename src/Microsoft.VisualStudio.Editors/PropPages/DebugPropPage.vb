@@ -295,9 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     sInitialDirectory = Path.Combine(GetProjectPath(), GetSelectedConfigOutputPath())
                 Catch ex As IO.IOException
                     'Ignore
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Exception getting project output path for selected config: " & ex.Message)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception getting project output path for selected config", NameOf(DebugPropPage))
                 End Try
             End If
 

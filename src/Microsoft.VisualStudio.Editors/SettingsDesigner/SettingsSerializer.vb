@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If mungeClassNameAttribute IsNot Nothing Then
                     Try
                         Settings.UseSpecialClassName = XmlConvert.ToBoolean(mungeClassNameAttribute.Value)
-                    Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Deserialize), NameOf(SettingsSerializer))
                         Settings.UseSpecialClassName = False
                     End Try
                 End If

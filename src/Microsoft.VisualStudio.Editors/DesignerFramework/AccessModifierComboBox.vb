@@ -496,7 +496,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     Debug.Fail("Couldn't find CustomTool property.  Dropdown shouldn't have been enabled.")
                 End If
-            Catch ex As Exception
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(TrySetCustomToolValue), NameOf(AccessModifierCombobox))
                 DesignerFramework.DesignerMessageBox.Show( _
                     _rootDesigner, _
                     SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), _
@@ -524,8 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Try
                 Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
                 Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
-            Catch e As Exception
-                Debug.Fail("Failed to determine if the access modifier combobox should be enabled: " & e.ToString())
+            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try
             Return shouldBeEnabled

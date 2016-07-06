@@ -44,6 +44,8 @@
     <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
     <Compile Include="ProjectSystem\Utilities\FileNameUtilties.cs" />
     <Compile Include="ProjectSystem\Utilities\FilePathUtilties.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />

@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Dim extensionsAddedSB As New StringBuilder()
                     Me.AddTemplates(addExtensionsDialog.ExtensionTemplatesToAdd, extensionsAddedSB)
                     Me.SetExtensionsStatus(extensionsAddedSB, Nothing)
-                Catch ex As Exception When Not IsUnrecoverable(ex)
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(AddExtensionsFromPropPage), NameOf(MyExtensibilityProjectService))
                 Finally
                     _excludedTemplates = Nothing
                 End Try
@@ -127,11 +127,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Get the extension template name and description from the machine settings.
         ''' This is called by MyExtensiblityProjectSettings.
         ''' </summary>
-        Public Sub GetExtensionTemplateNameAndDescription( _
-                ByVal id As String, ByVal version As Version, ByVal assemblyName As String, _
+        Public Sub GetExtensionTemplateNameAndDescription(
+                ByVal id As String, ByVal version As Version, ByVal assemblyName As String,
                 ByRef name As String, ByRef description As String)
-            _extensibilitySettings.GetExtensionTemplateNameAndDescription(Me.ProjectTypeID, _project, _
-                id, version, assemblyName, _
+            _extensibilitySettings.GetExtensionTemplateNameAndDescription(Me.ProjectTypeID, _project,
+                id, version, assemblyName,
                 name, description)
         End Sub
 
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Create a new project service.
         ''' </summary>
-        Private Sub New(ByVal vbPackage As VBPackage, ByVal project As EnvDTE.Project, _
+        Private Sub New(ByVal vbPackage As VBPackage, ByVal project As EnvDTE.Project,
                 ByVal projectHierarchy As IVsHierarchy, ByVal extensibilitySettings As MyExtensibilitySettings)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             Debug.Assert(project IsNot Nothing, "project Is Nothing")
@@ -182,22 +182,21 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         If _projectHierarchy IsNot Nothing Then
                             Dim hr As Integer
                             Try
-                                hr = _projectHierarchy.GetGuidProperty( _
+                                hr = _projectHierarchy.GetGuidProperty(
                                     VSITEMID.ROOT, __VSHPROPID2.VSHPROPID_AddItemTemplatesGuid, projGuid)
-                            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+                            Catch ex As Exception
                                 hr = System.Runtime.InteropServices.Marshal.GetHRForException(ex)
                             End Try
                             If VSErrorHandler.Failed(hr) Then
-                                hr = _projectHierarchy.GetGuidProperty( _
+                                hr = _projectHierarchy.GetGuidProperty(
                                     VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, projGuid)
                                 If VSErrorHandler.Failed(hr) Then
                                     projGuid = Guid.Empty
                                 End If
                             End If
                         End If
-                    Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+                    Catch ex As Exception
                         ' This is a non-vital function - ignore if we fail to get the GUID...
-                        Debug.Fail(String.Format("Failed to get project guid: {0}", ex.ToString()))
                     End Try
                     If Guid.Empty.Equals(projGuid) Then
                         If _project IsNot Nothing Then
@@ -481,7 +480,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         Else
                             projectFilesRemovedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
                         End If
-                    Catch ex As Exception ' Ignore exceptions.
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
+                        ' Ignore exceptions.
                     End Try
                 Next
 

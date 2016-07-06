@@ -251,8 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Throw
                 Catch ex As StackOverflowException
                     Throw
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(FileWatcher.New), NameOf(FileWatcher))
                     'CONSIDER: The directory does not exist.  Find a parent directory that
                     '  does exist.  What if drive doesn't exist?
                     Debug.WriteLineIf(Switches.RSEFileWatcher.TraceInfo, "FileWatcher: Unable to create FileSystemWatcher: directory does not exist: " & DirectoryPath)

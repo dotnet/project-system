@@ -926,8 +926,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Try
                 Return DesignerLoader.EnsureCheckedOut()
-            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                Debug.Fail(String.Format("SettingsDesignerView::EnsureCheckedOut: Caught exception {0}", ex))
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureCheckedOut), NameOf(SettingsDesignerView))
                 Throw
             End Try
         End Function
@@ -940,8 +939,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Try
                 Return DesignerLoader.InDesignMode
-            Catch ex As Exception
-                Debug.Fail(String.Format("SettingsDesignerView::InDesignMode: Caught exception {0}", ex))
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InDesignMode), NameOf(SettingsDesignerView))
                 Throw
             End Try
         End Function
@@ -1281,8 +1279,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             End If
                         End If
                     Case s_valueColumnNo
-                        Dim cell As DataGridViewUITypeEditorCell = TryCast( _
-                                        m_SettingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex), _
+                        Dim cell As DataGridViewUITypeEditorCell = TryCast(
+                                        m_SettingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex),
                                         DataGridViewUITypeEditorCell)
 
                         ' If the type has been invalidated, we need to make sure that we treat it as a string...
@@ -1389,7 +1387,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Transaction.Commit()
                 End Using
 
-                If newType IsNot Nothing AndAlso _
+                If newType IsNot Nothing AndAlso
                    _settingTypeCache.IsWellKnownType(newType) Then
                     '
                     ' Try to add a reference to the type (if not already in the project)
@@ -1406,13 +1404,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 vsLangProj.References.Add(newType.Assembly.GetName().Name)
                             End If
                         End If
-                    Catch ex As Exception
+                    Catch ex As CheckoutException
+                        'Ignore CheckoutException
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(SettingsDesignerView))
                         ' Well, we mostly tried to be nice to the user and automatically add the reference here... 
                         ' If we fail, the user will see an annoying error about undefined types, but it shouldn't be the
                         ' end of the world...
-                        If Not TypeOf ex Is CheckoutException Then
-                            Debug.Fail("Failed to add reference to assembly contining type " & newTypeName)
-                        End If
                     End Try
                 End If
             End If
@@ -1501,7 +1498,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         suggestedFileName = "Settings"
                     End If
                     ProjectUtils.OpenAndMaybeAddExtendingFile(FullyQualifedClassName, suggestedFileName, Settings.Site, Hierarchy, ProjectItem, CType(VSMDCodeDomProvider.CodeDomProvider, System.CodeDom.Compiler.CodeDomProvider), Me)
-                Catch ex As Exception
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewCode), NameOf(SettingsDesignerView))
                     If Settings IsNot Nothing AndAlso Settings.Site IsNot Nothing Then
                         ' We better tell the user that something went wrong (if we still have a settings/settings.site that is)
                         DesignerFramework.DesignerMessageBox.Show(Settings.Site, ex, DesignerFramework.DesignUtil.GetDefaultCaption(Settings.Site))
@@ -1562,10 +1559,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InThisMethod = True
             Try
                 _menuCommands = New ArrayList
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf Me.MenuEditCellEnableHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf Me.MenuEditCellEnableHandler,
                     alwayscheckstatus:=True))
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf Me.MenuAddSettingEnableHandler, commandtext:=SR.GetString(SR.SD_MNU_AddSettingText)))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf Me.MenuRemove, AddressOf Me.MenuRemoveEnableHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf Me.MenuRemove, AddressOf Me.MenuRemoveEnableHandler,
                     alwayscheckstatus:=True, commandtext:=SR.GetString(SR.SD_MNU_RemoveSettingText)))
 
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf Me.MenuViewCode, AddressOf Me.MenuViewCodeEnableHandler))
@@ -1678,13 +1675,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         Private Function MenuViewCodeEnableHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
             If DesignerLoader.IsReadOnly Then
-                return false
+                Return False
             End If
 
             If _cachedCodeProvider Is Nothing Then
                 ' Let's see if we support partial classes?
                 '
-                Dim VSMDCodeDomProvider As Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider = _
+                Dim VSMDCodeDomProvider As Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider =
                             DirectCast(GetService(GetType(Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)), Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)
                 If VSMDCodeDomProvider IsNot Nothing Then
                     _cachedCodeProvider = TryCast(VSMDCodeDomProvider.CodeDomProvider, CodeDom.Compiler.CodeDomProvider)
@@ -1793,7 +1790,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     configDirs = SettingsDesigner.FindUserConfigDirectories(DesignerLoader.VsHierarchy)
                     filesToDelete = SettingsDesigner.FindUserConfigFiles(configDirs)
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(MenuSynchronizeUserConfig), NameOf(SettingsDesignerView))
                 End Try
 
                 If filesToDelete Is Nothing OrElse filesToDelete.Count = 0 Then

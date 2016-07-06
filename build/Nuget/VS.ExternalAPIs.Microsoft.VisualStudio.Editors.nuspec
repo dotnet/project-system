@@ -19,5 +19,9 @@
     <file src="Microsoft.VisualStudio.Editors.dll" target="lib\net46" />
     <file src="Microsoft.VisualStudio.Editors.xml" target="lib\net46" />
     <file src="Microsoft.VisualStudio.Editors.pkgdef" target="lib\net46" />
+    <!-- Although contains info about MS.VS.Editors.dll and MS.VS.AppDesigner.dll we are keeping it in one place.
+         We can split it in the future if required.-->
+    <file src="VisualStudioEditorsSetup.pkgdef" target="lib\net46" />
+    <file src="Manifests\VisualStudioEditorsSetup\source.extension.vsixmanifest" target="lib\net46" />
   </files>
 </package>
