@@ -70,24 +70,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        internal static string CodeDirName {
-            get {
-                return ResourceManager.GetString("CodeDirName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Visual C# Items.
-        /// </summary>
-        internal static string CSharpItemsDirName {
-            get {
-                return ResourceManager.GetString("CSharpItemsDirName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Renaming the code element {0} failed..
         /// </summary>
         internal static string RenameSymbolFailed {

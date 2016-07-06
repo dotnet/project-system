@@ -120,12 +120,6 @@
   <data name="ClassTemplateName" xml:space="preserve">
     <value>Class</value>
   </data>
-  <data name="CodeDirName" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="CSharpItemsDirName" xml:space="preserve">
-    <value>Visual C# Items</value>
-  </data>
   <data name="RenameSymbolFailed" xml:space="preserve">
     <value>Renaming the code element {0} failed.</value>
   </data>
