@@ -1,11 +1,6 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using System.Runtime.Versioning;
@@ -37,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             var targetFrameworkProvider = new TargetFrameworkValueProvider(properties);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
-            return new InterceptedProjectPropertiesProvider(delegateProvider, targetFrameworkProvider, providerMetadata);
+            return new InterceptedProjectPropertiesProvider(delegateProvider, project, targetFrameworkProvider, providerMetadata);
         }
 
         [Fact]

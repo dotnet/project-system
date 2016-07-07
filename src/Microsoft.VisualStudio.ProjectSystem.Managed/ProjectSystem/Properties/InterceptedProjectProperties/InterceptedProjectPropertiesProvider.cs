@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// An intercepting project properties provider that validates and/or transforms the default <see cref="IProjectProperties"/>
@@ -23,9 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
         [ImportingConstructor]
         public InterceptedProjectPropertiesProvider(
-            [Import("Microsoft.VisualStudio.ProjectSystem.ProjectFile")] IProjectPropertiesProvider provider,
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
+            UnconfiguredProject unconfiguredProject,
             [ImportMany]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider)
+            : base(provider, unconfiguredProject)
         {
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }
@@ -33,9 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         // internal for testing purpose.
         internal InterceptedProjectPropertiesProvider(
             IProjectPropertiesProvider provider,
+            UnconfiguredProject unconfiguredProject,
             IInterceptingPropertyValueProvider interceptingValueProvider,
             IInterceptingPropertyValueProviderMetadata interceptingValueProviderMetadata)
-            : base (provider)
+            : base (provider, unconfiguredProject)
         {
             _interceptingValueProviders = ImmutableArray.Create(new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(() => interceptingValueProvider, interceptingValueProviderMetadata));
         }

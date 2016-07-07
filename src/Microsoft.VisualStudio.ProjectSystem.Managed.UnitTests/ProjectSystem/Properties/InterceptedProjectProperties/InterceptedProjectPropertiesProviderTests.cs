@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ProjectSystemTrait]
     public class InterceptedProjectPropertiesProviderTests
@@ -28,8 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 onGetEvaluatedPropertyValue: (v, p) => { getEvaluatedInvoked = true; return v; },
                 onGetUnevaluatedPropertyValue: (v, p) => { getUnevaluatedInvoked = true; return v; },
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
 
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, new[] { mockPropertyProvider });
+            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, unconfiguredProject, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.

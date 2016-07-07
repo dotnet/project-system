@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFullPath);
             var keyFileprovider = new AssemblyOriginatorKeyFileValueProvider(unconfiguredProject);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, keyFileprovider, providerMetadata);
+            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, unconfiguredProject, keyFileprovider, providerMetadata);
             var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Equal(1, propertyNames.Count());
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
