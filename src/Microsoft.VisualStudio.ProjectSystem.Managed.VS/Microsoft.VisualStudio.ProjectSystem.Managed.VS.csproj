@@ -30,6 +30,7 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\ReloadProjectResult.cs" />
     <Compile Include="ProjectSystem\VS\ProjectReloadHandler.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />

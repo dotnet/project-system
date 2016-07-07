@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 // First we wait the delay time. If another request has been made in the interval, then this task
                 // is cancelled. To avoid unnecessary OperationCanceled exceptions it tests to see if the token has
                 // been canceled
-                await Task.Delay(TaskDelayTime).ConfigureAwait(false);
+                await Task.Delay(TaskDelayTime).ConfigureAwait(true);
 
                 bool isCanceled = token.IsCancellationRequested;
                 lock (this.SyncObject)
@@ -86,7 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 }
 
                 if (isCanceled)
+                {
                     return;
+                }
             }
             catch (ObjectDisposedException)
             {
@@ -98,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             }
 
             // Execute the code
-            await asyncFnctionToCall(token).ConfigureAwait(false);
+            await asyncFnctionToCall(token).ConfigureAwait(true);
         }
 
         /// <summary>

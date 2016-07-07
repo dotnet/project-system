@@ -168,24 +168,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     // Grab the UI thread so that we block until the reload completes
                     await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                    _projectVsServices.ThreadingService.ExecuteSynchronously(async () =>
+                    ReloadProjectResult result = _projectVsServices.ThreadingService.ExecuteSynchronously(async () =>
                     {
-                        await  PerformReload(ct).ConfigureAwait(true);
+                        return await  TryToAutoReloadProject(ct).ConfigureAwait(true);
                     });
+
+
+                    // If a reload was not completed do a normal solution level reload.
+                    if(result == ReloadProjectResult.ReloadRequired || result == ReloadProjectResult.ReloadRequiredProjectDirty)
+                    {
+                        ReloadProjectInSolution(result == ReloadProjectResult.ReloadRequiredProjectDirty);
+                    }
                 });
             }
             return VSConstants.S_OK;
         }
 
         /// <summary>
-        /// Function called after a project file change has been detected which pushes the changes to CPS 
+        /// Function called after a project file change has been detected which pushes the changes to CPS. The return value indicates the status of the 
+        /// reload. ifrefresh of the msbuild contens was s returns false, it means the reload was not
+        /// done or not necssary and a solution level reload is necessary.
         /// </summary>
-        private async Task PerformReload(CancellationToken cancelToken)
+        private async Task<ReloadProjectResult> TryToAutoReloadProject(CancellationToken cancelToken)
         {
             // The file better not have changed at this point
             if(cancelToken.IsCancellationRequested || !string.Equals(_projectFileBeingMonitored, _projectVsServices.Project.FullPath, StringComparison.OrdinalIgnoreCase))
             {
-                return;
+                // Nothing to do
+                return ReloadProjectResult.NoAction;
             }
 
             // We need a write lock to modify the project file contents.
@@ -195,7 +205,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var msbuildProject = await writeAccess.GetProjectXmlAsync(_projectVsServices.Project.FullPath, cancelToken).ConfigureAwait(true);
                 if(msbuildProject.HasUnsavedChanges)
                 {
-                    // Do something about dirty project files
+                    // For now force a solution reload.
+                    return ReloadProjectResult.ReloadRequiredProjectDirty;
                 }
                 else
                 {
@@ -206,13 +217,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     // appear in the global project collection, the file is opened in a new collection which we will discard wnen done.
                     try
                     {
-
                         ProjectCollection thisCollection = new ProjectCollection();
                         var newProject = Microsoft.Build.Construction.ProjectRootElement.Open(_projectVsServices.Project.FullPath, thisCollection);
 
                         msbuildProject.RemoveAllChildren();
                         msbuildProject.DeepCopyFrom(newProject);
 
+                        // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
+                        // to a StringWriter. 
                         var tw = new StringWriter();
                         msbuildProject.Save(tw);
 
@@ -220,12 +232,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     }
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException)
                     {
-
+                        // Indicate we weren't able to complete the action. We want to do a normal reload 
+                        return ReloadProjectResult.ReloadRequired;
                     }
                     catch (Exception ex)
                     {
-                        // What do we do here? 
+                        // Any other exception likely mean the msbuildProject is not in a good state. Example, DeepCopyFrom failed after 
+                        // RemoveAll children. The only safe thing to do at this point is to reload the project in the solution
                         System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
+                        return ReloadProjectResult.ReloadRequired;
                     }
                 }
             }
@@ -234,6 +249,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // release our hold on the UI thread. This prevents unnecessary race conditions and prevent the user
             // from interacting with the project until the evaluation has completed.
             await _projectVsServices.ProjectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(false);
+            
+            return ReloadProjectResult.ReloadCompleted;
+        }
+
+        /// <summary>
+        /// Helper to use the solution to reload the project.
+        /// Reloading is managed via the ReloadItem() method of our parent hierarhcy(solution 
+        /// or solution folder).  So first we get our parent hierarchy and our itemid in the parent
+        /// hierarchy. 
+        /// </summary>
+        void ReloadProjectInSolution(bool projectDirty)
+        {
+            // Get our parent hierarchy and our itemid in the parent hierarchy.
+            IVsHierarchy parentHier = _projectVsServices.VsHierarchy.GetProperty<IVsHierarchy>(VsHierarchyPropID.ParentHierarchy, null);
+            if(parentHier == null)
+            {
+                ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
+            }
+            uint parentItemid  = (uint)_projectVsServices.VsHierarchy.GetProperty<int>(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
+            if(parentItemid == VSConstants.VSITEMID_NIL)
+            {
+                ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
+            }
+            
+            // Now using IVsPersistHierarchyItem2 we reload the project.
+            int hr = ((IVsPersistHierarchyItem2)parentHier).ReloadItem((uint)parentItemid, dwReserved: 0);
+            ErrorHandler.ThrowOnFailure(hr);
         }
 
         /// <summary>
