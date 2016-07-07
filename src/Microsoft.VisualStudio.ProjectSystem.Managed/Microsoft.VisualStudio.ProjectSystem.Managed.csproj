@@ -35,9 +35,9 @@
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
-    <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesProviderBase.cs" />
-    <Compile Include="ProjectSystem\ProjectPropertiesProviders\DelegatedProjectPropertiesBase.cs" />
-    <Compile Include="ProjectSystem\ProjectPropertiesProviders\ImplicitProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />

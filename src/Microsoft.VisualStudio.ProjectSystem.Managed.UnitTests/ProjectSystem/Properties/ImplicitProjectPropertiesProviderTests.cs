@@ -3,7 +3,7 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ProjectSystemTrait]
     public class ImplicitProjectPropertiesProviderTests

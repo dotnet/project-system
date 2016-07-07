@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Provides project properties that normally should not live in the project file but may be 
@@ -44,12 +43,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         /// </summary>
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
-            private ConcurrentDictionary<string, string> _propertyValues;
+            private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
 
             public ImplicitProjectProperties(IProjectProperties properties)
                 : base(properties)
             {
-                _propertyValues = new ConcurrentDictionary<string, string>();
             }
 
             /// <summary>

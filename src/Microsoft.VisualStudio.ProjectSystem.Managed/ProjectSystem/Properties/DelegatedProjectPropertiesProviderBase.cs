@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Base class for Project Property Providers that delegate most of their

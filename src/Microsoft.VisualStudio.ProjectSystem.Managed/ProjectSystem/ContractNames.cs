@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// Contract names to use for CPS exports/imports. (Ported over from 
     /// Microsoft.VisualStudio.ProjectSystem.ExportContractNames)
     /// </summary>
-    public static class ContractNames
+    internal static class ContractNames
     {
         /// <summary>
         /// The substring to prepend to all CPS-defined contract names.
