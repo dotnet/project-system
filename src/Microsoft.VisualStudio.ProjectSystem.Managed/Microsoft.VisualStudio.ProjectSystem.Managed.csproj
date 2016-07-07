@@ -32,8 +32,12 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
@@ -83,7 +87,7 @@
     <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\None.cs" >
+    <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
