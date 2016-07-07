@@ -71,7 +71,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ApplicationDesigner\SpecialFileCustomViewProvider.vb" />
-    <Compile Include="Common\ArgumentValidation.vb" />
     <Compile Include="Common\DTEUtils.vb" />
     <Compile Include="Common\ShellUtil.vb" />
     <Compile Include="Common\switches.vb" />
