@@ -55,6 +55,7 @@
     <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
+    <Compile Include="Mocks\IProjectPropertiesProviderFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeServiceTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\AssemblyOriginatorKeyFileValueProviderTests.cs" />

@@ -32,9 +32,13 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />

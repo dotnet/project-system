@@ -5,6 +5,7 @@
 	DisplayName="General"
 	PageTemplate="generic"
 	Description="General"
+    OverrideMode="Replace"
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.Categories>
         <Category Name="General" DisplayName="General" Description="General" />
@@ -16,7 +17,7 @@
     <StringListProperty Name="ProjectTypeGuids" Visible="False" />
     <StringProperty Name="ProjectGuid" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" Label="Globals" HasConfigurationCondition="False" />
+            <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
     <DynamicEnumProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker" EnumProvider="TargetFrameworkMoniker" />
