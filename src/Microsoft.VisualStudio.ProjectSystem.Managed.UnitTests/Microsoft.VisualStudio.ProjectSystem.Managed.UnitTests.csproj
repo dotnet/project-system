@@ -49,7 +49,6 @@
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
-    <Compile Include="Mocks\IProjectPropertiesProviderFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />
     <Compile Include="Mocks\IProjectItemProviderFactory.cs" />
