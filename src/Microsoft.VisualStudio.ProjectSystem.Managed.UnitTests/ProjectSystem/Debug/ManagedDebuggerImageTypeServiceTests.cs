@@ -4,6 +4,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.Build.Framework.XamlTypes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -98,10 +100,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private ManagedDebuggerImageTypeService CreateInstance(string outputType)
         {
+            var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
+
             var data = new PropertyPageData() {
                 Category = ConfigurationGeneral.SchemaName,
                 PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                Value = outputType
+                Value = outputTypeEnum
             };
 
             var project = IUnconfiguredProjectFactory.Create();
