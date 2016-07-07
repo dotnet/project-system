@@ -4,8 +4,6 @@ package name=Microsoft.VisualStudio.ProjectSystem.CommonFiles
         version=2.0.0.0
         vs.package.chip=neutral
         vs.package.language=en-us
-        vs.package.type=vsix
-        vs.package.vsixId=93A98013-4A3F-46D4-8B9F-548CE31703CE
 
 vs.localizedResources
   vs.localizedResource language=en-us
