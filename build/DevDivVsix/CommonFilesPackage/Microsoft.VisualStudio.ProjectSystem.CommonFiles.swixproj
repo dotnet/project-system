@@ -8,14 +8,15 @@
     <OutputLocalized>false</OutputLocalized>
     <OutputType>vsix</OutputType>
     <IsPackage>true</IsPackage>
+    <OutputName>Microsoft.VisualStudio.ProjectSystem.CommonFiles</OutputName>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
 
   <PropertyGroup>
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(AssemblyVersion);OutputPath=$(OutDir);LicenseUri=http://www.microsoft.com</PackagePreprocessorDefinitions>
-    <OutputPath>$(OutDir)</OutputPath>
-    <SourcePath>$(RepositoryRootDirectory)src</SourcePath>
+    <OutputPath>$(OutDir)\DevDivVsix</OutputPath>
+    <SourcePath>$(OutDir)\..\..\src</SourcePath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
 
