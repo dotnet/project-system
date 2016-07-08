@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     isVbProject = Common.Utils.IsVbProject(Hierarchy)
                 End If
 
-                If isVbProject AndAlso _
+                If isVbProject AndAlso
                     ((itemId <> VSITEMID.NIL AndAlso IsDefaultSettingsFile(Hierarchy, itemId)) _
                     OrElse (FullPath <> "" AndAlso IsDefaultSettingsFile(Hierarchy, FullPath))) _
                 Then
@@ -225,8 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If Settings.UseSpecialClassName Then
                             Return SettingsDesigner.s_specialClassName
                         End If
-                    Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                        Debug.Fail(String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name: {1}", FullPath, ex))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
                     End Try
                 End If
 
@@ -234,8 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Not a special case - let's return the "normal" class name which is based on the file name...
                 '
                 Return GeneratedClassNameFromPath(FullPath)
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                Debug.Fail(String.Format("Failed to determine if we were supposed to use the ""Special"" settings class name: {0}", ex))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to determine if we were supposed to use the ""Special"" settings class name", NameOf(SettingsDesigner))
             End Try
             Return ""
         End Function
@@ -453,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 For Each file As String In files
                     Try
                         System.IO.File.Delete(file)
-                    Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try
                 Next
@@ -463,7 +461,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 For Each directory As String In directories
                     Try
                         System.IO.Directory.Delete(directory, False)
-                    Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try
                 Next

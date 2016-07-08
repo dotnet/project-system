@@ -813,7 +813,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return ProjectProperties.OutputType
                 Else
                     Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("OutputType"))
-                    Return CType(obj, VSLangProj.prjOutputType)
+                    Try
+                        Return CType(obj, VSLangProj.prjOutputType)
+                    Catch ex As Exception
+                        Return 0
+                    End Try
                 End If
             End Get
         End Property
@@ -894,9 +898,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                     Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), "We should have a handle still.  Without it, BeginInvoke will fail.")
                     BeginInvoke(New MethodInvoker(AddressOf DelayedDispose))
-                Catch ex As Exception
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the property page", NameOf(PropPageUserControlBase))
                     ' At this point, all we can do is to avoid crashing the shell. 
-                    Debug.Fail(String.Format("Failed to queue a delayed Dispose for the property page: {0}", ex))
                 End Try
             End If
         End Sub
@@ -1350,8 +1353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Properties collection #" & i & " does not contain extended properties.")
                         End If
                     Next i
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                    Debug.Fail("An exception was thrown trying to get extended objects for the properties" & vbCrLf & ex.ToString)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties", NameOf(PropPageUserControlBase))
                     Throw
                 End Try
 
@@ -1379,8 +1381,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             m_CommonPropertyDescriptors = System.ComponentModel.TypeDescriptor.GetProperties(CommonPropertiesObject)
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Common properties collection does not contain extended properties.")
                         End If
-                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                        Debug.Fail("An exception was thrown trying to get extended objects for the common properties" & vbCrLf & ex.ToString)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the common properties", NameOf(PropPageUserControlBase))
                         Throw
                     End Try
                 End If
@@ -1874,8 +1875,7 @@ NextControl:
                                     End If
                                 End If
 
-                            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
-                                Debug.Fail("Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue")
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue", NameOf(PropPageUserControlBase))
                                 ValueHasChanged = True
                             End Try
 
@@ -1911,7 +1911,7 @@ NextControl:
                     Debug.Fail("Service provider or hierarchy missing - can't QueryEdit files before property set")
                 End If
 
-            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+            Catch ex As Exception
                 'ApplyPageChanges() handles ValidationException specially, we need to 
                 'Be sure to set the inner exception, so that if it was a checkout cancel, the
                 '  message box later knows to ignore it.
@@ -2019,8 +2019,7 @@ NextControl:
                         Try
                             BatchObject.BeginBatch()
                             BatchObjects(i) = BatchObject
-                        Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                            Debug.Fail("ILangPropertyProvideBatchUpdate.BeginBatch() failed, ignoring: " & ex.ToString)
+                        Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
                         End Try
                     End If
                     '... then individual objects from SetObjects
@@ -2031,8 +2030,7 @@ NextControl:
                             Try
                                 BatchObject.BeginBatch()
                                 BatchObjects(i) = BatchObject
-                            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                                Debug.Fail("ILangPropertyProvideBatchUpdate.BeginBatch() failed, ignoring: " & ex.ToString)
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
                             End Try
                         End If
                         i += 1
@@ -2077,7 +2075,7 @@ NextControl:
                             Next
 
                             Throw
-                        Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                        Catch ex As Exception
                             'Be sure to set the inner exception, so that if it was a checkout cancel, the
                             '  message box later knows to ignore it.
                             If TypeOf ex Is System.Reflection.TargetInvocationException Then
@@ -2125,7 +2123,7 @@ NextControl:
                                 If BatchObject IsNot Nothing Then
                                     Try
                                         BatchObject.EndBatch()
-                                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatch failed", NameOf(PropPageUserControlBase))
 
                                         'This will fail if there are build problems or validation problems when the project system
                                         '  tries to persist the requested property changes to the build system.  Sometimes this indicates
@@ -2154,7 +2152,7 @@ NextControl:
                                 'If m_DeactivateDuringApply = True, then the following may assert about the project being uninitialized.
                                 '  In reality, it is zombied, and in this scenario the assertion can be ignored.
                                 vsProjectBuildSystem.EndBatchEdit()
-                            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatchEdit failed", NameOf(PropPageUserControlBase))
 
                                 'This will fail if there are build problems or validation problems when the project system
                                 '  tries to persist the requested property changes to the build system.  Sometimes this indicates
@@ -2211,8 +2209,7 @@ NextControl:
                         If _site.IsImmediateApply Then
                             Try
                                 RestoreInitialValues()
-                            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                                Debug.Fail("Exception occurred trying to refresh all properties' UI: " & ex.ToString)
+                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception occurred trying to refresh all properties' UI", NameOf(PropPageUserControlBase))
                             End Try
                         End If
                     End If
@@ -3138,7 +3135,7 @@ NextControl:
                 '  can be an issue)
                 Try
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
                     ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
@@ -3153,9 +3150,8 @@ NextControl:
                         DirectCast(Page, IVsProjectDesignerPage).SetSite(ChildPageSite)
                     End If
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
                     _childPages.Remove(PageType)
-                    AppDesCommon.RethrowIfUnrecoverable(ex)
                     ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
@@ -3280,7 +3276,7 @@ NextControl:
                 Try
                     'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                     InitialDirectory = Path.GetFullPath(Common.Utils.AppendBackslash(InitialDirectory))
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception
                     InitialDirectory = ""
                 End Try
             End If
@@ -3987,9 +3983,7 @@ NextControl:
                     'We don't actually need to do anything with the properties that we got, we can throw them away.
                     '  Just the act of retrieving them causes all property descriptors for that object to refresh
                 Next i
-            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                Debug.Fail("An exception was thrown trying to get extended objects for the properties to refresh their standard values" & vbCrLf & ex.ToString)
-
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties to refresh their standard values", NameOf(PropPageUserControlBase))
                 'Ignore
             End Try
         End Sub
@@ -4273,7 +4267,7 @@ NextControl:
                         If Cfg IsNot Nothing Then
                             Cfg.get_DisplayName(DebugSourceName)
                         End If
-                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ConnectPropertyNotify), NameOf(PropPageUserControlBase))
                     End Try
                 Else
                     DebugSourceName &= " (Common Properties - non-config page)"
@@ -4440,7 +4434,7 @@ NextControl:
                         'These are all internal to the page, since they were
                         '  queued up because they occurred during an apply
                         OnExternalPropertyChanged(Change.DispId, Change.Source)
-                    Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CheckPlayCachedPropertyChanges), NameOf(PropPageUserControlBase))
                         ShowErrorMessage(ex)
                     End Try
                 Next

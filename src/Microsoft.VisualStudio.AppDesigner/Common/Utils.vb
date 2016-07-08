@@ -215,7 +215,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Return Value.ToString()
                 End If
             Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
                 Return "[" & ex.GetType.Name & "]"
             End Try
 #Else
@@ -223,23 +222,26 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Function
 
-
         ''' <summary>
-        ''' Given an exception, returns True if it is an "unrecoverable" exception.
+        ''' Logs the given exception and returns True so it can be used in an exception handler.
         ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
-        ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
-        ''' <remarks></remarks>
-        Public Function IsUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False) As Boolean
-            If (Not IgnoreOutOfMemory AndAlso TypeOf ex Is OutOfMemoryException) _
-                OrElse TypeOf ex Is StackOverflowException _
-                OrElse TypeOf ex Is ThreadAbortException _
-                OrElse TypeOf ex Is AccessViolationException _
-            Then
-                Return True
-            End If
+        ''' <param name="ex">The exception to log.</param>
+        ''' <param name="exceptionEventDescription">Additional description for the cause of the exception.</param>
+        ''' <param name="throwingComponentName">Name of the component that threw that exception, generally the containing type name.</param>
+        Public Function ReportWithoutCrash(ByVal ex As Exception,
+                                           ByVal exceptionEventDescription As String,
+                                           Optional ByVal throwingComponentName As String = "general") As Boolean
+            Debug.Assert(ex IsNot Nothing)
+            Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
+            Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
 
-            Return False
+            TelemetryService.DefaultSession.PostFault(
+                eventName:="vs/projectsystem/appdesigner/" & throwingComponentName.ToLower,
+                description:=exceptionEventDescription,
+                exceptionObject:=ex)
+
+            Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+            Return True
         End Function
 
 
@@ -262,19 +264,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Return False
         End Function
-
-
-        ''' <summary>
-        ''' Given an exception, rethrows it if it is an "unrecoverable" exception.  Otherwise does nothing.
-        ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's unrecoverable</param>
-        ''' <param name="IgnoreOutOfMemory">If True, out of memory will not be considered unrecoverable.</param>
-        ''' <remarks></remarks>
-        Public Sub RethrowIfUnrecoverable(ByVal ex As Exception, Optional ByVal IgnoreOutOfMemory As Boolean = False)
-            If IsUnrecoverable(ex, IgnoreOutOfMemory) Then
-                Throw ex
-            End If
-        End Sub
 
 
         ''' <summary>
@@ -601,7 +590,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         'Path needs a backslash at the end, or it will be interpreted as a directory + filename
                         InitialDirectory = Path.GetFullPath(AppendBackslash(InitialDirectory))
                     Catch ex As Exception
-                        AppDesCommon.RethrowIfUnrecoverable(ex)
                         InitialDirectory = String.Empty
                     End Try
                 End If

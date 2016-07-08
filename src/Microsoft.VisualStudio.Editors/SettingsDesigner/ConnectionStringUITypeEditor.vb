@@ -159,9 +159,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' Well, we better return the old value...
                     Return oValue
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                'Just throw the exception, caller should handle this.
-                Throw
             Finally
                 If dataConnectionDialog IsNot Nothing Then
                     dataConnectionDialog.Dispose()
@@ -186,8 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 Dim DataConnectionProperties As IVsDataConnectionProperties = GetConnectionStringProperties(ProviderManager, DataProvider, ConnectionString)
                 Return ContainsSensitiveData(DataConnectionProperties)
-            Catch ex As Exception
-                Common.Utils.RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ContainsSensitiveData), NameOf(ConnectionStringUITypeEditor))
             End Try
             ' The secure & safe assumption is that it does contain sensitive data
             Return True

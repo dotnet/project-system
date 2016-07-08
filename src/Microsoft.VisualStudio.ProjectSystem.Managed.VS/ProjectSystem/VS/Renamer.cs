@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -22,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private bool _docAdded = false;
         private bool _docRemoved = false;
         private bool _docChanged = false;
+        private bool _userPromptedOnce = false;
+        private bool _userConfirmedRename = true;
 
         internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
@@ -75,55 +78,83 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task RenameAsync(Project myNewProject)
         {
-            Document newDocument = (from d in myNewProject.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
-            if (newDocument == null)
+            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject).ConfigureAwait(false);
+            if (renamedSolution == null)
                 return;
 
-            var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
-            if (root == null)
-                return;
-
-            string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
-            string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
-
-            var declaration = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName)).FirstOrDefault();
-            if (declaration == null)
-                return;
-
-            var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
-            if (semanticModel == null)
-                return;
-
-            var symbol = semanticModel.GetDeclaredSymbol(declaration);
-            if (symbol == null)
-                return;
-
-            var userConfirmed = true;
             await _threadingService.SwitchToUIThread();
-            var userNeedPrompt =  _optionsSettings.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+            var renamedSolutionApplied = _roslynServices.ApplyChangesToSolution(myNewProject.Solution.Workspace, renamedSolution);
 
+            if (!renamedSolutionApplied)
+            {
+                string failureMessage = string.Format(CultureInfo.CurrentCulture, Resources.RenameSymbolFailed, Path.GetFileNameWithoutExtension(_oldFilePath));
+                await _threadingService.SwitchToUIThread();
+                _userNotificationServices.NotifyFailure(failureMessage);
+            }
+        }
+
+
+        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject)
+        {
+            var project = myNewProject;
+            Solution renamedSolution = null;
+            string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
+
+            while (project != null)
+            {
+                Document newDocument = (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, _newFilePath) select d).FirstOrDefault();
+                if (newDocument == null)
+                    return renamedSolution;
+                
+                var root = await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
+                if (root == null)
+                    return renamedSolution;
+
+                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldName));
+                var declaration = declarations.FirstOrDefault();
+                if (declaration == null)
+                    return renamedSolution;
+
+                var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+                if (semanticModel == null)
+                    return renamedSolution;
+
+                var symbol = semanticModel.GetDeclaredSymbol(declaration);
+                if (symbol == null)
+                    return renamedSolution;
+
+                bool userConfirmed = await CheckUserConfirmation().ConfigureAwait(false);
+                if (!userConfirmed)
+                    return renamedSolution;
+
+                string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
+                
+                // Note that RenameSymbolAsync will return a new snapshot of solution.
+                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
+                project = renamedSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
+            }
+            return null;
+        }
+
+        private async Task<bool> CheckUserConfirmation()
+        {
+            if (_userPromptedOnce)
+            {
+                return _userConfirmedRename;
+            }
+
+            await _threadingService.SwitchToUIThread();
+            var userNeedPrompt = _optionsSettings.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
             if (userNeedPrompt)
             {
-                string renamePromptMessage = string.Format(Resources.RenameSymbolPrompt, oldName);
+                string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, Resources.RenameSymbolPrompt, Path.GetFileNameWithoutExtension(_oldFilePath));
 
                 await _threadingService.SwitchToUIThread();
-                userConfirmed = _userNotificationServices.Confirm(renamePromptMessage);
+                _userConfirmedRename = _userNotificationServices.Confirm(renamePromptMessage);
             }
-            
-            if (userConfirmed)
-            {
-                var renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
 
-                await _threadingService.SwitchToUIThread();
-                var renamedSolutionApplied = _roslynServices.ApplyChangesToSolution(newDocument.Project.Solution.Workspace, renamedSolution);
-
-                if (!renamedSolutionApplied)
-                {
-                    string failureMessage = string.Format(Resources.RenameSymbolFailed, oldName);
-                    await _threadingService.SwitchToUIThread();
-                    _userNotificationServices.NotifyFailure(failureMessage);
-                }
-            }
+            _userPromptedOnce = true;
+            return _userConfirmedRename;
         }
 
         private bool HasMatchingSyntaxNode(Document document, SyntaxNode syntaxNode, string name)

@@ -334,7 +334,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     End If
                 End If
             Catch ex As Exception
-                AppDesCommon.RethrowIfUnrecoverable(ex)
             End Try
             Return System.Text.Encoding.Default
         End Function

@@ -233,11 +233,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim kindString As String = parentItem.Kind
                     Try
                         Dim kindGuid As Guid = New Guid(kindString)
-                        If kindGuid.Equals(new Guid(EnvDTE.Constants.vsProjectItemKindPhysicalFile)) Then
+                        If kindGuid.Equals(New Guid(EnvDTE.Constants.vsProjectItemKindPhysicalFile)) Then
                             Return True
                         End If
-                    Catch ex As Exception
-                        Common.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsDependentItem), NameOf(ResourceEditorRootComponent))
                     End Try
                 End If
             End If
@@ -294,9 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End While
             Catch ex As FormatException
                 ' Ignore this ...
-            Catch ex As Exception
-                Common.RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.Message)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsInGlobalResourceFolderInASP), NameOf(ResourceEditorRootComponent))
             End Try
             Return False
         End Function

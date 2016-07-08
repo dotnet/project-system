@@ -505,12 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Return TryCast(value, String)
                             End If
                         End Using
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex)
-                        Debug.Fail(ex.Message)
-                        'Catch ex As Object
-                        '    Debug.Fail("Unexpected, non-CLS compliant exception")
-                        '    Throw ex
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView))
                     End Try
                 End If
                 Return String.Empty
@@ -528,12 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 registryKey.SetValue("SafeExtensions", value, RegistryValueKind.String)
                             End Using
                         End If
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex)
-                        Debug.Fail(ex.Message)
-                        'Catch ex As Object
-                        '    Debug.Fail("Unexpected, non-CLS compliant exception")
-                        '    Throw ex
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView))
                     End Try
                 End If
             End Set
@@ -1540,9 +1530,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             selectionService.SetSelectedComponents(Resources, SelectionTypes.Replace)
                         End If
                     End Using
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Exception in property grid select: " & ex.ToString)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception in property grid select", NameOf(ResourceEditorView))
                 End Try
             End If
         End Sub
@@ -1566,9 +1554,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.ToString)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ResourceListView_SelectedIndexChanged), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -1586,9 +1572,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     PropertyGridUpdate()
                     RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.ToString)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_RowStateChanged), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -1604,9 +1588,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail(ex.ToString)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(StringTable_CellEnter), NameOf(ResourceEditorView))
             End Try
         End Sub
 
@@ -2198,9 +2180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             HighestPriority = Priority
                             Exit For
                         End If
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex)
-                        Debug.WriteLine("GetResourceTypeEditorForFileExtension: Exception thrown: " & ex.Message)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceTypeEditorForFileExtension), NameOf(ResourceEditorView))
                         'Swallow the error and continue to the next candidate resource type editor
                     End Try
                 Next
@@ -2587,8 +2567,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If DataFormatSupported(Data, DragDropEffects.Copy, ActualEffect, ActualFormat) Then
                 Try
                     DragDropPaste(Data, DragDropEffects.Copy, ActualEffect:=ActualEffect)
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(MenuPaste), NameOf(ResourceEditorView))
                     DsMsgBox(ex)
                 End Try
             End If
@@ -2740,9 +2719,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Try
                     If Resource.IsLink Then
                         'Linked file - copy the target of the link to a temp
-                        TempFileName = GetTemporaryFile( _
-                            AutoDelete.DeleteOnClipboardFlush, _
-                            ParentDirectory:=TempFolder, _
+                        TempFileName = GetTemporaryFile(
+                            AutoDelete.DeleteOnClipboardFlush,
+                            ParentDirectory:=TempFolder,
                             PreferredFileName:=Path.GetFileName(Resource.AbsoluteLinkPathAndFileName))
                         File.Copy(Resource.AbsoluteLinkPathAndFileName, TempFileName)
 
@@ -2753,9 +2732,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Else
                         If Resource.ResourceTypeEditor.CanSaveResourceToFile(Resource) Then
                             'Non-linked.  Export the resource to a temp.
-                            TempFileName = GetTemporaryFile( _
-                                AutoDelete.DeleteOnClipboardFlush, _
-                                ParentDirectory:=TempFolder, _
+                            TempFileName = GetTemporaryFile(
+                                AutoDelete.DeleteOnClipboardFlush,
+                                ParentDirectory:=TempFolder,
                                 PreferredFileName:=CreateLegalFileName(Resource.Name) _
                                     & Resource.ResourceTypeEditor.GetResourceFileExtension(Resource))
                             Resource.ResourceTypeEditor.SaveResourceToFile(Resource, TempFileName)
@@ -2767,12 +2746,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If TempFileName <> "" Then
                         ResourceFileNames.Add(TempFileName)
                     End If
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex,
+                                                                           $"Failed trying to copy linked or non-linked resource {Resource.Name} to temporary file {TempFileName} - ignoring and moving to next resource",
+                                                                           NameOf(ResourceEditorView))
                     'Swallow the exception and move on to the next resource
-                    Debug.WriteLine("Failed trying to copy linked or non-linked resource " & Resource.Name & " to temporary file " & TempFileName & " - ignoring and moving to next resource" _
-                        & VB.vbCrLf & ex.Message)
                 End Try
             Next
             'Build a list of filenames out of the saved/exported files.
@@ -2996,8 +2973,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 DragDropPaste(e.Data, e.AllowedEffect, ActualEffect:=e.Effect)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnDragDrop), NameOf(ResourceEditorView))
                 DsMsgBox(ex)
                 e.Effect = DragDropEffects.None
             Finally
@@ -3609,8 +3585,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  project.
                 'And those are the semantics that we want...
                 VSErrorHandler.ThrowOnFailure(OpenDocumentService.OpenDocumentViaProject(ResourceFullPathTolerant, OpenLogView, ServiceProvider, Hierarchy, ItemId, WindowFrame))
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EditOrOpenWith), NameOf(ResourceEditorView))
                 If TypeOf ex Is System.Runtime.InteropServices.COMException Then
                     If CType(ex, System.Runtime.InteropServices.COMException).ErrorCode = Editors.Interop.win.OLE_E_PROMPTSAVECANCELLED Then
                         'We get this error when the user cancels the Open With dialog.  Obviously, we ignore this error and cancel.
@@ -3657,9 +3632,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Dim Filter As String = ResourceToExportFrom.ResourceTypeEditor.GetSaveFileDialogFilter(Path.GetExtension(SuggestedFileName))
                             Dim FilterIndex As Integer = 0
                             Dim UserCanceled As Boolean
-                            Dim FileAndPathToExportTo As String = ShowSaveFileDialog( _
-                                UserCanceled, _
-                                Title, Filter, FilterIndex, _
+                            Dim FileAndPathToExportTo As String = ShowSaveFileDialog(
+                                UserCanceled,
+                                Title, Filter, FilterIndex,
                                 SuggestedFileName, StickyExportPath)
                             If Not UserCanceled AndAlso FileAndPathToExportTo <> "" Then
                                 StickyExportPath = Path.GetDirectoryName(FileAndPathToExportTo)
@@ -3682,8 +3657,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     End If
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(MenuExport), NameOf(ResourceEditorView))
                 DsMsgBox(ex)
             End Try
         End Sub
@@ -3706,8 +3680,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Try
                     ' If we can't check out the resource file, do not pop up any dialog...
                     RootDesigner.DesignerLoader.ManualCheckOut()
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(MenuImport), NameOf(ResourceEditorView))
                     'Report errors to the user.
                     DsMsgBox(ex)
                     Return
@@ -3746,8 +3719,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                             'BUGFIX:Dev11#35824 Save the directory where the user import resources for the next time.
                             StickyImportPath = Path.GetDirectoryName(FileAndPathToImportFrom)
-                        Catch ex As Exception
-                            RethrowIfUnrecoverable(ex)
+                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(MenuImport), NameOf(ResourceEditorView))
                             'Report errors to the user.
                             DsMsgBox(ex)
                         End Try
@@ -3853,9 +3825,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Extension As String = ""
                 Try
                     Extension = Resource.ResourceTypeEditor.GetResourceFileExtension(Resource)
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetSuggestedFileNameForResource), NameOf(ResourceEditorView))
                     'If an error, simply don't add an extension.
                 End Try
                 Return CreateLegalFileName(Resource.Name) & Extension
@@ -3969,8 +3939,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Save the resource
                     Resource.ResourceTypeEditor.SaveResourceToFile(Resource, FileAndPathToExportTo)
                 Next
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ExportResources), NameOf(ResourceEditorView))
                 DsMsgBox(ex)
             End Try
         End Sub
@@ -4229,8 +4198,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'NOTE: we update the existing item as bug 382459 said.
                 'FixInvalidIdentifiers:=True because we want to fix invalid identifiers in the copy/paste and drag/drop scenarios
                 AddOrUpdateResourcesFromFiles(FilesToAdd, CopyFileIfExists:=False, AlwaysAddNew:=False, FixInvalidIdentifiers:=True)
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ButtonAdd_ExistingFile_Click), NameOf(ResourceEditorView))
                 DsMsgBox(ex)
             End Try
         End Sub
@@ -4458,8 +4426,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Write out a blank resource into the new file
                     Try
                         TypeEditor.CreateNewResourceFile(NewResourceFilePath)
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, SR.GetString(SR.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), NameOf(ResourceEditorView))
                         DsMsgBox(SR.GetString(SR.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantCreateNewResource)
                         Exit Sub
                     End Try
@@ -4489,7 +4456,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  and deactivated again.  
                     Try
                         Me.RootDesigner.DesignerLoader.RunSingleFileGenerator(True)
-                    Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(QueryAddNewLinkedResource), NameOf(ResourceEditorView))
                         DsMsgBox(ex)
                     End Try
 
@@ -4499,13 +4466,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(NewResource IsNot Nothing)
                     Try
                         EditOrOpenWith(NewResource, UseOpenWithDialog:=False)
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex, IgnoreOutOfMemory:=True)
-
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to open the new resource in a separate editor - ignoring and continuing", NameOf(ResourceEditorView))
                         'Ignore errors trying to open the editor for the file.  That's confusing to the user, because it
                         '  makes it appear that the resource wasn't successfully added, but it was.  Let them double-click
                         '  it if they want to edit, at which point they'll get the error and it will be less confusing.
-                        Debug.Fail("Got an exception trying to open the new resource in a separate editor - ignoring and continuing" & Microsoft.VisualBasic.vbCrLf & ex.ToString)
                     End Try
                 End Using
             Catch ex As Exception
@@ -4591,9 +4555,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Try
                     Me.RootDesigner.ShowContextMenu(Constants.MenuConstants.ResXContextMenuID, e.X, e.Y)
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail(ex.ToString)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenu), NameOf(ResourceEditorView))
                 End Try
             Else
                 Debug.Fail("Wrong mouse button!")
@@ -4782,9 +4744,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If File.Exists(FileName) Then
                         File.Delete(FileName)
                     End If
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Unable to delete temporary file: " & FileName & VB.vbCrLf & ex.Message)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary file: {FileName}", NameOf(ResourceEditorView))
                 End Try
             Next
         End Sub
@@ -4801,9 +4761,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Directory.Exists(FolderName) Then
                         Directory.Delete(FolderName)
                     End If
-                Catch ex As Exception
-                    RethrowIfUnrecoverable(ex)
-                    Debug.Fail("Unable to delete temporary folder: " & FolderName & VB.vbCrLf & ex.Message)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to delete temporary folder: {FolderName}", NameOf(ResourceEditorView))
                 End Try
             Next
         End Sub
@@ -4825,9 +4783,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Directory.CreateDirectory(NewFolder)
                 _deleteFoldersOnEditorExit.Add(NewFolder)
                 Return NewFolder
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail("Couldn't create subfolder under TEMP directory - using TEMP directory itself instead")
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't create subfolder under TEMP directory - using TEMP directory itself instead", NameOf(ResourceEditorView))
             End Try
 
             'Had trouble creating a subfolder of TEMP.  Just return TEMP instead.
@@ -5147,9 +5103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         _typeResolutionServiceCache = DynamicTypeService.GetTypeResolutionService(Hierarchy)
                     End If
                 End If
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-                Debug.Fail("Exception trying to retrieve project references: " & ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to retrieve project references", NameOf(ResourceEditorView))
                 _typeResolutionServiceCache = Nothing
             End Try
 
@@ -5267,12 +5221,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Catch ex As COMException When ex.ErrorCode = win.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = win.OLECMDERR_E_NOTSUPPORTED
                 'Ignore this, if the project does not support this (like SmartPhone project)...
                 Return False
-            Catch ex As Exception
-                RethrowIfUnrecoverable(ex)
-
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsDefaultResXFile), NameOf(ResourceEditorView))
                 'If we hit some other unexpected error, we don't want to bomb out, as not being able to load the
                 '  designer would be worse than having me not recognize the default resx file.
-                Debug.Fail("Unexpected exception in IsDefaultResXFile - returning False")
                 Return False
             End Try
 
@@ -5311,8 +5262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If cultureInfo IsNot Nothing Then
                             isLocalizedFileName = True
                         End If
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsLocalizedResXFile), NameOf(ResourceEditorView))
                     End Try
                 End If
             End If
@@ -5458,8 +5408,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                                   OrElse ex.ErrorCode = NativeMethods.OLECMDERR_E_CANCELED _
                                                   OrElse ex.ErrorCode = NativeMethods.E_FAIL
                         ' We should ignore if the customer cancels this or we can not build the project...
-                    Catch ex As Exception
-                        Common.Utils.RethrowIfUnrecoverable(ex, True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CallGlobalRename), NameOf(ResourceEditorView))
                         DsMsgBox(ex)
                     Finally
                         ResourceEditorRefactorNotify.AllowSymbolRename = False
