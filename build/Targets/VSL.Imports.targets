@@ -318,6 +318,13 @@
     </ItemGroup>
   </Target>
 
+  <!-- Workaround: See: #https://github.com/dotnet/roslyn-project-system/issues/292 -->
+  <Target Name="_CopySharedTemplateFiles" BeforeTargets="GetZipFilesFromVSTemplates" Inputs="@(SharedTemplateFiles)" Outputs="%(SharedTemplateFiles.TargetPath)">
+    <Copy SourceFiles="@(SharedTemplateFiles)" DestinationFiles="%(SharedTemplateFiles.TargetPath)" OverwriteReadOnlyFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+
   <!-- ====================================================================================
 
          Generation of AssemblyVersion attributes from the BuildVersion property

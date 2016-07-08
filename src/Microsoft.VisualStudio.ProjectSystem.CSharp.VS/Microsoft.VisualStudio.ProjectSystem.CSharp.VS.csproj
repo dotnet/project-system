@@ -60,5 +60,8 @@
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConsoleApplication.png" />
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
