@@ -47,7 +47,7 @@
       <Type>Project</Type>
       <TargetPath>AssemblyInfo.cs</TargetPath>
     </SharedTemplateFiles>
-    <None Include="project.json" />
+    <None Include="NuGet.json" />
     <None Include="ProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -58,7 +58,8 @@
   <ItemGroup>
     <None Include="Program.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ConsoleApplication.png" />
+  </ItemGroup>
   <Import Project="..\..\..\..\..\..\build\Targets\VSL.Imports.targets" />
-
-  
 </Project>

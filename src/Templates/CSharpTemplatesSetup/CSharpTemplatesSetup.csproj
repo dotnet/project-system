@@ -9,7 +9,7 @@
     <ProjectGuid>{F535071D-F755-403A-AB63-468A0F547702}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>ProjectSystemTemplates</AssemblyName>
+    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.CSharp.Templates</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
