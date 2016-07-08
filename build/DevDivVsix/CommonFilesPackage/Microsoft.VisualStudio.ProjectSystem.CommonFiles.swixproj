@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(AssemblyVersion);OutputPath=$(OutDir);LicenseUri=http://www.microsoft.com</PackagePreprocessorDefinitions>
-    <OutputPath>$(OutDir)\DevDivVsix</OutputPath>
+    <OutputPath>$(OutDir)</OutputPath>
     <SourcePath>$(OutDir)\..\..\src</SourcePath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
