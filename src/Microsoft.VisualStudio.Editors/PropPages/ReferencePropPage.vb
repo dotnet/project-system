@@ -9,6 +9,7 @@ Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Windows.Forms
 Imports Microsoft.CodeAnalysis
+Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.VisualStudio.ComponentModelHost
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
@@ -183,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Overrides Function ReadUserDefinedProperty(ByVal PropertyName As String, ByRef Value As Object) As Boolean
             If PropertyName = "ImportList" Then
-                Value = GetCurrentImportsList()
+                Value = GetCurrentImports()
                 Return True
             End If
             Return False
@@ -611,13 +612,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Class
 
         Private Function NamespaceIsReferenceableFromCompilation([namespace] As INamespaceSymbol, compilation As Compilation) As Boolean
-            For Each type In [namespace].GetTypeMembers()
-                If type.CanBeReferencedByName Then
-                    If type.DeclaredAccessibility = CodeAnalysis.Accessibility.Public Then
+            For Each typeMember In [namespace].GetTypeMembers()
+                If typeMember.CanBeReferencedByName Then
+                    If typeMember.DeclaredAccessibility = CodeAnalysis.Accessibility.Public Then
                         Return True
                     End If
 
-                    If type.ContainingAssembly.Equals(compilation.Assembly) OrElse type.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
+                    If typeMember.ContainingAssembly.Equals(compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
                         Return True
                     End If
                 End If
@@ -637,7 +638,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' get namespace list earlier to prevent reentrance in this function to cause duplicated items in the list
             Namespaces = GetReferencedNamespaceList()
-            UserImports = GetCurrentImportsList()
+            UserImports = GetCurrentImports()
 
             ' Gotta make a copy of the currently selected items so I can re-select 'em after
             ' I have repopulated the list...
@@ -760,41 +761,65 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
             Me.AdviseWebReferencesEvents()
             Me.AdviseServiceReferencesEvents()
-            'TODO : Uncomment after GetCurrentImportsList() is implemented 
-            'Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
         End Sub
 
-        Private Function GetCurrentImportsList(ByVal _Imports As VSLangProj.Imports) As String()
-            'TODO : Remove the below empty return after GetCurrentImportsList() is implemented 
-            Return New String() {}
+        Private Function GetCurrentImports() As String()
 
-            Dim UserImports As String()
-            Dim ImportsCount As Integer
+            Dim threadedWaitDialogFactory = DirectCast(ServiceProvider.GetService(GetType(SVsThreadedWaitDialogFactory)), IVsThreadedWaitDialogFactory)
+            Dim threadedWaitDialog2 As IVsThreadedWaitDialog2 = Nothing
+            ErrorHandler.ThrowOnFailure(threadedWaitDialogFactory.CreateInstance(threadedWaitDialog2))
 
-            ImportsCount = _Imports.Count
-            If ImportsCount <= 0 Then
-                UserImports = New String() {}
-            Else
-                UserImports = New String(ImportsCount - 1) {}
+            Dim threadedWaitDialog3 = DirectCast(threadedWaitDialog2, IVsThreadedWaitDialog3)
+            Dim cancellationTokenSource As New CancellationTokenSource
+            Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
+            threadedWaitDialog3.StartWaitDialogWithCallback(
+                SR.GetString(SR.PropPage_ImportedNamespacesTitle),
+                SR.GetString(SR.PropPage_ComputingReferencedNamespacesMessage),
+                szProgressText:=Nothing,
+                varStatusBmpAnim:=Nothing,
+                szStatusBarText:=Nothing,
+                fIsCancelable:=True,
+                iDelayToShowDialog:=1,
+                fShowProgress:=True,
+                iTotalSteps:=0,
+                iCurrentStep:=0,
+                pCallback:=cancellationCallback)
 
-                For index As Integer = 0 To UBound(UserImports)
-                    UserImports(index) = _Imports.Item(index + 1)
+            Try
+                Dim componentModel = DirectCast(ServiceProvider.GetService(GetType(SComponentModel)), IComponentModel)
+                Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
+                Dim solution = visualStudioWorkspace.CurrentSolution
+                Dim CurrentImportNames As New List(Of String)
+
+                For Each projectId In solution.ProjectIds
+                    ' We need to find the project that matches by IVsHierarchy
+                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
+                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
+                        compilationTask.Wait(cancellationTokenSource.Token)
+                        Dim compilation = compilationTask.Result
+                        Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
+                        If (compilationOptions IsNot Nothing) Then
+                            Dim globalImports = compilationOptions.GlobalImports.ToList()
+                            For Each globalImport As GlobalImport In globalImports
+                                CurrentImportNames.Add(globalImport.Name)
+                            Next
+                            CurrentImportNames.Sort(CaseInsensitiveComparison.Comparer)
+                        End If
+                        Return CurrentImportNames.ToArray()
+                        End If
                 Next
-            End If
-            Return UserImports
-        End Function
 
-        Private Function GetCurrentImportsList() As String()
-            'TODO : Remove the below empty return after GetCurrentImportsList() is implemented 
-            Return New String() {}
+                ' Return empty list if an error occurred
+                Return New String() {}
 
-            Dim theVSProject As VSLangProj.VSProject
-            Dim _Imports As VSLangProj.Imports
-
-            theVSProject = CType(DTEProject.Object, VSLangProj.VSProject)
-
-            _Imports = theVSProject.Imports
-            Return GetCurrentImportsList(_Imports)
+            Catch ex As OperationCanceledException
+                ' Return empty list if we canceled
+                Return New String() {}
+            Finally
+                Dim canceled As Integer = 0
+                threadedWaitDialog3.EndWaitDialog(canceled)
+            End Try
         End Function
 
         ''' <summary>
@@ -835,7 +860,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Each import is stored in the hashtable with the
             ' value set to "True" if it is a namespace known to the compiler
             Dim UserDefinedImports As New Dictionary(Of String, Boolean)
-            For Each UserImport As String In GetCurrentImportsList()
+            For Each UserImport As String In GetCurrentImports()
                 UserDefinedImports.Add(UserImport, ReferencedNamespaces.Contains(UserImport))
             Next
             Return UserDefinedImports
@@ -1400,7 +1425,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _ignoreImportEvent = True
 
                 'For backward compatibility we remove all non-imported ones from the current Imports before adding any new ones
-                Dim CurrentImports As String() = GetCurrentImportsList(_Imports)
+                Dim CurrentImports As String() = GetCurrentImports()
 
                 index = CurrentImports.Length
                 For index = _Imports.Count To 1 Step -1
@@ -1528,7 +1553,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub CheckCurrentImports()
-            CheckCurrentImports(GetCurrentImportsList(), False)
+            CheckCurrentImports(GetCurrentImports(), False)
         End Sub
 
         Private Function ImportListSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
@@ -1611,7 +1636,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub AddUserImportButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddUserImportButton.Click
             Debug.Assert(UserImportTextBox.Text.Trim().Length > 0, "Why was the AddUserImportButton enabled when the UserImport text was empty?")
             ' Get the current list
-            Dim CurrentImports As String() = GetCurrentImportsList()
+            Dim CurrentImports As String() = GetCurrentImports()
             Dim ScrubbedUserImport As String = UserImportTextBox.Text.Trim()
 
             'Make place for one more item...
@@ -1671,7 +1696,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ImportListSelectedItem IsNot Nothing AndAlso
                         ImportListSelectedItem.Length > 0, "Why do we try to update more than one selected item?!")
 
-            Dim UserImports As String() = GetCurrentImportsList()
+            Dim UserImports As String() = GetCurrentImports()
             Dim UserImportToUpdate As String = ImportListSelectedItem
             Dim ScrubbedUpdatedUserImport As String = UserImportTextBox.Text.Trim()
 
