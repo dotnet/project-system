@@ -16,9 +16,11 @@
 
   <Target Name="BeforeBuild">
     <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.swixproj" Targets="Build" />
+    <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.CommonFiles.swixproj" Targets="Build" />
   </Target>
 
   <ItemGroup>
     <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.ProjectSystem.Managed.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.ProjectSystem.CommonFiles.json" />
   </ItemGroup>
 </Project>
