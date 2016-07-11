@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.25302.0
+VisualStudioVersion = 15.0.25424.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -75,8 +75,22 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573BCEB9-1EC1-49E0-8332-E8436304DFFA}"
 	ProjectSection(SolutionItems) = preProject
 		Targets\Microsoft.CSharp.DesignTime.targets = Targets\Microsoft.CSharp.DesignTime.targets
+		Targets\Microsoft.NETCore.props = Targets\Microsoft.NETCore.props
+		Targets\Microsoft.NETCore.targets = Targets\Microsoft.NETCore.targets
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{A870C57F-4104-47E9-8855-6F27AB71B616}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectTemplates", "ProjectTemplates", "{A19738BC-E9BD-4B0C-BC6D-875379B71EFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{271E239C-901C-40BC-8E3F-FCC9708F4993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "Templates\ProjectTemplates\CSharp\.NETCore\ConsoleApplication\ConsoleApplication.csproj", "{0C52951F-4EEF-4F2F-B587-0BCF6004C459}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NETCore", ".NETCore", "{EE24BCFB-1B61-40C7-9F12-86FA1572CE62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpTemplatesSetup", "Templates\CSharpTemplatesSetup\CSharpTemplatesSetup.csproj", "{F535071D-F755-403A-AB63-468A0F547702}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -197,6 +211,14 @@ Global
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C52951F-4EEF-4F2F-B587-0BCF6004C459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C52951F-4EEF-4F2F-B587-0BCF6004C459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C52951F-4EEF-4F2F-B587-0BCF6004C459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C52951F-4EEF-4F2F-B587-0BCF6004C459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F535071D-F755-403A-AB63-468A0F547702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F535071D-F755-403A-AB63-468A0F547702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F535071D-F755-403A-AB63-468A0F547702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F535071D-F755-403A-AB63-468A0F547702}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,5 +233,10 @@ Global
 		{CF97A73F-F2F1-4893-960C-9C2B95738870} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{4D52C1E5-6F4B-4CDE-8149-AC374F018245} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
+		{A19738BC-E9BD-4B0C-BC6D-875379B71EFC} = {A870C57F-4104-47E9-8855-6F27AB71B616}
+		{271E239C-901C-40BC-8E3F-FCC9708F4993} = {A19738BC-E9BD-4B0C-BC6D-875379B71EFC}
+		{0C52951F-4EEF-4F2F-B587-0BCF6004C459} = {EE24BCFB-1B61-40C7-9F12-86FA1572CE62}
+		{EE24BCFB-1B61-40C7-9F12-86FA1572CE62} = {271E239C-901C-40BC-8E3F-FCC9708F4993}
+		{F535071D-F755-403A-AB63-468A0F547702} = {A870C57F-4104-47E9-8855-6F27AB71B616}
 	EndGlobalSection
 EndGlobal

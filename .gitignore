@@ -50,6 +50,9 @@ project.lock.json
 *.log
 *.scc
 
+# Template Manifests generated as part of VSIX build
+*.vstman
+
 # Visual Studio cache files
 *.sln.ide/
 
@@ -162,3 +165,9 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# Workaround: See #292.
+/src/Templates/ProjectTemplates/CSharp/.NETCore/ConsoleApplication/Microsoft.NETCore.targets
+/src/Templates/ProjectTemplates/CSharp/.NETCore/ConsoleApplication/Microsoft.NETCore.props
+/src/Templates/ProjectTemplates/CSharp/.NETCore/ConsoleApplication/Microsoft.CSharp.DesignTime.targets
+/src/Templates/ProjectTemplates/CSharp/.NETCore/ConsoleApplication/AssemblyInfo.cs

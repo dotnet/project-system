@@ -1,0 +1,43 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  
+  <!-- User-facing configuration-agnostic defaults -->
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+   
+    <FileAlignment>512</FileAlignment>
+    <GlobalExclude>bin\**;obj\**;</GlobalExclude>
+  </PropertyGroup>
+
+  <!-- User-facing configuration-specific defaults -->
+  <PropertyGroup>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>$(NoWarn);1701</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoStdLib>true</NoStdLib>
+    <CopyNuGetImplementations>false</CopyNuGetImplementations> <!-- TODO: Need to figure out runtimes -->
+  </PropertyGroup>
+  
+</Project>

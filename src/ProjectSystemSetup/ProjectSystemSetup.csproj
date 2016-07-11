@@ -80,6 +80,11 @@
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
       <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
     </ProjectReference>
+    <ProjectReference Include="..\Templates\CSharpTemplatesSetup\CSharpTemplatesSetup.csproj">
+      <Project>{f535071d-f755-403a-ab63-468a0f547702}</Project>
+      <Name>CSharpTemplatesSetup</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
       <Name>VisualStudioEditorsSetup</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj">
@@ -58,7 +59,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="VSPackage.resx" />
+    <EmbeddedResource Include="VSPackage.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
