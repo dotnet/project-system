@@ -1,0 +1,21 @@
+use vs
+
+package name=Microsoft.VisualStudio.ProjectSystem.CommonFiles
+        version=$(Version)
+        vs.package.chip=neutral
+        vs.package.language=en-us
+
+vs.localizedResources
+  vs.localizedResource language=en-us
+                       title="Microsoft VisualStudio Managed Project System Common Files"
+                       description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
+
+folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
+  file source="$(SourcePath)\Targets\Microsoft.CSharp.DesignTime.targets"
+  file source="$(SourcePath)\Targets\Microsoft.VisualBasic.DesignTime.targets"
+
+folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
+  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\AppDesigner.xaml"
+  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\ConfigurationGeneral.xaml"
+  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\GeneralBrowseObject.xaml"
+  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\None.xaml"

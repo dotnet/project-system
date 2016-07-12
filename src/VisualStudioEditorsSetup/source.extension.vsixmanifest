@@ -4,7 +4,6 @@
     <Identity Id="F6B5EACA-7FA1-4591-8D40-A38234763621" Version="|%CurrentProject%;GetBuildVersion|" Language="en-US" Publisher="Microsoft" />
     <DisplayName>VisualStudio Editors </DisplayName>
     <Description>Microsoft VisualStudio Editors</Description>
-    <ShortcutPath>..</ShortcutPath> <!-- The Final path is Common7\IDE--> 
   </Metadata>
   <Installation SystemComponent="true" >
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.Pro" />
