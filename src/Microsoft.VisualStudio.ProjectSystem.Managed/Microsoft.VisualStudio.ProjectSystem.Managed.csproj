@@ -39,6 +39,7 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />

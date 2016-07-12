@@ -44,6 +44,11 @@
     </EnumProperty.DataSource>
   </EnumProperty>
   <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Application Manifest" >
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="Win32ResourceFile" DisplayName="Win32 Resource File">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
