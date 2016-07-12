@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dogfood.pkgdef">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
