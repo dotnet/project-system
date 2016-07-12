@@ -44,7 +44,6 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.cs" />
     <Compile Include="ProjectSystem\VS\IServiceProviderExtensions.cs" />
-    <Compile Include="ProjectSystem\VS\PreferedProjectFactoryRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
