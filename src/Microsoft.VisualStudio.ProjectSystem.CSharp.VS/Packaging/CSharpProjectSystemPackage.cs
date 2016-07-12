@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 
@@ -13,6 +14,8 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
+    [RemoteCodeGeneratorRegistration(ResXGenerators.ResXGuid, ResXGenerators.ResXGeneratorName, ResXGenerators.ResXGeneratorName, @"{" + ProjectTypeGuid + @"}", GeneratesDesignTimeSource = true)]
+    [RemoteCodeGeneratorRegistration(ResXGenerators.PublicResXGuid, ResXGenerators.PublicResXGeneratorName, ResXGenerators.PublicResXGeneratorName, @"{" + ProjectTypeGuid + @"}", GeneratesDesignTimeSource = true)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
