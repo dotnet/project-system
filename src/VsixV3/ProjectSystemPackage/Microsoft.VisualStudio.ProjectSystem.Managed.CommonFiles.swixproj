@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Package Include="Microsoft.VisualStudio.ProjectSystem.CommonFiles.swr" />
+    <Package Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swr" />
   </ItemGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
