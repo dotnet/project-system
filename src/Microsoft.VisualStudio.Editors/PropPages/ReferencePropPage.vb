@@ -774,8 +774,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                SR.GetString(SR.PropPage_ImportedNamespacesTitle),
-                SR.GetString(SR.PropPage_ComputingReferencedNamespacesMessage),
+                SR.GetString(SR.PropPage_CurrentImportsTitle),
+                SR.GetString(SR.PropPage_ComputingCurrentImportsMessage),
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -800,8 +800,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim compilation = compilationTask.Result
                         Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
                         If (compilationOptions IsNot Nothing) Then
-                            Dim globalImports = compilationOptions.GlobalImports.ToList()
-                            For Each globalImport As GlobalImport In globalImports
+                            For Each globalImport In compilationOptions.GlobalImports
                                 CurrentImportNames.Add(globalImport.Name)
                             Next
                             CurrentImportNames.Sort(CaseInsensitiveComparison.Comparer)

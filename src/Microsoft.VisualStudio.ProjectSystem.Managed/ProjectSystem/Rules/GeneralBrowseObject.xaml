@@ -82,7 +82,6 @@
         <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
     </EnumProperty>
     <StringProperty Name="ReferencePath" DisplayName="Reference Path"/>
-    <StringListProperty Name="AvailablePlatforms" Separator="," Visible="False" />
     <StringProperty Name="FileName" DisplayName="Project File" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
