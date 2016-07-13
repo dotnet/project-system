@@ -14,14 +14,16 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName, @"{" + ProjectTypeGuid + @"}", GeneratesDesignTimeSource = true)]
-    [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName, @"{" + ProjectTypeGuid + @"}", GeneratesDesignTimeSource = true)]
+    [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
+        SingleFileGenerators.ResXDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
+    [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
+        SingleFileGenerators.PublicResXDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.TextTemplatingFileGeneratorGuid, SingleFileGenerators.TextTemplatingFileGenerator,
-        ProjectTypeGuid, GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.TextTemplatingFileGeneratorDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.TextTemplatingFilePreprocessorGuid, SingleFileGenerators.TextTemplatingFilePreprocessor,
-        ProjectTypeGuid, GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.TextTemplatingFilePreprocessorDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
     [GeneratorExtensionRegistration(SingleFileGenerators.TextTemplatingFileGeneratorExtension,
-        SingleFileGenerators.TextTemplatingFileGenerator, ProjectTypeGuid)]
+        SingleFileGenerators.TextTemplatingFileGenerator, "{" + ProjectTypeGuid + "}")]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";

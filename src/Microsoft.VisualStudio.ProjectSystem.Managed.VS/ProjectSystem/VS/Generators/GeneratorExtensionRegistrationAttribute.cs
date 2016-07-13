@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
     {
         private readonly string _extension;
         private readonly string _generator;
-        private readonly Guid _contextGuid;
+        private readonly string _contextGuid;
 
         public GeneratorExtensionRegistrationAttribute(string extension, string generator, string contextGuid)
         {
@@ -21,8 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             _extension = extension;
             _generator = generator;
-            if (!Guid.TryParse(contextGuid, out _contextGuid))
-                throw new ArgumentException($"{contextGuid} is not a valid GUID!", contextGuid);
+            _contextGuid = contextGuid;
         }
 
         public override void Register(RegistrationContext context)
