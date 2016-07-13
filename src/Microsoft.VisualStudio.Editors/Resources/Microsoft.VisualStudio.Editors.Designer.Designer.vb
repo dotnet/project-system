@@ -2693,11 +2693,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Computing current imports....
+        '''</summary>
+        Friend Shared ReadOnly Property PropPage_ComputingCurrentImportsMessage() As String
+            Get
+                Return ResourceManager.GetString("PropPage_ComputingCurrentImportsMessage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Computing referenced namespaces....
         '''</summary>
         Friend Shared ReadOnly Property PropPage_ComputingReferencedNamespacesMessage() As String
             Get
                 Return ResourceManager.GetString("PropPage_ComputingReferencedNamespacesMessage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Current Imports.
+        '''</summary>
+        Friend Shared ReadOnly Property PropPage_CurrentImportsTitle() As String
+            Get
+                Return ResourceManager.GetString("PropPage_CurrentImportsTitle", resourceCulture)
             End Get
         End Property
         
@@ -4220,7 +4238,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("SD_ComboBoxItem_WebUserScope", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Setting.
         '''</summary>
@@ -4229,7 +4247,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("SD_DefaultSettingName", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Description of the setting..
         '''</summary>

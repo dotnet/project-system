@@ -1927,4 +1927,10 @@ Do you want to update the value in the .settings file?</value>
   <data name="SD_DefaultSettingName" xml:space="preserve">
     <value>Setting</value>
   </data>
+  <data name="PropPage_ComputingCurrentImportsMessage" xml:space="preserve">
+    <value>Computing current imports...</value>
+  </data>
+  <data name="PropPage_CurrentImportsTitle" xml:space="preserve">
+    <value>Current Imports</value>
+  </data>
 </root>
