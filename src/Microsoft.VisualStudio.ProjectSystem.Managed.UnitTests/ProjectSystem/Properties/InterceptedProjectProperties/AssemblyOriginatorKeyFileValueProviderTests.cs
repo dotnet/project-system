@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             string keyFileName = "KeyFile.snk";
             string keyFileFullPath = $@"{projectFolder}\{keyFileName}";
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndGetSet(new Dictionary<string, string>() {
+                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
                     { AssemblyOriginatorKeyFilePropertyName, keyFileFullPath }
                 });
 

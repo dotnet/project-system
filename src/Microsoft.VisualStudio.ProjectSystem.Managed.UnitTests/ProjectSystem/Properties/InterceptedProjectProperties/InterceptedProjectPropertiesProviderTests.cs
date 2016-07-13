@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task VerifyInterceptedPropertiesProviderAsync()
         {
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndGetSet(new Dictionary<string, string>() {
+                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
                     { MockPropertyName, "DummyValue" }
                 });
             

@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public void Constructor_NullUnconfiguredProject_ThrowsArgumentNullException()
         {
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertyAndSet("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
+                .MockWithPropertyAndValue("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertyAndSet("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
+                .MockWithPropertyAndValue("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
