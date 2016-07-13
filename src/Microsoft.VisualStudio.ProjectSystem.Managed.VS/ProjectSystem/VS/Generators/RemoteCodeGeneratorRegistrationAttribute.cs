@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
@@ -33,18 +29,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             if (generatorGuid == null)
                 throw new ArgumentNullException("generatorGuid");
+            if (generatorClassName == null)
+                throw new ArgumentNullException("generatorClassName");
             if (generatorName == null)
                 throw new ArgumentNullException("generatorName");
-            if (generatorClassName == null)
-                throw new ArgumentException("generatorClassName");
             if (contextGuid == null)
                 throw new ArgumentNullException("contextGuid");
 
             _contextGuid = contextGuid;
             _generatorName = generatorName;
             _generatorRegKeyName = generatorClassName;
-            _generatorGuid = new Guid(generatorGuid);
+            if (!Guid.TryParse(generatorGuid, out _generatorGuid))
+                throw new ArgumentException($"{generatorGuid} is not a valid GUID!", generatorGuid);
         }
+
+        public RemoteCodeGeneratorRegistrationAttribute(string generatorGuid, string generatorClassName, string contextGuid) : this(generatorGuid, generatorClassName, generatorClassName, contextGuid) { }
 
         /// <summary>
         /// Get the Guid representing the project type

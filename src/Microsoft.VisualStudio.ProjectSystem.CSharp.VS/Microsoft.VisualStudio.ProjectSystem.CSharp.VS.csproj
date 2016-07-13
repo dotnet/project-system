@@ -44,8 +44,6 @@
     <Compile Include="Packaging\CSharpProjectSystemPackage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
-    <Compile Include="ProjectSystem\VS\Generators\ResXGenerators.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPage.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProvider.cs" />
     <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProvider.cs" />

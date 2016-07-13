@@ -30,6 +30,9 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\SingleFileGenerators.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
