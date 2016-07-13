@@ -50,6 +50,7 @@
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
+    <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
     <Compile Include="Mocks\IOptionsSettingsFactory.cs" />
     <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
