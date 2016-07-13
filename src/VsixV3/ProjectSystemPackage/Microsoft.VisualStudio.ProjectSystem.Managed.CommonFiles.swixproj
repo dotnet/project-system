@@ -8,7 +8,7 @@
     <OutputLocalized>false</OutputLocalized>
     <OutputType>vsix</OutputType>
     <IsPackage>true</IsPackage>
-    <OutputName>Microsoft.VisualStudio.ProjectSystem.CommonFiles</OutputName>
+    <OutputName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</OutputName>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
