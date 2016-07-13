@@ -32,13 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             Assert.Throws<ArgumentNullException>("contextGuid", () => new GeneratorExtensionRegistrationAttribute(".resx", "ResXFileCodeGenerator", null));
         }
 
-        [Fact]
-        public void GeneratorExtensionRegistrationAttribute_BadGuidAsContextGuid_ThrowsArgument()
-        {
-            Assert.Throws<ArgumentException>(() => new GeneratorExtensionRegistrationAttribute(".resx", "ResXFileCodeGenerator",
-                "Not a guid"));
-        }
-
         [Theory]
         [InlineData(".resx", "ResXCodeFileGenerator", testGuid)]
         [InlineData(".resx",  "PublicResXCodeFileGenerator", testGuid2)]
@@ -50,8 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var createdKey = "";
             var createdSubkey = "";
             object subkeyValue = "";
-            Guid parsedGuid;
-            Guid.TryParse(contextGuid, out parsedGuid);
 
             var registration = RegistrationContextFactory.CreateInstance(key =>
             {
@@ -68,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             attr.Register(registration);
 
             Assert.Equal(1, numTimesCreateKeyCalled);
-            Assert.Equal($"Generators\\{parsedGuid}\\{extension}", createdKey);
+            Assert.Equal($"Generators\\{contextGuid}\\{extension}", createdKey);
             Assert.Equal(1, numTimesSetupValueCalled);
             Assert.Equal(string.Empty, createdSubkey);
             Assert.Equal(generator, subkeyValue);
