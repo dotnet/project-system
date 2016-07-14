@@ -7,10 +7,10 @@ using Microsoft.CodeAnalysis.Text;
 using Xunit;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [ProjectSystemTrait]
-    public class RenamerTests
+    public class SimpleRenamerTests
     {
         [Theory]
         [InlineData("class Foo{}", "Foo.cs", "Bar.cs")]
