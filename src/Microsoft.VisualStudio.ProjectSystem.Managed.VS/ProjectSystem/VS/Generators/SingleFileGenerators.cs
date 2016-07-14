@@ -13,6 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public const string ResXGeneratorName = "ResXFileCodeGenerator";
         public const string ResXGuid = "c77981ec-ba19-3348-878f-6f88745a251e";
         public const string ResXDescription = "Microsoft ResX File Code Generator";
+        public const string PublicVbResXGeneratorName = "PublicVbMyResourcesResXFileCodeGenerator";
+        public const string PublicVbResXGeneratorGuid = "{74d398e9-7cc3-4ff2-9a4d-acd177f40b58}";
+        public const string PublicVbResXGeneratorDescription = "Microsoft Visual Basic Primary My.Resources ResX File Code Generator (public cass)";
+        public const string VbResXGeneratorName = "VbMyResourcesResXFileCodeGenerator";
+        public const string VbResXGeneratorGuid = "{0452cd78-e6bf-4d67-848b-994dce92a503}";
+        public const string VbResXGeneratorDescription = "Microsoft Visual Basic Primary My.Resources ResX File Code Generator";
 
         // TextTemplating Code Generators
 
