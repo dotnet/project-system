@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             properties.SetPropertyValueAsync("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
 
             // verify all the setups
-            delegatePropertiesMock.VerifyAll();
+            delegatePropertiesMock.Verify(p => p.SetPropertyValueAsync("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776", null));
         }
 
         [Fact]
