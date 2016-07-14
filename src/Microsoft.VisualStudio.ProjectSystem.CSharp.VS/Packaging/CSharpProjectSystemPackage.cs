@@ -15,20 +15,21 @@ namespace Microsoft.VisualStudio.Packaging
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
-        SingleFileGenerators.ResXDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
-        SingleFileGenerators.PublicResXDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.PublicResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.TextTemplatingFileGeneratorGuid, SingleFileGenerators.TextTemplatingFileGenerator,
-        SingleFileGenerators.TextTemplatingFileGeneratorDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.TextTemplatingFileGeneratorDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.TextTemplatingFilePreprocessorGuid, SingleFileGenerators.TextTemplatingFilePreprocessor,
-        SingleFileGenerators.TextTemplatingFilePreprocessorDescription, "{" + ProjectTypeGuid + "}", GeneratesDesignTimeSource = true)]
+        SingleFileGenerators.TextTemplatingFilePreprocessorDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [GeneratorExtensionRegistration(SingleFileGenerators.TextTemplatingFileGeneratorExtension,
-        SingleFileGenerators.TextTemplatingFileGenerator, "{" + ProjectTypeGuid + "}")]
+        SingleFileGenerators.TextTemplatingFileGenerator, ProjectTypeGuidFormatted)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
         public const string LegacyProjectTypeGuid = "FAE04EC0-301F-11d3-BF4B-00C04F79EFBC";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
+        private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
 
         public CSharpProjectSystemPackage()
         {
