@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies
 {
@@ -18,7 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies
         }
 
         // For the SimpleRename, it can attempt to handle any situtation
-        public override bool CanHandleRename(string oldFileName, string newFileName) => true;
+        public override bool CanHandleRename(string oldFileName, string newFileName)
+        {
+            var oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
+            var newNameBase = Path.GetFileNameWithoutExtension(newFileName);
+            return SyntaxFacts.IsValidIdentifier(oldNameBase) && SyntaxFacts.IsValidIdentifier(newNameBase);
+        }
 
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName)
         {

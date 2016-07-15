@@ -8,9 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal sealed class Renamer
     {
-        // Characters we consider for Foo.Bar.cs renaming
-        private static readonly char[] s_separatorChars = new[] { '+', '.' };
-
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
         private readonly IUserNotificationServices _userNotificationServices;
