@@ -10,5 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     internal static class CSharpProjectDesignerPage
     {
         public static readonly ProjectDesignerPageMetadata Application = new ProjectDesignerPageMetadata(new Guid("{5E9A8AC2-4F34-4521-858F-4C248BA31532}"), pageOrder:0, hasConfigurationCondition:false);
+        public static readonly ProjectDesignerPageMetadata Signing = new ProjectDesignerPageMetadata(new Guid("{F8D6553F-F752-4DBF-ACB6-F291B744A792}"), pageOrder: 1, hasConfigurationCondition: false);
     }
 }

@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 
 // We register ourselves as a new CPS "project type", as well as setting ourselves as the prefered project type for the legacy C# project type.
 [assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid)]
-[assembly: PreferedProjectFactoryRegistration(originalProjectTypeGuid: CSharpProjectSystemPackage.LegacyProjectTypeGuid, preferedProjectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid)]
 
 namespace Microsoft.VisualStudio.Packaging
 {

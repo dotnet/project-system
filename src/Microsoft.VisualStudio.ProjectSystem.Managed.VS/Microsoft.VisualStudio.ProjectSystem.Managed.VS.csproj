@@ -33,11 +33,17 @@
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGenerators.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommand.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\IPhysicalProjectTreeExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\IProjectTreeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
     <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
@@ -46,7 +52,6 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.cs" />
     <Compile Include="ProjectSystem\VS\IServiceProviderExtensions.cs" />
-    <Compile Include="ProjectSystem\VS\PreferedProjectFactoryRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
