@@ -55,6 +55,9 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\AbstractRenameStrategy.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\IRenameStrategy.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />

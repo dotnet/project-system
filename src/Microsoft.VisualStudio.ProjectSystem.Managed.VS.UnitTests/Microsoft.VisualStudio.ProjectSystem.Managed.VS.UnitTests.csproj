@@ -76,7 +76,7 @@
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
-    <Compile Include="ProjectSystem\VS\RenamerTests.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
