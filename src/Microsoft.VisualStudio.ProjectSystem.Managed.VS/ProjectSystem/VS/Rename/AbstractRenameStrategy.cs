@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using System.Globalization;
 using Microsoft.CodeAnalysis.Editing;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     internal abstract class AbstractRenameStrategy : IRenameStrategy
     {

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies;
+using Microsoft.VisualStudio.ProjectSystem.VS.Rename;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -43,11 +43,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             Document oldDocument = (from d in _project.Documents where StringComparers.Paths.Equals(d.FilePath, _oldFilePath) select d).FirstOrDefault();
 
+            if (oldDocument == null)
+                return;
+
             if (args.Kind == WorkspaceChangeKind.DocumentAdded && args.ProjectId == _project.Id)
             {
                 Project project = (from p in args.NewSolution.Projects where p.Id.Equals(_project.Id) select p).FirstOrDefault();
-                Document addedDocument = (from d in project.Documents where d.Id.Equals(args.DocumentId) select d).FirstOrDefault();
-                if (StringComparers.Paths.Equals(addedDocument.FilePath, _newFilePath))
+                Document addedDocument = (from d in project?.Documents where d.Id.Equals(args.DocumentId) select d).FirstOrDefault();
+
+                if (addedDocument != null && StringComparers.Paths.Equals(addedDocument.FilePath, _newFilePath))
                 {
                     _docAdded = true;
                 }

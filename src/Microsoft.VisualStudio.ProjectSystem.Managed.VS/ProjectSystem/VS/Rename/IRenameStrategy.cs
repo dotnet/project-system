@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     /// <summary>
     /// General abstraction of rename strategies, allowing the Renamer to decide what type of renaming strategy is appropriate

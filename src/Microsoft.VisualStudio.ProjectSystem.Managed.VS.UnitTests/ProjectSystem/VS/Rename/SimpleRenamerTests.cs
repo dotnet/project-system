@@ -61,6 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [InlineData("partial class Foo1 {} partial class Foo2 {}", "Foo.cs", "Bar.cs")]
         [InlineData("struct Foo1 { decimal price; string title; string author;}", "Foo.cs", "Bar.cs")]
         [InlineData("enum Foo1 { None, enum1, enum2, enum3, enum4 };", "Foo.cs", "Bar.cs")]
+        [InlineData("class Foo{}", "Bar.cs", "Foo`.cs")]
+        [InlineData("class Foo{}", "Bar.cs", "Foo@.cs")]
         public async Task Rename_Symbol_Should_Not_HappenAsync(string soureCode, string oldFilePath, string newFilePath)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();

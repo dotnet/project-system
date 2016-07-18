@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.RenameStrategies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     internal sealed class SimpleRenameStrategy : AbstractRenameStrategy
     {
