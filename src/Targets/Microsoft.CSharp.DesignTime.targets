@@ -12,7 +12,7 @@
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
 
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
-    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
+    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
