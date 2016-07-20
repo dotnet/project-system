@@ -23,19 +23,19 @@
   
   <!-- CPS Project Properties -->
   <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
   
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
   
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\ConfigurationGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>
