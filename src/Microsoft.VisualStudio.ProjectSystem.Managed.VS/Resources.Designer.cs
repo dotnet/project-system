@@ -69,7 +69,6 @@ namespace Microsoft.VisualStudio {
             }
         }
         
-
         
         /// <summary>
         ///   Looks up a localized string similar to Assemblies.
