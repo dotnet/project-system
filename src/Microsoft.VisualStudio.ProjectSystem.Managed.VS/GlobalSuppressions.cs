@@ -13,3 +13,10 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.AbstractAddClassProjectCommand")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.AddClassProjectCSharpCommand")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.AddClassProjectVBCommand")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.NuGetDependenciesSubTreeProvider")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesGraphProjectContextProvider")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.ProjectExportProvider")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesProjectTreeProvider")]
+
+
+

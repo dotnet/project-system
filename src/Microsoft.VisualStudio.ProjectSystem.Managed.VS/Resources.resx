@@ -120,6 +120,30 @@
   <data name="ClassTemplateName" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (Loading...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(Errors - see Error List)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="GraphNodeCategoryDependency" xml:space="preserve">
+    <value>Dependency</value>
+  </data>
+  <data name="NoItemTypeForRule" xml:space="preserve">
+    <value>Expected to find item type for rule {0}. The rule file is either missing or malformed.</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projects</value>
+  </data>
   <data name="RenameSymbolFailed" xml:space="preserve">
     <value>Renaming the code element {0} failed.</value>
   </data>
