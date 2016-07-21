@@ -50,6 +50,8 @@
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
+    <Compile Include="Mocks\RegistrationContextFactory.cs" />
+    <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
     <Compile Include="Mocks\IOptionsSettingsFactory.cs" />
     <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
@@ -63,12 +65,17 @@
     <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
-    <Compile Include="ProjectSystem\VS\RenamerTests.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />

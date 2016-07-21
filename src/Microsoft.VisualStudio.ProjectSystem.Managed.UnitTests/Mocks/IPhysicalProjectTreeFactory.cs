@@ -6,9 +6,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IPhysicalProjectTreeFactory
     {
-        public static IPhysicalProjectTree Create()
+        public static IPhysicalProjectTree Create(IProjectTreeProvider provider = null)
         {
-            return Mock.Of<IPhysicalProjectTree>();
+            var mock = new Mock<IPhysicalProjectTree>();
+            mock.Setup(t => t.TreeProvider).Returns(provider ?? IProjectTreeProviderFactory.Create());
+            
+            return mock.Object;
         }
     }
 }
