@@ -35,7 +35,6 @@
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
     <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />

@@ -3,9 +3,8 @@
 using System.ComponentModel.Composition;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("TargetFramework")]
     internal sealed class TargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
