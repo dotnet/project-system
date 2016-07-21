@@ -46,7 +46,10 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectProperties.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IProjectFileInterceptingPropertyValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ProjectFileInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />

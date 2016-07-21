@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";
 
-        private InterceptedProjectPropertiesProvider CreateInstance(FrameworkName configuredTargetFramework)
+        private InterceptedProjectPropertiesProviderBase CreateInstance(FrameworkName configuredTargetFramework)
         {
             var data = new PropertyPageData()
             {
@@ -32,7 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             var targetFrameworkProvider = new TargetFrameworkValueProvider(properties);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
-            return new InterceptedProjectPropertiesProvider(delegateProvider, project, targetFrameworkProvider, providerMetadata);
+            var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                () => targetFrameworkProvider, providerMetadata) };
+            return new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, project, lazyArray);
         }
 
         [Fact]
