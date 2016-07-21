@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 using System;
 using System.IO;
 
+// CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
+// project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock
+// is fine but ConfigureAwait(false) will put us in a different thread and cause the lock-taking code to blow up.
+#pragma warning disable CA2007 // Do not directly await a Task
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest")]
     internal sealed class ApplicationManifestValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IProjectTreeService _projectTreeService;
 
         private const string NoManifestMSBuildProperty = "NoWin32Manifest";
         private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
@@ -20,13 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string DefaultManifestValue = "DefaultManifest";
 
         [ImportingConstructor]
-        public ApplicationManifestValueProvider(UnconfiguredProject unconfiguredProject, IProjectTreeService projectTreeService)
+        public ApplicationManifestValueProvider(UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(projectTreeService, nameof(projectTreeService));
 
             _unconfiguredProject = unconfiguredProject;
-            _projectTreeService = projectTreeService;
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return evaluatedPropertyValue;
             }
 
-            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty).ConfigureAwait(false);
+            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty);
             if (noManifestPropertyValue?.Equals("true", StringComparison.InvariantCultureIgnoreCase) == true)
             {
                 return NoManifestValue;
@@ -68,17 +70,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
             if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(false);
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(false);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
             else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(false);
-                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true").ConfigureAwait(false);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
             else
             {
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(false);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
 
                 // If we can make the path relative to the project folder do so. Otherwise just use the given path.
                 string relativePath;
@@ -92,9 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     returnValue = unevaluatedPropertyValue;
                 }
             }
-
-            // Push the changes so that they take effect immediately, since the property pages try to read the value right after the set.
-            await _projectTreeService.PublishLatestTreeAsync().ConfigureAwait(false);
 
             return returnValue;
         }
