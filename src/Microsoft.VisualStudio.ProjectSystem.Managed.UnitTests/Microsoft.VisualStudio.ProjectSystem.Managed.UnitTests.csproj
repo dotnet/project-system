@@ -70,6 +70,7 @@
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeServiceTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\Properties\ApplicationManifestValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderTests.cs" />
