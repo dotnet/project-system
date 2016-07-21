@@ -51,7 +51,7 @@
   </StringProperty>
   <StringProperty Name="Win32ResourceFile" DisplayName="Win32 Resource File">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," Visible="False" />
