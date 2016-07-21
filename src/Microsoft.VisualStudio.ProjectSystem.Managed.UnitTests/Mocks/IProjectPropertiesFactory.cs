@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return MockWithPropertiesAndValues(new Dictionary<string, string>() { { propertyName, setValue } });
         }
-        
+
         public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string> propertyNameAndValues)
         {
             var mock = MockWithProperties(propertyNameAndValues.Keys);
