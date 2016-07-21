@@ -26,7 +26,11 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-  
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)CSharp.CscCommandLineArgs.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
