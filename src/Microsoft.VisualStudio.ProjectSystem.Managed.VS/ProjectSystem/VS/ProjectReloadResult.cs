@@ -6,11 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     // <summary>
     // Represents the result of an attempt to silently load the project
     // </summary>
-    internal enum ReloadProjectResult
+    internal enum ProjectReloadResult
     {
         NoAction,
         ReloadCompleted,
-        ReloadRequiredProjectDirty,    // A complete reload of the project is required beccause the project is dirty in memory
-        ReloadRequired,                // A complete reload of the project is required for some other reason - usually msbuild level reload failed
+        ReloadFailedProjectDirty,    // A complete reload of the project is required beccause the project is dirty in memory
+        ReloadFailed,                // A complete reload of the project is required for some other reason - usually msbuild level reload failed
     }
 }

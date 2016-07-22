@@ -130,6 +130,9 @@
     </PropertyGroup>
   </Target>
 
+  <PropertyGroup Condition="'$(ProjectLanguage)' == ''">
+    <ProjectLanguage>CSharp</ProjectLanguage>
+  </PropertyGroup>
   <Choose>
     <When Condition="'$(ProjectLanguage)' == 'VB'">
       <PropertyGroup>

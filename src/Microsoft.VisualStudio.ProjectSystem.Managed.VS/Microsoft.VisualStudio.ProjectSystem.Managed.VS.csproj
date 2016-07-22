@@ -30,8 +30,11 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
-    <Compile Include="ProjectSystem\VS\ReloadProjectResult.cs" />
-    <Compile Include="ProjectSystem\VS\ProjectReloadHandler.cs" />
+    <Compile Include="ProjectSystem\VS\IProjectReloadManager.cs" />
+    <Compile Include="ProjectSystem\VS\IReloadableProject.cs" />
+    <Compile Include="ProjectSystem\VS\ProjectReloadManager.cs" />
+    <Compile Include="ProjectSystem\VS\ProjectReloadResult.cs" />
+    <Compile Include="ProjectSystem\VS\ReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
@@ -49,6 +52,10 @@
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
+      <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxResult.cs" />
     <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
@@ -79,7 +86,22 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="warning.ico" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
