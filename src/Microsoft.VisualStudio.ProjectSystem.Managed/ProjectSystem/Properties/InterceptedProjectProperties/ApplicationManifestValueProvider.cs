@@ -13,7 +13,7 @@ using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("ApplicationManifest")]
+    [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationManifestValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly UnconfiguredProject _unconfiguredProject;

@@ -3,6 +3,8 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.Immutable;
+using Microsoft.Build.Execution;
+using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -17,9 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public InterceptedProjectPropertiesProviderBase(
             IProjectPropertiesProvider provider,
+            IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject unconfiguredProject,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider, unconfiguredProject)
+            : base(provider, instanceProvider, unconfiguredProject)
         {
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }

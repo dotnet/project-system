@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             var project = IUnconfiguredProjectFactory.Create();
             var properties = ProjectPropertiesFactory.Create(project, data);
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
                 .MockWithProperty(TargetFrameworkPropertyName);
@@ -34,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
             var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 () => targetFrameworkProvider, providerMetadata) };
-            return new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, project, lazyArray);
+            return new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
         }
 
         [Fact]

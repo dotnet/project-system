@@ -30,8 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 onGetUnevaluatedPropertyValue: (v, p) => { getUnevaluatedInvoked = true; return v; },
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
-            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, unconfiguredProject, new[] { mockPropertyProvider });
+            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
