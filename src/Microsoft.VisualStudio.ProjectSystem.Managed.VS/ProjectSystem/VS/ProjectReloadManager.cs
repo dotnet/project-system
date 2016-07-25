@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -26,7 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, IVsSolutionEvents, IVsSolutionEvents4
     {
         private readonly IServiceProvider _serviceProvider;
-        public IProjectThreadingService _threadHandling;
+        private IProjectThreadingService _threadHandling;
+        private IUserNotificationServices _userNotificationServices;
 
         private uint  _solutionEventsCookie = VSConstants.VSCOOKIE_NIL;
         private ITaskDelayScheduler _reloadDelayScheduler;
@@ -39,11 +41,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private List<IReloadableProject> _changedProjects = new List<IReloadableProject>();
 
         [ImportingConstructor]
-        public ProjectReloadManager(IProjectThreadingService threadHandling, [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+        public ProjectReloadManager(IProjectThreadingService threadHandling, [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IUserNotificationServices userNotificationServices)
             : base(threadHandling.JoinableTaskContext)
         {
             _threadHandling = threadHandling;
             _serviceProvider = serviceProvider;
+            _userNotificationServices = userNotificationServices;
         }
 
         /// <summary>
@@ -261,21 +264,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         switch (dlg.SelectedAction)
                         {
                             case MultiChoiceMsgBoxResult.Cancel:
+                            {
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button1:
+                            {
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button2:
-                                SaveProject(failure.Item1);
+                            {
+                                int hr = SaveProject(failure.Item1);
+                                if(ErrorHandler.Failed(hr))
+                                {
+                                    _userNotificationServices.ReportErrorInfo(hr);
+                                }
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button3:
+                            {
                                 ReloadProjectInSolution(failure.Item1);
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button4:
-                                if(ErrorHandler.Succeeded(SaveAsProject(failure.Item1)))
+                            {
+                                int hr = SaveAsProject(failure.Item1);
+                                if(ErrorHandler.Succeeded(hr))
                                 {
                                     ReloadProjectInSolution(failure.Item1);
                                 }
+                                else
+                                {
+                                    _userNotificationServices.ReportErrorInfo(hr);
+                                }
                                 break;
+                            }
                         }
                     }
                 }
@@ -350,13 +372,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ErrorHandler.ThrowOnFailure(hr);
         }
 
-        int SaveProject(IReloadableProject project)
+        /// <summary>
+        /// Saves just the project file (does not save dirty documents)
+        /// </summary>
+       int SaveProject(IReloadableProject project)
         {
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-            __VSSLNSAVEOPTIONS saveOpts = __VSSLNSAVEOPTIONS.SLNSAVEOPT_SaveIfDirty;
-            return solution.SaveSolutionElement((uint)saveOpts, project.VsHierarchy, VSConstants.VSITEMID_ROOT);
+            __VSSLNSAVEOPTIONS saveOpts = __VSSLNSAVEOPTIONS.SLNSAVEOPT_SkipDocs;
+
+            IVsHierarchy hier;
+            uint itemid;
+            IVsPersistDocData docData;
+            uint docCookie;
+            VsShellUtilities.GetRDTDocumentInfo(_serviceProvider, project.ProjectFile, out hier, out itemid, out docData, out docCookie);
+            int hr = solution.SaveSolutionElement((uint)saveOpts, project.VsHierarchy, docCookie);
+            return hr;
         }
 
+        /// <summary>
+        /// Uses SaveAs to save a copy of the project somewhere else.
+        /// </summary>
         int SaveAsProject(IReloadableProject project)
         {
             // Save as needs to go through IPersistFileFormat
