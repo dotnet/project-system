@@ -5,9 +5,10 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [Export("UserFileWithInterception", typeof(IProjectPropertiesProvider))]
+    [Export(typeof(IProjectPropertiesProvider))]
     [ExportMetadata("Name", "UserFileWithInterception")]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    class UserFileInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
+    internal sealed class UserFileInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
     {
         [ImportingConstructor]
         public UserFileInterceptedProjectPropertiesProvider(
