@@ -1726,9 +1726,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  (other than cancel/checkout exceptions).
                     Descriptor.SetValue(Component, Value)
 
-                    ' Workaround until CPS is fixed to fire the value changed event on Descriptor.SetValue
-                    _valueChangedWasFired = Value.Equals(Descriptor.GetValue(Component))
-
                     'If we made it here, either the value was successfully changed, or
                     '  the set was canceled by the user in a checkout dialog, etc.
                     If _valueChangedWasFired Then
