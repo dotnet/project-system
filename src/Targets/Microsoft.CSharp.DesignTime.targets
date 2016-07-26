@@ -42,5 +42,9 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\ConfigurationGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\WindowsLocalDebugger.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
   </ItemGroup>
 </Project>

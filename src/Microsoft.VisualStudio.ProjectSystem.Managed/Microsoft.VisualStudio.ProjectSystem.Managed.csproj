@@ -148,6 +148,10 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\WindowsLocalDebugger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </XamlPropertyRule>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

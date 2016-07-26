@@ -95,9 +95,4 @@
     <StringProperty Name="OneAppCapabilities" Visible="False" />
     <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices."/>
     <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />
-    <StringProperty Name="LocalDebuggerCommand">
-        <StringProperty.DataSource>
-            <DataSource Persistence="UserFileWithInterception" />
-        </StringProperty.DataSource>
-    </StringProperty>
 </Rule>
