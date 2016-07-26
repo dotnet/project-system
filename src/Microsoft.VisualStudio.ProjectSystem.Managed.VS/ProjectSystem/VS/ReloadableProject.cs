@@ -15,10 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     // <summary>
     // ProjectReloadHandler
     //
-    // Autoloaded component which monitors the file system for changes to the project file and updates the project with the changes
-    // without actually doing a project reload. It uses the VS file change service to monitor the project file and also listens to 
-    // solution events so that it can detect when a project file rename occurs and it can start watching a new file.
-    // </summary>
+    // Auto-loaded component which represents a project which can auto-reload without going through the normal solution level reload. Upon load it 
+    // registers itself with the IProjectReloadManager which is the component which monitors for file changes and calls back on the this object to perform
+    // the actual reload operation. 
     [Export(typeof(ReloadableProject))]
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
@@ -53,8 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Autoload entry point. Once the project factory has returned to VS, the component will be loaded by CPS. There is no
-        /// expectation that this component will be imported by 
+        /// Auto-load entry point. Once the project factory has returned to VS, the component will be loaded by CPS. There is no
+        /// expectation that this component will be imported by any other component
         /// </summary>
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo("HandlesOwnReload")]
@@ -81,12 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         /// <summary>
         /// Function called after a project file change has been detected which pushes the changes to CPS. The return value indicates the status of the 
-        /// reload. ifrefresh of the msbuild contens was s returns false, it means the reload was not
-        /// done or not necssary and a solution level reload is necessary.
+        /// reload. 
         /// </summary>
         public async Task<ProjectReloadResult> ReloadProjectAsync()
         {
-            // We need a write lock to modify the project file contents. Note that all awaits while holdimg the lock need
+            // We need a write lock to modify the project file contents. Note that all awaits while holding the lock need
             // to capture the context as the project lock service has a special execution context which ensures only a single
             // thread has access.
             using (var writeAccess = await _projectVsServices.ProjectLockService.WriteLockAsync())
@@ -102,9 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     // What we need to do is load the one on disk. This accomplishes two things: 1) verifies that at least the msbuild is OK. If it isn't
                     // we want to let the normal solution reload occur so that the user sees the failure, and 2) it allows us to clear the current project
-                    // and do a deepcopy from the newly loaded one to the original - replacing its contents. Note that the Open call is cached so that if
+                    // and do a deep copy from the newly loaded one to the original - replacing its contents. Note that the Open call is cached so that if
                     // the project is already in a collection, it will just return the cached one. For this reason, and the fact we don't want the project to
-                    // appear in the global project collection, the file is opened in a new collection which we will discard wnen done.
+                    // appear in the global project collection, the file is opened in a new collection which we will discard when done.
                     try
                     {
                         ProjectCollection thisCollection = new ProjectCollection();
@@ -127,8 +125,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     }
                     catch (Exception ex)
                     {
-                        // Any other exception likely mean the msbuildProject is not in a good state. Example, DeepCopyFrom failed after 
-                        // RemoveAll children. The only safe thing to do at this point is to reload the project in the solution
+                        // Any other exception likely mean the msbuildProject is not in a good state. Example, DeepCopyFrom failed.
+                        // The only safe thing to do at this point is to reload the project in the solution
+                        // TODO: should we have an additional return value here to indicate that the existing project could be in a bad
+                        // state and the reload needs to happen without the user being able to block it?
                         System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
                         return ProjectReloadResult.ReloadFailed;
                     }
@@ -142,6 +142,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             
             return ProjectReloadResult.ReloadCompleted;
         }
-
     }
 }

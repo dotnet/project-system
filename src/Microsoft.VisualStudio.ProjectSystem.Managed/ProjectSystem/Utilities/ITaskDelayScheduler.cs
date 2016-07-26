@@ -11,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     {
         /// <summary>
         /// Schedules a task to be run. Note that the returning Task represents
-        /// the current scheduled task but not necessarily reprensent the task that
+        /// the current scheduled task but not necessarily represents the task that
         /// ends up doing the actual work. If another task is scheduled later which causes
-        /// the cancellation of the current scedules task, the caller will not know
-        /// and need to use that latest return value instead.
+        /// the cancellation of the current scheduled task, the caller will not know
+        /// and need to use that latest return task instead.
         /// </summary>
         JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall);
 

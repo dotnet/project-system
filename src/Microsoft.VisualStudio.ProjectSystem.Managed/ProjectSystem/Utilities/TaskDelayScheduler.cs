@@ -42,10 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
         /// <summary>
         /// Schedules a task to be run. Note that the returning Task represents
-        /// the current scheduled task but not necessarily reprensent the task that
+        /// the current scheduled task but not necessarily represents the task that
         /// ends up doing the actual work. If another task is scheduled later which causes
-        /// the cancellation of the current scedules task, the caller will not know
-        /// and need to use that latest return value instead.
+        /// the cancellation of the current scheduled task, the caller will not know
+        /// and need to use that latest returned task instead.
         /// </summary>
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall)
         {
@@ -94,8 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             {
                 // Sometimes the CTS from which the token was obtained is canceled and disposed of
                 // while we're still running this task. But it's OK, it basically means this task shouldn't 
-                // be running any more. There is nopoint throwing a canceled exception since the cancel is just
-                // a way of introducing the settling time - noone cares that it is being cancelled so just return.
+                // be running any more. There is no point throwing a canceled exception
                 return;
             }
 
@@ -104,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Clearsthe PendingUpdateTokenSource and if cancel is true cancels the token
+        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token
         /// </summary>
         private void ClearPendingUpdates(bool cancel)
         {
@@ -133,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Mechanism that ownsers can use to cancel any pending tasks.
+        /// Mechanism that owners can use to cancel pending tasks.
         /// </summary>
         public void CancelPendingUpdates()
         {

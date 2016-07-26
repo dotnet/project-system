@@ -2,25 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI;
-using System.IO;
-using System.Runtime.InteropServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     // <summary>
     // ProjectReloadManager
     //
-    // VS wide component which manages project reloads on behalf of projects. As projects are loaded they register with this component
+    // VS wide CPS component which manages project reloads on behalf of projects. As projects are loaded they register with this component
     // which will add that project to its list of watched projects. When the project file changes outside of VS, this object will call into the project to
-    // perform a silent reload. Using a cemtral objects allows batching of reload messages, especially when silent reloads fail due to problems with
-    // the project file, or the file in memory is dirty amd requires user intervention.
+    // perform a silent reload. Using a central object allows batching of reload messages, especially when silent reloads fail due to problems with
+    // the project file, or the file in memory is dirty requiring user intervention. It also permits handling scenarios such as automatically reloading the
+    // projects which fail the solution level reload, the next time the project file changes.
     // </summary>
     [Export(typeof(IProjectReloadManager))]
     [AppliesTo("HandlesOwnReload")]
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// IDispoable handler. Should only be called once
+        /// IDisposable handler. Should only be called once
         /// </summary>
         protected override async Task DisposeCoreAsync(bool initialized)
         {
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Called when the project file changes. In our case since we only watch one file with each cookie, the list of files
+        /// Called when one of the project files changes. In our case since only one file is watched with each cookie so the list of files
         /// should be one.
         /// </summary>
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] grfChange)
@@ -231,17 +231,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         /// <summary>
         /// Prompts once for all the projects 
-        /// For each dirty project it prompts first to see what the user action meeds to be amd then
-        /// reloads the project if desired. Other optioms are do nothing amd save as and then reload
+        /// For each dirty project it prompts first to see what the user action needs to be and then
+        /// reloads the project if desired. Other options are do nothing amd save as and then reload
         /// </summary>
-        /// <param name="failedProjects"></param>
         private void ProcessProjectReloadFailures(List<Tuple<IReloadableProject, ProjectReloadResult>> failedProjects)
         {
             if(failedProjects.Count == 0)
             {
                 return;
             }
-
 
             // Process each project. if the project is dirty in memory we need to prompt for each action. Non-dirty ones are
             // simply reloaded
@@ -349,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         /// <summary>
         /// Helper to use the solution to reload the project.
-        /// Reloading is managed via the ReloadItem() method of our parent hierarhcy(solution 
+        /// Reloading is managed via the ReloadItem() method of our parent hierarchy (solution 
         /// or solution folder).  So first we get our parent hierarchy and our itemid in the parent
         /// hierarchy. 
         /// </summary>
@@ -506,6 +504,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return VSConstants.S_OK;
         }
-
     }
 }
