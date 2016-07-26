@@ -120,8 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Marshal.Release(ObjPtr)
                     ObjPtr = IntPtr.Zero
                 End If
-            Catch ex As Exception
-                Debug.Fail("Failed to create VSTextBuffer Class. You need to check the guid is right?" + ex.ToString())
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
                 Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
             End Try
 
@@ -271,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim DocData As Object = Nothing
 
                 Dim CanceledAsBoolean As Boolean = False
-                CreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData, _
+                CreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
                         DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean)
 
                 If CanceledAsBoolean Then
@@ -395,8 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         If ((New IO.FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
-                    Catch ex As Exception
-                        Debug.Fail("Failed to get file read-only status")
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
                     End Try
                     Caption = DesignerLoader.GetEditorCaption(CaptionReadOnlyStatus)
 

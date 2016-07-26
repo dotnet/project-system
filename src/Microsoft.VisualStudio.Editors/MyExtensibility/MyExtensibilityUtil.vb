@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 outputAsmName.Name = inputAsmName.Name
                 outputAsmName.Version = inputAsmName.Version
                 Return outputAsmName.FullName
-            Catch ex As Exception When Not IsUnrecoverable(ex)
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(NormalizeAssemblyFullName), NameOf(MyExtensibilityUtil))
                 Return Nothing
             End Try
         End Function
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _assemblyIndependentList.Add(item)
             Else
                 If _assemblyDictionary Is Nothing Then
-                    _assemblyDictionary = New Dictionary(Of String, AssemblyVersionDictionary(Of T))( _
+                    _assemblyDictionary = New Dictionary(Of String, AssemblyVersionDictionary(Of T))(
                         System.StringComparer.OrdinalIgnoreCase)
                 End If
                 Dim asmVersionDictionary As AssemblyVersionDictionary(Of T) = Nothing
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
         End Sub
 
-        Private Sub ParseAssemblyFullName(ByVal assemblyFullName As String, _
+        Private Sub ParseAssemblyFullName(ByVal assemblyFullName As String,
                 ByRef assemblyName As String, ByRef assemblyVersion As Version)
 
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Dim asmName As New AssemblyName(assemblyFullName)
                     assemblyName = asmName.Name
                     assemblyVersion = asmName.Version
-                Catch ex As Exception When Not IsUnrecoverable(ex)
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ParseAssemblyFullName), NameOf(MyExtensibilityUtil))
                     assemblyName = Nothing
                     assemblyVersion = Nothing
                 End Try

@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PopulateIconList(FindIconsInProject, ApplicationIconCombobox, CurrentIconValue)
 
             'Now add the <browse> entry
-            If ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
+            If OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
                 ApplicationIconCombobox.Items.Add(m_IconBrowseText)
             End If
         End Sub
@@ -269,8 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                Debug.Fail("OnRootNamespaceChanged threw an exception: " & ex.ToString)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
             End Try
         End Sub
 
@@ -688,8 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
                     End If
 
-                Catch ex As Exception
-                    Common.RethrowIfUnrecoverable(ex)
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
                     If Not Me.ProjectReloadedDuringCheckout Then
                         ShowErrorMessage(ex)
                     End If

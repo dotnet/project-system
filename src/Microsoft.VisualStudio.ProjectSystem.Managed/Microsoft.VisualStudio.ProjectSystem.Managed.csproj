@@ -32,8 +32,24 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
+    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectProperties.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
@@ -77,6 +93,12 @@
     <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
+      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\None.cs">
+      <DependentUpon>None.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
@@ -96,6 +118,14 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>

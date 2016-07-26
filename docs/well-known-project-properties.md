@@ -4,7 +4,7 @@ There are two types of properties, items and item metadata that are stored in MS
 
 - [Build  Properties, Items and Item  Metadata](#build-properties-items-and-item-metadata)
 
-- [Designer Properties, Items and Item Metadata](#designer-properties-items-and-item-metadata)
+- [Design-Time Properties, Items and Item Metadata](#design-time-properties-items-and-item-metadata)
 
 ## __Build Properties, Items and Item Metadata__
 These properties, items and item metadata can be used to influence builds.
@@ -14,8 +14,8 @@ These properties, items and item metadata can be used to influence builds.
 #### __PreBuildEvent (string)__
 | Language      | Default            |
 |---------------| -------------------|
-| C#            | (empty)            |
-| Visual Basic  | (empty)            |
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
 
 Specifies commands to execute before the build starts.
 
@@ -29,8 +29,8 @@ Specifies commands to execute before the build starts.
 #### __PostBuildEvent (string)__
 | Language      | Default            |
 |---------------| -------------------|
-| C#            | (empty)            |
-| Visual Basic  | (empty)            |
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
 
 Specifies commands to excecute after the build ends. To control whether these commands are run on failed or update-to-date builds, set the _RunPostBuildEvent_ property.
 
@@ -63,10 +63,10 @@ Specifies the conditions for the command in _PostBuildEvent_ to run.
   </PropertyGroup>
 ```
 
-## __Designer Properties, Items and Item Metadata__
-These properties, items and item metadata are used for solely for Visual Studio and designer purposes, and have no influence on the resulting build.
+## __Design-Time Properties, Items and Item Metadata__
+These properties, items and item metadata are used for solely for Visual Studio and design-time purposes, and have no influence on the resulting build.
 
-### __Designer Properties__
+### __Design-Time Properties__
 
 #### __AppDesignerFolder (string)__
 
@@ -93,9 +93,50 @@ Specifies the name of the _Application Designer_ folder, which by default contai
 
 Specifies whether the contents of the _Application Designer_ folder are only visible when Solution Explorer's _Show All Files_ mode is turned on.
 
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | The __Application Designer__ folder's contents are only visible when Solution Explorer's _Show All Files__ mode is turned on.|
+| _false_ or empty ('') | The __Application Designer__ folder's contents are always visible.|
+
 ##### __Example__
 ``` XML
 <PropertyGroup>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles>true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
+<PropertyGroup>
+```
+
+#### __DesignTimeBuild (bool)__
+
+Specifies whether the current build is a [design-time build](design-time-builds.md).
+
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | The current build is a design-time build.|
+| _false_ or empty ('') | The current build is a normal build.|
+
+##### __Example__
+``` XML
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
+         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
+     </PropertyGroup>
+
+     ...
+  </Target>
+```
+
+#### __ProjectGuid (GUID) [deprecated]__
+
+| Language      | Default            |
+|---------------| -------------------|
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
+
+Specifies a unique key of a project within a Visual Studio solution. In the new [C# and Visual Basic project system](http://github.com/dotnet/roslyn-project-system), this is now optional.
+
+##### __Example__
+``` XML
+<PropertyGroup>
+    <ProjectGuid>{3B812812-7B6F-4327-948D-DF7CD21EFE4C}</ProjectGuid>
 <PropertyGroup>
 ```

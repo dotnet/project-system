@@ -251,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If MyApplicationProperties IsNot Nothing Then
                 Try
                     MyApplicationProperties.RunCustomTool()
-                Catch ex As Exception
+                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryRunCustomToolForMyApplication), NameOf(ApplicationPropPageInternalBase))
                     ShowErrorMessage(ex)
                 End Try
             End If
@@ -795,9 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Fail("Failed to get IVBEntryPointProvider")
                 End If
 
-            Catch ex As System.Exception
-                Common.RethrowIfUnrecoverable(ex)
-                Debug.Fail("An exception occurred in GetStartupForms() - using empty list" & vbCrLf & ex.ToString)
+            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
             End Try
 
             Return New String() {}
@@ -1014,14 +1012,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Try
                         MyApplicationProperties.CustomSubMain = True
                         UseApplicationFrameworkCheckBox.CheckState = CheckState.Unchecked
-                    Catch ex As Exception When Not Utils.IsUnrecoverable(ex)
+                    Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(PostInitPage), NameOf(ApplicationPropPageVBWinForms))
                     End Try
                 End If
             End If
 
             ' enable/disable controls based upon the current value of the project's
             '   OutputType (.exe, .dll...)
-            EnableControlSet(ProjectProperties.OutputType)
+            EnableControlSet(OutputTypeProperty)
 
             PopulateIconList(False)
             UpdateIconImage(False)
@@ -1473,7 +1471,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' add necessary references...
                     Try
                         AddRequiredReferences()
-                    Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex) AndAlso Not Common.Utils.IsCheckoutCanceledException(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms)) AndAlso
+                        Not Common.Utils.IsCheckoutCanceledException(ex)
+
                         ShowErrorMessage(ex)
                     End Try
 
@@ -1499,7 +1499,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 PopulateControlSet(outputType)
 
-            Catch ex As Exception When Not Common.Utils.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms))
                 ' There are lots of issues with check-out... I leave it to vswhidbey 475879
                 Dim appTypeValue As Object = Nothing
                 Dim CurrentAppType As ApplicationTypes = CType(appTypeValue, ApplicationTypes)
@@ -1547,8 +1547,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnterProjectCheckoutSection()
             Try
                 MyApplicationProperties.NavigateToEvents()
-            Catch ex As Exception
-                Common.RethrowIfUnrecoverable(ex)
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewCodeButton_Click), NameOf(ApplicationPropPageVBWinForms))
                 If Not Me.ProjectReloadedDuringCheckout Then
                     ShowErrorMessage(ex)
                 End If

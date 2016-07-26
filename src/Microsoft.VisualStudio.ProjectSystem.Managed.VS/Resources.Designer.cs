@@ -61,6 +61,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        internal static string ClassTemplateName {
+            get {
+                return ResourceManager.GetString("ClassTemplateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The project &apos;{0}&apos; has been modified outside the environment, and there are unsaved changes to the project.
         ///
         ///Press Save As to save the unsaved changes and load the updated project from disk.

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.25402.0
+VisualStudioVersion = 15.0.25302.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -34,6 +34,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests.csproj", "{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemSetup", "ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {49705330-A4F5-47EA-BB10-3B783CE91AEA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioEditorsSetup", "VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}"
 	ProjectSection(SolutionItems) = preProject
@@ -72,6 +77,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573B
 		Targets\Microsoft.CSharp.DesignTime.targets = Targets\Microsoft.CSharp.DesignTime.targets
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemDogfoodSetup", "ProjectSystemDogfoodSetup\ProjectSystemDogfoodSetup.csproj", "{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +151,10 @@ Global
 		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A57DDFE5-AB0E-4371-98E5-11B9218DF11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A57DDFE5-AB0E-4371-98E5-11B9218DF11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A57DDFE5-AB0E-4371-98E5-11B9218DF11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -188,6 +199,10 @@ Global
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

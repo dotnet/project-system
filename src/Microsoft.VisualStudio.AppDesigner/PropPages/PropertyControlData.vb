@@ -813,10 +813,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let the page handle it
                     Try
                         Handled = Me.ReadUserDefinedProperty(Me.PropertyName, Value)
-                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                        Debug.Fail("Exception reading user-defined property for initial value.  Will disable the property's control and related controls.  If this exception is expected, it should be handled in ReadUserDefinedProperty() and PropertyControlData.MissingProperty should be returned as the value." & vbCrLf _
-                            & "PropertyName: " & Me.PropertyName & vbCrLf _
-                            & "Exception:" & vbCrLf & ex.ToString())
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception reading user-defined property for initial value", NameOf(PropertyControlData))
                         Value = PropertyControlData.MissingProperty
                     End Try
 
@@ -826,7 +823,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ElseIf Me.IsCommonProperty Then
                     Try
                         Value = GetCommonPropertyValueNative()
-                    Catch ex As Exception
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(InitPropertyValue), NameOf(PropertyControlData))
                         Value = PropertyControlData.MissingProperty
                     End Try
 
@@ -1368,7 +1365,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If IsCommonProperty Then
                 Try
                     Return GetCommonPropertyValueNative(Me.PropDesc, CommonPropertiesObject)
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryGetPropertyValueNative), NameOf(PropertyControlData))
                     Return PropertyControlData.MissingProperty
                 End Try
             Else
@@ -1397,7 +1394,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Extenders.Length = 1 Then
                 Try
                     Value = GetNonCommonPropertyValueNative(Descriptor, Extenders(0))
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryGetNonCommonPropertyValueNative), NameOf(PropertyControlData))
                     Value = PropertyControlData.MissingProperty
                 End Try
             Else
@@ -1462,7 +1459,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 For i As Integer = 0 To Extenders.Length - 1
                     ReturnValues(i) = GetNonCommonPropertyValueNative(Descriptor, Extenders(i))
                 Next
-            Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
+            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(GetAllPropertyValuesNative), NameOf(PropertyControlData))
                 Values = New Object(Extenders.Length - 1) {}
                 ValueOrIndeterminate = PropertyControlData.MissingProperty
                 Return
@@ -1728,6 +1725,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Go ahead and do the SetValue.  It will throw if there's an exception
                     '  (other than cancel/checkout exceptions).
                     Descriptor.SetValue(Component, Value)
+
+                    ' Workaround until CPS is fixed to fire the value changed event on Descriptor.SetValue
+                    _valueChangedWasFired = Value.Equals(Descriptor.GetValue(Component))
 
                     'If we made it here, either the value was successfully changed, or
                     '  the set was canceled by the user in a checkout dialog, etc.
@@ -2258,14 +2258,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ElseIf (Me.Flags And ControlDataFlags.PersistedInVBMyAppFile) <> 0 Then
                     Try
-                        Dim MyAppProperties As MyApplication.MyApplicationPropertiesBase = _
+                        Dim MyAppProperties As MyApplication.MyApplicationPropertiesBase =
                             DirectCast(m_PropPage.m_ObjectsPropertyDescriptorsArray(0)("MyApplication").GetValue(m_PropPage.m_ExtendedObjects(0)), MyApplication.MyApplicationPropertiesBase)
                         Debug.Assert(MyAppProperties IsNot Nothing)
                         If MyAppProperties IsNot Nothing Then
                             Return MyAppProperties.FilesToCheckOut(True)
                         End If
-                    Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                        Debug.Fail("Unable to retrieve MyApplicationProperties to figure out set of files to check out")
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unable to retrieve MyApplicationProperties to figure out set of files to check out", NameOf(PropertyControlData))
                     End Try
                 ElseIf (Me.Flags And ControlDataFlags.PersistedInAppManifestFile) <> 0 Then
                     Dim AppManifest As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AppManifest, True)

@@ -933,7 +933,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 'Remove from local storage
                                 ReferenceList.Items.RemoveAt(ItemIndex)
 
-                            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(RemoveSelectedReference), NameOf(ReferencePropPage))
                                 If ProjectReloadedDuringCheckout Then
                                     ' If the Project could be reloaded, we should return ASAP, because the designer has been disposed
                                     Return
@@ -1031,7 +1031,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     hr = UIHier.ExecCommand(VSITEMID.ROOT, guidVSStd2k, ECMD_ADDREFERENCE, 0, Nothing, System.IntPtr.Zero)
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(referenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     ShowErrorMessage(ex)
                 End Try
 
@@ -1069,7 +1069,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Me.PopulateReferenceList()
                     Me.PopulateImportsList(True)
                 End If
-            Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                 If Not Common.IsCheckoutCanceledException(ex) Then
                     ShowErrorMessage(SR.GetString(SR.PPG_Reference_AddWebReference, ex.Message))
                 End If
@@ -1113,7 +1113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(Microsoft.Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
                     End If
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not Common.IsCheckoutCanceledException(ex) Then
                         ShowErrorMessage(SR.GetString(SR.PPG_Reference_AddWebReference, ex.Message))
                     End If
@@ -1267,7 +1267,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If referenceComponent IsNot Nothing Then
                         Try
                             referenceComponent.Update()
-                        Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(UpdateReferences_Click), NameOf(ReferencePropPage))
                             If Not Common.IsCheckoutCanceledException(ex) Then
                                 ShowErrorMessage(SR.GetString(SR.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
                             End If
@@ -1404,7 +1404,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Try
                             _Imports.Remove(index)
                             valueUpdated = True
-                        Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
                             If Common.IsCheckoutCanceledException(ex) Then
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated
@@ -1429,7 +1429,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Try
                             _Imports.Add(_Namespace)
                             valueUpdated = True
-                        Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
                             If Common.IsCheckoutCanceledException(ex) Then
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated

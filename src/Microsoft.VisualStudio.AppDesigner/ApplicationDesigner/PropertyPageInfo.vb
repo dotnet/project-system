@@ -72,13 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _site.Dispose()
                         _site = Nothing
                     End If
-                Catch ex As OutOfMemoryException
-                    Throw
-                Catch ex As ThreadAbortException
-                    Throw
-                Catch ex As StackOverflowException
-                    Throw
-                Catch ex As Exception
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropertyPageInfo))
                     'Ignore everything else
                 End Try
 
@@ -207,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Verify that loading the property page actually gave us the same title as the
                 '  cached version.
                 If _info.pszTitle IsNot Nothing AndAlso CachedTitle IsNot Nothing Then
-                    Debug.Assert(_info.pszTitle.Equals(CachedTitle), _
+                    Debug.Assert(_info.pszTitle.Equals(CachedTitle),
                         "The page title retrieved from cache ('" & CachedTitle & "') was not the same as that retrieved by " _
                         & "loading the page ('" & _info.pszTitle & "')")
                 End If
@@ -216,8 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Cache the title for future use
                 CachedTitle = _info.pszTitle
 
-            Catch Ex As Exception When Not AppDesCommon.IsUnrecoverable(Ex)
-                'Debug.Fail("Unable to create property page with guid " & m_Guid.ToString() & vbCrLf & Ex.Message)
+            Catch Ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryLoadPropertyPage), NameOf(PropertyPageInfo))
                 If _comPropPageInstance IsNot Nothing Then
                     'IPropertyPage.GetPageInfo probably failed - if that didn't 
                     ' succeed, then nothing much else will likely work on the page either
@@ -317,8 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Return DirectCast(ValueObject, String)
                         End If
                     End If
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                    Debug.Fail("Got exception trying to get cached page title: " & ex.ToString)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()
@@ -338,8 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If Key IsNot Nothing Then
                         Key.SetValue(CachedTitleValueName, value, Win32.RegistryValueKind.String)
                     End If
-                Catch ex As Exception When Not AppDesCommon.IsUnrecoverable(ex)
-                    Debug.Fail("Unable to cache page title: " & ex.Message)
+                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()

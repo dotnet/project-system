@@ -1006,8 +1006,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
                     Try
                         Value = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception
-                        Common.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceCellStringValue), NameOf(ResourceStringTable))
                     End Try
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellValueNeeded: Value: " & Value)
 
@@ -1056,8 +1055,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
                         Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception
-                        RethrowIfUnrecoverable(ex, IgnoreOutOfMemory:=True)
+                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.
                             e.ErrorText = ex.Message

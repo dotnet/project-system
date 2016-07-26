@@ -61,10 +61,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     Try
                         'Create the file
-                        VSErrorHandler.ThrowOnFailure( _
-                            _viewProvider.DesignerView.SpecialFiles.GetFile(_viewProvider.SpecialFileId, _
-                                CUInt(__PSFFLAGS.PSFF_FullPath + __PSFFLAGS.PSFF_CreateIfNotExist), _
-                                ItemId, FileName) _
+                        VSErrorHandler.ThrowOnFailure(
+                            _viewProvider.DesignerView.SpecialFiles.GetFile(_viewProvider.SpecialFileId,
+                                CUInt(__PSFFLAGS.PSFF_FullPath + __PSFFLAGS.PSFF_CreateIfNotExist),
+                                ItemId, FileName)
                             )
 
                         'Set the filename
@@ -77,8 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'Now show without the custom view, which will cause the
                         '  real editor to appear on the file
                         _viewProvider.DesignerPanel.ShowDesigner(True)
-                    Catch ex As Exception
-                        AppDesCommon.RethrowIfUnrecoverable(ex)
+                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CreateNewSpecialFile), NameOf(SpecialFileCustomView))
                         _viewProvider.DesignerView.DsMsgBox(ex)
                     End Try
                 End If

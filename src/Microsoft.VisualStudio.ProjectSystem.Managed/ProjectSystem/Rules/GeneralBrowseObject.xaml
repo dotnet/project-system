@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule
+  Name="ConfigurationGeneralBrowseObject"
+  DisplayName="General"
+  PageTemplate="generic"
+  Description="General"
+  OverrideMode= "Replace"
+  xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="General" DisplayName="General" Description="General" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
+  <DynamicEnumProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker" EnumProvider="TargetFrameworkMoniker" />
+  <StringProperty Name="AssemblyName" DisplayName="Assembly Name" />
+  <StringProperty Name="Name" Visible="False" />
+  <StringProperty Name="RootNamespace" DisplayName="Root namespace" />
+  <StringProperty Name="DefaultNamespace" DisplayName="Default namespace">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <IntProperty Name="TargetFramework" Visible="False" ReadOnly="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <StringProperty Name="OutputName" Visible="False" />
+  <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" />
+  <EnumProperty Name="OutputTypeEx" DisplayName="Output Type">
+    <EnumValue Name="winexe" DisplayName="0" />
+    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="library" DisplayName="2" />
+    <EnumValue Name="appcontainerexe" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OutputType" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Application Manifest" >
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Win32ResourceFile" DisplayName="Win32 Resource File">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringListProperty Name="AvailablePlatforms" Separator="," Visible="False" />
+  <StringProperty Name="FileName" DisplayName="Project File" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LocalPath" ReadOnly="True" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Title" DisplayName="Assembly Title">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Description" DisplayName="Assembly Description">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="Company">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="Product">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="Copyright">
+    <StringProperty.DataSource>
+        <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Trademark" DisplayName="Trademark">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="Assembly Version">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyFileVersion" DisplayName="Assembly FileVersion">
+    <StringProperty.DataSource>
+        <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyGuid" DisplayName="Assembly Guid">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralResourcesLanguage" DisplayName="Neutral Resources Language">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ComVisible" DisplayName="ComVisible">
+      <StringProperty.DataSource>
+          <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="SignAssembly" DisplayName="Sign the assembly" />
+  <StringProperty Name="DelaySign" DisplayName="Delay sign only" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Strong name key file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="AssemblyOriginatorKeyFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Try
                             existingValue = System.Activator.CreateInstance(ValueType)
                             passedNewInstanceToEditor = True
-                        Catch ex As Exception When Not Common.IsUnrecoverable(ex)
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowUITypeEditor), NameOf(TypeEditorHostControl))
                         End Try
                     End If
                     Dim editedValue As Object = _typeEditor.EditValue(Context, Me, existingValue)

@@ -30,15 +30,25 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\SingleFileGenerators.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommand.cs" />
     <Compile Include="ProjectSystem\VS\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\VS\ReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\IPhysicalProjectTreeExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\IProjectTreeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
     <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
@@ -47,10 +57,12 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommand.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.cs" />
     <Compile Include="ProjectSystem\VS\IServiceProviderExtensions.cs" />
-    <Compile Include="ProjectSystem\VS\PreferedProjectFactoryRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\IUnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractLanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\AbstractRenameStrategy.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\IRenameStrategy.cs" />
+    <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
       <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
@@ -70,10 +82,6 @@
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
-      <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
-      <Name>VisualStudio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
