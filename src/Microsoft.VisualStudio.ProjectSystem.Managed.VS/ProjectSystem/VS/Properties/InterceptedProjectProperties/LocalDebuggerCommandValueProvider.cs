@@ -10,8 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ExportInterceptingPropertyValueProvider("LocalDebuggerCommand", ExportInterceptingPropertyValueProviderFile.UserFile)]
     internal class LocalDebuggerCommandValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string DefaultCommand = "";
-        internal const string DotnetExe = "dotnet.exe";
+        public const string DefaultCommand = "";
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {

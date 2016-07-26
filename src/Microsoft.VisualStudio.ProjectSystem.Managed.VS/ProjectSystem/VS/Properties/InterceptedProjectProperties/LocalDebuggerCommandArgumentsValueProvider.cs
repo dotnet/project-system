@@ -31,14 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public async override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            // Rather than going through defaultProperties for this, we want to get the decorated and intercepted debugger properties, so we
-            // can get the final debug command.
-            var decoratedDebuggerProperties = await _projectProperties.Value.GetWindowsLocalDebuggerPropertiesAsync().ConfigureAwait(false);
-            var debugCommand = await decoratedDebuggerProperties.LocalDebuggerCommand.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
-
+            // We do the same check as in the debugger command, so empty string for the local debugger properties means we should perform
+            // the interception.
+            var debugCommand = await defaultProperties.GetEvaluatedPropertyValueAsync(WindowsLocalDebugger.LocalDebuggerCommandProperty).ConfigureAwait(false);
             var commandArgs = evaluatedPropertyValue;
 
-            if (debugCommand == LocalDebuggerCommandValueProvider.DotnetExe)
+            if (debugCommand == LocalDebuggerCommandValueProvider.DefaultCommand)
             {
                 // Get the path of the executable, and plug it into "exec path original_args"
                 var executable = await GetExecutablePath().ConfigureAwait(false);
