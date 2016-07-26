@@ -74,6 +74,7 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
