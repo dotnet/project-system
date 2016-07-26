@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio {
         ///Press Save As to save the unsaved changes and load the updated project from disk.
         ///Press Discard to discard the unsaved changes and load the updated project from disk.
         ///Press Overwrite to overwrite the external changes with your changes.
-        ///Press Ignore the external changes. Your changes may be lost if you close and reopen the project.
+        ///Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
         ///    .
         /// </summary>
         internal static string ConflictingModificationsPrompt {
@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio {
         ///   Looks up a localized string similar to The project &apos;{0}&apos; has been modified outside the environment.
         ///
         ///Press Reload to load the updated project from disk.
-        ///Press Ignore the external changes. The changes will be used the next time you open the project.
+        ///Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
         ///    .
         /// </summary>
         internal static string ProjectModificationsPrompt {
