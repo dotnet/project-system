@@ -19,4 +19,9 @@
             <DataSource Persistence="UserFileWithInterception"/>
         </StringProperty.DataSource>
     </StringProperty>
+    <StringProperty Name="LocalDebuggerCommandArguments" >
+        <StringProperty.DataSource>
+            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
+        </StringProperty.DataSource>
+    </StringProperty>
 </Rule>
