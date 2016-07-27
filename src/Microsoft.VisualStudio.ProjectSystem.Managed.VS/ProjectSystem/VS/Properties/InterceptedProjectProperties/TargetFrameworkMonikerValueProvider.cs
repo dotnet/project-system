@@ -21,12 +21,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
+            // CPS implements IVsHierarchy.SetProperty for the TFM property to call through the multi-targeting service and change the TFM.
+            // This causes the project to be reloaded after changing the values.
+            // Since the property providers are called under a write-lock, trying to reload the project on the same context fails saying it can't load the project
+            // if a lock is held. We are not going to write to the file under this lock (we return null from this method) and so we fork execution here to schedule
+            // a lambda on the UI thread and we don't pass the lock information from this context to the new one. 
             _unconfiguredProjectVsServices.ThreadingService.Fork(() =>
             {
                 _unconfiguredProjectVsServices.VsHierarchy.SetProperty(HierarchyId.Root, (int)VsHierarchyPropID.TargetFrameworkMoniker, unevaluatedPropertyValue);
                 return System.Threading.Tasks.Task.CompletedTask;
             }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
-            
+
             return System.Threading.Tasks.Task.FromResult<string>(null);
         }
     }
