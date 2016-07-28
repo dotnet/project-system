@@ -16,9 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  than None, and false otherwise
         Private _debugSymbols As Object
 
-        Private Const s_DEBUGINFO_NONE As String = ""
-        Private Const s_DEBUGINFO_FULL As String = "full"
-
         Public Sub New()
             MyBase.New()
 
@@ -26,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'We don't want this localized, and the WinForms designer will do that automatically if
             '  we have it in InitializeComponent.
-            Me.DebugInfoComboBox.Items.AddRange(New Object() {"None", "Full", "pdb-only"})
+            Me.DebugInfoComboBox.Items.AddRange(New Object() {"none", "full", "pdb-only", "portable", "embedded"})
 
             Me.MinimumSize = Me.PreferredSize()
 
@@ -164,8 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Gets the DebugInfo property (DebugType in the proj file).  This is either None, 
-        '''   Full or PDB-Only.
+        ''' Gets the DebugInfo property (DebugType in the proj file). 
         '''   In the VB property pages, the user is given only the choice of whether
         '''   to generate debug info or not.  But setting only that property on/off
         '''   without also changing the DebugInfo property can lead to confusion in the
