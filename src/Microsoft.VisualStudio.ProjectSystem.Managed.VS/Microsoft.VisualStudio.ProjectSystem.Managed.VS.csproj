@@ -71,7 +71,7 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxResult.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModel.cs" />
-    <Compile Include="ProjectSystem\VS\UI\Command.cs" />
+    <Compile Include="ProjectSystem\VS\UI\RelayCommand.cs" />
     <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />

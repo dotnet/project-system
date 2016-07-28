@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 Button4Text = buttons[3];
             }
-            ButtonClickCommand = new Command((parameter) => {CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
+            ButtonClickCommand = new RelayCommand((parameter) => {CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
 
         }
         

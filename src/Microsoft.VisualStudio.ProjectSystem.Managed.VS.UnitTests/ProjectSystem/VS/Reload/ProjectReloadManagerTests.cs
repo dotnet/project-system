@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -17,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             await rlm.Initialize();
             Assert.Equal<uint>(150, rlm.SolutionEventsCookie);
@@ -30,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             await rlm.DisposeAsync();
             Assert.Equal<uint>(0, rlm.SolutionEventsCookie);
@@ -43,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(@"c:\temp\project1.csproj");
@@ -61,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(@"c:\temp\project1.csproj");
@@ -85,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(projectFile);
@@ -107,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(projectFile);
@@ -131,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(projectFile);
@@ -152,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100));
             spMock.AddService(typeof(IVsSolution), typeof(SVsSolution), IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(150));
 
-            var rlm = new ProjectReloadManager(new IProjectThreadingServiceMock(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
+            var rlm = new ProjectReloadManager(IProjectThreadingServiceFactory.Create(), spMock, IUserNotificationServicesFactory.ImplementReportErrorInfo(), new Mock<IDialogServices>().Object);
             
             var reloadableProjectMock = new Mock<IReloadableProject>(MockBehavior.Strict);
             var hierMock = new Mock<IVsHierarchy>();

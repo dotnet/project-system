@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
@@ -15,12 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     internal class DialogServices : IDialogServices
     {
         [ImportingConstructor]
-        public DialogServices([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+        public DialogServices(IProjectThreadingService threadHandling)
         {
-            _serviceProvider = serviceProvider;
+            _threadHandling = threadHandling;
         }
 
-        private readonly IServiceProvider _serviceProvider;
+        // Only here to provide scope
+        private readonly IProjectThreadingService _threadHandling;
 
         public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
         { 

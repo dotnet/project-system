@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo("HandlesOwnReload")]
-        private Task Initialize()
+        public Task Initialize()
         {
             return InitializeCoreAsync(CancellationToken.None);
         }

@@ -10,12 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// CanExecute handlers. If no CanExecute is specified it returns true in the CanExecute
     /// method.
     /// </summary>
-    public class Command : ICommand
+    public class RelayCommand : ICommand
     {
         /// <summary>
         /// Creates a new command that is always enabled
         /// </summary>
-        public Command(Action<object> execute)
+        public RelayCommand(Action<object> execute)
             : this(execute, null)
         {
         }
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// <summary>
         /// Creates a new command.
         /// </summary>
-        public Command(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");

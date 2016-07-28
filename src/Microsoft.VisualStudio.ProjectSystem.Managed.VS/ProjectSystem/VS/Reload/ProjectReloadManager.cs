@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -23,8 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// projects which fail the solution level reload, the next time the project file changes.
     /// </summary>
     [Export(typeof(IProjectReloadManager))]
-    [AppliesTo("HandlesOwnReload")]
-    internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, IVsSolutionEvents, IVsSolutionEvents4
+    [AppliesTo("HandlesOwnReload")] // Replace with ProjectCapabilities.HandlesOwnReload when new CPS is available
+    internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, 
+                                          IVsSolutionEvents, IVsSolutionEvents4
     {
         private readonly IServiceProvider _serviceProvider;
         private IProjectThreadingService _threadHandling;
