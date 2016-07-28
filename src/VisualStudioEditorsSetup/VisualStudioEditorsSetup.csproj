@@ -35,12 +35,14 @@
       <Name>Microsoft.VisualStudio.AppDesigner</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
       <Project>{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}</Project>
       <Name>Microsoft.VisualStudio.Editors</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

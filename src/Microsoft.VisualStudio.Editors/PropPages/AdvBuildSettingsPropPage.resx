@@ -304,6 +304,14 @@
     <value>pdb-only</value>
     <comment>{Locked}</comment>
   </data>
+  <data name="cboDebugInfo.Items3" xml:space="preserve">
+    <value>portable</value>
+    <comment>{Locked}</comment>
+  </data>
+  <data name="cboDebugInfo.Items4" xml:space="preserve">
+    <value>embedded</value>
+    <comment>{Locked}</comment>
+  </data>
   <data name="cboDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 115</value>
   </data>

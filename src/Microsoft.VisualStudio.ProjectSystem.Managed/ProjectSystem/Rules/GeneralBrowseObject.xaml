@@ -26,11 +26,11 @@
       <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFramework" Visible="False">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkMoniker" />
-    </StringProperty.DataSource>
-  </StringProperty>
+  <IntProperty Name="TargetFramework" Visible="False" ReadOnly="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
   <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" />
   <EnumProperty Name="OutputTypeEx" DisplayName="Output Type">
@@ -44,9 +44,14 @@
     </EnumProperty.DataSource>
   </EnumProperty>
   <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Application Manifest" >
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="Win32ResourceFile" DisplayName="Win32 Resource File">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" />
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," Visible="False" />
@@ -121,5 +126,12 @@
       <StringProperty.DataSource>
           <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
       </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="SignAssembly" DisplayName="Sign the assembly" />
+  <StringProperty Name="DelaySign" DisplayName="Delay sign only" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Strong name key file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="AssemblyOriginatorKeyFile" />
+    </StringProperty.DataSource>
   </StringProperty>
 </Rule>

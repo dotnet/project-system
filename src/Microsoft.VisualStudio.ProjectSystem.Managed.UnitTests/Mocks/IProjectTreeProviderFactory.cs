@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectTreeProviderFactory
     {
-        public static IProjectTreeProvider Create()
+        public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null)
         {
             var mock = new Mock<IProjectTreeProvider>();
 
@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     }
                     return Task.CompletedTask;
                 });
+
+            mock.Setup(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
             return mock.Object;
         }
     }
