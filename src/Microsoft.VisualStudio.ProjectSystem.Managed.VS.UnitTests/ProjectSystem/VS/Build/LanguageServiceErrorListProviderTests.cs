@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var provider = CreateInstance();
 
             await Assert.ThrowsAsync<ArgumentNullException>("task", () => {
-                return provider.AddMessageAsync((TargetGeneratedTask)null);
+                return provider.AddMessageAsync((TargetGeneratedError)null);
             });
         }
 
@@ -84,8 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            var task = new TargetGeneratedTask();
-            task.BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender");
+            var task = new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
 
             var result = await provider.AddMessageAsync(task);
 
@@ -97,8 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            var task = new TargetGeneratedTask();
-            task.BuildEventArgs = null;
+            var task = new TargetGeneratedError("Test", null);
 
             var result = await provider.AddMessageAsync(task);
 
@@ -110,8 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            var task = new TargetGeneratedTask();
-            task.BuildEventArgs = new LazyFormattedBuildEventArgs("Message", "HelpKeyword", "SenderName");
+            var task = new TargetGeneratedError("Test", new LazyFormattedBuildEventArgs("Message", "HelpKeyword", "SenderName"));
 
             var result = await provider.AddMessageAsync(task);
 
@@ -124,8 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            var task = new TargetGeneratedTask();
-            task.BuildEventArgs = new BuildErrorEventArgs(null, "" /* Code */, "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender");
+            var task = new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "" /* Code */, "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
 
             var result = await provider.AddMessageAsync(task);
 
@@ -189,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
 
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
             Assert.Equal(result, VSTASKPRIORITY.TP_NORMAL);
         }
@@ -204,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
 
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
             Assert.Equal(result, VSTASKPRIORITY.TP_HIGH);
         }
@@ -219,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
             var provider = CreateInstance(project);
 
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
             Assert.Equal(result, VSTASKPRIORITY.TP_LOW);
         }
@@ -246,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
 
             var provider = CreateInstance(project);
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, code, "File", 0, 0, 0, 0, errorMessage, "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, code, "File", 0, 0, 0, 0, errorMessage, "HelpKeyword", "Sender")));
 
 
             Assert.Equal(errorMessage, errorMessageResult);
@@ -277,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
 
             var provider = CreateInstance(project);
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, 0, 0, "ErrorMessage", "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, 0, 0, "ErrorMessage", "HelpKeyword", "Sender")));
 
 
             Assert.Equal(expectedLineNumber, lineResult);
@@ -309,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
 
             var provider = CreateInstance(project);
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, endLineNumber, endColumnNumber, "ErrorMessage", "HelpKeyword", "Sender") });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, endLineNumber, endColumnNumber, "ErrorMessage", "HelpKeyword", "Sender")));
 
 
             Assert.Equal(expectedEndLineNumber, endLineResult);
@@ -346,19 +342,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender");
             args.ProjectFile = projectFile;
-            await provider.AddMessageAsync(new TargetGeneratedTask() { BuildEventArgs = args });
+            await provider.AddMessageAsync(new TargetGeneratedError("Test", args));
 
             Assert.Equal(expectedFileName, fileNameResult);
         }
 
-        private static TargetGeneratedTask CreateDefaultTask()
+        private static TargetGeneratedError CreateDefaultTask()
         {
-            return new TargetGeneratedTask() {
-                BuildEventArgs = new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")
-            };
+            return new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
         }
-
-
+        
         private static LanguageServiceErrorListProvider CreateInstance()
         {
             return CreateInstance(null);
