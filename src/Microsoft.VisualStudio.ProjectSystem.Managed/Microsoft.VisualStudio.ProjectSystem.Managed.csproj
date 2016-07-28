@@ -141,15 +141,19 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <ItemDefinitionGroup>
+    <!-- By default, all XAML rules get generated into the same namespace -->
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>
 </Project>
