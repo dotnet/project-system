@@ -488,11 +488,23 @@
 
   ==================================================================================== -->
 
-  <Target Name="AfterBuild" Condition="'$(CreateVsixContainer)' == 'true'">
-     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
-  </Target>
+  <Target Name="CopyAdditionalFilesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
 
-  <Target Name="AfterRebuild" Condition="'$(CreateVsixContainer)' == 'true'">
-     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
+    <!-- Copy manifests to be picked up by NuGet insertion packages -->
+    <Copy SourceFiles="source.extension.vsixmanifest" 
+          DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)"
+          Condition="'$(CreateVsixContainer)' == 'true'">
+      
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+
+
+    <!-- Copy rule files for testing purposes -->
+    <Copy SourceFiles="@(XamlPropertyRule)" 
+          DestinationFolder="$(OutDir)\Rules">
+      
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
+    </Copy>
+    
   </Target>
 </Project>

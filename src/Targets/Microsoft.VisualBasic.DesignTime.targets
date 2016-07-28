@@ -28,6 +28,10 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)VisualBasic.VbcCommandLineArgs.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
