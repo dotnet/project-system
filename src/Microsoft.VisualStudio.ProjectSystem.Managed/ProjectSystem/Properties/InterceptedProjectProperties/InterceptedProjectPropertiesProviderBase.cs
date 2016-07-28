@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.Immutable;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

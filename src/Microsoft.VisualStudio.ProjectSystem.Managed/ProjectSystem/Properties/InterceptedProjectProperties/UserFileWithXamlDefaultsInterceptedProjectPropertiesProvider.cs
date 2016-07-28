@@ -12,20 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "UserFileWithXamlDefaultsWithInterception")]
     [AppliesTo(ProjectCapability.AlwaysAvailable)]
-    internal sealed class UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
+    internal sealed class UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider : UserFileInterceptedProjectPropertiesProvider
     {
-        private const string userSuffix = ".user";
-
-        public override string DefaultProjectPath {
-            get { return base.DefaultProjectPath + userSuffix; }
-        }
-
         [ImportingConstructor]
         public UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider(
             [Import(ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults)] IProjectPropertiesProvider provider,
+            // We use project file here because in CPS, the UserFileWithXamlDefaults instance provider is implemented by the same
+            // provider as the ProjectFile, and is exported as the ProjectFile provider.
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject unconfiguredProject,
-            [ImportMany(ContractNames.ProjectPropertyProviders.UserFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
+            [ImportMany(ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
             : base(provider, instanceProvider, unconfiguredProject, interceptingValueProviders)
         {
         }

@@ -27,7 +27,7 @@
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
-    <StringProperty Name="AssemblyName"/>
+    <StringProperty Name="AssemblyName" />
     <StringProperty Name="Name" />
     <StringProperty Name="RootNamespace" DisplayName="Root namespace">
         <StringProperty.DataSource>
