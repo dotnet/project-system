@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     return ContractNames.ProjectPropertyProviders.ProjectFile;
                 case ExportInterceptingPropertyValueProviderFile.UserFile:
                     return ContractNames.ProjectPropertyProviders.UserFile;
-                case ExportInterceptingPropertyValueProviderFile.UserWithXamlDefaults:
+                case ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults:
                     return ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults;
                 default:
                     return string.Empty;
@@ -45,6 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         ProjectFile,
         UserFile,
-        UserWithXamlDefaults
+        UserFileWithXamlDefaults
     }
 }
