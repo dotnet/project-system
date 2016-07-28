@@ -35,10 +35,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\Rules\VisualBasic.VbcCommandLineArgs.cs">
+      <DependentUpon>VisualBasic.VbcCommandLineArgs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\VisualBasicProjectProperties.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\BasicAssemblyInfoSpecialFileProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.VbcCommandLineArgs.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <ItemDefinitionGroup>
+    <!-- Change the defaults for all rules so that they generate to Visual Basic properties -->
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+      <RuleInjectionClassName>VisualBasicProjectProperties</RuleInjectionClassName>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>
 </Project>
