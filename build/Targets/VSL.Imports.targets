@@ -149,6 +149,11 @@
         <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
       </PropertyGroup>
     </When>
+    <When Condition="'$(ProjectLanguage)' == ''">
+      <PropertyGroup>
+        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
+      </PropertyGroup>
+    </When>
   </Choose>
 
   <Choose>

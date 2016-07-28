@@ -27,5 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Cancels any pending updates
         /// </summary>
         void CancelPendingUpdates();
+
+        /// <summary>
+        /// Holds the last scheduled task.
+        /// </summary>
+        JoinableTask LatestScheduledTask { get; }
     }
 }

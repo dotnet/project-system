@@ -29,6 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         // True if there are pending file changes
         public bool HasPendingUpdates { get { return PendingUpdateTokenSource != null; } }
 
+        // Holds the latest scheduled task
+        public JoinableTask LatestScheduledTask { get; private set; }
+
         /// <summary>
         /// Creates an instance of the TaskDelayScheduler. If an originalSourceToken is passed, it will be linked to the PendingUpdateTokenSource so
         /// that cancelling that token will also flow through and cancel a pending update.
@@ -59,10 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 var token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
-                return _threadingService.JoinableTaskFactory.RunAsync(async () =>
+                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () =>
                 {
                     await ThrottleAsync(asyncFnctionToCall, token).ConfigureAwait(false);
                 });
+                return LatestScheduledTask;
             }
         }
 

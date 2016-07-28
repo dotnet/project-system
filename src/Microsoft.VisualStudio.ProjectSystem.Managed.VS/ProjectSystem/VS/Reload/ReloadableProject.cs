@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IProjectReloadManager _reloadManager;
 
         public string ProjectFile
@@ -43,11 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [ImportingConstructor]
-        public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager, [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+        public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
-            _serviceProvider = serviceProvider;
             _reloadManager = reloadManager;
         }
 

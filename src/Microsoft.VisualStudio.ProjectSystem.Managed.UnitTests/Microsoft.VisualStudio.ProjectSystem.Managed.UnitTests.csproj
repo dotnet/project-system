@@ -26,6 +26,10 @@
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
+      <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
+      <Name>VisualStudio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
       <Project>{37ba82e6-9abd-4aca-aa26-2dfd39a359a5}</Project>
       <Name>DeployTestDependencies</Name>
@@ -41,8 +45,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
@@ -81,6 +87,7 @@
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
   </ItemGroup>
@@ -93,7 +100,9 @@
     </None>
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>
