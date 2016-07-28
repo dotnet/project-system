@@ -6,11 +6,14 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectPropertiesFactory
     {
+        public static ProjectProperties CreateEmpty() => Mock.Of<ProjectProperties>();
+
         public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)
         {
             var catalog = CreateCatalog(CreateCatalogLookup(data));
@@ -96,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             property.Setup(o => o.GetValueAsync())
                     .ReturnsAsync(value);
 
-            property.As<IEvaluatedProperty>();
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync((string) value);
 
             return property.Object;
         }

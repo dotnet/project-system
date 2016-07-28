@@ -16,8 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public LocalDebuggerCommandArgumentsValueProvider(Lazy<ProjectProperties> projectProperties, Lazy<IOutputGroupsService, IAppliesToMetadataView> outputGroups, ConfiguredProject configuredProject)
+        public LocalDebuggerCommandArgumentsValueProvider(Lazy<ProjectProperties> projectProperties, 
+                                                          [Import(AllowDefault = true)] Lazy<IOutputGroupsService, IAppliesToMetadataView> outputGroups,
+                                                          ConfiguredProject configuredProject)
         {
+            Requires.NotNull(projectProperties, nameof(projectProperties));
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+
             _projectProperties = projectProperties;
             _outputGroups = outputGroups;
             _configuredProject = configuredProject;
@@ -49,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private async Task<string> GetExecutablePath()
         {
             var generalProperties = await _projectProperties.Value.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            var command = await generalProperties.TargetPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
+            var command = await generalProperties.TargetPath.GetEvaluatedValueAsync().ConfigureAwait(false);
 
             if (string.IsNullOrEmpty(command) && OutputGroups != null)
             {
