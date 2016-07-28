@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("task", () => {
+            await Assert.ThrowsAsync<ArgumentNullException>("error", () => {
                 return provider.AddMessageAsync((TargetGeneratedError)null);
             });
         }
@@ -85,18 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var provider = CreateInstance();
 
             var task = new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
-
-            var result = await provider.AddMessageAsync(task);
-
-            Assert.Equal(result, AddMessageResult.NotHandled);
-        }
-
-        [Fact]
-        public async void AddMessageAsync_NullAsTaskBuildEventArgs_ReturnsNotHandled()
-        {
-            var provider = CreateInstance();
-
-            var task = new TargetGeneratedError("Test", null);
 
             var result = await provider.AddMessageAsync(task);
 
