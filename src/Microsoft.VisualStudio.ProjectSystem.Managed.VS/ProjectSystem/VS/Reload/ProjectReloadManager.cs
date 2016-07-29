@@ -286,11 +286,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 if(failure.Item2 == ProjectReloadResult.ReloadFailedProjectDirty)
                 {
-                    var buttons = new string[] {
-                                                Resources.Ignore,
+                    var buttons = new string[] {Resources.Ignore,
                                                 Resources.Overwrite,
                                                 Resources.Discard,
                                                 Resources.SaveAs};
+
                     var msgText = string.Format(Resources.ConflictingModificationsPrompt, Path.GetFileNameWithoutExtension(failure.Item1.ProjectFile));
 
                     switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ConflictingProjectModificationTitle, msgText, buttons))
@@ -349,11 +349,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     else
                     {
 
-                        var buttons = new string[] {
-                                                    Resources.IgnoreAll,
+                        var buttons = new string[] {Resources.IgnoreAll,
                                                     Resources.Ignore,
                                                     Resources.ReloadAll,
                                                     Resources.Reload};
+
                         var msgText = string.Format(Resources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(failure.Item1.ProjectFile));
                         switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ProjectModificationDlgTitle, msgText, buttons))
                         {
@@ -363,21 +363,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             }
                             case MultiChoiceMsgBoxResult.Button1:
                             {
+                                // Ignore All
                                 ignoreAll = true;
                                 break;
                             }
                             case MultiChoiceMsgBoxResult.Button2:
                             {
+                                // Ignore
                                 break;
                             }
                             case MultiChoiceMsgBoxResult.Button3:
                             {
+                                // Reload  all
                                 reloadAll = true;
                                 ReloadProjectInSolution(failure.Item1);
                                 break;
                             }
                             case MultiChoiceMsgBoxResult.Button4:
                             {
+                                // Reload
                                 ReloadProjectInSolution(failure.Item1);
                                 break;
                             }
