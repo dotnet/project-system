@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
@@ -79,7 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private void RegisterProject(IReloadableProject project)
         {
             uint filechangeCookie;
-            _registeredProjects.TryGetValue(project, out filechangeCookie);
+            lock(_registeredProjects)
+            {
+                _registeredProjects.TryGetValue(project, out filechangeCookie);
+            }
+
             System.Diagnostics.Debug.Assert(filechangeCookie == VSConstants.VSCOOKIE_NIL);
             if (filechangeCookie == VSConstants.VSCOOKIE_NIL)
             {
@@ -88,7 +93,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     int hr = fileChangeService.AdviseFileChange(project.ProjectFile, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size), this, out filechangeCookie);
                     System.Diagnostics.Debug.Assert(ErrorHandler.Succeeded(hr) && filechangeCookie != VSConstants.VSCOOKIE_NIL);
-                    _registeredProjects.Add(project, filechangeCookie);
+                    if(ErrorHandler.Succeeded(hr) && filechangeCookie != VSConstants.VSCOOKIE_NIL)
+                    {
+                        lock(_registeredProjects)
+                        {
+                            _registeredProjects.Add(project, filechangeCookie);
+                        }
+                    }
+                    else
+                    {
+                        throw new COMException(string.Format(Resources.FailedToWatchProject, project.ProjectFile), hr);
+                    }
                 }
             }
         }
@@ -107,7 +122,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private void UnregisterProject(IReloadableProject project)
         {
             uint filechangeCookie;
-            if (_registeredProjects.TryGetValue(project, out filechangeCookie))
+            lock(_registeredProjects)
+            {
+                _registeredProjects.TryGetValue(project, out filechangeCookie);
+            }
+
+            if (filechangeCookie !=  VSConstants.VSCOOKIE_NIL)
             {
                 // Remove watch
                 IVsFileChangeEx fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
@@ -118,7 +138,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
 
                 // Always remove the watcher from our list
-                _registeredProjects.Remove(project);
+                lock(_registeredProjects)
+                {
+                    _registeredProjects.Remove(project);
+                }
             }
         }
 
@@ -147,10 +170,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private async Task DisconnectFromSolutionEvents()
         {
+            await _threadHandling.SwitchToUIThread();
+
             if(SolutionEventsCookie != VSConstants.VSCOOKIE_NIL)
             {
-                await _threadHandling.SwitchToUIThread();
-
                 IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
                 if (solution != null)
                 {
@@ -206,6 +229,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             // Grab the UI thread so that we block until the reload of this set of 
                             // projects completes.
                             await _threadHandling.SwitchToUIThread();
+
+                            if(ct.IsCancellationRequested)
+                            {
+                                return;
+                            }
 
                             // Make a copy of the changed projects
                             var changedProjects = new List<IReloadableProject>();
@@ -273,10 +301,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         }
                         case MultiChoiceMsgBoxResult.Button1:
                         {
+                            // Ignore
                             break;
                         }
                         case MultiChoiceMsgBoxResult.Button2:
                         {
+                            // Overwrite
                             int hr = SaveProject(failure.Item1);
                             if(ErrorHandler.Failed(hr))
                             {
@@ -286,11 +316,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         }
                         case MultiChoiceMsgBoxResult.Button3:
                         {
+                            // Discard 
                             ReloadProjectInSolution(failure.Item1);
                             break;
                         }
                         case MultiChoiceMsgBoxResult.Button4:
                         {
+                            // Save as
                             int hr = SaveAsProject(failure.Item1);
                             if(ErrorHandler.Succeeded(hr))
                             {
@@ -326,19 +358,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ProjectModificationDlgTitle, msgText, buttons))
                         {
                             case MultiChoiceMsgBoxResult.Cancel:
+                            {
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button1:
+                            {
                                 ignoreAll = true;
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button2:
+                            {
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button3:
+                            {
                                 reloadAll = true;
                                 ReloadProjectInSolution(failure.Item1);
                                 break;
+                            }
                             case MultiChoiceMsgBoxResult.Button4:
+                            {
                                 ReloadProjectInSolution(failure.Item1);
                                 break;
+                            }
                         }
                     }
                 }

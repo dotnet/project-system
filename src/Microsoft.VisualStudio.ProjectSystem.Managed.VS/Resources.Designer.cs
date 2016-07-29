@@ -103,6 +103,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred attempting to watch project file &apos;{0}&apos;.
+        /// </summary>
+        internal static string FailedToWatchProject {
+            get {
+                return ResourceManager.GetString("FailedToWatchProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Ignore.
         /// </summary>
         internal static string Ignore {

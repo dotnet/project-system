@@ -169,4 +169,7 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
   <data name="SaveAs" xml:space="preserve">
     <value>_Save As</value>
   </data>
+  <data name="FailedToWatchProject" xml:space="preserve">
+    <value>An unexpected error occurred attempting to watch project file '{0}'</value>
+  </data>
 </root>

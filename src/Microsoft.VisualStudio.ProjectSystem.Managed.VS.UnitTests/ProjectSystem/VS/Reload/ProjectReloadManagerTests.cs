@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
@@ -95,12 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
             Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            // Shorten the normal delay so unit tests run faster
+            ((TaskDelayScheduler)rlm.ReloadDelayScheduler).TaskDelayTime = TimeSpan.FromMilliseconds(20);
 
             rlm.FilesChanged(1, new string[1] {projectFile},  new uint[1] { (uint)flags });
             await rlm.ReloadDelayScheduler.LatestScheduledTask;
             reloadableProjectMock.VerifyAll();
 
         }
+
         [Fact]
         public async Task FilesChanged_SkipsNonRegisteredProjects()
         {
@@ -140,6 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
             Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            // Shorten the normal delay so unit tests run faster
+            ((TaskDelayScheduler)rlm.ReloadDelayScheduler).TaskDelayTime = TimeSpan.FromMilliseconds(20);
 
             rlm.FilesChanged(1, new string[1] {projectFile},  new uint[1] { (uint)flags});
             Assert.True(rlm.ReloadDelayScheduler.LatestScheduledTask == null);
@@ -166,6 +173,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Same(reloadableProjectMock.Object, rlm.RegisteredProjects.First().Key);
             reloadableProjectMock.VerifyAll();
         }
-
     }
 }

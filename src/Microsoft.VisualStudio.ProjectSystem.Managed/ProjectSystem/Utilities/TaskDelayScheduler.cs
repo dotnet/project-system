@@ -19,7 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         private object SyncObject = new object();
         private readonly IProjectThreadingService _threadingService;
 
-        // Delay time can be adjusted after creation. Won't affect any pending task
+        /// <summary>
+        /// Delay time can be adjusted after creation - mostly useful for unit tests. Won't affect any pending task
+        /// </summary>
         public TimeSpan TaskDelayTime { get; set; }
 
         // Task completetion source for cancelling a pending file update.
