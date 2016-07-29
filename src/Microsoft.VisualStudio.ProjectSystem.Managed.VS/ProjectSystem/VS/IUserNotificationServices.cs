@@ -7,5 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         bool Confirm(string message);
 
         void NotifyFailure(string failureMessage);
+
+        void ReportErrorInfo(int hr);
     }
 }

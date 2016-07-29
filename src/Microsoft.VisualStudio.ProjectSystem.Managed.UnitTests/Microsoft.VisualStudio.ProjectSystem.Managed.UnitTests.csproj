@@ -46,6 +46,7 @@
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
+    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
