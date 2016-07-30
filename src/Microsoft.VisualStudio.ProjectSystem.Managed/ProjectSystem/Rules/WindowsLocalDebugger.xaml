@@ -16,7 +16,7 @@
 
     <StringProperty Name="LocalDebuggerCommand" >
         <StringProperty.DataSource>
-            <DataSource Persistence="UserFileWithInterception"/>
+            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="LocalDebuggerCommandArguments" >
@@ -24,4 +24,24 @@
             <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
         </StringProperty.DataSource>
     </StringProperty>
+    <!--<StringProperty Name="LocalDebuggerDebuggerType">
+        <StringProperty.DataSource>
+            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
+        </StringProperty.DataSource>
+    </StringProperty>-->
+    <EnumProperty Name="LocalDebuggerDebuggerType" DisplayName="Debugger Type"
+                Default="ManagedCore"
+                Description="Specifies the debugger type to use. When set to Auto, the debugger type will be selected based on contents of the exe file."
+                F1Keyword="VC.Project.IVCLocalDebugPageObject.DebuggerType">
+        <EnumProperty.Metadata>
+            <NameValuePair Name="IsDebugType" Value="true"/>
+        </EnumProperty.Metadata>
+        <EnumValue Name="NativeOnly" DisplayName="Native Only" Description="Native Only" />
+        <EnumValue Name="ManagedOnly" DisplayName="Managed Only" Description="Managed Only" />
+        <EnumValue Name="Mixed" DisplayName="Mixed" Description="Mixed" />
+        <EnumValue Name="Auto" DisplayName="Auto" Description="Auto" />
+        <EnumValue Name="Script" DisplayName="Script" Description="Script" />
+        <EnumValue Name="GPUOnly" DisplayName="GPU Only" Description="GPU Only" />
+        <EnumValue Name="ManagedCore" DisplayName="Managed Core" Description="asdf"/>
+    </EnumProperty>
 </Rule>

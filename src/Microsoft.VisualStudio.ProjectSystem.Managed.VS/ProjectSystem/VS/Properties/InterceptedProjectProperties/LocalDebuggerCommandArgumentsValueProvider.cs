@@ -4,11 +4,12 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ExportInterceptingPropertyValueProvider("LocalDebuggerCommandArguments", ExportInterceptingPropertyValueProviderFile.UserFile)]
+    [ExportInterceptingPropertyValueProvider("LocalDebuggerCommandArguments", ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults)]
     internal sealed class LocalDebuggerCommandArgumentsValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly Lazy<ProjectProperties> _projectProperties;
@@ -60,6 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 command = await OutputGroups.Value.GetKeyOutputAsync().ConfigureAwait(false);
             }
+
+            // Because a .NET Core app produces an executable dll, and not an actual executable, we need to change the extension to be .dll
+            var rawName = Path.GetFileNameWithoutExtension(command);
+            var folder = new FileInfo(command).Directory.FullName;
+
+            command = folder + Path.DirectorySeparatorChar + rawName + ".dll";
 
             return command;
         }

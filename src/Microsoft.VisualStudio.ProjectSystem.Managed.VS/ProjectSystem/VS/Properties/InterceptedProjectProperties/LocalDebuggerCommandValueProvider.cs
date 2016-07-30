@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ExportInterceptingPropertyValueProvider("LocalDebuggerCommand", ExportInterceptingPropertyValueProviderFile.UserFile)]
+    [ExportInterceptingPropertyValueProvider("LocalDebuggerCommand", ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults)]
     internal class LocalDebuggerCommandValueProvider : InterceptingPropertyValueProviderBase
     {
         public const string DefaultCommand = "";

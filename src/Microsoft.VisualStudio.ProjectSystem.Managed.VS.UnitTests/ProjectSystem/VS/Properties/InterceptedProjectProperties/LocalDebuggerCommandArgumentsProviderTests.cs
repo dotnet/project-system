@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Moq;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -54,13 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 new LocalDebuggerCommandArgumentsValueProvider(new Lazy<ProjectProperties>(() => ProjectPropertiesFactory.CreateEmpty()), null, null);
             });
-        }
-
-        [Fact]
-        public async Task test()
-        {
-            var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue(WindowsLocalDebugger.LocalDebuggerCommandProperty, "");
-            Assert.Equal("exec asdf", (await CreateInstance(targetExecutable: "asdf", useOutputGroups: false).OnGetEvaluatedPropertyValueAsync("", defaultProperties)).Trim());
         }
     }
 }
