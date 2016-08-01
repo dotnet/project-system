@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ExportInterceptingPropertyValueProvider("TargetFramework")]
+    [ExportInterceptingPropertyValueProvider("TargetFramework", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly ProjectProperties _properties;
