@@ -11,7 +11,7 @@
 
     <Rule.DataSource>
         <DataSource Persistence="VbcCommandLineArgs" ItemType="VbcCommandLineArgs" HasConfigurationCondition="False"
-                SourceType="TargetResults" MSBuildTarget="Compile" />
+                SourceType="TargetResults" MSBuildTarget="CompileDesignTime" />
     </Rule.DataSource>
 
 </Rule>
