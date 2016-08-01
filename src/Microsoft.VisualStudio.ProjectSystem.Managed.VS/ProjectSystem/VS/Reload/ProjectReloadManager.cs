@@ -215,15 +215,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if(cChanges == 1 && (grfChange[0] & (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Time)) != 0)
             {
-                lock(_changedProjects)
+                IReloadableProject changedProject = null;
+                lock(_registeredProjects)
                 {
-                    var changedProject = _registeredProjects.FirstOrDefault(kv => kv.Key.ProjectFile.Equals(rgpszFile[0], StringComparison.OrdinalIgnoreCase)).Key;
-                    if(changedProject != null)
+                    changedProject = _registeredProjects.FirstOrDefault(kv => kv.Key.ProjectFile.Equals(rgpszFile[0], StringComparison.OrdinalIgnoreCase)).Key;
+                }
+
+                if(changedProject != null)
+                {
+                    lock(_changedProjects)
                     {
                         if(!_changedProjects.Contains(changedProject))
                         {
                             _changedProjects.Add(changedProject);
                         }
+
                         ReloadDelayScheduler.ScheduleAsyncTask(async (ct) => 
                         {
                             // Grab the UI thread so that we block until the reload of this set of 
@@ -235,12 +241,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 return;
                             }
 
-                            // Make a copy of the changed projects
-                            var changedProjects = new List<IReloadableProject>();
+                            // Get the list of projects and create a new empty list to put new requests
+                            List<IReloadableProject> changedProjects;
                             lock(_changedProjects)
                             {
-                                changedProjects.AddRange(_changedProjects);
-                                _changedProjects.Clear();
+                                changedProjects = _changedProjects;
+                                _changedProjects = new List<IReloadableProject>();
                             }
                                
                             var failedProjects = new List<Tuple<IReloadableProject, ProjectReloadResult>>();
