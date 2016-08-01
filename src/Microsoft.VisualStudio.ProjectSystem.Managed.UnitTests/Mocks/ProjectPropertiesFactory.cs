@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             property.Setup(o => o.GetValueAsync())
                     .ReturnsAsync(value);
 
-            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync((string) value);
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
 
             return property.Object;
         }
