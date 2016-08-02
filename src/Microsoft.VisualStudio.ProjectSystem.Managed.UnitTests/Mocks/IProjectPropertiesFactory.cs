@@ -26,14 +26,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock;
         }
 
-        public static Mock<IProjectProperties> MockWithPropertyAndSet(string propertyName, string setValue)
+        public static Mock<IProjectProperties> MockWithPropertyAndValue(string propertyName, string setValue)
         {
-            return MockWithPropertiesAndSet(new Dictionary<string, string>() { { propertyName, setValue } });
+            return MockWithPropertiesAndValues(new Dictionary<string, string>() { { propertyName, setValue } });
         }
 
-        public static Mock<IProjectProperties> MockWithPropertiesAndSet(Dictionary<string, string> propertyNameAndValues)
+        public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string> propertyNameAndValues)
         {
             var mock = MockWithProperties(propertyNameAndValues.Keys);
+
+            mock.Setup(t => t.GetEvaluatedPropertyValueAsync(
+                It.IsIn<string>(propertyNameAndValues.Keys)))
+                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k]));
+
+            mock.Setup(t => t.GetUnevaluatedPropertyValueAsync(
+                It.IsIn<string>(propertyNameAndValues.Keys)))
+                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k]));
 
             mock.Setup(t => t.SetPropertyValueAsync(
                 It.IsIn<string>(propertyNameAndValues.Keys),
@@ -44,28 +52,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         propertyNameAndValues[k] = v;
                     }));
 
-            return mock;
-        }
-
-        public static Mock<IProjectProperties> MockWithPropertiesAndGetSet(Dictionary<string, string> propertyNameAndValues)
-        {
-            var mock = MockWithPropertiesAndSet(propertyNameAndValues);
-
-            mock.Setup(t => t.GetEvaluatedPropertyValueAsync(
-                It.IsIn<string>(propertyNameAndValues.Keys)))
-                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k]));
-
-            mock.Setup(t => t.GetUnevaluatedPropertyValueAsync(
-                It.IsIn<string>(propertyNameAndValues.Keys)))
-                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k]));
+            mock.Setup(t => t.DeletePropertyAsync(
+                It.IsIn<string>(propertyNameAndValues.Keys),
+                null))
+                 .Returns<string, IReadOnlyDictionary<string, string>>((propName, d) =>
+                    Task.Run(() =>
+                    {
+                        propertyNameAndValues[propName] = null;
+                    }));
 
             return mock;
         }
 
         public static IProjectProperties CreateWithProperty(string propertyName)
             => MockWithProperty(propertyName).Object;
+        
+        public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string setValue)
+            => MockWithPropertyAndValue(propertyName, setValue).Object;
 
-        public static IProjectProperties CreateWithPropertyAndSet(string propertyName, string setValue)
-            => MockWithPropertyAndSet(propertyName, setValue).Object;
+        public static IProjectProperties CreateWithPropertiesAndValues(Dictionary<string, string> propertyNameAndValues)
+            => MockWithPropertiesAndValues(propertyNameAndValues).Object;
     }
 }

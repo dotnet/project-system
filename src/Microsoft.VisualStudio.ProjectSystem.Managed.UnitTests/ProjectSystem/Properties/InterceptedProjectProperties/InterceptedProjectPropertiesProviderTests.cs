@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,10 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task VerifyInterceptedPropertiesProviderAsync()
         {
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndGetSet(new Dictionary<string, string>() {
+                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
                     { MockPropertyName, "DummyValue" }
                 });
-            
+
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
 
@@ -29,8 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 onGetUnevaluatedPropertyValue: (v, p) => { getUnevaluatedInvoked = true; return v; },
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
             var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, unconfiguredProject, new[] { mockPropertyProvider });
+            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.

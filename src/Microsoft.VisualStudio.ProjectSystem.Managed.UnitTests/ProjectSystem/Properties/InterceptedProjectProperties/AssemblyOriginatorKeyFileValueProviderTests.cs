@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Xunit;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
@@ -19,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             string keyFileName = "KeyFile.snk";
             string keyFileFullPath = $@"{projectFolder}\{keyFileName}";
             var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndGetSet(new Dictionary<string, string>() {
+                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
                     { AssemblyOriginatorKeyFilePropertyName, keyFileFullPath }
                 });
 
@@ -33,9 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             // Verify relative path key file value from intercepted key file provider.
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFullPath);
-            var keyFileprovider = new AssemblyOriginatorKeyFileValueProvider(unconfiguredProject);
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
+            var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(unconfiguredProject);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
-            var interceptedProvider = new InterceptedProjectPropertiesProvider(delegateProvider, unconfiguredProject, keyFileprovider, providerMetadata);
+            var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                () => keyFileProvider, providerMetadata) };
+            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Equal(1, propertyNames.Count());
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());

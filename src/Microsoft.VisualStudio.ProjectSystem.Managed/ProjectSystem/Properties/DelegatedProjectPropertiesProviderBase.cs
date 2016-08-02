@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.Build.Execution;
+using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -9,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// responsibilities to a different project property provider, only overriding
     /// the things they want to change.
     /// </summary>
-    internal class DelegatedProjectPropertiesProviderBase : IProjectPropertiesProvider
+    internal class DelegatedProjectPropertiesProviderBase : IProjectPropertiesProvider, IProjectInstancePropertiesProvider
     {
         /// <summary>
         /// Gets the unconfigured project
@@ -22,14 +24,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         protected readonly IProjectPropertiesProvider DelegatedProvider;
 
         /// <summary>
+        /// The Project Instance Properties provider that is being delegated to for most operations
+        /// </summary>
+        protected readonly IProjectInstancePropertiesProvider DelegatedInstanceProvider;
+
+        /// <summary>
         /// Construct using the provider that should be delegated to for most operations
         /// </summary>
-        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, UnconfiguredProject unconfiguredProject)
+        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, IProjectInstancePropertiesProvider instanceProvider, UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(provider, nameof(provider));
+            Requires.NotNull(instanceProvider, nameof(instanceProvider));
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
             DelegatedProvider = provider;
+            DelegatedInstanceProvider = instanceProvider;
             UnconfiguredProject = unconfiguredProject;
         }
 
@@ -64,5 +73,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public virtual IProjectProperties GetProperties(string file, string itemType, string item)
             => DelegatedProvider.GetProperties(file, itemType, item);
+
+        public IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
+            => DelegatedInstanceProvider.GetCommonProperties(projectInstance);
+
+        public IProjectProperties GetItemTypeProperties(ProjectInstance projectInstance, string itemType)
+            => DelegatedInstanceProvider.GetItemTypeProperties(projectInstance, itemType);
+
+        public IProjectProperties GetItemProperties(ProjectInstance projectInstance, string itemType, string itemName)
+            => DelegatedInstanceProvider.GetItemProperties(projectInstance, itemType, itemName);
+
+        public IProjectProperties GetItemProperties(ITaskItem taskItem)
+            => DelegatedInstanceProvider.GetItemProperties(taskItem);
     }
 }
