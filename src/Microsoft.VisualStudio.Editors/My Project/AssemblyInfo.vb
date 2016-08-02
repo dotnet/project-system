@@ -38,6 +38,13 @@ Imports System.Runtime.InteropServices
  "c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc09334" & _
  "4d5ad293")>
 
+<Assembly: InternalsVisibleTo("Microsoft.VisualStudio.PortableLibrary, PublicKey=" & _
+ "002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9" & _
+ "f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad2361321" & _
+ "02900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93" & _
+ "c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc09334" & _
+ "4d5ad293")>
+
 <Assembly: InternalsVisibleTo("Microsoft.VisualStudio.ProjectFlavoring, PublicKey=" & _
  "002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9" & _
  "f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad2361321" & _
@@ -127,5 +134,4 @@ Imports System.Runtime.InteropServices
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerWindowPane))>
-
 
