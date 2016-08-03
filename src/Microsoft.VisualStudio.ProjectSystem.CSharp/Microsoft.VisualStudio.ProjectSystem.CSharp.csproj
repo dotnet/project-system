@@ -35,20 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ProjectSystem\Rules\CSharp.CscCommandLineArgs.cs">
-      <DependentUpon>CSharp.CscCommandLineArgs.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectSystem\Rules\CSharpProjectProperties.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\CSharpAssemblyInfoSpecialFileProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.CscCommandLineArgs.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>

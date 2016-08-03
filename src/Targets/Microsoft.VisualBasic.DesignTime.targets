@@ -6,56 +6,28 @@
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <Import Project="Microsoft.Managed.DesignTime.targets" />
+  
+  <!-- Properties -->
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">My Project</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
-    
-    <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
-    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
+    <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">Visual Basic</LanguageServiceName>
   </PropertyGroup>
-
-  <!-- Project Capabilities -->
-  <ItemGroup>
-    <ProjectCapability Include="AppDesigner"/>
-    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
-  </ItemGroup>
-
-  <!-- CPS Project Properties -->
-  <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)VisualBasic.VbcCommandLineArgs.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-    
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
-      <Context>File;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-  </ItemGroup>
 
   <!-- Targets -->
 
   <!-- Returns Vbc command-line arguments for the language service -->
   <Target Name="CompileDesignTime"
-          Returns="@(VbcCommandLineArgs)"
-          DependsOnTargets="Compile"
+          Returns="@(_CompilerCommandLineArgs)"
+          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
           >
 
-    <Error Condition="'$(SkipCompilerExecution)|$(ProvideCommandLineArgs)' != 'true|true'"
-           Text="SkipCompilerExecution and ProvideCommandLineArgs should be set before calling this target" 
-           />
-    
+    <ItemGroup>
+      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+    </ItemGroup>
+
   </Target>
   
 </Project>
