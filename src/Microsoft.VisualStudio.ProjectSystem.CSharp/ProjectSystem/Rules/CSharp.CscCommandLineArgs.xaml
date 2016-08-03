@@ -10,8 +10,8 @@
   <!-- Rule represents the CscCommandLineArgs item that contains the split arguments that we get back from Compile -->
 
   <Rule.DataSource>
-    <DataSource Persistence="CscCommandLineArgs" ItemType="CscCommandLineArgs" HasConfigurationCondition="False"
-                SourceType="TargetResults" MSBuildTarget="Compile" />
+      <DataSource Persistence="CscCommandLineArgs" ItemType="CscCommandLineArgs" HasConfigurationCondition="False"
+                  SourceType="TargetResults" MSBuildTarget="CompileDesignTime" />
   </Rule.DataSource>
 
 </Rule>

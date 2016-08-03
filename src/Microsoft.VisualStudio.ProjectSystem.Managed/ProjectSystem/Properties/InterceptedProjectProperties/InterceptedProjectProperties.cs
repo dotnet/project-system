@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.Build.Framework.XamlTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// the given default <see cref="IProjectProperties"/> and passes it to corresponding <see cref="IInterceptingPropertyValueProvider"/>
     /// to validate and/or transform the property value to get/set.
     /// </summary>
-    internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase
+    internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase, IRuleAwareProjectProperties
     {
         private readonly ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _valueProviders;
 
@@ -78,6 +79,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions);
             }
+        }
+
+        public void SetRuleContext(Rule rule)
+        {
+            var ruleAwareProperties = DelegatedProperties as IRuleAwareProjectProperties;
+            ruleAwareProperties?.SetRuleContext(rule);
         }
     }
 }

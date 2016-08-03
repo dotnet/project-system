@@ -51,6 +51,7 @@
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectInstancePropertiesProviderFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />

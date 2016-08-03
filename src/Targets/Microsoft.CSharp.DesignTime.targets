@@ -1,7 +1,7 @@
 <!--
 
   This file contains C# Visual Studio and designer-related properties and items for C# projects.
-  
+
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -24,24 +24,39 @@
   
   <!-- CPS Project Properties -->
   <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)CSharp.CscCommandLineArgs.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-  
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\ConfigurationGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>
+  
+  <!-- Targets -->
+
+  <!-- Returns Csc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(CscCommandLineArgs)"
+          DependsOnTargets="Compile"
+          >
+
+    <Error Condition="'$(SkipCompilerExecution)|$(ProvideCommandLineArgs)' != 'true|true'"
+           Text="SkipCompilerExecution and ProvideCommandLineArgs should be set before calling this target"
+           />
+    
+  </Target>
+  
 </Project>

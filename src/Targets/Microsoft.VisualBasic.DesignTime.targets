@@ -44,4 +44,19 @@
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>
+
+  <!-- Targets -->
+
+  <!-- Returns Vbc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(VbcCommandLineArgs)"
+          DependsOnTargets="Compile"
+          >
+
+    <Error Condition="'$(SkipCompilerExecution)|$(ProvideCommandLineArgs)' != 'true|true'"
+           Text="SkipCompilerExecution and ProvideCommandLineArgs should be set before calling this target" 
+           />
+    
+  </Target>
+  
 </Project>
