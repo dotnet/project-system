@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// </summary>
         public MultiChoiceMsgBoxViewModel(string title, string errorText, string[] buttons)
         {
-            if(buttons.Length < 1 || buttons.Length > 4)
+            if (buttons.Length < 1 || buttons.Length > 4)
             {
                 throw new ArgumentException(null, nameof(buttons));
             }
@@ -27,17 +27,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             DialogTitle = title;
 
             Button1Text = buttons[0];
-            if(buttons.Length > 1)
+            if (buttons.Length > 1)
             {
                 Button2Text = buttons[1];
             }
 
-            if(buttons.Length > 2)
+            if (buttons.Length > 2)
             {
                 Button3Text = buttons[2];
             }
 
-            if(buttons.Length > 3)
+            if (buttons.Length > 3)
             {
                 Button4Text = buttons[3];
             }
@@ -50,17 +50,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         // Dialog needs to listen to this event to know when to close.
         public event EventHandler<MultiChoiceMsgBoxResult> CloseDialog;
 
-        public string Button1Text { get; private set; }
-        public string Button2Text { get; private set; }
-        public string Button3Text { get; private set; }
-        public string Button4Text { get; private set; }
-        public string DialogTitle { get; private set; }
-        public string ErrorMsgText { get; private set; }
+        public string Button1Text { get; }
+        public string Button2Text { get; }
+        public string Button3Text { get; }
+        public string Button4Text { get; }
+        public string DialogTitle { get; }
+        public string ErrorMsgText { get; }
 
         public Visibility Button1Visibility { get {return Button1Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button2Visibility { get{return Button2Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button3Visibility { get{return Button3Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button4Visibility { get{return Button4Text == null? Visibility.Collapsed: Visibility.Visible;} }
+        public Visibility Button2Visibility { get {return Button2Text == null? Visibility.Collapsed: Visibility.Visible;} }
+        public Visibility Button3Visibility { get {return Button3Text == null? Visibility.Collapsed: Visibility.Visible;} }
+        public Visibility Button4Visibility { get {return Button4Text == null? Visibility.Collapsed: Visibility.Visible;} }
 
     }
 }

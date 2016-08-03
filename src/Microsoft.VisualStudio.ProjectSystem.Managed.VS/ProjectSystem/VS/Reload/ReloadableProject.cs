@@ -22,6 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
+
+        [ImportingConstructor]
+        public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager)
+            : base(projectVsServices.ThreadingService.JoinableTaskContext)
+        {
+            _projectVsServices = projectVsServices;
+            _reloadManager = reloadManager;
+        }
+
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectReloadManager _reloadManager;
 
@@ -39,14 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 return _projectVsServices.VsHierarchy;
             }
-        }
-
-        [ImportingConstructor]
-        public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager)
-            : base(projectVsServices.ThreadingService.JoinableTaskContext)
-        {
-            _projectVsServices = projectVsServices;
-            _reloadManager = reloadManager;
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 await writeAccess.CheckoutAsync(_projectVsServices.Project.FullPath).ConfigureAwait(true);
                 var msbuildProject = await writeAccess.GetProjectXmlAsync(_projectVsServices.Project.FullPath, CancellationToken.None).ConfigureAwait(true);
-                if(msbuildProject.HasUnsavedChanges)
+                if (msbuildProject.HasUnsavedChanges)
                 {
                     // For now force a solution reload.
                     return ProjectReloadResult.ReloadFailedProjectDirty;

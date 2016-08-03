@@ -29,23 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, 
                                           IVsSolutionEvents, IVsSolutionEvents4
     {
-        private readonly IServiceProvider _serviceProvider;
-        private IProjectThreadingService _threadHandling;
-        private IUserNotificationServices _userNotificationServices;
-        private IDialogServices _dialogServices;
 
-        public uint  SolutionEventsCookie { get; private set; } = VSConstants.VSCOOKIE_NIL;
-        public ITaskDelayScheduler ReloadDelayScheduler { get; private set; }
-
-        private const int ReloadDelay = 1000;   // delay 1s before applying updated project contents.
-
-        // Tracks the set of reloadable projects. The value is the file system watcher cookie
-        private Dictionary<IReloadableProject, uint> _registeredProjects = new Dictionary<IReloadableProject, uint>();
-
-        public IReadOnlyDictionary<IReloadableProject, uint> RegisteredProjects { get { return _registeredProjects;} }
-
-        // Tracks the list of projects that have changed and need to be processed
-        private List<IReloadableProject> _changedProjects = new List<IReloadableProject>();
 
         [ImportingConstructor]
         public ProjectReloadManager(IProjectThreadingService threadHandling, [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IUserNotificationServices userNotificationServices,
@@ -58,6 +42,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _dialogServices = dialogServices;
         }
 
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IProjectThreadingService _threadHandling;
+        private readonly IUserNotificationServices _userNotificationServices;
+        private readonly IDialogServices _dialogServices;
+
+        public uint  SolutionEventsCookie { get; private set; } = VSConstants.VSCOOKIE_NIL;
+        public ITaskDelayScheduler ReloadDelayScheduler { get; private set; }
+
+        private const int ReloadDelay = 1000;   // delay 1s before applying updated project contents.
+
+        // Tracks the set of reloadable projects. The value is the file system watcher cookie
+        private Dictionary<IReloadableProject, uint> _registeredProjects = new Dictionary<IReloadableProject, uint>();
+
+        public IReadOnlyDictionary<IReloadableProject, uint> RegisteredProjects { get { return _registeredProjects;} }
+
+        // Tracks the list of projects that have changed and need to be processed
+        private List<IReloadableProject> _changedProjects = new List<IReloadableProject>();        
+        
         /// <summary>
         /// Initialization occurs when the first project registers
         /// </summary>
@@ -71,6 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public async Task RegisterProjectAsync(IReloadableProject project)
         {
+            Requires.NotNull(project, nameof(project));
+
             await Initialize().ConfigureAwait(false);
             await _threadHandling.SwitchToUIThread();
 
@@ -93,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     int hr = fileChangeService.AdviseFileChange(project.ProjectFile, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size), this, out filechangeCookie);
                     System.Diagnostics.Debug.Assert(ErrorHandler.Succeeded(hr) && filechangeCookie != VSConstants.VSCOOKIE_NIL);
-                    if(ErrorHandler.Succeeded(hr) && filechangeCookie != VSConstants.VSCOOKIE_NIL)
+                    if (ErrorHandler.Succeeded(hr) && filechangeCookie != VSConstants.VSCOOKIE_NIL)
                     {
                         lock(_registeredProjects)
                         {
@@ -114,6 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public async Task UnregisterProjectAsync(IReloadableProject project)
         {
+            Requires.NotNull(project, nameof(project));
+
             await _threadHandling.SwitchToUIThread();
             
             UnregisterProject(project);
@@ -138,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
 
                 // Always remove the watcher from our list
-                lock(_registeredProjects)
+                lock (_registeredProjects)
                 {
                     _registeredProjects.Remove(project);
                 }
@@ -161,6 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     int hr = solution.AdviseSolutionEvents(this, out cookie);
                     SolutionEventsCookie = cookie;
                     System.Diagnostics.Debug.Assert(ErrorHandler.Succeeded(hr) && SolutionEventsCookie != VSConstants.VSCOOKIE_NIL);
+                    ErrorHandler.ThrowOnFailure(hr);
                 }
             }
         }
@@ -172,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _threadHandling.SwitchToUIThread();
 
-            if(SolutionEventsCookie != VSConstants.VSCOOKIE_NIL)
+            if (SolutionEventsCookie != VSConstants.VSCOOKIE_NIL)
             {
                 IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
                 if (solution != null)
@@ -199,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if(ReloadDelayScheduler != null)
+            if (ReloadDelayScheduler != null)
             {
                 ReloadDelayScheduler.Dispose();
                 ReloadDelayScheduler = null;
@@ -213,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] grfChange)
         {
-            if(cChanges == 1 && (grfChange[0] & (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Time)) != 0)
+            if (cChanges == 1 && (grfChange[0] & (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Time)) != 0)
             {
                 IReloadableProject changedProject = null;
                 lock(_registeredProjects)
@@ -221,11 +228,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     changedProject = _registeredProjects.FirstOrDefault(kv => kv.Key.ProjectFile.Equals(rgpszFile[0], StringComparison.OrdinalIgnoreCase)).Key;
                 }
 
-                if(changedProject != null)
+                if (changedProject != null)
                 {
                     lock(_changedProjects)
                     {
-                        if(!_changedProjects.Contains(changedProject))
+                        if (!_changedProjects.Contains(changedProject))
                         {
                             _changedProjects.Add(changedProject);
                         }
@@ -236,14 +243,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             // projects completes.
                             await _threadHandling.SwitchToUIThread();
 
-                            if(ct.IsCancellationRequested)
+                            if (ct.IsCancellationRequested)
                             {
                                 return;
                             }
 
                             // Get the list of projects and create a new empty list to put new requests
                             List<IReloadableProject> changedProjects;
-                            lock(_changedProjects)
+                            lock (_changedProjects)
                             {
                                 changedProjects = _changedProjects;
                                 _changedProjects = new List<IReloadableProject>();
@@ -252,11 +259,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             var failedProjects = new List<Tuple<IReloadableProject, ProjectReloadResult>>();
                             _threadHandling.ExecuteSynchronously(async () =>
                             {
-                                foreach(var project in changedProjects)
+                                foreach (var project in changedProjects)
                                 {
                                     ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
 
-                                    if(result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
+                                    if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
                                     {
                                         failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
                                     }
@@ -279,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private void ProcessProjectReloadFailures(List<Tuple<IReloadableProject, ProjectReloadResult>> failedProjects)
         {
-            if(failedProjects.Count == 0)
+            if (failedProjects.Count == 0)
             {
                 return;
             }
@@ -288,111 +295,131 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // simply reloaded
             bool ignoreAll = false;
             bool reloadAll = false;
-            foreach(var failure in failedProjects)
+            foreach (var failure in failedProjects)
             {
-                if(failure.Item2 == ProjectReloadResult.ReloadFailedProjectDirty)
+                if (failure.Item2 == ProjectReloadResult.ReloadFailedProjectDirty)
                 {
-                    var buttons = new string[] {Resources.Ignore,
-                                                Resources.Overwrite,
-                                                Resources.Discard,
-                                                Resources.SaveAs};
-
-                    var msgText = string.Format(Resources.ConflictingModificationsPrompt, Path.GetFileNameWithoutExtension(failure.Item1.ProjectFile));
-
-                    switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ConflictingProjectModificationTitle, msgText, buttons))
-                    {
-                        case MultiChoiceMsgBoxResult.Cancel:
-                        {
-                            break;
-                        }
-                        case MultiChoiceMsgBoxResult.Button1:
-                        {
-                            // Ignore
-                            break;
-                        }
-                        case MultiChoiceMsgBoxResult.Button2:
-                        {
-                            // Overwrite
-                            int hr = SaveProject(failure.Item1);
-                            if(ErrorHandler.Failed(hr))
-                            {
-                                _userNotificationServices.ReportErrorInfo(hr);
-                            }
-                            break;
-                        }
-                        case MultiChoiceMsgBoxResult.Button3:
-                        {
-                            // Discard 
-                            ReloadProjectInSolution(failure.Item1);
-                            break;
-                        }
-                        case MultiChoiceMsgBoxResult.Button4:
-                        {
-                            // Save as
-                            int hr = SaveAsProject(failure.Item1);
-                            if(ErrorHandler.Succeeded(hr))
-                            {
-                                ReloadProjectInSolution(failure.Item1);
-                            }
-                            else
-                            {
-                                _userNotificationServices.ReportErrorInfo(hr);
-                            }
-                            break;
-                        }
-                    }
+                    ProcessProjectDirtyInMemory(failure.Item1);
                 }
                 else
                 {
-                    if(ignoreAll)
+                    if (ignoreAll)
                     {   
                         // do nothing
                     }
-                    else if(reloadAll)
+                    else if (reloadAll)
                     {
                         ReloadProjectInSolution(failure.Item1);
                     }
                     else
                     {
-
-                        var buttons = new string[] {Resources.IgnoreAll,
-                                                    Resources.Ignore,
-                                                    Resources.ReloadAll,
-                                                    Resources.Reload};
-
-                        var msgText = string.Format(Resources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(failure.Item1.ProjectFile));
-                        switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ProjectModificationDlgTitle, msgText, buttons))
-                        {
-                            case MultiChoiceMsgBoxResult.Cancel:
-                            {
-                                break;
-                            }
-                            case MultiChoiceMsgBoxResult.Button1:
-                            {
-                                // Ignore All
-                                ignoreAll = true;
-                                break;
-                            }
-                            case MultiChoiceMsgBoxResult.Button2:
-                            {
-                                // Ignore
-                                break;
-                            }
-                            case MultiChoiceMsgBoxResult.Button3:
-                            {
-                                // Reload  all
-                                reloadAll = true;
-                                ReloadProjectInSolution(failure.Item1);
-                                break;
-                            }
-                            case MultiChoiceMsgBoxResult.Button4:
-                            {
-                                // Reload
-                                ReloadProjectInSolution(failure.Item1);
-                                break;
-                            }
-                        }
+                        ProcessProjectWhichFailedReload(failure.Item1, out ignoreAll, out reloadAll);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Puts up a prompt appropriate for project which failed the autoload. ignoreAll or reloadAll will be set
+        /// to true if the user selected those options
+        /// </summary>
+        private void ProcessProjectWhichFailedReload(IReloadableProject project, out bool ignoreAll, out bool reloadAll)
+        {
+            ignoreAll = false;
+            reloadAll = false;
+            var buttons = new string[] {Resources.IgnoreAll,
+                                        Resources.Ignore,
+                                        Resources.ReloadAll,
+                                        Resources.Reload};
+
+            var msgText = string.Format(Resources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
+            switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ProjectModificationDlgTitle, msgText, buttons))
+            {
+                case MultiChoiceMsgBoxResult.Cancel:
+                {
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button1:
+                {
+                    // Ignore All
+                    ignoreAll = true;
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button2:
+                {
+                    // Ignore
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button3:
+                {
+                    // Reload  all
+                    reloadAll = true;
+                    ReloadProjectInSolution(project);
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button4:
+                {
+                    // Reload
+                    ReloadProjectInSolution(project);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Puts up UI to allow the user to decide on the appropriate action for a project which is dirty
+        /// in memory
+        /// </summary>
+        private void ProcessProjectDirtyInMemory(IReloadableProject project)
+        {
+            var buttons = new string[] {Resources.Ignore,
+                                        Resources.Overwrite,
+                                        Resources.Discard,
+                                        Resources.SaveAs};
+
+            var msgText = string.Format(Resources.ConflictingModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
+
+            switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ConflictingProjectModificationTitle, msgText, buttons))
+            {
+                case MultiChoiceMsgBoxResult.Cancel:
+                {
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button1:
+                {
+                    // Ignore
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button2:
+                {
+                    // Overwrite
+                    int hr = SaveProject(project);
+
+                    if (ErrorHandler.Failed(hr))
+                    {
+                        _userNotificationServices.ReportErrorInfo(hr);
+                    }
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button3:
+                {
+                    // Discard 
+                    ReloadProjectInSolution(project);
+                    break;
+                }
+                case MultiChoiceMsgBoxResult.Button4:
+                {
+                    // Save as
+                    int hr = SaveAsProject(project);
+                    if (ErrorHandler.Succeeded(hr))
+                    {
+                        ReloadProjectInSolution(project);
+                    }
+                    else
+                    {
+                        _userNotificationServices.ReportErrorInfo(hr);
+                    }
+                    break;
                 }
             }
         }
@@ -407,12 +434,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Get our parent hierarchy and our itemid in the parent hierarchy.
             IVsHierarchy parentHier = project.VsHierarchy.GetProperty<IVsHierarchy>(VsHierarchyPropID.ParentHierarchy, null);
-            if(parentHier == null)
+            if (parentHier == null)
             {
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
             }
+
             uint parentItemid  = (uint)project.VsHierarchy.GetProperty<int>(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
-            if(parentItemid == VSConstants.VSITEMID_NIL)
+            if (parentItemid == VSConstants.VSITEMID_NIL)
             {
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
             }
@@ -455,6 +483,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 hr = VSConstants.E_ABORT;
             }
+
             return hr;
         }
 
@@ -475,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             lock(_registeredProjects)
             {
                 var renamedProject = _registeredProjects.FirstOrDefault(kv => kv.Key.VsHierarchy.Equals(pHierarchy)).Key;
-                if(renamedProject != null)
+                if (renamedProject != null)
                 {
                     UnregisterProject(renamedProject);
                     RegisterProject(renamedProject);
