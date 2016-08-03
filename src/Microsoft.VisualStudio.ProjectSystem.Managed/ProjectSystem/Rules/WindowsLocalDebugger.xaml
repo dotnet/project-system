@@ -40,5 +40,5 @@
         <EnumValue Name="ManagedCore" DisplayName="Managed Core" Description="CoreCLR"/>
         <EnumValue Name="NativeWithManagedCore" DisplayName="Native with Managed Core" Description="Native and CoreCLR"/>
     </EnumProperty>
-    <StringProperty Name="DotnetPath" Default="C:\Program Files\dotnet\dotnet.exe" Description="Path to the dotnet executable" DisplayName="Dotnet Path"/>
+    <StringProperty Name="DotnetPath" Default="dotnet.exe" Description="Path to the dotnet executable" DisplayName="Dotnet Path"/>
 </Rule>

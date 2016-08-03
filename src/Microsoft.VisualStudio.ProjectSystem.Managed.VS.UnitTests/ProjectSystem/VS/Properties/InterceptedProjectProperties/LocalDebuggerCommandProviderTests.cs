@@ -18,12 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var provider = new LocalDebuggerCommandValueProvider();
 
             Assert.Equal(existingCommand, await provider.OnGetEvaluatedPropertyValueAsync(existingCommand, properties));
-        }        
+        }
 
         [Fact]
         public async Task LocalDebuggerCommand_EmptyCommand_ReturnsDotnet()
         {
-            var properties = IProjectPropertiesFactory.CreateWithPropertyAndValue(WindowsLocalDebugger.LocalDebuggerCommandProperty, string.Empty);
+            var properties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new System.Collections.Generic.Dictionary<string, string>()
+            {
+                { WindowsLocalDebugger.LocalDebuggerCommandProperty,  "" },
+                { WindowsLocalDebugger.DotnetPathProperty,  "dotnet.exe" }
+            });
             var provider = new LocalDebuggerCommandValueProvider();
 
             Assert.Equal("dotnet.exe", await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, properties));
