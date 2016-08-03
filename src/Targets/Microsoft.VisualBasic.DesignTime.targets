@@ -1,7 +1,7 @@
 <!--
 
   This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
-  
+
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -10,7 +10,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">My Project</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
-    
+
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
@@ -23,23 +23,27 @@
 
   <!-- CPS Project Properties -->
   <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)VisualBasic.VbcCommandLineArgs.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\VisualBasic.VbcCommandLineArgs.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-    
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\ConfigurationGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)\WindowsLocalDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>

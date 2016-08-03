@@ -150,7 +150,7 @@
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\WindowsLocalDebugger.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
   </ItemGroup>
   <ItemGroup>

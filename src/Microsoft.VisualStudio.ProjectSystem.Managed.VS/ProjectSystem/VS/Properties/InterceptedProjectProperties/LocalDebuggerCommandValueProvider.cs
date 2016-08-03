@@ -2,8 +2,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using System;
-using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -12,16 +10,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     {
         public const string DefaultCommand = "";
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             var command = evaluatedPropertyValue;
 
             // If the existing command is the empty string, then a custom command has not been set. We therefore want to return dotnet here,
             // and return exec + exe + args in the LocalDebuggerCommandArguments interceptor.
             if (command == DefaultCommand)
-                command = "dotnet.exe";
+                command = await defaultProperties.GetEvaluatedPropertyValueAsync(WindowsLocalDebugger.DotnetPathProperty).ConfigureAwait(false);
 
-            return Task.FromResult(command);
+            return command;
         }
     }
 }

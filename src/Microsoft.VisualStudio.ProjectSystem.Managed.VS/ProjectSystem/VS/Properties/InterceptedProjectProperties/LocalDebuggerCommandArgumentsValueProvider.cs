@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public LocalDebuggerCommandArgumentsValueProvider(Lazy<ProjectProperties> projectProperties, 
+        public LocalDebuggerCommandArgumentsValueProvider(Lazy<ProjectProperties> projectProperties,
                                                           [Import(AllowDefault = true)] Lazy<IOutputGroupsService, IAppliesToMetadataView> outputGroups,
                                                           ConfiguredProject configuredProject)
         {

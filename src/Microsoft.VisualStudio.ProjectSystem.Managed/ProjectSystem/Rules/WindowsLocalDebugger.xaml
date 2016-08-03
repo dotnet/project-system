@@ -24,11 +24,6 @@
             <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
         </StringProperty.DataSource>
     </StringProperty>
-    <!--<StringProperty Name="LocalDebuggerDebuggerType">
-        <StringProperty.DataSource>
-            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
-        </StringProperty.DataSource>
-    </StringProperty>-->
     <EnumProperty Name="LocalDebuggerDebuggerType" DisplayName="Debugger Type"
                 Default="ManagedCore"
                 Description="Specifies the debugger type to use. When set to Auto, the debugger type will be selected based on contents of the exe file."
@@ -42,6 +37,8 @@
         <EnumValue Name="Auto" DisplayName="Auto" Description="Auto" />
         <EnumValue Name="Script" DisplayName="Script" Description="Script" />
         <EnumValue Name="GPUOnly" DisplayName="GPU Only" Description="GPU Only" />
-        <EnumValue Name="ManagedCore" DisplayName="Managed Core" Description="asdf"/>
+        <EnumValue Name="ManagedCore" DisplayName="Managed Core" Description="CoreCLR"/>
+        <EnumValue Name="NativeWithManagedCore" DisplayName="Native with Managed Core" Description="Native and CoreCLR"/>
     </EnumProperty>
+    <StringProperty Name="DotnetPath" Default="C:\Program Files\dotnet\dotnet.exe" Description="Path to the dotnet executable" DisplayName="Dotnet Path"/>
 </Rule>
