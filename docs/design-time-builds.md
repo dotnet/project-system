@@ -15,12 +15,12 @@ For performance reasons and unlike normal builds, which call the _Build_ target,
 
 The following design-time targets are called, including any dependencies, during design-time builds in the C#/VB project systems. Other project systems, such as C++ or JavaScript will call different targets. 
 
-Design-Time Target                  | Normal Target                      | Description
-------------------------------------|------------------------------------|------------------
-ResolveAssemblyReferencesDesignTime | ResolveAssemblyReferences          | Resolves `<Reference>` items to their paths.
-ResolveProjectReferencesDesignTime  | ResolveProjectReferences           | Resolves `<ProjectReference>` items to their output paths.
-ResolveComReferencesDesignTime      | ResolveComReferences               | Resolves `<COMReference>` items to their primary interop assemblies (PIA) paths.
-Compile                             | Compile                            | Passes command-line arguments, include `<Compile>` and `<Analyzer>` items to the compiler in normal builds, or language service in design-time builds.
+Design-Time Target                            | Normal Target                      | Description
+----------------------------------------------|------------------------------------|------------------
+ResolveAssemblyReferencesDesignTime           | ResolveAssemblyReferences          | Resolves `<Reference>` items to their paths.
+ResolveProjectReferencesDesignTime            | ResolveProjectReferences           | Resolves `<ProjectReference>` items to their output paths.
+ResolveComReferencesDesignTime                | ResolveComReferences               | Resolves `<COMReference>` items to their primary interop assemblies (PIA) paths.
+CompileDesignTime (new project system)/Compile| Compile                            | Passes command-line arguments, include `<Compile>` and `<Analyzer>` items to the compiler in normal builds, or language service in design-time builds.
 
 The design-time targets are typically simple wrappers around their normal target equivalents, with customized behavior for design-time builds. 
 
