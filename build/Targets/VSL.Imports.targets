@@ -6,6 +6,9 @@
        csproj's up-to-date check because they aren't copied to the output directory. 
        Turn it off. 
   -->
+  <Import Condition="'$(ProjectSystemLayer)' != 'Dependendency' OR '$(NeedsSigningToRelease)' == 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.props" />
+  <Import Condition="'$(ProjectSystemLayer)' != 'Dependendency' OR '$(NeedsSigningToRelease)' == 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.targets" />
+
   <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
     <Reference>
       <Private>false</Private>
@@ -404,70 +407,21 @@
 
   <!-- ====================================================================================
 
-         Support for signing VSIXes
+         Support for signing
 
        ==================================================================================== -->
-
-  <UsingTask TaskName="SignFiles" AssemblyFile="$(MicroBuildSigningLibrary)" Condition="'$(ShouldSignBuild)' == 'true'"/>
-
-  <!-- The below properties are set so that the SignVsixInputs Target runs right after we Get the VSIX Source items
-       This allows the signing of the components that go into the VSIX, which gets signed through SignVsix Target-->
-  <PropertyGroup>
-    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);SignVsixInputs</CreateVsixContainerDependsOn>
-    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);SignVsix</PrepareForRunDependsOn>
-    <ProducingSignedVsix Condition="'$(ShouldSignBuild)' == 'true' AND '$(CreateVsixContainer)' == 'true'">true</ProducingSignedVsix>
-  </PropertyGroup>
-
-  <Target Name="GetTargetPathWithStrongNameFriendlyID" DependsOnTargets="GetTargetPath" Returns="@(TargetPathWithStrongNameFriendlyID)">
-    <ItemGroup>
-      <TargetPathWithStrongNameFriendlyID Include="$(TargetPath)">
-        <StrongName>$(StrongNameCertificateFriendlyId)</StrongName>
-      </TargetPathWithStrongNameFriendlyID>
-    </ItemGroup>
-  </Target>
-
-  <Target Name="SignVsixInputs" Condition="'$(ProducingSignedVsix)' == 'true'" DependsOnTargets="GetVsixSourceItems" BeforeTargets="AfterCompile">
-    <MSBuild Projects="@(ProjectReferenceWithConfiguration)"
-             Targets="GetTargetPathWithStrongNameFriendlyID"
-             BuildInParallel="$(BuildInParallel)"
-             Properties="%(ProjectReferenceWithConfiguration.SetConfiguration); %(ProjectReferenceWithConfiguration.SetPlatform)"
-             >
-      <Output TaskParameter="TargetOutputs" ItemName="VsixInputAssembliesToSign" />
-    </MSBuild>
-
-    <!-- The below check is to decide if the assembly produced by the VSIX project should be included in the VSIX-->
-    <ItemGroup>
-      <VsixInputAssembliesToSign Include="@(IntermediateAssembly)" Condition="'$(IncludeAssemblyInVSIXContainer)' == 'true'" />
-    </ItemGroup>
-
-    <Message Text="Signing VSIX inputs: using authenticode certificate Microsoft for %(VsixInputAssembliesToSign.Identity)"/>
-
-    <ItemGroup>
-      <VsixInputAssembliesToSign>
+  <ItemGroup>
+    <FilesToSign Condition="'$(ShouldSignBuild)' == 'true' AND '$(NeedsSigningToRelease)' == 'true'" Include="$(OutDir)\$(AssemblyName).dll">
         <Authenticode>Microsoft</Authenticode>
-      </VsixInputAssembliesToSign>
-    </ItemGroup>
+        <StrongName>$(StrongNameCertificateFriendlyId)</StrongName>
+    </FilesToSign>
+  </ItemGroup>
 
-    <SignFiles Files="@(VsixInputAssembliesToSign)"
-               BinariesDirectory="$(OutDir)"
-               IntermediatesDirectory="$(IntermediateOutputPath)"
-               Type="$(SignType)" />
-  </Target>
-
-  <Target Name="SignVsix" Condition="'$(ProducingSignedVsix)' == 'true'" DependsOnTargets="CreateVsixContainer">
-    <Message Text="Signing VSIX: $(TargetVsixContainer)"/>
-
-    <ItemGroup>
-      <VsixToSign Include="$(TargetVsixContainer)">
+  <ItemGroup>
+    <FilesToSign Condition="'$(ShouldSignBuild)' == 'true' AND '$(ProducingSignedVsix)' == 'true'" Include="$(TargetVsixContainer)">
         <Authenticode>VsixSHA2</Authenticode>
-      </VsixToSign>
-    </ItemGroup>
-
-    <SignFiles Files="@(VsixToSign)"
-               BinariesDirectory="$(OutDir)"
-               IntermediatesDirectory="$(IntermediateOutputPath)"
-               Type="$(SignType)" />
-  </Target>
+    </FilesToSign>
+  </ItemGroup>
 
   <!-- ====================================================================================
 

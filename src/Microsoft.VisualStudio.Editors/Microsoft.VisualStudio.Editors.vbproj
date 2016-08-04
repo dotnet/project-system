@@ -25,6 +25,7 @@
     <TargetFrameworkProfile />
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <StrongNameCertificate>Microsoft</StrongNameCertificate>
+    <NeedsSigningToRelease>true</NeedsSigningToRelease>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <Prefer32Bit>false</Prefer32Bit>
