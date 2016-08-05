@@ -61,11 +61,112 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assemblies.
+        /// </summary>
+        internal static string AssembliesNodeName {
+            get {
+                return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assemblies(old).
+        /// </summary>
+        internal static string AssembliesNodeNameTemp {
+            get {
+                return ResourceManager.GetString("AssembliesNodeNameTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         internal static string ClassTemplateName {
             get {
                 return ResourceManager.GetString("ClassTemplateName", resourceCulture);
+            }
+        }
+        
+
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM.
+        /// </summary>
+        internal static string ComNodeName {
+            get {
+                return ResourceManager.GetString("ComNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (Loading...).
+        /// </summary>
+        internal static string DependenciesLoadingPostfix {
+            get {
+                return ResourceManager.GetString("DependenciesLoadingPostfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Errors - see Error List).
+        /// </summary>
+        internal static string DependenciesNodeErrorsSuffix {
+            get {
+                return ResourceManager.GetString("DependenciesNodeErrorsSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        internal static string DependenciesNodeName {
+            get {
+                return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assemblies.
+        /// </summary>
+        internal static string FrameworkAssembliesNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency.
+        /// </summary>
+        internal static string GraphNodeCategoryDependency {
+            get {
+                return ResourceManager.GetString("GraphNodeCategoryDependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected to find item type for rule {0}. The rule file is either missing or malformed..
+        /// </summary>
+        internal static string NoItemTypeForRule {
+            get {
+                return ResourceManager.GetString("NoItemTypeForRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        internal static string NuGetPackagesNodeName {
+            get {
+                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        internal static string ProjectsNodeName {
+            get {
+                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
             }
         }
         
@@ -202,6 +303,15 @@ namespace Microsoft.VisualStudio {
         internal static string SaveAs {
             get {
                 return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SDK.
+        /// </summary>
+        internal static string SdkNodeName {
+            get {
+                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
     }

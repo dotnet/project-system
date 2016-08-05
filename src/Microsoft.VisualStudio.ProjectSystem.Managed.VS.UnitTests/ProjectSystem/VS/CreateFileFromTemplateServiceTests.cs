@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.Mocks;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
