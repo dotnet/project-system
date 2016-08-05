@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -24,7 +25,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // Internally this calls ThreadHelper.SetUIThread(), which
                 // causes ThreadHelper to remember this thread for the
                 // lifetime of the process as the dispatcher thread.
-                IServiceProvider serviceProvider = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider;
+                // Note that we don't want to take a dependency on VisualStudio from this managed assembly
+                // so instead of 
+                //      var serviceProvider = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider; 
+                // use refletion to get the property. 
+                var assembly = Assembly.Load("Microsoft.VisualStudio.Shell.15.0");
+                var sptype = assembly.GetType("Microsoft.VisualStudio.Shell.ServiceProvider");
+                var serviceProvider = sptype.GetProperty("GlobalProvider");
             });
         }
 
