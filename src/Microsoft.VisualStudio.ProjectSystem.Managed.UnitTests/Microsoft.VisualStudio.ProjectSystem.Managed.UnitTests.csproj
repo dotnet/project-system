@@ -41,6 +41,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />

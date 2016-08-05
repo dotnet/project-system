@@ -26,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                       IUnconfiguredProjectCommonServices projectServices,
                                       IProjectLockService projectLockService)
         {
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
+            Requires.NotNull(projectServices, nameof(projectServices));
+            Requires.NotNull(projectLockService, nameof(projectLockService));
+
             _serviceProvider = serviceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
@@ -34,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         [ConfiguredProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        private void Load()
+        internal void Load()
         {
             this.EnsureInitialized();
         }
@@ -44,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(this.ProjectTree_ChangedAsync)));
         }
 
-        private void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
+        internal void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
         {
             var newTree = treeSnapshot.Value.Tree;
             if (newTree == null)
