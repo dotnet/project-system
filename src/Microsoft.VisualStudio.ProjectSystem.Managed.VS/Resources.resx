@@ -120,10 +120,56 @@
   <data name="ClassTemplateName" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="ProjectModificationsPrompt" xml:space="preserve">
+    <value>The project '{0}' has been modified outside the environment.
+
+Press Reload to load the updated project from disk.
+Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
+    </value>
+  </data>
+  <data name="ConflictingModificationsPrompt" xml:space="preserve">
+    <value>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
+
+Press Save As to save the unsaved changes and load the updated project from disk.
+Press Discard to discard the unsaved changes and load the updated project from disk.
+Press Overwrite to overwrite the external changes with your changes.
+Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
+    </value>
+  </data>
+  <data name="ConflictingProjectModificationTitle" xml:space="preserve">
+    <value>Conflicting Project Modification Detected</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>_Discard</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>_Ignore</value>
+  </data>
+  <data name="IgnoreAll" xml:space="preserve">
+    <value>Ignore A_ll</value>
+  </data>
+  <data name="Overwrite" xml:space="preserve">
+    <value>_Overwrite</value>
+  </data>
+  <data name="ProjectModificationDlgTitle" xml:space="preserve">
+    <value>Project Modification Detected</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>_Reload</value>
+  </data>
+  <data name="ReloadAll" xml:space="preserve">
+    <value>Reload A_ll</value>
+  </data>
   <data name="RenameSymbolFailed" xml:space="preserve">
     <value>Renaming the code element {0} failed.</value>
   </data>
   <data name="RenameSymbolPrompt" xml:space="preserve">
     <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element {0}?</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>_Save As</value>
+  </data>
+  <data name="FailedToWatchProject" xml:space="preserve">
+    <value>An unexpected error occurred attempting to watch project file '{0}'</value>
   </data>
 </root>
