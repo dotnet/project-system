@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         [ImportingConstructor]
         public ProjectLockFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-                                      [Import("Microsoft.VisualStudio.ProjectSystem.FileSystemDirectory")] IProjectTreeProvider fileSystemTreeProvider,
+                                      [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
                                       IProjectLockService projectLockService)
         {
