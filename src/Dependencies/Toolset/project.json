@@ -1,6 +1,7 @@
 {
   "supports": { },
   "dependencies": {
+    "MicroBuild.Core": "0.2.0",
     "Microsoft.Net.Compilers": {
       "version": "1.2.1",
       "exclude": "build"

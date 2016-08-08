@@ -12,13 +12,14 @@
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
-    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(CommonXamlResourcesDirectory)</CustomCommonXamlResourcesDirectory>
+    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
+    <!--<ProjectCapability Include="HandlesOwnReload"/>-->   <!--Temporary as it requires a CPS change to work-->
   </ItemGroup>
 
   <!-- CPS Project Properties -->
@@ -27,6 +28,10 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)VisualBasic.VbcCommandLineArgs.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
@@ -39,4 +44,19 @@
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>
+
+  <!-- Targets -->
+
+  <!-- Returns Vbc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(VbcCommandLineArgs)"
+          DependsOnTargets="Compile"
+          >
+
+    <Error Condition="'$(SkipCompilerExecution)|$(ProvideCommandLineArgs)' != 'true|true'"
+           Text="SkipCompilerExecution and ProvideCommandLineArgs should be set before calling this target" 
+           />
+    
+  </Target>
+  
 </Project>

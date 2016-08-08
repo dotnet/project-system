@@ -28,8 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider, 
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider, 
             UnconfiguredProject unconfiguredProject)
-            : base(provider, unconfiguredProject)
+            : base(provider, instanceProvider, unconfiguredProject)
         {
         }
 

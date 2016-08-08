@@ -2,14 +2,18 @@
 
 using Moq;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class SVsServiceProviderFactory
     {
-        public static SVsServiceProvider Create()
+        public static SVsServiceProvider Create(IVsAddProjectItemDlg dlg = null)
         {
-            return Mock.Of<SVsServiceProvider>();
+            var mock = new Mock<SVsServiceProvider>();
+            mock.Setup(s => s.GetService(It.IsAny<Type>())).Returns(dlg);
+            return mock.Object;
         }
     }
 }

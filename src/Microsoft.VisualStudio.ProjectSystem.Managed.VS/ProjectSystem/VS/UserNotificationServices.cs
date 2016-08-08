@@ -42,5 +42,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
+
+        /// <summary>
+        /// Uses IVsUIShell to display the error associated with the hr. Will look for an error string on the current thread that was
+        /// set by SetErrorInfo() and use that. Otherwise, tries to get the best error from the hResult.
+        /// </summary>
+        public void ReportErrorInfo(int hr)
+        {
+            _threadingService.VerifyOnUIThread();
+
+            var vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+
+            var result = vsUIShell.ReportErrorInfo(hr);
+        }
     }
 }

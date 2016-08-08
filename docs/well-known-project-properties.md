@@ -9,6 +9,26 @@ There are two types of properties, items and item metadata that are stored in MS
 ## __Build Properties, Items and Item Metadata__
 These properties, items and item metadata can be used to influence builds.
 
+#### __DesignTimeBuild (bool)__
+
+Specifies whether the current build is a [design-time build](design-time-builds.md).
+
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | The current build is a design-time build.|
+| _false_ or empty ('') | The current build is a normal build.|
+
+##### __Example__
+``` XML
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
+         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
+     </PropertyGroup>
+
+     ...
+  </Target>
+```
+
 ### __Build Properties__
 
 #### __PreBuildEvent (string)__
@@ -32,13 +52,42 @@ Specifies commands to execute before the build starts.
 | C#            | empty ('')         |
 | Visual Basic  | empty ('')         |
 
-Specifies commands to excecute after the build ends. To control whether these commands are run on failed or update-to-date builds, set the _RunPostBuildEvent_ property.
+Specifies commands to execute after the build ends. To control whether these commands are run on failed or update-to-date builds, set the _RunPostBuildEvent_ property.
 
 ##### __Example__
 ``` XML
   <PropertyGroup>
     <PostBuildEvent>call DeployTestEnvironment.cmd</PostBuildEvent>
   </PropertyGroup>
+```
+
+#### __ProvideCommandLineArgs (bool)__
+
+| Language      | Default            |
+|---------------| -------------------|
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
+
+Specifies whether `CoreCompile` should output the command-line arguments that were passed (or would have been passed if `SkipCompilerExecution` is `true`) to the Csc.exe and Vbc.exe executables.
+
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | CoreCompile will return the command-line arguments passed to Csc.exe or Vbc.exe.|
+| _false_ or empty ('') | CoreCompile will not return the command-line arguments passed to Csc.exe or Vbc.exe.|
+
+##### __Example__
+``` XML
+  <PropertyGroup>
+    <ProvideCommandLineArgs>true</ProvideCommandLineArgs>
+    <SkipCompilerExecution>true</SkipCompilerExecution>
+  </PropertyGroup>
+
+  <Target Name="PrintCommandLineArguments" AfterTargets="CoreCompile">
+    
+    <Message Text="Csc: @(CscCommandLineArguments)" />
+    <Message Text="Vbc: @(VbcCommandLineArguments)" />
+
+  </Target>
 ```
 
 #### __RunPostBuildEvent (enum)__
@@ -55,6 +104,25 @@ Specifies the conditions for the command in _PostBuildEvent_ to run.
 | Always          | Post-build event will run regardless of whether the build succeeds.     |
 | OnOutputUpdated | Post-build event will run only when the project output is different than the previous output.|
 | OnBuildSuccess  | Post-build event will run if the build succeeds, regardless of whether the project output is up-to-date.|
+
+
+#### __SkipCompilerExecution (bool)__
+
+| Language      | Default            |
+|---------------| -------------------|
+| C#            | empty ('')         |
+| Visual Basic  | empty ('')         |
+
+Specifies whether `CoreCompile` should skip compiler execution.
+
+| Value                 | Description    |
+|-----------------------| ---------------|
+| _true_                | CoreCompile will not call the Csc.exe or Vbc.exe executables.|
+| _false_ or empty ('') | CoreCompile will call the Csc.exe or Vbc.exe executables.|
+
+This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs_(bool)) property.
+
+
 
 ##### __Example__
 ``` XML
@@ -103,26 +171,6 @@ Specifies whether the contents of the _Application Designer_ folder are only vis
 <PropertyGroup>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles>true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
 <PropertyGroup>
-```
-
-#### __DesignTimeBuild (bool)__
-
-Specifies whether the current build is a [design-time build](design-time-builds.md).
-
-| Value                 | Description    |
-|-----------------------| ---------------|
-| _true_                | The current build is a design-time build.|
-| _false_ or empty ('') | The current build is a normal build.|
-
-##### __Example__
-``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
-     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
-         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
-     </PropertyGroup>
-
-     ...
-  </Target>
 ```
 
 #### __ProjectGuid (GUID) [deprecated]__

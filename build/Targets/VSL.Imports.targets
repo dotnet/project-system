@@ -40,7 +40,7 @@
 
   <!-- settings for strong name signing -->
   <PropertyGroup>
-    <MicroBuildSigningLibraryV2>$(BUILD_ARTIFACTSTAGINGDIRECTORY)\MicroBuild\Plugins\MicroBuild.Plugins.Signing.1.0.200\build\MicroBuild.Signing.dll</MicroBuildSigningLibraryV2>
+    <MicroBuildSigningLibraryV2>$(BUILD_ARTIFACTSTAGINGDIRECTORY)\MicroBuild\Plugins\MicroBuild.Plugins.Signing.1.0.227\build\MicroBuild.Signing.dll</MicroBuildSigningLibraryV2>
     <MicroBuildSigningLibrary Condition="Exists('$(MicroBuildSigningLibraryV2)')">$(MicroBuildSigningLibraryV2)</MicroBuildSigningLibrary>
     <ShouldSignBuild Condition="'$(RunningInMicroBuild)' == 'true' AND '$(SignType)' == 'real'">true</ShouldSignBuild>
     <StrongNameCertificate Condition="'$(StrongNameCertificate)' == ''">MicrosoftShared</StrongNameCertificate>
@@ -130,6 +130,14 @@
     </PropertyGroup>
   </Target>
 
+  <!-- Project language. This is needed to get xaml files to compile correctly. For some reason the ProjectLanguage is not
+       set and some of the tasks will fail
+  -->
+  <PropertyGroup Condition="'$(ProjectLanguage)' == ''">
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">CSharp</ProjectLanguage>
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">VB</ProjectLanguage>
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vcxproj' OR '$(Language)' == 'C++'">C++</ProjectLanguage>
+  </PropertyGroup>
   <Choose>
     <When Condition="'$(ProjectLanguage)' == 'VB'">
       <PropertyGroup>
@@ -137,6 +145,11 @@
       </PropertyGroup>
     </When>
     <When Condition="'$(ProjectLanguage)' == 'CSharp'">
+      <PropertyGroup>
+        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(ProjectLanguage)' == ''">
       <PropertyGroup>
         <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
       </PropertyGroup>
@@ -475,11 +488,23 @@
 
   ==================================================================================== -->
 
-  <Target Name="AfterBuild" Condition="'$(CreateVsixContainer)' == 'true'">
-     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
-  </Target>
+  <Target Name="CopyAdditionalFilesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
 
-  <Target Name="AfterRebuild" Condition="'$(CreateVsixContainer)' == 'true'">
-     <Copy SourceFiles="source.extension.vsixmanifest" DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)" />
+    <!-- Copy manifests to be picked up by NuGet insertion packages -->
+    <Copy SourceFiles="source.extension.vsixmanifest" 
+          DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)"
+          Condition="'$(CreateVsixContainer)' == 'true'">
+      
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+
+
+    <!-- Copy rule files for testing purposes -->
+    <Copy SourceFiles="@(XamlPropertyRule)" 
+          DestinationFolder="$(OutDir)\Rules">
+      
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
+    </Copy>
+    
   </Target>
 </Project>

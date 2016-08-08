@@ -41,12 +41,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
+    <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
+    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectInstancePropertiesProviderFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />
@@ -55,6 +60,7 @@
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
     <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesProviderFactory.cs" />
+    <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
@@ -68,13 +74,17 @@
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeServiceTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\Properties\ApplicationManifestValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderTests.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\AssemblyOriginatorKeyFileValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFilePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
   </ItemGroup>
@@ -87,7 +97,9 @@
     </None>
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>
