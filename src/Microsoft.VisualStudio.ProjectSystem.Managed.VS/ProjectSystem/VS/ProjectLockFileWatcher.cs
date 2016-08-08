@@ -37,6 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _projectLockService = projectLockService;
         }
 
+        /// <summary>
+        /// Called on project load.
+        /// </summary>
         [ConfiguredProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal void Load()
@@ -44,11 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             this.EnsureInitialized();
         }
         
+        /// <summary>
+        /// Initialize the watcher.
+        /// </summary>
         protected override void Initialize()
         {
             _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(this.ProjectTree_ChangedAsync)));
         }
 
+        /// <summary>
+        /// Called on changes to the project tree.
+        /// </summary>
         internal void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
         {
             var newTree = treeSnapshot.Value.Tree;
@@ -101,6 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (fileChangeService != null)
             {
                 int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
+                ErrorHandler.ThrowOnFailure(hr);
             }
         }
 
@@ -111,8 +121,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 IVsFileChangeEx fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
                 if (fileChangeService != null)
                 {
-                    int hr = fileChangeService.UnadviseFileChange(_filechangeCookie);
-                    System.Diagnostics.Debug.Assert(ErrorHandler.Succeeded(hr));
+                    // There's nothing for us to do if this fails. So ignore the return value.
+                    fileChangeService.UnadviseFileChange(_filechangeCookie);
                 }
             }
         }
@@ -126,9 +136,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
+        /// <summary>
+        /// Called when a project.lock.json file changes.
+        /// </summary>
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
-            // Kick off the operation to notify the project change in a different thread.
+            // Kick off the operation to notify the project change in a different thread irregardless of
+            // the kind of change since we are interested in all changes.
             _projectServices.ThreadingService.Fork(async () => { 
                 using (var access = await _projectLockService.WriteLockAsync())
                 {
