@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
-    partial class CscCommandLineArgs
+    partial class CompilerCommandLineArgs
     {
     }
 }

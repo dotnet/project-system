@@ -7,7 +7,7 @@
     <ProjectGuid>{6C6A41CE-72C5-4D77-8208-D01693F9BC88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.VisualStudio.ProjectSystem</RootNamespace>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
@@ -32,6 +32,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
+    <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
@@ -42,14 +44,20 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectProperties.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ProjectFileInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileInterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
+    <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
+      <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
@@ -105,6 +113,8 @@
     <Compile Include="ProjectSystem\SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
+    <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
   </ItemGroup>
@@ -142,6 +152,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

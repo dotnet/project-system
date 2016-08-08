@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void OptionsSettings_GetPropertiesValue_UIThread_Failure()
         {
-            COMException exception = Assert.ThrowsAsync<COMException>(async () =>
+            InvalidOperationException exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var optionnsSettings = new OptionsSettings(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
                 var task = Task.Run(() =>
@@ -54,8 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
                 await task;
             }).Result;
-
-            Assert.Contains("UI thread", exception.Message);
         }
 
         [Fact]

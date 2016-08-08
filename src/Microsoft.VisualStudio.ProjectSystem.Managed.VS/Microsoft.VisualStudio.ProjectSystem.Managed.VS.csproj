@@ -36,6 +36,8 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\IPhysicalProjectTreeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\IProjectTreeExtensions.cs" />
@@ -45,6 +47,9 @@
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\IReloadableProject.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\ProjectReloadResult.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\ReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />
     <Compile Include="ProjectSystem\VS\FileRenameTracker.cs" />
@@ -60,6 +65,14 @@
     <Compile Include="ProjectSystem\VS\Rename\IRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\UI\DialogServices.cs" />
+    <Compile Include="ProjectSystem\VS\UI\IDialogServices.cs" />
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
+      <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxResult.cs" />
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModel.cs" />
+    <Compile Include="ProjectSystem\VS\UI\RelayCommand.cs" />
     <Compile Include="ProjectSystem\VS\UserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
@@ -86,7 +99,22 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="warning.ico" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

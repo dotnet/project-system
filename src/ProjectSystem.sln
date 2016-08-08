@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.25527.0
+VisualStudioVersion = 15.0.25424.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -75,6 +75,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573BCEB9-1EC1-49E0-8332-E8436304DFFA}"
 	ProjectSection(SolutionItems) = preProject
 		Targets\Microsoft.CSharp.DesignTime.targets = Targets\Microsoft.CSharp.DesignTime.targets
+		Targets\Microsoft.Managed.DesignTime.targets = Targets\Microsoft.Managed.DesignTime.targets
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection
 EndProject
