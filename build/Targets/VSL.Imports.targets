@@ -6,8 +6,8 @@
        csproj's up-to-date check because they aren't copied to the output directory. 
        Turn it off. 
   -->
-  <Import Condition="'$(ProjectSystemLayer)' != 'Dependendency' OR '$(NeedsSigningToRelease)' == 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.props" />
-  <Import Condition="'$(ProjectSystemLayer)' != 'Dependendency' OR '$(NeedsSigningToRelease)' == 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.targets" />
+  <Import Condition="'$(ProjectSystemLayer)' != 'Dependency' AND '$(NonShipping)' != 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.props" />
+  <Import Condition="'$(ProjectSystemLayer)' != 'Dependency' AND '$(NonShipping)' != 'true'" Project="$(NuGetPackageRoot)\MicroBuild.Core\0.2.0\build\MicroBuild.Core.targets" />
 
   <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
     <Reference>
@@ -411,7 +411,7 @@
 
        ==================================================================================== -->
   <ItemGroup>
-    <FilesToSign Condition="'$(ShouldSignBuild)' == 'true' AND '$(NeedsSigningToRelease)' == 'true'" Include="$(OutDir)\$(AssemblyName).dll">
+    <FilesToSign Condition="'$(ShouldSignBuild)' == 'true' AND '$(NonShipping)' != 'true' AND '$(ProjectSystemLayer)' != 'Dependency'" Include="$(OutDir)\$(AssemblyName).dll">
         <Authenticode>Microsoft</Authenticode>
         <StrongName>$(StrongNameCertificateFriendlyId)</StrongName>
     </FilesToSign>

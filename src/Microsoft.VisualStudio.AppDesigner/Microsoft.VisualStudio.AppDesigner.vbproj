@@ -25,7 +25,6 @@
     <TargetFrameworkProfile />
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <StrongNameCertificate>Microsoft</StrongNameCertificate>
-    <NeedsSigningToRelease>true</NeedsSigningToRelease>
   </PropertyGroup>
   <ItemGroup>
     <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />

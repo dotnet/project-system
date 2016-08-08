@@ -13,7 +13,6 @@
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
-    <NeedsSigningToRelease>true</NeedsSigningToRelease>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
