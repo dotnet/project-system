@@ -78,7 +78,10 @@
           <Project>{e6796b97-d5c6-45b2-ae46-351d15dcfc71}</Project>
           <Name>Metadata</Name>
         </ProjectReference>
-        
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Json.net\Json.net.csproj">
+          <Project>{ca374af1-c983-4019-8fd0-01fa510c6e56}</Project>
+          <Name>Json.net</Name>
+        </ProjectReference>
       </ItemGroup>
     </When>
   </Choose>
