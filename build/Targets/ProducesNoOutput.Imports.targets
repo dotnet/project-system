@@ -7,8 +7,9 @@
     <TargetPath></TargetPath>    <!-- Prevent projects referencing this from trying to pass us to the compiler -->
   </PropertyGroup>
   
-  <Target Name="CoreCompile" />                               <!-- Prevent Csc from being called -->  
-  <Target Name="GenerateTargetFrameworkMonikerAttribute" />   <!-- Don't generate TFM attribute -->  
+  <!-- Return this back when up-to-date bug is fixed (projects are being build everytime) -->
+  <!-- <Target Name="CoreCompile" /> -->                               <!-- Prevent Csc from being called -->  
+  <!-- <Target Name="GenerateTargetFrameworkMonikerAttribute" /> -->  <!-- Don't generate TFM attribute -->    
   <Target Name="RuntimeImplementationProjectOutputGroup" />   <!-- Group always attempts resolve runtime, regardless of <CopyNuGetImplementations>-->
   
 </Project>
