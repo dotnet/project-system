@@ -49,6 +49,9 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\IOutputGroupsFactory.cs" />
+    <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
     <Compile Include="Mocks\IServiceProviderMoq.cs" />
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
@@ -77,6 +80,8 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandArgumentsProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />

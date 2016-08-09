@@ -24,6 +24,7 @@
     <NoDocumentationFile>true</NoDocumentationFile>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProducingSignedVsix>true</ProducingSignedVsix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>

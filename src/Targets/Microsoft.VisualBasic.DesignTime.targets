@@ -1,13 +1,13 @@
 <!--
 
   This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
-  
+
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="Microsoft.Managed.DesignTime.targets" />
-  
+
   <!-- Properties -->
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -29,5 +29,5 @@
     </ItemGroup>
 
   </Target>
-  
+
 </Project>

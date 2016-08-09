@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule
+	Name="WindowsLocalDebugger"
+	DisplayName="Windows Local Debugger"
+	PageTemplate="debugger"
+	Description="Windows Local Debugger options"
+    OverrideMode="Replace"
+	xmlns="http://schemas.microsoft.com/build/2009/properties">
+    <Rule.Categories>
+        <Category Name="General" DisplayName="General" Description="General" />
+    </Rule.Categories>
+    <Rule.DataSource>
+        <DataSource Persistence="UserFileWithXamlDefaults" Label="Configuration" />
+    </Rule.DataSource>
+
+    <StringProperty Name="LocalDebuggerCommand" >
+        <StringProperty.DataSource>
+            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="LocalDebuggerCommandArguments" >
+        <StringProperty.DataSource>
+            <DataSource Persistence="UserFileWithXamlDefaultsWithInterception"/>
+        </StringProperty.DataSource>
+    </StringProperty>
+    <EnumProperty Name="LocalDebuggerDebuggerType" DisplayName="Debugger Type"
+                Default="ManagedCore"
+                Description="Specifies the debugger type to use. When set to Auto, the debugger type will be selected based on contents of the exe file."
+                F1Keyword="VC.Project.IVCLocalDebugPageObject.DebuggerType">
+        <EnumProperty.Metadata>
+            <NameValuePair Name="IsDebugType" Value="true"/>
+        </EnumProperty.Metadata>
+        <EnumValue Name="NativeOnly" DisplayName="Native Only" Description="Native Only" />
+        <EnumValue Name="ManagedOnly" DisplayName="Managed Only" Description="Managed Only" />
+        <EnumValue Name="Mixed" DisplayName="Mixed" Description="Mixed" />
+        <EnumValue Name="Auto" DisplayName="Auto" Description="Auto" />
+        <EnumValue Name="Script" DisplayName="Script" Description="Script" />
+        <EnumValue Name="GPUOnly" DisplayName="GPU Only" Description="GPU Only" />
+        <EnumValue Name="ManagedCore" DisplayName="Managed Core" Description="CoreCLR"/>
+        <EnumValue Name="NativeWithManagedCore" DisplayName="Native with Managed Core" Description="Native and CoreCLR"/>
+    </EnumProperty>
+    <StringProperty Name="DotnetPath" Default="dotnet.exe" Description="Path to the dotnet executable" DisplayName="Dotnet Path"/>
+</Rule>
