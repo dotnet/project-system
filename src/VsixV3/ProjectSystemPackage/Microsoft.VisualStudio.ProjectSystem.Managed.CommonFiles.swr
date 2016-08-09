@@ -13,11 +13,11 @@ vs.localizedResources
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(SourcePath)\Targets\Microsoft.CSharp.DesignTime.targets"
   file source="$(SourcePath)\Targets\Microsoft.VisualBasic.DesignTime.targets"
+  file source="$(SourcePath)\Targets\Microsoft.Managed.DesignTime.targets"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(OutputPath)Rules\AppDesigner.xaml"
   file source="$(OutputPath)Rules\ConfigurationGeneral.xaml"
   file source="$(OutputPath)Rules\GeneralBrowseObject.xaml"
   file source="$(OutputPath)Rules\None.xaml"
-  file source="$(OutputPath)Rules\CSharp.CscCommandLineArgs.xaml"
-  file source="$(OutputPath)Rules\VisualBasic.VbcCommandLineArgs.xaml"
+  file source="$(OutputPath)Rules\CompilerCommandLineArgs.xaml"

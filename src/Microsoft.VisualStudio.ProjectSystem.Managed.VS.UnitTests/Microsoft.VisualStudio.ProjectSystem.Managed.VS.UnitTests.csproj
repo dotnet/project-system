@@ -53,6 +53,9 @@
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
+    <Compile Include="Mocks\IServiceProviderMoq.cs" />
+    <Compile Include="Mocks\IVsSolutionFactory.cs" />
+    <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
@@ -79,9 +82,12 @@
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandArgumentsProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
+    <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
+    <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
