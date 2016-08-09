@@ -21,7 +21,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         public void VerifyFileWatcherRegistration(string inputTree, string fileToWatch)
         {
             var spMock = new IServiceProviderMoq();
-            var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
+            uint adviseCookie = 100;
+            var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
             var watcher = new ProjectLockFileWatcher(spMock,
@@ -32,7 +33,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var tree = ProjectTreeParser.Parse(inputTree);
             watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(tree)));
 
-            uint adviseCookie = 100;
             // If fileToWatch is null then we expect to not register any filewatcher.
             var times = fileToWatch == null ? Times.Never() : Times.Once();
             Mock.Get<IVsFileChangeEx>(fileChangeService).Verify(s => s.AdviseFileChange(fileToWatch ?? It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), times);
@@ -72,7 +72,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         public void VerifyFileWatcherRegistrationOnTreeChange(string inputTree, string changedTree, int numRegisterCalls, int numUnregisterCalls)
         {
             var spMock = new IServiceProviderMoq();
-            var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
+            uint adviseCookie = 100;
+            var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
             var watcher = new ProjectLockFileWatcher(spMock,
@@ -86,7 +87,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var secondTree = ProjectTreeParser.Parse(changedTree);
             watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(secondTree)));
 
-            uint adviseCookie = 100;
             // If fileToWatch is null then we expect to not register any filewatcher.
             Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get<IVsFileChangeEx>(fileChangeService);
             fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), 
