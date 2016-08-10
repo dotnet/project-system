@@ -1,0 +1,9 @@
+{
+  "supports": { },
+  "dependencies": {
+     "Roslyn.Microsoft.Build": "0.0.2"
+  },
+  "frameworks": {
+    ".NETFramework,Version=v4.6": { }
+  }
+}
