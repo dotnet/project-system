@@ -66,6 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
+            // If tree changed when we are disposing then ignore the change.
+            if (this.IsDisposing)
+            {
+                return;
+            }
+
             // If there' no project.json in the project, there's nothing to watch.
             IProjectTree projectJsonNode = FindProjectJsonNode(newTree);
             if (projectJsonNode == null)
@@ -146,9 +152,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _projectServices.ThreadingService.Fork(async () => { 
                 using (var access = await _projectLockService.WriteLockAsync())
                 {
-#pragma warning disable CA2007 // Inside a write lock, we should get back to the same thread.
-                    var project = await access.GetProjectAsync(_projectServices.ActiveConfiguredProject);
-#pragma warning restore CA2007 // Do not directly await a Task
+                    // Inside a write lock, we should get back to the same thread.
+                    var project = await access.GetProjectAsync(_projectServices.ActiveConfiguredProject).ConfigureAwait(true);
                     project.MarkDirty();
                     _projectServices.ActiveConfiguredProject.NotifyProjectChange();
                 }
