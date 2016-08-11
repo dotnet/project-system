@@ -5,7 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
-    partial class ComReference
+    partial class VisualBasic
     {
+
     }
 }

@@ -10,10 +10,11 @@
     <!-- workaround to disable References capability. We re-add other capabilities below. -->
     <DefineCommonCapabilities>false</DefineCommonCapabilities>
     
+    <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
-    <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
-    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
+    <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)
+    </ManagedXamlResourcesDirectory>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
@@ -47,27 +48,31 @@
 
   <!-- CPS Project Properties -->
   <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)CompilerCommandLineArgs.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CompilerCommandLineArgs.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)WindowsLocalDebugger.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)WindowsLocalDebugger.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -99,20 +104,20 @@
     </PropertyPageSchema>
     
     <!-- Sdk references -->
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)SdkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SdkReference.xaml">
       <Context>;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedSdkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedSdkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
     <!-- Package references -->
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)PackageReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PackageReference.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedPackageReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedPackageReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 

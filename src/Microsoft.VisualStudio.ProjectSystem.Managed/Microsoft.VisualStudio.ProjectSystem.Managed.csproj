@@ -54,12 +54,6 @@
     <Compile Include="ProjectSystem\Rules\SdkReference.xaml.cs">
       <DependentUpon>SdkReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ComReference.xaml.cs">
-      <DependentUpon>ComReference.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectSystem\Rules\AssemblyReference.xaml.cs">
-      <DependentUpon>AssemblyReference.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ProjectSystem\Rules\PackageReference.cs">
       <DependentUpon>PackageReference.xaml</DependentUpon>
     </Compile>
@@ -107,6 +101,15 @@
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\AssemblyReference.cs">
+      <DependentUpon>AssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\COMReference.cs">
+      <DependentUpon>COMReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SubProject.cs">
+      <DependentUpon>SubProject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
       <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
     </Compile>
@@ -129,6 +132,9 @@
     <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\VisualBasic.cs">
+      <DependentUpon>VisualBasic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
@@ -145,6 +151,18 @@
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\COMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SubProject.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -186,42 +204,36 @@
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\PackageReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ComReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\CSharp.BrowseObject.xaml">
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\VisualBasic.BrowseObject.xaml">
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

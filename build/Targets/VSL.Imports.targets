@@ -454,7 +454,7 @@
 
 
     <!-- Copy rule files for testing purposes -->
-    <Copy SourceFiles="@(XamlPropertyRule)" 
+    <Copy SourceFiles="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema)" 
           DestinationFolder="$(OutDir)\Rules">
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
