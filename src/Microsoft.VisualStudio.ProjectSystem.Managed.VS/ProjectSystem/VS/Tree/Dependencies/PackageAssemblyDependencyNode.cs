@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public PackageAssemblyDependencyNode(DependencyNodeId id,
                                              string caption,
                                              ProjectTreeFlags flags,
-                                             string parentItemSpec = null,
                                              IImmutableDictionary<string, string> properties = null,
                                              bool resolved = true)
             : base(id, flags, 0, properties, resolved)
@@ -21,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Icon = resolved ? KnownMonikers.Reference : KnownMonikers.ReferenceWarning;
             ExpandedIcon = Icon;
             Priority = resolved
-                            ? PackageDependencyNode.PackageAssemblyNodePriority
-                            : PackageDependencyNode.UnresolvedReferenceNodePriority;
+                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
+                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
 
             // override flags here - exclude default Reference flags since they block graph nodes at the moment
             Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)

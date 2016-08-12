@@ -74,6 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
                 = ResolvedDependencyFlags.Union(ResolvedReferenceFlags);
 
+        internal DependencyNode()
+        {
+            // for unit tests
+        }
+
         public DependencyNode(DependencyNodeId id,
                               ProjectTreeFlags flags,
                               int priority = 0,
@@ -133,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public int Priority { get; protected set; }
 
-        public ProjectTreeFlags Flags { get; protected set; }
+        public ProjectTreeFlags Flags { get; set; }
 
         public IImmutableDictionary<string, string> Properties { get; protected set; }
 

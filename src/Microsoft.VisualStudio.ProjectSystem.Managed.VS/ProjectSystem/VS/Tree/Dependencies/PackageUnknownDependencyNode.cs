@@ -11,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      DependencyNodeId id,
                                      string caption,
                                      ProjectTreeFlags flags,
-                                     string parentItemSpec = null,
                                      IImmutableDictionary<string, string> properties = null,
                                      bool resolved = true)
-            : base(id, flags, PackageDependencyNode.UnresolvedReferenceNodePriority, properties, resolved)
+            : base(id, flags, NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority, 
+                   properties, resolved)
         {
             Requires.NotNullOrEmpty(caption, nameof(caption));
 

@@ -12,21 +12,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// The data comes from an executed MSBuild targets' Returns items.
         /// </summary>
-        internal const string TargetResults = "TargetResults";
+        internal const string TargetResults = nameof(TargetResults);
 
         /// <summary>
         /// The data comes from items or item metadata in the project.
         /// </summary>
-        internal const string Item = "Item";
+        internal const string Item = nameof(Item);
 
         /// <summary>
         /// The data comes from item definition metadata in the project.
         /// </summary>
-        internal const string ItemDefinition = "ItemDefinition";
+        internal const string ItemDefinition = nameof(ItemDefinition);
 
         /// <summary>
         /// The data comes from project properties.
         /// </summary>
-        internal const string Property = "Property";
+        internal const string Property = nameof(Property);
     }
 }

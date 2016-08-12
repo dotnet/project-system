@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,20 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                           | ProjectTreeFlags.Common.VirtualFolder)
                                   .Add("DependenciesRootNode");
 
-        // TODO: Consider moving this to an [AppliesTo] attribute and
-        // removing the GetIsApplicableAsync method or always returning true from it.
-        /// <summary>
-        /// The AppliesTo expression that must be satisfied for this subtree provider to be applicable.
-        /// </summary>
-        private static readonly string ApplicabilityTest 
-                = string.Format(CultureInfo.InvariantCulture, "{0} & ({1} | {2} | {3} | {4} | {5})",
-                                ProjectCapabilities.ReferencesFolder,
-                                ProjectCapabilities.AssemblyReferences,
-                                ProjectCapabilities.ComReferences,
-                                ProjectCapabilities.ProjectReferences,
-                                ProjectCapabilities.SdkReferences,
-                                ProjectCapabilities.WinRTReferences);
-
         /// <summary>
         /// Keeps latest updated snapshot of all rules schema catalogs
         /// </summary>
@@ -68,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// a particular dependency type and are responsible for Dependencies\[TypeNode] and it's contents.
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
+        public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -113,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      IProjectTree receiver, 
                                      bool deleteOriginal = false)
         {
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -306,11 +291,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         UnconfiguredProjectAsynchronousTasksService
                             .UnloadCancellationToken.ThrowIfCancellationRequested();
 
-                        if (!await GetIsApplicableAsync().ConfigureAwait(false))
-                        {
-                            return;
-                        }
-
                         lock (SyncObject)
                         {
                             foreach (var provider in SubTreeProviders)
@@ -367,13 +347,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    // Note: this is legacy code that changes data source version, assuming this is correct
-                    // We're excluding this data source for now until we figure out how the 
-                    // PhysicalProjectTreeProvider can reconcile grafts with different ActiveProjectConfiguration
-                    // versions. With the below line we had bugs like 535352 where the product would flag an 
-                    // internal error because this version would "decrement" across an active project config change.
-                    //var dataSources = e.DataSourceVersions
-                    //                   .Add(ProjectTreeDataSources.ReferencesFolderProjectSnapshotVersion, 0L);
                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, e.DataSourceVersions));
                 });
         }
@@ -381,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Creates the loading References folder node.
         /// </summary>
-        /// <returns>a new "References (loading...)" tree node.</returns>
+        /// <returns>a new "Dependencies" tree node.</returns>
         private IProjectTree CreateDependenciesFolder(IProjectTree oldNode)
         {
             if (oldNode == null)
@@ -850,18 +823,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return base.GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the References folder should appear in this project.
-        /// </summary>
-        protected Task<bool> GetIsApplicableAsync()
-        {
-            // TODO Figure out capabilities that support Dependencies node 
-            // await this.InitialActiveConfiguredProjectAvailable;
-            // return this.UnconfiguredProject.Capabilities.AppliesTo(ApplicabilityTest);
-            return Task.FromResult(true);
-        }
-
 
         #region IDependenciesGraphProjectContext
 

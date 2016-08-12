@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         internal static IEnumerable<T> ExtensionValues<T>(this IEnumerable<Lazy<T>> extensions, bool onlyCreatedValues = false)
         {
             Requires.NotNull(extensions, nameof(extensions));
+            var traceErrorMessage = "Roslyn project system extension rejected due to exception: {0}";
 
             foreach (var extension in extensions)
             {
@@ -38,12 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
                 catch (CompositionContractMismatchException ex)
                 {
-                    TraceUtilities.TraceError("Roslyn project system extension rejected due to exception: {0}", ex);
+                    TraceUtilities.TraceError(traceErrorMessage, ex);
                     continue;
                 }
                 catch (CompositionException ex)
                 {
-                    TraceUtilities.TraceError("Roslyn project system extension rejected due to exception: {0}", ex);
+                    TraceUtilities.TraceError(traceErrorMessage, ex);
                     continue;
                 }
 

@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                       string fusionName = null)
             : base(id, flags, priority, properties, resolved)
         {
+            Requires.NotNullOrEmpty(id.ItemSpec, nameof(id.ItemSpec));
+
             if (resolved)
             {
                 Icon = KnownMonikers.Reference;

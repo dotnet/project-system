@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             RemovedNodes = new List<IDependencyNode>();
         }
 
-        public List<IDependencyNode> AddedNodes { get; }
-        public List<IDependencyNode> UpdatedNodes { get; }
-        public List<IDependencyNode> RemovedNodes { get; }
+        public List<IDependencyNode> AddedNodes { get; protected set; }
+        public List<IDependencyNode> UpdatedNodes { get; protected set;}
+        public List<IDependencyNode> RemovedNodes { get; protected set; }
 
         public IDependenciesChangeDiff GetDiff()
         {

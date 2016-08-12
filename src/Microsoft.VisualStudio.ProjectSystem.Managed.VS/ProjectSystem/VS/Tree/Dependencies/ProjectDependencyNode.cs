@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      bool resolved = true)
             : base(id, flags, priority, properties, resolved)
         {
+            Requires.NotNullOrEmpty(id.ItemSpec, nameof(id.ItemSpec));
+
             Caption = Path.GetFileNameWithoutExtension(id.ItemSpec);
 
             if (resolved)

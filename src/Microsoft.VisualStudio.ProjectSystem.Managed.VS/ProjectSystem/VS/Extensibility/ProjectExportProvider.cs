@@ -25,34 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
         }
 
         /// <summary>
-        /// This function requires going to the UI thread to map the hierarchy to the correct project
-        /// instance. 
-        /// </summary>
-        public T GetExport<T>(IVsHierarchy projectHierarchy) where T : class
-        {
-            if (projectHierarchy == null)
-            {
-                throw new ArgumentNullException(nameof(projectHierarchy));
-            }
-
-            T exportedValue = null;
-
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                // The following code must be run on the UI thread
-                UnconfiguredProject unconfiguredProject = projectHierarchy.GetUnconfiguredProject();
-                if (unconfiguredProject != null)
-                {
-                    exportedValue = unconfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<T>();
-                }
-            });
-
-            return exportedValue;
-        }
-
-        /// <summary>
         /// Returns the export for the given project without having to go to the 
         /// UI thread. This is the preferred method for getting access to project specific
         /// exports
@@ -73,12 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
             var unconfiguredProject = projectService.LoadedUnconfiguredProjects
                                                     .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
                                                                             StringComparison.OrdinalIgnoreCase));
-            if (unconfiguredProject == null)
-            {
-                return null;
-            }
-
-            return unconfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<T>();
+            return unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }
     }
 }

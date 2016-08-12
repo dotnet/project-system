@@ -75,9 +75,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 }
             }
 
-            return context != null ? context.UnconfiguredProject : null;
+            return context?.UnconfiguredProject;
         }
-
 
         /// <summary>
         /// Returns EnvDTE.Project object for the hierarchy
@@ -91,6 +90,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             {
                 return extObject as EnvDTE.Project;
             }
+
             return null;
         }
     }

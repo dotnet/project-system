@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 DataSource = new DataSource { ItemType = itemType, Persistence = "ProjectFile" },
             };
+
             return emptyRule;
         }
 

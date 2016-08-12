@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
-    /// Provides NuGet packages sub node to global Dependencies project tree node.
+    /// Provides Com sub node to global Dependencies project tree node.
     /// </summary>
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public ComDependenciesSubTreeProvider()
         {
-            // sucscribe to design time build to get corresponding items
+            // subscribe to design time build to get corresponding items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ComReference.SchemaName);
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet

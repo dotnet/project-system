@@ -17,6 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return (InterfaceType)sp.GetService(typeof(ServiceType));
         }
 
+        /// <summary>
+        /// Returns IProjectService a global scope component that provdes data accross all CPS projects
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
         public static IProjectService GetProjectService(this IServiceProvider sp)
         {
             var componentModel = sp.GetService(typeof(SComponentModel)) as IComponentModel;

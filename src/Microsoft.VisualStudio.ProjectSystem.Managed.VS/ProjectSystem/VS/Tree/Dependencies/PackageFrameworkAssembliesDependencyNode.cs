@@ -9,19 +9,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         public PackageFrameworkAssembliesDependencyNode(
                                              DependencyNodeId id,
-                                             string caption,
                                              ProjectTreeFlags flags,
-                                             string parentItemSpec = null,
                                              IImmutableDictionary<string, string> properties = null,
                                              bool resolved = true)
             : base(id, flags, 0, properties, resolved)
         {
-            Caption = caption;
+            Caption = Resources.FrameworkAssembliesNodeName;
             Icon = KnownMonikers.Library;
             ExpandedIcon = Icon;
-            Priority = resolved
-                            ? PackageDependencyNode.FrameworkAssemblyNodePriority
-                            : PackageDependencyNode.UnresolvedReferenceNodePriority;
+            Priority = NuGetDependenciesSubTreeProvider.FrameworkAssemblyNodePriority;
 
             // override flags here - exclude default Reference flags since they block graph nodes at the moment
             Flags = DependencyFlags
