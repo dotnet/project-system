@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -21,8 +20,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Base class for <see cref="IProjectDependenciesSubTreeProvider"/> implementations that need to 
     /// subscribe to design time build to get data.
     /// </summary>
-    internal class DependenciesSubTreeProviderBase : OnceInitializedOnceDisposed, IProjectDependenciesSubTreeProvider
+    internal abstract class DependenciesSubTreeProviderBase : OnceInitializedOnceDisposed, IProjectDependenciesSubTreeProvider
     {
+        /// <summary>
+        /// A lock object to protect data integrity of this instance.
+        /// </summary>
+        private readonly object _syncObject = new object();
+
+        /// <summary>
+        /// A cache of rule names to item types.
+        /// </summary>
+        private readonly Dictionary<string, string> _ruleNameToItemType
+                = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// A cache of item types to rule names.
+        /// </summary>
+        private readonly Dictionary<string, string> _itemTypeToRuleName
+                = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// The value to dispose to terminate the link providing evaluation snapshots.
+        /// </summary>
+        private IDisposable _projectSubscriptionLink;
+
+        /// <summary>
+        /// The value to dispose to terminate the SyncLinkTo subscription.
+        /// </summary>
+        private IDisposable _projectSyncLink;
+
         /// <summary>
         /// Gets the project asynchronous tasks service.
         /// </summary>
@@ -36,16 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         protected IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; private set; }
 
         /// <summary>
-        /// The value to dispose to terminate the link providing evaluation snapshots.
-        /// </summary>
-        private IDisposable _projectSubscriptionLink;
-
-        /// <summary>
-        /// The value to dispose to terminate the SyncLinkTo subscription.
-        /// </summary>
-        private IDisposable _projectSyncLink;
-
-        /// <summary>
         /// The set of rule names that represent unresolved references.
         /// </summary>
         protected ImmutableHashSet<string> UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet;
@@ -55,21 +71,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         protected ImmutableHashSet<string> ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet;
 
-        public virtual string ProviderType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public event DependenciesChangedEventHandler DependenciesChanged;
 
         private IDependencyNode _rootNode;
         public IDependencyNode RootNode
         {
             get
             {
-                EnsureInitialized();
+                if (_rootNode == null)
+                {
+                    EnsureInitialized();
+                    _rootNode = CreateRootNode();
+                }
+
                 return _rootNode;
+            }
+            protected set
+            {
+                _rootNode = value;
             }
         }
 
@@ -96,12 +115,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        public virtual IEnumerable<ImageMoniker> Icons
+        public abstract string ProviderType { get; }
+
+        public abstract IEnumerable<ImageMoniker> Icons { get; }
+
+        /// <summary>
+        /// Creates a root node specific to provider implementation
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IDependencyNode CreateRootNode();
+
+        /// <summary>
+        /// Creates a specific node type for given provider
+        /// </summary>
+        protected virtual IDependencyNode CreateDependencyNode(string itemSpec,
+                                                               string itemType,
+                                                               int priority = 0,
+                                                               IImmutableDictionary<string, string> properties = null,
+                                                               bool resolved = true)
         {
-            get
-            {
-                return null;
-            }
+            // Note: it is not abstract since not all providers would need to implement it
+            throw new NotImplementedException();
         }
 
         protected virtual string OriginalItemSpecPropertyName
@@ -114,11 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         protected override void Initialize()
         {
-            if (_rootNode == null)
-            {
-                _rootNode = CreateRootNode();
-            }
-
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
             {
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
@@ -193,7 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                   IProjectCatalogSnapshot,
                                                                   IProjectSharedFoldersSnapshot>> e)
         {
-
             var dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
 
             // process separatelly shared projects changes
@@ -217,34 +245,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return RootNode.Children.FirstOrDefault(x => x.Id.Equals(nodeId));
         }
 
-        public IDependencyNode GetDependencyNode(string nodeIdString)
-        {
-            Requires.NotNullOrEmpty(nodeIdString, nameof(nodeIdString));
-
-            var id = DependencyNodeId.FromString(nodeIdString);
-            return GetDependencyNode(id);
-        }
-
         public virtual Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
         {
             return Task.FromResult<IEnumerable<IDependencyNode>>(null);
-        }
-
-        protected virtual IDependencyNode CreateRootNode()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creates a specific node type for given provider
-        /// </summary>
-        protected virtual IDependencyNode CreateDependencyNode(string itemSpec,
-                                                               string itemType,
-                                                               int priority = 0,
-                                                               IImmutableDictionary<string, string> properties = null,
-                                                               bool resolved = true)
-        {
-            throw new NotImplementedException();
         }
 
         protected virtual DependenciesChange ProcessDependenciesChanges(
@@ -267,6 +270,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependenciesChange = new DependenciesChange();
             foreach (var unresolvedChange in unresolvedReferenceSnapshots.Values)
             {
+                if (!unresolvedChange.Difference.AnyChanges)
+                {
+                    continue;
+                }
+
                 var itemType = GetItemTypeFromRuleName(unresolvedChange.After.RuleName,
                                                                  catalogs,
                                                                  true);
@@ -279,7 +287,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 foreach (string removedItemSpec in unresolvedChange.Difference.RemovedItems)
                 {
                     var node = RootNode.Children.FindNode(removedItemSpec, itemType);
-                    Report.IfNot(node != null, "Unable to find reference node to delete.");
                     if (node != null)
                     {
                         dependenciesChange.RemovedNodes.Add(node);
@@ -304,12 +311,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var updatedUnresolvedSnapshots = unresolvedReferenceSnapshots.Values.Select(cd => cd.After);
             foreach (var resolvedReferenceRuleChanges in resolvedReferenceChanges)
             {
+                if (!resolvedReferenceRuleChanges.Difference.AnyChanges)
+                {
+                    continue;
+                }
+
                 // if resolved reference appears in Removed list, it means that it is either removed from
                 // project or can not be resolved anymore. In case when it can not be resolved,
                 // we must remove old "resolved" node and add new unresolved node with corresponding 
                 // properties changes (rules, icon, etc)
                 // Note: removed resolved node is not added to "added unresolved diff", which we process
-                // above, thus we need to do this properties update here. It is just cleaner to readd node
+                // above, thus we need to do this properties update here. It is just cleaner to re-add node
                 // instead of modifying properties.
                 foreach (string removedItemSpec in resolvedReferenceRuleChanges.Difference.RemovedItems)
                 {
@@ -320,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                             updatedUnresolvedSnapshots,
                                                                             catalogs,
                                                                             out unresolvedReferenceSnapshot);
-                    var node = RootNode.Children.FindNode(unresolvedItemSpec, unresolvedItemType);
+                    var node = RootNode.Children.FindNode(removedItemSpec, unresolvedItemType);
                     if (node != null)
                     {
                         dependenciesChange.RemovedNodes.Add(node);
@@ -484,8 +496,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return null;
         }
 
-        public event DependenciesChangedEventHandler DependenciesChanged;
-
         protected void OnDependenciesChanged(IDependenciesChangeDiff changes, 
                                              IProjectVersionedValue<
                                                 Tuple<IProjectSubscriptionUpdate,
@@ -493,26 +503,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         IProjectSharedFoldersSnapshot>> e)
         {
             DependenciesChanged?.Invoke(this, 
-                                        new DependenciesChangedEventArgs(this, 
-                                                changes, e.Value.Item2, e.DataSourceVersions));
+                                        new DependenciesChangedEventArgs(
+                                                this, 
+                                                changes, 
+                                                e.Value.Item2, 
+                                                e.DataSourceVersions));
         }
-
-        /// <summary>
-        /// A lock object to protect data integrity of this instance.
-        /// </summary>
-        private readonly object _syncObject = new object();
-
-        /// <summary>
-        /// A cache of rule names to item types.
-        /// </summary>
-        private readonly Dictionary<string, string> _ruleNameToItemType
-                = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// A cache of item types to rule names.
-        /// </summary>
-        private readonly Dictionary<string, string> _itemTypeToRuleName
-                = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets the item type for a given rule.
@@ -521,7 +517,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="catalogs">The catalog snapshot to use to find the item type.</param>
         /// <param name="allowNull">Whether or not to allow a null result for a missing or malformed rule.</param>
         /// <returns>The matching item type.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Ignored")]
         public string GetItemTypeFromRuleName(string ruleName,
                                               IProjectCatalogSnapshot catalogs,
                                               bool allowNull = false)
@@ -559,7 +554,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="catalogs">The catalog snapshot to use to find the rule name.</param>
         /// <param name="allowNull">Whether or not to allow a null result for a missing or malformed rule.</param>
         /// <returns>The matching rule name.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Ignored")]
         public string GetRuleNameFromItemType(string itemType,
                                               IProjectCatalogSnapshot catalogs,
                                               bool allowNull = false)

@@ -40,8 +40,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         [ImportingConstructor]
         public DependenciesGraphProvider(IDependenciesGraphProjectContextProvider projectContextProvider,
-                                             SVsServiceProvider serviceProvider)
-            : base(new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
+                                         SVsServiceProvider serviceProvider)
+            : this(projectContextProvider, 
+                   serviceProvider, 
+                   new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
+        {
+        }
+
+        public DependenciesGraphProvider(IDependenciesGraphProjectContextProvider projectContextProvider,
+                                         SVsServiceProvider serviceProvider,
+                                         JoinableTaskContextNode joinableTaskContextNode)
+            : base(joinableTaskContextNode)
         {
             ProjectContextProvider = projectContextProvider;
             ServiceProvider = serviceProvider;
@@ -49,10 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// Remembers expanded graph nodes.
-        /// TODO: Check how to clean them when project is unloaded. (What graph is doing in general when project is killed?)
         /// </summary>
-        private WeakCollection<IGraphContext> ExpandedGraphContexts { get; set; }
-        private HashSet<string> RegisteredSubTreeProviders { get; set; }
+        protected WeakCollection<IGraphContext> ExpandedGraphContexts { get; set; } = new WeakCollection<IGraphContext>();
+        protected HashSet<string> RegisteredSubTreeProviders { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         private IDependenciesGraphProjectContextProvider ProjectContextProvider { get; }
 
@@ -61,14 +69,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// All icons that are used tree graph, register their monikers once and refer to them by string id
         /// </summary>
-        private HashSet<ImageMoniker> Images { get; set; }
+        protected HashSet<ImageMoniker> Images { get; set; } = new HashSet<ImageMoniker>();
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            ExpandedGraphContexts = new WeakCollection<IGraphContext>();
-            RegisteredSubTreeProviders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            Images = new HashSet<ImageMoniker>();
-
             ProjectContextProvider.ProjectContextChanged += ProjectContextProvider_ProjectContextChanged;
 
             return TplExtensions.CompletedTask;
@@ -199,11 +203,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private static string GetIconStringName(ImageMoniker icon)
-        {
-            return $"{icon.Guid.ToString()};{icon.Id}";
-        }
-
         /// <summary>
         /// Checks if given node has children and adds corresponding IDependencyDescription to the node.
         /// </summary>
@@ -239,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                IDependencyNode nodeInfo = subTreeProvider.GetDependencyNode(nodeIdString);
+                IDependencyNode nodeInfo = subTreeProvider.GetDependencyNode(nodeId);
                 if (nodeInfo == null)
                 {
                     continue;
@@ -275,12 +274,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
                 if (string.IsNullOrEmpty(projectPath))
-                {
-                    continue;
-                }
-
-                var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
-                if (projectContext == null)
                 {
                     continue;
                 }
@@ -324,7 +317,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         inputGraphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, nodeInfo);
 
-                        var newGraphNode = AddGraphNode(graphContext, projectPath, inputGraphNode, childNodeToAdd);
+                        var newGraphNode = AddGraphNode(graphContext, projectPath, 
+                                                subTreeProvider, inputGraphNode, childNodeToAdd);
 
                         if (childNodeToAdd.Flags.Contains(DependencyNode.PreFilledFolderNode))
                         {                           
@@ -387,6 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             // add provider's root node to display matching nodes                                                         
                             var topLevelGraphNode = AddGraphNode(graphContext,
                                                                  projectContext.ProjectFilePath,
+                                                                 subTreeProvider,
                                                                  parentNode: null,
                                                                  nodeInfo: topLevelNode);
 
@@ -394,6 +389,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             // provider's root node
                             AddNodesToGraphRecursive(graphContext,
                                                      projectContext.ProjectFilePath,
+                                                     subTreeProvider,
                                                      topLevelGraphNode,
                                                      matchingNodes);
 
@@ -413,15 +409,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private void AddNodesToGraphRecursive(IGraphContext graphContext,
                                               string projectPath,
+                                              IProjectDependenciesSubTreeProvider subTreeProvider,
                                               GraphNode parentNode, 
                                               IEnumerable<IDependencyNode> nodes)
         {
             foreach(var nodeInfo in nodes)
             {
-                var graphNode = AddGraphNode(graphContext, projectPath, parentNode, nodeInfo);
+                var graphNode = AddGraphNode(graphContext, projectPath, subTreeProvider, parentNode, nodeInfo);
                 graphContext.Graph.Links.GetOrCreate(parentNode, graphNode, null, GraphCommonSchema.Contains);
 
-                AddNodesToGraphRecursive(graphContext, projectPath, graphNode, nodeInfo.Children);                
+                AddNodesToGraphRecursive(graphContext, projectPath, subTreeProvider, graphNode, nodeInfo.Children);                
             }
         }
 
@@ -508,7 +505,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     var nodesToAdd = updatedNodeInfo.Children.Except(existingNodeInfo.Children);
                     foreach (var nodeToAdd in nodesToAdd)
                     {
-                        AddGraphNode(graphContext, projectPath, inputGraphNode, nodeToAdd);
+                        AddGraphNode(graphContext, projectPath, subTreeProvider, inputGraphNode, nodeToAdd);
                     }
 
                     // Update the node info saved on the 'inputNode'
@@ -580,6 +577,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private GraphNode AddGraphNode(IGraphContext graphContext,
                                        string projectPath,
+                                       IProjectDependenciesSubTreeProvider subTreeProvider,
                                        GraphNode parentNode,
                                        IDependencyNode nodeInfo)
         {
@@ -591,6 +589,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // priority sets correct order among peers
             newNode.SetValue(CodeNodeProperties.SourceLocation, 
                              new SourceLocation(projectPath, new Position(nodeInfo.Priority, 0)));
+            newNode.SetValue(DependenciesGraphSchema.ProviderProperty, subTreeProvider);
+
             newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
 
             graphContext.OutputNodes.Add(newNode);
@@ -615,6 +615,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 graphContext.OutputNodes.Remove(nodeToRemove);
                 graphContext.Graph.Nodes.Remove(nodeToRemove);
             }
+        }
+
+        private static string GetIconStringName(ImageMoniker icon)
+        {
+            return $"{icon.Guid.ToString()};{icon.Id}";
         }
     }
 }

@@ -98,7 +98,6 @@
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependenciesChangeDiff.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Tree\IProjectTreeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBase.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProjectContextProvider.cs" />

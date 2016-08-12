@@ -11,12 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     public interface IProjectExportProvider
     {
         /// <summary>
-        /// This function requires going to the UI thread to map the hierarchy to the correct project
-        /// instance. 
-        /// </summary>
-        T GetExport<T>(IVsHierarchy projectHierarchy) where T : class;
-
-        /// <summary>
         /// Returns the export for the given project without having to go to the 
         /// UI thread. This is the preferred method for getting access to project specific
         /// exports

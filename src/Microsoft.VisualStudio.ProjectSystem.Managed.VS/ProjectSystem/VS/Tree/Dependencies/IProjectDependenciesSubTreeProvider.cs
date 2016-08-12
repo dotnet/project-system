@@ -37,11 +37,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         bool ShouldBeVisibleWhenEmpty { get; }
 
+        /// <summary>
+        /// Returns a list of all icons used by nodes managed by given provider. It is used in 
+        /// GraphProvider to register that in IVsImageService once and reuse later.
+        /// </summary>
         IEnumerable<ImageMoniker> Icons { get; }
 
-        IDependencyNode GetDependencyNode(string nodeIdString);
+        /// <summary>
+        /// Returns a node metadata for given nodeId.
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
         IDependencyNode GetDependencyNode(DependencyNodeId nodeId);
 
+        /// <summary>
+        /// Searches for given searchTerm under given node. It returns a hierarchy of nodes 
+        /// that match search or null if nothing found.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
         Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm);
 
         /// <summary>

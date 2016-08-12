@@ -19,18 +19,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase
     {
+        public const int DiagnosticsNodePriority = 0; // for any custom nodes like errors or warnings
+        public const int UnresolvedReferenceNodePriority = 1;
+        public const int PackageNodePriority = 2;
+        public const int FrameworkAssemblyNodePriority = 3;
+        public const int PackageAssemblyNodePriority = 4;
+
         public const string ProviderTypeString = "NuGetDependency";
 
-        public readonly ProjectTreeFlags NuGetSubTreeRootNodeFlags
+        public static readonly ProjectTreeFlags NuGetSubTreeRootNodeFlags
                             = ProjectTreeFlags.Create("NuGetSubTreeRootNode");
 
-        public readonly ProjectTreeFlags NuGetSubTreeNodeFlags
+        public static readonly ProjectTreeFlags NuGetSubTreeNodeFlags
                             = ProjectTreeFlags.Create("NuGetSubTreeNode")
                                 .Union(DependencyNode.CustomItemSpec);
 
         public NuGetDependenciesSubTreeProvider()
         {
-            // sucscribe to design time build to get corresponding items
+            // subscribe to design time build to get corresponding items
 
             // For now we don't need unresolved package rules, since we can get all 
             // info from resolved items
@@ -78,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private object _snapshotLock = new object();
-        private DependenciesSnapshot CurrentSnapshot { get; } = new DependenciesSnapshot();
+        protected DependenciesSnapshot CurrentSnapshot { get; } = new DependenciesSnapshot();
 
         protected override IDependencyNode CreateRootNode()
         {
@@ -89,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private IDependencyNode CreateDependencyNode(DependencyMetadata dependencyMetadata, 
-                                                           DependencyNodeId id = null,
-                                                           bool topLevel = true)
+                                                     DependencyNodeId id = null,
+                                                     bool topLevel = true)
         {
             if (id == null)
             {
@@ -144,7 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return new PackageFrameworkAssembliesDependencyNode(
                                              id,
-                                             caption: Resources.FrameworkAssembliesNodeName,
                                              flags: NuGetSubTreeNodeFlags);
         }
 
@@ -213,6 +218,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var newDependencies = new HashSet<DependencyMetadata>();
                 foreach (var change in changes.Values)
                 {
+                    if (!change.Difference.AnyChanges)
+                    {
+                        continue;
+                    }
+
                     foreach (string removedItemSpec in change.Difference.RemovedItems)
                     {
                         CurrentSnapshot.RemoveDependency(removedItemSpec);
@@ -237,7 +247,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         var itemNode = RootNode.Children.FirstOrDefault(
                                         x => x.Id.ItemSpec.Equals(changedItemSpec, StringComparison.OrdinalIgnoreCase));
-
                         if (itemNode != null)
                         {
                             dependenciesChange.UpdatedNodes.Add(itemNode);
@@ -351,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return matchingNodes;
         }
 
-        private class TargetMetadata
+        protected class TargetMetadata
         {
             public TargetMetadata(IImmutableDictionary<string, string> properties)
             {
@@ -369,8 +378,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 RuntimeIdentifier = properties.ContainsKey("RuntimeIdentifier") 
                                         ? properties["RuntimeIdentifier"] : string.Empty;
-                TargetFrameworkMoniker = properties.ContainsKey("TargetFramework") 
-                                            ? properties["TargetFramework"] : string.Empty;
+                TargetFrameworkMoniker = properties.ContainsKey("TargetFrameworkMoniker") 
+                                            ? properties["TargetFrameworkMoniker"] : string.Empty;
                 FrameworkName = properties.ContainsKey("FrameworkName")
                                     ? properties["FrameworkName"] : string.Empty;
                 FrameworkVersion = properties.ContainsKey("FrameworkVersion") 
@@ -378,7 +387,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private class DependencyMetadata
+        protected class DependencyMetadata
         {
             public DependencyMetadata(string itemSpec, IImmutableDictionary<string, string> properties)
             {
@@ -432,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Resolved = resolved;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                if (properties["Dependencies"] != null)
+                if (properties.ContainsKey("Dependencies") && properties["Dependencies"] != null)
                 {
                     var dependencyIds = properties["Dependencies"].Split(new[] { ';' },
                                                                          StringSplitOptions.RemoveEmptyEntries);
@@ -489,7 +498,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private class DependenciesSnapshot
+        protected class DependenciesSnapshot
         {
             public DependenciesSnapshot()
             {
@@ -566,8 +575,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var nodesToClean = new List<IDependencyNode>();
                 foreach (var nodeInCache in NodesCache)
                 {
-                    if (nodeInCache.Value.Children.Any(x => x.Id.ItemSpec.Equals(itemSpec))
-                        || nodeInCache.Key.ItemSpec.Equals(itemSpec))
+                    if (nodeInCache.Value.Children.Any(x => x.Id.ItemSpec.Equals(itemSpec, StringComparison.OrdinalIgnoreCase))
+                        || nodeInCache.Key.ItemSpec.Equals(itemSpec, StringComparison.OrdinalIgnoreCase))
                     {
                         nodesToClean.Add(nodeInCache.Value);
                     }
@@ -590,7 +599,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private enum DependencyType
+        protected enum DependencyType
         {
             Unknown,
             Target,

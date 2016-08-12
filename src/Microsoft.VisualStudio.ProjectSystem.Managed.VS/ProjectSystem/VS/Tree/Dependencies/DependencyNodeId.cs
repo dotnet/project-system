@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// way to pass complex data is by serializiung it in FilePath string, and make sure 
     /// Uri.IsAbsolute returns true for FilePath after serialization.)
     /// 
-    /// Note: top level nodes should have only ProviderType and ItemSpec (no inique token) 
+    /// Note: top level nodes should have only ProviderType and ItemSpec (no unique token) 
     /// since they are created via regular IProjecTree provider and data comes from Design
-    /// Time build, which send ItemSpec (we just don't known unique tokens at that point).
+    /// Time build, which sends ItemSpec (we just don't known unique tokens at that point).
     /// 
     /// However lower level nodes must have a unique token in their ids, since they can 
     /// repeat. GraphProvider uses ProviderType to find correct provider for given node and
@@ -41,6 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             UniqueToken = uniqueToken ?? string.Empty;
         }
 
+        /// <summary>
+        /// ProviderType that created this node
+        /// </summary>
         public string ProviderType { get; private set; }
 
         /// <summary>
@@ -69,23 +72,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             builder.Append("file:///");
             builder.Append("[");
             builder.Append(ProviderType);
-            if (!string.IsNullOrEmpty(ItemSpec))
-            {
-                builder.Append(";");
-                builder.Append(ItemSpec);
-            }
 
-            if (!string.IsNullOrEmpty(ItemType))
-            {
-                builder.Append(";");
-                builder.Append(ItemType);
-            }
+            builder.Append(";");
+            builder.Append(ItemSpec);
 
-            if (!string.IsNullOrEmpty(UniqueToken))
-            {
-                builder.Append(";");
-                builder.Append(UniqueToken);
-            }
+            builder.Append(";");
+            builder.Append(ItemType);
+            
+            builder.Append(";");
+            builder.Append(UniqueToken);
+
             builder.Append("]");
 
             return builder.ToString();
@@ -111,8 +107,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            serializedId = serializedId.TrimStart('[').TrimEnd(']');
-            var parts = serializedId?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            serializedId = serializedId.TrimStart('[').TrimEnd(']').Trim(' ', ';');
+            if (string.IsNullOrEmpty(serializedId))
+            {
+                return null;
+            }
+
+            var parts = serializedId?.Split(new[] { ';' });
             if (parts == null || parts.Length <= 0)
             {
                 return null;

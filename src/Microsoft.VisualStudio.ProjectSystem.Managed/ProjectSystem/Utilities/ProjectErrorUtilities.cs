@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
@@ -10,8 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     /// </summary>
     internal static class ProjectErrorUtilities
     {
-        #region ThrowProjectException
-
         /// <summary>
         /// Throws an ProjectException with the specified message string if some condition is false.
         /// </summary>
@@ -78,59 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             throw ThrowProjectExceptionHelper(null, message, arg0);
         }
-
-        /// <summary>
-        /// Throws an ProjectException with the specified message string
-        /// </summary>
-        /// <param name="message">The text message to display.</param>
-        /// <param name="arg0">The first formatting argument to consume when formatting the message string.</param>
-        /// <param name="arg1">The second formatting argument to consume when formatting the message string.</param>
-        /// <returns>Nothing.  This method always throws.</returns>
-        internal static Exception ThrowProjectException(string message, object arg0, object arg1)
-        {
-            throw ThrowProjectExceptionHelper(null, message, arg0, arg1);
-        }
-
-        /// <summary>
-        /// Throws an ProjectException with the specified message string
-        /// </summary>
-        /// <param name="innerException">Can be null.</param>
-        /// <param name="message">The text message to display.</param>
-        /// <returns>Nothing.  This method always throws.</returns>
-        internal static Exception ThrowProjectException(Exception innerException, string message)
-        {
-            // PERF NOTE: explicitly passing null for the arguments array
-            // prevents memory allocation
-            throw ThrowProjectExceptionHelper(innerException, message, null);
-        }
-
-        /// <summary>
-        /// Throws an ProjectException with the specified message string
-        /// </summary>
-        /// <param name="innerException">Can be null.</param>
-        /// <param name="message">The text message to display.</param>
-        /// <param name="arg0">The first formatting argument to consume when formatting the message string.</param>
-        /// <returns>Nothing.  This method always throws.</returns>
-        internal static Exception ThrowProjectException(Exception innerException, string message, object arg0)
-        {
-            throw ThrowProjectExceptionHelper(innerException, message, arg0);
-        }
-
-        /// <summary>
-        /// Throws an ProjectException with the specified message string
-        /// </summary>
-        /// <param name="innerException">Can be null.</param>
-        /// <param name="message">The text message to display.</param>
-        /// <param name="arg0">The first formatting argument to consume when formatting the message string.</param>
-        /// <param name="arg1">The second formatting argument to consume when formatting the message string.</param>
-        /// <returns>Nothing.  This method always throws.</returns>
-        internal static Exception ThrowProjectException(Exception innerException, string message, object arg0, object arg1)
-        {
-            throw ThrowProjectExceptionHelper(innerException, message, arg0, arg1);
-        }
-        #endregion
-
-        #region Private Methods
+                
         /// <summary>
         /// Throws a ProjectException.
         ///
@@ -146,6 +91,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             throw new ProjectException(ResourceUtilities.FormatString(unformattedMessage, args), innerException);
         }
-        #endregion
     }
 }

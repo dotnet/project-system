@@ -24,11 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [InlineData("MyProviderType", "MyItemSpec", "MyItemType", "MyUniqueToken",
                     "file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]")]
         [InlineData("MyProviderType", "MyItemSpec", "MyItemType", null,
-                    "file:///[MyProviderType;MyItemSpec;MyItemType]")]
+                    "file:///[MyProviderType;MyItemSpec;MyItemType;]")]
         [InlineData("MyProviderType", "MyItemSpec", "", null,
-                    "file:///[MyProviderType;MyItemSpec]")]
+                    "file:///[MyProviderType;MyItemSpec;;]")]
         [InlineData("MyProviderType", null, null, null,
-                    "file:///[MyProviderType]")]
+                    "file:///[MyProviderType;;;]")]
+        [InlineData("MyProviderType", null, "MyItemType", null,
+                    "file:///[MyProviderType;;MyItemType;]")]
+        [InlineData("MyProviderType", null, null, "MyUniqueToken",
+                    "file:///[MyProviderType;;;MyUniqueToken]")]
         public void DependencyNodeId_ToString(string providerType,
                                                    string itemSpec,
                                                    string itemType,
