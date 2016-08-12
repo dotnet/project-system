@@ -5,12 +5,6 @@
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">    
-  
-  <Import Project="Microsoft.Managed.DesignTime.targets" />
-
-  <!-- Properties -->
-  <UsingTask TaskName="DependenciesTreeTasks.GetDependenciesData" 
-             AssemblyFile="D:\temp\LockFileTaskSamples\MyTask\DependenciesTreeTasks\DependenciesTreeTasks\bin\Debug\DependenciesTreeTasks.dll" />    
     
   <PropertyGroup>
     <DefineCommonCapabilities>false</DefineCommonCapabilities>
@@ -81,54 +75,14 @@
   </Target>
 
   <!-- 
-    Target ResolvePackageReferencesDesignTime called by design time build to get 
-    NuGet package dependencies data. It is referenced from NuGetPackageReference.xaml.
-    
-    Currently it is using ResolveNuGetPackageAssets task (which is loaded already by common imports)
-    and gets only a list of top level direct package dependencies if project.lock.file exists.
-    
-    TODO: Work with native languages team to re-write this task and/or create new tasks that would
-          read project.lock.json and get all data from it:
-            - full workld of dependencies with their corresponding types (similar to what 
-              ProjectModelServer did for existing dotnet project system).
-            - all other assets like content etc
-          Having that task there should be a first level target calling it to get data into project,
-          then this data can be transformed to other formats/item collections by next level targets
-          including ResolveNuGetPackageReferencesDesignTime target.
+      TODO:
+      
+      Uncomment when final tasks for raising project.lock.json data and pre-processing it to 
+      fromat understood by our DesignTime build rule are checked in to sdk repo.
   -->
-  <Target
-        Name="ResolvePackageReferencesDesignTime"
-        Returns="@(Packages)"
-        DependsOnTargets="ResolveAssemblyReferencesDesignTime"
-        Condition="exists('$(ProjectLockFile)')">
 
-    <ResolveNuGetPackageAssets AllowFallbackOnTargetSelection="$(DesignTimeBuild)"
-                               ContinueOnError="$(ContinueOnError)"
-                               IncludeFrameworkReferences="$(IncludeFrameworkReferencesFromNuGet)"
-                               NuGetPackagesDirectory="$(NuGetPackagesDirectory)"
-                               RuntimeIdentifier="$(_NuGetRuntimeIdentifierWithoutAot)"
-                               ProjectLanguage="$(Language)"
-                               ProjectLockFile="$(ProjectLockFile)"
-                               ProjectReferencesCreatingPackages="@(ProjectReferenceCreatingPackage)"
-                               ContentPreprocessorValues="@(NuGetPreprocessorValue)"
-                               ContentPreprocessorOutputDirectory="$(IntermediateOutputPath)\NuGet"
-                               TargetMonikers="$(NuGetTargetMoniker);$(_NuGetTargetFallbackMoniker)">
-
-      <Output TaskParameter="ResolvedAnalyzers" ItemName="_Analyzer" />
-      <Output TaskParameter="ResolvedCopyLocalItems" ItemName="_ReferenceCopyLocalPaths" />
-      <Output TaskParameter="ResolvedReferences" ItemName="_ReferencesFromNuGetPackages" />
-      <Output TaskParameter="ReferencedPackages" ItemName="_MyReferencedNuGetPackages" />
-      <Output TaskParameter="ContentItems" ItemName="_NuGetContentItems" />
-      <Output TaskParameter="FileWrites" ItemName="FileWrites" />
-    </ResolveNuGetPackageAssets>
-       
-    <ItemGroup>
-      <Packages Include="@(_MyReferencedNuGetPackages)"/>      
-    </ItemGroup>
-  </Target>
-  
-  <Target Name="RunLockFileToMSBuild">
-    <Message Text="     -> (Raising Lock File: ProjectLockFile=$(ProjectLockFile))" Importance="high"/>
+  <!--<Target Name="RunLockFileToMSBuild">
+    --><!-- Rename and use final task from sdk to raise project.lock.json file data --><!--
 
     <LockFileToMSBuild2 
       ProjectLockFile="$(ProjectLockFile)">
@@ -144,12 +98,11 @@
 
   <Target
         Name="ResolveDependenciesDesignTime"
-        Returns="@(Packages)"
+        Returns="@(_DependenciesWorld)"
         DependsOnTargets="ResolveAssemblyReferencesDesignTime;RunLockFileToMSBuild"
         Condition="exists('$(ProjectLockFile)')">
-
-    <!--<Message Text="%(FileDefinitions.Identity)" Importance="high" />-->
-    
+   
+    --><!-- Rename this task later to it's final name, when it is checked in to sdk repo --><!--
     <GetDependenciesData TargetDefinitions="@(TargetDefinitions)"
                                PackageDefinitions="@(PackageDefinitions)"
                                FileDefinitions="@(FileDefinitions)"
@@ -158,10 +111,6 @@
 
       <Output TaskParameter="DependenciesWorld" ItemName="_DependenciesWorld" />
     </GetDependenciesData>
-   
-    <ItemGroup>
-      <Packages Include="@(_DependenciesWorld)"/>      
-    </ItemGroup>
-  </Target>
+  </Target>-->
 
 </Project>
