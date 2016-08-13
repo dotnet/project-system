@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return listItem.SubItems.Item(column).Text
             End If
 
-            Debug.Fail("RefComparer: obj was not an ListViewItem")
+            Debug.Fail($"RefComparer: obj was not an {NameOf(ListViewItem)}")
             Return String.Empty
         End Function
 

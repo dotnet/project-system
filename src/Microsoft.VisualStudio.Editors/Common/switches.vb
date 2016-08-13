@@ -151,49 +151,49 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Trace for the ResourceEditor.FileWatcher class
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEFileWatcher As New TraceSwitch("RSEFileWatcher", "Trace the resource editor FileWatcher class.")
+        Public Shared RSEFileWatcher As New TraceSwitch(NameOf(RSEFileWatcher), "Trace the resource editor FileWatcher class.")
 
         ''' <summary>
         ''' Tracing for the ResourceEditor.ResourceSerializationService class
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEResourceSerializationService As New TraceSwitch("RSEResourceSerializationService", "Trace the resource editor ResourceSerializationService class.")
+        Public Shared RSEResourceSerializationService As New TraceSwitch(NameOf(RSEResourceSerializationService), "Trace the resource editor ResourceSerializationService class.")
 
         ''' <summary>
         ''' Track adding and removing resources in the resource editor
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEAddRemoveResources As New TraceSwitch("RSEAddRemoveResources", "Trace adding/removing resources in the resource editor")
+        Public Shared RSEAddRemoveResources As New TraceSwitch(NameOf(RSEAddRemoveResources), "Trace adding/removing resources in the resource editor")
 
         ''' <summary>
         ''' Trace virtual mode methods in the resource editor's string table
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEVirtualStringTable As New TraceSwitch("RSEVirtualStringTable", "Trace virtual mode methods in the resource editor's string table")
+        Public Shared RSEVirtualStringTable As New TraceSwitch(NameOf(RSEVirtualStringTable), "Trace virtual mode methods in the resource editor's string table")
 
         ''' <summary>
         ''' Trace virtual mode methods in the resource editor's listview
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEVirtualListView As New TraceSwitch("RSEVirtualListView", "Trace virtual mode methods in the resource editor's listview")
+        Public Shared RSEVirtualListView As New TraceSwitch(NameOf(RSEVirtualListView), "Trace virtual mode methods in the resource editor's listview")
 
         ''' <summary>
         ''' Trace the delayed checking of errors in resources
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEDelayCheckErrors As New TraceSwitch("RSEDelayCheckErrors", "Trace the delayed checking of errors in resources")
+        Public Shared RSEDelayCheckErrors As New TraceSwitch(NameOf(RSEDelayCheckErrors), "Trace the delayed checking of errors in resources")
 
         ''' <summary>
         ''' Disable high-quality options on the Graphics object when creating thumbnails in the resource editor
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch("RSEDisableHighQualityThumbnails", "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
+        Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch(NameOf(RSEDisableHighQualityThumbnails), "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
 
         ''' <summary>
         ''' Trace find/replace in the resource editor
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared RSEFindReplace As New TraceSwitch("RSEFindReplace", "Trace find/replace in the resource editor")
+        Public Shared RSEFindReplace As New TraceSwitch(NameOf(RSEFindReplace), "Trace find/replace in the resource editor")
 
 
 
@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Trace the showing of context menus via the base control classes in DesignerFramework
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared DFContextMenu As New TraceSwitch("DFContextMenu", "Trace the showing of context menus via the base control classes in DesignerFramework")
+        Public Shared DFContextMenu As New TraceSwitch(NameOf(DFContextMenu), "Trace the showing of context menus via the base control classes in DesignerFramework")
 
 
 
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Trace source code control integration behavior in Microsoft.VisualStudio.Editors.dll
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared MSVBE_SCC As New TraceSwitch("MSVBE_SCC", "Trace source code control integration behavior in Microsoft.VisualStudio.Editors.dll")
+        Public Shared MSVBE_SCC As New TraceSwitch(NameOf(MSVBE_SCC), "Trace source code control integration behavior in Microsoft.VisualStudio.Editors.dll")
 
 
 
@@ -229,106 +229,106 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Trace when the active designer changes in the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDDesignerActivations As New TraceSwitch("PDDesignerActivations", "Trace when the active designer changes in the project designer")
+        Public Shared PDDesignerActivations As New TraceSwitch(NameOf(PDDesignerActivations), "Trace when the active designer changes in the project designer")
 
         ''' <summary>
         ''' Trace project designer focus-related events
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDFocus As New TraceSwitch("PDFocus", "Trace project designer focus-related events")
+        Public Shared PDFocus As New TraceSwitch(NameOf(PDFocus), "Trace project designer focus-related events")
 
         ''' <summary>
         ''' Trace behavior of multiple-value undo and redo
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDUndo As New TraceSwitch("PDUndo", "Trace behavior of multiple-value undo and redo")
+        Public Shared PDUndo As New TraceSwitch(NameOf(PDUndo), "Trace behavior of multiple-value undo And redo")
 
         ''' <summary>
         ''' Trace the creation and dirtying of properties, apply, etc.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDProperties As New TraceSwitch("PDProperties", "Trace the creation and dirtying of properties in property pages, apply, etc.")
+        Public Shared PDProperties As New TraceSwitch(NameOf(PDProperties), "Trace the creation And dirtying of properties in property pages, apply, etc.")
 
         ''' <summary>
         ''' Trace mapping of application type - output type, MyType
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDApplicationType As New TraceSwitch("PDApplicationType", "Trace mapping of application type properties")
+        Public Shared PDApplicationType As New TraceSwitch(NameOf(PDApplicationType), "Trace mapping of application type properties")
 
         ''' <summary>
         ''' Trace the functionality of extender properties
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDExtenders As New TraceSwitch("PDExtenders", "Trace the functionality of extender properties")
+        Public Shared PDExtenders As New TraceSwitch(NameOf(PDExtenders), "Trace the functionality of extender properties")
 
         ''' <summary>
         ''' Trace configuration setup and changes tracking in the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDConfigs As New TraceSwitch("PDConfigs", "Trace configuration setup and changes tracking in the project designer")
+        Public Shared PDConfigs As New TraceSwitch(NameOf(PDConfigs), "Trace configuration setup And changes tracking in the project designer")
 
         ''' <summary>
         ''' Trace performance issues for the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDPerf As New TraceSwitch("PDPerf", "Trace performance issues for the project designer")
+        Public Shared PDPerf As New TraceSwitch(NameOf(PDPerf), "Trace performance issues for the project designer")
 
         ''' <summary>
         ''' Trace command routing (CmdTargetHelper, etc.) in the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDCmdTarget As New TraceSwitch("PDCmdTarget", "Trace command routing (CmdTargetHelper, etc.) in the project designer")
+        Public Shared PDCmdTarget As New TraceSwitch(NameOf(PDCmdTarget), "Trace command routing (CmdTargetHelper, etc.) in the project designer")
 
         ''' <summary>
         ''' Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting.
         ''' This is useful for testing the hosting of pages as it would occur for non-native pages.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDAlwaysUseSetParent As New BooleanSwitch("PDAlwaysUseSetParent", "Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting")
+        Public Shared PDAlwaysUseSetParent As New BooleanSwitch(NameOf(PDAlwaysUseSetParent), "Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting")
 
         ''' <summary>
         ''' Traces message routing in the project designer and its property pages
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDMessageRouting As New TraceSwitch("PDMessageRouting", "Traces message routing in the project designer and its property pages")
+        Public Shared PDMessageRouting As New TraceSwitch(NameOf(PDMessageRouting), "Traces message routing in the project designer and its property pages")
 
         ''' <summary>
         ''' Overrides the SKU edition value for the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDSku As New EnumSwitch(Of VSProductSKU.VSASKUEdition)("PDSku", "Overrides the SKU edition value for the project designer")
+        Public Shared PDSku As New EnumSwitch(Of VSProductSKU.VSASKUEdition)(NameOf(PDSku), "Overrides the SKU edition value for the project designer")
 
         ''' <summary>
         ''' Overrides the Sub-SKU edition value for the project designer
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared PDSubSku As New EnumSwitch(Of VSProductSKU.VSASubSKUEdition)("PDSubSku", "Overrides the Sub-SKU edition value for the project designer")
+        Public Shared PDSubSku As New EnumSwitch(Of VSProductSKU.VSASubSKUEdition)(NameOf(PDSubSku), "Overrides the Sub-SKU edition value for the project designer")
 
-        Public Shared PDAddVBWPFApplicationPageToAllProjects As New BooleanSwitch("PDAddVBWPFApplicationPageToAllProjects", _
+        Public Shared PDAddVBWPFApplicationPageToAllProjects As New BooleanSwitch(NameOf(PDAddVBWPFApplicationPageToAllProjects),
             "Add the VB WPF Application property page to all projects, even non-WPF projects.  This allows for debugging " _
             & "this page without the new WPF flavor")
 
-        Public Shared PDAccessModifierCombobox As New TraceSwitch("PDAccessModifierCombobox", "Traces the access modifier combobox functionality")
+        Public Shared PDAccessModifierCombobox As New TraceSwitch(NameOf(PDAccessModifierCombobox), "Traces the access modifier combobox functionality")
 
-        Public Shared PDLinqImports As New TraceSwitch("PDLinqImports", "Traces the adding and removing of Linq imports during target framework upgrade/downgrade")
+        Public Shared PDLinqImports As New TraceSwitch(NameOf(PDLinqImports), "Traces the adding and removing of Linq imports during target framework upgrade/downgrade")
 
         '------------- Settings Designer -------------
-        Public Shared SDSyncUserConfig As New TraceSwitch("SDSyncUserConfig", "Trace synhronization/deletion of user.config files")
+        Public Shared SDSyncUserConfig As New TraceSwitch(NameOf(SDSyncUserConfig), "Trace synhronization/deletion of user.config files")
 
         ''' <summary>
         ''' Tracing whenever we read/write .settings and/or app.config files...
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared SDSerializeSettings As New TraceSwitch("SDSerializeSettings", "Serialization/deserialization of settings")
+        Public Shared SDSerializeSettings As New TraceSwitch(NameOf(SDSerializeSettings), "Serialization/deserialization of settings")
 
         '------------- WCF Tooling -------------
 
-        Public Shared WCF_Config_FileChangeWatch As New TraceSwitch("WCF_Config_FileChangeWatch", "Changes to configuration files in the current project")
+        Public Shared WCF_Config_FileChangeWatch As New TraceSwitch(NameOf(WCF_Config_FileChangeWatch), "Changes to configuration files in the current project")
 
-        Public Shared WCF_ASR_DebugServiceInfoNodes As New TraceSwitch("WCF_ASR_DebugServiceInfoNodes", "Displays additional information about the ServiceInfoNodes in the Services treeview in the ASR dialog")
+        Public Shared WCF_ASR_DebugServiceInfoNodes As New TraceSwitch(NameOf(WCF_ASR_DebugServiceInfoNodes), "Displays additional information about the ServiceInfoNodes in the Services treeview in the ASR dialog")
 
         '------------- MyExtensibility -------------
-        Public Shared MyExtensibilityTraceSwitch As New TraceSwitch("MyExtensibilityTrace", "Trace switch for MyExtensibility Feature")
+        Public Shared MyExtensibilityTraceSwitch As New TraceSwitch(NameOf(MyExtensibilityTraceSwitch), "Trace switch for MyExtensibility Feature")
 
         '--------------- Functions (optional, but make usage easier) ------------------
 
@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Public Sub New(ByVal DisplayName As String, ByVal Description As String)
                 MyBase.New(DisplayName, Description)
-                Debug.Assert(GetType(System.Enum).IsAssignableFrom(GetType(T)), "EnumSwitch() requires an Enum as a type parameter")
+                Debug.Assert(GetType(System.Enum).IsAssignableFrom(GetType(T)), NameOf(EnumSwitch(Of T)) & "() requires an Enum as a type parameter")
             End Sub
 
             ''' <summary>
@@ -498,7 +498,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TraceSCC(ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(MSVBE_SCC.TraceVerbose, "MSVBE_SCC: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(MSVBE_SCC.TraceVerbose, NameOf(MSVBE_SCC) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDFocus(ByVal Level As TraceLevel, ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDFocus.Level >= Level, "PDFocus:" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDFocus.Level >= Level, NameOf(PDFocus) & ":" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDUndo(ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDUndo.TraceVerbose, "PDUndo: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDUndo.TraceVerbose, NameOf(PDUndo) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -538,7 +538,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDProperties(ByVal Level As TraceLevel, ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDProperties.Level >= Level, "PDProperties: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDProperties.Level >= Level, NameOf(PDProperties) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDExtenders(ByVal Level As TraceLevel, ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDExtenders.Level >= Level, "PDExtenders: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDExtenders.Level >= Level, NameOf(PDExtenders) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDConfigs(ByVal TraceLevel As TraceLevel, ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDConfigs.Level >= TraceLevel, "PDConfigs: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDConfigs.Level >= TraceLevel, NameOf(PDConfigs) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -587,7 +587,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDPerf(ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDPerf.TraceInfo, "PDPerf:" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDPerf.TraceInfo, NameOf(PDPerf) & ":" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -645,7 +645,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDCmdTarget(ByVal TraceLevel As TraceLevel, ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDCmdTarget.Level >= TraceLevel, "PDCmdTarget: " & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDCmdTarget.Level >= TraceLevel, NameOf(PDCmdTarget) & ": " & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -663,7 +663,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If PDMessageRouting.Level >= TraceLevel Then
                 Dim FormattedMessage As String = FormatWin32Message(msg)
                 If FormattedMessage IsNot Nothing Then
-                    Trace.WriteLine("PDMessageRouting: " & Message & ": " & FormattedMessage)
+                    Trace.WriteLine(NameOf(PDMessageRouting) & ": " & Message & ": " & FormattedMessage)
                 End If
             End If
 #End If
@@ -679,7 +679,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDMessageRouting(ByVal TraceLevel As TraceLevel, ByVal Message As String)
 #If DEBUG Then
-            Trace.WriteLineIf(PDMessageRouting.Level >= TraceLevel, "PDMessageRouting: " & Message)
+            Trace.WriteLineIf(PDMessageRouting.Level >= TraceLevel, NameOf(PDMessageRouting) & ": " & Message)
 #End If
         End Sub
 
@@ -690,7 +690,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDAccessModifierCombobox(ByVal traceLevel As TraceLevel, ByVal message As String)
 #If DEBUG Then
-            trace.WriteLineIf(PDAccessModifierCombobox.Level >= tracelevel, "PDAccessModifierCombobox: " & message)
+            Trace.WriteLineIf(PDAccessModifierCombobox.Level >= traceLevel, NameOf(PDAccessModifierCombobox) & ": " & message)
 #End If
         End Sub
 
@@ -767,7 +767,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         <Conditional("DEBUG")> _
         Public Shared Sub TraceMyExtensibility(ByVal traceLevel As TraceLevel, ByVal message As String)
 #If DEBUG Then
-            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, string.Format("MyExtensibility {0} {1}: ", Date.Now.ToLongDateString(), Date.Now.ToLongTimeString()))
+            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, $"MyExtensibility {Date.Now.ToLongDateString()} {Date.Now.ToLongTimeString()}: ")
             Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, message)
 #End If
         End Sub

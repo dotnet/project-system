@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Start a batch edit
         ''' </summary>
         Friend Sub StartBatch()
-            Debug.Assert(_batchCount >= 0, "We should never call EndBatch more than StartBatch.")
+            Debug.Assert(_batchCount >= 0, $"We should never call {NameOf(EndBatch)} more than {NameOf(StartBatch)}.")
             If _batchCount = 0 AndAlso _projectBuildSystem IsNot Nothing Then
                 _projectBuildSystem.StartBatchEdit()
                 _batchCount = 1
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     _batchCount = _batchCount - 1
                 End If
             Else
-                Debug.Fail("We should never call EndBatch more than StartBatch.")
+                Debug.Fail($"We should never call {NameOf(EndBatch)} more than {NameOf(StartBatch)}.")
             End If
         End Sub
 

@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         ''' <remarks></remarks>
         Friend Sub New(ByVal packageServiceProvider As IServiceProvider)
             If packageServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("packageServiceProvider")
+                Throw New ArgumentNullException(NameOf(packageServiceProvider))
             End If
             _serviceProvider = packageServiceProvider
         End Sub

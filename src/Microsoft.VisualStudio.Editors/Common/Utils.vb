@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim Filter As New StringBuilder
             Dim i As Integer
 
-            Debug.Assert(VB.InStr(FilterText, "|") = 0, "FilterText for CreateDialogFilter should not contain '|'")
+            Debug.Assert(VB.InStr(FilterText, "|") = 0, NameOf(FilterText) & " for " & NameOf(CreateDialogFilter) & " should not contain '|'")
 
             'Build the user-friendly portion of the filter
             Filter.Append(FilterText & " (")
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
             Else
-                Debug.Fail("SetComboBoxDropdownWidth: No combobox specified")
+                Debug.Fail(NameOf(SetComboBoxDropdownWidth) & ": No combobox specified")
             End If
         End Sub
 
@@ -625,7 +625,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If column IsNot Nothing AndAlso column.DataGridView IsNot Nothing Then
                 column.DropDownWidth = Math.Max(MeasureMaxTextWidth(column.DataGridView, column.Items) + SystemInformation.VerticalScrollBarWidth, column.Width)
             Else
-                Debug.Fail("SetComboBoxColumnDropdownWidth: No combobox column specified, or the column didn't have a parent datagridview!")
+                Debug.Fail(NameOf(SetComboBoxColumnDropdownWidth) & ": No combobox column specified, or the column didn't have a parent " & NameOf(DataGridView) & "!")
             End If
         End Sub
 
@@ -1105,7 +1105,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If vsUIShell IsNot Nothing Then
                 vsUIShell.SetErrorInfo(hr, errorMessage, 0, Nothing, Nothing)
             Else
-                System.Diagnostics.Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
+                System.Diagnostics.Debug.Fail("Could not get " & NameOf(Microsoft.VisualStudio.Shell.Interop.IVsUIShell) & " from service provider. Can't set specific error message.")
             End If
         End Sub
 
@@ -1333,7 +1333,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsWebReferenceSupportedByDefaultInProject(ByVal Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException("Hierarchy")
+                Throw New ArgumentNullException(NameOf(Hierarchy))
             End If
 
             Dim objIsReferenceSupported As Object = Nothing
@@ -1357,7 +1357,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsVbProject(ByVal Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException("Hierarchy")
+                Throw New ArgumentNullException(NameOf(Hierarchy))
             End If
 
             Dim langService As Guid = Guid.Empty
@@ -1625,16 +1625,16 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsImplicitlyAddedReference(ByVal Reference As VSLangProj.Reference) As Boolean
             If Reference Is Nothing Then
-                Debug.Fail("Reference shouldn't be Nothing")
+                Debug.Fail(NameOf(Reference) & " shouldn't be Nothing")
                 Return False
             End If
-
+            Dim Reference3 As VSLangProj80.Reference3
             Try
-                Dim Reference3 As VSLangProj80.Reference3 = TryCast(Reference, VSLangProj80.Reference3)
+                Reference3 = TryCast(Reference, VSLangProj80.Reference3)
                 If Reference3 IsNot Nothing AndAlso Reference3.AutoReferenced Then
                     Return True
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Reference3) & "." & NameOf(Reference3.AutoReferenced) & " threw an exception", NameOf(Utils))
             End Try
 
             Return False

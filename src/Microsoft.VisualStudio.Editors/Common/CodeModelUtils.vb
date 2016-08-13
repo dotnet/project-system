@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                                 Return Func
                             End If
                         Else
-                            Debug.Fail("This code wasn't written for a non-VB language.  Couldn't get IEventHandler from CodeFunction.")
+                            Debug.Fail($"This code wasn't written for a non-VB language.  Couldn't get {NameOf(IEventHandler)} from {NameOf(CodeFunction)}.")
                         End If
                     End If
                 Else
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     HandlerFunction.AddParameter("sender", "Object", 0)
                     HandlerFunction.AddParameter("e", EventArgsType.FullName, 1)
                 Else
-                    Debug.Fail("This code wasn't written for a non-VB language.  Couldn't get IEventHandler from CodeFunction.")
+                    Debug.Fail($"This code wasn't written for a non-VB language.  Couldn't get {NameOf(IEventHandler)} from {NameOf(CodeFunction)}.")
                 End If
             End If
             Return HandlerFunction

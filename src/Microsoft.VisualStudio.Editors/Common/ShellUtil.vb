@@ -49,7 +49,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail(
+$"Unable to get color from the shell, using a predetermined default color instead.
+Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}")
             Return DefaultColor
         End Function
 
@@ -77,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 dialogOwner = UIService.GetDialogOwnerWindow()
             End If
 
-            Debug.Assert(dialogOwner IsNot Nothing, "Couldn't get DialogOwnerWindow")
+            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get {NameOf(DialogOwnerWindow)}")
             Return dialogOwner
         End Function
 
@@ -161,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If VSErrorHandler.Succeeded(hr) AndAlso TypeOf ValueObject Is Boolean Then
                     ReturnValue = CBool(ValueObject)
                 Else
-                    Debug.Fail("Failed to get VSCFGPROPID_HideConfigurations from project config provider")
+                    Debug.Fail($"Failed to get {NameOf(VSCFGPROPID_HideConfigurations)} from project config provider")
                     ReturnValue = False
                 End If
             End If
@@ -187,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Try
                 ProjAndSolutionProperties = DTE.Properties(EnvironmentCategory, ProjectsAndSolution)
                 If ProjAndSolutionProperties IsNot Nothing Then
-                    ShowValue = CBool(ProjAndSolutionProperties.Item("ShowAdvancedBuildConfigurations").Value)
+                    ShowValue = CBool(ProjAndSolutionProperties.Item(ShowAdvancedBuildConfigurations).Value)
                 Else
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
@@ -435,8 +437,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         ''' <remarks></remarks>
         Friend Shared Sub GetDocumentInfo(ByVal fileName As String, ByVal rdt As IVsRunningDocumentTable, ByRef hierarchy As IVsHierarchy, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
-            If fileName Is Nothing Then Throw New ArgumentNullException("fileName")
-            If rdt Is Nothing Then Throw New ArgumentNullException("rdt")
+            If fileName Is Nothing Then Throw New ArgumentNullException(NameOf(fileName))
+            If rdt Is Nothing Then Throw New ArgumentNullException(NameOf(rdt))
 
             '
             ' Initialize out parameters...
@@ -735,8 +737,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>True if registered, false otherwise</returns>
         ''' <remarks></remarks>
         Friend Shared Function IsCustomToolRegistered(ByVal hierarchy As IVsHierarchy, ByVal customToolName As String) As Boolean
-            If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
-            If customToolName Is Nothing Then Throw New ArgumentNullException("customToolName")
+            If hierarchy Is Nothing Then Throw New ArgumentNullException(NameOf(hierarchy))
+            If customToolName Is Nothing Then Throw New ArgumentNullException(NameOf(customToolName))
 
             ' All project systems support empty string (= no custom tool)
             If customToolName.Length = 0 Then Return True
@@ -872,7 +874,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail(
+$"Unable to get color from the shell, using a predetermined default color instead.
+Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}")
             Return DefaultColor
         End Function
 
