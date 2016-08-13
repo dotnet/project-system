@@ -572,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 Return (_flags And Flags.IsRoot) <> 0
             End Get
             Set(ByVal Value As Boolean)
-                Debug.Assert(Value, "IsRoot can only be set to true")
+                Debug.Assert(Value, NameOf(IsRoot) & " can only be set to true")
                 _flags = _flags Or Flags.IsRoot
             End Set
         End Property
@@ -978,8 +978,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 Dim Results As List(Of XmlIntellisenseMember) = New List(Of XmlIntellisenseMember)()
 
                 If _previousStep Is Nothing Then
-                    Debug.Fail("GetEnumerator() should never be called on the Document or All member lists (it is not implemented).")
-                Else If _previousStep Is _allMembers.All Then
+                    Debug.Fail(NameOf(GetEnumerator) & "() should never be called on the Document or All member lists (it is not implemented).")
+                ElseIf _previousStep Is _allMembers.All Then
                     ' Applying a query to the document root and all elements yields all matching members at any level
                     If _name.Name.Length = 0 Then
                         _allMembers.FindByNamespace(_name.Namespace, AddressOf MatchesType, Results)
