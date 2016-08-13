@@ -32,14 +32,14 @@ Namespace My.Resources
             'IMPORTANT: These must be kept manually up to date, they are not automatically
             '  synchronized with the .resx file.
 
-            Friend Const PPG_WebReferenceNameDescription As String = "PPG_WebReferenceNameDescription"
-            Friend Const PPG_ServiceReferenceNamespaceDescription As String = "PPG_ServiceReferenceNamespaceDescription"
-            Friend Const PPG_UrlBehaviorName As String = "PPG_UrlBehaviorName"
-            Friend Const PPG_UrlBehaviorDescription As String = "PPG_UrlBehaviorDescription"
-            Friend Const PPG_WebReferenceUrlName As String = "PPG_WebReferenceUrlName"
-            Friend Const PPG_WebReferenceUrlDescription As String = "PPG_WebReferenceUrlDescription"
-            Friend Const PPG_ServiceReferenceUrlName As String = "PPG_ServiceReferenceUrlName"
-            Friend Const PPG_ServiceReferenceUrlDescription As String = "PPG_ServiceReferenceUrlDescription"
+            Friend Const PPG_WebReferenceNameDescription As String = NameOf(PPG_WebReferenceNameDescription)
+            Friend Const PPG_ServiceReferenceNamespaceDescription As String = NameOf(PPG_ServiceReferenceNamespaceDescription)
+            Friend Const PPG_UrlBehaviorName As String = NameOf(PPG_UrlBehaviorName)
+            Friend Const PPG_UrlBehaviorDescription As String = NameOf(PPG_UrlBehaviorDescription)
+            Friend Const PPG_WebReferenceUrlName As String = NameOf(PPG_WebReferenceUrlName)
+            Friend Const PPG_WebReferenceUrlDescription As String = NameOf(PPG_WebReferenceUrlDescription)
+            Friend Const PPG_ServiceReferenceUrlName As String = NameOf(PPG_ServiceReferenceUrlName)
+            Friend Const PPG_ServiceReferenceUrlDescription As String = NameOf(PPG_ServiceReferenceUrlDescription)
 
         End Class
     End Class

@@ -16,12 +16,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
         Friend Function FileName(ByVal ProjectItem As EnvDTE.ProjectItem) As String
             If ProjectItem Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
+                System.Diagnostics.Debug.Fail("Can't get file name for NULL " & NameOf(ProjectItem) & "!")
                 Throw New System.ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
-                Debug.Fail("No file associated with ProjectItem (filecount <= 0)")
+                Debug.Fail("No file associated with " & NameOf(ProjectItem) & " (" & NameOf(ProjectItem.FileCount) & " <= 0)")
                 Return Nothing
             End If
 
@@ -128,18 +128,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Friend Function IsDefaultSettingsFile(ByVal Hierarchy As IVsHierarchy, ByVal Item As EnvDTE.ProjectItem) As Boolean
             If Hierarchy Is Nothing Then
-                Debug.Fail("Can't get the special files from a NULL Hierarchy!")
+                Debug.Fail("Can't get the special files from a NULL " & NameOf(Hierarchy) & "!")
                 Throw New ArgumentNullException()
             End If
 
             If Item Is Nothing Then
-                Debug.Fail("Shouldn't pass in NULL as Item to check if it is the default settings file!")
+                Debug.Fail("Shouldn't pass in NULL as " & NameOf(Item) & " to check if it is the default settings file!")
                 Return False
             End If
 
             Dim SpecialProjectItems As IVsProjectSpecialFiles = TryCast(Hierarchy, IVsProjectSpecialFiles)
             If SpecialProjectItems Is Nothing Then
-                Debug.Fail("Failed to get IVsProjectSpecialFiles from IVsHierarchy")
+                Debug.Fail("Failed to get " & NameOf(IVsProjectSpecialFiles) & " from " & NameOf(IVsHierarchy))
                 Return False
             End If
 
@@ -171,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
             Dim cc2 As EnvDTE80.CodeClass2 = TryCast(SettingClassElement, EnvDTE80.CodeClass2)
             If cc2 Is Nothing Then
-                Debug.Fail("Failed to get CodeClass2 to extend!")
+                Debug.Fail("Failed to get " & NameOf(EnvDTE80.CodeClass2) & " to extend!")
                 Return
             End If
 
@@ -286,17 +286,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Private Function AddNewProjectItemExtendingClass(ByVal cc2 As EnvDTE80.CodeClass2, ByVal NewFilePath As String, ByVal Generator As CodeDomProvider, ByVal supportsDeclarativeEventHandlers As Boolean, Optional ByVal CollectionToAddTo As EnvDTE.ProjectItems = Nothing) As EnvDTE.ProjectItem
             If cc2 Is Nothing Then
-                Debug.Fail("CodeClass2 isntance to extend can't be NULL!")
+                Debug.Fail(NameOf(EnvDTE80.CodeClass2) & " instance to extend can't be NULL!")
                 Throw New ArgumentNullException()
             End If
 
             If NewFilePath Is Nothing Then
-                Debug.Fail("NewFilePath can't be nothing!")
+                Debug.Fail(NameOf(NewFilePath) & " can't be nothing!")
                 Throw New ArgumentNullException()
             End If
 
             If Generator Is Nothing Then
-                Debug.Fail("Can't create a new file with a NULL CodeDomProvider")
+                Debug.Fail("Can't create a new file with a NULL " & NameOf(CodeDomProvider))
                 Throw New ArgumentNullException()
             End If
 
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 Dim Prop As EnvDTE.CodeProperty = TryCast(Element, EnvDTE.CodeProperty)
-                Debug.Assert(Prop IsNot Nothing, "Failed to get EnvDTE.CodeProperty from element with kind = vsCMElementProperty!?")
+                Debug.Assert(Prop IsNot Nothing, "Failed to get " & NameOf(EnvDTE) & "." & NameOf(EnvDTE.CodeProperty) & " from element with kind = " & NameOf(vsCMElementProperty) & "!?")
                 If Prop.Parent Is Nothing Then
                     Return False
                 End If
@@ -778,7 +778,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Friend Function CodeModelToCodeDomTypeAttributes(ByVal cc2 As EnvDTE80.CodeClass2) As System.Reflection.TypeAttributes
             If cc2 Is Nothing Then
-                Throw New ArgumentNullException("cc2")
+                Throw New ArgumentNullException(NameOf(cc2))
             End If
 
             Dim returnValue As System.Reflection.TypeAttributes = 0

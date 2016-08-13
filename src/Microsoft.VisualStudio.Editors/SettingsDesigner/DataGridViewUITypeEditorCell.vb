@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                  ByVal formattedTypeConverter As TypeConverter) As Object
             If Not TypeOf FormattedValue Is String Then
                 Debug.Fail("Unknown formatted value type!")
-                Throw Common.CreateArgumentException("FormattedValue")
+                Throw Common.CreateArgumentException(NameOf(FormattedValue))
             End If
             Dim StrFormattedValue As String = DirectCast(FormattedValue, String)
             Dim parsedValue As Object = Nothing
