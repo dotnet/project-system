@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Marshal.Release(ObjPtr)
                     ObjPtr = IntPtr.Zero
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create " & NameOf(VSTextBuffer) & " Class", NameOf(BaseEditorFactory))
                 Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
             End Try
 
@@ -363,10 +363,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Dim DesignerLoaderClassName As String = _designerLoaderType.AssemblyQualifiedName
                     Dim DesignerLoaderObject As Object = DesignerService.CreateDesignerLoader(DesignerLoaderClassName)
                     If DesignerLoaderObject Is Nothing Then
-                        Debug.Fail("DesignerService.CreateDesignerLoader() returned Nothing")
+                        Debug.Fail(NameOf(DesignerService) & "." & NameOf(DesignerService.CreateDesignerLoader) & "() returned Nothing")
                     End If
                     If Not TypeOf (DesignerLoaderObject) Is BaseDesignerLoader Then
-                        Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
+                        Debug.Fail(NameOf(DesignerLoader) & " was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
                             & VB.vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
                     End If
@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Sub SetSiteInternal(ByVal Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If Me._site Is Site Then
-                Debug.Fail("Why is this EditorFactory site:ed twice?")
+                Debug.Fail("Why is this " & NameOf(EditorFactory) & " site:ed twice?")
                 Exit Sub
             End If
 

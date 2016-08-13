@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Public Sub New(ByVal customToolValue As String)
                 If customToolValue Is Nothing Then
-                    Throw New ArgumentNullException("customToolValue")
+                    Throw New ArgumentNullException(NameOf(customToolValue))
                 End If
                 _customToolValue = customToolValue
             End Sub
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 MyBase.New(customToolValue)
 
                 If serviceProvider Is Nothing Then
-                    Throw New ArgumentNullException("serviceProvider")
+                    Throw New ArgumentNullException(NameOf(serviceProvider))
                 End If
 
                 _accessibility = accessibility
@@ -314,13 +314,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Sub New(ByVal rootDesigner As BaseRootDesigner, ByVal serviceProvider As IServiceProvider, ByVal projectItem As EnvDTE.ProjectItem, ByVal namespaceToOverrideIfCustomToolIsEmpty As String)
             If rootDesigner Is Nothing Then
-                Throw New ArgumentNullException("rootDesigner")
+                Throw New ArgumentNullException(NameOf(rootDesigner))
             End If
             If projectItem Is Nothing Then
-                Throw New ArgumentNullException("projectItem")
+                Throw New ArgumentNullException(NameOf(projectItem))
             End If
             If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException("serviceProvider")
+                Throw New ArgumentNullException(NameOf(serviceProvider))
             End If
 
             _rootDesigner = rootDesigner
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 currentValue = SR.GetString(SR.RSE_AccessModifier_Custom)
             End If
 
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & Me.GetType.Name & ": " & currentValue)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, NameOf(GetCurrentValue) & ": " & Me.GetType.Name & ": " & currentValue)
             Return currentValue
         End Function
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="value"></param>
         Private Sub SetCurrentValue(ByVal value As String)
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & Me.GetType.Name & ": " & value)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, NameOf(SetCurrentValue) & ": " & Me.GetType.Name & ": " & value)
 
             For Each entry As CodeGenerator In _codeGeneratorEntries
                 If entry.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
@@ -523,7 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Function EnabledHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
             Try
                 Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
-                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
+                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, NameOf(EnabledHandler) & ": " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
             Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try

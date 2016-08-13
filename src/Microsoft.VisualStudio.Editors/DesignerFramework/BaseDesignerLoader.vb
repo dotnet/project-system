@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If RootDesigner IsNot Nothing Then
                     View = TryCast(RootDesigner.GetView(ViewTechnology.Default), BaseDesignerView)
                 End If
-                Debug.Assert(View IsNot Nothing, "ManualCheckOut: Unable to locate base designer view to call Enter/LeaveProjectCheckoutSection")
+                Debug.Assert(View IsNot Nothing, NameOf(ManualCheckOut) & ": Unable to locate base designer view to call " & NameOf(Enter) & "/" & NameOf(LeaveProjectCheckoutSection))
 
                 If View IsNot Nothing Then
                     View.EnterProjectCheckoutSection()
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overrides Sub OnModifying()
-            Switches.TraceSCC("BaseDesignerLoader.OnModifying()")
+            Switches.TraceSCC(NameOf(BaseDesignerLoader) & "." & NameOf(OnModifying) & "()")
 
             MyBase.OnModifying()
             'In order to get check-in/check-out to work, we need to notify the DocData
@@ -192,12 +192,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '  tracking IVsTextBufferDataEvents.OnLoadCompleted(), at which point we'll call into this
                 '  function again.
 
-                Debug.Assert(Not _loadDeferred, "Load already deferred in PerformLoad()")
+                Debug.Assert(Not _loadDeferred, "Load already deferred in " & NameOf(PerformLoad) & "()")
                 _loadDeferred = True
 
                 _deferredLoaderService = DirectCast(GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
                 If _deferredLoaderService Is Nothing Then
-                    Debug.Fail("Deferred load doc data requires support for IDesignerLoaderService")
+                    Debug.Fail("Deferred load doc data requires support for " & NameOf(IDesignerLoaderService))
                     Throw New NotSupportedException(SR.GetString(SR.DFX_IncompatibleBuffer))
                 End If
 
@@ -452,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Overridable Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal moniker As String, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
 
             If m_DocData IsNot Nothing Then
-                Debug.Fail("BaseDesignerLoader.InitializeEx() should only be called once!")
+                Debug.Fail(NameOf(BaseDesignerLoader) & "." & NameOf(InitializeEx) & "() should only be called once!")
                 Return
             End If
 
@@ -668,7 +668,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Exit Sub
             End If
 
-            Switches.TracePDFocus(TraceLevel.Warning, "BaseDesignerLoader.WindowActivated")
+            Switches.TracePDFocus(TraceLevel.Warning, NameOf(BaseDesignerLoader) & "." & NameOf(BaseDesignerLoader.WindowActivated))
 
             If LostFocus IsNot Nothing Then
                 'This seems to throw sometimes, let's ignore if that happens
