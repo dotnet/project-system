@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors
             ''' <remarks></remarks>
             Public Sub New(ByVal sp As IServiceProvider)
                 _solution = TryCast(sp.GetService(GetType(IVsSolution)), IVsSolution)
-                Debug.Assert(_solution IsNot Nothing, "Failed to get IVsSolution - clean up of user config files in ZIP projects will not work...")
+                Debug.Assert(_solution IsNot Nothing, "Failed to get " & NameOf(IVsSolution) & " - clean up of user config files in ZIP projects will not work...")
                 If _solution IsNot Nothing Then
                     Dim hr As Integer = _solution.AdviseSolutionEvents(Me, _cookie)
 #If DEBUG Then
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors
                     Dim oBool As Object = Nothing
                     hr = _solution.GetProperty(Microsoft.VisualStudio.Shell.Interop.__VSPROPID2.VSPROPID_DeferredSaveSolution, oBool)
 #If DEBUG Then
-                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to get VSPROPID_DeferredSaveSolution - we will not clean up user.config files...")
+                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to get " & NameOf(VSPROPID_DeferredSaveSolution) & " - we will not clean up user.config files...")
 #End If
                     ErrorHandler.ThrowOnFailure(hr)
 
