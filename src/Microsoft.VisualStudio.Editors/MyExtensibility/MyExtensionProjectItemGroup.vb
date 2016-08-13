@@ -23,8 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Sub New( _
                 ByVal extensionID As String, ByVal extensionVersion As Version, _
                 ByVal extensionName As String, ByVal extensionDescription As String)
-            Debug.Assert(Not StringIsNullEmptyOrBlank(extensionID), "Invalid extensionID!")
-            Debug.Assert(extensionVersion IsNot Nothing, "Invalid extensionVersion!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(extensionID), "Invalid " & NameOf(extensionID) & "!")
+            Debug.Assert(extensionVersion IsNot Nothing, "Invalid " & NameOf(extensionVersion) & "!")
 
             _extensionID = extensionID
             _extensionVersion = extensionVersion

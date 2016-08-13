@@ -150,10 +150,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 ByVal id As String, ByVal version As Version, _
                 ByVal template As Template, ByVal assemblyFullName As String)
 
-            Debug.Assert(Not StringIsNullEmptyOrBlank(id), "Invalid id!")
-            Debug.Assert(version IsNot Nothing, "Invalid version!")
-            Debug.Assert(template IsNot Nothing, "Invalid tempalte!")
-            Debug.Assert(Not StringIsNullEmptyOrBlank(template.FilePath), "Invalid template.FilePath!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(id), "Invalid " & NameOf(id) & "!")
+            Debug.Assert(version IsNot Nothing, "Invalid " & NameOf(version) & "!")
+            Debug.Assert(template IsNot Nothing, "Invalid " & NameOf(template) & "!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(template.FilePath), "Invalid " & NameOf(template) & "." & NameOf(template.FilePath) & "!")
 
             _assemblyFullName = assemblyFullName
             _ID = id

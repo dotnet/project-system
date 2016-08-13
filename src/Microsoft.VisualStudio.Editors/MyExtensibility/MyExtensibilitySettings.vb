@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Me.InitializeProjectKindSettings(projectTypeID, project)
 
             If _extensionInfos.ContainsKey(projectTypeID) Then
-                Debug.Assert(_extensionInfos(projectTypeID) IsNot Nothing, "Corruped m_ExtensionInfos!")
+                Debug.Assert(_extensionInfos(projectTypeID) IsNot Nothing, "Corruped " & NameOf(_extensionInfos) & "!")
 
                 Dim extensionLists As List(Of MyExtensionTemplate) = _extensionInfos(projectTypeID).GetItems(assemblyFullName)
                 If extensionLists Is Nothing OrElse extensionLists.Count <= 0 Then
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             assemblyFullName = NormalizeAssemblyFullName(assemblyFullName)
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 Dim asmAutoOption As AssemblyAutoOption = _autoOptions(assemblyFullName)
-                Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
+                Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted " & NameOf(_autoOptions) & "!")
                 Return IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
             Else
                 Return AssemblyOption.Prompt
@@ -372,7 +372,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim asmAutoOption As AssemblyAutoOption = Nothing
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 asmAutoOption = _autoOptions(assemblyFullName)
-                Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
+                Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted " & NameOf(_autoOptions) & "!")
                 Dim existingValue As AssemblyOption = IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
                 If existingValue = inputValue Then
                     Exit Sub
@@ -426,10 +426,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Shared Sub WriteAssemblyOptionAttribute(ByVal writer As XmlTextWriter,
                 ByVal attributeName As String, ByVal value As AssemblyOption)
-            Debug.Assert(writer IsNot Nothing, "Null writer!")
-            Debug.Assert(Not StringIsNullEmptyOrBlank(attributeName), "Null attribute name!")
+            Debug.Assert(writer IsNot Nothing, "Null " & NameOf(writer) & "!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(attributeName), "Null " & NameOf(attributeName) & "!")
             Debug.Assert(value = AssemblyOption.Yes OrElse value = AssemblyOption.No _
-                OrElse value = AssemblyOption.Prompt, "Invalid value!")
+                OrElse value = AssemblyOption.Prompt, "Invalid " & NameOf(value) & "!")
 
             Dim text As String = Nothing
             Try
@@ -453,7 +453,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 If s_assemblyOptionConverter Is Nothing Then
                     s_assemblyOptionConverter = TypeDescriptor.GetConverter(GetType(AssemblyOption))
                 End If
-                Debug.Assert(s_assemblyOptionConverter IsNot Nothing, "Could not get converter for AssemblyOption!")
+                Debug.Assert(s_assemblyOptionConverter IsNot Nothing, "Could not get converter for " & NameOf(AssemblyOption) & "!")
                 Return s_assemblyOptionConverter
             End Get
         End Property

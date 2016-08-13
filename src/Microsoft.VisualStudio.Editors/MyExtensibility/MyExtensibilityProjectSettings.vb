@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Add the given extension template to the current project.
         ''' </summary>
         Public Function AddExtensionTemplate(ByVal extensionTemplate As MyExtensionTemplate) As List(Of ProjectItem)
-            Debug.Assert(extensionTemplate IsNot Nothing, "NULL extensionTemplate!")
+            Debug.Assert(extensionTemplate IsNot Nothing, "NULL " & NameOf(extensionTemplate) & "!")
 
             ' Start monitoring the project items being added from the template.
             _monitorState = MonitorState.AddTemplate
@@ -293,8 +293,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub AddExtensionProjectFile(ByVal assemblyFullName As String, ByVal extensionProjectItem As ProjectItem,
                 ByVal extensionID As String, ByVal extensionVersion As Version,
                 ByVal extensionName As String, ByVal extensionDescription As String)
-            Debug.Assert(extensionProjectItem IsNot Nothing, "NULL extensionProjectItem!")
-            Debug.Assert(Not String.IsNullOrEmpty(extensionID), "extensionID is NULL or empty!")
+            Debug.Assert(extensionProjectItem IsNot Nothing, "NULL " & NameOf(extensionProjectItem) & "!")
+            Debug.Assert(Not String.IsNullOrEmpty(extensionID), NameOf(extensionID) & " is NULL or empty!")
 
             If assemblyFullName Is Nothing Then
                 assemblyFullName = String.Empty
@@ -327,8 +327,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Get the MSBuild attribute for the given project item ID.
         ''' </summary>
         Private Function GetBuildAttribute(ByVal projectItemID As UInteger, ByVal attributeName As String) As String
-            Debug.Assert(Not String.IsNullOrEmpty(attributeName), "NULL attributeName")
-            Debug.Assert(_vsBuildPropertyStorage IsNot Nothing, "NULL IVsBuildPropertyStrorage!")
+            Debug.Assert(Not String.IsNullOrEmpty(attributeName), "NULL " & NameOf(attributeName))
+            Debug.Assert(_vsBuildPropertyStorage IsNot Nothing, "NULL " & NameOf(IVsBuildPropertyStrorage) & "!")
 
             Dim result As String = Nothing
             _vsBuildPropertyStorage.GetItemAttribute(projectItemID, attributeName, result)
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' and in AddTemplate state, collect them into m_ProjectItemsAddedFromTemplate.
         ''' </summary>
         Private Sub OnAfterAddFilesEx(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSADDFILEFLAGS)
-            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
+            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL " & NameOf(rgpszMkDocuments) & "!")
 
             If _monitorState <> MonitorState.AddTemplate Then ' Return if not monitoring add templates.
                 Exit Sub
@@ -439,7 +439,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                             Dim fileName As String = Path.GetFileName(filePath)
                             Dim subProjectItem As ProjectItem =
                                 DTEUtils.FindProjectItem(_extensionFolderProjectItem.ProjectItems, fileName)
-                            Debug.Assert(subProjectItem IsNot Nothing, "Could not find subProjectItem!")
+                            Debug.Assert(subProjectItem IsNot Nothing, "Could not find " & NameOf(subProjectItem) & "!")
                             If _projectItemsAddedFromTemplate Is Nothing Then
                                 _projectItemsAddedFromTemplate = New List(Of ProjectItem)()
                             End If
@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' raise change event.
         ''' </summary>
         Private Sub OnAfterRemoveFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSREMOVEFILEFLAGS)
-            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
+            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL " & NameOf(rgpszMkDocuments) & "!")
 
             If _monitorState = MonitorState.RemoveProjectItem Then
                 ' If in RemoveProjectItem state, do not raise event since project service will raise event itself.
@@ -487,8 +487,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' File (or directory??) renamed. Check and reload extension file list if neccessary.
         ''' </summary>
         Private Sub OnAfterRenameFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As VSRENAMEFILEFLAGS)
-            Debug.Assert(rgszMkNewNames IsNot Nothing, "NULL rgszMkNewNames!")
-            Debug.Assert(rgszMkOldNames IsNot Nothing, "NULL rgszMkOldNames!")
+            Debug.Assert(rgszMkNewNames IsNot Nothing, "NULL " & NameOf(rgszMkNewNames) & "!")
+            Debug.Assert(rgszMkOldNames IsNot Nothing, "NULL " & NameOf(rgszMkOldNames) & "!")
 
             If _monitorState <> MonitorState.Normal Then
                 Exit Sub
@@ -528,7 +528,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Directories removed from the solution. See if MyExtensions folder is removed.
         ''' </summary>
         Private Sub OnAfterRemoveDirectories(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSREMOVEDIRECTORYFLAGS)
-            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
+            Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL " & NameOf(rgpszMkDocuments) & "!")
 
             If _monitorState <> MonitorState.Normal Then
                 Exit Sub
@@ -578,7 +578,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Return the full path to a project item. If the project item becomes unavailable, return Nothing.
         ''' </summary>
         Private Shared Function GetProjectItemPath(ByVal projectItem As ProjectItem) As String
-            Debug.Assert(projectItem IsNot Nothing, "Null projectItem!")
+            Debug.Assert(projectItem IsNot Nothing, "Null " & NameOf(projectItem) & "!")
 
             Dim itemPath As String = Nothing
             Try
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Function
 
         Private Shared Function RemoveEndingSeparator(ByVal pathStr As String) As String
-            Debug.Assert(pathStr IsNot Nothing, "NULL path!")
+            Debug.Assert(pathStr IsNot Nothing, "NULL " & NameOf(pathStr) & "!")
             Return pathStr.TrimEnd(New Char() {Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar})
         End Function
 
@@ -660,11 +660,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 ByVal serviceProvider As IServiceProvider, ByVal project As Project, _
                 ByVal projectHierarchy As IVsHierarchy, ByVal vsBuildPropertyStorage As IVsBuildPropertyStorage)
 
-            Debug.Assert(projectService IsNot Nothing, "projectService")
-            Debug.Assert(serviceProvider IsNot Nothing, "serviceProvider")
-            Debug.Assert(project IsNot Nothing, "project")
-            Debug.Assert(projectHierarchy IsNot Nothing, "projectHierarchy")
-            Debug.Assert(vsBuildPropertyStorage IsNot Nothing, "vsBuildPropertyStorage")
+            Debug.Assert(projectService IsNot Nothing, NameOf(projectService))
+            Debug.Assert(serviceProvider IsNot Nothing, NameOf(serviceProvider))
+            Debug.Assert(project IsNot Nothing, NameOf(project))
+            Debug.Assert(projectHierarchy IsNot Nothing, NameOf(projectHierarchy))
+            Debug.Assert(vsBuildPropertyStorage IsNot Nothing, NameOf(vsBuildPropertyStorage))
 
             _projectService = projectService
             _serviceProvider = serviceProvider
