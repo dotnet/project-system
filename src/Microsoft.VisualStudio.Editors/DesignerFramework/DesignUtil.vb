@@ -132,19 +132,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Friend Shared Sub DisplayTopicFromF1Keyword(ByVal ServiceProvider As IServiceProvider, ByVal keyword As String)
             If ServiceProvider Is Nothing Then
-                System.Diagnostics.Debug.Fail("NULL serviceprovider - can't show help!")
+                System.Diagnostics.Debug.Fail("NULL " & NameOf(ServiceProvider) & " - can't show help!")
                 Return
             End If
 
             If keyword Is Nothing Then
-                System.Diagnostics.Debug.Fail("NULL help keyword - can't show help!")
+                System.Diagnostics.Debug.Fail("NULL help " & NameOf(keyword) & " - can't show help!")
                 Return
             End If
 
             Dim vshelp As VSHelp.Help = CType(ServiceProvider.GetService(GetType(VSHelp.Help)), VSHelp.Help)
 
             If vshelp Is Nothing Then
-                System.Diagnostics.Debug.Fail("Failed to get VSHelp.Help service from given service provider - can't show help!")
+                System.Diagnostics.Debug.Fail("Failed to get " & NameOf(vshelp) & NameOf(vshelp.Help) & " service from given service provider - can't show help!")
                 Return
             End If
 
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 vshelp.DisplayTopicFromF1Keyword(keyword)
             Catch ex As System.Runtime.InteropServices.COMException
                 ' DisplayTopicFromF1Keyword may throw COM exceptions even though dexplore shows the appropriate error message
-                System.Diagnostics.Debug.Assert(System.Runtime.InteropServices.Marshal.GetHRForException(ex) = &H80040305, String.Format("Unknown COM Exception {0} when trying to show help topic {1}", ex, keyword))
+                System.Diagnostics.Debug.Assert(System.Runtime.InteropServices.Marshal.GetHRForException(ex) = &H80040305, $"Unknown COM Exception {ex} when trying to show help topic {keyword}")
             End Try
         End Sub
 
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim chars() As Char = value.ToCharArray()
 
             If chars.Length = 0 Then
-                Throw Common.CreateArgumentException("value")
+                Throw Common.CreateArgumentException(NameOf(value))
             End If
 
             Dim result As New System.Text.StringBuilder
@@ -308,8 +308,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim cleanIdentifier As String = result.ToString()
             If Not System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
-                System.Diagnostics.Debug.Fail(String.Format("Failed to clean up identifier '{0}'", cleanIdentifier))
-                Throw Common.CreateArgumentException("value")
+                System.Diagnostics.Debug.Fail($"Failed to clean up identifier '{cleanIdentifier}'", cleanIdentifier))
+                Throw Common.CreateArgumentException(NameOf(value))
             End If
 
             Return cleanIdentifier

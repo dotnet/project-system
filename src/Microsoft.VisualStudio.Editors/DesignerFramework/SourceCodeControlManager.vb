@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Sub New(ByVal sp As IServiceProvider, ByVal Hierarchy As IVsHierarchy)
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(name(sp))
             End If
 
             _serviceProvider = sp
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' It is OK to pass in the name of a file that isn't currently managed...
         ''' </remarks>
         Public Sub StopManagingFile(ByVal mkDocument As String)
-            Debug.WriteLineIf(Common.Switches.MSVBE_SCC.TraceInfo, String.Format("Stop managing {0}'s SCC status", mkDocument))
+            Debug.WriteLineIf(Common.Switches.MSVBE_SCC.TraceInfo, $"Stop managing {mkDocument}'s SCC status")
             _managedFiles.Remove(mkDocument)
         End Sub
 
@@ -146,11 +146,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
         Public Shared Function QueryEditableFiles(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean, ByVal checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional ByVal allowInMemoryEdits As Boolean = True, Optional ByVal allowFileReload As Boolean = True) As Boolean
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             If files Is Nothing Then
-                Throw New ArgumentNullException("files")
+                Throw New ArgumentNullException(NameOf(files))
             End If
 
             If files.Count = 0 Then
@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Next
                     Return True
                 Else
-                    Debug.Fail("Failed to get both IVsQueryEditQuerySave2 and IVsTextManager services - can't check out file!")
+                    Debug.Fail("Failed to get both " & NameOf(IVsQueryEditQuerySave2) & " and " & NameOf(IVsTextManager) & " services - can't check out file!")
                 End If
             End If
 
@@ -264,11 +264,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Shared Function QuerySave(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean) As Boolean
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             If files Is Nothing Then
-                Throw New ArgumentNullException("files")
+                Throw New ArgumentNullException(NameOf(files))
             End If
 
             If files.Count = 0 Then
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
                 End If
             Else
-                Debug.Fail("Failed to get IVsQueryEditQuerySave2 services - can't query save the file!")
+                Debug.Fail("Failed to get " & NameOf(IVsQueryEditQuerySave2) & " services - can't query save the file!")
             End If
 
             ' Assume we can save the file...

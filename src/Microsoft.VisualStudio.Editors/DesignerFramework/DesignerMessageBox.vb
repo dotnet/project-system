@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ByVal Caption As String, Optional ByVal HelpLink As String = Nothing)
 
             If ex Is Nothing Then
-                Debug.Fail("ex should not be Nothing")
+                Debug.Fail(NameOf(ex) & " should not be Nothing")
                 Return
             End If
 
@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox))
                 End Try
             Else
-                Debug.Fail("ServiceProvider is Nothing! Message box won't have parent!")
+                Debug.Fail(NameOf(ServiceProvider) & " is Nothing! Message box won't have parent!")
             End If
 
             ' If there is no IServiceProvider, message box has no parent.
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         OLEButtons, OLEDefaultButton, MessageBoxIconToOleIcon(Icon), CInt(False), Result))
                 Return CType(Result, DialogResult)
             Else
-                Debug.Fail("Could not retreive IVsUIShell, message box will not be parented")
+                Debug.Fail("Could not retreive " & NameOf(IVsUIShell) & ", message box will not be parented")
             End If
 
             ' Either UIService or VsUIShell does not exist, show message box without parent.
