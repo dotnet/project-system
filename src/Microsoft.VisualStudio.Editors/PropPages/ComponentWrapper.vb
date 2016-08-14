@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _currentObject As Object
 
-        Protected Sub New(ByVal realObject As Object)
+        Protected Sub New(realObject As Object)
             _currentObject = realObject
         End Sub
 
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _currentObject
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 Debug.Assert(value IsNot Nothing, "can not support Nothing")
                 _currentObject = value
             End Set
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetDefaultProperty(_currentObject)
         End Function
 
-        Public Function GetEditor(ByVal editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor(_currentObject, editorBaseType)
         End Function
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetEvents(_currentObject)
         End Function
 
-        Public Function GetEvents1(ByVal attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents(_currentObject, attributes)
         End Function
 
@@ -70,11 +70,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetProperties(_currentObject)
         End Function
 
-        Public Function GetProperties1(ByVal attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties(_currentObject, attributes)
         End Function
 
-        Public Function GetPropertyOwner(ByVal pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
             Return _currentObject
         End Function
     End Class

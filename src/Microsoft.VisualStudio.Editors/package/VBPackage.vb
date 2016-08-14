@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="serviceType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnCreateService(ByVal container As IServiceContainer, ByVal serviceType As Type) As Object
+        Private Function OnCreateService(container As IServiceContainer, serviceType As Type) As Object
 
             ' Is the Permission Set Service being requested?
             If serviceType Is GetType(VBAttributeEditor.Interop.IVbPermissionSetService) Then
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <remarks>
         ''' This code is factored out of OnCreateService in order to delay loading Microsoft.VisualStudio.XmlEditor.dll
         ''' </remarks>
-        Private Function GetXmlIntellisenseService(ByVal container As IServiceContainer) As XmlIntellisense.XmlIntellisenseService
+        Private Function GetXmlIntellisenseService(container As IServiceContainer) As XmlIntellisense.XmlIntellisenseService
             If (_xmlIntellisenseService Is Nothing) Then
                 ' Xml Intellisense Service is only available if the Xml Editor Schema Service is available as well
                 Dim schemaService As XmlSchemaService = DirectCast(container.GetService(GetType(XmlSchemaService)), XmlSchemaService)
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _userConfigCleaner IsNot Nothing Then
                     _userConfigCleaner.Dispose()
@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors
         End Property
 
         'Used for accessing global services before a component in this assembly gets sited
-        Public Shadows ReadOnly Property GetService(ByVal serviceType As Type) As Object Implements Editors.IVBPackage.GetService
+        Public Shadows ReadOnly Property GetService(serviceType As Type) As Object Implements Editors.IVBPackage.GetService
             Get
                 Return MyBase.GetService(serviceType)
             End Get
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="key">Added in the constructor using AddOptionKey </param>
         ''' <param name="stream">Stream to read from</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLoadOptions(ByVal key As String, ByVal stream As System.IO.Stream)
+        Protected Overrides Sub OnLoadOptions(key As String, stream As System.IO.Stream)
             If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
                 Dim reader As New IO.BinaryReader(stream)
                 Dim buf(15) As Byte ' Space enough for a GUID - 16 bytes...
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="key">Added in the constructor using AddOptionKey</param>
         ''' <param name="stream">Stream to read data from</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnSaveOptions(ByVal key As String, ByVal stream As System.IO.Stream)
+        Protected Overrides Sub OnSaveOptions(key As String, stream As System.IO.Stream)
             If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
                 ' This is the project designer's last active tab
                 If _lastViewedProjectDesignerTab IsNot Nothing Then
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ProjectGUID(ByVal hierarchy As IVsHierarchy) As Guid
+        Private Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
                 If hierarchy IsNot Nothing Then
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="projectHierarchy"></param>
         ''' <returns>Last active tab number</returns>
         ''' <remarks></remarks>
-        Public Function GetLastShownApplicationDesignerTab(ByVal projectHierarchy As IVsHierarchy) As Integer Implements Editors.IVBPackage.GetLastShownApplicationDesignerTab
+        Public Function GetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy) As Integer Implements Editors.IVBPackage.GetLastShownApplicationDesignerTab
             Dim value As Byte
             If _lastViewedProjectDesignerTab IsNot Nothing AndAlso _lastViewedProjectDesignerTab.TryGetValue(ProjectGUID(projectHierarchy), value) Then
                 Return value
@@ -337,7 +337,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="projectHierarchy">Hierarchy</param>
         ''' <param name="tab">Tab number</param>
         ''' <remarks></remarks>
-        Public Sub SetLastShownApplicationDesignerTab(ByVal projectHierarchy As IVsHierarchy, ByVal tab As Integer) Implements Editors.IVBPackage.SetLastShownApplicationDesignerTab
+        Public Sub SetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy, tab As Integer) Implements Editors.IVBPackage.SetLastShownApplicationDesignerTab
             If _lastViewedProjectDesignerTab Is Nothing Then
                 _lastViewedProjectDesignerTab = New System.Collections.Generic.Dictionary(Of Guid, Byte)
             End If
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors
             ''' </summary>
             ''' <param name="sp"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal sp As IServiceProvider)
+            Public Sub New(sp As IServiceProvider)
                 _solution = TryCast(sp.GetService(GetType(IVsSolution)), IVsSolution)
                 Debug.Assert(_solution IsNot Nothing, "Failed to get IVsSolution - clean up of user config files in ZIP projects will not work...")
                 If _solution IsNot Nothing Then
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors
             ''' <param name="pUnkReserved"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Function OnAfterCloseSolution(ByVal pUnkReserved As Object) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterCloseSolution
+            Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
                 Return Editors.Interop.NativeMethods.S_OK
@@ -425,7 +425,7 @@ Namespace Microsoft.VisualStudio.Editors
             ''' <param name="pUnkReserved"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Function OnBeforeCloseSolution(ByVal pUnkReserved As Object) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeCloseSolution
+            Public Function OnBeforeCloseSolution(pUnkReserved As Object) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeCloseSolution
                 Try
                     _filesToCleanUp.Clear()
 
@@ -461,35 +461,35 @@ Namespace Microsoft.VisualStudio.Editors
 
 #Region "IVsSolutionEvents methods that simply return S_OK"
 
-            Public Function OnAfterLoadProject(ByVal pStubHierarchy As Shell.Interop.IVsHierarchy, ByVal pRealHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterLoadProject
+            Public Function OnAfterLoadProject(pStubHierarchy As Shell.Interop.IVsHierarchy, pRealHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterLoadProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnAfterOpenProject(ByVal pHierarchy As Shell.Interop.IVsHierarchy, ByVal fAdded As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenProject
+            Public Function OnAfterOpenProject(pHierarchy As Shell.Interop.IVsHierarchy, fAdded As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnAfterOpenSolution(ByVal pUnkReserved As Object, ByVal fNewSolution As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenSolution
+            Public Function OnAfterOpenSolution(pUnkReserved As Object, fNewSolution As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenSolution
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnBeforeCloseProject(ByVal pHierarchy As Shell.Interop.IVsHierarchy, ByVal fRemoved As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeCloseProject
+            Public Function OnBeforeCloseProject(pHierarchy As Shell.Interop.IVsHierarchy, fRemoved As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeCloseProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnBeforeUnloadProject(ByVal pRealHierarchy As Shell.Interop.IVsHierarchy, ByVal pStubHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeUnloadProject
+            Public Function OnBeforeUnloadProject(pRealHierarchy As Shell.Interop.IVsHierarchy, pStubHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeUnloadProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnQueryCloseProject(ByVal pHierarchy As Shell.Interop.IVsHierarchy, ByVal fRemoving As Integer, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseProject
+            Public Function OnQueryCloseProject(pHierarchy As Shell.Interop.IVsHierarchy, fRemoving As Integer, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnQueryCloseSolution(ByVal pUnkReserved As Object, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseSolution
+            Public Function OnQueryCloseSolution(pUnkReserved As Object, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseSolution
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 
-            Public Function OnQueryUnloadProject(ByVal pRealHierarchy As Shell.Interop.IVsHierarchy, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryUnloadProject
+            Public Function OnQueryUnloadProject(pRealHierarchy As Shell.Interop.IVsHierarchy, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryUnloadProject
                 Return Editors.Interop.NativeMethods.S_OK
             End Function
 #End Region
@@ -497,7 +497,7 @@ Namespace Microsoft.VisualStudio.Editors
             Private _disposed As Boolean = False
 
             ' IDisposable
-            Private Overloads Sub Dispose(ByVal disposing As Boolean)
+            Private Overloads Sub Dispose(disposing As Boolean)
                 If Not Me._disposed Then
                     If disposing Then
                         UnadviseSolutionEvents()
@@ -510,13 +510,13 @@ Namespace Microsoft.VisualStudio.Editors
 #Region " IDisposable Support "
             ' This code added by Visual Basic to correctly implement the disposable pattern.
             Public Overloads Sub Dispose() Implements IDisposable.Dispose
-                ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+                ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
                 Dispose(True)
                 GC.SuppressFinalize(Me)
             End Sub
 
             Protected Overrides Sub Finalize()
-                ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+                ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
                 Dispose(False)
                 MyBase.Finalize()
             End Sub

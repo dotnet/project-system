@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="Text">The error text to display</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Text As String)
+        Public Sub New(Text As String)
             Me.New()
             Me.Text = Text
         End Sub
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="ex">The exception to display</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ex As Exception)
+        Public Sub New(ex As Exception)
             Me.New(AppDesCommon.DebugMessageFromException(ex))
         End Sub
 
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="errors">A list of exceptions or error messages to display</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal errors As ICollection)
+        Public Sub New(errors As ICollection)
             Me.New()
 
             Dim TextBuilder As New System.Text.StringBuilder
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Get
                 Return ErrorText.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 MyBase.Text = value
                 Me.ErrorText.Text = value
             End Set
@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ErrorText_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles ErrorText.GotFocus
+        Private Sub ErrorText_GotFocus(sender As Object, e As System.EventArgs) Handles ErrorText.GotFocus
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
                 '  doesn't really make sense in this case, so set it back to no selection.
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="proposedSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetPreferredSize(ByVal proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
             If proposedSize.Width = 0 Then
                 Return MyBase.GetPreferredSize(proposedSize)
             End If

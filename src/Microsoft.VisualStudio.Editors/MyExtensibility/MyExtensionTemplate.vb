@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Shared factory method to create a MyExtensionTemplate. Return Nothing if the Template is invalid.
         ''' </summary>
-        Public Shared Function CreateInstance(ByVal template As Template) As MyExtensionTemplate
+        Public Shared Function CreateInstance(template As Template) As MyExtensionTemplate
             ' CONSIDER: (HuyN) - ID can be nothing, fall back to name instead?
 
             If template Is Nothing Then
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Get
         End Property
 
-        Public Overrides Function Equals(ByVal obj As Object) As Boolean
+        Public Overrides Function Equals(obj As Object) As Boolean
             Dim extensionTemplate As MyExtensionTemplate = TryCast(obj, MyExtensionTemplate)
 
             If extensionTemplate IsNot Nothing Then
@@ -147,8 +147,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Private constructor to avoid create this class directly.
         ''' </summary>
         Private Sub New( _
-                ByVal id As String, ByVal version As Version, _
-                ByVal template As Template, ByVal assemblyFullName As String)
+                id As String, version As Version, _
+                template As Template, assemblyFullName As String)
 
             Debug.Assert(Not StringIsNullEmptyOrBlank(id), "Invalid id!")
             Debug.Assert(version IsNot Nothing, "Invalid version!")

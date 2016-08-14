@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _culture As System.Globalization.CultureInfo
 
-        Public Sub New(ByVal culture As System.Globalization.CultureInfo)
+        Public Sub New(culture As System.Globalization.CultureInfo)
             _culture = culture
         End Sub
 
@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="serializedValue"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetValue(ByVal settingType As System.Type, ByVal serializedValue As String) As Object
+        Public Function GetValue(settingType As System.Type, serializedValue As String) As Object
             Dim valueDictionary As System.Collections.Generic.Dictionary(Of String, Object) = Nothing
             If Not _cachedSettingValues.TryGetValue(settingType, valueDictionary) Then
                 ' Make sure we have a 1st level entry for this type

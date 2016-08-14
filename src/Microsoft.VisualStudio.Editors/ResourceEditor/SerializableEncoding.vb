@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Encoding">The encoding to wrap.  Nothing is acceptable (indicates a default value - won't be written out to the resx if Nothing).</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Encoding As Encoding)
+        Public Sub New(Encoding As Encoding)
             _encoding = Encoding
         End Sub
 
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="info"></param>
         ''' <param name="context"></param>
         ''' <remarks></remarks>
-        Private Sub New(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext)
+        Private Sub New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
             Dim EncodingName As String = info.GetString(s_KEY_NAME)
             If EncodingName <> "" Then
                 _encoding = System.Text.Encoding.GetEncoding(EncodingName)
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _encoding
             End Get
-            Set(ByVal Value As Encoding)
+            Set(Value As Encoding)
                 _encoding = Encoding
             End Set
         End Property
@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="info"></param>
         ''' <param name="context"></param>
         ''' <remarks></remarks>
-        Private Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext) Implements ISerializable.GetObjectData
+        Private Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements ISerializable.GetObjectData
             If _encoding IsNot Nothing Then
                 info.AddValue(s_KEY_NAME, _encoding.WebName)
             Else

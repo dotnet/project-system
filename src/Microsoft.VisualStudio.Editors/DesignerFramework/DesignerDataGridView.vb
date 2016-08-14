@@ -26,10 +26,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' ContextMenuShow will be raised when this list view needs to show its context menu.
         ' The derived control simply needs to handle this event to know when to show a
         '   context menu
-        Public Event ContextMenuShow(ByVal sender As Object, ByVal e As MouseEventArgs)
+        Public Event ContextMenuShow(sender As Object, e As MouseEventArgs)
 
         ' Give clients a chance to prevent the "edit on click" caused by some custom cell types
-        Public Event CellClickBeginEdit(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
+        Public Event CellClickBeginEdit(sender As Object, e As System.ComponentModel.CancelEventArgs)
 
         'Backing property fields
         Private _DFAutoSizeColumnWidths As Boolean
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Friend Overridable Sub OnCellClickBeginEdit(ByVal e As System.ComponentModel.CancelEventArgs)
+        Friend Overridable Sub OnCellClickBeginEdit(e As System.ComponentModel.CancelEventArgs)
             RaiseEvent CellClickBeginEdit(Me, e)
         End Sub
 
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             Dim ht As HitTestInfo = Me.HitTest(e.X, e.Y)
 
             If (Control.ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         <System.Security.Permissions.UIPermission(System.Security.Permissions.SecurityAction.LinkDemand, Window:=System.Security.Permissions.UIPermissionWindow.AllWindows)> _
-        Protected Overrides Function ProcessDialogKey(ByVal keyData As Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 
             Dim key As Keys = (keyData And Keys.KeyCode)
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Class EditOnClickDataGridViewComboBoxCell
             Inherits DataGridViewComboBoxCell
 
-            Protected Overrides Sub OnEnter(ByVal rowIndex As Integer, ByVal throughMouseClick As Boolean)
+            Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
                 Dim dfxdgv As DesignerDataGridView = TryCast(Me.DataGridView, DesignerDataGridView)
                 Dim e As New System.ComponentModel.CancelEventArgs(False)
 
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Get
                     Return MyBase.ReadOnly
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     MyBase.ReadOnly = value
                     If value Then
                         DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Class EditOnClickDataGridViewTextBoxCell
             Inherits DataGridViewTextBoxCell
 
-            Protected Overrides Sub OnEnter(ByVal rowIndex As Integer, ByVal throughMouseClick As Boolean)
+            Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
                 Dim dfxdgv As DesignerDataGridView = TryCast(Me.DataGridView, DesignerDataGridView)
                 Dim e As New System.ComponentModel.CancelEventArgs(False)
 

@@ -16,24 +16,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _showHeaderAndFooterInErrorControl As Boolean = True
 
-        Public Sub New(ByVal message As String)
+        Public Sub New(message As String)
             Me.New(message, Nothing, DirectCast(Nothing, Exception))
         End Sub
 
-        Public Sub New(ByVal message As String, ByVal helpLink As String)
+        Public Sub New(message As String, helpLink As String)
             Me.New(message, helpLink, Nothing)
         End Sub
 
-        Public Sub New(ByVal message As String, ByVal innerException As Exception)
+        Public Sub New(message As String, innerException As Exception)
             Me.New(message, Nothing, innerException)
         End Sub
 
-        Public Sub New(ByVal message As String, ByVal helpLink As String, ByVal innerException As Exception)
+        Public Sub New(message As String, helpLink As String, innerException As Exception)
             MyBase.New(message, innerException)
             Me.HelpLink = helpLink
         End Sub
 
-        Public Sub New(ByVal message As String, ByVal innerException As Exception, ByVal ShowHeaderandFooterInErrorControl As Boolean)
+        Public Sub New(message As String, innerException As Exception, ShowHeaderandFooterInErrorControl As Boolean)
             MyBase.New(message, innerException)
             _showHeaderAndFooterInErrorControl = ShowHeaderandFooterInErrorControl
         End Sub
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
-        Protected Sub New(ByVal Info As SerializationInfo, ByVal Context As StreamingContext)
+        Protected Sub New(Info As SerializationInfo, Context As StreamingContext)
             MyBase.New(Info, Context)
         End Sub
 
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _showHeaderAndFooterInErrorControl
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _showHeaderAndFooterInErrorControl = value
             End Set
         End Property

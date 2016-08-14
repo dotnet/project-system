@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   will return any function that handles the given event, regardless of name</param>
         ''' <returns>The function which handles the given event and (optionally) has the given name.</returns>
         ''' <remarks></remarks>
-        Public Shared Function FindEventHandler(ByVal Elements As CodeElements, ByVal EventName As String, ByVal EventHandlerFunctionName As String, ByVal AllowMatchToOnlyEventName As Boolean) As CodeFunction
+        Public Shared Function FindEventHandler(Elements As CodeElements, EventName As String, EventHandlerFunctionName As String, AllowMatchToOnlyEventName As Boolean) As CodeFunction
             Dim ExistingHandler As CodeFunction
 
             'First try to match both event handler function name and handled event name
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="EventHandlerFunctionName">Handled event handler function name to search for.  May be Nothing/empty.</param>
         ''' <returns>The function which handles the given event and (optionally) has the given name.</returns>
         ''' <remarks>This function only works with VB as currently written.</remarks>
-        Public Shared Function FindEventHandlerHelper(ByVal Elements As CodeElements, ByVal EventName As String, ByVal EventHandlerFunctionName As String) As CodeFunction
+        Public Shared Function FindEventHandlerHelper(Elements As CodeElements, EventName As String, EventHandlerFunctionName As String) As CodeFunction
             For Each element As CodeElement In Elements
                 If element.Kind = vsCMElement.vsCMElementFunction Then
                     Dim Func As CodeFunction = DirectCast(element, CodeFunction)
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Access">The access level (private/friend/etc)</param>
         ''' <returns>The existing or newly-created event handler function.</returns>
         ''' <remarks>This function is currently written only to work with VB.</remarks>
-        Public Shared Function TryAddEventHandler(ByVal CodeClass As CodeClass, ByVal EventName As String, ByVal EventHandlerFunctionName As String, ByVal EventArgsType As Type, ByVal Access As vsCMAccess) As CodeFunction
+        Public Shared Function TryAddEventHandler(CodeClass As CodeClass, EventName As String, EventHandlerFunctionName As String, EventArgsType As Type, Access As vsCMAccess) As CodeFunction
             Dim HandlerFunction As CodeFunction = FindEventHandler(CodeClass.Members, EventName, EventHandlerFunctionName, True)
             If HandlerFunction Is Nothing Then
                 'Doesn't exist.  Let's add a handling method
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Func">The function to navigate to.</param>
         ''' <remarks></remarks>
-        Public Shared Sub NavigateToFunction(ByVal Func As CodeFunction)
+        Public Shared Sub NavigateToFunction(Func As CodeFunction)
             Try
                 'Ensure the document is activated
                 If Func.ProjectItem IsNot Nothing Then
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ClassName">The class name to search for</param>
         ''' <returns>The CodeClass if found, otherwise Nothing.</returns>
         ''' <remarks></remarks>
-        Public Shared Function FindCodeClass(ByVal CodeNamespace As CodeNamespace, ByVal ClassName As String) As CodeClass
+        Public Shared Function FindCodeClass(CodeNamespace As CodeNamespace, ClassName As String) As CodeClass
             For Each Element As CodeElement In CodeNamespace.Members
                 If Element.Kind = vsCMElement.vsCMElementClass Then
                     ' Consider, should we use language case sensitivity instead of ignore case here?
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ClassName">The class name to search for</param>
         ''' <returns>The CodeClass if found, otherwise Nothing.</returns>
         ''' <remarks></remarks>
-        Public Shared Function FindCodeClass(ByVal CodeElements As CodeElements, ByVal NamespaceName As String, ByVal ClassName As String) As CodeClass
+        Public Shared Function FindCodeClass(CodeElements As CodeElements, NamespaceName As String, ClassName As String) As CodeClass
             For Each Element As CodeElement In CodeElements
                 If Element.Kind = vsCMElement.vsCMElementNamespace Then
                     ' Consider, should we use language case sensitivity instead of ignore case here?

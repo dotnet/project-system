@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' The default version of this function calls IResource.GetValue().
         ''' </remarks>
-        Public Overrides Sub CheckValueForErrors(ByVal Resource As IResource)
+        Public Overrides Sub CheckValueForErrors(Resource As IResource)
             ValidateResourceValue(Resource, ResourceTypeEditorBinaryFile.BinaryFileValueType, ResourceTypeEditorTextFile.TextFileValueType)
             Debug.Assert(Resource.IsLink)
 

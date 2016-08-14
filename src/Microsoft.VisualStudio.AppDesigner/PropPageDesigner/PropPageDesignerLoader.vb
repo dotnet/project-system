@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="ItemId"></param>
         ''' <param name="punkDocData"></param>
         ''' <remarks></remarks>
-        Public Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
+        Public Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If punkDocData Is Nothing Then
                 Debug.Fail("Docdata must be supplied")
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PerformFlush(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformFlush(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' will automatically be added to the ErrorList by VSDesignerLoader.  If there
         ''' are more specific local exceptions, they can be added to ErrorList manually.
         '''</remarks>
-        Protected Overrides Sub PerformLoad(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformLoad(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
 
             '... BasicDesignerLoader requires that we call SetBaseComponentClassName() during load.
             SetBaseComponentClassName(GetType(PropPageDesignerRootComponent).AssemblyQualifiedName)
@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="disposing">True if calling from Dispose()</param>
         ''' <remarks></remarks>
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose of managed resources.
                 If TypeOf _punkDocData Is PropPageDesignerDocData Then

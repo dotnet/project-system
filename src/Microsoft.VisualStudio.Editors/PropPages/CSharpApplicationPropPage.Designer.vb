@@ -6,7 +6,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _components As System.ComponentModel.IContainer
 
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()

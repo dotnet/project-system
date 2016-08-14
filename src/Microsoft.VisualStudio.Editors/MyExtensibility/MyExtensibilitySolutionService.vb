@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Obtain the specified service.
         ''' </summary>
-        Public Function GetService(ByVal serviceType As Type) As Object
+        Public Function GetService(serviceType As Type) As Object
             Return _VBPackage.GetService(serviceType)
         End Function
 
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Notify the project's My Extensibility service that a reference has been added.
         ''' </summary>
         ''' <remarks>VB Compiler will call this method through VBReferenceChangedService.</remarks>
-        Public Sub ReferenceAdded(ByVal projectHierarchy As IVsHierarchy, ByVal assemblyInfo As String)
+        Public Sub ReferenceAdded(projectHierarchy As IVsHierarchy, assemblyInfo As String)
             Me.HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Add)
         End Sub
 
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Notify the project's My Extensibility service that a reference has been removed.
         ''' </summary>
         ''' <remarks>VB Compiler will call this method through VBReferenceChangedService.</remarks>
-        Public Sub ReferenceRemoved(ByVal projectHierarchy As IVsHierarchy, ByVal assemblyInfo As String)
+        Public Sub ReferenceRemoved(projectHierarchy As IVsHierarchy, assemblyInfo As String)
             Me.HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Remove)
         End Sub
 
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         ''' <remarks>This can be invoked by VB Compiler (through ReferenceAdded, ReferenceRemoved) or
         ''' My Extensibility Property Page.</remarks>
-        Public Function GetProjectService(ByVal projectHierarchy As IVsHierarchy) _
+        Public Function GetProjectService(projectHierarchy As IVsHierarchy) _
                 As MyExtensibilityProjectService
 
             ' Expect an IVsHierarchy but if none is provided, attempt to get it from IVsMonitorSelection.
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Private constructor since MyExtensibilityManager can be accessed through
         ''' shared property Instance.
         ''' </summary>
-        Private Sub New(ByVal vbPackage As VBPackage)
+        Private Sub New(vbPackage As VBPackage)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             _VBPackage = vbPackage
             Me.AddEnvDTEEvents()
@@ -218,8 +218,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' After that, the project service will listen to reference added or removed event itself (to avoid ZIP problem).
         ''' Therefore, if a project service already exists, do not notify it.
         ''' </remarks>
-        Private Sub HandleReferenceChange(ByVal projectHierarchy As IVsHierarchy, ByVal assemblyInfo As String, _
-                ByVal action As AddRemoveAction)
+        Private Sub HandleReferenceChange(projectHierarchy As IVsHierarchy, assemblyInfo As String, _
+                action As AddRemoveAction)
             ' assemblyInfo can be NULL in case of unmanaged assembly.
             If StringIsNullEmptyOrBlank(assemblyInfo) Then
                 Exit Sub
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Handle ProjectRemoved event and remove the associate project service from our collection.
         ''' </summary>
-        Private Sub SolutionEvents_ProjectRemoved(ByVal project As Project)
+        Private Sub SolutionEvents_ProjectRemoved(project As Project)
             If project Is Nothing Then
                 Exit Sub
             End If

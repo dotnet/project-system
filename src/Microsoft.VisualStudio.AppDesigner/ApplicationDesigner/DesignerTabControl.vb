@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 
         'Control override dispose to clean up the component list.
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _components IsNot Nothing Then
                     _components.Dispose()
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal value As IServiceProvider)
+            Set(value As IServiceProvider)
                 _serviceProvider = value
                 _renderer.ServiceProvider = value
 
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="index"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetTabButton(ByVal index As Integer) As ProjectDesignerTabButton
+        Public Function GetTabButton(index As Integer) As ProjectDesignerTabButton
             Return _buttonCollection(index)
         End Function
 
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLayout(ByVal levent As LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "DesignerTabControl.OnLayout()")
 
             _renderer.PerformLayout() 'This can affect the layout of other controls on this page
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="AutomationName">Non-localizable name to be used for QA automation.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function AddTab(ByVal Title As String, ByVal AutomationName As String) As Integer
+        Public Function AddTab(Title As String, AutomationName As String) As Integer
             SuspendLayout()
             Dim newIndex As Integer
             Try
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _selectedItem
             End Get
-            Set(ByVal value As ProjectDesignerTabButton)
+            Set(value As ProjectDesignerTabButton)
                 Dim oldSelectedItem As ProjectDesignerTabButton = Nothing
 
                 If _selectedItem Is value Then
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Return _selectedItem.ButtonIndex
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If value = -1 Then
                     SelectedItem = Nothing
                 Else
@@ -390,7 +390,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
         End Sub
 
 
@@ -399,7 +399,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnPaintBackground(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaintBackground(e As PaintEventArgs)
             Renderer.RenderBackground(e.Graphics)
         End Sub
 
@@ -409,7 +409,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="item">The tab button which has been clicked.</param>
         ''' <remarks></remarks>
-        Public Overridable Sub OnItemClick(ByVal item As ProjectDesignerTabButton)
+        Public Overridable Sub OnItemClick(item As ProjectDesignerTabButton)
             SelectedItem = item
         End Sub
 
@@ -420,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="e"></param>
         ''' <param name="item"></param>
         ''' <remarks></remarks>
-        Public Sub OnItemEnter(ByVal e As EventArgs, ByVal item As ProjectDesignerTabButton)
+        Public Sub OnItemEnter(e As EventArgs, item As ProjectDesignerTabButton)
             If _hoverItem IsNot item Then
                 _hoverItem = item
                 item.Invalidate()
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="e"></param>
         ''' <param name="item"></param>
         ''' <remarks></remarks>
-        Public Sub OnItemLeave(ByVal e As EventArgs, ByVal item As ProjectDesignerTabButton)
+        Public Sub OnItemLeave(e As EventArgs, item As ProjectDesignerTabButton)
             If _hoverItem Is item Then
                 _hoverItem = Nothing
                 item.Invalidate()
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="e"></param>
         ''' <param name="item"></param>
         ''' <remarks></remarks>
-        Public Overridable Sub OnItemGotFocus(ByVal e As EventArgs, ByVal item As ProjectDesignerTabButton)
+        Public Overridable Sub OnItemGotFocus(e As EventArgs, item As ProjectDesignerTabButton)
         End Sub
 
         ''' <summary>
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles OverflowButton.Click
+        Private Sub OverflowButton_Click(sender As Object, e As System.EventArgs) Handles OverflowButton.Click
             'Set up to use VS colors
             If _serviceProvider IsNot Nothing Then
                 Dim uiSvc As IUIService = DirectCast(_serviceProvider.GetService(GetType(IUIService)), IUIService)
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowMenuItemClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OverflowMenuItemClick(sender As Object, e As System.EventArgs)
             Dim MenuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim Button As ProjectDesignerTabButton = DirectCast(MenuItem.Tag, ProjectDesignerTabButton)
             Debug.Assert(Button IsNot Nothing)
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
         ''' <remarks></remarks>
-        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(ByVal msg As UInteger, ByVal wParam As System.IntPtr, ByVal lParam As System.IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
                     _renderer.CreateGDIObjects(True)
@@ -596,7 +596,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 MyBase.BackColor = Color.Transparent 'Need to let gradients show through the image when not hovered over
             End Sub
 
-            Public Sub New(ByVal ImageResourceId As String, ByVal TransparentColor As Color)
+            Public Sub New(ImageResourceId As String, TransparentColor As Color)
                 Me.New()
 
                 'Get the image and make it transparent
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseEnter(ByVal e As System.EventArgs)
+            Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
                 MyBase.OnMouseEnter(e)
 
                 'No border unless the mouse is over the button
@@ -623,7 +623,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseLeave(ByVal e As System.EventArgs)
+            Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
                 MyBase.OnMouseLeave(e)
 
                 'No border unless the mouse is over the button
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ' button which this accessible object belongs to
             Private _tabControl As ProjectDesignerTabControl
 
-            Public Sub New(ByVal owner As ProjectDesignerTabControl)
+            Public Sub New(owner As ProjectDesignerTabControl)
                 MyBase.New(owner)
                 _tabControl = owner
             End Sub
@@ -676,7 +676,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Return Nothing
                     End If
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                 End Set
             End Property
 

@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "Dispose"
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             '
             'NOTE:
             '  Most clean-up should be done in the overridden CleanupCOMReferences
@@ -386,15 +386,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         'Delegate to the base class for all functionality related to the icon combobox
         '
 
-        Private Sub IconCombobox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.DropDown
+        Private Sub IconCombobox_DropDown(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDown
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_DropDownClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.DropDownClosed
+        Private Sub IconCombobox_DropDownClosed(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDownClosed
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
+        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
             MyBase.HandleIconComboboxSelectionChangeCommitted(sender)
         End Sub
 
@@ -402,7 +402,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Enables the Icon combobox (if Enable=True), but only if the associated property is supported
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overrides Sub EnableIconComboBox(ByVal Enable As Boolean)
+        Protected Overrides Sub EnableIconComboBox(Enable As Boolean)
             'Icon combobox shouldn't be enabled for XBAP projects
             EnableControl(m_CommonControls.IconCombobox, Enable AndAlso Not IsXBAP())
             UpdateIconImage(False)
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AssemblyInfoButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AssemblyInfoButton.Click
+        Private Sub AssemblyInfoButton_Click(sender As Object, e As System.EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks>OutputType is obtained from the value in the Application Type field</remarks>
-        Private Function GetOutputTypeFromUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function GetOutputTypeFromUI(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim AppType As ApplicationTypes
 
             If ApplicationTypeComboBox.SelectedItem IsNot Nothing Then
@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SetOutputTypeIntoUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function SetOutputTypeIntoUI(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value IsNot Nothing AndAlso Not PropertyControlData.IsSpecialValue(value) Then
                 Dim AppType As MyApplication.ApplicationTypes = ApplicationTypeFromOutputType(CType(value, VSLangProj.prjOutputType))
                 Me.ApplicationTypeComboBox.SelectedItem = s_applicationTypes.Find(ApplicationTypeInfo.ApplicationTypePredicate(AppType))
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="AppType"></param>
         ''' <remarks></remarks>
-        Private Sub EnableApplicationIconAccordingToApplicationType(ByVal AppType As ApplicationTypes)
+        Private Sub EnableApplicationIconAccordingToApplicationType(AppType As ApplicationTypes)
             Select Case AppType
                 Case ApplicationTypes.CommandLineApp
                     EnableIconComboBox(True)
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="OutputType">Output type</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function ApplicationTypeFromOutputType(ByVal OutputType As VSLangProj.prjOutputType) As ApplicationTypes
+        Friend Shared Function ApplicationTypeFromOutputType(OutputType As VSLangProj.prjOutputType) As ApplicationTypes
             Select Case OutputType
 
                 Case VSLangProj.prjOutputType.prjOutputTypeExe
@@ -533,7 +533,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="AppType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function OutputTypeFromApplicationType(ByVal AppType As ApplicationTypes) As VSLangProj.prjOutputType
+        Friend Shared Function OutputTypeFromApplicationType(AppType As ApplicationTypes) As VSLangProj.prjOutputType
             Select Case AppType
 
                 Case ApplicationTypes.WindowsApp
@@ -557,7 +557,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="Enable"></param>
         ''' <remarks></remarks>
-        Private Sub EnableUseApplicationFrameworkCheckBox(ByVal Enable As Boolean)
+        Private Sub EnableUseApplicationFrameworkCheckBox(Enable As Boolean)
             GetPropertyControlData(s_PROPID_UseApplicationFramework).EnableControls(Enable)
         End Sub
 
@@ -567,7 +567,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             [True]
         End Enum
 
-        Private Function SetUseApplicationFrameworkIntoUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function SetUseApplicationFrameworkIntoUI(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 UseApplicationFrameworkCheckBox.CheckState = CheckState.Indeterminate
                 EnableUseApplicationFrameworkCheckBox(False)
@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Return True
         End Function
 
-        Private Function GetUseApplicationFrameworkFromUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function GetUseApplicationFrameworkFromUI(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If Not UseApplicationFrameworkCheckBox.Enabled Then
                 Debug.Fail("Get shouldn't be called if disabled")
                 value = TriState.Disabled
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Return True
         End Function
 
-        Private Sub SetUseApplicationFrameworkIntoStorage(ByVal value As TriState)
+        Private Sub SetUseApplicationFrameworkIntoStorage(value As TriState)
             Select Case value
                 Case TriState.Disabled
                     Debug.Fail("Shouldn't get here")
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks>
         ''' Overridable for unit testing.
         ''' </remarks>
-        Private Function FindApplicationXamlProjectItem(ByVal createAppXamlIfDoesNotExist As Boolean) As ProjectItem
+        Private Function FindApplicationXamlProjectItem(createAppXamlIfDoesNotExist As Boolean) As ProjectItem
             Return FindApplicationXamlProjectItem(ProjectHierarchy, createAppXamlIfDoesNotExist)
         End Function
 
@@ -722,7 +722,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks>
         ''' Overridable for unit testing.
         ''' </remarks>
-        Friend Shared Function FindApplicationXamlProjectItem(ByVal hierarchy As IVsHierarchy, ByVal createAppXamlIfDoesNotExist As Boolean) As ProjectItem
+        Friend Shared Function FindApplicationXamlProjectItem(hierarchy As IVsHierarchy, createAppXamlIfDoesNotExist As Boolean) As ProjectItem
             Try
                 Dim specialFiles As IVsProjectSpecialFiles = TryCast(hierarchy, IVsProjectSpecialFiles)
                 If specialFiles Is Nothing Then
@@ -788,7 +788,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' the function will never return Nothing, but rather will throw an exception if there's a problem.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetApplicationXamlDocData(ByVal createAppXamlIfDoesNotExist As Boolean) As DocData
+        Private Function GetApplicationXamlDocData(createAppXamlIfDoesNotExist As Boolean) As DocData
             If _applicationXamlDocData Is Nothing Then
                 Dim applicationXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(createAppXamlIfDoesNotExist)
                 If applicationXamlProjectItem IsNot Nothing Then
@@ -819,7 +819,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="createAppXamlIfDoesNotExist"></param>
         ''' <returns>The AppDotXamlDocument</returns>
         ''' <remarks></remarks>
-        Protected Overridable Function CreateAppDotXamlDocumentForApplicationDefinitionFile(ByVal createAppXamlIfDoesNotExist As Boolean) As AppDotXamlDocument
+        Protected Overridable Function CreateAppDotXamlDocumentForApplicationDefinitionFile(createAppXamlIfDoesNotExist As Boolean) As AppDotXamlDocument
             Dim docData As DocData = GetApplicationXamlDocData(createAppXamlIfDoesNotExist)
             If docData IsNot Nothing Then
                 Dim vsTextLines As IVsTextLines = TryCast(docData.Buffer, IVsTextLines)
@@ -853,7 +853,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Using
         End Function
 
-        Private Sub SetStartupUriIntoStorage(ByVal value As String)
+        Private Sub SetStartupUriIntoStorage(value As String)
             Using document As AppDotXamlDocument = CreateAppDotXamlDocumentForApplicationDefinitionFile(True)
                 Debug.Assert(document IsNot Nothing, "This shouldn't ever be returned as Nothing from GetAppDotXamlDocument(True)")
                 document.SetStartupUri(value)
@@ -877,7 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private _value As String
             Private _description As String
 
-            Public Sub New(ByVal value As String, ByVal description As String)
+            Public Sub New(value As String, description As String)
                 If value Is Nothing Then
                     value = ""
                 End If
@@ -910,7 +910,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End Get
             End Property
 
-            Public Overrides Function Equals(ByVal obj As Object) As Boolean
+            Public Overrides Function Equals(obj As Object) As Boolean
                 If TypeOf obj Is StartupObjectOrUri Then
                     If obj.GetType() IsNot Me.GetType() Then
                         Return False
@@ -932,7 +932,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Friend Class StartupObject
             Inherits StartupObjectOrUri
 
-            Public Sub New(ByVal value As String, ByVal description As String)
+            Public Sub New(value As String, description As String)
                 MyBase.New(value, description)
             End Sub
 
@@ -942,7 +942,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End Get
             End Property
 
-            Public Overrides Function Equals(ByVal obj As Object) As Boolean
+            Public Overrides Function Equals(obj As Object) As Boolean
                 If TypeOf obj Is StartupObject Then
                     If Me.GetType() IsNot obj.GetType() Then
                         Return False
@@ -982,7 +982,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Friend Class StartupUri
             Inherits StartupObjectOrUri
 
-            Public Sub New(ByVal value As String)
+            Public Sub New(value As String)
                 MyBase.New(value, value)
             End Sub
 
@@ -997,7 +997,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub StartupObjectOrUriComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartupObjectOrUriComboBox.DropDown
+        Private Sub StartupObjectOrUriComboBox_DropDown(sender As Object, e As System.EventArgs) Handles StartupObjectOrUriComboBox.DropDown
             PopulateStartupObjectOrUriComboboxAndKeepCurrentEntry()
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1087,13 +1087,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetStartupObjectOrUriFromUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function GetStartupObjectOrUriFromUI(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = CType(StartupObjectOrUriComboBox.SelectedItem, StartupObjectOrUri)
             Debug.Assert(value IsNot Nothing, "GetStartupObjectOrUriFromUI(): Shouldn't get null value")
             Return True
         End Function
 
-        Private Shared Sub SetSelectedStartupObjectOrUriIntoCombobox(ByVal combobox As ComboBox, ByVal startupObjectOrUri As StartupObjectOrUri)
+        Private Shared Sub SetSelectedStartupObjectOrUriIntoCombobox(combobox As ComboBox, startupObjectOrUri As StartupObjectOrUri)
             'Find the value in the combobox
             Dim foundStartupObjectOrUri As StartupObjectOrUri = Nothing
             If startupObjectOrUri IsNot Nothing Then
@@ -1121,7 +1121,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SetStartupObjectOrUriIntoUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function SetStartupObjectOrUriIntoUI(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 StartupObjectOrUriComboBox.SelectedIndex = -1
                 EnableControl(StartupObjectOrUriComboBox, False)
@@ -1197,7 +1197,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   its persisted storage (project file or Application.xaml)
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub SetStartupObjectOrUriValueIntoStorage(ByVal value As StartupObjectOrUri)
+        Private Sub SetStartupObjectOrUriValueIntoStorage(value As StartupObjectOrUri)
             If TypeOf value Is StartupObject Then
                 SetStartupObjectIntoStorage(value.Value)
             ElseIf TypeOf value Is StartupUri Then
@@ -1207,11 +1207,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End If
         End Sub
 
-        Private Sub SetStartupObjectIntoStorage(ByVal value As String)
+        Private Sub SetStartupObjectIntoStorage(value As String)
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject).SetPropertyValue(value)
         End Sub
 
-        Private Sub PopulateStartupObjectDropdownValues(ByVal startupObjectComboBox As ComboBox)
+        Private Sub PopulateStartupObjectDropdownValues(startupObjectComboBox As ComboBox)
             startupObjectComboBox.DropDownStyle = ComboBoxStyle.DropDownList
             startupObjectComboBox.Items.Clear()
 
@@ -1255,7 +1255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Return startupObjects
         End Function
 
-        Private Sub PopulateStartupUriDropdownValues(ByVal startupObjectComboBox As ComboBox)
+        Private Sub PopulateStartupUriDropdownValues(startupObjectComboBox As ComboBox)
             startupObjectComboBox.DropDownStyle = ComboBoxStyle.DropDownList
             startupObjectComboBox.Items.Clear()
 
@@ -1274,7 +1274,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="fullPath"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsFileRelativeToProjectPath(ByVal fullPath As String) As Boolean
+        Private Function IsFileRelativeToProjectPath(fullPath As String) As Boolean
             Dim relativePath As String = GetProjectRelativeFilePath(fullPath)
             Return Not System.IO.Path.IsPathRooted(relativePath)
         End Function
@@ -1285,7 +1285,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="projectItems"></param>
         ''' <param name="list"></param>
         ''' <remarks></remarks>
-        Private Sub FindXamlPageFiles(ByVal projectItems As ProjectItems, ByVal list As List(Of ProjectItem))
+        Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
             For Each projectitem As ProjectItem In projectItems
                 If IO.Path.GetExtension(projectitem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
                     'We only want .xaml files with BuildAction="Page"
@@ -1353,7 +1353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private _value As String
             Private _description As String
 
-            Public Sub New(ByVal value As String, ByVal description As String)
+            Public Sub New(value As String, description As String)
                 If value Is Nothing Then
                     Throw New ArgumentNullException("value")
                 End If
@@ -1406,7 +1406,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Using
         End Function
 
-        Public Sub SetShutdownModeIntoStorage(ByVal value As String)
+        Public Sub SetShutdownModeIntoStorage(value As String)
             Using document As AppDotXamlDocument = CreateAppDotXamlDocumentForApplicationDefinitionFile(True)
                 document.SetShutdownMode(value)
             End Using
@@ -1421,7 +1421,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetShutdownModeFromUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function GetShutdownModeFromUI(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim currentShutdownMode As ShutdownMode = CType(ShutdownModeComboBox.SelectedItem, ShutdownMode)
             If currentShutdownMode Is Nothing Then
                 value = ""
@@ -1442,7 +1442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function SetShutdownModeIntoUI(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function SetShutdownModeIntoUI(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 ShutdownModeComboBox.SelectedIndex = -1
             Else
@@ -1488,7 +1488,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' This method must be overridden to handle all user-defined properties defined in a page.  The easiest way to implement
         '''   this is to return a new instance of the UserPropertyDescriptor class, which was created for that purpose.
         ''' </remarks>
-        Public Overrides Function GetUserDefinedPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Select Case PropertyName
                 Case s_PROPNAME_StartupObjectOrUri
                     Return New UserPropertyDescriptor(PropertyName, GetType(StartupObjectOrUri))
@@ -1513,7 +1513,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function ReadUserDefinedProperty(ByVal PropertyName As String, ByRef Value As Object) As Boolean
+        Public Overrides Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
             '
             'NOTE: We do not want to throw any exceptions from this method for our properties, because if this happens 
             '  during initialization, it will cause the property's controls to get disabled, and simply
@@ -1563,7 +1563,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function WriteUserDefinedProperty(ByVal PropertyName As String, ByVal Value As Object) As Boolean
+        Public Overrides Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
             Select Case PropertyName
                 Case s_PROPNAME_StartupObjectOrUri
                     SetStartupObjectOrUriValueIntoStorage(CType(Value, StartupObjectOrUri))
@@ -1594,7 +1594,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub EditXamlButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles EditXamlButton.Click
+        Private Sub EditXamlButton_Click(sender As Object, e As EventArgs) Handles EditXamlButton.Click
             TryShowXamlEditor(True)
         End Sub
 
@@ -1604,7 +1604,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="createAppDotXamlIfItDoesntExist"></param>
         ''' <remarks></remarks>
-        Friend Sub TryShowXamlEditor(ByVal createAppDotXamlIfItDoesntExist As Boolean)
+        Friend Sub TryShowXamlEditor(createAppDotXamlIfItDoesntExist As Boolean)
             EnterProjectCheckoutSection()
             Try
                 Dim appXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(ProjectHierarchy, createAppDotXamlIfItDoesntExist)
@@ -1628,7 +1628,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #Region "View Application Events button"
 
-        Private Sub ViewCodeButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ViewCodeButton.Click
+        Private Sub ViewCodeButton_Click(sender As Object, e As EventArgs) Handles ViewCodeButton.Click
             TryShowApplicationEventsCode()
         End Sub
 
@@ -1639,7 +1639,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="extension"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindDependentFile(ByVal projectItem As ProjectItem, ByVal extension As String) As ProjectItem
+        Private Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
             For Each dependentItem As ProjectItem In projectItem.ProjectItems
                 If dependentItem.FileNames(1) IsNot Nothing _
                         AndAlso IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
@@ -1650,11 +1650,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Return Nothing
         End Function
 
-        Private Function GetExpectedApplicationEventsFileName(ByVal appDotXamlFilename As String) As String
+        Private Function GetExpectedApplicationEventsFileName(appDotXamlFilename As String) As String
             Return appDotXamlFilename & s_VB_EXTENSION
         End Function
 
-        Private Function CreateApplicationEventsFile(ByVal parent As ProjectItem) As ProjectItem
+        Private Function CreateApplicationEventsFile(parent As ProjectItem) As ProjectItem
             'First, determine the new name by appending ".vb"
             Dim newFileName As String = GetExpectedApplicationEventsFileName(parent.Name)
 
@@ -1740,7 +1740,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         'If this is non-null, then the error control is visible
         Private WithEvents _pageErrorControl As AppDotXamlErrorControl = Nothing
 
-        Private Sub DisplayErrorControl(ByVal message As String)
+        Private Sub DisplayErrorControl(message As String)
             RemoveErrorControl()
 
             Me.SuspendLayout()
@@ -1817,7 +1817,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Private _docDataHasChanged As Boolean
 
-        Private Sub ApplicationXamlDocData_DataChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _applicationXamlDocData.DataChanged
+        Private Sub ApplicationXamlDocData_DataChanged(sender As Object, e As EventArgs) Handles _applicationXamlDocData.DataChanged
             _docDataHasChanged = True
         End Sub
 
@@ -1884,7 +1884,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComboBoxes_DropDown(ByVal sender As Object, ByVal e As EventArgs) Handles IconCombobox.DropDown
+        Private Sub ComboBoxes_DropDown(sender As Object, e As EventArgs) Handles IconCombobox.DropDown
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
@@ -1898,7 +1898,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewUACSettingsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ViewUACSettingsButton.Click
+        Private Sub ViewUACSettingsButton_Click(sender As Object, e As System.EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
         End Sub
 

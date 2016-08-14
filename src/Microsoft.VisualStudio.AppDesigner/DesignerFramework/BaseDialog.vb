@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Exceptions:
         '   ArgumentNullException: If ServiceProvider is Nothing.
         '**************************************************************************
-        Public Sub New(ByVal ServiceProvider As IServiceProvider)
+        Public Sub New(ServiceProvider As IServiceProvider)
             Debug.Assert(ServiceProvider IsNot Nothing, "ServiceProvider is NULL.")
             If ServiceProvider Is Nothing Then
                 Throw New ArgumentNullException("ServiceProvider")
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal Value As IServiceProvider)
+            Set(Value As IServiceProvider)
                 Debug.Assert(Value IsNot Nothing, "Bad service provider")
                 _serviceProvider = Value
             End Set
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Get
                 Return _helpKeyword
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 _helpKeyword = Value
             End Set
         End Property
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Returns:
         '   An Object contains the service.
         '**************************************************************************
-        Protected Overrides Function GetService(ByVal ServiceType As Type) As Object
+        Protected Overrides Function GetService(ServiceType As Type) As Object
 
             If (ServiceProvider Is Nothing) Then
                 Return MyBase.GetService(ServiceType)
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Params:
         '   ErrorMessage: The text to display in the message box.
         '**************************************************************************
-        Protected Overloads Sub ReportError(ByVal ErrorMessage As String)
+        Protected Overloads Sub ReportError(ErrorMessage As String)
             DesignUtil.ReportError(ServiceProvider, ErrorMessage)
         End Sub 'ReportError
 
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   ErrorMessage: The text to display in the message box.
         '   HelpLink: Link to the help topic for this message box.
         '**************************************************************************
-        Protected Overloads Sub ReportError(ByVal errorMessage As String, ByVal helpLink As String)
+        Protected Overloads Sub ReportError(errorMessage As String, helpLink As String)
             DesignUtil.ReportError(ServiceProvider, errorMessage, helpLink)
         End Sub 'ReportError
 
@@ -235,8 +235,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Protected Overloads Function ShowMessage(ByVal Message As String, ByVal Caption As String, _
-                ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon) As DialogResult
+        Protected Overloads Function ShowMessage(Message As String, Caption As String, _
+                Buttons As MessageBoxButtons, Icon As MessageBoxIcon) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon)
         End Function 'ShowMessage
 
@@ -254,9 +254,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Protected Overloads Function ShowMessage(ByVal Message As String, ByVal Caption As String, _
-                ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon, _
-                ByVal DefaultButton As MessageBoxDefaultButton) As DialogResult
+        Protected Overloads Function ShowMessage(Message As String, Caption As String, _
+                Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
+                DefaultButton As MessageBoxDefaultButton) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton)
         End Function 'ShowMessage
 
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Summary:
         '   Handle the HelpRequested event.
         '**************************************************************************
-        Private Overloads Sub OnHelpRequested(ByVal sender As Object, ByVal e As HelpEventArgs)
+        Private Overloads Sub OnHelpRequested(sender As Object, e As HelpEventArgs)
             If Not e.Handled Then
                 ShowHelp()
                 e.Handled = True

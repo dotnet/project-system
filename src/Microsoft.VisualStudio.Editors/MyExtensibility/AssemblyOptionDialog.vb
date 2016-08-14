@@ -30,10 +30,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Shared method to return an instance of Add / Remove extension templates / code files dialog.
         ''' </summary>
         Public Shared Function GetAssemblyOptionDialog( _
-                ByVal assemblyName As String, _
-                ByVal serviceProvider As IServiceProvider, _
-                ByVal objects As IList, _
-                ByVal extensionAction As AddRemoveAction) As AssemblyOptionDialog
+                assemblyName As String, _
+                serviceProvider As IServiceProvider, _
+                objects As IList, _
+                extensionAction As AddRemoveAction) As AssemblyOptionDialog
 
             Debug.Assert(Not String.IsNullOrEmpty(assemblyName), "NULL or empty: assemblyName!")
             Debug.Assert(serviceProvider IsNot Nothing, "NULL serviceProvider!")
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Return the assembly name from the assembly full name.
         ''' </summary>
-        Private Shared Function GetAssemblyName(ByVal assemblyFullName As String) As String
+        Private Shared Function GetAssemblyName(assemblyFullName As String) As String
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Return String.Empty
             End If
@@ -69,8 +69,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub New()
         End Sub
 
-        Private Sub New(ByVal serviceProvider As IServiceProvider, _
-                ByVal objects As IList)
+        Private Sub New(serviceProvider As IServiceProvider, _
+                objects As IList)
             MyBase.New(serviceProvider)
             Me.InitializeComponent()
 
@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Click handler for the Help button. DevDiv Bugs 110807.
         ''' </summary>
         Private Sub AssemblyOptionDialog_HelpButtonClicked( _
-                ByVal sender As Object, ByVal e As CancelEventArgs) _
+                sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True
             Me.ShowHelp()
@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Get
         End Property
 
-        Private Sub buttonYes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles buttonYes.Click
+        Private Sub buttonYes_Click(sender As Object, e As EventArgs) Handles buttonYes.Click
             Me.Close()
             Me.DialogResult = System.Windows.Forms.DialogResult.Yes
         End Sub

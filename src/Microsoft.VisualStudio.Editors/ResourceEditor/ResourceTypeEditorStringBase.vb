@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceTypeEditorNonStringConvertible and ResourceTypeEditorStringConvertible).
         '''  Because the resource file in different platform doesn't support all types, we should pick up the right type for the platform it targets.
         ''' </remarks>
-        Public Overrides Function GetDefaultResourceTypeName(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             Return GetType(String).AssemblyQualifiedName
         End Function
 
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Caller is responsible for displaying exceptions thrown by this method.
         '''   This function is not exposed publicly, because the class it is defined on is not public.
         ''' </remarks>
-        Public MustOverride Function StringGetFormattedCellValue(ByVal Resource As Resource, ByVal ResourceValue As Object) As String
+        Public MustOverride Function StringGetFormattedCellValue(Resource As Resource, ResourceValue As Object) As String
 
 
         ''' <summary>
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   This function only needs to be implemented if StringValueCanBeEdited returns True for the class.
         '''   This function is not exposed publicly, because the class it is defined on is not public.
         ''' </remarks>
-        Public Overridable Function StringParseFormattedCellValue(ByVal Resource As Resource, ByVal FormattedValue As String) As Object
+        Public Overridable Function StringParseFormattedCellValue(Resource As Resource, FormattedValue As String) As Object
             Debug.Fail("StringParseFormattedCellValue(): This function should not have been called, or else it was not overridden when it should have been")
             Return Resource.TryGetValue() 'defensive
         End Function

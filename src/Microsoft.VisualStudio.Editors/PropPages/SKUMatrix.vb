@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Disallow creation
         End Sub
 
-        Friend Shared Function IsHidden(ByVal PropertyId As Integer) As Boolean
+        Friend Shared Function IsHidden(PropertyId As Integer) As Boolean
 
             If VSProductSKU.IsExpress Then
                 'These properties are to be hidden for all Express SKU

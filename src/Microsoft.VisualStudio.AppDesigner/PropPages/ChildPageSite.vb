@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="wrappedInternalSite">The IPropertyPageSiteInternal site (required).</param>
         ''' <param name="wrappedUndoSite">The IVsProjectDesignerPageSite site (optional).</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal childPage As PropPageUserControlBase, ByVal wrappedInternalSite As IPropertyPageSiteInternal, ByVal wrappedUndoSite As IVsProjectDesignerPageSite)
+        Public Sub New(childPage As PropPageUserControlBase, wrappedInternalSite As IPropertyPageSiteInternal, wrappedUndoSite As IVsProjectDesignerPageSite)
             If childPage Is Nothing Then
                 Debug.Fail("childPage missing")
                 Throw New ArgumentNullException()
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ServiceType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetService(ByVal ServiceType As System.Type) As Object Implements IPropertyPageSiteInternal.GetService
+        Public Function GetService(ServiceType As System.Type) As Object Implements IPropertyPageSiteInternal.GetService
             Return _wrappedInternalSite.GetService(ServiceType)
         End Function
 
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="flags"></param>
         ''' <remarks></remarks>
-        Public Sub OnStatusChange(ByVal flags As PROPPAGESTATUS) Implements IPropertyPageSiteInternal.OnStatusChange
+        Public Sub OnStatusChange(flags As PROPPAGESTATUS) Implements IPropertyPageSiteInternal.OnStatusChange
             ' We do *not* want to propagate this to our internal site - that would cause this change to
             ' be immediately applied, which is not what we want for child (modal) property pages...
         End Sub
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
-        Public Function TranslateAccelerator(ByVal msg As System.Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
+        Public Function TranslateAccelerator(msg As System.Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
             Return _wrappedInternalSite.TranslateAccelerator(msg)
         End Function
 
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="description"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetTransaction(ByVal description As String) As System.ComponentModel.Design.DesignerTransaction Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.GetTransaction
+        Public Function GetTransaction(description As String) As System.ComponentModel.Design.DesignerTransaction Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.GetTransaction
             If _wrappedUndoSite IsNot Nothing Then
                 Return _wrappedUndoSite.GetTransaction(description)
             End If
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="oldValue"></param>
         ''' <param name="newValue"></param>
         ''' <remarks></remarks>
-        Public Sub OnPropertyChanged(ByVal propertyName As String, ByVal propertyDescriptor As System.ComponentModel.PropertyDescriptor, ByVal oldValue As Object, ByVal newValue As Object) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanged
+        Public Sub OnPropertyChanged(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor, oldValue As Object, newValue As Object) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanged
             If _wrappedUndoSite IsNot Nothing Then
                 _wrappedUndoSite.OnPropertyChanged(MungePropertyName(propertyName), propertyDescriptor, oldValue, newValue)
             End If
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="propertyName"></param>
         ''' <param name="propertyDescriptor"></param>
         ''' <remarks></remarks>
-        Public Sub OnPropertyChanging(ByVal propertyName As String, ByVal propertyDescriptor As System.ComponentModel.PropertyDescriptor) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanging
+        Public Sub OnPropertyChanging(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanging
             If _wrappedUndoSite IsNot Nothing Then
                 _wrappedUndoSite.OnPropertyChanging(MungePropertyName(propertyName), propertyDescriptor)
             End If
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="propertyName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function MungePropertyName(ByVal propertyName As String) As String
+        Private Function MungePropertyName(propertyName As String) As String
             'We need to mark properties as having coming from our hosted page.  We're forwarding undo/redo functionality to the same
             '  undo site (IVsPropertyDesignerPageSite) that handles the parent page, so that we create an undo/redo unit on the
             '  parent form that may be undone by the user.  But that means that the parent page will receive the requests (through

@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         '''     Creates a new editor factory.
         ''' </summary>
-        Public Sub New(ByVal DesignerLoaderType As Type)
+        Public Sub New(DesignerLoaderType As Type)
             Debug.Assert(Not DesignerLoaderType Is Nothing)
             _designerLoaderType = DesignerLoaderType
         End Sub
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="ExistingDocData">The existing DocData pointer, if any</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function GetOrCreateDocDataForNewEditor(ByVal ExistingDocData As Object) As Object
+        Protected Overridable Function GetOrCreateDocDataForNewEditor(ExistingDocData As Object) As Object
             Dim TextStreamInstance As IVsTextStream
 
             If ExistingDocData Is Nothing Then
@@ -243,12 +243,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   will ask if the open document should be closed. Any other return will stop the loop from continuing.                                                                                                                                                                                                                                                                                                                                                                         If the constructed object referenced by ppunkDocData supports IOleCommandTarget, the object is included in the command routing chain of the Environment after the command is routed to the active object referenced by ppunkDocView.
         '''   
         Private Function IVsEditorFactory_CreateEditorInstance( _
-                ByVal vscreateeditorflags As UInteger, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal Itemid As UInteger, _
-                ByVal ExistingDocDataPtr As IntPtr, _
+                vscreateeditorflags As UInteger, _
+                FileName As String, _
+                PhysicalView As String, _
+                Hierarchy As IVsHierarchy, _
+                Itemid As UInteger, _
+                ExistingDocDataPtr As IntPtr, _
                 ByRef DocViewPtr As IntPtr, _
                 ByRef DocDataPtr As IntPtr, _
                 ByRef Caption As String, _
@@ -309,12 +309,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub CreateEditorInstance(ByVal VsCreateEditorFlags As System.UInt32, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal ItemId As System.UInt32, _
-                ByVal ExistingDocData As Object, _
+        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As System.UInt32, _
+                FileName As String, _
+                PhysicalView As String, _
+                Hierarchy As IVsHierarchy, _
+                ItemId As System.UInt32, _
+                ExistingDocData As Object, _
                 ByRef DocView As Object, _
                 ByRef DocData As Object, _
                 ByRef Caption As String, _
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         '''     Called by the VS shell when it first initializes us.
         ''' </summary>
-        Private Function IVsEditorFactory_SetSite(ByVal site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
+        Private Function IVsEditorFactory_SetSite(site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             SetSiteInternal(site)
         End Function
 
@@ -480,7 +480,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Site">The Site that will own this editor factory</param>
         ''' <remarks></remarks>
-        Private Sub SetSiteInternal(ByVal Site As Object)
+        Private Sub SetSiteInternal(Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If Me._site Is Site Then
                 Debug.Fail("Why is this EditorFactory site:ed twice?")
@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Dispose my resources
         ''' </summary>
         ''' <remarks>Standard implementation pattern for IDisposable</remarks>
-        Protected Overridable Overloads Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overridable Overloads Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _serviceProvider IsNot Nothing Then
                     _serviceProvider.Dispose()

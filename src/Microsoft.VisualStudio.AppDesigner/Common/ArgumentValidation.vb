@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="argument"></param>
         ''' <param name="parameter"></param>
         ''' <remarks></remarks>
-        Public Sub ValidateArgumentNotNothing(ByVal argument As Object, ByVal parameter As String)
+        Public Sub ValidateArgumentNotNothing(argument As Object, parameter As String)
             If argument Is Nothing Then
                 Throw New ArgumentNullException(parameter)
             End If
@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="argument"></param>
         ''' <param name="parameter"></param>
         ''' <remarks></remarks>
-        Public Sub ValidateArgumentNotNothingOrEmptyString(ByVal argument As String, ByVal parameter As String)
+        Public Sub ValidateArgumentNotNothingOrEmptyString(argument As String, parameter As String)
             If argument Is Nothing OrElse argument.Length = 0 Then
                 Throw CreateArgumentException(parameter)
             End If
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="argumentName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function CreateArgumentException(ByVal argumentName As String) As Exception
+        Public Function CreateArgumentException(argumentName As String) As Exception
             Return New ArgumentException(String.Format(My.Resources.Designer.General_InvalidArgument_1Arg, argumentName))
         End Function
     End Module

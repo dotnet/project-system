@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ServiceProvider As IServiceProvider, ByVal fileName As String)
+        Public Sub New(ServiceProvider As IServiceProvider, fileName As String)
             MyBase.New(ServiceProvider)
 
             'This call is required by the Windows Form Designer.
@@ -31,12 +31,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             F1Keyword = HelpIDs.Dlg_OpenFileWarning
         End Sub
 
-        Private Sub TableLayoutPanelSizeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub TableLayoutPanelSizeChanged(sender As Object, e As EventArgs)
             Me.ClientSize = New Size(Me.ClientSize.Width, Me.dialogLayoutPanel.Size.Height + Me.Padding.Top * 2)
         End Sub
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing AndAlso _components IsNot Nothing Then
                 RemoveHandler Me.dialogLayoutPanel.SizeChanged, AddressOf TableLayoutPanelSizeChanged
                 _components.Dispose()
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonOk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles buttonOK.Click
+        Private Sub ButtonOk_Click(sender As Object, e As System.EventArgs) Handles buttonOK.Click
             Close()
         End Sub
         Friend WithEvents messageLabel2 As System.Windows.Forms.Label
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub DialogQueryName_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub DialogQueryName_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

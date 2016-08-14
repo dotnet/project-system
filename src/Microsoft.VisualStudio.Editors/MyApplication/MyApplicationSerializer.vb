@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="Reader">Text reader on stream containing object info</param>
         ''' <remarks></remarks>
-        Public Shared Function Deserialize(ByVal Reader As TextReader) As MyApplicationData
+        Public Shared Function Deserialize(Reader As TextReader) As MyApplicationData
             Dim serializer As XmlSerializer = New MyApplicationDataSerializer()
             'XmlSerializer(GetType(MyApplicationData))
             Dim xmlReader As System.Xml.XmlReader = System.Xml.XmlReader.Create(Reader)
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="data">Instance to serialize</param>
         ''' <param name="Writer">Text writer on stream to serialize MyApplicationData to</param>
         ''' <remarks></remarks>
-        Public Shared Sub Serialize(ByVal data As MyApplicationData, ByVal Writer As TextWriter)
+        Public Shared Sub Serialize(data As MyApplicationData, Writer As TextWriter)
             Dim serializer As XmlSerializer = new MyApplicationDataSerializer()
             'New XmlSerializer(GetType(MyApplicationData))
             serializer.Serialize(Writer, data)

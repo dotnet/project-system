@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ServiceProvider As IServiceProvider)
+        Public Sub New(ServiceProvider As IServiceProvider)
             MyBase.New(ServiceProvider)
 
             'This call is required by the Windows Form Designer.
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region " Windows Form Designer generated code "
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="UserCancel">[Out] True iff the user canceled the dialog.</param>
         ''' <returns>The Name selected by the user.</returns>
         ''' <remarks></remarks>
-        Public Shared Function QueryAddNewResourceName(ByVal RootDesigner As ResourceEditorRootDesigner, ByVal SuggestedName As String, ByRef UserCancel As Boolean) As String
+        Public Shared Function QueryAddNewResourceName(RootDesigner As ResourceEditorRootDesigner, SuggestedName As String, ByRef UserCancel As Boolean) As String
             Dim Dialog As New DialogQueryName(RootDesigner)
             With Dialog
                 Try
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
+        Private Sub ButtonAdd_Click(sender As Object, e As System.EventArgs) Handles ButtonAdd.Click
             Dim ResourceView As ResourceEditorView = _rootDesigner.GetView()
             Debug.Assert(ResourceView IsNot Nothing, "Why there is no view?")
             If ResourceView IsNot Nothing Then
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonCancel.Click
+        Private Sub ButtonCancel_Click(sender As Object, e As System.EventArgs) Handles ButtonCancel.Click
             Close()
         End Sub
 
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub DialogQueryName_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub DialogQueryName_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function CreateSchemas( _
-            <InAttribute()> ByVal ProjectGuid As Guid _
+            <InAttribute()> ProjectGuid As Guid _
             ) _
             As IXmlIntellisenseSchemas
 
@@ -51,8 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Sub ShowInXmlSchemaExplorer( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean)
 
@@ -83,35 +83,35 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function ElementsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function ElementsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function AttributesByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function AttributesByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function DescendantsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function DescendantsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _

@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     CLSCompliant(False)> _
     Friend Interface IVsBuildEventMacroProvider
         Function GetCount() As Integer
-        Sub GetExpandedMacro(<InAttribute()> ByVal Index As Integer, _
+        Sub GetExpandedMacro(<InAttribute()> Index As Integer, _
            <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef MacroName As String, _
            <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef MacroValue As String)
     End Interface

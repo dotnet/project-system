@@ -14,15 +14,15 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
     ''' Utility method for the XmlToSchema wizard.
     ''' </summary>
     Friend Module Utilities
-        Public Sub ShowWarning(ByVal message As String)
+        Public Sub ShowWarning(message As String)
             DesignUtil.ShowWarning(VBPackage.Instance, message)
         End Sub
 
-        Public Sub ShowWarning(ByVal ex As Exception)
+        Public Sub ShowWarning(ex As Exception)
             ShowWarning(String.Format(SR.XmlToSchema_Error, ex.Message))
         End Sub
 
-        Public Function FilterException(ByVal ex As Exception) As Boolean
+        Public Function FilterException(ex As Exception) As Boolean
             Return Not TypeOf ex Is AccessViolationException AndAlso _
                    Not TypeOf ex Is StackOverflowException AndAlso _
                    Not TypeOf ex Is OutOfMemoryException
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Me.HelpButton = True
         End Sub
 
-        Protected Sub New(ByVal serviceProvider As IServiceProvider)
+        Protected Sub New(serviceProvider As IServiceProvider)
             _serviceProvider = serviceProvider
             Me.HelpButton = True
         End Sub
@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal value As IServiceProvider)
+            Set(value As IServiceProvider)
                 _serviceProvider = value
             End Set
         End Property
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Get
         End Property
 
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
             Debug.Assert(_serviceProvider IsNot Nothing)
             If _serviceProvider IsNot Nothing Then
                 Me.Font = Me.DialogFont
@@ -96,11 +96,11 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Try
         End Sub
 
-        Protected NotOverridable Overrides Sub OnHelpButtonClicked(ByVal e As CancelEventArgs)
+        Protected NotOverridable Overrides Sub OnHelpButtonClicked(e As CancelEventArgs)
             ShowHelp()
         End Sub
 
-        Protected NotOverridable Overrides Sub OnHelpRequested(ByVal hevent As HelpEventArgs)
+        Protected NotOverridable Overrides Sub OnHelpRequested(hevent As HelpEventArgs)
             ShowHelp()
             hevent.Handled = True
         End Sub

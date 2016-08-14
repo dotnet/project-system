@@ -20,22 +20,22 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor.Interop
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function ComputeZonePermissionSet( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal strAppManifestFileName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal strTargetZone As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal strExcludedPermissions As String) _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> strAppManifestFileName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> strTargetZone As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> strExcludedPermissions As String) _
             As <MarshalAs(UnmanagedType.IUnknown)> Object
 
         <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()> _
         Function IsAvailableInProject( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal strPermissionSet As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.IUnknown)> ByVal ProjectPermissionSet As Object, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> strPermissionSet As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.IUnknown)> ProjectPermissionSet As Object, _
             <OutAttribute(), MarshalAs(UnmanagedType.Bool)> ByRef isAvailable As Boolean) _
             As Integer
 
         ' Returns S_FALSE if there is no tip
         <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()> _
         Function GetRequiredPermissionsTip( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal strPermissionSet As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> strPermissionSet As String, _
             <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef strTip As String) _
             As Integer
 

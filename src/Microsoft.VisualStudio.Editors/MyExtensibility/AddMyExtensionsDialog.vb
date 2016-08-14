@@ -33,8 +33,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Construct the dialog with the given service provider and extension templates list.
         ''' </summary>
-        Public Sub New(ByVal serviceProvider As IServiceProvider, _
-                ByVal extensionTemplates As List(Of MyExtensionTemplate))
+        Public Sub New(serviceProvider As IServiceProvider, _
+                extensionTemplates As List(Of MyExtensionTemplate))
             MyBase.New(serviceProvider)
             Me.InitializeComponent()
 
@@ -70,22 +70,22 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Property
 
 #Region "Event handlers"
-        Private Sub listViewExtensions_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) _
+        Private Sub listViewExtensions_ColumnClick(sender As Object, e As ColumnClickEventArgs) _
                 Handles listViewExtensions.ColumnClick
             ListViewComparer.HandleColumnClick(Me.listViewExtensions, _comparer, e)
         End Sub
 
-        Private Sub listViewExtensions_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub listViewExtensions_DoubleClick(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.DoubleClick
             AddExtensions()
         End Sub
 
-        Private Sub listViewExtensions_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub listViewExtensions_SelectedIndexChanged(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.SelectedIndexChanged
             EnableButtonOK()
         End Sub
 
-        Private Sub buttonOK_Click(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub buttonOK_Click(sender As Object, e As EventArgs) _
                 Handles buttonOK.Click
             Debug.Assert(Me.listViewExtensions.SelectedItems.Count > 0)
             AddExtensions()
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Click handler for the Help button. DevDiv Bugs 69458.
         ''' </summary>
         Private Sub AddMyExtensionDialog_HelpButtonClicked( _
-                ByVal sender As Object, ByVal e As CancelEventArgs) _
+                sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True
             Me.ShowHelp()
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Return a ListViewItem for the given extension template.
         ''' </summary>
         Private Shared Function ExtensionTemplateToListViewItem( _
-                ByVal extensionTemplate As MyExtensionTemplate) As ListViewItem
+                extensionTemplate As MyExtensionTemplate) As ListViewItem
             Debug.Assert(extensionTemplate IsNot Nothing, "extensionTemplate is NULL!")
 
             Dim item As New ListViewItem(extensionTemplate.DisplayName)

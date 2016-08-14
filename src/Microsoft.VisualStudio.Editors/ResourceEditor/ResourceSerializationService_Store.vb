@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="info">Serialization info</param>
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
-            Private Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+            Private Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
                 info.AddValue(s_KEY_STATE, _serializedState)
 
                 Trace("Serialized store (GetObjectData)")
@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Info">Serialization info</param>
             ''' <param name="Context">Serialization context</param>
             ''' <remarks></remarks>
-            Private Sub New(ByVal Info As SerializationInfo, ByVal Context As StreamingContext)
+            Private Sub New(Info As SerializationInfo, Context As StreamingContext)
                 _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
 
                 Trace("Deserialized store from a stream (constructor)")
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Stream">The stream to load from</param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Shared Function Load(ByVal Stream As Stream) As ResourceSerializationStore
+            Public Shared Function Load(Stream As Stream) As ResourceSerializationStore
                 Dim f As New BinaryFormatter
                 Return DirectCast(f.Deserialize(Stream), ResourceSerializationStore)
             End Function
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="stream">The stream to save to</param>
             ''' <remarks></remarks>
-            Public Overrides Sub Save(ByVal Stream As System.IO.Stream)
+            Public Overrides Sub Save(Stream As System.IO.Stream)
                 Close()
 
                 Dim f As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
@@ -223,7 +223,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Again, the resource isn't actually serialized until Close(), it's just put in
             '''   our list of things to be serialized.
             ''' </remarks>
-            Public Sub AddResource(ByVal Resource As Resource)
+            Public Sub AddResource(Resource As Resource)
                 Debug.Assert(_serializedState Is Nothing, "Shouldn't be adding more resources to serialization store - it's already been serialized")
 
                 'Get the current object (or create a new one) that stores all info to
@@ -247,7 +247,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Again, the property isn't actually serialized until Close(), it's just put in
             '''   our list of things to be serialized.
             ''' </remarks>
-            Friend Sub AddMember(ByVal Resource As Resource, ByVal Member As MemberDescriptor)
+            Friend Sub AddMember(Resource As Resource, Member As MemberDescriptor)
                 Debug.Assert(_serializedState Is Nothing, "Shouldn't be adding more to serialization store - it's already been serialized")
 
                 'Get the current object (or create a new one) that stores all info to
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Resource">The Resource from which we want to serialize something.</param>
             ''' <returns>The ResourceDataToSerialize object associated with this Resource.</returns>
             ''' <remarks></remarks>
-            Private Function GetResourceSerializationData(ByVal Resource As Resource) As ResourceDataToSerialize
+            Private Function GetResourceSerializationData(Resource As Resource) As ResourceDataToSerialize
                 Dim Data As ResourceDataToSerialize = DirectCast(_hashedObjectsToSerialize(Resource), ResourceDataToSerialize)
                 If Data Is Nothing Then
                     'No object created for this Resource yet.  Create one now.
@@ -304,7 +304,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
             ''' <remarks></remarks>
-            Friend Sub DeserializeTo(ByVal Container As IContainer)
+            Friend Sub DeserializeTo(Container As IContainer)
                 DeserializeHelper(Container, True)
             End Sub
 
@@ -331,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
             ''' <returns>The list of objects that were deserialized.</returns>
             ''' <remarks></remarks>
-            Friend Function Deserialize(ByVal Container As IContainer) As ICollection
+            Friend Function Deserialize(Container As IContainer) As ICollection
                 Return DeserializeHelper(Container, False)
             End Function
 
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''   instances of Resource components (this is always the case for Undo/Redo).</param>
             ''' <returns>The objects which have been serialized.</returns>
             ''' <remarks></remarks>
-            Private Function DeserializeHelper(ByVal Container As IContainer, ByVal RecycleInstances As Boolean) As ICollection
+            Private Function DeserializeHelper(Container As IContainer, RecycleInstances As Boolean) As ICollection
 
                 Trace("Deserializing store (Container Exists={0}, RecycleInstances={1}): {2} objects", Container IsNot Nothing, RecycleInstances, _serializedState.Count)
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' </summary>
                 ''' <param name="Resource">The Resource from which we want to serialize stuff.</param>
                 ''' <remarks></remarks>
-                Public Sub New(ByVal Resource As Resource)
+                Public Sub New(Resource As Resource)
                     If Resource Is Nothing Then
                         Throw Common.CreateArgumentException("Resource")
                     End If
@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Get
                         Return _entireObject
                     End Get
-                    Set(ByVal Value As Boolean)
+                    Set(Value As Boolean)
                         If Value AndAlso _propertiesToSerialize IsNot Nothing Then
                             _propertiesToSerialize.Clear()
                         End If
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' </summary>
                 ''' <param name="Member">The property (must be a PropertyDescriptor) to be serialized.</param>
                 ''' <remarks></remarks>
-                Public Sub AddPropertyToSerialize(ByVal Member As MemberDescriptor)
+                Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
                     If Member Is Nothing Then
                         Throw New ArgumentNullException("Member")
                     End If
@@ -564,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <remarks>
                 ''' The property value is immediately serialized in the constructor and stored away.
                 ''' </remarks>
-                Public Sub New(ByVal OwnerResource As Resource, ByVal ResourceProperty As PropertyDescriptor)
+                Public Sub New(OwnerResource As Resource, ResourceProperty As PropertyDescriptor)
                     _resourceName = OwnerResource.Name
                     _propertyName = ResourceProperty.Name
                     If PropertyName = "" Then
@@ -588,7 +588,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <remarks>
                 ''' The Resource is immediately serialized in the constructor and stored away.
                 ''' </remarks>
-                Public Sub New(ByVal ResourceAsEntireObject As Resource)
+                Public Sub New(ResourceAsEntireObject As Resource)
                     _propertyName = Nothing
                     _resourceName = ResourceAsEntireObject.Name
                     _resourceValueTypeName = ResourceAsEntireObject.ValueTypeName
@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <param name="Object">The object to serialize</param>
                 ''' <returns>The binary serialized object.</returns>
                 ''' <remarks></remarks>
-                Private Function SerializeObject(ByVal [Object] As Object) As Byte()
+                Private Function SerializeObject([Object] As Object) As Byte()
                     Dim MemoryStream As New MemoryStream
                     Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()

@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Public ReadOnly NextControl As Control
         Public ReadOnly PreviousControl As Control
 
-        Public Sub New(ByVal NextControl As Control, ByVal PreviousControl As Control)
+        Public Sub New(NextControl As Control, PreviousControl As Control)
             Me.NextControl = NextControl
             Me.PreviousControl = PreviousControl
         End Sub

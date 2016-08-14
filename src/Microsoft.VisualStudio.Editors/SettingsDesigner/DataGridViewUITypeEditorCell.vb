@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function GetFormattedValue(ByVal value As Object, ByVal rowIndex As Integer, ByRef cellStyle As System.Windows.Forms.DataGridViewCellStyle, ByVal valueTypeConverter As TypeConverter, ByVal formattedValueTypeConverter As TypeConverter, ByVal context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object
+        Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As System.Windows.Forms.DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object
             If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso _
                 value IsNot Nothing AndAlso _
                 value.GetType().Equals(GetType(Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString)) Then
@@ -78,10 +78,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="formattedTypeConverter"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function ParseFormattedValue(ByVal FormattedValue As Object, _
-                                                 ByVal CellStyle As DataGridViewCellStyle, _
-                                                 ByVal valueTypeConverter As TypeConverter, _
-                                                 ByVal formattedTypeConverter As TypeConverter) As Object
+        Public Overrides Function ParseFormattedValue(FormattedValue As Object, _
+                                                 CellStyle As DataGridViewCellStyle, _
+                                                 valueTypeConverter As TypeConverter, _
+                                                 formattedTypeConverter As TypeConverter) As Object
             If Not TypeOf FormattedValue Is String Then
                 Debug.Fail("Unknown formatted value type!")
                 Throw Common.CreateArgumentException("FormattedValue")
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="constraintSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function GetPreferredSize(ByVal g As System.Drawing.Graphics, ByVal cellStyle As System.Windows.Forms.DataGridViewCellStyle, ByVal rowIndex As Integer, ByVal constraintSize As System.Drawing.Size) As System.Drawing.Size
+        Protected Overrides Function GetPreferredSize(g As System.Drawing.Graphics, cellStyle As System.Windows.Forms.DataGridViewCellStyle, rowIndex As Integer, constraintSize As System.Drawing.Size) As System.Drawing.Size
             Dim FormattedValue As String = DirectCast(GetFormattedValue(GetValue(rowIndex), rowIndex, cellStyle, Nothing, Nothing, DataGridViewDataErrorContexts.Formatting Or DataGridViewDataErrorContexts.Display), String)
             Dim preferredStringSize As SizeF = g.MeasureString(FormattedValue, cellStyle.Font)
             Return New System.Drawing.Size(CInt(preferredStringSize.Width + 40), CInt(preferredStringSize.Height))
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="advancedBorderStyle"></param>
         ''' <param name="paintParts"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Paint(ByVal graphics As System.Drawing.Graphics, ByVal clipBounds As System.Drawing.Rectangle, ByVal cellBounds As System.Drawing.Rectangle, ByVal rowIndex As Integer, ByVal cellState As System.Windows.Forms.DataGridViewElementStates, ByVal value As Object, ByVal formattedValue As Object, ByVal errorText As String, ByVal cellStyle As System.Windows.Forms.DataGridViewCellStyle, ByVal advancedBorderStyle As System.Windows.Forms.DataGridViewAdvancedBorderStyle, ByVal paintParts As System.Windows.Forms.DataGridViewPaintParts)
+        Protected Overrides Sub Paint(graphics As System.Drawing.Graphics, clipBounds As System.Drawing.Rectangle, cellBounds As System.Drawing.Rectangle, rowIndex As Integer, cellState As System.Windows.Forms.DataGridViewElementStates, value As Object, formattedValue As Object, errorText As String, cellStyle As System.Windows.Forms.DataGridViewCellStyle, advancedBorderStyle As System.Windows.Forms.DataGridViewAdvancedBorderStyle, paintParts As System.Windows.Forms.DataGridViewPaintParts)
             MyBase.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle, paintParts)
 
 
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks>Not consistent with all edit modes in the DataGridView</remarks>
-        Protected Overrides Sub OnMouseClick(ByVal e As DataGridViewCellMouseEventArgs)
+        Protected Overrides Sub OnMouseClick(e As DataGridViewCellMouseEventArgs)
             If DataGridView Is Nothing Then
                 Return
             End If
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Public Overrides Function KeyEntersEditMode(ByVal e As System.Windows.Forms.KeyEventArgs) As Boolean
+        Public Overrides Function KeyEntersEditMode(e As System.Windows.Forms.KeyEventArgs) As Boolean
             ' This code was copied from the DataGridViewTextBoxCell 
             If (((Char.IsLetterOrDigit(Microsoft.VisualBasic.ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse _
                  (e.KeyCode >= Keys.NumPad0 AndAlso e.KeyCode <= Keys.Divide) OrElse _
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="InitialFormattedValue"></param>
         ''' <param name="CellStyle"></param>
         ''' <remarks></remarks>
-        Public Overrides Sub InitializeEditingControl(ByVal RowIndex As Integer, ByVal InitialFormattedValue As Object, ByVal CellStyle As DataGridViewCellStyle)
+        Public Overrides Sub InitializeEditingControl(RowIndex As Integer, InitialFormattedValue As Object, CellStyle As DataGridViewCellStyle)
             Debug.Assert(DataGridView IsNot Nothing AndAlso DataGridView.EditingControl IsNot Nothing AndAlso TypeOf DataGridView.EditingControl Is DataGridViewUITypeEditorEditingControl)
             MyBase.InitializeEditingControl(RowIndex, InitialFormattedValue, CellStyle)
             Dim Ctrl As DataGridViewUITypeEditorEditingControl = DirectCast(DataGridView.EditingControl, DataGridViewUITypeEditorEditingControl)
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rowIndex"></param>
         ''' <param name="throughMouseClick"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnEnter(ByVal rowIndex As Integer, ByVal throughMouseClick As Boolean)
+        Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
             MyBase.OnEnter(rowIndex, throughMouseClick)
             If throughMouseClick Then
                 Dim dfxdgv As DesignerFramework.DesignerDataGridView = TryCast(Me.DataGridView, DesignerFramework.DesignerDataGridView)
@@ -277,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rowIndex"></param>
         ''' <param name="throughMouseClick"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLeave(ByVal rowIndex As Integer, ByVal throughMouseClick As Boolean)
+        Protected Overrides Sub OnLeave(rowIndex As Integer, throughMouseClick As Boolean)
             MyBase.OnLeave(rowIndex, throughMouseClick)
             _ignoreNextMouseClick = False
         End Sub
@@ -288,7 +288,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal Value As IServiceProvider)
+            Set(Value As IServiceProvider)
                 _serviceProvider = Value
             End Set
         End Property

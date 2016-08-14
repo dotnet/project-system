@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="View">Resource editor view object to save state from.</param>
             ''' <remarks></remarks>
-            Public Sub PersistStateFrom(ByVal View As ResourceEditorView)
+            Public Sub PersistStateFrom(View As ResourceEditorView)
                 Debug.Assert(View IsNot Nothing, "View can't be Nothing in EditorState")
 
                 Try
@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="View">The resource editor view instance to depersist the old state into</param>
             ''' <remarks></remarks>
-            Public Sub DepersistStateInto(ByVal View As ResourceEditorView)
+            Public Sub DepersistStateInto(View As ResourceEditorView)
                 If _statePersisted Then
                     Try
                         Debug.Assert(View IsNot Nothing, "View can't be Nothing in EditorState")

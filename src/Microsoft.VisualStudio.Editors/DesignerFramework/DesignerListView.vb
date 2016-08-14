@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Event ContextMenuShow(ByVal sender As Object, ByVal e As MouseEventArgs)
+        Public Event ContextMenuShow(sender As Object, e As MouseEventArgs)
 
 
 

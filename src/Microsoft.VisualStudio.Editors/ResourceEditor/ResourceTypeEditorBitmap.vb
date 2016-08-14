@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceTypeEditorNonStringConvertible and ResourceTypeEditorStringConvertible).
         '''  Because the resource file in different platform doesn't support all types, we should pick up the right type for the platform it targets.
         ''' </remarks>
-        Public Overrides Function GetDefaultResourceTypeName(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             If ResourceContentFile.IsSupportedType(GetType(Bitmap)) Then
                 Return GetType(Bitmap).AssemblyQualifiedName
             Else
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   overriden if this behavior is insufficient.
         ''' Exceptions should be handled by caller.
         '''</remarks>
-        Public Overrides Function LoadResourceFromFile(ByVal FilePath As String, ByVal ResourceContentFile As IResourceContentFile) As Object
+        Public Overrides Function LoadResourceFromFile(FilePath As String, ResourceContentFile As IResourceContentFile) As Object
             'Use the base behavior, except verify that the Image that is returned is actually a bitmap,
             '  and not a metafile, etc. (could only happen if the user put the wrong extension on a file).
             Dim LoadedImage As Image = DirectCast(MyBase.LoadResourceFromFile(FilePath, ResourceContentFile), Image)
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This function need not be implemented if CanSaveResourceToFile() is implemented to return False.
         ''' Caller is responsible for handling exceptions.
         ''' </remarks>
-        Public Overrides Sub CreateNewResourceFile(ByVal FilePath As String)
+        Public Overrides Sub CreateNewResourceFile(FilePath As String)
             Dim ManifestResourceId As String = Nothing
 
             Dim resourceDictionary As ListDictionary = GetManifestResourceList()
@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
-        Public Overrides Function GetOpenFileDialogFilter(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
             If ResourceContentFile.IsInsideDeviceProject() Then
                 Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Bitmap), _extensionsForDevice)
             Else
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Windows metafile (*.wmf)|*.wmf|Windows Enhanced Metafile (*.emf)|*.emf|Windows Bitmap (*.bmp;*.dib)|*.bmp;*.dib"
         ''' </remarks>
-        Public Overrides Function GetSaveFileDialogFilter(ByVal Extension As String) As String
+        Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
             Dim ExtensionIndex As Integer
             Dim FilterText As String = ""
 
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   after the thumbnail image is created).
         ''' Default implementation returns an empty bitmap.
         ''' </remarks>
-        Public Overrides Function GetImageForThumbnail(ByVal Resource As IResource, background As Color) As Image
+        Public Overrides Function GetImageForThumbnail(Resource As IResource, background As Color) As Image
             ValidateResourceValue(Resource, GetType(Bitmap), GetType(Byte()))
 
             Return DirectCast(Resource.GetValue(), Bitmap)
@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   should be given to this resource editor.  The higher the value, the higher the priority.
         ''' </returns>
         ''' <remarks>Extension should be checked case-insensitively.</remarks>
-        Public Overrides Function GetExtensionPriority(ByVal Extension As String) As Integer
+        Public Overrides Function GetExtensionPriority(Extension As String) As Integer
             If MatchAgainstListOfExtensions(Extension, _extensions) Then
                 Return ExtensionPriorities.Normal
             Else

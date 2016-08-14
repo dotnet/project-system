@@ -16,11 +16,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _serviceProvider As IServiceProvider
 
-        Friend Sub New(ByVal sp As IServiceProvider)
+        Friend Sub New(sp As IServiceProvider)
             _serviceProvider = sp
         End Sub
 
-        Public Function EditCommandLine(ByVal WindowText As String, ByVal HelpID As String, ByVal OriginalCommandLine As String, ByVal MacroProvider As Interop.IVsBuildEventMacroProvider, ByRef Result As String) As Integer _
+        Public Function EditCommandLine(WindowText As String, HelpID As String, OriginalCommandLine As String, MacroProvider As Interop.IVsBuildEventMacroProvider, ByRef Result As String) As Integer _
             Implements Interop.IVsBuildEventCommandLineDialogService.EditCommandLine
 
             Dim frm As New BuildEventCommandLineDialog

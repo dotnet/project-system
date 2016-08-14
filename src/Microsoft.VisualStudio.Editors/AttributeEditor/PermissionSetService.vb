@@ -27,11 +27,11 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
         Private _serviceProvider As IServiceProvider
 
-        Friend Sub New(ByVal sp As IServiceProvider)
+        Friend Sub New(sp As IServiceProvider)
             _serviceProvider = sp
         End Sub
 
-        Public Function CreateSecurityElementFromXmlElement(ByVal element As XmlElement) As SecurityElement
+        Public Function CreateSecurityElementFromXmlElement(element As XmlElement) As SecurityElement
 
             ' Create the new security element
             Dim securityElement As New SecurityElement(element.Name)
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             Return securityElement
         End Function
 
-        Public Function LoadPermissionSet(ByVal strPermissionSet As String) As PermissionSet
+        Public Function LoadPermissionSet(strPermissionSet As String) As PermissionSet
 
             ' Load the XML
             Dim document As New XmlDocument
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             Return permissionSet
         End Function
 
-        Private Function DocDataToStream(ByVal doc As DocData) As Stream
+        Private Function DocDataToStream(doc As DocData) As Stream
             Dim retStream As New MemoryStream()
             Using docReader As New DocDataTextReader(doc, False)
                 Dim writer As New StreamWriter(retStream)
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             Return retStream
         End Function
 
-        Public Function ComputeZonePermissionSet(ByVal strManifestFileName As String, ByVal strTargetZone As String, ByVal strExcludedPermissions As String) As Object Implements Interop.IVbPermissionSetService.ComputeZonePermissionSet
+        Public Function ComputeZonePermissionSet(strManifestFileName As String, strTargetZone As String, strExcludedPermissions As String) As Object Implements Interop.IVbPermissionSetService.ComputeZonePermissionSet
 
             Try
 
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
         End Function
 
-        Public Function IsAvailableInProject(ByVal strPermissionSet As String, ByVal ProjectPermissionSet As Object, ByRef isAvailable As Boolean) As Integer Implements Interop.IVbPermissionSetService.IsAvailableInProject
+        Public Function IsAvailableInProject(strPermissionSet As String, ProjectPermissionSet As Object, ByRef isAvailable As Boolean) As Integer Implements Interop.IVbPermissionSetService.IsAvailableInProject
 
             Try
 
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
         End Function
 
         ' Returns S_FALSE if there is no tip
-        Public Function GetRequiredPermissionsTip(ByVal strPermissionSet As String, ByRef strTip As String) As Integer Implements Interop.IVbPermissionSetService.GetRequiredPermissionsTip
+        Public Function GetRequiredPermissionsTip(strPermissionSet As String, ByRef strTip As String) As Integer Implements Interop.IVbPermissionSetService.GetRequiredPermissionsTip
 
             Dim hasTip As Boolean = False
 
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
         End Function
 
 
-        Private Shared Function StringToIdentityList(ByVal s As String) As String()
+        Private Shared Function StringToIdentityList(s As String) As String()
             Dim a() As String = s.Split(CChar(";"))
             For i As Integer = 0 To a.Length - 1
                 a(i) = a(i).Trim()

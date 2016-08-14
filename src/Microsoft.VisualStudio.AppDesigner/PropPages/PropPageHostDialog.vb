@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return keyword
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 MyBase.F1Keyword = Value
             End Set
         End Property
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _propPage
             End Get
-            Set(ByVal Value As PropPageUserControlBase)
+            Set(Value As PropPageUserControlBase)
                 Me.SuspendLayout()
                 If _propPage IsNot Nothing Then
                     'Remove previous page if any
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region " Windows Form Designer generated code "
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ServiceProvider As System.IServiceProvider, ByVal F1Keyword As String)
+        Public Sub New(ServiceProvider As System.IServiceProvider, F1Keyword As String)
             MyBase.New(ServiceProvider)
 
             'This call is required by the Windows Form Designer.
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.CancelButton = Me.Cancel
         End Sub
 
-        Protected Overrides Sub OnShown(ByVal e As EventArgs)
+        Protected Overrides Sub OnShown(e As EventArgs)
             MyBase.OnShown(e)
 
             If Me.MinimumSize.IsEmpty Then
@@ -189,12 +189,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub Cancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cancel.Click
+        Private Sub Cancel_Click(sender As Object, e As System.EventArgs) Handles Cancel.Click
             PropPage.RestoreInitialValues()
             Me.Close()
         End Sub
 
-        Private Sub OK_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles OK.Click
+        Private Sub OK_Click(sender As Object, e As System.EventArgs) Handles OK.Click
             'Save the changes if current values
             Try
                 'No errors in the values, apply & close the dialog
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosing(e As FormClosingEventArgs)
             If e.CloseReason = CloseReason.None Then
                 ' That happens when the user clicks the OK button, but validation failed
                 ' That is how we block the user leave when something wrong.
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PropPageHostDialog_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub PropPageHostDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

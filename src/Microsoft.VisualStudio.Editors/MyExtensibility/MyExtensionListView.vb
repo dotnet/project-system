@@ -16,15 +16,15 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
     Friend Class MyExtensionListView
         Inherits DesignerListView
 
-        Public Event AddExtension(ByVal sender As Object, ByVal e As EventArgs)
-        Public Event RemoveExtension(ByVal sender As Object, ByVal e As EventArgs)
+        Public Event AddExtension(sender As Object, e As EventArgs)
+        Public Event RemoveExtension(sender As Object, e As EventArgs)
 
         Public Property MenuCommandService() As IMenuCommandService
             Get
                 Debug.Assert(_menuCommandService IsNot Nothing)
                 Return _menuCommandService
             End Get
-            Set(ByVal value As IMenuCommandService)
+            Set(value As IMenuCommandService)
                 Debug.Assert(value IsNot Nothing)
                 Me.UnregisterMenuCommands()
                 _menuCommandService = value
@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Property
 
         Private Sub MyExtensionListView_ContextMenuShow( _
-                ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.ContextMenuShow
+                sender As Object, e As MouseEventArgs) Handles Me.ContextMenuShow
 
             _menuCommandRemoveExtension.Enabled = Me.SelectedItems.Count > 0
 
@@ -59,11 +59,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
         End Sub
 
-        Private Sub AddExtension_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub AddExtension_Click(sender As Object, e As EventArgs)
             RaiseEvent AddExtension(sender, e)
         End Sub
 
-        Private Sub RemoveExtension_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub RemoveExtension_Click(sender As Object, e As EventArgs)
             RaiseEvent RemoveExtension(sender, e)
         End Sub
 

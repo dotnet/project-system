@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overrides Sub Dispose(Disposing As Boolean)
             _tearingDown = True
 
             If Disposing Then
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="NewResourceFile"></param>
         ''' <remarks></remarks>
-        Friend Sub LoadResXResourceFile(ByVal NewResourceFile As ResourceFile)
+        Friend Sub LoadResXResourceFile(NewResourceFile As ResourceFile)
             Debug.Assert(NewResourceFile.RootComponent Is Me)
             Debug.Assert(Not NewResourceFile Is Nothing)
             Debug.Assert(_resourceFile Is Nothing, "ResourceEditorRootComponent.LoadResXResourceFile(): a resource file has already been loaded")

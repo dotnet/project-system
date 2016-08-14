@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' <devdoc>
         '     Creates a new DeferrableWindowPaneProviderService.
         ' </devdoc>
-        Public Sub New(ByVal provider As IServiceProvider, ByVal docData As DocData)
+        Public Sub New(provider As IServiceProvider, docData As DocData)
             MyBase.new(provider, Nothing)
             _docData = docData
         End Sub
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '     If we do have a file, we just forward to the base implementation
         '     because we're already loaded and there is no need to interfere.
         ' </devdoc>
-        Public Overrides Function CreateWindowPane(ByVal surface As DesignSurface) As DesignerWindowPane
+        Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New ApplicationDesignerWindowPane(surface)
         End Function
 

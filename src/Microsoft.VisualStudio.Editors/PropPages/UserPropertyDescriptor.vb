@@ -18,12 +18,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _propertyType As System.Type
         Private _isReadOnly As Boolean
 
-        Public Sub New(ByVal Name As String, ByVal PropertyType As System.Type)
+        Public Sub New(Name As String, PropertyType As System.Type)
             MyBase.New(Name, New System.Attribute() {})
             _propertyType = PropertyType
         End Sub
 
-        Public Overrides Function CanResetValue(ByVal component As Object) As Boolean
+        Public Overrides Function CanResetValue(component As Object) As Boolean
             Return False
         End Function
 
@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Public Overrides Function GetValue(ByVal component As Object) As Object
+        Public Overrides Function GetValue(component As Object) As Object
             'Note: this function never gets called and does not need to be implemented (the call is
             '  intercepted by the project designer)
             Debug.Fail("This should not get called")
@@ -52,16 +52,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Public Overrides Sub ResetValue(ByVal component As Object)
+        Public Overrides Sub ResetValue(component As Object)
         End Sub
 
-        Public Overrides Sub SetValue(ByVal component As Object, ByVal value As Object)
+        Public Overrides Sub SetValue(component As Object, value As Object)
             'Note: this function never gets called and does not need to be implemented (the call is
             '  intercepted by the project designer)
             Debug.Fail("This should not get called")
         End Sub
 
-        Public Overrides Function ShouldSerializeValue(ByVal component As Object) As Boolean
+        Public Overrides Function ShouldSerializeValue(component As Object) As Boolean
             Return True
         End Function
 

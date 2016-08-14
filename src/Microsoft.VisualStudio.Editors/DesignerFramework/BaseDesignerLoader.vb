@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="ReadOnlyMode"></param>
         ''' <param name="Message"></param>
         ''' <remarks></remarks>
-        Friend Sub SetReadOnlyMode(ByVal ReadOnlyMode As Boolean, ByVal Message As String)
+        Friend Sub SetReadOnlyMode(ReadOnlyMode As Boolean, Message As String)
             _readOnlyMode = ReadOnlyMode
             _readOnlyPrompt = Message
         End Sub
@@ -175,14 +175,14 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
 
-        Protected NotOverridable Overrides Sub PerformFlush(ByVal SerializationManager As IDesignerSerializationManager)
+        Protected NotOverridable Overrides Sub PerformFlush(SerializationManager As IDesignerSerializationManager)
             HandleFlush(SerializationManager)
         End Sub
 
         Private _loadDeferred As Boolean = False
         Private _deferredLoaderService As IDesignerLoaderService
         Private _deferredLoadManager As IDesignerSerializationManager
-        Protected NotOverridable Overrides Sub PerformLoad(ByVal SerializationManager As IDesignerSerializationManager)
+        Protected NotOverridable Overrides Sub PerformLoad(SerializationManager As IDesignerSerializationManager)
             ' Are we aready loaded?  If not, then we must defer the entire process for later.
             '
             If DocData.Name Is Nothing OrElse DocData.Name.Length = 0 Then
@@ -236,9 +236,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Return _paneProviderService
         End Function
 
-        Protected MustOverride Sub HandleFlush(ByVal SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected MustOverride Sub HandleFlush(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
 
-        Protected MustOverride Sub HandleLoad(ByVal SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected MustOverride Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
 
         'This must be overloaded to return the assembly-qualified name of the base component that is 
         '  being designed by this editor.  This information is required by the managed VSIP classes.
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _vsTextBufferDataEventsCookie As Interop.NativeMethods.ConnectionPointCookie
 
-        Protected Sub SetAllBufferText(ByVal Text As String)
+        Protected Sub SetAllBufferText(Text As String)
             Dim Writer As New DocDataTextWriter(m_DocData)
             Try
                 Writer.Write(Text)
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overridable Overloads Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overridable Overloads Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 Disconnect()
                 If m_DocDataService IsNot Nothing Then
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Private Function GetDocDataState(ByVal BitFlagToTest As TextManager.Interop.BUFFERSTATEFLAGS) As Boolean
+        Private Function GetDocDataState(BitFlagToTest As TextManager.Interop.BUFFERSTATEFLAGS) As Boolean
             If m_DocData IsNot Nothing AndAlso m_DocData.Buffer IsNot Nothing Then
                 Dim State As System.UInt32
                 VSErrorHandler.ThrowOnFailure(m_DocData.Buffer.GetStateFlags(State))
@@ -385,7 +385,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             NotReadOnly
         End Enum
 
-        Public Function GetEditorCaption(ByVal Status As EditorCaptionState) As String
+        Public Function GetEditorCaption(Status As EditorCaptionState) As String
             Dim Caption As String = _baseEditorCaption
             If Caption Is Nothing Then
                 Caption = ""
@@ -449,7 +449,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '/     buffer to read from and a service provider through which we
         '/     can ask for services.
         '/ </devdoc>
-        Friend Overridable Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal moniker As String, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
+        Friend Overridable Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If m_DocData IsNot Nothing Then
                 Debug.Fail("BaseDesignerLoader.InitializeEx() should only be called once!")
@@ -531,11 +531,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '  will automatically handle adding "[Read Only]" to the caption as necessary.
         '  If this default behavior is good enough, then BaseEditorCaption can be
         '  left at its default setting.
-        Protected Sub SetBaseEditorCaption(ByVal Caption As String)
+        Protected Sub SetBaseEditorCaption(Caption As String)
             _baseEditorCaption = Caption
         End Sub
 
-        Public Sub OnFileChanged(ByVal grfChange As UInteger, ByVal dwFileAttrs As UInteger) Implements TextManager.Interop.IVsTextBufferDataEvents.OnFileChanged
+        Public Sub OnFileChanged(grfChange As UInteger, dwFileAttrs As UInteger) Implements TextManager.Interop.IVsTextBufferDataEvents.OnFileChanged
             Dim Frame As IVsWindowFrame = CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
             If Frame IsNot Nothing Then
                 Dim Caption As String = GetEditorCaption(EditorCaptionState.AutoDetect)
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' IVsPersistDocData::LoadDocData, IPersistStream::Load, IVsTextBuffer::InitializeContent, IPersistFile::Load, or
         ' IPersistFile::InitNew. This event is also fired if the text buffer executes a reload of its file in response to
         ' an IVsTextBufferDataEvents::OnFileChanged event, as when a file is edited outside of the environment.
-        Public Function OnLoadCompleted(ByVal fReload As Integer) As Integer Implements TextManager.Interop.IVsTextBufferDataEvents.OnLoadCompleted
+        Public Function OnLoadCompleted(fReload As Integer) As Integer Implements TextManager.Interop.IVsTextBufferDataEvents.OnLoadCompleted
             If _loadDeferred Then
                 Debug.Assert(_deferredLoaderService IsNot Nothing)
 
@@ -595,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '     Reloading is deferred until the document is later activated, and reload is contingent 
         '     upon IsReloadNeeded returning true.
         '**************************************************************************
-        Private Sub DocData_DataChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_DocData.DataChanged
+        Private Sub DocData_DataChanged(sender As Object, e As System.EventArgs) Handles m_DocData.DataChanged
             'The DocData has been changed externally (either outside of VS or from another editor).
             '  We notify ourselves that we need to reload.  The reload doesn't actually happen until we
             '  have focus again and then hit idle time processing.
@@ -627,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="flushBeforeRun">If true, flush before running the custom tool</param>
         ''' <remarks></remarks>
-        Friend Overridable Sub RunSingleFileGenerator(ByVal flushBeforeRun As Boolean)
+        Friend Overridable Sub RunSingleFileGenerator(flushBeforeRun As Boolean)
             If flushBeforeRun Then
                 HandleFlush(Nothing)
             End If
@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' We use this to know when the user has moved off of the designer.  When this happens,
         '''   we know it's time to commit pending changes on that designer.
         ''' </remarks>
-        Private Sub m_WindowEvents_WindowActivated(ByVal GotFocus As EnvDTE.Window, ByVal LostFocus As EnvDTE.Window) Handles m_WindowEvents.WindowActivated
+        Private Sub m_WindowEvents_WindowActivated(GotFocus As EnvDTE.Window, LostFocus As EnvDTE.Window) Handles m_WindowEvents.WindowActivated
             Dim ThisProjectItem As EnvDTE.ProjectItem
 
             Try
@@ -702,7 +702,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Activated">True if the document window has been activated, False if deactivated.</param>
         ''' <remarks></remarks>
-        Protected Overridable Sub OnDesignerWindowActivated(ByVal Activated As Boolean)
+        Protected Overridable Sub OnDesignerWindowActivated(Activated As Boolean)
         End Sub
 
 #End Region
@@ -735,7 +735,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="filename">The name of the document</param>
         ''' <returns>The document's cookie, or 0 if it's not in the RDT</returns>
-        Private Function GetDocCookie(ByVal filename As String) As UInteger
+        Private Function GetDocCookie(filename As String) As UInteger
             If filename Is Nothing Then
                 Throw New ArgumentNullException("filename")
             End If
@@ -759,7 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="docCookie">The document's cookie</param>
         ''' <returns>The document's moniker</returns>
-        Private Function GetDocumentMoniker(ByVal docCookie As UInteger) As String
+        Private Function GetDocumentMoniker(docCookie As UInteger) As String
             Dim rdt4 As IVsRunningDocumentTable4 = TryCast(_rdt, IVsRunningDocumentTable4)
             Dim moniker As String = String.Empty
 
@@ -777,7 +777,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Determines if two paths are equivalent (i.e. differ only by case)
         ''' </summary>
-        Private Function PathEquals(ByVal path1 As String, ByVal path2 As String) As Boolean
+        Private Function PathEquals(path1 As String, path2 As String) As Boolean
             Return String.Equals(path1, path2, StringComparison.OrdinalIgnoreCase)
         End Function
 
@@ -786,7 +786,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="serviceType">The type of the service to update</param>
         ''' <param name="serviceInstance">The new service instance</param>
-        Private Sub UpdateService(ByVal serviceType As Type, ByVal serviceInstance As Object)
+        Private Sub UpdateService(serviceType As Type, serviceInstance As Object)
             ' remove the old instance
             LoaderHost.RemoveService(serviceType)
 
@@ -845,27 +845,27 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "RDT events we don't care about"
 
-        Private Function OnAfterAttributeChange(ByVal docCookie As UInteger, ByVal attributes As UInteger) As Integer _
+        Private Function OnAfterAttributeChange(docCookie As UInteger, attributes As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterAttributeChange, IVsRunningDocTableEvents2.OnAfterAttributeChange
         End Function
 
-        Private Function OnAfterFirstDocumentLock(ByVal docCookie As UInteger, ByVal lockType As UInteger, ByVal readLocksRemaining As UInteger, ByVal editLocksRemaining As UInteger) As Integer _
+        Private Function OnAfterFirstDocumentLock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock, IVsRunningDocTableEvents2.OnAfterFirstDocumentLock
         End Function
 
-        Private Function OnBeforeLastDocumentUnlock(ByVal docCookie As UInteger, ByVal lockType As UInteger, ByVal readLocksRemaining As UInteger, ByVal editLocksRemaining As UInteger) As Integer _
+        Private Function OnBeforeLastDocumentUnlock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock, IVsRunningDocTableEvents2.OnBeforeLastDocumentUnlock
         End Function
 
-        Private Function OnAfterDocumentWindowHide(ByVal docCookie As UInteger, ByVal frame As IVsWindowFrame) As Integer _
+        Private Function OnAfterDocumentWindowHide(docCookie As UInteger, frame As IVsWindowFrame) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide, IVsRunningDocTableEvents2.OnAfterDocumentWindowHide
         End Function
 
-        Private Function OnAfterSave(ByVal docCookie As UInteger) As Integer _
+        Private Function OnAfterSave(docCookie As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterSave, IVsRunningDocTableEvents2.OnAfterSave
         End Function
 
-        Private Function OnBeforeDocumentWindowShow(ByVal docCookie As UInteger, ByVal firstShow As Integer, ByVal frame As IVsWindowFrame) As Integer _
+        Private Function OnBeforeDocumentWindowShow(docCookie As UInteger, firstShow As Integer, frame As IVsWindowFrame) As Integer _
             Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow, IVsRunningDocTableEvents2.OnBeforeDocumentWindowShow
         End Function
 

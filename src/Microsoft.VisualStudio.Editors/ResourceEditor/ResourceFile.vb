@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ServiceProvider">The service provider provided by the designer host</param>
         ''' <param name="BasePath">The base path to use for resolving relative paths in the resx file.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal mtsrv As MultiTargetService, ByVal RootComponent As ResourceEditorRootComponent, ByVal ServiceProvider As IServiceProvider, ByVal BasePath As String)
+        Public Sub New(mtsrv As MultiTargetService, RootComponent As ResourceEditorRootComponent, ServiceProvider As IServiceProvider, BasePath As String)
             Debug.Assert(Not RootComponent Is Nothing)
             Debug.Assert(ServiceProvider IsNot Nothing)
 
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Disposing">If True, we're disposing.  If false, we're finalizing.</param>
         ''' <remarks></remarks>
-        Protected Sub Dispose(ByVal Disposing As Boolean)
+        Protected Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 'Stop listening to component removing events - we want to just tear down in peace.
                 ComponentChangeService = Nothing
@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _componentChangeService
             End Get
-            Set(ByVal Value As IComponentChangeService)
+            Set(Value As IComponentChangeService)
                 _componentChangeService = Value
             End Set
         End Property
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetUniqueName(ByVal TypeEditor As ResourceTypeEditor) As String
+        Public Function GetUniqueName(TypeEditor As ResourceTypeEditor) As String
             Dim UniqueNamePrefix As String
 
             Try
@@ -387,7 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="NameFormat">A format to use for String.Format which indicates how to format the integer portion of the name.  Must contain a single {0} parameter.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetUniqueName(ByVal NameFormat As String) As String
+        Public Function GetUniqueName(NameFormat As String) As String
             Debug.Assert(NameFormat.IndexOf("{") >= 0 AndAlso NameFormat.IndexOf("}") >= 2, _
                 "NameFormat must contain a replacement arg")
 
@@ -409,7 +409,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Name">The resource name to look for (case insensitive)</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Contains(ByVal Name As String) As Boolean
+        Public Function Contains(Name As String) As Boolean
             Return Not FindResource(Name) Is Nothing
         End Function
 
@@ -420,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Contains(ByVal Resource As Resource) As Boolean
+        Public Function Contains(Resource As Resource) As Boolean
             Return _resourcesHash.ContainsValue(Resource)
         End Function
 
@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Name">The resource name to look for (case insensitive)</param>
         ''' <returns>The found Resource, or Nothing if not found.</returns>
         ''' <remarks></remarks>
-        Public Function FindResource(ByVal Name As String) As Resource
+        Public Function FindResource(Name As String) As Resource
             If Name = "" Then
                 Return Nothing
             End If
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FileFullPath">The full path name of the linked file to look for (case insensitive)</param>
         ''' <returns>The found Resource, or Nothing if not found.</returns>
         ''' <remarks> We should be careful there, because there could be different path pointing to a same file</remarks>
-        Public Function FindLinkResource(ByVal FileFullPath As String) As Resource
+        Public Function FindLinkResource(FileFullPath As String) As Resource
             Dim fileInfo As New FileInfo(FileFullPath)
             FileFullPath = fileInfo.FullName
             For Each Resource As Resource In _resourcesHash.Values
@@ -471,7 +471,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Add a collection of resources to the ResourceFile
         ''' </summary>
         ''' <param name="NewResources">A collection of resource items to add</param>
-        Public Sub AddResources(ByVal NewResources As ICollection)
+        Public Sub AddResources(NewResources As ICollection)
             Debug.Assert(NewResources IsNot Nothing, "Invalid Resources collection")
 
             _inBatchAdding = True
@@ -492,7 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="NewResource">The Resource to add.  Must not be blank.</param>
         ''' <remarks>Exception throw if the name is not unique.</remarks>
-        Public Sub AddResource(ByVal NewResource As Resource)
+        Public Sub AddResource(NewResource As Resource)
             If NewResource.Name = "" Then
                 Debug.Fail("Resource Name is blank - we shouldn't reach here with that condition")
                 Throw NewException(SR.GetString(SR.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
@@ -534,7 +534,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource to remove.  Must exist in the ResourceFile</param>
         ''' <param name="DisposeResource">If True, the Resource is also disposed.</param>
         ''' <remarks></remarks>
-        Public Sub RemoveResource(ByVal Resource As Resource, ByVal DisposeResource As Boolean)
+        Public Sub RemoveResource(Resource As Resource, DisposeResource As Boolean)
             Debug.Assert(Not Resource Is Nothing)
             Debug.Assert(FindResource(Resource.Name) Is Resource, "RemoveResource: not found by Name")
             Debug.Assert(_resourcesHash.ContainsValue(Resource), "RemoveResource: not found")
@@ -574,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' Here we do the actual adding of the resource to our list.
         ''' </remarks>
-        Private Sub ComponentChangeService_ComponentAdded(ByVal sender As Object, ByVal e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentAdded
+        Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentAdded
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Fail("How could we be adding a component that's not a Resource?")
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRemoved(ByVal sender As Object, ByVal e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
+        Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Assert(TypeOf ResourceObject Is ResourceEditorRootComponent, "How could we be removing a component that's not a Resource?")
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">Resource to rename</param>
         ''' <param name="NewName">New name.  If it's not unique, an exception is thrown.</param>
         ''' <remarks>Caller is responsible for showing error message boxes</remarks>
-        Public Sub RenameResource(ByVal Resource As Resource, ByVal NewName As String)
+        Public Sub RenameResource(Resource As Resource, NewName As String)
             If Contains(Resource) Then
                 Debug.Assert(DesignerHost.Container.Components(Resource.Name) IsNot Nothing)
 
@@ -761,7 +761,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRename(ByVal sender As Object, ByVal e As System.ComponentModel.Design.ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
+        Private Sub ComponentChangeService_ComponentRename(sender As Object, e As System.ComponentModel.Design.ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -823,7 +823,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentChanged(ByVal sender As Object, ByVal e As System.ComponentModel.Design.ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
+        Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As System.ComponentModel.Design.ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -855,7 +855,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="TextReader">The TextReader to read from</param>
         ''' <remarks></remarks>
-        Public Sub ReadResources(ByVal TextReader As TextReader)
+        Public Sub ReadResources(TextReader As TextReader)
             Dim ResXReader As ResXResourceReader
             Dim TypeResolutionService As ITypeResolutionService = View.GetTypeResolutionService()
             If TypeResolutionService IsNot Nothing Then
@@ -869,7 +869,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ResXReader.Close()
         End Sub
 
-        Public Function TypeNameConverter(ByVal runtimeType As System.Type) As String
+        Public Function TypeNameConverter(runtimeType As System.Type) As String
             Debug.Assert(runtimeType IsNot Nothing, "runtimeType cannot be Nothing!")
             If _multiTargetService Is Nothing Then
                 Return runtimeType.AssemblyQualifiedName
@@ -884,7 +884,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="TextWriter">TextWriter to write to</param>
         ''' <remarks></remarks>
-        Public Sub WriteResources(ByVal TextWriter As TextWriter)
+        Public Sub WriteResources(TextWriter As TextWriter)
             Dim ResXWriter As IResourceWriter
 
             If _resxService IsNot Nothing Then
@@ -908,7 +908,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResXReader">The ResXReader to read from</param>
         ''' <remarks></remarks>
-        Private Sub ReadResources(ByVal ResXReader As ResXResourceReader)
+        Private Sub ReadResources(ResXReader As ResXResourceReader)
             Debug.Assert(ResXReader IsNot Nothing, "ResXReader must exist!")
 
             _isLoadingResourceFile = True
@@ -968,7 +968,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResXWriter">The ResXResourceWriter instance to use</param>
         ''' <remarks></remarks>
-        Private Sub WriteResources(ByVal ResXWriter As IResourceWriter)
+        Private Sub WriteResources(ResXWriter As IResourceWriter)
             Debug.Assert(Not ResXWriter Is Nothing, "ResXWriter must exist.")
 
             If Not _resourcesHash Is Nothing Then
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource to invalidate</param>
         ''' <param name="InvalidateThumbnail">If True, then the Resource's thumbnail is also invalidated so it will be regenerated on the next paint.</param>
         ''' <remarks></remarks>
-        Public Sub InvalidateResourceInView(ByVal Resource As Resource, Optional ByVal InvalidateThumbnail As Boolean = False)
+        Public Sub InvalidateResourceInView(Resource As Resource, Optional InvalidateThumbnail As Boolean = False)
             If RootComponent.RootDesigner IsNot Nothing AndAlso RootComponent.RootDesigner.GetView() IsNot Nothing Then
                 RootComponent.RootDesigner.GetView().InvalidateResource(Resource, InvalidateThumbnail)
             End If
@@ -1163,7 +1163,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="Resource"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal Resource As Resource)
+            Public Sub New(Resource As Resource)
                 _resource = Resource
             End Sub
 
@@ -1191,7 +1191,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="resource">The resource to look for task entries for.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ResourceHasTasks(ByVal Resource As Resource) As Boolean
+        Public Function ResourceHasTasks(Resource As Resource) As Boolean
             Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
             If TaskSet Is Nothing Then
                 Return False
@@ -1217,7 +1217,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TaskType">The type of task list entry to retrieve for this Resource.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetResourceTaskMessage(ByVal Resource As Resource, ByVal TaskType As ResourceTaskType) As String
+        Public Function GetResourceTaskMessage(Resource As Resource, TaskType As ResourceTaskType) As String
             Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
             If TaskSet Is Nothing Then
                 Return Nothing
@@ -1240,7 +1240,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource to look up task list entries for.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetResourceTaskMessages(ByVal Resource As Resource) As String
+        Public Function GetResourceTaskMessages(Resource As Resource) As String
             Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
             If TaskSet Is Nothing Then
                 Return Nothing
@@ -1267,7 +1267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">The task that was double-clicked.</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub OnTaskNavigate(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnTaskNavigate(sender As Object, e As EventArgs)
             Dim Task As ResourceTask = TryCast(sender, ResourceTask)
             If Task Is Nothing Then
                 Debug.Fail("Navigate sender not a resourcetask?")
@@ -1293,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="HelpLink">The help link of the new task list entry.</param>
         ''' <param name="ErrorCategory">The ErrorCategory of the new task list entry. It is an Error or Warning.</param>
         ''' <remarks></remarks>
-        Public Sub SetResourceTask(ByVal Resource As Resource, ByVal TaskType As ResourceTaskType, ByVal Text As String, ByVal Priority As TaskPriority, ByVal HelpLink As String, ByVal ErrorCategory As TaskErrorCategory)
+        Public Sub SetResourceTask(Resource As Resource, TaskType As ResourceTaskType, Text As String, Priority As TaskPriority, HelpLink As String, ErrorCategory As TaskErrorCategory)
             Debug.Assert(Resource IsNot Nothing)
             Dim taskProvider As ErrorListProvider = ErrorListProvider
             If taskProvider IsNot Nothing Then
@@ -1371,7 +1371,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource from which the task list entry will be cleared.</param>
         ''' <param name="TaskType">The type of task list entry to clear, if it exists.</param>
         ''' <remarks></remarks>
-        Public Sub ClearResourceTask(ByVal Resource As Resource, ByVal TaskType As ResourceTaskType)
+        Public Sub ClearResourceTask(Resource As Resource, TaskType As ResourceTaskType)
             Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
             If TaskSet Is Nothing Then
                 Exit Sub 'Nothing to clear
@@ -1416,7 +1416,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The resource to clear.</param>
         ''' <remarks></remarks>
-        Public Sub ClearResourceTasks(ByVal Resource As Resource)
+        Public Sub ClearResourceTasks(Resource As Resource)
             Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
             If TaskSet IsNot Nothing Then
                 'Remove all entries for this resource
@@ -1452,7 +1452,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' It's okay to add the same resource multiple times.
         ''' </remarks>
-        Public Sub DelayCheckResourceForErrors(ByVal Resource As Resource)
+        Public Sub DelayCheckResourceForErrors(Resource As Resource)
             Debug.WriteLineIf(Switches.RSEDelayCheckErrors.TraceVerbose, "Delay-check errors: Adding resource to list: " & Resource.Name)
 
             If _resourcesToDelayCheckForErrors.Count = 0 AndAlso Not _delayCheckSuspended Then
@@ -1495,7 +1495,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The resource to add.  If it doesn't exist, this call is a NOOP.</param>
         ''' <remarks></remarks>
-        Private Sub RemoveResourceToDelayCheckForErrors(ByVal Resource As Resource)
+        Private Sub RemoveResourceToDelayCheckForErrors(Resource As Resource)
             If _resourcesToDelayCheckForErrors.Contains(Resource) Then
                 Debug.WriteLineIf(Switches.RSEDelayCheckErrors.TraceVerbose, "Delay-check errors: Removing resource from list: " & Resource.Name)
                 _resourcesToDelayCheckForErrors.Remove(Resource)
@@ -1529,7 +1529,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We must keep our idle-time processing short, so we currently only process a single
         '''   resource per call.
         ''' </remarks>
-        Private Sub OnDelayCheckForErrors(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnDelayCheckForErrors(sender As Object, e As EventArgs)
             If _mainThread IsNot System.Threading.Thread.CurrentThread Then
                 Debug.Fail("Idle processing is supposed to occur on the main thread!")
                 Exit Sub
@@ -1568,7 +1568,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="suspendIt"></param>
         ''' <remarks>We also use Idle time to load images. The delay checking should be low priority, and need to be disabled until we finish paining the screen.</remarks>
-        Friend Sub SuspendDelayingCheckingForErrors(ByVal suspendIt As Boolean)
+        Friend Sub SuspendDelayingCheckingForErrors(suspendIt As Boolean)
             If suspendIt <> _delayCheckSuspended Then
                 _delayCheckSuspended = suspendIt
                 If _resourcesToDelayCheckForErrors.Count > 0 Then
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Class AlphabetizedOrderComparer
             Implements IComparer
 
-            Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
                 Dim r2 As Resource = CType(y, Resource)
 
@@ -1603,7 +1603,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Class OriginalOrderComparer
             Implements IComparer
 
-            Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
                 Dim r2 As Resource = CType(y, Resource)
 
@@ -1631,7 +1631,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">A collection of resource items </param>
         ''' <remarks>For performance reasons, we processes a collection of items one time</remarks>
-        Private Sub AddNecessaryReferenceToProject(ByVal Resources As ICollection)
+        Private Sub AddNecessaryReferenceToProject(Resources As ICollection)
             Debug.Assert(Resources IsNot Nothing, "Invalid Resources collection")
 
             Dim TypeResolutionService As ITypeResolutionService = View.GetTypeResolutionService()

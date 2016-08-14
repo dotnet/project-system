@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
     Public NotInheritable Class CAUUIDMarshaler
 
-        Public Shared Function GetData(ByVal cauuid As CAUUID) As Guid()
+        Public Shared Function GetData(cauuid As CAUUID) As Guid()
             Const GUID_BYTE_COUNT As Integer = 16
             Dim guids As Guid()
             Dim CurrentPtr As IntPtr

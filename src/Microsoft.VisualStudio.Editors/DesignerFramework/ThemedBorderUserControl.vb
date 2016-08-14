@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
                 _borderPen.Dispose()
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.Dispose(disposing)
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             ' we have to get a new pen everytime
             _borderPen.Dispose()
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)

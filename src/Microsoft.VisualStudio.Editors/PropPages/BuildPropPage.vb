@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             WARNINGS_NONE
         End Enum
 
-        Protected Overrides Sub EnableAllControls(ByVal _enabled As Boolean)
+        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
             MyBase.EnableAllControls(_enabled)
         End Sub
 
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub AdvancedButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdvanced.Click
+        Private Sub AdvancedButton_Click(sender As Object, e As System.EventArgs) Handles btnAdvanced.Click
             ShowChildPage(SR.GetString(SR.PPG_AdvancedBuildSettings_Title), GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
 
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        Private Function OutputTypeSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function OutputTypeSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not ShouldEnableRegisterForCOM() Then
                 Me.chkRegisterForCOM.Enabled = False
             Else
@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function RegisterForCOMInteropSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function RegisterForCOMInteropSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 Dim bRegisterForCOM As Boolean = False
                 Dim propRegisterForCOM As PropertyDescriptor
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Function RegisterForCOMInteropGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function RegisterForCOMInteropGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (Me.chkRegisterForCOM.CheckState <> CheckState.Indeterminate) Then
                 value = Me.chkRegisterForCOM.Checked
                 Return True
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Sub OutputPathBrowse_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnOutputPathBrowse.Click
+        Private Sub OutputPathBrowse_Click(sender As Object, e As System.EventArgs) Handles btnOutputPathBrowse.Click
             Dim DirName As String = Nothing
             If GetDirectoryViaBrowseRelativeToProject(Me.txtOutputPath.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), DirName) Then
                 txtOutputPath.Text = DirName
@@ -259,7 +259,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Function TreatSpecificWarningsInit(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function TreatSpecificWarningsInit(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
             m_bInsideInternalUpdate = True
 
@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return warnings
         End Function
 
-        Private Function TreatSpecificWarningsGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function TreatSpecificWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim bRetVal As Boolean = True
 
             If Me.rbWarningAll.Checked Then
@@ -360,12 +360,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return bRetVal
         End Function
 
-        Private Function TreatWarningsInit(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function TreatWarningsInit(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             '// Don't need to do anything here (it's done in TreatSpecificWarningsInit)
             Return True
         End Function
 
-        Private Function TreatWarningsGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function TreatWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim bRetVal As Boolean = True
 
             If Me.rbWarningAll.Checked Then
@@ -385,7 +385,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return bRetVal
         End Function
 
-        Private Sub rbStartAction_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
+        Private Sub rbStartAction_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
             If (Not m_bInsideInternalUpdate) Then
                 Dim warnings As TreatWarningsSetting = TreatSpecificWarningsGetValue()
                 Me.rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
@@ -400,7 +400,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Function XMLDocumentationFileInit(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal values() As Object) As Boolean
+        Private Function XMLDocumentationFileInit(control As Control, prop As PropertyDescriptor, values() As Object) As Boolean
             Dim bOriginalState As Boolean = m_bInsideInternalUpdate
 
             m_bInsideInternalUpdate = True
@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function XMLDocumentationFileGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef values() As Object) As Boolean
+        Private Function XMLDocumentationFileGet(control As Control, prop As PropertyDescriptor, ByRef values() As Object) As Boolean
             Debug.Assert(m_stDocumentationFile IsNot Nothing)
             ReDim values(m_stDocumentationFile.Length - 1)
             m_stDocumentationFile.CopyTo(values, 0)
@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Function WarningLevelSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 Me.cboWarningLevel.SelectedIndex = CType(value, Integer)
                 Return True
@@ -458,12 +458,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Function WarningLevelGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function WarningLevelGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = CType(Me.cboWarningLevel.SelectedIndex, Integer)
             Return True
         End Function
 
-        Private Function PlatformTargetSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function PlatformTargetSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
                     Me.cboPlatformTarget.SelectedIndex = 0     '// AnyCPU
@@ -509,7 +509,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Function PlatformTargetGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function PlatformTargetGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             ' SelectedItem may be Nothing if the PlatformTarget property isn't supported
             If Me.cboPlatformTarget.SelectedItem Is Nothing Then
@@ -526,7 +526,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub XMLDocumentationEnable_CheckStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
+        Private Sub XMLDocumentationEnable_CheckStateChanged(sender As Object, e As System.EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
             Const XML_FILE_EXTENSION As String = ".xml"
 
             If Me.chkXMLDocumentationFile.Checked Then
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
-        Private Sub DocumentationFile_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtXMLDocumentationFile.TextChanged
+        Private Sub DocumentationFile_TextChanged(sender As Object, e As System.EventArgs) Handles txtXMLDocumentationFile.TextChanged
             If Not m_bInsideInternalUpdate Then
                 Debug.Assert(m_stDocumentationFile IsNot Nothing)
                 For i As Integer = 0 To m_stDocumentationFile.Length - 1
@@ -655,7 +655,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PlatformTarget_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPlatformTarget.SelectionChangeCommitted
+        Private Sub PlatformTarget_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles cboPlatformTarget.SelectionChangeCommitted
             If m_fInsideInit OrElse m_bInsideInternalUpdate Then
                 Return
             End If
@@ -693,7 +693,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
-        Private Sub DefineConstants_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
+        Private Sub DefineConstants_TextChanged(sender As Object, e As System.EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
             If Not m_bInsideInternalUpdate Then
                 Debug.Assert(m_stCondCompSymbols IsNot Nothing)
                 For i As Integer = 0 To m_stCondCompSymbols.Length - 1
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the "Define DEBUG Constant" check has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
-        Private Sub chkDefineDebug_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkDefineDebug.CheckedChanged
+        Private Sub chkDefineDebug_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkDefineDebug.CheckedChanged
             If Not m_bInsideInternalUpdate Then
                 Dim DebugIndexDoNotChange As Integer 'Index to avoid changing, if in simplified configs mode
                 If IsSimplifiedConfigs() Then
@@ -765,7 +765,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the "Define DEBUG Constant" check has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
-        Private Sub chkDefineTrace_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkDefineTrace.CheckedChanged
+        Private Sub chkDefineTrace_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkDefineTrace.CheckedChanged
             If Not m_bInsideInternalUpdate Then
                 For i As Integer = 0 To m_stCondCompSymbols.Length - 1
                     Select Case chkDefineTrace.CheckState
@@ -788,7 +788,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Given DefineConstants string, parse it into a DEBUG value, a TRACE value, and everything else
         ''' </summary>
-        Private Sub ParseConditionalCompilationConstants(ByVal DefineConstantsFullValue As String, ByRef DebugDefined As Boolean, ByRef TraceDefined As Boolean, ByRef OtherConstants As String)
+        Private Sub ParseConditionalCompilationConstants(DefineConstantsFullValue As String, ByRef DebugDefined As Boolean, ByRef TraceDefined As Boolean, ByRef OtherConstants As String)
             'Start out with the full set of defined constants
             OtherConstants = DefineConstantsFullValue
 
@@ -818,7 +818,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Multi-value setter for the conditional compilation constants value.  We parse the values and determine
         '''   what to display in the textbox and checkboxes.
         ''' </summary>
-        Private Function ConditionalCompilationSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal values() As Object) As Boolean
+        Private Function ConditionalCompilationSet(control As Control, prop As PropertyDescriptor, values() As Object) As Boolean
             Debug.Assert(values IsNot Nothing)
 #If DEBUG Then
             For i As Integer = 0 To values.Length - 1
@@ -901,7 +901,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Multi-value getter for the conditional compilation constants values.
         ''' </summary>
-        Private Function ConditionalCompilationGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef values() As Object) As Boolean
+        Private Function ConditionalCompilationGet(control As Control, prop As PropertyDescriptor, ByRef values() As Object) As Boolean
             'Fetch the original values we stored in the setter (the values stored in the controls are lossy when there are indeterminate values)
             Debug.Assert(m_stCondCompSymbols IsNot Nothing)
             ReDim values(m_stCondCompSymbols.Length - 1)
@@ -920,7 +920,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We're only guaranteed to find the "Debug" or "Release" configurations when in
         '''   simplified configuration mode.
         ''' </remarks>
-        Private Function GetIndexOfConfiguration(ByVal ConfigurationName As String) As Integer
+        Private Function GetIndexOfConfiguration(ConfigurationName As String) As Integer
             Debug.Assert(IsSimplifiedConfigs, "Shouldn't be calling this in advanced configs mode - not guaranteed to have Debug/Release configurations")
 
             Dim DefineConstantsData As PropertyControlData = GetPropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants)
@@ -962,7 +962,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a string containing conditional compilation constants, adds the given constant to it, if it
         '''   doesn't already exist.
         ''' </summary>
-        Public Function AddSymbol(ByVal stOldCondCompConstants As String, ByVal stSymbol As String) As String
+        Public Function AddSymbol(stOldCondCompConstants As String, stSymbol As String) As String
             '// See if we find it
             Dim rgConstants() As String
             Dim bFound As Boolean = False
@@ -1001,7 +1001,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Given a string containing conditional compilation constants, determines if the given constant is defined in it
         ''' </summary>
-        Public Function FindSymbol(ByVal stOldCondCompConstants As String, ByVal stSymbol As String) As Boolean
+        Public Function FindSymbol(stOldCondCompConstants As String, stSymbol As String) As Boolean
             '// See if we find it
             Dim rgConstants() As String
 
@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a string containing conditional compilation constants, removes the given constant from it, if it
         '''   is in the list.
         ''' </summary>
-        Public Function RemoveSymbol(ByVal stOldCondCompConstants As String, ByVal stSymbol As String) As String
+        Public Function RemoveSymbol(stOldCondCompConstants As String, stSymbol As String) As String
             '// Look for the DEBUG constant
             Dim rgConstants() As String
             Dim stNewConstants As String = ""
