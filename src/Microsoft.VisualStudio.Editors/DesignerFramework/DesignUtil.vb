@@ -308,7 +308,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim cleanIdentifier As String = result.ToString()
             If Not System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
-                System.Diagnostics.Debug.Fail($"Failed to clean up identifier '{cleanIdentifier}'", cleanIdentifier))
+                System.Diagnostics.Debug.Fail($"Failed to clean up identifier '{cleanIdentifier}'", cleanIdentifier)
                 Throw Common.CreateArgumentException(NameOf(value))
             End If
 

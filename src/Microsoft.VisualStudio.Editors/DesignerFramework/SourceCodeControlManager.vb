@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Sub New(ByVal sp As IServiceProvider, ByVal Hierarchy As IVsHierarchy)
             If sp Is Nothing Then
-                Throw New ArgumentNullException(name(sp))
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             _serviceProvider = sp
@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Next
                     Return True
                 Else
-                    Debug.Fail("Failed to get both " & NameOf(IVsQueryEditQuerySave2) & " and " & NameOf(IVsTextManager) & " services - can't check out file!")
+                    Debug.Fail("Failed to get both " & NameOf(IVsQueryEditQuerySave2) & " and " & NameOf(TextManager.Interop.IVsTextManager) & " services - can't check out file!")
                 End If
             End If
 

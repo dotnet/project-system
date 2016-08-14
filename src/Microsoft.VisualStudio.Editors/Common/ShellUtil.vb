@@ -79,7 +79,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
                 dialogOwner = UIService.GetDialogOwnerWindow()
             End If
 
-            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get {NameOf(DialogOwnerWindow)}")
+            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get DialogOwnerWindow") 'TODO: Fix name.
             Return dialogOwner
         End Function
 
@@ -163,7 +163,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
                 If VSErrorHandler.Succeeded(hr) AndAlso TypeOf ValueObject Is Boolean Then
                     ReturnValue = CBool(ValueObject)
                 Else
-                    Debug.Fail($"Failed to get {NameOf(VSCFGPROPID_HideConfigurations)} from project config provider")
+                    Debug.Fail($"Failed to get VSCFGPROPID_HideConfigurations from project config provider") ' TODO: Fix Name
                     ReturnValue = False
                 End If
             End If
@@ -189,7 +189,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
             Try
                 ProjAndSolutionProperties = DTE.Properties(EnvironmentCategory, ProjectsAndSolution)
                 If ProjAndSolutionProperties IsNot Nothing Then
-                    ShowValue = CBool(ProjAndSolutionProperties.Item(ShowAdvancedBuildConfigurations).Value)
+                    ShowValue = CBool(ProjAndSolutionProperties.Item(ShowAdvancedBuildIntValue).Value) ' TODO: Check that this is the correct object to use.
                 Else
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode

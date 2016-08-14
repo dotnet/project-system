@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
                 StringComparison.OrdinalIgnoreCase), NameOf(assemblyFullName) & " not normalized!")
             Debug.Assert(_pendingAssemblyChangesList Is Nothing OrElse _pendingAssemblyChangesList.Count > 0,
-                NameOf(_AssemblyActionList) & " in in valid state!")
+                "_AssemblyActionList in invalid state!") ' TODO: Find correct name.
             Debug.Assert(changeType = AddRemoveAction.Add OrElse changeType = AddRemoveAction.Remove,
                 "Invalid " & NameOf(changeType) & "!")
 
@@ -462,7 +462,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Remove the given extension code files from the project.
         ''' </summary>
         Private Sub RemoveExtensionProjectItemGroups(ByVal extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup), ByVal projectFilesRemovedSB As StringBuilder)
-            Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid " & NameOf(extensionProjectFiles) & "!")
+            Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid extensionProjectFiles!") 'TODO: Find correct name.
             Debug.Assert(projectFilesRemovedSB IsNot Nothing, "Invalid " & NameOf(projectFilesRemovedSB) & "!")
 
             Using New WaitCursor()

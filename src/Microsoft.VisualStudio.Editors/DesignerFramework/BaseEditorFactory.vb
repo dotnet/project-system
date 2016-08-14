@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Sub SetSiteInternal(ByVal Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If Me._site Is Site Then
-                Debug.Fail("Why is this " & NameOf(EditorFactory) & " site:ed twice?")
+                Debug.Fail("Why is this EditorFactory & site:ed twice?") ' TODO: FIX Namees
                 Exit Sub
             End If
 

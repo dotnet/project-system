@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 Dim Prop As EnvDTE.CodeProperty = TryCast(Element, EnvDTE.CodeProperty)
-                Debug.Assert(Prop IsNot Nothing, "Failed to get " & NameOf(EnvDTE) & "." & NameOf(EnvDTE.CodeProperty) & " from element with kind = " & NameOf(vsCMElementProperty) & "!?")
+                Debug.Assert(Prop IsNot Nothing, "Failed to get " & NameOf(EnvDTE) & "." & NameOf(EnvDTE.CodeProperty) & " from element with kind = vsCMElementProperty!?") ' TODO: Find correct name.
                 If Prop.Parent Is Nothing Then
                     Return False
                 End If
