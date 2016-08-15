@@ -264,9 +264,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Gotta store the namespace here in case it changes from under us!
             Settings.PersistedNamespace = GeneratedClassNameSpace
+            DeclareEncodingAs = If(DeclareEncodingAs, System.Text.Encoding.UTF8)
 
-            Dim XML_SettingsFile = <?xml version='1.0' encoding=''?>
-                                   <SettingsFile xmls=<%= SettingsSerializer.SettingsSchemaUri %>
+            Dim XML_SettingsFile = <SettingsFile xmls=<%= SettingsSerializer.SettingsSchemaUri %>
                                        CurrentProfile=<%= SettingsDesigner.CultureInvariantDefaultProfileName %>>
                                        GeneratedClassNameSpace=<%= If(Settings.Count > 0, GeneratedClassNameSpace, Nothing) %>
                                        GeneratedClassName=<%= If(Settings.Count > 0, ClassName, Nothing) %>
@@ -278,6 +278,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                Select i %>
                                        </Settings>
                                    </SettingsFile>
+            Dim version = 1.0
+            Dim proc As New Linq.XProcessingInstruction("?xml", $"verion='{version}' encoding='{DeclareEncodingAs}' ")
+            XML_SettingsFile.AddBeforeSelf(proc)
             Dim SettingsWriter As New XmlTextWriter(Writer) With {.Formatting = Formatting.Indented, .Indentation = 2}
             XML_SettingsFile.WriteTo(SettingsWriter)
         End Sub
