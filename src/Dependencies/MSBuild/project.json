@@ -1,7 +1,7 @@
 {
   "supports": { },
   "dependencies": {
-     "Roslyn.Microsoft.Build": "0.0.2"
+     "RoslynDependencies.Microsoft.Build.Desktop": "15.0.25302", 
   },
   "frameworks": {
     ".NETFramework,Version=v4.6": { }
