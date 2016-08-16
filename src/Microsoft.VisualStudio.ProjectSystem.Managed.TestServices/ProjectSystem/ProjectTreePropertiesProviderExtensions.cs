@@ -113,6 +113,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get;
             }
+
+            public bool IsFolder => _tree.Flags.Contains(ProjectTreeFlags.Common.Folder);
+
+            public bool IsNonFileSystemProjectItem => _tree.Flags.Contains(ProjectTreeFlags.Common.NonFileSystemProjectItem);
         }
     }
 }
