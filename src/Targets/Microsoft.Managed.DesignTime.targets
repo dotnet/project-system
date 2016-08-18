@@ -7,6 +7,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
+    <!-- workaround to disable References capability. We re-add other capabilities below. -->
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
     <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
@@ -18,6 +21,28 @@
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <!--<ProjectCapability Include="HandlesOwnReload"/>--><!--Temporary as it requires a CPS change to work-->
+    
+    <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
+    <ProjectCapability Include="DependenciesTree" />
+
+    <!-- 
+      List of capabilities below is adding back common capabilities defined in imported targets.
+      We disabled them with the property DefineCommonCapabilities=false to get rid of default 
+      References capability, but everything else we want back.
+    -->
+    <ProjectCapability Include="LanguageService;
+                                ProjectConfigurationsInferredFromUsage;
+                                AssemblyReferences;
+                                COMReferences;
+                                ProjectReferences;
+                                SharedProjectReferences;
+                                OutputGroups;
+                                AllTargetOutputGroups;
+                                VisualStudioWellKnownOutputGroups;
+                                SingleFileGenerators;
+                                DeclaredSourceItems;
+                                UserSourceItems;" />
+
   </ItemGroup>
 
   <!-- CPS Project Properties -->
@@ -45,6 +70,52 @@
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)WindowsLocalDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
+
+    <!-- Assembly references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AssemblyReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAssemblyReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <!-- COM references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)COMReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCOMReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <!-- Project references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedProjectReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+    
+    <!-- Sdk references -->
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)SdkReference.xaml">
+      <Context>;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedSdkReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <!-- Package references -->
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)PackageReference.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedPackageReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <!-- Targets -->

@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
+    <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -42,6 +43,26 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
+    <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\Rules\ResolvedPackageReference.cs">
+      <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedSdkReference.cs">
+      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SdkReference.xaml.cs">
+      <DependentUpon>SdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ComReference.xaml.cs">
+      <DependentUpon>ComReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\AssemblyReference.xaml.cs">
+      <DependentUpon>AssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\PackageReference.cs">
+      <DependentUpon>PackageReference.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderBase.cs" />
@@ -55,6 +76,7 @@
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
@@ -115,6 +137,9 @@
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
     <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\ProjectErrorUtilities.cs" />
+    <Compile Include="ProjectSystem\Utilities\ResourceUtilities.cs" />
+    <Compile Include="ProjectSystem\Utilities\TraceUtilities.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
   </ItemGroup>
@@ -160,6 +185,40 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ComReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
