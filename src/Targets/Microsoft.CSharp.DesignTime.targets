@@ -74,43 +74,4 @@
 
   </Target>
 
-  <!-- 
-      TODO:
-      
-      Uncomment when final tasks for raising project.lock.json data and pre-processing it to 
-      fromat understood by our DesignTime build rule are checked in to sdk repo.
-  -->
-
-  <!--<Target Name="RunLockFileToMSBuild">
-    --><!-- Rename and use final task from sdk to raise project.lock.json file data --><!--
-
-    <LockFileToMSBuild2 
-      ProjectLockFile="$(ProjectLockFile)">
-
-      <Output TaskParameter="TargetDefinitions" ItemName="TargetDefinitions" />
-      <Output TaskParameter="PackageDefinitions" ItemName="PackageDefinitions" />
-      <Output TaskParameter="FileDefinitions" ItemName="FileDefinitions" />
-      <Output TaskParameter="PackageDependencies" ItemName="PackageDependencies" />
-      <Output TaskParameter="FileDependencies" ItemName="FileDependencies" />
-    </LockFileToMSBuild2>
-
-  </Target>
-
-  <Target
-        Name="ResolveDependenciesDesignTime"
-        Returns="@(_DependenciesWorld)"
-        DependsOnTargets="ResolveAssemblyReferencesDesignTime;RunLockFileToMSBuild"
-        Condition="exists('$(ProjectLockFile)')">
-   
-    --><!-- Rename this task later to it's final name, when it is checked in to sdk repo --><!--
-    <GetDependenciesData TargetDefinitions="@(TargetDefinitions)"
-                               PackageDefinitions="@(PackageDefinitions)"
-                               FileDefinitions="@(FileDefinitions)"
-                               PackageDependencies="@(PackageDependencies)"
-                               FileDependencies="@(FileDependencies)">
-
-      <Output TaskParameter="DependenciesWorld" ItemName="_DependenciesWorld" />
-    </GetDependenciesData>
-  </Target>-->
-
 </Project>

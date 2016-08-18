@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""tfm1/package1/1.0.2.0"": {
                         ""Name"": ""package"",
                         ""Version"": ""1.0.2.0"",
-                        ""DependencyType"":""Package"",
+                        ""Type"":""Package"",
                         ""Path"":""SomePath"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""tfm1/PackageToRemove/1.0.0"": {
                         ""Name"": ""PackageToRemove"",
                         ""Version"": ""1.0.0"",
-                        ""DependencyType"":""Package"",
+                        ""Type"":""Package"",
                         ""Path"":""SomePath"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""tfm1/PackageToChange/2.0.0"": {
                         ""Name"": ""PackageToChange"",
                         ""Version"": ""2.0.0"",
-                        ""DependencyType"":""Package"",
+                        ""Type"":""Package"",
                         ""Path"":""SomePath"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""tfm1/package2/1.0.2.0"": {
                         ""Name"": ""package2"",
                         ""Version"": ""1.0.2.0"",
-                        ""DependencyType"":""Package"",
+                        ""Type"":""Package"",
                         ""Path"":""SomePath2"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package2"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
@@ -276,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package3"",
                 ""Version"": ""2.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Assembly1"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Assembly"",
+                ""Type"": ""Assembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""FrameworkAssembly1"",
                 ""Version"": ""4.0.0"",
-                ""DependencyType"": ""FrameworkAssembly"",
+                ""Type"": ""FrameworkAssembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -309,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""SomeUnknown"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Xxxx"",
+                ""Type"": ""Xxxx"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -408,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package2"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package3"",
                 ""Version"": ""2.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -430,7 +430,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Assembly1"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Assembly"",
+                ""Type"": ""Assembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -441,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""FrameworkAssembly1"",
                 ""Version"": ""4.0.0"",
-                ""DependencyType"": ""FrameworkAssembly"",
+                ""Type"": ""FrameworkAssembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -452,7 +452,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""SomeUnknown"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Xxxx"",
+                ""Type"": ""Xxxx"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -500,7 +500,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package2"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
@@ -511,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package3"",
                 ""Version"": ""2.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -522,7 +522,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Assembly1"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Assembly"",
+                ""Type"": ""Assembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -533,7 +533,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""FrameworkAssembly1"",
                 ""Version"": ""4.0.0"",
-                ""DependencyType"": ""FrameworkAssembly"",
+                ""Type"": ""FrameworkAssembly"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -544,7 +544,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""SomeUnknown"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Xxxx"",
+                ""Type"": ""Xxxx"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": """"
@@ -597,7 +597,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package2"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
@@ -665,7 +665,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Properties"": {
                 ""Name"": ""Package2"",
                 ""Version"": ""1.0.0"",
-                ""DependencyType"": ""Package"",
+                ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
                 ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
@@ -817,7 +817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 result.Add("Version", dependency.Version);
                 result.Add("Name", dependency.Name);
-                result.Add("DependencyType", dependency.DependencyType.ToString());
+                result.Add("Type", dependency.DependencyType.ToString());
                 result.Add("Path", dependency.Path);
                 result.Add("Dependencies", string.Join(";", dependency.DependenciesItemSpecs));
                 result.Add("Resolved", dependency.Resolved.ToString());

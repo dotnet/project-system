@@ -376,14 +376,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Requires.NotNull(properties, nameof(properties));
 
-                RuntimeIdentifier = properties.ContainsKey("RuntimeIdentifier") 
-                                        ? properties["RuntimeIdentifier"] : string.Empty;
-                TargetFrameworkMoniker = properties.ContainsKey("TargetFrameworkMoniker") 
-                                            ? properties["TargetFrameworkMoniker"] : string.Empty;
-                FrameworkName = properties.ContainsKey("FrameworkName")
-                                    ? properties["FrameworkName"] : string.Empty;
-                FrameworkVersion = properties.ContainsKey("FrameworkVersion") 
-                                    ? properties["FrameworkVersion"] : string.Empty;
+                RuntimeIdentifier = properties.ContainsKey(MetadataKeys.RuntimeIdentifier) 
+                                        ? properties[MetadataKeys.RuntimeIdentifier] : string.Empty;
+                TargetFrameworkMoniker = properties.ContainsKey(MetadataKeys.TargetFrameworkMoniker) 
+                                            ? properties[MetadataKeys.TargetFrameworkMoniker] : string.Empty;
+                FrameworkName = properties.ContainsKey(MetadataKeys.FrameworkName)
+                                    ? properties[MetadataKeys.FrameworkName] : string.Empty;
+                FrameworkVersion = properties.ContainsKey(MetadataKeys.FrameworkVersion) 
+                                    ? properties[MetadataKeys.FrameworkVersion] : string.Empty;
             }
         }
 
@@ -423,27 +423,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Requires.NotNull(properties, nameof(properties));
 
-                Name = properties.ContainsKey("Name") ? properties["Name"] : string.Empty;
-                Version = properties.ContainsKey("Version") ? properties["Version"] : string.Empty;
-                var dependencyTypeString = properties.ContainsKey("DependencyType") 
-                                    ? properties["DependencyType"] : string.Empty;
+                Name = properties.ContainsKey(MetadataKeys.Name) ? properties[MetadataKeys.Name] : string.Empty;
+                Version = properties.ContainsKey(MetadataKeys.Version) 
+                                    ? properties[MetadataKeys.Version] : string.Empty;
+                var dependencyTypeString = properties.ContainsKey(MetadataKeys.Type) 
+                                    ? properties[MetadataKeys.Type] : string.Empty;
                 DependencyType dependencyType = DependencyType.Unknown;
                 if (Enum.TryParse(dependencyTypeString ?? string.Empty, /*ignoreCase */ true, out dependencyType))
                 {
                     DependencyType = dependencyType;
                 }
 
-                Path = properties.ContainsKey("Path") ? properties["Path"] : string.Empty;
+                Path = properties.ContainsKey(MetadataKeys.Path) ? properties[MetadataKeys.Path] : string.Empty;
 
                 bool resolved = true;
-                bool.TryParse(properties.ContainsKey("Resolved") 
-                                ? properties["Resolved"] : "true", out resolved);
+                bool.TryParse(properties.ContainsKey(MetadataKeys.Resolved) 
+                                ? properties[MetadataKeys.Resolved] : "true", out resolved);
                 Resolved = resolved;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                if (properties.ContainsKey("Dependencies") && properties["Dependencies"] != null)
+                if (properties.ContainsKey(MetadataKeys.Dependencies) && properties[MetadataKeys.Dependencies] != null)
                 {
-                    var dependencyIds = properties["Dependencies"].Split(new[] { ';' },
+                    var dependencyIds = properties[MetadataKeys.Dependencies].Split(new[] { ';' },
                                                                          StringSplitOptions.RemoveEmptyEntries);
 
                     // store only unique dependency IDs
@@ -607,6 +608,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Package,
             Assembly,
             FrameworkAssembly            
+        }
+
+        protected static class MetadataKeys
+        {
+            // General Metadata
+            public const string Name = "Name";
+            public const string Type = "Type";
+            public const string Version = "Version";
+            public const string FileGroup = "FileGroup";
+            public const string Path = "Path";
+            public const string Resolved = "Resolved";
+            public const string Dependencies = "Dependencies";
+
+            // Target Metadata
+            public const string RuntimeIdentifier = "RuntimeIdentifier";
+            public const string TargetFrameworkMoniker = "TargetFrameworkMoniker";
+            public const string FrameworkName = "FrameworkName";
+            public const string FrameworkVersion = "FrameworkVersion";
         }
     }
 }
