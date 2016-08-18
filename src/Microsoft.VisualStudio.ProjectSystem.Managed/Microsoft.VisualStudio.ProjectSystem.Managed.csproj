@@ -224,36 +224,6 @@
     </XamlPropertyRule>
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ComReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />

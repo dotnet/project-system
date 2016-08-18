@@ -4,61 +4,17 @@
 
 -->
 
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">    
-    
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="Microsoft.Managed.DesignTime.targets" />
+
+  <!-- Properties -->
   <PropertyGroup>
-    <DefineCommonCapabilities>false</DefineCommonCapabilities>
-    
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
   </PropertyGroup>
-
-    <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
-    <ProjectCapability Include="DependenciesTree" />
-    
-    <!-- 
-      List of capabilities below is adding back common capabilities defined in imported targets.
-      We disabled them with the property DefineCommonCapabilities=false to get rid of default 
-      References capability, but everything else we want back.
-    -->
-    <ProjectCapability Include="LanguageService;
-                                ProjectConfigurationsInferredFromUsage;
-                                AssemblyReferences;
-                                COMReferences;
-                                ProjectReferences;
-                                SharedProjectReferences;
-                                OutputGroups;
-                                AllTargetOutputGroups;
-                                VisualStudioWellKnownOutputGroups;
-                                SingleFileGenerators;
-                                DeclaredSourceItems;
-                                UserSourceItems;" />
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AssemblyReference.xaml">
-      <Context>;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ComReference.xaml">
-      <Context>;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)SdkReference.xaml">
-      <Context>;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedSdkReference.xaml">
-      <Context>ProjectSubscriptionService;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)PackageReference.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ResolvedPackageReference.xaml">
-      <Context>ProjectSubscriptionService;BrowseObject</Context>
-    </PropertyPageSchema>
 
   <!-- Targets -->
 
