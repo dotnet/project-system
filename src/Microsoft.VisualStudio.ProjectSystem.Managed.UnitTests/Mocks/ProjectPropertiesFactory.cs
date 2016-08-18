@@ -28,9 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
                 o.AdditionalRuleDefinitions == ruleService);            
 
+            var cfg = new StandardProjectConfiguration("Debug|" + "AnyCPU", Empty.PropertiesMap.SetItem("Configuration", "Debug").SetItem("Platform", "AnyCPU"));
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == unconfiguredProject &&
-                o.Services == configuredProjectServices);
+                o.Services == configuredProjectServices &&
+                o.ProjectConfiguration == cfg);
 
             return new ProjectProperties(configuredProject);
         }
@@ -69,7 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                    .Returns((string schemaName, string file, string itemType, string itemName) => {
 
-                       return rulesBySchemaName.Values.First();
+                       IRule rule;
+                       rulesBySchemaName.TryGetValue(schemaName, out rule);
+                       return rule;
                 });
 
             return catalog.Object;

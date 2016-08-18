@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     }
                     else
                     {
-                        throw new COMException(string.Format(Resources.FailedToWatchProject, project.ProjectFile), hr);
+                        throw new COMException(string.Format(VSResources.FailedToWatchProject, project.ProjectFile), hr);
                     }
                 }
             }
@@ -327,13 +327,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             ignoreAll = false;
             reloadAll = false;
-            var buttons = new string[] {Resources.IgnoreAll,
-                                        Resources.Ignore,
-                                        Resources.ReloadAll,
-                                        Resources.Reload};
+            var buttons = new string[] {VSResources.IgnoreAll,
+                                        VSResources.Ignore,
+                                        VSResources.ReloadAll,
+                                        VSResources.Reload};
 
-            var msgText = string.Format(Resources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
-            switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ProjectModificationDlgTitle, msgText, buttons))
+            var msgText = string.Format(VSResources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
+            switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ProjectModificationDlgTitle, msgText, buttons))
             {
                 case MultiChoiceMsgBoxResult.Cancel:
                 {
@@ -372,14 +372,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private void ProcessProjectDirtyInMemory(IReloadableProject project)
         {
-            var buttons = new string[] {Resources.Ignore,
-                                        Resources.Overwrite,
-                                        Resources.Discard,
-                                        Resources.SaveAs};
+            var buttons = new string[] {VSResources.Ignore,
+                                        VSResources.Overwrite,
+                                        VSResources.Discard,
+                                        VSResources.SaveAs};
 
-            var msgText = string.Format(Resources.ConflictingModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
+            var msgText = string.Format(VSResources.ConflictingModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
 
-            switch (_dialogServices.ShowMultiChoiceMsgBox(Resources.ConflictingProjectModificationTitle, msgText, buttons))
+            switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ConflictingProjectModificationTitle, msgText, buttons))
             {
                 case MultiChoiceMsgBoxResult.Cancel:
                 {

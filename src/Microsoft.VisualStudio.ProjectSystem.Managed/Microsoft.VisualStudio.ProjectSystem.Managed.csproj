@@ -37,6 +37,20 @@
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
+    <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
+    <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
+    <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
+    <Compile Include="ProjectSystem\Debug\IMutableLaunchProfile.cs" />
+    <Compile Include="ProjectSystem\Debug\IMutableLaunchSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
+    <Compile Include="ProjectSystem\Debug\ILaunchProfile.cs" />
+    <Compile Include="ProjectSystem\Debug\ILaunchSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\ILaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeService.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
@@ -58,7 +72,9 @@
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
+    <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
@@ -114,7 +130,15 @@
     <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
     <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\SimpleFileWatcher.cs" />
+    <Compile Include="ProjectSystem\Utilities\StringExtensions.cs" />
     <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskExtensions.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
   </ItemGroup>
@@ -162,6 +186,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>

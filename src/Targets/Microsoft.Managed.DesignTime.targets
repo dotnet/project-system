@@ -13,12 +13,37 @@
     <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
   </PropertyGroup>
 
+    
+  <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
+       currently matches what is in common targets, but removes BuildWnowsDesktopTarget -->
+  <PropertyGroup>
+    <DefineCommonCapabilities>False</DefineCommonCapabilities>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectCapability Include="
+                          AssemblyReferences;
+                          COMReferences;
+                          ProjectReferences;
+                          SharedProjectReferences;
+                          OutputGroups;
+                          AllTargetOutputGroups;
+                          VisualStudioWellKnownOutputGroups;
+                          SingleFileGenerators;
+                          DeclaredSourceItems;
+                          UserSourceItems;
+                           " />
+    <!-- And from Microsoft.Csharp/VisualBasic.Currentversion.targets -->
+      <ProjectCapability Include="ReferencesFolder;LanguageService" />
+      <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
+  </ItemGroup>
+
   <!-- Project Capabilities -->
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <!--<ProjectCapability Include="HandlesOwnReload"/>--><!--Temporary as it requires a CPS change to work-->
-  </ItemGroup>
+     <ProjectCapability Include="LaunchProfiles" />
+ </ItemGroup>
   
   <!-- CPS Project Properties -->
   <ItemGroup>
@@ -39,6 +64,10 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>

@@ -41,9 +41,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
+    <Compile Include="Mocks\IFileSystemMoq.cs" />
+    <Compile Include="Mocks\ISourceCodeControlIntegrationFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
@@ -63,6 +66,8 @@
     <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
+    <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
@@ -72,6 +77,11 @@
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchProfileDataTests.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchProfileTests.cs" />
+    <Compile Include="ProjectSystem\Debug\DebugTokenReplacerTests.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
+    <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
     <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeServiceTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\Properties\ApplicationManifestValueProviderTests.cs" />
@@ -84,6 +94,8 @@
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskExtensionsTests.cs" />
+    <Compile Include="ProjectSystem\Utilities\StringExtensionsTests .cs" />
     <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />

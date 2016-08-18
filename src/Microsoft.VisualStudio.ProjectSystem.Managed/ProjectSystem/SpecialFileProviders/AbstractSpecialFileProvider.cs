@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             // If the file was in the project but not on disk.
-            if (!_fileSystem.Exists(specialFileNode.FilePath))
+            if (!_fileSystem.FileExists(specialFileNode.FilePath))
             {
                 if (forceSync)
                 {

@@ -68,6 +68,9 @@
     <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugLaunchProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
@@ -96,6 +99,7 @@
     </None>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>

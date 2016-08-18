@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     ///     Provides debuggers with information agbout the target output that the project generates.
     /// </summary>
     [Export(typeof(IDebuggerImageTypeService))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic + " & !" + ProjectCapability.LaunchProfiles )]
     internal class ManagedDebuggerImageTypeService : IDebuggerImageTypeService
     {
         private readonly ProjectProperties _properties;
