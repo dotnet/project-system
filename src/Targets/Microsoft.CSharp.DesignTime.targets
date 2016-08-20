@@ -16,18 +16,29 @@
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
   </PropertyGroup>
 
-  <!-- Targets -->
-
-  <!-- Returns Csc command-line arguments for the language service -->
-  <Target Name="CompileDesignTime"
-          Returns="@(_CompilerCommandLineArgs)"
-          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-          >
-
     <ItemGroup>
       <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
     </ItemGroup>
 
-  </Target>
+    <ItemGroup>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.xaml;">
+      <Context>File</Context>
+     </PropertyPageSchema>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+     </PropertyPageSchema>
+
+     <ProjectCapability Include="CSharp;Managed"/>
+    </ItemGroup>
+
+    <!-- Targets -->
+
+    <!-- Returns Csc command-line arguments for the language service -->
+    <Target Name="CompileDesignTime"
+            Returns="@(_CompilerCommandLineArgs)"
+            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          >
+    </Target>
 
 </Project>
