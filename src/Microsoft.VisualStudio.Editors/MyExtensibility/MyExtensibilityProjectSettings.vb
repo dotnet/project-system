@@ -328,7 +328,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Function GetBuildAttribute(ByVal projectItemID As UInteger, ByVal attributeName As String) As String
             Debug.Assert(Not String.IsNullOrEmpty(attributeName), "NULL " & NameOf(attributeName))
-            Debug.Assert(_vsBuildPropertyStorage IsNot Nothing, "NULL IVsBuildPropertyStrorage!") ' TODO: Find correct object.
+            Debug.Assert(_vsBuildPropertyStorage IsNot Nothing, "NULL IVsBuildPropertyStrorage!")
 
             Dim result As String = Nothing
             _vsBuildPropertyStorage.GetItemAttribute(projectItemID, attributeName, result)

@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If RootDesigner IsNot Nothing Then
                     View = TryCast(RootDesigner.GetView(ViewTechnology.Default), BaseDesignerView)
                 End If
-                Debug.Assert(View IsNot Nothing, NameOf(ManualCheckOut) & ": Unable to locate base designer view to call Enter/LeaveProjectCheckoutSection") ' TODO: Nameof Enter / LeaveProjectCheckoutSection
+                Debug.Assert(View IsNot Nothing, NameOf(ManualCheckOut) & ": Unable to locate base designer view to call Enter/LeaveProjectCheckoutSection")
 
                 If View IsNot Nothing Then
                     View.EnterProjectCheckoutSection()
@@ -668,7 +668,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Exit Sub
             End If
 
-            Switches.TracePDFocus(TraceLevel.Warning, NameOf(BaseDesignerLoader) & "." & NameOf(BaseDesignerLoader.m_WindowEvents_WindowActivated)) ' TODO: Find a better name.
+            Switches.TracePDFocus(TraceLevel.Warning, NameOf(BaseDesignerLoader) & "." & NameOf(BaseDesignerLoader.m_WindowEvents_WindowActivated))
 
             If LostFocus IsNot Nothing Then
                 'This seems to throw sometimes, let's ignore if that happens

@@ -462,7 +462,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Remove the given extension code files from the project.
         ''' </summary>
         Private Sub RemoveExtensionProjectItemGroups(ByVal extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup), ByVal projectFilesRemovedSB As StringBuilder)
-            Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid extensionProjectFiles!") 'TODO: Find correct name.
+            Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid extensionProjectFiles!")
             Debug.Assert(projectFilesRemovedSB IsNot Nothing, "Invalid " & NameOf(projectFilesRemovedSB) & "!")
 
             Using New WaitCursor()

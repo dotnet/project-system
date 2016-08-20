@@ -79,7 +79,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
                 dialogOwner = UIService.GetDialogOwnerWindow()
             End If
 
-            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get DialogOwnerWindow") 'TODO: Fix name.
+            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get DialogOwnerWindow")
             Return dialogOwner
         End Function
 
@@ -163,7 +163,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
                 If VSErrorHandler.Succeeded(hr) AndAlso TypeOf ValueObject Is Boolean Then
                     ReturnValue = CBool(ValueObject)
                 Else
-                    Debug.Fail($"Failed to get VSCFGPROPID_HideConfigurations from project config provider") ' TODO: Fix Name
+                    Debug.Fail($"Failed to get VSCFGPROPID_HideConfigurations from project config provider")
                     ReturnValue = False
                 End If
             End If
@@ -189,7 +189,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
             Try
                 ProjAndSolutionProperties = DTE.Properties(EnvironmentCategory, ProjectsAndSolution)
                 If ProjAndSolutionProperties IsNot Nothing Then
-                    ShowValue = CBool(ProjAndSolutionProperties.Item(ShowAdvancedBuildIntValue).Value) ' TODO: Check that this is the correct object to use.
+                    ShowValue = CBool(ProjAndSolutionProperties.Item("ShowAdvancedBuildConfigurations").Value)
                 Else
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
@@ -495,9 +495,9 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
         ''' The list of items that are to be checked out
         ''' </returns>
         ''' <remarks></remarks>
-        Friend Shared Function FileNameAndGeneratedFileName(ByVal projectitem As EnvDTE.ProjectItem, _
-                                                            Optional ByVal suffix As String = ".Designer", _
-                                                            Optional ByVal requireExactlyOneChild As Boolean = True, _
+        Friend Shared Function FileNameAndGeneratedFileName(ByVal projectitem As EnvDTE.ProjectItem,
+                                                            Optional ByVal suffix As String = ".Designer",
+                                                            Optional ByVal requireExactlyOneChild As Boolean = True,
                                                             Optional ByVal exclude As Predicate(Of String) = Nothing) _
                                As Collections.Generic.List(Of String)
 
@@ -545,7 +545,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
         '''<summary>
         ''' a fake IVSDProjectProperties definition. We only use this to check whether the project supports this interface, but don't pay attention to the detail.
         '''</summary>
-        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)> _
+        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
         Private Interface IVSDProjectProperties
         End Interface
 
@@ -673,7 +673,7 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
             Public Sub New(ByVal sp As IServiceProvider, ByVal ctrl As System.Windows.Forms.Control, ByVal SetFontInitially As Boolean)
-                MyBase.new(sp)
+                MyBase.New(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
                 Debug.Assert(ctrl IsNot Nothing, "Why didn't we get a control to provide the dialog font for!?")
@@ -773,8 +773,8 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
         ''' <returns>If serviceProvider, (Import)proxyGenerationErrors or no error, return S_OK,
         '''  else, return the result from IVsErrorList.BringToFront() </returns>
         ''' <remarks></remarks>
-        Public Shared Function CheckAndDisplayWcfErrorList(ByVal serviceProvider As IServiceProvider, _
-                                                           ByVal proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError), _
+        Public Shared Function CheckAndDisplayWcfErrorList(ByVal serviceProvider As IServiceProvider,
+                                                           ByVal proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError),
                                                            ByVal importErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError)) As Integer
 
             If serviceProvider Is Nothing Then
@@ -836,9 +836,9 @@ Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function CreateTypeResolutionService(ByVal serviceProvider As IServiceProvider, ByVal hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
-                    TryCast(serviceProvider.GetService( _
-                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), _
+            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService =
+                    TryCast(serviceProvider.GetService(
+                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)),
                     Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
 
             Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing

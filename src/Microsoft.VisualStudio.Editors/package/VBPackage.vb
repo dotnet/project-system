@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors
                     Dim oBool As Object = Nothing
                     hr = _solution.GetProperty(Microsoft.VisualStudio.Shell.Interop.__VSPROPID2.VSPROPID_DeferredSaveSolution, oBool)
 #If DEBUG Then
-                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to get VSPROPID_DeferredSaveSolution - we will not clean up user.config files...") ' TODO: Find correct name.
+                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to get VSPROPID_DeferredSaveSolution - we will not clean up user.config files...")
 #End If
                     ErrorHandler.ThrowOnFailure(hr)
 
