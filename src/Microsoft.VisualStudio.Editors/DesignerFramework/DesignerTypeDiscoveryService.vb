@@ -24,8 +24,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="hierarchy"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal sp As IServiceProvider, ByVal hierarchy As IVsHierarchy)
-            If sp Is Nothing Then Throw New ArgumentNullException("sp")
-            If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
+            If sp Is Nothing Then Throw New ArgumentNullException(NameOf(sp))
+            If hierarchy Is Nothing Then Throw New ArgumentNullException(NameOf(hierarchy))
 
             _serviceProvider = sp
             _hierarchy = hierarchy
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function AssemblyFromProjectOutput(ByVal typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, ByVal projectOutput As String) As System.Reflection.Assembly
-            If typeResolutionService Is Nothing Then Throw New ArgumentNullException("typeResolutionService")
+            If typeResolutionService Is Nothing Then Throw New ArgumentNullException(NameOf(typeResolutionService))
 
             If typeResolutionService IsNot Nothing Then
                 Try
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' we need to append the fragment to the end of the path.
         ''' </devdoc>
         Protected Shared Function GetLocalPath(ByVal fileName As String) As String
-            System.Diagnostics.Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
+            System.Diagnostics.Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, " & NameOf(fileName) & " is not valid")
 
             Dim uri As New Uri(fileName)
             Return uri.LocalPath & uri.Fragment

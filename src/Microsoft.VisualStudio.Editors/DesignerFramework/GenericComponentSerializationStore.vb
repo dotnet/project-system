@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Friend Sub New(ByVal Value As ObjectData)
                 If Value Is Nothing Then
-                    Throw New ArgumentNullException("Value")
+                    Throw New ArgumentNullException(NameOf(Value))
                 End If
                 _objectName = Value.Name
                 _serializedValue = SerializeObject(Value.Value)
@@ -478,10 +478,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Public Sub New(ByVal Value As ObjectData, ByVal [Property] As PropertyDescriptor)
                 If Value Is Nothing Then
-                    Throw New ArgumentNullException("Value")
+                    Throw New ArgumentNullException(NameOf(Value))
                 End If
                 If [Property] Is Nothing Then
-                    Throw New ArgumentNullException("Property")
+                    Throw New ArgumentNullException(NameOf([Property]))
                 End If
 
                 _objectName = Value.Name

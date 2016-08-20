@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Shared Function GetInstance(ByVal serviceProvider As IServiceProvider) As TrackProjectDocumentsEventsHelper
             Try
                 Return New TrackProjectDocumentsEventsHelper(serviceProvider)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Fail to listen to IVsTrackProjectDocumentsEvents2", NameOf(TrackProjectDocumentsEventsHelper))
+            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Fail to listen to " & NameOf(IVsTrackProjectDocumentsEvents2), NameOf(TrackProjectDocumentsEventsHelper))
                 Return Nothing
             End Try
         End Function
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub New(ByVal serviceProvider As IServiceProvider)
             If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException("serviceProvider")
+                Throw New ArgumentNullException(NameOf(serviceProvider))
             End If
 
             _serviceProvider = serviceProvider
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             _vsTrackProjectDocuments = TryCast(_serviceProvider.GetService(GetType(SVsTrackProjectDocuments)), _
                 IVsTrackProjectDocuments2)
             If _vsTrackProjectDocuments Is Nothing Then
-                Throw New Exception("Could not get IVsTrackProjectDocuments2!")
+                Throw New Exception("Could not get " & NameOf(IVsTrackProjectDocuments2) & "!")
             End If
 
             ErrorHandler.ThrowOnFailure( _

@@ -619,7 +619,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
-                        Throw New ArgumentOutOfRangeException("value")
+                        Throw New ArgumentOutOfRangeException(NameOf(value))
                 End Select
 
                 If _myAppData.AuthenticationMode <> value Then
@@ -1209,7 +1209,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
 
             If MyAppProjectItem Is Nothing Then
-                Debug.Fail("MyAppProjectItem is Nothing")
+                Debug.Fail(NameOf(MyAppProjectItem) & " is Nothing")
                 Return New String() {}
             End If
 

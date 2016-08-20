@@ -13,13 +13,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
     Friend Class VsStatusBarWrapper
 
         Public Sub New(ByVal vsStatusBar As IVsStatusbar)
-            Debug.Assert(vsStatusBar IsNot Nothing, "Must provide IVsStatusBar!")
+            Debug.Assert(vsStatusBar IsNot Nothing, "Must provide " & NameOf(IVsStatusBar) & "!")
 
             _vsStatusBar = vsStatusBar
         End Sub
 
         Public Sub StartProgress(ByVal label As String, ByVal total As Integer)
-            Debug.Assert(total > 0, "total must > 0!")
+            Debug.Assert(total > 0, NameOf(total) & " must > 0!")
             _vsStatusBarCookie = 0
             _completed = 0
             _total = total
@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Sub
 
         Public Sub UpdateProgress(ByVal label As String)
-            Debug.Assert(_vsStatusBarCookie > 0, "Haven't StartProgress!")
+            Debug.Assert(_vsStatusBarCookie > 0, "Haven't " & NameOf(StartProgress) & "!")
             If _vsStatusBarCookie = 0 Then
                 Exit Sub
             End If

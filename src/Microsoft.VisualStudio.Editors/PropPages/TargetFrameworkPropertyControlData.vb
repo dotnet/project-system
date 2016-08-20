@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If Site Is Nothing Then
                 ' Can't do anything without a site
-                Debug.Fail("Why is there no site?")
+                Debug.Fail("Why is there no " & NameOf(Site) & "?")
                 Return
             End If
 
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If vsUIShellOpenDocument Is Nothing Then
                 ' Can't do anything without a IVsUIShellOpenDocument
-                Debug.Fail("Why is there no IVsUIShellOpenDocument service?")
+                Debug.Fail("Why is there no " & NameOf(IVsUIShellOpenDocument) & " service?")
                 Return
             End If
 
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If ErrorHandler.Failed(vsUIShellOpenDocument.OpenStandardPreviewer(flags, url, resolution, reserved)) Then
                 ' Behavior for OpenStandardPreviewer with no flags is to show a message box if
                 ' it fails (will always return S_OK)
-                Debug.Fail("IVsUIShellOpenDocument.OpenStandardPreviewer failed!")
+                Debug.Fail(NameOf(IVsUIShellOpenDocument) & "." & NameOf(IVsUIShellOpenDocument.OpenStandardPreviewer) & " failed!")
             End If
 
         End Sub

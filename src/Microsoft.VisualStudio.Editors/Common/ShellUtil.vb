@@ -49,7 +49,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail(
+$"Unable to get color from the shell, using a predetermined default color instead.
+Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}")
             Return DefaultColor
         End Function
 
@@ -77,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 dialogOwner = UIService.GetDialogOwnerWindow()
             End If
 
-            Debug.Assert(dialogOwner IsNot Nothing, "Couldn't get DialogOwnerWindow")
+            Debug.Assert(dialogOwner IsNot Nothing, $"Couldn't get DialogOwnerWindow")
             Return dialogOwner
         End Function
 
@@ -161,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If VSErrorHandler.Succeeded(hr) AndAlso TypeOf ValueObject Is Boolean Then
                     ReturnValue = CBool(ValueObject)
                 Else
-                    Debug.Fail("Failed to get VSCFGPROPID_HideConfigurations from project config provider")
+                    Debug.Fail($"Failed to get VSCFGPROPID_HideConfigurations from project config provider")
                     ReturnValue = False
                 End If
             End If
@@ -435,8 +437,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         ''' <remarks></remarks>
         Friend Shared Sub GetDocumentInfo(ByVal fileName As String, ByVal rdt As IVsRunningDocumentTable, ByRef hierarchy As IVsHierarchy, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
-            If fileName Is Nothing Then Throw New ArgumentNullException("fileName")
-            If rdt Is Nothing Then Throw New ArgumentNullException("rdt")
+            If fileName Is Nothing Then Throw New ArgumentNullException(NameOf(fileName))
+            If rdt Is Nothing Then Throw New ArgumentNullException(NameOf(rdt))
 
             '
             ' Initialize out parameters...
@@ -493,9 +495,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' The list of items that are to be checked out
         ''' </returns>
         ''' <remarks></remarks>
-        Friend Shared Function FileNameAndGeneratedFileName(ByVal projectitem As EnvDTE.ProjectItem, _
-                                                            Optional ByVal suffix As String = ".Designer", _
-                                                            Optional ByVal requireExactlyOneChild As Boolean = True, _
+        Friend Shared Function FileNameAndGeneratedFileName(ByVal projectitem As EnvDTE.ProjectItem,
+                                                            Optional ByVal suffix As String = ".Designer",
+                                                            Optional ByVal requireExactlyOneChild As Boolean = True,
                                                             Optional ByVal exclude As Predicate(Of String) = Nothing) _
                                As Collections.Generic.List(Of String)
 
@@ -543,7 +545,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''<summary>
         ''' a fake IVSDProjectProperties definition. We only use this to check whether the project supports this interface, but don't pay attention to the detail.
         '''</summary>
-        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)> _
+        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
         Private Interface IVSDProjectProperties
         End Interface
 
@@ -671,7 +673,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
             Public Sub New(ByVal sp As IServiceProvider, ByVal ctrl As System.Windows.Forms.Control, ByVal SetFontInitially As Boolean)
-                MyBase.new(sp)
+                MyBase.New(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
                 Debug.Assert(ctrl IsNot Nothing, "Why didn't we get a control to provide the dialog font for!?")
@@ -735,8 +737,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>True if registered, false otherwise</returns>
         ''' <remarks></remarks>
         Friend Shared Function IsCustomToolRegistered(ByVal hierarchy As IVsHierarchy, ByVal customToolName As String) As Boolean
-            If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
-            If customToolName Is Nothing Then Throw New ArgumentNullException("customToolName")
+            If hierarchy Is Nothing Then Throw New ArgumentNullException(NameOf(hierarchy))
+            If customToolName Is Nothing Then Throw New ArgumentNullException(NameOf(customToolName))
 
             ' All project systems support empty string (= no custom tool)
             If customToolName.Length = 0 Then Return True
@@ -771,8 +773,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>If serviceProvider, (Import)proxyGenerationErrors or no error, return S_OK,
         '''  else, return the result from IVsErrorList.BringToFront() </returns>
         ''' <remarks></remarks>
-        Public Shared Function CheckAndDisplayWcfErrorList(ByVal serviceProvider As IServiceProvider, _
-                                                           ByVal proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError), _
+        Public Shared Function CheckAndDisplayWcfErrorList(ByVal serviceProvider As IServiceProvider,
+                                                           ByVal proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError),
                                                            ByVal importErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError)) As Integer
 
             If serviceProvider Is Nothing Then
@@ -834,9 +836,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function CreateTypeResolutionService(ByVal serviceProvider As IServiceProvider, ByVal hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
-                    TryCast(serviceProvider.GetService( _
-                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), _
+            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService =
+                    TryCast(serviceProvider.GetService(
+                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)),
                     Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
 
             Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing
@@ -872,7 +874,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail(
+$"Unable to get color from the shell, using a predetermined default color instead.
+Color Index = {VsSysColorIndex}, Default Color = &h{VB.Hex(DefaultColor.ToArgb)}")
             Return DefaultColor
         End Function
 

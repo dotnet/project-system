@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     SyncLock _syncLockObject
                         If _selectionService Is Nothing Then
                             _selectionService = CType(MyBase.GetService(GetType(ISelectionService)), ISelectionService)
-                            Debug.Assert(_selectionService IsNot Nothing, "Cannot get ISelectionService!!!")
+                            Debug.Assert(_selectionService IsNot Nothing, "Cannot get " & NameOf(ISelectionService) & "!!!")
                         End If
                     End SyncLock
                 End If
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Friend Sub RefreshMenuStatus()
             For Each MenuItem As MenuCommand In MenuCommands
-                Debug.Assert(MenuItem IsNot Nothing, "MenuItem IsNot Nothing!")
+                Debug.Assert(MenuItem IsNot Nothing, NameOf(MenuItem) & " IsNot Nothing!")
                 If TypeOf MenuItem Is DesignerMenuCommand Then
                     CType(MenuItem, DesignerMenuCommand).RefreshStatus()
                 End If

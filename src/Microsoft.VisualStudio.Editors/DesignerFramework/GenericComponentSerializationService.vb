@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Overrides Function LoadStore(ByVal Stream As Stream) As SerializationStore
             If Stream Is Nothing Then
-                Throw New ArgumentNullException("Stream")
+                Throw New ArgumentNullException(NameOf(Stream))
             End If
 
             Return GenericComponentSerializationStore.Load(Stream)
@@ -63,16 +63,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Overrides Sub Serialize(ByVal Store As SerializationStore, ByVal Value As Object)
             If Store Is Nothing Then
-                Throw New ArgumentNullException("Store")
+                Throw New ArgumentNullException(NameOf(Store))
             End If
 
             If Value Is Nothing Then
-                Throw New ArgumentNullException("Value")
+                Throw New ArgumentNullException(NameOf(Value))
             End If
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.AddObject(Value)
@@ -99,24 +99,24 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </remarks>
         Public Overrides Sub SerializeMember(ByVal Store As SerializationStore, ByVal OwningObject As Object, ByVal Member As MemberDescriptor)
             If Store Is Nothing Then
-                Throw New ArgumentNullException("Store")
+                Throw New ArgumentNullException(NameOf(Store))
             End If
 
             If OwningObject Is Nothing Then
-                Throw New ArgumentNullException("OwningObject")
+                Throw New ArgumentNullException(NameOf(OwningObject))
             End If
 
             If Member Is Nothing Then
-                Throw New ArgumentNullException("Member")
+                Throw New ArgumentNullException(NameOf(Member))
             End If
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             If Not TypeOf Member Is PropertyDescriptor Then
-                Throw Common.CreateArgumentException("Member")
+                Throw Common.CreateArgumentException(NameOf(Member))
             End If
 
             RFStore.AddMember(OwningObject, DirectCast(Member, PropertyDescriptor))
@@ -153,12 +153,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Overrides Function Deserialize(ByVal Store As SerializationStore) As ICollection
             If Store Is Nothing Then
-                Throw New ArgumentNullException("Store")
+                Throw New ArgumentNullException(NameOf(Store))
             End If
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize()
@@ -176,16 +176,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Overrides Function Deserialize(ByVal Store As SerializationStore, ByVal Container As IContainer) As ICollection
             If Store Is Nothing Then
-                Throw New ArgumentNullException("Store")
+                Throw New ArgumentNullException(NameOf(Store))
             End If
 
             If Container Is Nothing Then
-                Throw New ArgumentNullException("Container")
+                Throw New ArgumentNullException(NameOf(Container))
             End If
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize(Container)
@@ -209,16 +209,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Overrides Sub DeserializeTo(ByVal Store As SerializationStore, ByVal Container As IContainer, ByVal ValidateRecycledTypes As Boolean, ByVal applyDefaults As Boolean)
             If Store Is Nothing Then
-                Throw New ArgumentNullException("Store")
+                Throw New ArgumentNullException(NameOf(Store))
             End If
 
             If Container Is Nothing Then
-                Throw New ArgumentNullException("Container")
+                Throw New ArgumentNullException(NameOf(Container))
             End If
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.DeserializeTo(Container)

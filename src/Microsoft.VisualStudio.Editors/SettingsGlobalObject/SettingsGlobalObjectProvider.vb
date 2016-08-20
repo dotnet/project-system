@@ -15,6 +15,7 @@ Imports System.Runtime.InteropServices
 
 Imports Microsoft.VSDesigner
 Imports System.Reflection
+Imports Microsoft.VisualStudio.Editors
 
 Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <summary>
@@ -76,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Friend Shared ReadOnly Property GlobalSettings() As TraceSwitch
             Get
                 If (s_globalSettings Is Nothing) Then
-                    s_globalSettings = New TraceSwitch("GlobalSettings", "Enable tracing for the Typed Settings GlobalObjectProvider.")
+                    s_globalSettings = New TraceSwitch(NameOf(GlobalSettings), "Enable tracing for the Typed Settings GlobalObjectProvider.")
                 End If
 
                 Return s_globalSettings
@@ -249,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If _vsTrackProjectDocuments IsNot Nothing Then
                         If _vsTrackProjectDocuments IsNot Nothing AndAlso _vsTrackProjectDocumentsEventsCookie <> 0 Then
                             Dim hr As Integer = _vsTrackProjectDocuments.UnadviseTrackProjectDocumentsEvents(_vsTrackProjectDocumentsEventsCookie)
-                            Debug.Assert(NativeMethods.Succeeded(hr), String.Format("GlobalSettings failed to unadvice VsTrackDocumentsEvents {0}", hr))
+                            Debug.Assert(NativeMethods.Succeeded(hr), $"GlobalSettings failed to unadvice VsTrackDocumentsEvents {hr}")
                         End If
                         _vsTrackProjectDocuments = Nothing
                         _vsTrackProjectDocumentsEventsCookie = 0
@@ -743,8 +744,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
 
             Dim hier As IVsHierarchy = Nothing
-            If Not IgnoreAppConfigChanges AndAlso _
-               ((attributes And (__VSRDTATTRIB.RDTA_DocDataReloaded Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty)) <> 0) AndAlso _
+            If Not IgnoreAppConfigChanges AndAlso
+               ((attributes And (__VSRDTATTRIB.RDTA_DocDataReloaded Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty)) <> 0) AndAlso
                IsDefaultAppConfigFile(docCookie, hier) _
             Then
 #If DEBUG Then
@@ -752,7 +753,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
                 Debug.Assert(hier IsNot Nothing, "Why didn't we find a IVsHierarchy for the default app.config file?")
                 Dim goc As GlobalObjectCollection = Nothing
-                If Me._globalObjects.TryGetValue(Editors.Common.DTEUtils.EnvDTEProject(hier), _
+                If Me._globalObjects.TryGetValue(Editors.Common.DTEUtils.EnvDTEProject(hier),
                                                  goc) _
                 Then
                     For Each go As GlobalObject In goc
@@ -886,21 +887,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
 
             ' Validate arguments....
-            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
-            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException("rgpProjects")
+            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null " & NameOf(rgpProjects) & " or bad-length array")
+            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpProjects))
+            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
-            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
-            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException("rgFirstIndices")
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException("rgFirstIndices")
+            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null " & NameOf(rgFirstIndices) & " or bad-length array")
+            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFirstIndices))
+            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
-            Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null rgpszMkDocuments or bad-length array")
-            If (rgpszMkDocuments Is Nothing) Then Throw New ArgumentNullException("rgpszMkDocuments")
-            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException("rgpszMkDocuments")
+            Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null " & NameOf(rgpszMkDocuments) & " or bad-length array")
+            If (rgpszMkDocuments Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpszMkDocuments))
+            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
 
-            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
-            If (rgFlags Is Nothing) Then Throw New ArgumentNullException("rgFlags")
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
+            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null " & NameOf(rgFlags) & " or bad-length array")
+            If (rgFlags Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFlags))
+            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             ' CONSIDER: Check/pass the flags to the MapToSettingsFileProjectItems to exclude special/dependent/nested files from being added
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
@@ -921,21 +922,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         Public Function OnAfterRemoveFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSREMOVEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveFiles
             ' Validate arguments....
-            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
-            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException("rgpProjects")
+            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null " & NameOf(rgpProjects) & " or bad-length array")
+            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpProjects))
+            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
-            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
-            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException("rgFirstIndices")
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException("rgFirstIndices")
+            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null " & NameOf(rgFirstIndices) & " or bad-length array")
+            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFirstIndices))
+            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
-            Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null rgpszMkDocuments or bad-length array")
-            If (rgpszMkDocuments Is Nothing) Then Throw New ArgumentNullException("rgpszMkDocuments")
-            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException("rgpszMkDocuments")
+            Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null " & NameOf(rgpszMkDocuments) & " or bad-length array")
+            If (rgpszMkDocuments Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpszMkDocuments))
+            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
 
-            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
-            If (rgFlags Is Nothing) Then Throw New ArgumentNullException("rgFlags")
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
+            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null " & NameOf(rgFlags) & " or bad-length array")
+            If (rgFlags Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFlags))
+            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
             For i As Integer = 0 To cFiles - 1
@@ -952,25 +953,25 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         Public Function OnAfterRenameFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSRENAMEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
             ' Validate arguments....
-            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
-            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException("rgpProjects")
+            Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null " & NameOf(rgpProjects) & " or bad-length array")
+            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpProjects))
+            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
-            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
-            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException("rgFirstIndices")
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException("rgFirstIndices")
+            Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null " & NameOf(rgFirstIndices) & " or bad-length array")
+            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFirstIndices))
+            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
-            Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
-            If (rgszMkOldNames Is Nothing) Then Throw New ArgumentNullException("rgszMkOldNames")
-            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkOldNames")
+            Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null " & NameOf(rgszMkOldNames) & " or bad-length array")
+            If (rgszMkOldNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkOldNames))
+            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
 
-            Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
-            If (rgszMkNewNames Is Nothing) Then Throw New ArgumentNullException("rgszMkNewNames")
-            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkNewNames")
+            Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null " & NameOf(rgszMkNewNames) & " or bad-length array")
+            If (rgszMkNewNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkNewNames))
+            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
 
-            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
-            If (rgFlags Is Nothing) Then Throw New ArgumentNullException("rgFlags")
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
+            Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null " & NameOf(rgFlags) & " or bad-length array")
+            If (rgFlags Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFlags))
+            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
 
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
@@ -1028,8 +1029,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Function GetCorrespondingProjects(ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal cFiles As Integer) As Shell.Interop.IVsHierarchy()
             ' We trust that someone has already checked these parameters, so we only ASSERT if something looks
             ' bogus....
-            Debug.Assert(rgpProjects IsNot Nothing, "NULL rgpProjects passed in - this is a bug the SettingsGlobalObject!")
-            Debug.Assert(rgFirstIndices IsNot Nothing, "NULL rgFirstIndices passed in - this is a bug the SettingsGlobalObject!")
+            Debug.Assert(rgpProjects IsNot Nothing, "NULL " & NameOf(rgpProjects) & " passed in - this is a bug the " & NameOf(SettingsGlobalObjects) & "!")
+            Debug.Assert(rgFirstIndices IsNot Nothing, "NULL " & NameOf(rgFirstIndices) & " passed in - this is a bug the SettingsGlobalObject!")
             Debug.Assert(cFiles > 0, "Negative or zero count of files to map!?")
 
             ' Allocate somewhere to put our results
@@ -1578,7 +1579,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- editLocks=" & editLocks & ", readLocks=" & readLocks & "...")
 #End If
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
+                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
                     Throw
                 End Try
 

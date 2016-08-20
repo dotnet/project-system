@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Private Sub EnableUndo()
 
-                Debug.Assert(_undoEngine Is Nothing, "EnableUndo should only be called once.  Call DisableUndo before calling this again.")
+                Debug.Assert(_undoEngine Is Nothing, NameOf(EnableUndo) & " should only be called once.  Call " & NameOf(DisableUndo) & " before calling this again.")
 
                 ' Undo requires that IDesignerSerializationService and
                 ' IOleUndoManager are both present.  If they're not,

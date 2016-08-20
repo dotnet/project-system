@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Catch ex As Exception When Not TypeOf ex Is System.ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
                     AppConfigItemId = VSITEMID.NIL
-                    Debug.Fail(String.Format("ProjSpecialFiles.GetFile (create={0}) failed: {1}", CreateIfNotExists, ex))
+                    Debug.Fail($"{NameOf(ProjSpecialFiles)}.{NameOf(ProjSpecialFiles.GetFile)} (create={CreateIfNotExists}) failed: {ex}")
                 End Try
                 If AppConfigItemId <> VSITEMID.NIL Then
                     If DocDataService IsNot Nothing Then
@@ -253,22 +253,22 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
             If Settings Is Nothing Then
                 Debug.Fail("Can't serialize NULL settings instance!")
-                Throw New ArgumentNullException("Settings")
+                Throw New ArgumentNullException(NameOf(Settings))
             End If
 
             If ClassName = "" Then
                 Debug.Fail("Must provide a valid class name!")
-                Throw Common.CreateArgumentException("ClassName")
+                Throw Common.CreateArgumentException(NameOf(ClassName))
             End If
 
             If NamespaceName Is Nothing Then
                 Debug.Fail("Must provide a valid namespace name!")
-                Throw New ArgumentNullException("NamespaceName")
+                Throw New ArgumentNullException(NameOf(NamespaceName))
             End If
 
             If AppConfigDocData Is Nothing Then
                 Debug.Fail("Can't serialize to a NULL DocData")
-                Throw New ArgumentNullException("AppConfigDocData")
+                Throw New ArgumentNullException(NameOf(AppConfigDocData))
             End If
 
             Dim AppConfigReader As DocDataTextReader = Nothing

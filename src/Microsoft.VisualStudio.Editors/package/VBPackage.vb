@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors
             ''' <remarks></remarks>
             Public Sub New(ByVal sp As IServiceProvider)
                 _solution = TryCast(sp.GetService(GetType(IVsSolution)), IVsSolution)
-                Debug.Assert(_solution IsNot Nothing, "Failed to get IVsSolution - clean up of user config files in ZIP projects will not work...")
+                Debug.Assert(_solution IsNot Nothing, "Failed to get " & NameOf(IVsSolution) & " - clean up of user config files in ZIP projects will not work...")
                 If _solution IsNot Nothing Then
                     Dim hr As Integer = _solution.AdviseSolutionEvents(Me, _cookie)
 #If DEBUG Then

@@ -157,10 +157,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub New(ByVal vbPackage As VBPackage, ByVal project As EnvDTE.Project,
                 ByVal projectHierarchy As IVsHierarchy, ByVal extensibilitySettings As MyExtensibilitySettings)
-            Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
-            Debug.Assert(project IsNot Nothing, "project Is Nothing")
-            Debug.Assert(projectHierarchy IsNot Nothing, "projectHierarchy Is Nothing")
-            Debug.Assert(extensibilitySettings IsNot Nothing, "extensibilitySettings Is Nothing")
+            Debug.Assert(vbPackage IsNot Nothing, NameOf(vbPackage) & " Is Nothing")
+            Debug.Assert(project IsNot Nothing, NameOf(project) & " Is Nothing")
+            Debug.Assert(projectHierarchy IsNot Nothing, NameOf(projectHierarchy) & " Is Nothing")
+            Debug.Assert(extensibilitySettings IsNot Nothing, NameOf(extensibilitySettings) & " Is Nothing")
 
             _VBPackage = vbPackage
             _project = project
@@ -222,13 +222,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub HandleReferenceChanged( _
                 ByVal changeType As AddRemoveAction, ByVal assemblyFullName As String)
-            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
-                StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
-            Debug.Assert(_pendingAssemblyChangesList Is Nothing OrElse _pendingAssemblyChangesList.Count > 0, _
-                "m_AssemblyActionList in in valid state!")
-            Debug.Assert(changeType = AddRemoveAction.Add OrElse changeType = AddRemoveAction.Remove, _
-                "Invalid changeType!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), NameOf(assemblyFullName) & " is NULL!")
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
+                StringComparison.OrdinalIgnoreCase), NameOf(assemblyFullName) & " not normalized!")
+            Debug.Assert(_pendingAssemblyChangesList Is Nothing OrElse _pendingAssemblyChangesList.Count > 0,
+                "_AssemblyActionList in invalid state!") ' TODO: Find correct name.
+            Debug.Assert(changeType = AddRemoveAction.Add OrElse changeType = AddRemoveAction.Remove,
+                "Invalid " & NameOf(changeType) & "!")
 
             Dim pendingChangesExist As Boolean = _pendingAssemblyChangesList IsNot Nothing
             If changeType = AddRemoveAction.Add Then
@@ -247,9 +247,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Do not call this method directly, use HandleReferenceChanged.
         ''' </summary>
         Private Sub HandleReferenceAdded(ByVal assemblyFullName As String)
-            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
-                StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), NameOf(assemblyFullName) & " is NULL!")
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
+                StringComparison.OrdinalIgnoreCase), NameOf(assemblyFullName) & " not normalized!")
 
             Dim addActivity As New AssemblyChange(assemblyFullName, AddRemoveAction.Add)
             ' Check the pending assembly changes list, if this assembly is in the list with Added status, 
@@ -305,9 +305,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Do not call this method directly, use HandleReferenceChanged.
         ''' </summary>
         Private Sub HandleReferenceRemoved(ByVal assemblyFullName As String)
-            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
-                StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
+            Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), NameOf(assemblyFullName) & " is NULL!")
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
+                StringComparison.OrdinalIgnoreCase), NameOf(assemblyFullName) & " not normalized!")
 
             Dim removeActivity As New AssemblyChange(assemblyFullName, AddRemoveAction.Remove)
             Dim addActivity As New AssemblyChange(assemblyFullName, AddRemoveAction.Add)
@@ -319,12 +319,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Check the pending assembly changes list, find the index of existing remove activity (if any) 
             ' and existing add activity (if any)
             If _pendingAssemblyChangesList IsNot Nothing Then
-                Debug.Assert(_pendingAssemblyChangesList.IndexOf(removeActivity) = _
-                    _pendingAssemblyChangesList.LastIndexOf(removeActivity), _
-                    "m_PendingAssemblyChangesList should contain 1 instance of remove activity!")
-                Debug.Assert(_pendingAssemblyChangesList.IndexOf(addActivity) = _
-                    _pendingAssemblyChangesList.LastIndexOf(addActivity), _
-                    "m_PendingAssemblyChangesList should contain 1 instance of add activity!")
+                Debug.Assert(_pendingAssemblyChangesList.IndexOf(removeActivity) =
+                    _pendingAssemblyChangesList.LastIndexOf(removeActivity),
+                    NameOf(_pendingAssemblyChangesList) & " should contain 1 instance of remove activity!")
+                Debug.Assert(_pendingAssemblyChangesList.IndexOf(addActivity) =
+                    _pendingAssemblyChangesList.LastIndexOf(addActivity),
+                    NameOf(_pendingAssemblyChangesList) & " should contain 1 instance of add activity!")
 
                 previousRemoveActivityIndex = _pendingAssemblyChangesList.IndexOf(removeActivity)
                 previousAddActivityIndex = _pendingAssemblyChangesList.IndexOf(addActivity)
@@ -332,8 +332,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             If previousAddActivityIndex > 0 Then
                 ' If assembly action list contains "Add Foo", continue to ask for remove of templates.
-                Debug.Assert(previousRemoveActivityIndex < previousAddActivityIndex, _
-                    "m_PendingAssemblyChangesList should not have Add Foo continue by Remove Foo!")
+                Debug.Assert(previousRemoveActivityIndex < previousAddActivityIndex,
+                    NameOf(_pendingAssemblyChangesList) & " should not have Add Foo continue by Remove Foo!")
             ElseIf previousRemoveActivityIndex > 0 Then
                 ' If assembly action list does not contain "Add Foo" but contains "Remove Foo", no op.
                 Exit Sub
@@ -414,8 +414,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub AddTemplates(ByVal extensionTemplates As List(Of MyExtensionTemplate), _
                 ByVal extensionsAddedSB As StringBuilder)
-            Debug.Assert(extensionTemplates IsNot Nothing AndAlso extensionTemplates.Count > 0, "Invalid extensionTemplates!")
-            Debug.Assert(extensionsAddedSB IsNot Nothing, "Invalid extensionsAddedSB!")
+            Debug.Assert(extensionTemplates IsNot Nothing AndAlso extensionTemplates.Count > 0, "Invalid " & NameOf(extensionTemplates) & "!")
+            Debug.Assert(extensionsAddedSB IsNot Nothing, "Invalid " & NameOf(extensionsAddedSB) & "!")
 
             Using New WaitCursor()
                 IdeStatusBar.StartProgress(Res.StatusBar_Add_Start, extensionTemplates.Count)
@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub RemoveExtensionProjectItemGroups(ByVal extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup), ByVal projectFilesRemovedSB As StringBuilder)
             Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid extensionProjectFiles!")
-            Debug.Assert(projectFilesRemovedSB IsNot Nothing, "Invalid projectFilesRemovedSB!")
+            Debug.Assert(projectFilesRemovedSB IsNot Nothing, "Invalid " & NameOf(projectFilesRemovedSB) & "!")
 
             Using New WaitCursor()
                 IdeStatusBar.StartProgress(Res.StatusBar_Remove_Start, extensionProjectItemGroups.Count)
@@ -543,11 +543,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Class AssemblyChange
             Public Sub New(ByVal assemblyName As String, ByVal actionType As AddRemoveAction)
-                Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyName), "NULL assemblyName!")
-                Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyName), assemblyName, _
-                    StringComparison.OrdinalIgnoreCase), "assemblyName not normalized!")
-                Debug.Assert(actionType = AddRemoveAction.Add Or actionType = AddRemoveAction.Remove, _
-                    "Invalid actionType!")
+                Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyName), "NULL " & NameOf(assemblyName) & "!")
+                Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyName), assemblyName,
+                    StringComparison.OrdinalIgnoreCase), NameOf(assemblyName) & " not normalized!")
+                Debug.Assert(actionType = AddRemoveAction.Add Or actionType = AddRemoveAction.Remove,
+                    "Invalid " & NameOf(actionType) & "!")
 
                 _assemblyName = assemblyName
                 _changeType = actionType

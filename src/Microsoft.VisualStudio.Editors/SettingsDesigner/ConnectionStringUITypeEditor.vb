@@ -221,17 +221,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Function GetConnectionString(ByVal ServiceProvider As IServiceProvider, ByVal Dialog As IVsDataConnectionDialog, ByVal PromptIfContainsSensitiveData As Boolean) As String
 
             If Dialog Is Nothing Then
-                Throw New ArgumentNullException("Dialog")
+                Throw New ArgumentNullException(NameOf(Dialog))
             End If
 
             If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("ServiceProvider")
+                Throw New ArgumentNullException(NameOf(ServiceProvider))
             End If
 
             Dim SafeConnectionString As String = Dialog.SafeConnectionString
 
             If SafeConnectionString Is Nothing Then
-                Debug.Fail("Failed to get SafeConnectionString from IVsDataConnectionDialog (got a NULL value:()")
+                Debug.Fail("Failed to get " & NameOf(SafeConnectionString) & " from IVsDataConnectionDialog (got a NULL value:()")
                 Return ""
             End If
 
@@ -300,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim invariantName As String = providerMapper.MapGuidToInvariantName(providerGuid)
             If invariantName Is Nothing Or invariantName = "" Then
-                Debug.Fail(String.Format("{0} is not an ADO.NET provider", providerGuid))
+                Debug.Fail($"{providerGuid} is not an ADO.NET provider")
                 Return providerGuid.ToString()
             End If
 
@@ -309,13 +309,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private Shared Function GetGuidFromInvariantProviderName(ByVal ProviderMapper As IDTAdoDotNetProviderMapper, ByVal providerName As String, ByVal ConnectionString As String, ByVal EncryptedString As Boolean) As Guid
             If providerMapper Is Nothing Then
-                Debug.Fail("Failed to get a IDTAdoDotNetProviderMapper")
+                Debug.Fail("Failed to get a " & NameOf(IDTAdoDotNetProviderMapper))
                 Return Guid.Empty
             End If
 
             Dim providerGuid as Guid = providerMapper.MapInvariantNameToGuid(providerName, connectionString, encryptedString)
             If providerGuid.Equals(Guid.Empty) Then
-                Debug.Fail(String.Format("Couldn't find GUID for provider {0}", providerName))
+                Debug.Fail($"Couldn't find GUID for provider {providerName}")
                 Try
                     ' Let's see if the provided name is a valid Guid?
                     Return New Guid(providerName)
