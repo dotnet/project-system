@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index">The integer index to look up</param>
         ''' <value></value>
         ''' <remarks>Throws an exception if out of bounds.</remarks>
-        Default Public ReadOnly Property Item(ByVal Index As Integer) As Category
+        Default Public ReadOnly Property Item(Index As Integer) As Category
             Get
                 Return DirectCast(MyBase.InnerList(Index), Category)
             End Get
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ProgrammaticCategoryName">Category name to search for.</param>
         ''' <value>The category if found, or else Nothing.</value>
         ''' <remarks>Does not throw an exception if not found.</remarks>
-        Default Public ReadOnly Property Item(ByVal ProgrammaticCategoryName As String) As Category
+        Default Public ReadOnly Property Item(ProgrammaticCategoryName As String) As Category
             Get
                 Return DirectCast(_innerHashByName(ProgrammaticCategoryName), Category)
             End Get
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Category">The category to add.</param>
         ''' <remarks></remarks>
-        Public Sub Add(ByVal Category As Category)
+        Public Sub Add(Category As Category)
             'Add to the inner list (indexable by integer index)
             MyBase.InnerList.Add(Category)
 

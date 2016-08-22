@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <returns></returns>
         ''' <remarks></remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
-        Public Shared Function GetString(ByVal s As String, ByVal ParamArray Arguments() As Object) As String
+        Public Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then
                 Return s
             Else

@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
         End Sub 'Invoke
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overrides Sub Invoke(ByVal inArg As Object, ByVal outArg As System.IntPtr)
+        Public Overrides Sub Invoke(inArg As Object, outArg As System.IntPtr)
             MyBase.Invoke(inArg, outArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         End Sub
 
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overrides Sub Invoke(ByVal inArg As Object)
+        Public Overrides Sub Invoke(inArg As Object)
             MyBase.Invoke(inArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -109,13 +109,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   CommandText: If specified (and the TEXTMENUCHANGES flag is set for the command in the CTC file) you can 
         '       supplies your own text for the command. 
         '**************************************************************************
-        Public Sub New(ByVal RootDesigner As BaseRootDesigner, ByVal CommandID As CommandID, _
-                        ByVal CommandHandler As EventHandler, _
-                        Optional ByVal CommandEnabledHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal CommandCheckedHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal CommandVisibleHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional ByVal AlwaysCheckStatus As Boolean = False, _
-                        Optional ByVal CommandText As String = Nothing)
+        Public Sub New(RootDesigner As BaseRootDesigner, CommandID As CommandID, _
+                        CommandHandler As EventHandler, _
+                        Optional CommandEnabledHandler As CheckCommandStatusHandler = Nothing, _
+                        Optional CommandCheckedHandler As CheckCommandStatusHandler = Nothing, _
+                        Optional CommandVisibleHandler As CheckCommandStatusHandler = Nothing, _
+                        Optional AlwaysCheckStatus As Boolean = False, _
+                        Optional CommandText As String = Nothing)
 
             MyBase.New(CommandHandler, CommandID)
 
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         Private _statusValid As Boolean ' Whether the status of the command is still valid.
     End Class 'DesignerMenuCommand
 
-    Public Delegate Function CheckCommandStatusHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
+    Public Delegate Function CheckCommandStatusHandler(MenuCommand As DesignerMenuCommand) As Boolean
 
 
 End Namespace

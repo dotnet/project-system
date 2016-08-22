@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks>
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
-        Private Function RootDesigner_GetView(ByVal Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
+        Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
                 Throw New ArgumentException("Not a supported view technology", "Technology")
             End If
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="ServiceType">The type of the service being asked for.</param>
         ''' <returns>The requested service, if it exists.</returns>
-        Public Shadows Function GetService(ByVal ServiceType As Type) As Object
+        Public Shadows Function GetService(ServiceType As Type) As Object
             Return MyBase.GetService(ServiceType)
         End Function
 
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _view IsNot Nothing Then
                     _view.Dispose()

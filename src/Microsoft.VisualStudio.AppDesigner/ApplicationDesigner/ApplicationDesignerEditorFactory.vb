@@ -59,12 +59,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="pgrfCDW">[out] Flags to be passed to CreateDocumentWindow</param>
         ''' <remarks></remarks>
-        Private Function InternalCreateEditorInstance(ByVal VsCreateEditorFlags As System.UInt32, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal ItemId As System.UInt32, _
-                ByVal ExistingDocData As Object, _
+        Private Function InternalCreateEditorInstance(VsCreateEditorFlags As System.UInt32, _
+                FileName As String, _
+                PhysicalView As String, _
+                Hierarchy As IVsHierarchy, _
+                ItemId As System.UInt32, _
+                ExistingDocData As Object, _
                 ByRef DocView As Object, _
                 ByRef DocData As Object, _
                 ByRef Caption As String, _
@@ -164,12 +164,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Function IVsEditorFactory_CreateEditorInstance( _
-                ByVal vscreateeditorflags As UInteger, _
-                ByVal FileName As String, _
-                ByVal PhysicalView As String, _
-                ByVal Hierarchy As IVsHierarchy, _
-                ByVal Itemid As UInteger, _
-                ByVal ExistingDocDataPtr As IntPtr, _
+                vscreateeditorflags As UInteger, _
+                FileName As String, _
+                PhysicalView As String, _
+                Hierarchy As IVsHierarchy, _
+                Itemid As UInteger, _
+                ExistingDocDataPtr As IntPtr, _
                 ByRef DocViewPtr As IntPtr, _
                 ByRef DocDataPtr As IntPtr, _
                 ByRef Caption As String, _
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Site"></param>
         ''' <remarks></remarks>
-        Public Function SetSite(ByVal Site As OLE.Interop.IServiceProvider) As Integer Implements Shell.Interop.IVsEditorFactory.SetSite
+        Public Function SetSite(Site As OLE.Interop.IServiceProvider) As Integer Implements Shell.Interop.IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If Me._site Is Site Then
                 Exit Function

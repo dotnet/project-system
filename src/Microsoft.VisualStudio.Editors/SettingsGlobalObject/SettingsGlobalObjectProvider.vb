@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="project">the project we're supposed to grope for all .settings files</param>
         ''' <returns>a collection of SettingsFileGlobalObject's</returns>
-        Private Function CreateGlobalObjects(ByVal project As Project) As GlobalObjectCollection
+        Private Function CreateGlobalObjects(project As Project) As GlobalObjectCollection
 
 #If DEBUG Then
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.CreateGlobalObjects(" & DebugGetId(project) & ")...")
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Overrides the standard dispose to clean up COM events we're listening to.
         ''' </summary>
         ''' <param name="disposing">true if called from MyBase.Dispose(), false if called from finalizer</param>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
 
 #If DEBUG Then
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.Dispose(" & disposing & ")...")
@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Disposes all objects in the given global object collection.
         ''' </summary>
         ''' <param name="col">collection of global-objects to dispose</param>
-        Private Sub DisposeGlobalObjects(ByVal col As GlobalObjectCollection)
+        Private Sub DisposeGlobalObjects(col As GlobalObjectCollection)
 
             Debug.Assert(col IsNot Nothing, "don't call this with a null collection")
 
@@ -311,7 +311,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="item">project-item DTE object</param>
         ''' <returns>the file-name for the project-item</returns>
-        Friend Shared Function GetFileNameForProjectItem(ByVal item As ProjectItem) As String
+        Friend Shared Function GetFileNameForProjectItem(item As ProjectItem) As String
 
             Dim fileName As String
 
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="baseType">type to which we should limit our search</param>
         ''' <returns>collection of global objects</returns>
         ''' <remarks></remarks>
-        Protected Overrides Function GetGlobalObjectsCore(ByVal project As Project, ByVal baseType As Type) As GlobalObjectCollection
+        Protected Overrides Function GetGlobalObjectsCore(project As Project, baseType As Type) As GlobalObjectCollection
 
 #If DEBUG Then
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.GetGlobalObjectsCore(" & DebugGetId(project) & ", " & DebugGetStr(baseType) & ")...")
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="o"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function DebugGetId(ByVal o As Object) As String
+        Friend Shared Function DebugGetId(o As Object) As String
 #If DEBUG Then
             If (o Is Nothing) Then
                 Return "<nada>"
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="o"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function DebugGetStr(ByVal o As Object) As String
+        Friend Shared Function DebugGetStr(o As Object) As String
 #If DEBUG Then
             If (o Is Nothing) Then
                 Return "<nada>"
@@ -512,7 +512,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="docCookie">running-doc-table cookie representing a doc</param>
         ''' <param name="punk">punk pointing to the doc-data</param>
         ''' <returns>global setting object</returns>
-        Private Function GetObjectForCookie(ByVal docCookie As UInteger, ByRef punk As IntPtr) As SettingsFileGlobalObject
+        Private Function GetObjectForCookie(docCookie As UInteger, ByRef punk As IntPtr) As SettingsFileGlobalObject
 
             punk = IntPtr.Zero
             If (_globalObjects Is Nothing) OrElse (_globalObjects.Count = 0) Then
@@ -568,7 +568,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="serviceType">service to fetch</param>
         ''' <returns>object implementing requested service or Nothing</returns>
-        Private Overloads Function GetService(ByVal serviceType As Type) As Object _
+        Private Overloads Function GetService(serviceType As Type) As Object _
             Implements IServiceProvider.GetService
 
             Return MyBase.GetService(serviceType)
@@ -607,7 +607,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' it for each .settings file.
         ''' </summary>
         ''' <param name="projectItem">item being added to the project</param>
-        Private Sub OnProjectItemAdded(ByVal projectItem As ProjectItem)
+        Private Sub OnProjectItemAdded(projectItem As ProjectItem)
 
 #If DEBUG Then
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnProjectItemAdded(" & DebugGetId(projectItem) & ")...")
@@ -640,7 +640,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Called to notify us when a project is removed.
         ''' </summary>
         ''' <param name="target">project that was removed</param>
-        Private Sub OnProjectRemoved(ByVal target As Project)
+        Private Sub OnProjectRemoved(target As Project)
 
 #If DEBUG Then
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnProjectRemoved(" & DebugGetId(target) & ")...")
@@ -670,7 +670,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="hier">Nothing or the IVsHierarchy in which the document is the default app.config file</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsDefaultAppConfigFile(ByVal docCookie As UInteger, ByRef hier As IVsHierarchy) As Boolean
+        Private Function IsDefaultAppConfigFile(docCookie As UInteger, ByRef hier As IVsHierarchy) As Boolean
             Dim itemid As UInteger = VSITEMID.NIL
 
             ' Now, look in the RDT to see if this doc data already has an edit lock on it.
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Get
                 Return _ignoreAppConfigChanges
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
 #If DEBUG Then
                 Debug.WriteLineIf(GlobalSettings.TraceVerbose, String.Format("SettingsGlobalObject:IgnoreAppConfigChanges set to {0}", value))
 #End If
@@ -733,7 +733,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="docCookie">id for the document who's attribute is changing</param>
         ''' <param name="attributes">the attribute chaning</param>
-        Private Function OnAfterAttributeChange(ByVal docCookie As UInteger, ByVal attributes As UInteger) As Integer _
+        Private Function OnAfterAttributeChange(docCookie As UInteger, attributes As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterAttributeChange
 
             If _globalObjects Is Nothing Then
@@ -794,7 +794,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="lockType">type of lock taken</param>
         ''' <param name="readLocksRemaining">number or read-locks remaining</param>
         ''' <param name="editLocksRemaining">number of edit-locks remaining</param>
-        Private Function OnAfterFirstDocumentLock(ByVal docCookie As UInteger, ByVal lockType As UInteger, ByVal readLocksRemaining As UInteger, ByVal editLocksRemaining As UInteger) As Integer _
+        Private Function OnAfterFirstDocumentLock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
 
             If ((lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock) Then
@@ -830,7 +830,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="lockType">type of lock taken</param>
         ''' <param name="readLocksRemaining">number or read-locks remaining</param>
         ''' <param name="editLocksRemaining">number of edit-locks remaining</param>
-        Private Function OnBeforeLastDocumentUnlock(ByVal docCookie As UInteger, ByVal lockType As UInteger, ByVal readLocksRemaining As UInteger, ByVal editLocksRemaining As UInteger) As Integer _
+        Private Function OnBeforeLastDocumentUnlock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
 
             If ((lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock) Then
@@ -861,27 +861,27 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' IVsRunningDocTable events we don't care about.
         ''' </summary>
-        Private Function OnAfterDocumentWindowHide(ByVal docCookie As UInteger, ByVal frame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
+        Private Function OnAfterDocumentWindowHide(docCookie As UInteger, frame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
         End Function
 
         ''' <summary>
         ''' IVsRunningDocTable events we don't care about.
         ''' </summary>
-        Private Function OnAfterSave(ByVal docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
+        Private Function OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
         End Function
 
         ''' <summary>
         ''' IVsRunningDocTable events we don't care about.
         ''' </summary>
-        Private Function OnBeforeDocumentWindowShow(ByVal docCookie As UInteger, ByVal firstShow As Integer, ByVal frame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
+        Private Function OnBeforeDocumentWindowShow(docCookie As UInteger, firstShow As Integer, frame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
         End Function
 #End Region
 
-        Public Function OnAfterAddDirectoriesEx(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSADDDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddDirectoriesEx
+        Public Function OnAfterAddDirectoriesEx(cProjects As Integer, cDirectories As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSADDDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddDirectoriesEx
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterAddFilesEx(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSADDFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddFilesEx
+        Public Function OnAfterAddFilesEx(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSADDFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddFilesEx
             ' New files added - let's go through 'em and see if they may be .settings files!
             '
 
@@ -912,14 +912,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterRemoveDirectories(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSREMOVEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveDirectories
+        Public Function OnAfterRemoveDirectories(cProjects As Integer, cDirectories As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSREMOVEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveDirectories
             ' CONSIDER: It seems we don't get a item removed for the files in the removed directories, we should really traverse the
             ' directory to find all items to remove...
             ' VsWhidbey 318791
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterRemoveFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSREMOVEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveFiles
+        Public Function OnAfterRemoveFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSREMOVEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveFiles
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
@@ -946,11 +946,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterRenameDirectories(ByVal cProjects As Integer, ByVal cDirs As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSRENAMEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameDirectories
+        Public Function OnAfterRenameDirectories(cProjects As Integer, cDirs As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSRENAMEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterRenameFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSRENAMEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
+        Public Function OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSRENAMEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
@@ -983,31 +983,31 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnAfterSccStatusChanged(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgdwSccStatus() As UInteger) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterSccStatusChanged
+        Public Function OnAfterSccStatusChanged(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgdwSccStatus() As UInteger) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterSccStatusChanged
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryAddDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirectories As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYADDDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddDirectories
+        Public Function OnQueryAddDirectories(pProject As Shell.Interop.IVsProject, cDirectories As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYADDDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryAddFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYADDFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYADDFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYADDFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddFiles
+        Public Function OnQueryAddFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYADDFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYADDFILERESULTS, rgResults() As Shell.Interop.VSQUERYADDFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddFiles
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryRemoveDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirectories As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYREMOVEDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveDirectories
+        Public Function OnQueryRemoveDirectories(pProject As Shell.Interop.IVsProject, cDirectories As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYREMOVEDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryRemoveFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYREMOVEFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYREMOVEFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYREMOVEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveFiles
+        Public Function OnQueryRemoveFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYREMOVEFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYREMOVEFILERESULTS, rgResults() As Shell.Interop.VSQUERYREMOVEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveFiles
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryRenameDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirs As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSQUERYRENAMEDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameDirectories
+        Public Function OnQueryRenameDirectories(pProject As Shell.Interop.IVsProject, cDirs As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSQUERYRENAMEDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Public Function OnQueryRenameFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSQUERYRENAMEFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYRENAMEFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYRENAMEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameFiles
+        Public Function OnQueryRenameFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSQUERYRENAMEFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYRENAMEFILERESULTS, rgResults() As Shell.Interop.VSQUERYRENAMEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameFiles
             Return NativeMethods.S_OK
         End Function
 
@@ -1025,7 +1025,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="cFiles"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetCorrespondingProjects(ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal cFiles As Integer) As Shell.Interop.IVsHierarchy()
+        Private Function GetCorrespondingProjects(rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, cFiles As Integer) As Shell.Interop.IVsHierarchy()
             ' We trust that someone has already checked these parameters, so we only ASSERT if something looks
             ' bogus....
             Debug.Assert(rgpProjects IsNot Nothing, "NULL rgpProjects passed in - this is a bug the SettingsGlobalObject!")
@@ -1067,7 +1067,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="hierarchy">IVsHierarchy (project) that we are going to remove an item from</param>
         ''' <param name="fileName">Name of the file in the project that we are removing</param>
-        Private Sub RemoveItem(ByVal hierarchy As IVsHierarchy, ByVal fileName As String)
+        Private Sub RemoveItem(hierarchy As IVsHierarchy, fileName As String)
             ' Search for this project item
             If (_globalObjects IsNot Nothing) Then
                 If (fileName.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
@@ -1110,7 +1110,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         End Sub
 
-        Private Sub AddItem(ByVal project As IVsHierarchy, ByVal fileName As String)
+        Private Sub AddItem(project As IVsHierarchy, fileName As String)
             ' Only care about files with names that end with .settings
             If fileName.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
                 Try
@@ -1204,7 +1204,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="item">EnvDTE project-item for the file this setting represents</param>
         ''' <param name="name">the name of this setting class</param>
         ''' <param name="typeResolver">type-resolution service</param>
-        Friend Sub New(ByVal provider As SettingsGlobalObjectProvider, ByVal hierarchy As IVsHierarchy, ByVal item As ProjectItem, ByVal name As String, ByVal typeResolver As ITypeResolutionService)
+        Friend Sub New(provider As SettingsGlobalObjectProvider, hierarchy As IVsHierarchy, item As ProjectItem, name As String, typeResolver As ITypeResolutionService)
             MyBase.New(GetType(Object), name)
 
 #If DEBUG Then
@@ -1235,11 +1235,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         End Property
 
 
-        Friend Function ResolveType(ByVal typeName As String) As System.Type
+        Friend Function ResolveType(typeName As String) As System.Type
             Return _typeCache.GetSettingType(typeName)
         End Function
 
-        Friend Function DeserializeValue(ByVal type As System.Type, ByVal serializedValue As String) As Object
+        Friend Function DeserializeValue(type As System.Type, serializedValue As String) As Object
             Return _valueCache.GetValue(type, serializedValue)
         End Function
 
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Get
                 Return _docData
             End Get
-            Set(ByVal Value As DocData)
+            Set(Value As DocData)
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.DocData-setter(" & Name & "), _docData is " _
@@ -1474,7 +1474,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="editLocks">OUT: Number of edit locks on the document</param>
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         ''' <remarks></remarks>
-        Private Sub GetDocumentInfo(ByVal fileName As String, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
+        Private Sub GetDocumentInfo(fileName As String, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
             Dim rdt As IVsRunningDocumentTable = _provider.RunningDocTable
             Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
 
@@ -1514,7 +1514,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/ <devdoc>
         '/    We need to return the serializer for our class.
         '/ </devdoc>
-        Public Overrides Function GetSerializerCore(ByVal serializerType As Type) As Object
+        Public Overrides Function GetSerializerCore(serializerType As Type) As Object
 
             If (serializerType Is GetType(CodeDomSerializer)) Then
 #If DEBUG Then
@@ -1535,7 +1535,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="service"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetService(ByVal service As Type) As Object
+        Private Function GetService(service As Type) As Object
             Return DirectCast(_provider, IServiceProvider).GetService(service)
         End Function
 
@@ -1545,7 +1545,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="fileName">path to a .settings file</param>
         ''' <returns>DesignTimeSettings that represents the given file</returns>
         ''' <remarks></remarks>
-        Private Function LoadSettings(ByVal fileName As String) As DesignTimeSettings
+        Private Function LoadSettings(fileName As String) As DesignTimeSettings
 
 #If DEBUG Then
             Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- file '" & fileName & "'...")
@@ -1661,7 +1661,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/    Raised while we are listening to doc data events to signal that
         '/    the global object has changed.
         '/ </devdoc>
-        Private Sub OnDocDataChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnDocDataChanged(sender As Object, e As EventArgs)
 
 #If DEBUG Then
             Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.OnDocDataChanged(" & CStr(_className) & ")...")
@@ -1678,7 +1678,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/    is an add-ref'd pointer (we do not have to release it, it will be 
         '/    released for us).
         '/ </devdoc>
-        Friend Sub OnFirstLock(ByVal punkDocData As IntPtr)
+        Friend Sub OnFirstLock(punkDocData As IntPtr)
 
             If (Not _ignoreDocLock) Then
 #If DEBUG Then
@@ -1739,7 +1739,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' app/web.config and re-serialize the .settings file
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Sub OnRootNamespaceChanged(ByVal OldRootNamespace As String)
+        Friend Sub OnRootNamespaceChanged(OldRootNamespace As String)
             ' If we don't have a persisted namespace, that means that we have a newly created
             ' instance, which doesn't exist in the app.config (yet)
             If _dtSettings.PersistedNamespace IsNot Nothing Then
@@ -1893,7 +1893,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Serializing an empty settings file will remove all old references to it from
         ''' the app/web.config file
         ''' </remarks>
-        Private Sub SaveToAppConfig(ByVal Settings As DesignTimeSettings, ByVal GeneratedNamespace As String, ByVal GeneratedClassName As String)
+        Private Sub SaveToAppConfig(Settings As DesignTimeSettings, GeneratedNamespace As String, GeneratedClassName As String)
             ' now just write the stuff out to the file
             '
             Dim appConfigItemid As UInteger = VSITEMID.NIL
@@ -1975,7 +1975,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/     can't support.  For example, virtual types can't support
         '/     private members, so we remove them here.
         '/ </devdoc>
-        Private Sub ScrubCompileUnit(ByVal ccu As CodeCompileUnit)
+        Private Sub ScrubCompileUnit(ccu As CodeCompileUnit)
 
             Dim allowed As MemberAttributes = SettingsSingleFileGenerator.SettingsPropertyVisibility
 
@@ -2045,7 +2045,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="codeObject"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function Deserialize(ByVal manager As IDesignerSerializationManager, ByVal codeObject As Object) As Object
+            Public Overrides Function Deserialize(manager As IDesignerSerializationManager, codeObject As Object) As Object
 
                 Debug.Fail("Should never be called")
                 Return Nothing
@@ -2059,7 +2059,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="value">a SettingsGlobalObjectValueAttribute</param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function Serialize(ByVal manager As IDesignerSerializationManager, ByVal value As Object) As Object
+            Public Overrides Function Serialize(manager As IDesignerSerializationManager, value As Object) As Object
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileCodeDomSerializer.Serialize...")
@@ -2119,7 +2119,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="globalObject">object we implement in place of</param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal globalObject As SettingsFileGlobalObject)
+            Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileTypeImplementor.ctor(" & CStr(globalObject._className) & ")...")
@@ -2136,7 +2136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="args"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function GetPropertyValue(ByVal prop As System.Reflection.PropertyInfo, ByVal instance As Object, ByVal args() As Object) As Object
+            Public Overrides Function GetPropertyValue(prop As System.Reflection.PropertyInfo, instance As Object, args() As Object) As Object
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to GetPropertyValue")
                 If (prop Is Nothing) Then
@@ -2227,7 +2227,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="args"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function InvokeConstructor(ByVal ctor As System.Reflection.ConstructorInfo, ByVal args As System.Object()) As Object
+            Public Overrides Function InvokeConstructor(ctor As System.Reflection.ConstructorInfo, args As System.Object()) As Object
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileTypeImplementor.InvokeConstructor(" & CStr(_globalObject._className) & ")...")
@@ -2248,7 +2248,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="value"></param>
             ''' <param name="args"></param>
             ''' <remarks></remarks>
-            Public Overrides Sub SetPropertyValue(ByVal prop As System.Reflection.PropertyInfo, ByVal instance As Object, ByVal value As Object, ByVal args As System.Object())
+            Public Overrides Sub SetPropertyValue(prop As System.Reflection.PropertyInfo, instance As Object, value As Object, args As System.Object())
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to SetPropertyValue")
                 If (prop Is Nothing) Then
@@ -2336,7 +2336,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="globalObject"></param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal globalObject As SettingsFileGlobalObject)
+            Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "ConcreteApplicationSettings.ctor(" & CStr(globalObject._className) & ")...")
@@ -2396,7 +2396,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="globalObject"></param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal globalObject As SettingsFileGlobalObject)
+            Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "GlobalSettingsPropertyCollection.ctor(" & CStr(globalObject._className) & ")...")
@@ -2416,7 +2416,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="prop"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnAddComplete(ByVal prop As System.Configuration.SettingsProperty)
+            Protected Overrides Sub OnAddComplete(prop As System.Configuration.SettingsProperty)
                 If _globalObject Is Nothing Then Return
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "GlobalSettingsPropertyCollection.OnAddComplete(" & CStr(_globalObject._className) & ")...")
@@ -2503,7 +2503,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="property"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnRemoveComplete(ByVal [property] As System.Configuration.SettingsProperty)
+            Protected Overrides Sub OnRemoveComplete([property] As System.Configuration.SettingsProperty)
                 If _globalObject Is Nothing Then Return
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "GlobalSettingsPropertyCollection.OnRemoveComplete(" & CStr(_globalObject._className) & ")...")
@@ -2576,7 +2576,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="globalObject"></param>
             ''' <param name="propertyName"></param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal globalObject As SettingsFileGlobalObject, ByVal propertyName As String)
+            Friend Sub New(globalObject As SettingsFileGlobalObject, propertyName As String)
                 _globalObject = globalObject
                 _propertyName = propertyName
             End Sub
@@ -2614,7 +2614,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <remarks></remarks>
     Friend Class ProjectUtilities
 
-        Public Shared Function GetVsHierarchy(ByVal provider As IServiceProvider, ByVal project As Project) As IVsHierarchy
+        Public Shared Function GetVsHierarchy(provider As IServiceProvider, project As Project) As IVsHierarchy
             ' YUCK.  We need to use DTE to get references because VSIP doesn't define
             ' that concept.  We need to use VSIP to get deploy dependencies because
             ' DTE doesn't define THAT.  There is no way to go between a DTE project

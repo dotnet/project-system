@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Sub PostBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPostBuildBuilder.Click
+        Private Sub PostBuildBuilderButton_Click(sender As Object, e As System.EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPostBuildEventCommandLine.Text
 
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PreBuildBuilderButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPreBuildBuilder.Click
+        Private Sub PreBuildBuilderButton_Click(sender As Object, e As System.EventArgs) Handles btnPreBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPreBuildEventCommandLine.Text
 
@@ -112,9 +112,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Friend Delegate Function GetTokenValueFunc(ByVal MacroName As String) As String
+        Friend Delegate Function GetTokenValueFunc(MacroName As String) As String
 
-        Private Function LaunchEventBuilder(ByVal Parent As BuildEventsPropPage, ByVal valueHelper As GetTokenValueFunc, ByVal WindowTitleText As String, ByRef CommandLine As String) As Boolean
+        Private Function LaunchEventBuilder(Parent As BuildEventsPropPage, valueHelper As GetTokenValueFunc, WindowTitleText As String, ByRef CommandLine As String) As Boolean
 
             Dim frm As New BuildEventCommandLineDialog
             Dim Values() As String = Nothing
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Friend Shared Function GetTokenValues(ByRef Values() As String, ByVal valueHelper As GetTokenValueFunc) As Boolean
+        Friend Shared Function GetTokenValues(ByRef Values() As String, valueHelper As GetTokenValueFunc) As Boolean
             Dim i As Integer
             Values = CType(Array.CreateInstance(GetType(String), Tokens.Tokens_MAX), String())
 
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function GetTokenValue(ByVal MacroName As String) As String
+        Private Function GetTokenValue(MacroName As String) As String
             Dim MacroEval As IVsBuildMacroInfo
             Dim MacroValue As String = Nothing
             Dim Hier As IVsHierarchy = Nothing

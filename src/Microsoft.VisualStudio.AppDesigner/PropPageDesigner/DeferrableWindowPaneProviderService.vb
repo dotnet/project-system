@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="provider"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal provider As IServiceProvider)
+        Public Sub New(provider As IServiceProvider)
             MyBase.New(provider, Nothing)
         End Sub
 
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="surface"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function CreateWindowPane(ByVal surface As DesignSurface) As DesignerWindowPane
+        Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New PropPageDesignerWindowPane(surface)
         End Function
 

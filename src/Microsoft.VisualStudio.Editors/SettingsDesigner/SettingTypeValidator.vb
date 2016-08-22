@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function IsTypeObsolete(ByVal type As System.Type) As Boolean
+        Public Shared Function IsTypeObsolete(type As System.Type) As Boolean
             Dim typeInLoadedAssembly As System.Type = System.Type.GetType(type.AssemblyQualifiedName)
 
             ' If the type we get from System.Type.GetType(<assembly qualified type name>) is not the same
@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Object.ReferenceEquals(type, typeInLoadedAssembly) = False
         End Function
 
-        Public Shared Function IsValidSettingType(ByVal type As System.Type) As Boolean
+        Public Shared Function IsValidSettingType(type As System.Type) As Boolean
 
             If Not type.IsPublic Then Return False
             If type.IsPointer Then Return False
@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return True
         End Function
 
-        Private Shared Function CanSerializeType(ByVal type As System.Type) As Boolean
+        Private Shared Function CanSerializeType(type As System.Type) As Boolean
             Try
                 Dim tc As TypeConverter = TypeDescriptor.GetConverter(type)
                 If tc.CanConvertFrom(GetType(String)) AndAlso tc.CanConvertTo(GetType(String)) Then

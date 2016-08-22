@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
         '   ErrorMessage: The text to display in the message box.
         '**************************************************************************
-        Friend Overloads Shared Sub ReportError(ByVal ServiceProvider As IServiceProvider, ByVal ErrorMessage As String)
+        Friend Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String)
             ReportError(ServiceProvider, ErrorMessage, Nothing)
         End Sub 'ReportError
 
@@ -42,8 +42,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   ErrorMessage: The text to display in the message box.
         '   HelpLink: Link to the help topic for this message box.
         '**************************************************************************
-        Friend Overloads Shared Sub ReportError(ByVal ServiceProvider As IServiceProvider, ByVal ErrorMessage As String, _
-                ByVal HelpLink As String)
+        Friend Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String, _
+                HelpLink As String)
 
 
             DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider), _
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
         '   Message: The text to display in the message box.
         '**************************************************************************
-        Friend Shared Sub ShowWarning(ByVal ServiceProvider As IServiceProvider, ByVal Message As String)
+        Friend Shared Sub ShowWarning(ServiceProvider As IServiceProvider, Message As String)
             DesignerMessageBox.Show(ServiceProvider, Message, GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK, _
                     MessageBoxIcon.Warning)
         End Sub 'ShowWarning
@@ -78,8 +78,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Friend Overloads Shared Function ShowMessage(ByVal ServiceProvider As IServiceProvider, ByVal Message As String, _
-                ByVal Caption As String, ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon) As DialogResult
+        Friend Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon)
         End Function 'ShowMessage
 
@@ -98,9 +98,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Friend Overloads Shared Function ShowMessage(ByVal ServiceProvider As IServiceProvider, ByVal Message As String, _
-                        ByVal Caption As String, ByVal Buttons As MessageBoxButtons, ByVal Icon As MessageBoxIcon, _
-                        ByVal DefaultButton As MessageBoxDefaultButton) As DialogResult
+        Friend Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
+                        Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
+                        DefaultButton As MessageBoxDefaultButton) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton)
         End Function 'ShowMessage
 
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sp"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetDefaultCaption(ByVal sp As IServiceProvider) As String
+        Friend Shared Function GetDefaultCaption(sp As IServiceProvider) As String
             Dim caption As String = ""
             Dim uiShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
             If sp IsNot Nothing Then
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="ServiceProvider"></param>
         ''' <param name="keyword"></param>
         ''' <remarks></remarks>
-        Friend Shared Sub DisplayTopicFromF1Keyword(ByVal ServiceProvider As IServiceProvider, ByVal keyword As String)
+        Friend Shared Sub DisplayTopicFromF1Keyword(ServiceProvider As IServiceProvider, keyword As String)
             If ServiceProvider Is Nothing Then
                 System.Diagnostics.Debug.Fail("NULL serviceprovider - can't show help!")
                 Return
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   This way, when the VS shell font is given to us (it changes) then controls that have a different style 
         '       of the font (bolded for example) will recreate their font and use the VS shell font but bolded.
         '**************************************************************************
-        Friend Overloads Shared Sub SetFontStyles(ByVal TopControl As Control)
+        Friend Overloads Shared Sub SetFontStyles(TopControl As Control)
             SetFontStyles(TopControl, TopControl, TopControl.Font)
         End Sub 'SetFontStyles
 
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   Parent: The parent control used to iterate through all the control.
         '   ReferenceFont: The font to set to.
         '**************************************************************************
-        Private Overloads Shared Sub SetFontStyles(ByVal TopControl As Control, ByVal Parent As Control, ByVal ReferenceFont As Font)
+        Private Overloads Shared Sub SetFontStyles(TopControl As Control, Parent As Control, ReferenceFont As Font)
             For Each ChildControl As Control In Parent.Controls
                 If Not (ChildControl.Controls Is Nothing) AndAlso ChildControl.Controls.Count > 0 Then
                     SetFontStyles(TopControl, ChildControl, ReferenceFont)
@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Number">The IntPtr to get the word from</param>
         ''' <returns>The signed hi word</returns>
         ''' <remarks></remarks>
-        Public Shared Function SignedHiWord(ByVal Number As IntPtr) As Integer
+        Public Shared Function SignedHiWord(Number As IntPtr) As Integer
             Return (CType(Number, Integer) >> 16) And &HFFFF
         End Function
 
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Number">The IntPtr to get the word from</param>
         ''' <returns>The signed lo word</returns>
         ''' <remarks></remarks>
-        Public Shared Function SignedLoWord(ByVal Number As IntPtr) As Integer
+        Public Shared Function SignedLoWord(Number As IntPtr) As Integer
             Return (CType(Number, Integer) And &HFFFF)
         End Function
 
@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m">Window's message.</param>
         ''' <returns>The context event args to use for raising the event.</returns>
         ''' <remarks></remarks>
-        Public Shared Function GetContextMenuMouseEventArgs(ByVal Control As Control, ByRef m As Message) As MouseEventArgs
+        Public Shared Function GetContextMenuMouseEventArgs(Control As Control, ByRef m As Message) As MouseEventArgs
             Dim x As Integer = DesignUtil.SignedLoWord(m.LParam)
             Dim y As Integer = DesignUtil.SignedHiWord(m.LParam)
 
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GenerateValidLanguageIndependentNamespace(ByVal value As String) As String
+        Friend Shared Function GenerateValidLanguageIndependentNamespace(value As String) As String
             If value = "" Then
                 Return value
             Else
@@ -266,7 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks>Will throw an ArgumentException if it fails</remarks>
-        Friend Shared Function GenerateValidLanguageIndependentIdentifier(ByVal value As String) As String
+        Friend Shared Function GenerateValidLanguageIndependentIdentifier(value As String) As String
             Const replacementChar As Char = "_"c
 
             If System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(value) Then
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="dd"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetEncoding(ByVal dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As System.Text.Encoding
+        Friend Shared Function GetEncoding(dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As System.Text.Encoding
             ' Try to get the encoding of the textbuffer that we are going to write to...
             Try
                 Static GUID_VsBufferEncodingVSTFF As New Guid("{16417F39-A6B7-4c90-89FA-770D2C60440B}")
@@ -342,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Returns true is ClickOnce is available for this project
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Shared Function IsClickOnceSupported(ByVal hier As IVsHierarchy) As Boolean
+        Friend Shared Function IsClickOnceSupported(hier As IVsHierarchy) As Boolean
             If Common.ShellUtil.IsWebProject(hier) Then
                 Return False
             End If

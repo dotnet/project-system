@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Event ResourcesExistChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Public Event ResourcesExistChanged(sender As Object, e As EventArgs)
 
 
         ''' <summary>
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="CategoryDisplay">Whether this category uses a stringtable or listview.</param>
         ''' <param name="AssociatedResourceTypeEditors">A list of all resource type editors which are shown in this category (a resource type editor can only be shown in a single category).</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ProgrammaticName As String, ByVal LocalizedName As String, ByVal CategoryDisplay As Display, ByVal MenuCommand As MenuCommand, ByVal addCommand As EventHandler, ByVal ParamArray AssociatedResourceTypeEditors() As ResourceTypeEditor)
+        Public Sub New(ProgrammaticName As String, LocalizedName As String, CategoryDisplay As Display, MenuCommand As MenuCommand, addCommand As EventHandler, ParamArray AssociatedResourceTypeEditors() As ResourceTypeEditor)
             Debug.Assert(ProgrammaticName <> "", "programmatic name must be non-empty")
             Debug.Assert(LocalizedName <> "", "localized name should be non-empty")
             Debug.Assert(Not AssociatedResourceTypeEditors Is Nothing, "Must be at least one resource type editor per category.")
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _addCommand
             End Get
-            Set(ByVal value As EventHandler)
+            Set(value As EventHandler)
                 _addCommand = value
             End Set
         End Property
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _resourceCount
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 Dim ResourcesExisted As Boolean = ResourcesExist
                 _resourceCount = Value
 
@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _resourceView
             End Get
-            Set(ByVal Value As ResourceListView.ResourceView)
+            Set(Value As ResourceListView.ResourceView)
                 _resourceView = Value
             End Set
         End Property
@@ -242,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _showTypeColumnInStringTable
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _showTypeColumnInStringTable = Value
             End Set
@@ -273,13 +273,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _allowNewEntriesInStringTable
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _allowNewEntriesInStringTable = Value
             End Set
         End Property
 
-        Public Function Compare(ByVal Resource1 As Resource, ByVal Resource2 As Resource) As Integer
+        Public Function Compare(Resource1 As Resource, Resource2 As Resource) As Integer
             If _sorter IsNot Nothing
                 Return _sorter.Compare(Resource1, Resource2)
             Else

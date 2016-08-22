@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
         ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
-        Public Shared Function AddFileToProject(ByVal EditorName As String, ByVal Project As Project, ByVal ResXProjectItem As ProjectItem, ByVal MessageBoxOwner As IWin32Window, ByVal SourceFilePath As String) As String
+        Public Shared Function AddFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String) As String
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists:=False)
         End Function
 
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FormatArguments">Arguments for "{0}", "{1}", etc.</param>
         ''' <remarks></remarks>
         <Conditional("DEBUG")> _
-        Friend Shared Sub Trace(ByVal Message As String, ByVal ParamArray FormatArguments() As Object)
+        Friend Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             If FormatArguments.Length > 0 Then
                 'Only use String.Format when we have specific format arguments, although we might accidently break on something like a stray "{" in a filename
                 Message = String.Format(Message, FormatArguments)
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
         ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
-        Private Shared Function AddFileToProjectHelper(ByVal EditorName As String, ByVal Project As Project, ByVal ResXProjectItem As ProjectItem, ByVal MessageBoxOwner As IWin32Window, ByVal SourceFilePath As String, ByVal CopyFileIfExists As Boolean) As String
+        Private Shared Function AddFileToProjectHelper(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             If EditorName = "" Then
                 Throw New ArgumentNullException("EditorName")
             End If
@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GetProjectItemProperty(ByVal Item As ProjectItem, ByVal PropertyName As String) As [Property]
+        Private Shared Function GetProjectItemProperty(Item As ProjectItem, PropertyName As String) As [Property]
             If Item.Properties Is Nothing Then
                 Return Nothing
             End If
@@ -305,7 +305,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Item">The ProjectItem on which to set the property</param>
         ''' <remarks></remarks>
-        Private Shared Sub SetBuildAction(ByVal Item As ProjectItem)
+        Private Shared Sub SetBuildAction(Item As ProjectItem)
             Const BuildActionPropertyName As String = "BuildAction"
             Const BuildActionNone As Integer = 0
 
@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DestinationFolder">The destination folder (ProjectItems) where the file should be copied.</param>
         ''' <returns></returns>
         ''' <remarks>Either DestinationFolder or DestinationFolderPath must be passed in.</remarks>
-        Private Shared Function CopyFileWithinProject(ByVal Project As Project, ByVal SourceFilePath As String, ByVal DestinationFolder As ProjectItems) As String
+        Private Shared Function CopyFileWithinProject(Project As Project, SourceFilePath As String, DestinationFolder As ProjectItems) As String
             'Need to determine the destination disk path
             Dim DestinationFolderPath As String
             If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(DestinationFolder.Kind)) Then
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DestinationFolderPath">The path of the destination folder where this item should be copied.</param>
         ''' <returns></returns>
         ''' <remarks>Either DestinationFolder or DestinationFolderPath must be passed in.</remarks>
-        Private Shared Function CopyFileWithinProject(ByVal Project As Project, ByVal SourceFilePath As String, ByVal DestinationFolderPath As String) As String
+        Private Shared Function CopyFileWithinProject(Project As Project, SourceFilePath As String, DestinationFolderPath As String) As String
             Debug.Assert(DestinationFolderPath IsNot Nothing AndAlso DestinationFolderPath <> "", "DestinationFolderPath was empty")
 
             'Try to locate the source file's directory in the project.
@@ -374,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DestinationFolderPath">The path of the destination folder where this item should be copied.  Must not be empty.</param>
         ''' <returns></returns>
         ''' <remarks>Either DestinationFolder or DestinationFolderPath must be passed in.</remarks>
-        Private Shared Function CopyFileWithinProjectHelper(ByVal Project As Project, ByVal SourceFilePath As String, ByVal DestinationFolder As ProjectItems, ByVal DestinationFolderPath As String) As String
+        Private Shared Function CopyFileWithinProjectHelper(Project As Project, SourceFilePath As String, DestinationFolder As ProjectItems, DestinationFolderPath As String) As String
             If DestinationFolderPath Is Nothing OrElse DestinationFolderPath = "" OrElse Project Is Nothing OrElse SourceFilePath Is Nothing OrElse SourceFilePath = "" Then
                 Debug.Fail("Missing args")
                 Return Nothing 'defensive
@@ -414,7 +414,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
         ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
-        Private Shared Function AddOutsideFileToProject(ByVal EditorName As String, ByVal Project As Project, ByVal ResXProjectItem As ProjectItem, ByVal MessageBoxOwner As IWin32Window, ByVal FullSourceFilePath As String, ByVal Behavior As ResourcesFolderBehavior, ByVal ResourcesFolderName As String, ByVal CopyFileIfExists As Boolean) As String
+        Private Shared Function AddOutsideFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, FullSourceFilePath As String, Behavior As ResourcesFolderBehavior, ResourcesFolderName As String, CopyFileIfExists As Boolean) As String
             Dim SourceFileNameOnly As String = Path.GetFileName(FullSourceFilePath)
 
             'Determine where to add files into the project
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ResourcesFolderProjectItems">[Out] Returns the ProjectItem collection that represents the Resources folder in the project</param>
         ''' <param name="ResourcesFolderPath">[Out] Returns the path on disk of the Resources folder.</param>
         ''' <remarks></remarks>
-        Private Shared Sub GetOrCreateResourcesFolder(ByVal Project As Project, ByVal ResourcesFolderName As String, ByRef ResourcesFolderProjectItems As ProjectItems, ByRef ResourcesFolderPath As String)
+        Private Shared Sub GetOrCreateResourcesFolder(Project As Project, ResourcesFolderName As String, ByRef ResourcesFolderProjectItems As ProjectItems, ByRef ResourcesFolderPath As String)
             Dim AddToProjectRoot As Boolean = False
 
             Dim FoundProjectItem As ProjectItem
@@ -616,7 +616,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Behavior">[Out] Returns the add-to-project behavior to use for this project.</param>
         ''' <param name="ResourcesFolderName">[Out] Returns the name of the Resources folder to use for this project (only relevant if the behavior is to copy to the Resources folder)</param>
         ''' <remarks></remarks>
-        Private Shared Sub GetProjectBehavior(ByVal Project As Project, ByRef Behavior As ResourcesFolderBehavior, ByRef ResourcesFolderName As String)
+        Private Shared Sub GetProjectBehavior(Project As Project, ByRef Behavior As ResourcesFolderBehavior, ByRef ResourcesFolderName As String)
             'If we can't find evidence in the registry to say otherwise, our behavior will be to not do any
             '  copying of files into the project
             Behavior = ResourcesFolderBehavior.AddNone
@@ -713,7 +713,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' If DestinationProjectItems is returned as Nothing, assume the same behavior as ResourcesFolderBehavior.AddNone.
         ''' </remarks>
-        Private Shared Sub GetDestinationFolder(ByVal Project As Project, ByVal ResXProjectItem As ProjectItem, ByVal Behavior As ResourcesFolderBehavior, ByVal ResourcesFolderName As String, ByRef DestinationProjectItems As ProjectItems, ByRef DestinationPath As String)
+        Private Shared Sub GetDestinationFolder(Project As Project, ResXProjectItem As ProjectItem, Behavior As ResourcesFolderBehavior, ResourcesFolderName As String, ByRef DestinationProjectItems As ProjectItems, ByRef DestinationPath As String)
             DestinationProjectItems = Nothing
             DestinationPath = Nothing
 
@@ -763,7 +763,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Name">The key to check for.</param>
         ''' <returns>The ProjectItem for the given key, if found, else Nothing.  Throws exceptions only in unexpected cases.</returns>
         ''' <remarks></remarks>
-        Friend Shared Function QueryProjectItems(ByVal ProjectItems As ProjectItems, ByVal Name As String) As ProjectItem
+        Friend Shared Function QueryProjectItems(ProjectItems As ProjectItems, Name As String) As ProjectItem
             Try
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
@@ -785,7 +785,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="BaseFileName">The base filename to use.  This name will be modified until a unique name is found.</param>
         ''' <returns>The unique filename and path.</returns>
         ''' <remarks>The returned name is always munged.</remarks>
-        Private Shared Function MakeUniqueFileName(ByVal ParentFolder As ProjectItems, ByVal ParentFolderPath As String, ByVal BaseFileName As String) As String
+        Private Shared Function MakeUniqueFileName(ParentFolder As ProjectItems, ParentFolderPath As String, BaseFileName As String) As String
             Dim Append As Integer = 1
 
             Do
@@ -816,7 +816,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ProjectItem">The project item to check.</param>
         ''' <returns>The filename and path of the project item.</returns>
         ''' <remarks></remarks>
-        Private Shared Function GetFileNameFromProjectItem(ByVal ProjectItem As ProjectItem, ByVal ExpectedExtension As String) As String
+        Private Shared Function GetFileNameFromProjectItem(ProjectItem As ProjectItem, ExpectedExtension As String) As String
             'Look for a FileName with the expected extension.  It's unclear whether we can assume it will always be the
             '  first one.  (There can be multiple files for a ProjectItem for such cases as code behind, etc.)
             For i As Short = 1 To ProjectItem.FileCount 'this collection is 1-indexed
@@ -837,7 +837,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ProjectItem">The project item to check.</param>
         ''' <returns>The filename and path of the project item.</returns>
         ''' <remarks></remarks>
-        Private Shared Function GetFileNameFromFolderProjectItem(ByVal ProjectItem As ProjectItem) As String
+        Private Shared Function GetFileNameFromFolderProjectItem(ProjectItem As ProjectItem) As String
             If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(ProjectItem.Kind)) Then
                 'The FileNames property represents the actual full path of the directory if the folder
                 '  is an actual physical folder on disk.
@@ -856,7 +856,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ProjectItems">The ProjectItems collection to check.  Must refer to a physical folder on disk.</param>
         ''' <returns>The directory name of the collection on disk.</returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetFolderNameFromProjectItems(ByVal ProjectItems As ProjectItems) As String
+        Friend Shared Function GetFolderNameFromProjectItems(ProjectItems As ProjectItems) As String
             If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(ProjectItems.Kind)) Then
                 If TypeOf ProjectItems.Parent Is Project Then
                     Return GetProjectDirectory(DirectCast(ProjectItems.Parent, Project))
@@ -879,7 +879,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Project"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function IsMiscellaneousProject(ByVal Project As Project) As Boolean
+        Private Shared Function IsMiscellaneousProject(Project As Project) As Boolean
             If vsMiscFilesProjectUniqueName.Equals(Project.UniqueName, StringComparison.OrdinalIgnoreCase) Then
                 Return True
             End If
@@ -899,7 +899,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Project">The project to query.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GetProjectDirectory(ByVal Project As Project) As String
+        Private Shared Function GetProjectDirectory(Project As Project) As String
             'Some special cases.  In particular, note that the Miscellaneous Files project
             '  has a FullName value of the empty string.
             If Project Is Nothing OrElse Project.FullName Is Nothing OrElse Project.FullName = "" OrElse IsMiscellaneousProject(Project) Then
@@ -932,7 +932,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' This does not handle cases where the directories are related by a mapped drive.
         ''' </remarks>
-        Private Shared Function IsSubdirectoryOf(ByVal Directory1 As String, ByVal Directory2 As String) As Boolean
+        Private Shared Function IsSubdirectoryOf(Directory1 As String, Directory2 As String) As Boolean
             Directory1 = Path.GetFullPath(Directory1)
             Directory2 = Path.GetFullPath(Directory2)
 
@@ -960,7 +960,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FolderPathToFind">The folder path to search for</param>
         ''' <returns>The parent ProjectItem collection.</returns>
         ''' <remarks></remarks>
-        Private Shared Function FindProjectItemsForFolderPath(ByVal Project As Project, ByVal FolderPathToFind As String) As ProjectItems
+        Private Shared Function FindProjectItemsForFolderPath(Project As Project, FolderPathToFind As String) As ProjectItems
             Return FindProjectItemsForFolderPathHelper(Project.ProjectItems, EnsureBackslash(Path.GetFullPath(FolderPathToFind)))
         End Function
 
@@ -972,7 +972,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FullFolderPathToFind">The folder path to look for.  Must have had Path.GetFullPath() and EnsureBackslash() called on it.</param>
         ''' <returns>The parent ProjectItem collection, or Nothing if not found.</returns>
         ''' <remarks></remarks>
-        Private Shared Function FindProjectItemsForFolderPathHelper(ByVal ProjectItemsTree As ProjectItems, ByVal FullFolderPathToFind As String) As ProjectItems
+        Private Shared Function FindProjectItemsForFolderPathHelper(ProjectItemsTree As ProjectItems, FullFolderPathToFind As String) As ProjectItems
             Debug.Assert(FullFolderPathToFind.Equals(Path.GetFullPath(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase), _
                 "FullFolderPathToFind should have already had Path.GetFullPath() called on it")
             Debug.Assert(FullFolderPathToFind.Equals(EnsureBackslash(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase), _
@@ -1002,7 +1002,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FilePath"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function EnsureBackslash(ByVal FilePath As String) As String
+        Private Shared Function EnsureBackslash(FilePath As String) As String
             If FilePath IsNot Nothing AndAlso Not FilePath.EndsWith(Path.DirectorySeparatorChar) Then
                 Return FilePath & Path.DirectorySeparatorChar
             Else

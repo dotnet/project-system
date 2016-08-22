@@ -8,7 +8,7 @@ Imports System.Xml.Serialization
 Namespace Microsoft.VisualStudio.Editors.MyApplication
     Friend Class MyApplicationDataSerializationWriter
         Inherits System.Xml.Serialization.XmlSerializationWriter
-        Public Sub Write2_MyApplicationData(ByVal n As String, ByVal ns As String, ByVal o As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData, ByVal isNullable As Boolean, ByVal needType As Boolean)
+        Public Sub Write2_MyApplicationData(n As String, ns As String, o As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData, isNullable As Boolean, needType As Boolean)
             If o Is Nothing Then
                 If isNullable Then
                     WriteNullTagLiteral(n, ns)
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub 'InitCallbacks
 
 
-        Public Sub Write3_MyApplicationData(ByVal o As Object)
+        Public Sub Write3_MyApplicationData(o As Object)
             WriteStartDocument()
             If o Is Nothing Then
                 WriteNullTagLiteral("MyApplicationData", "")
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return _publicMethods
         End Function 'GetPublicMethods
 
-        Public Shared Function CanSerialize(ByVal type As System.Type) As System.Boolean
+        Public Shared Function CanSerialize(type As System.Type) As System.Boolean
             Return False
         End Function 'CanSerialize 
     End Class 'MyApplicationDataSerializationWriter
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     Friend Class MyApplicationDataSerializationReader
         Inherits System.Xml.Serialization.XmlSerializationReader
 
-        Public Function Read2_MyApplicationData(ByVal isNullable As Boolean, ByVal checkType As Boolean) As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData
+        Public Function Read2_MyApplicationData(isNullable As Boolean, checkType As Boolean) As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData
             Dim xsiType As System.Xml.XmlQualifiedName = Nothing
             If (checkType) Then xsiType = GetXsiType()
 
@@ -258,12 +258,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function 'CreateWriter
 
 
-        Public Overrides Function CanDeserialize(ByVal xmlReader As System.Xml.XmlReader) As Boolean
+        Public Overrides Function CanDeserialize(xmlReader As System.Xml.XmlReader) As Boolean
             Return xmlReader.IsStartElement("MyApplicationData", "")
         End Function 'CanDeserialize
 
 
-        Protected Overrides Sub Serialize(ByVal objectToSerialize As [Object], ByVal writer As XmlSerializationWriter)
+        Protected Overrides Sub Serialize(objectToSerialize As [Object], writer As XmlSerializationWriter)
 
             If Not (objectToSerialize Is Nothing) AndAlso Not Type.Equals(objectToSerialize.GetType(), GetType(Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData)) Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")
@@ -274,7 +274,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub 'Serialize
 
 
-        Protected Overrides Function Deserialize(ByVal reader As XmlSerializationReader) As Object
+        Protected Overrides Function Deserialize(reader As XmlSerializationReader) As Object
 
             Return CType(reader, MyApplicationDataSerializationReader).Read4_MyApplicationData()
         End Function 'Deserialize 

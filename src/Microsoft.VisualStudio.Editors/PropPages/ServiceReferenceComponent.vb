@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _collection As IVsWCFReferenceGroupCollection
         Private _referenceGroup As IVsWCFReferenceGroup
 
-        Public Sub New(ByVal collection As IVsWCFReferenceGroupCollection, ByVal referenceGroup As IVsWCFReferenceGroup)
+        Public Sub New(collection As IVsWCFReferenceGroupCollection, referenceGroup As IVsWCFReferenceGroup)
             _collection = collection
             _referenceGroup = referenceGroup
         End Sub
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _referenceGroup.GetNamespace()
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _referenceGroup.SetNamespace(value)
             End Set
         End Property
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return String.Empty
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 value = value.Trim()
                 Dim currentCount As Integer = _referenceGroup.GetReferenceCount()
                 If currentCount = 1 Then
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetDefaultProperty(Me.GetType())
         End Function
 
-        Public Function GetEditor(ByVal editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor(Me.GetType(), editorBaseType)
         End Function
 
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetEvents(Me.GetType())
         End Function
 
-        Public Function GetEvents1(ByVal attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents(Me.GetType(), attributes)
         End Function
 
@@ -163,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="orig">The original property list</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetModifiedPropertyList(ByVal orig As PropertyDescriptorCollection) As PropertyDescriptorCollection
+        Private Function GetModifiedPropertyList(orig As PropertyDescriptorCollection) As PropertyDescriptorCollection
             Dim modified As PropertyDescriptor() = New PropertyDescriptor(orig.Count - 1) {}
 
             Dim i As Integer = 0
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Public Function GetProperties1(ByVal attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
             Dim orig As PropertyDescriptorCollection = TypeDescriptor.GetProperties(Me.GetType(), attributes)
 
             If _referenceGroup.GetReferenceCount() > 1 Then
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        Public Function GetPropertyOwner(ByVal pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
             Return Me
         End Function
 #End Region

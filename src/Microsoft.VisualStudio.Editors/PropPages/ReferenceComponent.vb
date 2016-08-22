@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits ComponentWrapper
         Implements IComparable, IReferenceComponent
 
-        Public Sub New(ByVal realObject As VSLangProj.Reference)
+        Public Sub New(realObject As VSLangProj.Reference)
             MyBase.New(realObject)
         End Sub
 
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Name
         End Function
 
-        Public Function CompareTo(ByVal obj As Object) As Integer Implements System.IComparable.CompareTo
+        Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
             Dim y As ReferenceComponent = CType(obj, ReferenceComponent)
             If y IsNot Nothing Then
                 Return String.Compare(Name, y.Name)

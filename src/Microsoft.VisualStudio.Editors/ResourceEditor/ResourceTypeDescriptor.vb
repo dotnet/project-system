@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Instance">An instance of Resource class.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Instance As Resource)
+        Public Sub New(Instance As Resource)
             MyBase.New()
 
             Debug.Assert(Instance IsNot Nothing, "Instance is Nothing!!!")
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="attributes">An array of type Attribute that is used as a filter.</param>
         ''' <returns>A PropertyDescriptorCollection that represents the filtered properties for this Resource instance.</returns>
         ''' <remarks>We don't have any attributes on the properties except possibly the Category attribute.</remarks>
-        Public Overrides Function GetProperties(ByVal attributes() As Attribute) As PropertyDescriptorCollection
+        Public Overrides Function GetProperties(attributes() As Attribute) As PropertyDescriptorCollection
             Return _instance.GetProperties
         End Function
 

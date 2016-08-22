@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '*
         '* Only allow numerical (and control i.e. backspace) characters
         '*
-        Private Sub FilterNumericInput(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) _
+        Private Sub FilterNumericInput(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) _
                 Handles _tabSizeTextBox.KeyPress, _indentSizeTextBox.KeyPress
             If Char.IsDigit(e.KeyChar) Or Char.IsControl(e.KeyChar) Then
                 e.Handled = False
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Get
                 IndentSize = _indentSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 _IndentSizeTextBox.Text = Value.ToString()
                 _indentSize = Value
             End Set
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                     IndentType = EnvDTE.vsIndentStyle.vsIndentStyleSmart
                 End If
             End Get
-            Set(ByVal Value As EnvDTE.vsIndentStyle)
+            Set(Value As EnvDTE.vsIndentStyle)
                 _indentTypeBlockRadioButton.Checked = (Value = EnvDTE.vsIndentStyle.vsIndentStyleDefault)
                 _indentTypeNoneRadioButton.Checked = (Value = EnvDTE.vsIndentStyle.vsIndentStyleNone)
                 _indentTypeSmartRadioButton.Checked = (Value = EnvDTE.vsIndentStyle.vsIndentStyleSmart)
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Get
                 LineNumbers = _LineNumbersCheckBox.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _LineNumbersCheckBox.Checked = Value
             End Set
         End Property
@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Get
                 TabSize = _tabSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 _TabSizeTextBox.Text = Value.ToString()
                 _tabSize = Value
             End Set
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Get
                 WordWrap = _WordWrapCheckBox.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _WordWrapCheckBox.Checked = Value
             End Set
         End Property
@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '* Try to set TabSize to the value in the tabsize text box. If failure (i.e non-numerical value)
         '* reset the contents of the text box to previous value...
         '*
-        Private Sub tabSizeTextBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _tabSizeTextBox.TextChanged
+        Private Sub tabSizeTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles _tabSizeTextBox.TextChanged
             Try
                 TabSize = UInt16.Parse(_tabSizeTextBox.Text)
             Catch ex As Exception
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '* Try to set IndentSize to the value in the indentsize text box. If failure (i.e non-numerical value)
         '* reset the contents of the text box to previous value...
         '*
-        Private Sub indentSizeTextBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _indentSizeTextBox.TextChanged
+        Private Sub indentSizeTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles _indentSizeTextBox.TextChanged
             Try
                 IndentSize = UInt16.Parse(_indentSizeTextBox.Text)
             Catch ex As Exception

@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function FilesToCheckOut(ByVal CreateIfNotExist As Boolean) As String()
+        Public Overridable Function FilesToCheckOut(CreateIfNotExist As Boolean) As String()
             Return New String() {}
         End Function
 

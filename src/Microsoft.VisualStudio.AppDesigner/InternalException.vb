@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="Message">The message for the exception.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Message As String)
+        Public Sub New(Message As String)
             Me.New(Message, Nothing)
         End Sub
 
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="InnerException">The inner exception, if any (Nothing = none).</param>
         ''' <remarks>Message defaults to "Unexpected error."</remarks>
-        Public Sub New(ByVal InnerException As Exception)
+        Public Sub New(InnerException As Exception)
             Me.New(SR.GetString(SR.RSE_Err_InternalException), InnerException)
         End Sub
 
@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <param name="Message">The message for the exception.</param>
         ''' <param name="InnerException">The inner exception, if any (Nothing = none).</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Message As String, ByVal InnerException As Exception)
+        Public Sub New(Message As String, InnerException As Exception)
             MyBase.New(Message, InnerException)
         End Sub
 
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <param name="context"></param>
         ''' <remarks></remarks>
         <EditorBrowsable(EditorBrowsableState.Advanced)> _
-        Protected Sub New(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext)
+        Protected Sub New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
             MyBase.New(info, context)
         End Sub
 

@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ItemId">ItemId in Hierarchy to load</param>
         ''' <param name="punkDocData">Document data to load</param>
         ''' <remarks></remarks>
-        Friend Overrides Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal moniker As String, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
+        Friend Overrides Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
             MyBase.InitializeEx(ServiceProvider, moniker, Hierarchy, ItemId, punkDocData)
 
             _serviceProvider = ServiceProvider
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="SerializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub HandleFlush(ByVal SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleFlush(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
             Try
                 _flushing = True
                 Dim Designer As SettingsDesigner = DirectCast(LoaderHost.GetDesigner(RootComponent), SettingsDesigner)
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="SerializationManager">My serialization manager</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub HandleLoad(ByVal SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "SettingsDesignerLoader: Start loading settings")
             Debug.Assert(LoaderHost IsNot Nothing, "Asked to load settings designer without a LoaderHost!?")
             LoaderHost.CreateComponent(GetType(DesignTimeSettings))
@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Private ReadOnly Property GeneratedClassNamespace(ByVal IncludeRootNamespace As Boolean) As String
+        Private ReadOnly Property GeneratedClassNamespace(IncludeRootNamespace As Boolean) As String
             Get
                 Return ProjectUtils.GeneratedSettingsClassNamespace(VsHierarchy, ProjectItemid, IncludeRootNamespace)
             End Get
@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Get a DocData for the App.Config file (if any)
         ''' </summary>
         ''' <remarks></remarks>
-        Private Function AttachAppConfigDocData(ByVal CreateIfNotExist As Boolean) As Boolean
+        Private Function AttachAppConfigDocData(CreateIfNotExist As Boolean) As Boolean
             ' Now, Let's try and get to the app.config file
             If _appConfigDocData Is Nothing Then
                 _appConfigDocData = AppConfigSerializer.GetAppConfigDocData(VBPackage.Instance, VsHierarchy, CreateIfNotExist, False, m_DocDataService)
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComponentAddedHandler(ByVal sender As Object, ByVal e As ComponentEventArgs)
+        Private Sub ComponentAddedHandler(sender As Object, e As ComponentEventArgs)
             If TypeOf e.Component Is DesignTimeSettingInstance Then
                 ' Let's make sure our root component knows about this guy!
                 Debug.Assert(RootComponent IsNot Nothing, "No root component when adding design time setting instances")
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangingHandler(ByVal sender As Object, ByVal e As ComponentChangingEventArgs)
+        Private Sub ComponentChangingHandler(sender As Object, e As ComponentChangingEventArgs)
             Dim instance As DesignTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
             ' If this is a rename of a web reference, we have to check out the project file in order to update
             ' the corresponding property in it...
@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangedHandler(ByVal sender As Object, ByVal e As ComponentChangedEventArgs)
+        Private Sub ComponentChangedHandler(sender As Object, e As ComponentChangedEventArgs)
             ' If the name property of a designtimesetting instance (or derived class) has changed in a project item
             ' that has "our" custom tool associated with it, we want to invoke a global rename of the setting
             '
@@ -461,7 +461,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComponentRemovedHandler(ByVal sender As Object, ByVal e As ComponentEventArgs)
+        Private Sub ComponentRemovedHandler(sender As Object, e As ComponentEventArgs)
             If Me.LoaderHost IsNot Nothing AndAlso Me.LoaderHost.Loading Then
                 ' If we are currently (re)loading the design surface, we don't want to force-run the custom tool
                 ' (Loading is set to true during reload as well as during load)
@@ -490,7 +490,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ExternalChange(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub ExternalChange(sender As Object, e As System.EventArgs)
             If Not _flushing Then
                 Debug.Assert(_appConfigDocData IsNot Nothing, "Why did we get a change notification for a NULL App.Config DocData?")
                 Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Queueing a reload due to an external change of the app.config DocData")
@@ -537,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="successful"></param>
         ''' <param name="errors"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnEndLoad(ByVal successful As Boolean, ByVal errors As System.Collections.ICollection)
+        Protected Overrides Sub OnEndLoad(successful As Boolean, errors As System.Collections.ICollection)
             MyBase.OnEndLoad(successful, errors)
             ConnectDebuggerEvents()
             ConnectBuildEvents()
@@ -589,7 +589,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Activated"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDesignerWindowActivated(ByVal Activated As Boolean)
+        Protected Overrides Sub OnDesignerWindowActivated(Activated As Boolean)
             MyBase.OnDesignerWindowActivated(Activated)
 
             Switches.TracePDFocus(TraceLevel.Warning, "SettingsDesignerLoader.OnDesignerWindowActivated")
@@ -610,7 +610,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' The LoaderHost will remove all services all by itself...
                 ' No need to worry about that here :)
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
 #Region "INameCreationService"
-        Public Function CreateName(ByVal container As System.ComponentModel.IContainer, ByVal dataType As System.Type) As String Implements System.ComponentModel.Design.Serialization.INameCreationService.CreateName
+        Public Function CreateName(container As System.ComponentModel.IContainer, dataType As System.Type) As String Implements System.ComponentModel.Design.Serialization.INameCreationService.CreateName
             If dataType IsNot Nothing AndAlso String.Equals(dataType.AssemblyQualifiedName, GetType(DesignTimeSettings).AssemblyQualifiedName, StringComparison.OrdinalIgnoreCase) Then
                 Return ""
             End If
@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return ""
         End Function
 
-        Public Function IsValidName(ByVal name As String) As Boolean Implements System.ComponentModel.Design.Serialization.INameCreationService.IsValidName
+        Public Function IsValidName(name As String) As Boolean Implements System.ComponentModel.Design.Serialization.INameCreationService.IsValidName
             If RootComponent IsNot Nothing Then
                 Return RootComponent.IsValidName(name)
             Else
@@ -748,7 +748,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Public Sub ValidateName(ByVal name As String) Implements System.ComponentModel.Design.Serialization.INameCreationService.ValidateName
+        Public Sub ValidateName(name As String) Implements System.ComponentModel.Design.Serialization.INameCreationService.ValidateName
             If Not IsValidName(name) Then
                 Throw Common.CreateArgumentException("name")
             End If
@@ -778,7 +778,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' A build has started - disable/enable page
         ''' </summary>
-        Private Sub BuildBegin(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
+        Private Sub BuildBegin(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
             SetReadOnlyMode(True, String.Empty)
             _readOnly = True
             RefreshView()
@@ -790,7 +790,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
         ''' <remarks></remarks>
-        Private Sub BuildDone(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
+        Private Sub BuildDone(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
             SetReadOnlyMode(False, String.Empty)
             _readOnly = False
             RefreshView()
@@ -848,7 +848,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' handle DebugMode change event, disable the designer when in debug mode...
         ''' </summary>
         ''' <param name="dbgmodeNew"></param>
-        Private Function OnModeChange(ByVal dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
+        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
             Try
                 If dbgmodeNew = DBGMODE.DBGMODE_Design Then
                     SetReadOnlyMode(False, String.Empty)

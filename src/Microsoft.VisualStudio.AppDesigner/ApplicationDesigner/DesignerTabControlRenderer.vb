@@ -121,7 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="owner">The ProjectDesignerTabControl control which owns and contains this control.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal owner As ProjectDesignerTabControl)
+        Public Sub New(owner As ProjectDesignerTabControl)
             If owner Is Nothing Then
                 Throw New ArgumentNullException("owner")
             End If
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal value As IServiceProvider)
+            Set(value As IServiceProvider)
                 _serviceProvider = value
                 If _GDIObjectsCreated Then
                     'If we've already created GDI stuff/layout, we will need to re-create them.  Otherwise
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _preferredButtonForSwitchableSlot
             End Get
-            Set(ByVal value As ProjectDesignerTabButton)
+            Set(value As ProjectDesignerTabButton)
                 If value IsNot _preferredButtonForSwitchableSlot Then
                     _preferredButtonForSwitchableSlot = value
                     _owner.Invalidate()
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="ForceUpdate">If True, the GDI objects are updated if they have already been created.</param>
         ''' <remarks></remarks>
-        Public Sub CreateGDIObjects(Optional ByVal ForceUpdate As Boolean = False)
+        Public Sub CreateGDIObjects(Optional ForceUpdate As Boolean = False)
             If _creatingGDIObjects Then
                 Exit Sub
             End If
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Calculates the positions of various lines in the UI
         ''' </summary>
         ''' <param name="rect"></param>
-        Private Sub CalcLineOffsets(ByVal rect As Rectangle)
+        Private Sub CalcLineOffsets(rect As Rectangle)
             'const int yOffset = 10;
             Dim width As Integer = rect.Width
             Dim height As Integer = rect.Height
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _owner.OverflowButton.Visible = OverflowNeeded
         End Sub
 
-        Private Function SetButtonBounds(ByVal Button As Button, ByVal ButtonIndex As Integer) As Size
+        Private Function SetButtonBounds(Button As Button, ButtonIndex As Integer) As Size
             Button.Size = New Size(_buttonWidth, _buttonHeight)
             Button.Location = New Point(_buttonsLocationX, _buttonsLocationY + ButtonIndex * _buttonHeight)
         End Function
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="g">The Graphics object to paint to.</param>
         ''' <remarks></remarks>
-        Public Sub RenderBackground(ByVal g As Graphics)
+        Public Sub RenderBackground(g As Graphics)
             CreateGDIObjects()
 
             If Not _gradientBrushesCreated Then
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>
         ''' The graphics object g is the button's, so coordinates are relative to the button left/top
         ''' </remarks>
-        Public Sub RenderButton(ByVal g As Graphics, ByVal button As ProjectDesignerTabButton, ByVal IsSelected As Boolean, ByVal IsHovered As Boolean)
+        Public Sub RenderButton(g As Graphics, button As ProjectDesignerTabButton, IsSelected As Boolean, IsHovered As Boolean)
             CreateGDIObjects()
 
             Dim backgroundBrush As Brush = _buttonBackgroundBrush

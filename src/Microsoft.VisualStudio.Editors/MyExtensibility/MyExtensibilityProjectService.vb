@@ -37,8 +37,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #Region "Public methods"
 
         Public Shared Function CreateNew( _
-                ByVal vbPackage As VBPackage, ByVal project As EnvDTE.Project, _
-                ByVal projectHierarchy As IVsHierarchy, ByVal extensibilitySettings As MyExtensibilitySettings) _
+                vbPackage As VBPackage, project As EnvDTE.Project, _
+                projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings) _
                 As MyExtensibilityProjectService
             If vbPackage Is Nothing Then
                 Return Nothing
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' VB Compiler calls this method (through VBReferenceChangedService) when a reference is added into the current project.
         ''' _dispReferencesEvents.ReferenceAdded also calls this method when a reference is added into the current project.
         ''' </summary>
-        Public Sub ReferenceAdded(ByVal assemblyFullName As String)
+        Public Sub ReferenceAdded(assemblyFullName As String)
             Me.HandleReferenceChanged(AddRemoveAction.Add, NormalizeAssemblyFullName(assemblyFullName))
         End Sub
 
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' VB Compiler calls this method (through VBReferenceChangedService) when a reference is removed from the current project.
         ''' </summary>
-        Public Sub ReferenceRemoved(ByVal assemblyFullName As String)
+        Public Sub ReferenceRemoved(assemblyFullName As String)
             Me.HandleReferenceChanged(AddRemoveAction.Remove, NormalizeAssemblyFullName(assemblyFullName))
         End Sub
 
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Remove the selected extensions from "My Extensions" property page.
         ''' </summary>
-        Public Sub RemoveExtensionsFromPropPage(ByVal extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup))
+        Public Sub RemoveExtensionsFromPropPage(extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup))
             Dim projectFilesRemovedSB As New StringBuilder()
             Me.RemoveExtensionProjectItemGroups(extensionProjectItemGroups, projectFilesRemovedSB)
             Me.SetExtensionsStatus(Nothing, projectFilesRemovedSB)
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' This is called by MyExtensiblityProjectSettings.
         ''' </summary>
         Public Sub GetExtensionTemplateNameAndDescription(
-                ByVal id As String, ByVal version As Version, ByVal assemblyName As String,
+                id As String, version As Version, assemblyName As String,
                 ByRef name As String, ByRef description As String)
             _extensibilitySettings.GetExtensionTemplateNameAndDescription(Me.ProjectTypeID, _project,
                 id, version, assemblyName,
@@ -155,8 +155,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Create a new project service.
         ''' </summary>
-        Private Sub New(ByVal vbPackage As VBPackage, ByVal project As EnvDTE.Project,
-                ByVal projectHierarchy As IVsHierarchy, ByVal extensibilitySettings As MyExtensibilitySettings)
+        Private Sub New(vbPackage As VBPackage, project As EnvDTE.Project,
+                projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             Debug.Assert(project IsNot Nothing, "project Is Nothing")
             Debug.Assert(projectHierarchy IsNot Nothing, "projectHierarchy Is Nothing")
@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' compiler and MSBuild errors.
         ''' </summary>
         Private Sub HandleReferenceChanged( _
-                ByVal changeType As AddRemoveAction, ByVal assemblyFullName As String)
+                changeType As AddRemoveAction, assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
             Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Do not call this method directly, use HandleReferenceChanged.
         ''' </summary>
-        Private Sub HandleReferenceAdded(ByVal assemblyFullName As String)
+        Private Sub HandleReferenceAdded(assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
             Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
@@ -304,7 +304,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Do not call this method directly, use HandleReferenceChanged.
         ''' </summary>
-        Private Sub HandleReferenceRemoved(ByVal assemblyFullName As String)
+        Private Sub HandleReferenceRemoved(assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
             Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' When VS is idle, loop through the pending activities list and add / remove extensions.
         ''' </summary>
-        Private Sub HandleReferenceChangedOnIdle(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub HandleReferenceChangedOnIdle(sender As Object, e As EventArgs)
             RemoveHandler Application.Idle, AddressOf Me.HandleReferenceChangedOnIdle
 
             Debug.Assert(_pendingAssemblyChangesList IsNot Nothing, "Invalid pending assembly changes list!")
@@ -412,8 +412,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Add the given extension project item templates to the current project.
         ''' </summary>
-        Private Sub AddTemplates(ByVal extensionTemplates As List(Of MyExtensionTemplate), _
-                ByVal extensionsAddedSB As StringBuilder)
+        Private Sub AddTemplates(extensionTemplates As List(Of MyExtensionTemplate), _
+                extensionsAddedSB As StringBuilder)
             Debug.Assert(extensionTemplates IsNot Nothing AndAlso extensionTemplates.Count > 0, "Invalid extensionTemplates!")
             Debug.Assert(extensionsAddedSB IsNot Nothing, "Invalid extensionsAddedSB!")
 
@@ -461,7 +461,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Remove the given extension code files from the project.
         ''' </summary>
-        Private Sub RemoveExtensionProjectItemGroups(ByVal extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup), ByVal projectFilesRemovedSB As StringBuilder)
+        Private Sub RemoveExtensionProjectItemGroups(extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup), projectFilesRemovedSB As StringBuilder)
             Debug.Assert(extensionProjectItemGroups IsNot Nothing AndAlso extensionProjectItemGroups.Count > 0, "Invalid extensionProjectFiles!")
             Debug.Assert(projectFilesRemovedSB IsNot Nothing, "Invalid projectFilesRemovedSB!")
 
@@ -494,7 +494,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Set the final status of VS status bar to the names of the items added / removed.
         ''' </summary>
-        Private Sub SetExtensionsStatus(ByVal addSB As StringBuilder, ByVal removeSB As StringBuilder)
+        Private Sub SetExtensionsStatus(addSB As StringBuilder, removeSB As StringBuilder)
             If addSB IsNot Nothing AndAlso addSB.Length > 0 Then
                 If removeSB IsNot Nothing AndAlso removeSB.Length > 0 Then
                     IdeStatusBar.SetText(String.Format(Res.StatusBar_Add_Remove_Finish, addSB.ToString(), removeSB.ToString()))
@@ -542,7 +542,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' the activity (add or remove) and the extensions associated with this change.
         ''' </summary>
         Private Class AssemblyChange
-            Public Sub New(ByVal assemblyName As String, ByVal actionType As AddRemoveAction)
+            Public Sub New(assemblyName As String, actionType As AddRemoveAction)
                 Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyName), "NULL assemblyName!")
                 Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyName), assemblyName, _
                     StringComparison.OrdinalIgnoreCase), "assemblyName not normalized!")
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Get
                     Return _extensionTemplates
                 End Get
-                Set(ByVal value As List(Of MyExtensionTemplate))
+                Set(value As List(Of MyExtensionTemplate))
                     _extensionTemplates = value
                 End Set
             End Property
@@ -578,12 +578,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Get
                     Return _extensionProjectFiles
                 End Get
-                Set(ByVal value As List(Of MyExtensionProjectItemGroup))
+                Set(value As List(Of MyExtensionProjectItemGroup))
                     _extensionProjectFiles = value
                 End Set
             End Property
 
-            Public Overrides Function Equals(ByVal obj As Object) As Boolean
+            Public Overrides Function Equals(obj As Object) As Boolean
                 Dim asmActivity As AssemblyChange = TryCast(obj, AssemblyChange)
                 If asmActivity IsNot Nothing Then
                     Return String.Equals(_assemblyName, asmActivity._assemblyName, StringComparison.OrdinalIgnoreCase) _

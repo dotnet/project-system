@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _replaced As Boolean
 
-        Public Sub New(ByVal description As String)
+        Public Sub New(description As String)
             MyBase.New(description)
         End Sub
 

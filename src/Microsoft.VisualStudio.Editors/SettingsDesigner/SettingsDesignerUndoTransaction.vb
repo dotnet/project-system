@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Provider"></param>
         ''' <param name="Description"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Provider As IServiceProvider, ByVal Description As String)
+        Public Sub New(Provider As IServiceProvider, Description As String)
             If Provider IsNot Nothing Then
                 Initialize(DirectCast(Provider.GetService(GetType(IDesignerHost)), IDesignerHost), Description)
             Else
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="DesignerHost"></param>
         ''' <param name="Description"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal DesignerHost As IDesignerHost, ByVal Description As String)
+        Public Sub New(DesignerHost As IDesignerHost, Description As String)
             Initialize(DesignerHost, Description)
         End Sub
 
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="DesignerHost"></param>
         ''' <param name="Description"></param>
         ''' <remarks></remarks>
-        Private Sub Initialize(ByVal DesignerHost As IDesignerHost, ByVal Description As String)
+        Private Sub Initialize(DesignerHost As IDesignerHost, Description As String)
             If DesignerHost IsNot Nothing Then
                 _transaction = DesignerHost.CreateTransaction(Description)
             End If

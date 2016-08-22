@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _page As ReferencePropPage
         Private _projectItem As EnvDTE.ProjectItem
 
-        Public Sub New(ByVal page As ReferencePropPage, ByVal projectItem As EnvDTE.ProjectItem)
+        Public Sub New(page As ReferencePropPage, projectItem As EnvDTE.ProjectItem)
             _page = page
             _projectItem = projectItem
         End Sub
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return String.Empty
                 End Try
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _projectItem.Name = value
                 _page.OnWebReferencePropertyChanged(Me)
             End Set
@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return UrlBehaviorType.Static
                 End If
             End Get
-            Set(ByVal value As UrlBehaviorType)
+            Set(value As UrlBehaviorType)
                 Dim prop As EnvDTE.[Property] = GetItemProperty("UrlBehavior")
                 If prop IsNot Nothing Then
                     prop.Value = CInt(value)
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return String.Empty
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If value Is Nothing Then
                     value = String.Empty
                 End If
@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' Access the property through EnvDTE.ProjectItem.Properties
-        Private Function GetItemProperty(ByVal propertyName As String) As EnvDTE.[Property]
+        Private Function GetItemProperty(propertyName As String) As EnvDTE.[Property]
             Try
                 Dim properties As EnvDTE.Properties = _projectItem.Properties
                 If properties IsNot Nothing Then
@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetDefaultProperty(Me.GetType())
         End Function
 
-        Public Function GetEditor(ByVal editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor(Me.GetType(), editorBaseType)
         End Function
 
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetEvents(Me.GetType())
         End Function
 
-        Public Function GetEvents1(ByVal attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents(Me.GetType(), attributes)
         End Function
 
@@ -189,11 +189,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return TypeDescriptor.GetProperties(Me.GetType())
         End Function
 
-        Public Function GetProperties1(ByVal attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties(Me.GetType(), attributes)
         End Function
 
-        Public Function GetPropertyOwner(ByVal pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
             Return Me
         End Function
 #End Region
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' we only implement coverting from string...
-        Public Overrides Function CanConvertFrom(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
+        Public Overrides Function CanConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, sourceType As System.Type) As Boolean
             If sourceType Is GetType(String) Then
                 Return True
             End If
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting to string...
-        Public Overrides Function CanConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
+        Public Overrides Function CanConvertTo(context As System.ComponentModel.ITypeDescriptorContext, destinationType As System.Type) As Boolean
             If destinationType Is GetType(String) Then
                 Return True
             End If
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting from string...
-        Public Overrides Function ConvertFrom(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal culture As System.Globalization.CultureInfo, ByVal value As Object) As Object
+        Public Overrides Function ConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object) As Object
             If TypeOf value Is String Then
                 Dim stringValue As String = CStr(value)
                 For i As Integer = 0 To DisplayValues.Length - 1
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting to string...
-        Public Overrides Function ConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal culture As System.Globalization.CultureInfo, ByVal value As Object, ByVal destinationType As System.Type) As Object
+        Public Overrides Function ConvertTo(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object, destinationType As System.Type) As Object
             If destinationType Is GetType(String) Then
                 Dim type As UrlBehaviorType = CType(value, UrlBehaviorType)
                 Return DisplayValues(CInt(type))
@@ -263,11 +263,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' standard value collection... will be used in the dropdown of the propertyGrid
-        Public Overrides Function GetStandardValues(ByVal context As System.ComponentModel.ITypeDescriptorContext) As System.ComponentModel.TypeConverter.StandardValuesCollection
+        Public Overrides Function GetStandardValues(context As System.ComponentModel.ITypeDescriptorContext) As System.ComponentModel.TypeConverter.StandardValuesCollection
             Return New StandardValuesCollection(New UrlBehaviorType() {UrlBehaviorType.Static, UrlBehaviorType.Dynamic})
         End Function
 
-        Public Overrides Function GetStandardValuesSupported(ByVal context As System.ComponentModel.ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(context As System.ComponentModel.ITypeDescriptorContext) As Boolean
             Return True
         End Function
     End Class

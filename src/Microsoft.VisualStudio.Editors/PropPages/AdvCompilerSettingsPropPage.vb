@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Format baseaddress value into VB hex notation
         ''' </summary>
-        Private Function ToHexAddress(ByVal BaseAddress As UInt64) As String
+        Private Function ToHexAddress(BaseAddress As UInt64) As String
             Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInt32.MaxValue, "Invalid baseaddress value")
 
             Return "&H" & String.Format("{0:X8}", CUInt(BaseAddress))
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Converts BaseAddress property to VB hext format for UI
         ''' Called by base class code through delegate
         ''' </summary>
-        Private Function SetBaseAddress(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal obj As Object) As Boolean
+        Private Function SetBaseAddress(control As Control, prop As PropertyDescriptor, obj As Object) As Boolean
             control.Text = "&H" & String.Format("{0:X8}", obj)
             Return True
         End Function
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Converts the string BaseAddress text to the native property type of UInt32
         ''' Called by base class code through delegate
         ''' </summary>
-        Private Function GetBaseAddress(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef obj As Object) As Boolean
+        Private Function GetBaseAddress(control As Control, prop As PropertyDescriptor, ByRef obj As Object) As Boolean
             obj = GetBaseAddressFromControl(control)
             Return True
         End Function
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Converts the string BaseAddress text to the native property type of UInt32
         ''' Called by base class code through delegate
         ''' </summary>
-        Private Function GetBaseAddressFromControl(ByVal control As Control) As UInteger
+        Private Function GetBaseAddressFromControl(control As Control) As UInteger
             Dim StringValue As String = Trim(control.Text)
             Dim LongValue As ULong = 0
 
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Get the debug symbols flag. 
         ''' </summary>
-        Private Function DebugSymbolsGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function DebugSymbolsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If TypeOf _debugSymbols Is Boolean Then
                 value = CType(_debugSymbols, Boolean)
                 Return True
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Set the debug symbols flag
         ''' </summary>
-        Private Function DebugSymbolsSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function DebugSymbolsSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             _debugSymbols = value
             Return True
         End Function
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   build engine (esp. if the DebugType is also set in the proj file).  So we
         '''   change this property when the DebugSymbols property is set.
         ''' </summary>
-        Private Function DebugInfoSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function DebugInfoSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
                 Me.DebugInfoComboBox.SelectedIndex = -1
             Else
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function DebugInfoGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function DebugInfoGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             ' Need to special case pdb-only because the display name has a dash while the actual property value
             ' doesn't have the dash.
             If String.Equals(Me.DebugInfoComboBox.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) Then
@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Whenever the user changes the selection in the debug info combobox, we have to update both the
         ''' DebugInfo and DebugSymbols properties...
         ''' </summary>
-        Private Sub DebugInfoComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles DebugInfoComboBox.SelectionChangeCommitted
+        Private Sub DebugInfoComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DebugInfoComboBox.SelectionChangeCommitted
             If DebugInfoComboBox.SelectedIndex = 0 Then
                 ' Index 0 corresponds to "None" 
                 _debugSymbols = False
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Validation method for BaseAddress
         ''' no cancellation, just normalizes value if not an error condition
         ''' </summary>
-        Private Sub BaseAddress_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles DllBaseTextbox.Validating
+        Private Sub BaseAddress_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles DllBaseTextbox.Validating
             Dim StringValue As String = Trim(Me.DllBaseTextbox.Text)
 
             Const DEFAULT_DLLBASEADDRESS As String = "&H11000000"
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Validation properties
         ''' </summary>
-        Protected Overrides Function ValidateProperty(ByVal controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
+        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
             If controlData.FormControl Is DllBaseTextbox Then
                 Try
                     GetBaseAddressFromControl(DllBaseTextbox)

@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="projectHierarchy"> The VS project object</param>
         ''' <param name="startBatch">If true, we start a batch process immediately</param>
-        Friend Sub New(ByVal projectHierarchy As IVsHierarchy, Optional ByVal startBatch As Boolean = True)
+        Friend Sub New(projectHierarchy As IVsHierarchy, Optional startBatch As Boolean = True)
             _projectBuildSystem = TryCast(projectHierarchy, IVsProjectBuildSystem)
             If startBatch AndAlso _projectBuildSystem IsNot Nothing Then
                 _projectBuildSystem.StartBatchEdit()

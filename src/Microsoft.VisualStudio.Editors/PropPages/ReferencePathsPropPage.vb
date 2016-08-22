@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Private Function ReferencePathSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function ReferencePathSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             'enable when the enum comes online
             Dim RefPathList As String() = Split(DirectCast(value, String), ";")
 
@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return RefPath
         End Function
 
-        Private Function ReferencePathGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function ReferencePathGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = ReferencePathGetValue()
             Return True
         End Function
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return System.IO.Directory.Exists(Dir)
         End Function
 
-        Private Sub AddFolder_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AddFolder.Click
+        Private Sub AddFolder_Click(sender As Object, e As System.EventArgs) Handles AddFolder.Click
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
             If Len(FolderText) > 0 AndAlso ReferencePath.FindStringExact(FolderText) = -1 Then
                 If IsValidFolderPath(FolderText) Then
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub UpdateFolder_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles UpdateFolder.Click
+        Private Sub UpdateFolder_Click(sender As Object, e As System.EventArgs) Handles UpdateFolder.Click
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
             Dim index As Integer = Me.ReferencePath.SelectedIndex
 
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub RemoveFolder_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RemoveFolder.Click
+        Private Sub RemoveFolder_Click(sender As Object, e As System.EventArgs) Handles RemoveFolder.Click
             '
             RemoveCurrentPath()
         End Sub
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub MoveUp_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MoveUp.Click
+        Private Sub MoveUp_Click(sender As Object, e As System.EventArgs) Handles MoveUp.Click
             '
             Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
             Dim SelectedItem As Object = ReferencePath.SelectedItem
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub MoveDown_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MoveDown.Click
+        Private Sub MoveDown_Click(sender As Object, e As System.EventArgs) Handles MoveDown.Click
             '
             Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
             Dim SelectedItem As Object = ReferencePath.SelectedItem
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferencePath_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ReferencePath.SelectedIndexChanged
+        Private Sub ReferencePath_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ReferencePath.SelectedIndexChanged
             If Not m_fInsideInit Then
                 Dim FolderText As String
                 Dim SelectedIndex As Integer = Me.ReferencePath.SelectedIndex
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  process key event on the ReferencePath ListBox
         ''' </summary>
-        Private Sub ReferencePath_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ReferencePath.KeyDown
+        Private Sub ReferencePath_KeyDown(sender As Object, e As KeyEventArgs) Handles ReferencePath.KeyDown
             If e.KeyCode = Keys.Delete Then
                 Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
                 If SelectedIndex >= 0 Then
@@ -291,7 +291,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''     returned.
         ''' Controls will seldom, if ever, need to override this method.
         ''' </summary>
-        Protected Overrides Function ProcessDialogKey(ByVal KeyData As Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(KeyData As Keys) As Boolean
             If (KeyData And (Keys.Alt Or Keys.Control)) = Keys.None Then
                 Dim keyCode As Keys = KeyData And Keys.KeyCode
                 If keyCode = Keys.Enter Then
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Private Sub Folder_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Folder.TextChanged
+        Private Sub Folder_TextChanged(sender As Object, e As System.EventArgs) Handles Folder.TextChanged
             If Not m_fInsideInit Then
                 EnableReferencePathGroup()
             End If
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return FolderText
         End Function
 
-        Private Sub FolderBrowse_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles FolderBrowse.Click
+        Private Sub FolderBrowse_Click(sender As Object, e As System.EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
             If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(SR.PPG_SelectReferencePath), value) Then
                 Folder.Text = GetProjectRelativeDirectoryPath(value)
@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''<summary>
         ''' Handle button Enabled property changing event to reset its image
         '''</summary>
-        Private Sub GraphicButton_OnEnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles MoveUp.EnabledChanged, MoveDown.EnabledChanged, RemoveFolder.EnabledChanged
+        Private Sub GraphicButton_OnEnabledChanged(sender As Object, e As System.EventArgs) Handles MoveUp.EnabledChanged, MoveDown.EnabledChanged, RemoveFolder.EnabledChanged
             UpdateButtonImages()
         End Sub
 
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Handle SystemEvents, so we will update Buttom image when SystemColor was changed...
         ''' </summary>
-        Private Sub SystemEvents_UserPreferenceChanged(ByVal sender As Object, ByVal e As UserPreferenceChangedEventArgs)
+        Private Sub SystemEvents_UserPreferenceChanged(sender As Object, e As UserPreferenceChangedEventArgs)
             Select Case e.Category
                 Case UserPreferenceCategory.Accessibility
                     If _inContrastMode <> SystemInformation.HighContrast Then

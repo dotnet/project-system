@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="UIService"></param>
         ''' <returns>True if we made any changes to the object, false otherwise</returns>
         ''' <remarks></remarks>
-        Friend Shared Function Deserialize(ByVal Settings As DesignTimeSettings, ByVal typeCache As SettingsTypeCache, ByVal valueCache As SettingsValueCache, ByVal SectionName As String, ByVal AppConfigDocData As DocData, ByVal mergeMode As MergeValueMode, Optional ByVal UIService As IUIService = Nothing) As DirtyState
+        Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
             Dim objectDirty As DirtyState = DirtyState.NoChange
 
             ' Create a "master" list of existing settings....
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="DocDataService">If specified, the DesignerDocDataService to add/get this DocData to/from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetAppConfigDocData(ByVal ServiceProvider As IServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal CreateIfNotExists As Boolean, ByVal Writeable As Boolean, Optional ByVal DocDataService As DesignerDocDataService = Nothing) As DocData
+        Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writeable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
             Dim ProjSpecialFiles As IVsProjectSpecialFiles = TryCast(Hierarchy, IVsProjectSpecialFiles)
             Dim AppConfigDocData As DocData = Nothing
 
@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="NamespaceName"></param>
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
-        Friend Shared Sub Serialize(ByVal Settings As DesignTimeSettings, ByVal typeCache As SettingsTypeCache, ByVal valueCache As SettingsValueCache, ByVal ClassName As String, ByVal NamespaceName As String, ByVal AppConfigDocData As DocData, ByVal Hierarchy As IVsHierarchy, ByVal SynchronizeUserConfig As Boolean)
+        Friend Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, ClassName As String, NamespaceName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, SynchronizeUserConfig As Boolean)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
             If Settings Is Nothing Then
                 Debug.Fail("Can't serialize NULL settings instance!")
@@ -291,7 +291,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ShouldSynchronizeUserConfig"></param>
         ''' <remarks></remarks>
-        Private Shared Sub Serialize(ByVal Settings As DesignTimeSettings, ByVal typeCache As SettingsTypeCache, ByVal valueCache As SettingsValueCache, ByVal SectionName As String, ByVal AppConfigDocData As DocData, ByVal Hierarchy As IVsHierarchy, ByVal ShouldSynchronizeUserConfig As Boolean)
+        Private Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, ShouldSynchronizeUserConfig As Boolean)
             ' Populate settingspropertyvalue collections for user & application scoped settings respectively
             Dim ExistingUserScopedSettings As New System.Configuration.SettingsPropertyValueCollection
             Dim ExistingApplicationScopedSettings As New System.Configuration.SettingsPropertyValueCollection
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Settings"></param>
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
-        Private Shared Sub SynchronizeUserConfig(ByVal SectionName As String, ByVal Hierarchy As IVsHierarchy, ByVal ConfigHelperService As ConfigurationHelperService, ByVal Settings As DesignTimeSettings, ByVal AppConfigDocData As DocData)
+        Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, Settings As DesignTimeSettings, AppConfigDocData As DocData)
             ' We list all the USER scoped settings that we know about and set the value to true or false depending
             ' on if the setting is roaming... The set of known settings is used both when scrubbing the file used
             ' in VSHost:ed and stand-alone sessions, so we only need to do it once...
@@ -393,7 +393,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="SettingsTheDesignerKnownsAbout"></param>
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
-        Private Shared Sub SynchronizeUserConfig(ByVal UnderVsHost As Boolean, ByVal SectionName As String, ByVal Hierarchy As IVsHierarchy, ByVal ConfigHelperService As ConfigurationHelperService, ByVal SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), ByVal AppConfigDocData As DocData)
+        Private Shared Sub SynchronizeUserConfig(UnderVsHost As Boolean, SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), AppConfigDocData As DocData)
             Dim hierSp As IServiceProvider = Common.Utils.ServiceProviderFromHierarchy(Hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
 
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Reader"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function LoadAppConfigDocument(ByVal Reader As TextReader) As XmlDocument
+        Private Shared Function LoadAppConfigDocument(Reader As TextReader) As XmlDocument
             Dim AppConfigXmlDoc As New XmlDocument()
             AppConfigXmlDoc.PreserveWhitespace = False
             ' Load App.Config into XML Doc
@@ -494,7 +494,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="UIService"></param>
         ''' <returns>True if a new instance was added to the the root component</returns>
         ''' <remarks></remarks>
-        Private Shared Function MergeAndMaybeAddValue(ByVal Settings As DesignTimeSettings, ByVal DeserializedPropertyValue As SettingsPropertyValue, ByVal Scope As DesignTimeSettingInstance.SettingScope, ByVal ExistingSettings As Dictionary(Of String, DesignTimeSettingInstance), ByVal mergeMode As MergeValueMode, ByVal UIService As System.Windows.Forms.Design.IUIService) As DirtyState
+        Private Shared Function MergeAndMaybeAddValue(Settings As DesignTimeSettings, DeserializedPropertyValue As SettingsPropertyValue, Scope As DesignTimeSettingInstance.SettingScope, ExistingSettings As Dictionary(Of String, DesignTimeSettingInstance), mergeMode As MergeValueMode, UIService As System.Windows.Forms.Design.IUIService) As DirtyState
             If Not ExistingSettings.ContainsKey(DeserializedPropertyValue.Name) Then
                 If Settings.IsValidName(DeserializedPropertyValue.Name) Then
                     ' This is a new setting - let's silently add it to our settings as new setting of type "string"
@@ -542,7 +542,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="AppConfigScope">The scope of the value found in the app.cofig file</param>
         ''' <param name="UIService">An option UI service to help us pop up a nice dialog</param>
         ''' <remarks></remarks>
-        Private Shared Function QueryReplaceValue(ByVal Settings As DesignTimeSettings, ByVal Instance As DesignTimeSettingInstance, ByVal SerializedAppConfigValue As String, ByVal AppConfigScope As DesignTimeSettingInstance.SettingScope, ByVal mergeMode As MergeValueMode, ByVal UIService As IUIService) As DirtyState
+        Private Shared Function QueryReplaceValue(Settings As DesignTimeSettings, Instance As DesignTimeSettingInstance, SerializedAppConfigValue As String, AppConfigScope As DesignTimeSettingInstance.SettingScope, mergeMode As MergeValueMode, UIService As IUIService) As DirtyState
             Dim ReplaceValue As Boolean
             Select Case mergeMode
                 Case MergeValueMode.UseAppConfigFileValue

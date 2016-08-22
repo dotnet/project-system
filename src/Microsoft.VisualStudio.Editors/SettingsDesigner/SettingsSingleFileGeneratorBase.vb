@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="compileUnit">The full compile unit that we are to generate code from</param>
         ''' <param name="generatedClass">The generated settings class</param>
         ''' <remarks></remarks>
-        Protected Overridable Sub OnCompileUnitCreated(ByVal compileUnit As CodeCompileUnit, ByVal generatedClass As CodeTypeDeclaration)
+        Protected Overridable Sub OnCompileUnitCreated(compileUnit As CodeCompileUnit, generatedClass As CodeTypeDeclaration)
             ' By default, we don't want to make any modifications...
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="pcbOutput"></param>
         '@ <param name="pGenerateProgress"></param>
         '@ <remarks></remarks>
-        Private Function Generate(ByVal wszInputFilePath As String, ByVal bstrInputFileContents As String, ByVal wszDefaultNamespace As String, ByVal rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, ByVal pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
+        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
 
 
             Dim BufPtr As IntPtr = IntPtr.Zero
@@ -253,16 +253,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
         ''' <remarks></remarks>
-        Friend Shared Function Create(ByVal Hierarchy As IVsHierarchy,
-                                      ByVal Settings As DesignTimeSettings,
-                                      ByVal DefaultNamespace As String,
-                                      ByVal FilePath As String,
-                                      ByVal IsDesignTime As Boolean,
-                                      ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress,
-                                      ByVal GeneratedClassVisibility As TypeAttributes,
-                                      Optional ByVal GeneratorSupportsTryCatch As Boolean = True,
-                                      Optional ByVal GenerateVBMyAutoSave As Boolean = False,
-                                      Optional ByVal ProjectRootNamespace As String = "",
+        Friend Shared Function Create(Hierarchy As IVsHierarchy,
+                                      Settings As DesignTimeSettings,
+                                      DefaultNamespace As String,
+                                      FilePath As String,
+                                      IsDesignTime As Boolean,
+                                      GenerateProgress As Shell.Interop.IVsGeneratorProgress,
+                                      GeneratedClassVisibility As TypeAttributes,
+                                      Optional GeneratorSupportsTryCatch As Boolean = True,
+                                      Optional GenerateVBMyAutoSave As Boolean = False,
+                                      Optional ProjectRootNamespace As String = "",
                                       <Out()> Optional ByRef generatedType As CodeTypeDeclaration = Nothing) As CodeCompileUnit
 
             Dim CompileUnit As New CodeCompileUnit
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeSettings(ByVal InputString As String, ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress) As DesignTimeSettings
+        Private Function DeserializeSettings(InputString As String, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As DesignTimeSettings
             Dim Settings As New DesignTimeSettings()
             If InputString <> "" Then
                 ' We actually have some contents to deserialize.... 
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="SupportsTryCatch"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <remarks></remarks>
-        Private Shared Sub AddDefaultInstance(ByVal GeneratedType As CodeTypeDeclaration, ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress, Optional ByVal SupportsTryCatch As Boolean = True, Optional ByVal GenerateVBMyAutoSave As Boolean = False)
+        Private Shared Sub AddDefaultInstance(GeneratedType As CodeTypeDeclaration, GenerateProgress As Shell.Interop.IVsGeneratorProgress, Optional SupportsTryCatch As Boolean = True, Optional GenerateVBMyAutoSave As Boolean = False)
 
             ' type-reference that both the default-instance field and the property will be
             '
@@ -457,7 +457,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="GenerateProgress"></param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Private Shared Function CodeDomPropertyFromSettingInstance(ByVal TypeNameResolver As SettingTypeNameResolutionService, ByVal Instance As DesignTimeSettingInstance, ByVal IsDesignTime As Boolean, ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeMemberProperty
+        Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeMemberProperty
             Dim CodeProperty As New CodeMemberProperty
             CodeProperty.Attributes = SettingsPropertyVisibility
             CodeProperty.Name = Instance.Name
@@ -538,14 +538,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return CodeProperty
         End Function
 
-        Private Shared Sub AddDefaultValueAttribute(ByVal CodeProperty As CodeMemberProperty, ByVal Value As String)
+        Private Shared Sub AddDefaultValueAttribute(CodeProperty As CodeMemberProperty, Value As String)
             ' Add default value attribute
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(New CodePrimitiveExpression(Value))}
             Dim DefaultValueAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.DefaultSettingValueAttribute)), Parameters)
             CodeProperty.CustomAttributes.Add(DefaultValueAttribute)
         End Sub
 
-        Private Shared Sub AddManagebilityAttribue(ByVal CodeProperty As CodeMemberProperty, ByVal Value As System.Configuration.SettingsManageability)
+        Private Shared Sub AddManagebilityAttribue(CodeProperty As CodeMemberProperty, Value As System.Configuration.SettingsManageability)
             Dim SettingsManageability As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SettingsManageability)))
             Dim FieldExp As New CodeFieldReferenceExpression(SettingsManageability, Value.ToString)
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
@@ -570,7 +570,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="Instance"></param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Private Shared Function GenerateGetterStatements(ByVal Instance As DesignTimeSettingInstance, ByVal SettingType As CodeTypeReference) As CodeStatementCollection
+        Private Shared Function GenerateGetterStatements(Instance As DesignTimeSettingInstance, SettingType As CodeTypeReference) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
             Dim IndexerStatement As New CodeIndexerExpression(New CodeThisReferenceExpression(), Parameters)
@@ -590,7 +590,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="Instance"></param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Private Shared Function GenerateSetterStatements(ByVal Instance As DesignTimeSettingInstance) As CodeStatementCollection
+        Private Shared Function GenerateSetterStatements(Instance As DesignTimeSettingInstance) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
             Dim IndexerStatement As New CodeIndexerExpression(New CodeThisReferenceExpression(), Parameters)
@@ -610,7 +610,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName">the type of the settings-class we are generating</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GetFullTypeName(ByVal projectRootNamespace As String, ByVal defaultNamespace As String, ByVal typeName As String) As String
+        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
 
             Dim fullTypeName As String = String.Empty
 
@@ -635,7 +635,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="memberName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GenerateSuppressMessageAttribute(ByVal memberName As String) As CodeAttributeDeclaration
+        Private Shared Function GenerateSuppressMessageAttribute(memberName As String) As CodeAttributeDeclaration
 
             Dim suppressMessageAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Diagnostics.CodeAnalysis.SuppressMessageAttribute)))
 
@@ -655,7 +655,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ </summary>
         '@ <param name="GenerateProgress"></param>
         '@ <remarks></remarks>
-        Protected Overridable Sub AddRequiredReferences(ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress)
+        Protected Overridable Sub AddRequiredReferences(GenerateProgress As Shell.Interop.IVsGeneratorProgress)
             Dim CurrentProjectItem As EnvDTE.ProjectItem = CType(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
             If CurrentProjectItem Is Nothing Then
                 Debug.Fail("Failed to get EnvDTE.ProjectItem service")
@@ -677,7 +677,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Unit"></param>
         ''' <remarks></remarks>
-        Private Shared Sub AddMyModule(ByVal Unit As CodeCompileUnit, ByVal projectRootNamespace As String, ByVal defaultNamespace As String)
+        Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String)
 
             Debug.Assert(Unit IsNot Nothing AndAlso Unit.Namespaces.Count = 1 AndAlso Unit.Namespaces(0).Types.Count = 1, "Expected a compile unit with a single namespace containing a single type!")
 
@@ -701,7 +701,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 "    Private Shared " & s_addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine & _
                 Environment.NewLine & _
                 "    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _" & Environment.NewLine & _
-                "    Private Shared Sub " & s_autoSaveSubName & "(ByVal sender As Global.System.Object, ByVal e As Global.System.EventArgs)" & Environment.NewLine & _
+                "    Private Shared Sub " & s_autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine & _
                 "        If My.Application.SaveMySettingsOnExit Then" & Environment.NewLine & _
                 "            " & MyNamespaceName & "." & s_mySettingsPropertyName & ".Save()" & Environment.NewLine & _
                 "        End If" & Environment.NewLine & _
@@ -844,7 +844,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="FilePath">Fully qualified path of file to check</param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Private Function IsDefaultSettingsFile(ByVal FilePath As String) As Boolean
+        Private Function IsDefaultSettingsFile(FilePath As String) As Boolean
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If Hierarchy Is Nothing Then
                 Debug.Fail("Failed to get Hierarchy for file to generate code from...")
@@ -891,7 +891,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return _codeDomProvider
             End Get
-            Set(ByVal Value As CodeDomProvider)
+            Set(Value As CodeDomProvider)
                 If Value Is Nothing Then
                     Throw New ArgumentNullException()
                 End If
@@ -920,7 +920,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function CreateGlobalCodeTypeReference(ByVal type As Type) As CodeTypeReference
+        Private Shared Function CreateGlobalCodeTypeReference(type As Type) As CodeTypeReference
             Dim ctr As New CodeTypeReference(type)
             ctr.Options = CodeTypeReferenceOptions.GlobalReference
             Return ctr
@@ -949,7 +949,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Try
         End Sub
 
-        Private Sub SetSite(ByVal pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
+        Private Sub SetSite(pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
             _site = pUnkSite
             ClearCachedServices()
         End Sub
@@ -974,7 +974,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnBeforeGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
+        Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
             prgAdditionalCheckoutVSITEMIDS = Nothing
 
             Dim isRootNamespaceRename As Boolean = RenamingHelper.IsRootNamespaceRename(phier, cRQNames, rglpszRQName, lpszNewName)
@@ -1023,7 +1023,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
         '@ <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         '@ <returns>error code</returns>
-        Private Function OnGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
+        Private Function OnGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
             'VSWhidbey #452759: Always return S_OK in OnGlobalSymbolRenamed.
             Return NativeMethods.S_OK
         End Function
@@ -1040,7 +1040,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgszParamNames">the names of the parameters</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnBeforeAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -1059,7 +1059,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgszParamNames">the names of the parameters</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
+        Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -1075,7 +1075,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnBeforeReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
+        Private Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -1091,7 +1091,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         '@ <returns>error code</returns>
-        Private Function OnReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
+        Private Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -1107,7 +1107,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnBeforeRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
+        Private Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -1124,7 +1124,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
+        Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -1141,7 +1141,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="serviceType">The type of service requested</param>
         '@ <returns>An instance of the service, or nothing if service not found</returns>
         '@ <remarks></remarks>
-        Private Function GetService(ByVal serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Private Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
             Else

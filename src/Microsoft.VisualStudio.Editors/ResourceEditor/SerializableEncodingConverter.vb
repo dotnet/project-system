@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   type to a SerializableEncoding object using the specified context.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Function CanConvertFrom(ByVal Context As ITypeDescriptorContext, ByVal SourceType As Type) As Boolean
+        Public Overrides Function CanConvertFrom(Context As ITypeDescriptorContext, SourceType As Type) As Boolean
             If SourceType.Equals(GetType(String)) Then
                 Return True
             End If
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Converts the specified value object to a SerializableEncoding object.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Function ConvertFrom(ByVal Context As ITypeDescriptorContext, ByVal Culture As CultureInfo, ByVal Value As Object) As Object
+        Public Overrides Function ConvertFrom(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object) As Object
             If TypeOf Value Is String Then
                 Dim EncodingName As String = DirectCast(Value, String)
 
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Converts the given value object to the specified destination type.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Function ConvertTo(ByVal Context As ITypeDescriptorContext, ByVal Culture As CultureInfo, ByVal Value As Object, ByVal DestinationType As Type) As Object
+        Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
             If DestinationType Is Nothing Then
                 Throw New ArgumentNullException("DestinationType")
             End If
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   can be picked from a list using the specified context.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Function GetStandardValuesSupported(ByVal Context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(Context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
 
@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We return false so that the user is allows to type in a value manually (in particular,
         '''    a codepage value).
         ''' </remarks>
-        Public Overrides Function GetStandardValuesExclusive(ByVal Context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesExclusive(Context As ITypeDescriptorContext) As Boolean
             Return False
         End Function
 
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   object using the specified context.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overrides Function GetStandardValues(ByVal Context As ITypeDescriptorContext) As StandardValuesCollection
+        Public Overrides Function GetStandardValues(Context As ITypeDescriptorContext) As StandardValuesCollection
             If _standardValuesCache Is Nothing Then
                 'We want to sort like the the Save As... dialog does.  In particular, we want this sorting:
                 '
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Encoding"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsUnicodeEncoding(ByVal Encoding As Encoding) As Boolean
+        Private Function IsUnicodeEncoding(Encoding As Encoding) As Boolean
             Return Encoding.Equals(System.Text.Encoding.BigEndianUnicode) _
                 OrElse Encoding.Equals(System.Text.Encoding.Unicode) _
                 OrElse Encoding.Equals(System.Text.Encoding.UTF7) _
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Encoding">The encoding to check for validity.</param>
         ''' <returns>True if the encoding is valid.</returns>
         ''' <remarks></remarks>
-        Private Function IsValidEncoding(ByVal Encoding As Encoding) As Boolean
+        Private Function IsValidEncoding(Encoding As Encoding) As Boolean
             If Interop.NativeMethods.IsValidCodePage(CUInt(Encoding.CodePage)) Then
                 Return True
             End If

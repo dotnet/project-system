@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceTypeEditorNonStringConvertible and ResourceTypeEditorStringConvertible).
         '''  Because the resource file in different platform doesn't support all types, we should pick up the right type for the platform it targets.
         ''' </remarks>
-        Public Overrides Function GetDefaultResourceTypeName(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             Return BinaryFileValueType.AssemblyQualifiedName
         End Function
 
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' For files, we have exactly two thumbnails - one for text files, one for binary files
         ''' </remarks>
-        Public Overrides Function GetImageForThumbnail(ByVal Resource As IResource, background As Color) As Image
+        Public Overrides Function GetImageForThumbnail(Resource As IResource, background As Color) As Image
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.IsLink)
             If s_thumbnailForBinaryFile Is Nothing Then
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   should be given to this resource editor.  The higher the value, the higher the priority.
         ''' </returns>
         ''' <remarks>Extension should be checked case-insensitively.</remarks>
-        Public Overrides Function GetExtensionPriority(ByVal Extension As String) As Integer
+        Public Overrides Function GetExtensionPriority(Extension As String) As Integer
             'This type editor handle all file extensions, no matter what they are (but at lowest priority).
             Return ExtensionPriorities.Lowest
         End Function
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetResourceFriendlyTypeDescription(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.IsLink)
             Return SR.GetString(SR.RSE_Type_BinaryFile)
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetResourceFriendlySize(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.GetValueType().Equals(BinaryFileValueType))
             Debug.Assert(BinaryFileValueType.Equals(GetType(Byte())), "Need to change implementation - type of binary files has changed")

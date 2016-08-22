@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub 'Invoke
 
-        Public Overrides Sub Invoke(ByVal inArg As Object, ByVal outArg As System.IntPtr)
+        Public Overrides Sub Invoke(inArg As Object, outArg As System.IntPtr)
             MyBase.Invoke(inArg, outArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-        Public Overrides Sub Invoke(ByVal inArg As Object)
+        Public Overrides Sub Invoke(inArg As Object)
             MyBase.Invoke(inArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -105,13 +105,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   CommandText: If specified (and the TEXTMENUCHANGES flag is set for the command in the CTC file) you can 
         '       supplies your own text for the command. 
         '**************************************************************************
-        Friend Sub New(ByVal RootDesigner As BaseRootDesigner, ByVal CommandID As CommandID,
-                        ByVal CommandHandler As EventHandler,
-                        Optional ByVal CommandEnabledHandler As CheckCommandStatusHandler = Nothing,
-                        Optional ByVal CommandCheckedHandler As CheckCommandStatusHandler = Nothing,
-                        Optional ByVal CommandVisibleHandler As CheckCommandStatusHandler = Nothing,
-                        Optional ByVal AlwaysCheckStatus As Boolean = False,
-                        Optional ByVal CommandText As String = Nothing)
+        Friend Sub New(RootDesigner As BaseRootDesigner, CommandID As CommandID,
+                        CommandHandler As EventHandler,
+                        Optional CommandEnabledHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandCheckedHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandVisibleHandler As CheckCommandStatusHandler = Nothing,
+                        Optional AlwaysCheckStatus As Boolean = False,
+                        Optional CommandText As String = Nothing)
 
             MyBase.New(CommandHandler, CommandID)
 
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _statusValid As Boolean ' Whether the status of the command is still valid.
     End Class 'DesignerMenuCommand
 
-    Friend Delegate Function CheckCommandStatusHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
+    Friend Delegate Function CheckCommandStatusHandler(MenuCommand As DesignerMenuCommand) As Boolean
 
 
     ''' <summary>
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="commandId">CommandID with GUID/id as specified for the command in the CTC file</param>
         ''' <param name="getter">Delegate that returns a list of strings to fill the combobox with</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal designer As BaseRootDesigner, ByVal commandId As CommandID, ByVal getter As ItemsGetter)
+        Public Sub New(designer As BaseRootDesigner, commandId As CommandID, getter As ItemsGetter)
             MyBase.New(designer, commandId, AddressOf CommandHandler)
 
             If getter Is Nothing Then
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(ByVal e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
             If e Is Nothing Then
                 Throw New ArgumentNullException
             End If
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Shared Sub CommandHandler(ByVal sender As Object, ByVal e As EventArgs)
+        Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
             Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
             Dim cmdSender As DesignerCommandBarComboBoxFiller = TryCast(sender, DesignerCommandBarComboBoxFiller)
             If cmdSender Is Nothing OrElse oleEventArgs Is Nothing Then
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits DesignerMenuCommand
 
         Public Delegate Function CurrentTextGetter() As String
-        Public Delegate Sub CurrentTextSetter(ByVal value As String)
+        Public Delegate Sub CurrentTextSetter(value As String)
 
         Private _currentTextGetter As CurrentTextGetter
         Private _currentTextSetter As CurrentTextSetter
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="currentTextGetter">Delegate to get the current text in the combobox</param>
         ''' <param name="currentTextSetter">Delegate to set the current text in the combobox</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal designer As BaseRootDesigner, ByVal commandId As CommandID, ByVal currentTextGetter As CurrentTextGetter, ByVal currentTextSetter As CurrentTextSetter, ByVal enabledHandler As CheckCommandStatusHandler)
+        Public Sub New(designer As BaseRootDesigner, commandId As CommandID, currentTextGetter As CurrentTextGetter, currentTextSetter As CurrentTextSetter, enabledHandler As CheckCommandStatusHandler)
             MyBase.New(designer, commandId, AddressOf CommandHandler, enabledHandler)
             If currentTextGetter Is Nothing OrElse currentTextSetter Is Nothing Then
                 Debug.Fail("You must specify a getter and setter method")
@@ -285,7 +285,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(ByVal e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
             If e.InValue Is Nothing Then
                 ' Request to get the current text...
                 Marshal.GetNativeVariantForObject(_currentTextGetter(), e.OutValue)
@@ -305,7 +305,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Shared Sub CommandHandler(ByVal sender As Object, ByVal e As EventArgs)
+        Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
             Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
             Dim cboSender As DesignerCommandBarComboBox = TryCast(sender, DesignerCommandBarComboBox)
 
@@ -334,7 +334,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="commandId">Id of the command.</param>
         ''' <remarks>Sets the command invisible and disabled.</remarks>
-        Public Sub New(ByVal commandId As CommandID)
+        Public Sub New(commandId As CommandID)
             MyBase.New(Nothing, commandId, AddressOf CommandHandler)
             Me.Visible = False
             Me.Enabled = False
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender">Sender of the event.</param>
         ''' <param name="e">Argument of the event.</param>
         ''' <remarks>This handler is never invoked since the command is disabled.</remarks>
-        Private Shared Sub CommandHandler(ByVal sender As Object, ByVal e As EventArgs)
+        Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
         End Sub
     End Class
 
@@ -365,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Id">A unique (within the group) id of the command</param>
         ''' <param name="Command">The command to add</param>
         ''' <remarks></remarks>
-        Public Sub Add(ByVal Id As Integer, ByVal Command As MenuCommand)
+        Public Sub Add(Id As Integer, Command As MenuCommand)
             _commands(Id) = Command
         End Sub
 
@@ -385,7 +385,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="CommandToCheck"></param>
         ''' <remarks>Will uncheck all commands if the command passed in was not in the group...</remarks>
-        Public Sub Check(ByVal CommandToCheck As MenuCommand)
+        Public Sub Check(CommandToCheck As MenuCommand)
             For Each Command As MenuCommand In _commands.Values
                 If Command Is CommandToCheck Then
                     Command.Checked = True
@@ -400,7 +400,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Id"></param>
         ''' <remarks></remarks>
-        Public Sub Check(ByVal Id As Integer)
+        Public Sub Check(Id As Integer)
             Dim CommandToCheck As MenuCommand = Nothing
             If Not _commands.TryGetValue(Id, CommandToCheck) Then
                 Throw New ArgumentOutOfRangeException

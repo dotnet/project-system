@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _comboBox As ComboBox
 
-        Public Sub New(ByVal id As Integer, ByVal name As String, ByVal comboBox As ComboBox, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal flags As ControlDataFlags, ByVal AssocControls As System.Windows.Forms.Control())
+        Public Sub New(id As Integer, name As String, comboBox As ComboBox, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As System.Windows.Forms.Control())
             MyBase.New(id, name, comboBox, setter, getter, flags, AssocControls)
             Me._comboBox = comboBox
 
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub ComboBox_DropDownClosed(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub ComboBox_DropDownClosed(sender As Object, e As System.EventArgs)
 
             If IsInstallOtherFrameworksSelected() Then
 
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Protected Overrides Sub ComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Overrides Sub ComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs)
 
             If IsInstallOtherFrameworksSelected() Then
 

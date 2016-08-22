@@ -55,15 +55,15 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Friend Const LVM_SETEXTENDEDLISTVIEWSTYLE As Integer = (LVM_FIRST + 54)
         Friend Const LVM_GETEXTENDEDLISTVIEWSTYLE As Integer = (LVM_FIRST + 55)
 
-        Friend Shared Function Succeeded(ByVal hr As Integer) As Boolean
+        Friend Shared Function Succeeded(hr As Integer) As Boolean
             Return hr >= 0
         End Function 'Succeeded
 
-        Friend Shared Function Failed(ByVal hr As Integer) As Boolean
+        Friend Shared Function Failed(hr As Integer) As Boolean
             Return hr < 0
         End Function 'Failed
 
-        Friend Shared Function HRESULT_FROM_WIN32(ByVal x As Integer) As Integer
+        Friend Shared Function HRESULT_FROM_WIN32(x As Integer) As Integer
             If x <> 0 Then
                 Return (x And &H0000FFFF) Or (Interop.win.FACILITY_WIN32 * &H10000) Or &H80000000
             Else
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             '/ Creates a connection point to of the given interface type.
             '/ which will call on a managed code sink that implements that interface.
             '/ </devdoc>
-            Friend Sub New(ByVal [source] As Object, ByVal sink As Object, ByVal eventInterface As Type)
+            Friend Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
 
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             '/ Creates a connection point to of the given interface type.
             '/ which will call on a managed code sink that implements that interface.
             '/ </devdoc>
-            Friend Sub New(ByVal [source] As Object, ByVal sink As Object, ByVal eventInterface As Type, ByVal throwException As Boolean)
+            Friend Sub New([source] As Object, sink As Object, eventInterface As Type, throwException As Boolean)
                 Dim ex As Exception = Nothing
                 If sink Is Nothing OrElse Not eventInterface.IsInstanceOfType(sink) Then
                     ex = New InvalidCastException("The sink object does not implement the eventInterface.")
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             '/ Disconnect the current connection point.  If the object is not connected,
             '/ this method will do nothing.
             '/ </devdoc>
-            Friend Overloads Sub Disconnect(ByVal release As Boolean)
+            Friend Overloads Sub Disconnect(release As Boolean)
                 If _cookie <> 0 Then
                     Try
                         If _connectionPoint IsNot Nothing Then
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
 
         <DllImport("crypt32.dll", CharSet:=CharSet.Unicode, SetLastError:=True)> _
-        Friend Shared Function PFXImportCertStore(<[In]> ByVal blob As IntPtr, <[In]> ByVal password As String, <[In]> ByVal flags As CryptFlags) As IntPtr
+        Friend Shared Function PFXImportCertStore(<[In]> blob As IntPtr, <[In]> password As String, <[In]> flags As CryptFlags) As IntPtr
         End Function
 
         <Flags> _
@@ -268,19 +268,19 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Enum
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
-        Friend Shared Function CertEnumCertificatesInStore(<[In]> ByVal CertStore As IntPtr, <[In]> ByVal PrevCertContext As IntPtr) As IntPtr
+        Friend Shared Function CertEnumCertificatesInStore(<[In]> CertStore As IntPtr, <[In]> PrevCertContext As IntPtr) As IntPtr
         End Function
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptAcquireCertificatePrivateKey(<[In]> ByVal CertContext As IntPtr, <[In]> ByVal flags As UInt32, <[In]> ByVal reserved As IntPtr, <[In], Out> ByRef CryptProv As IntPtr, <[In], Out> ByRef KeySpec As KeySpec, <[In], Out, MarshalAs(UnmanagedType.Bool)> ByRef CallerFreeProv As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptAcquireCertificatePrivateKey(<[In]> CertContext As IntPtr, <[In]> flags As UInt32, <[In]> reserved As IntPtr, <[In], Out> ByRef CryptProv As IntPtr, <[In], Out> ByRef KeySpec As KeySpec, <[In], Out, MarshalAs(UnmanagedType.Bool)> ByRef CallerFreeProv As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptGetUserKey(<[In]> ByVal CryptProv As IntPtr, <[In]> ByVal KeySpec As KeySpec, <[In], Out> ByRef Key As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptGetUserKey(<[In]> CryptProv As IntPtr, <[In]> KeySpec As KeySpec, <[In], Out> ByRef Key As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptExportKey(<[In]> ByVal Key As IntPtr, <[In]> ByVal ExpKey As IntPtr, <[In]> ByVal type As BlobType, <[In]> ByVal Flags As UInt32, <[In]> ByVal Data As IntPtr, <[In], Out> ByRef DataLen As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptExportKey(<[In]> Key As IntPtr, <[In]> ExpKey As IntPtr, <[In]> type As BlobType, <[In]> Flags As UInt32, <[In]> Data As IntPtr, <[In], Out> ByRef DataLen As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         Friend Enum BlobType
@@ -295,19 +295,19 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Enum
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptDestroyKey(ByVal hKey As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptDestroyKey(hKey As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptReleaseContext(<[In]> ByVal Prov As IntPtr, <[In]> ByVal Flags As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptReleaseContext(<[In]> Prov As IntPtr, <[In]> Flags As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
-        Friend Shared Function CertFreeCertificateContext(ByVal CertContext As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CertFreeCertificateContext(CertContext As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
-        Friend Shared Function CertCloseStore(<[In]> ByVal CertStore As IntPtr, ByVal Flags As CertStoreClose) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CertCloseStore(<[In]> CertStore As IntPtr, Flags As CertStoreClose) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
 
@@ -320,12 +320,12 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         <PreserveSig()> Friend Declare Function _
              SetParent _
-                 Lib "user32" (ByVal hwnd As IntPtr, ByVal hWndParent As IntPtr) As IntPtr
+                 Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
 
 
         <PreserveSig()> Friend Declare Function _
             GetParent _
-                Lib "user32" (ByVal hwnd As IntPtr) As IntPtr
+                Lib "user32" (hwnd As IntPtr) As IntPtr
 
         <PreserveSig()> Friend Declare Function _
             GetFocus _
@@ -333,23 +333,23 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         <PreserveSig()> Friend Declare Function _
             SetFocus _
-                Lib "user32" (ByVal hwnd As IntPtr) As Integer
+                Lib "user32" (hwnd As IntPtr) As Integer
 
         <PreserveSig()> Friend Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As HandleRef, ByVal msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
+                Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
         <PreserveSig()> Friend Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As HandleRef, ByVal msg As Integer, ByVal wParam As Integer, ByRef lParam As TVITEM) As IntPtr
+                Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, ByRef lParam As TVITEM) As IntPtr
 
         <PreserveSig()> Friend Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
+                Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
 
         <PreserveSig()> Friend Declare Auto Function _
             PostMessage _
-                Lib "user32" (ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
+                Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
         <PreserveSig()> Friend Declare Auto Function _
             WaitMessage _
@@ -362,43 +362,43 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         ''' <remarks></remarks>
         <PreserveSig()> Friend Declare Auto Function _
             GetNextDlgTabItem _
-                Lib "user32" (ByVal hDlg As IntPtr, ByVal hCtl As IntPtr, ByVal bPrevious As Boolean) As IntPtr
+                Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function GetWindow Lib "user32" (ByVal Hwnd As IntPtr, ByVal uCmd As UInteger) As IntPtr
+        Friend Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
         <PreserveSig()> _
-        Friend Declare Auto Function DragQueryFile Lib "shell32" (ByVal hDrop As IntPtr, ByVal iFile As Integer, ByVal lpszFile As String, ByVal cch As Integer) As Integer
+        Friend Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
         <System.Runtime.InteropServices.PreserveSig()> _
         Friend Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Function GetTopWindow Lib "user32" (ByVal Hwnd As IntPtr) As IntPtr
+        Friend Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function SetWindowLong Lib "user32" (ByVal hWnd As IntPtr, ByVal Index As Integer, ByVal Value As IntPtr) As IntPtr
+        Friend Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function GetWindowLong Lib "user32" (ByVal Hwnd As IntPtr, ByVal Index As Integer) As IntPtr
+        Friend Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
         ' Windows theme
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function SetWindowTheme Lib "uxtheme" (ByVal Hwnd As IntPtr, ByVal appName As String, ByVal subIdList As String) As Integer
+        Friend Declare Auto Function SetWindowTheme Lib "uxtheme" (Hwnd As IntPtr, appName As String, subIdList As String) As Integer
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function GetWindowText Lib "user32" (ByVal hWnd As IntPtr, ByVal lpString As String, ByVal nMaxCount As Integer) As Integer
+        Friend Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
         <DllImport("user32", CharSet:=CharSet.Auto)> _
-        Friend Shared Function GetWindowRect(ByVal hwnd As IntPtr, ByRef rect As RECT) As Integer
+        Friend Shared Function GetWindowRect(hwnd As IntPtr, ByRef rect As RECT) As Integer
         End Function
 
         Friend Declare Function MoveWindow Lib "user32" _
-          (ByVal hWnd As IntPtr, _
-            ByVal x As Integer, ByVal y As Integer, _
-            ByVal nWidth As Integer, _
-            ByVal nHeight As Integer, _
-            ByVal bRepaint As Integer) As Integer
+          (hWnd As IntPtr, _
+            x As Integer, y As Integer, _
+            nWidth As Integer, _
+            nHeight As Integer, _
+            bRepaint As Integer) As Integer
 
         <StructLayout(LayoutKind.Sequential)> _
         Friend Structure RECT
@@ -409,23 +409,23 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Structure
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function IsChild Lib "user32" (ByVal hWndParent As IntPtr, ByVal hWnd As IntPtr) As Boolean
+        Friend Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function EnableWindow Lib "user32" (ByVal hWnd As IntPtr, ByVal bEnable As Boolean) As Boolean
+        Friend Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<System.Runtime.InteropServices.PreserveSig()> _
-        'Friend Declare Auto Sub ShowWindow Lib "user32" (ByVal Hwnd As IntPtr, ByVal Flags As Integer)
+        'Friend Declare Auto Sub ShowWindow Lib "user32" (Hwnd As IntPtr, Flags As Integer)
         '
         '<System.Runtime.InteropServices.PreserveSig()> _
-        'Friend Declare Auto Function SetWindowPos Lib "user32" (ByVal Hwnd As IntPtr, ByVal HwndInsertAfter As IntPtr, ByVal x As Integer, _
-        '    ByVal y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal flags As Integer) As Boolean
+        'Friend Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
+        '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function SystemParametersInfo Lib "user32" (ByVal uiAction As UInteger, ByVal uiParam As UInteger, ByVal pvParam As IntPtr, ByVal fWinIni As UInteger) As Integer
+        Friend Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
         <System.Runtime.InteropServices.PreserveSig()> _
-        Friend Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (ByVal nCount As Integer, ByVal pHandles As IntPtr, ByVal fWaitAll As Boolean, ByVal dwMilliSeconds As Integer, ByVal dwWakeMask As Integer) As Integer
+        Friend Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Friend Const GWL_EXSTYLE As Integer = -20
         Friend Const GWL_STYLE As Integer = -16
@@ -436,9 +436,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Friend Const WS_EX_CONTROLPARENT As Integer = &H10000
         Friend Const WS_TABSTOP As Integer = &H10000
         Friend Const DS_CONTROL As Integer = &H400
-        Friend Declare Auto Function IsValidCodePage Lib "kernel32" (ByVal CodePage As UInteger) As Boolean
+        Friend Declare Auto Function IsValidCodePage Lib "kernel32" (CodePage As UInteger) As Boolean
 
-        Friend Declare Function IsWindowUnicode Lib "user32" (ByVal hWnd As IntPtr) As Boolean
+        Friend Declare Function IsWindowUnicode Lib "user32" (hWnd As IntPtr) As Boolean
 
         <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)> _
         Public Structure TVITEM
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Structure
 
         <DllImport("user32")> _
-        Friend Shared Function GetComboBoxInfo(ByVal hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
+        Friend Shared Function GetComboBoxInfo(hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
         End Function
 
         <StructLayout(LayoutKind.Sequential)> _
@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Sub BeginBatch()
         Sub EndBatch()
         Sub IsBatchModeEnabled(<InAttribute(), Out()> ByRef BatchModeEnabled As Boolean)
-        Sub PushOptionsToCompiler(ByVal dispid As UInteger)
+        Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
     <ComImport()> _
@@ -494,9 +494,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <TypeLibType(TypeLibTypeFlags.FRestricted)> _
     Friend Interface IMetaDataDispenser
-        Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> ByVal dwCreateFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
-        <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> ByVal szScope As String, <[In]()> ByVal dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
-        Function OpenScopeOnMemory(<[In]()> ByVal pData As IntPtr, <[In]()> ByVal cbData As UInt32, <[In]()> ByVal dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> dwCreateFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]()> dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
+        Function OpenScopeOnMemory(<[In]()> pData As IntPtr, <[In]()> cbData As UInt32, <[In]()> dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
     End Interface
 
     <StructLayout(LayoutKind.Sequential)> _

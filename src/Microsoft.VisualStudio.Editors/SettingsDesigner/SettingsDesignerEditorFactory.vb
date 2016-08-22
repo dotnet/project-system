@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub CreateEditorInstance(ByVal VsCreateEditorFlags As UInteger, ByVal FileName As String, ByVal PhysicalView As String, ByVal Hierarchy As Shell.Interop.IVsHierarchy, ByVal ItemId As UInteger, ByVal ExistingDocData As Object, ByRef DocView As Object, ByRef DocData As Object, ByRef Caption As String, ByRef CmdUIGuid As System.Guid, ByRef Canceled As Boolean)
+        Protected Overrides Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, FileName As String, PhysicalView As String, Hierarchy As Shell.Interop.IVsHierarchy, ItemId As UInteger, ExistingDocData As Object, ByRef DocView As Object, ByRef DocData As Object, ByRef Caption As String, ByRef CmdUIGuid As System.Guid, ByRef Canceled As Boolean)
             Static prjKindVenus As String = "{E24C65DC-7377-472b-9ABA-BC803B73C61A}"
             Dim proj As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
             If proj IsNot Nothing AndAlso proj.Kind = prjKindVenus Then

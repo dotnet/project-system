@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function ApplicationIconGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function ApplicationIconGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim ApplicationIconCombobox As ComboBox = DirectCast(control, ComboBox)
             Dim ApplicationIconText As String = Trim(CStr(ApplicationIconCombobox.SelectedItem))
 
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   set up by PropertyControlData), since clearing the list will clear the text value, too,
         '''   for a dropdown list.
         ''' </remarks>
-        Protected Overridable Sub PopulateIconList(ByVal FindIconsInProject As Boolean, ByVal ApplicationIconCombobox As ComboBox, ByVal CurrentIconValue As String)
+        Protected Overridable Sub PopulateIconList(FindIconsInProject As Boolean, ApplicationIconCombobox As ComboBox, CurrentIconValue As String)
             Dim fInsideInitPrevious As Boolean = m_fInsideInit
             m_fInsideInit = True
             Try
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ApplicationIconCombobox"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub AddIconEntryToCombobox(ByVal ApplicationIconCombobox As ComboBox, ByVal IconRelativePath As String)
+        Protected Overridable Sub AddIconEntryToCombobox(ApplicationIconCombobox As ComboBox, IconRelativePath As String)
             'By default, add the icon to the end of the combobox's dropdown list
             ApplicationIconCombobox.Items.Add(IconRelativePath)
         End Sub
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="IconFileName"></param>
         ''' <remarks></remarks>
-        Private Function AddIconFileToProject(ByVal IconFileName As String) As ProjectItem
+        Private Function AddIconFileToProject(IconFileName As String) As ProjectItem
             'Note: we allow the project to set the Build Action property for the icon to the default (content),
             '  which causes it to get deployed.  That is the desired behavior.
             Return AddFileToProject(DTEProject.ProjectItems, IconFileName, True)
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ApplicationIconCombobox">The combobox that displays the list of icons to choose from.</param>
         ''' <param name="ApplicationIconPictureBox">The picturebox that displays the image of the currently selected icon.</param>
         ''' <remarks></remarks>
-        Protected Sub BrowseForAppIcon(ByVal ApplicationIconCombobox As ComboBox, ByVal ApplicationIconPictureBox As PictureBox)
+        Protected Sub BrowseForAppIcon(ApplicationIconCombobox As ComboBox, ApplicationIconPictureBox As PictureBox)
             Dim sInitialDirectory As String
             Dim sFileName As String
 
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ApplicationIconCombobox">The combobox that displays the list of icons to choose from.</param>
         ''' <param name="ApplicationIconPictureBox">The picturebox that displays the image of the currently selected icon.</param>
         ''' <remarks></remarks>
-        Protected Sub UpdateIconImage(ByVal ApplicationIconCombobox As ComboBox, ByVal ApplicationIconPictureBox As PictureBox, ByVal AddToProject As Boolean)
+        Protected Sub UpdateIconImage(ApplicationIconCombobox As ComboBox, ApplicationIconPictureBox As PictureBox, AddToProject As Boolean)
             If ApplicationIconCombobox.Enabled Then
                 Dim ApplicationIconText As String = Trim(CStr(ApplicationIconCombobox.SelectedItem))
 
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Function SetIconImagePath(ByVal path As String, ByVal ApplicationIconCombobox As ComboBox, ByVal ApplicationIconPictureBox As PictureBox, ByVal AddToProject As Boolean) As Boolean
+        Private Function SetIconImagePath(path As String, ApplicationIconCombobox As ComboBox, ApplicationIconPictureBox As PictureBox, AddToProject As Boolean) As Boolean
             If path IsNot Nothing AndAlso path.Equals(_lastIconImage, StringComparison.Ordinal) Then
                 'PERF: Nothing to do if nothing has changed
                 Return True
@@ -366,7 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PictureBoxSize">The size into which the image needs to fit</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IconToImage(ByVal Icon As Icon, ByVal PictureBoxSize As Size) As Image
+        Private Function IconToImage(Icon As Icon, PictureBoxSize As Size) As Image
             ' We want to fit the icon into the picture box, but we'll keep it square
             ' so as not to distort it.
             Dim width As Integer = PictureBoxSize.Width
@@ -404,7 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ProjectItem"></param>
         ''' <remarks></remarks>
-        Protected Sub AddIconsFromProjectItem(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal ApplicationIconCombobox As ComboBox)
+        Protected Sub AddIconsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationIconCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
                 Dim ext As String = System.IO.Path.GetExtension(FileName)
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EntryText"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function IconEntryIsBrowse(ByVal EntryText As String) As Boolean
+        Protected Overridable Function IconEntryIsBrowse(EntryText As String) As Boolean
             Return False
         End Function
 
@@ -437,7 +437,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EntryText"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function IconEntryIsDefault(ByVal EntryText As String) As Boolean
+        Protected Overridable Function IconEntryIsDefault(EntryText As String) As Boolean
             Return EntryText IsNot Nothing AndAlso EntryText.Equals(m_DefaultIconText, StringComparison.OrdinalIgnoreCase)
         End Function
 
@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EntryText"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function IconEntryIsSpecial(ByVal EntryText As String) As Boolean
+        Protected Function IconEntryIsSpecial(EntryText As String) As Boolean
             Return IconEntryIsBrowse(EntryText) OrElse IconEntryIsDefault(EntryText)
         End Function
 
@@ -471,7 +471,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   set up by PropertyControlData), since clearing the list will clear the text value, too,
         '''   for a dropdown list.
         ''' </remarks>
-        Protected Overridable Sub PopulateManifestList(ByVal FindManifestInProject As Boolean, ByVal ApplicationManifestCombobox As ComboBox, ByVal CurrentManifestValue As String)
+        Protected Overridable Sub PopulateManifestList(FindManifestInProject As Boolean, ApplicationManifestCombobox As ComboBox, CurrentManifestValue As String)
             Dim fInsideInitPrevious As Boolean = m_fInsideInit
             m_fInsideInit = True
             Try
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ProjectItem"></param>
         ''' <remarks></remarks>
-        Protected Sub AddManifestsFromProjectItem(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal ApplicationManifestCombobox As ComboBox)
+        Protected Sub AddManifestsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationManifestCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
                 Dim ext As String = System.IO.Path.GetExtension(FileName)
@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-        Protected Function ApplicationManifestEntryIsDefault(ByVal text As String) As Boolean
+        Protected Function ApplicationManifestEntryIsDefault(text As String) As Boolean
             Return text IsNot Nothing AndAlso text.Equals(m_DefaultManifestText, StringComparison.OrdinalIgnoreCase)
         End Function
 

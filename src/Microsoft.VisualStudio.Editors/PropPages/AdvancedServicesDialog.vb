@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Days
         End Enum
 
-        Private Sub SetCacheTimeoutControlValues(ByVal cacheTimeout As Integer)
+        Private Sub SetCacheTimeoutControlValues(cacheTimeout As Integer)
             If cacheTimeout < 0 Then cacheTimeout = 0
             If cacheTimeout > Integer.MaxValue Then cacheTimeout = Integer.MaxValue
 
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             TimeQuantity.Value = cacheTimeout
         End Sub
 
-        Private Sub SetUseCustomConnectionStringControlValues(ByVal doc As XmlDocument)
+        Private Sub SetUseCustomConnectionStringControlValues(doc As XmlDocument)
             Dim connectionStringSpecified As Boolean
             Dim connectionString As String = ServicesPropPageAppConfigHelper.GetEffectiveDefaultConnectionString(doc, connectionStringSpecified, ProjectHierarchy)
             If Not connectionStringSpecified Then
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirtyFlag()
         End Sub
 
-        Private Sub UseCustomConnectionStringCheckBox_CheckStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles UseCustomConnectionStringCheckBox.CheckStateChanged
+        Private Sub UseCustomConnectionStringCheckBox_CheckStateChanged(sender As Object, e As System.EventArgs) Handles UseCustomConnectionStringCheckBox.CheckStateChanged
             UpdateCustomConnectionStringControlBasedOnCheckState()
         End Sub
 
@@ -167,18 +167,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirtyFlag()
         End Sub
 
-        Private Sub CustomConnectionString_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CustomConnectionString.TextChanged
+        Private Sub CustomConnectionString_TextChanged(sender As Object, e As System.EventArgs) Handles CustomConnectionString.TextChanged
             If CustomConnectionString.Enabled Then
                 ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, CustomConnectionString.Text, ProjectHierarchy)
                 SetDirtyFlag()
             End If
         End Sub
 
-        Private Sub TimeUnitComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimeUnitComboBox.SelectedIndexChanged
+        Private Sub TimeUnitComboBox_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles TimeUnitComboBox.SelectedIndexChanged
             SetCacheTimeout()
         End Sub
 
-        Private Sub TimeQuantity_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimeQuantity.ValueChanged
+        Private Sub TimeQuantity_ValueChanged(sender As Object, e As System.EventArgs) Handles TimeQuantity.ValueChanged
             SetCacheTimeout()
         End Sub
 
@@ -204,12 +204,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirtyFlag()
         End Sub
 
-        Private Sub SavePasswordHashLocallyCheckbox_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles SavePasswordHashLocallyCheckbox.CheckedChanged
+        Private Sub SavePasswordHashLocallyCheckbox_CheckedChanged(sender As Object, e As System.EventArgs) Handles SavePasswordHashLocallyCheckbox.CheckedChanged
             ServicesPropPageAppConfigHelper.SetSavePasswordHashLocally(_appConfigDocument, SavePasswordHashLocallyCheckbox.Checked, ProjectHierarchy)
             SetDirtyFlag()
         End Sub
 
-        Private Sub HonorServerCookieExpirySavePasswordHashLocallyCheckbox_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles HonorServerCookieExpirationCheckbox.CheckedChanged
+        Private Sub HonorServerCookieExpirySavePasswordHashLocallyCheckbox_CheckedChanged(sender As Object, e As System.EventArgs) Handles HonorServerCookieExpirationCheckbox.CheckedChanged
             ServicesPropPageAppConfigHelper.SetHonorCookieExpiry(_appConfigDocument, HonorServerCookieExpirationCheckbox.Checked, ProjectHierarchy)
             SetDirtyFlag()
         End Sub

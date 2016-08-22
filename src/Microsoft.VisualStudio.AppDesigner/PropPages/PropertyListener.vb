@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EventSource">The object to try listening to property changes on.</param>
         ''' <param name="DebugSourceName">For debugging purposes: name of the properties object that is being listened to.</param>
         ''' <remarks></remarks>
-        Private Sub New(ByVal PropPage As PropPageUserControlBase, ByVal EventSource As Object, ByVal DebugSourceName As String)
+        Private Sub New(PropPage As PropPageUserControlBase, EventSource As Object, DebugSourceName As String)
             _propPage = PropPage
 #If DEBUG Then
             _debugSourceName = DebugSourceName
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <returns>If it succeeds, a valid listener is created.  If it fails, Nothing is returned.</returns>
         ''' <remarks></remarks>
-        Public Shared Function TryCreate(ByVal PropPage As PropPageUserControlBase, ByVal EventSource As Object, ByVal DebugSourceName As String, ByVal ProjectHierarchy As IVsHierarchy, ByVal ListenToInactiveConfigs As Boolean) As PropertyListener
+        Public Shared Function TryCreate(PropPage As PropPageUserControlBase, EventSource As Object, DebugSourceName As String, ProjectHierarchy As IVsHierarchy, ListenToInactiveConfigs As Boolean) As PropertyListener
             Debug.Assert(ProjectHierarchy IsNot Nothing)
             Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & VB.TypeName(EventSource))
 
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Private Overloads Sub Dispose(ByVal Disposing As Boolean)
+        Private Overloads Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _cookieActiveCfg IsNot Nothing Then
                     _cookieActiveCfg.Disconnect()
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overrides Sub Finalize()
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
             Dispose(False)
             MyBase.Finalize()
         End Sub
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="EventSource"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function SupportsConnectionPointContainer(ByVal EventSource As Object) As Boolean
+        Private Shared Function SupportsConnectionPointContainer(EventSource As Object) As Boolean
             If EventSource IsNot Nothing Then
                 If TypeOf EventSource Is OLE.Interop.IConnectionPointContainer OrElse TypeOf EventSource Is ComTypes.IConnectionPointContainer Then
                     Return True
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   attempt to use an error code (such as E_NOTIMPL) to determine whether to not send the notification 
         '''   in the future. Such semantics are not part of this interface.
         ''' </remarks>
-        Private Sub OnChanged(ByVal DISPID As Integer) Implements OLE.Interop.IPropertyNotifySink.OnChanged
+        Private Sub OnChanged(DISPID As Integer) Implements OLE.Interop.IPropertyNotifySink.OnChanged
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
             DebugSourceName = _debugSourceName
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   the property is unavailable and thus cannot be validated. This method's only purpose is to allow the sink to enforce 
         '''   a read-only state on a property.
         ''' </remarks>
-        Private Sub OnRequestEdit(ByVal DISPID As Integer) Implements OLE.Interop.IPropertyNotifySink.OnRequestEdit
+        Private Sub OnRequestEdit(DISPID As Integer) Implements OLE.Interop.IPropertyNotifySink.OnRequestEdit
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
             DebugSourceName = _debugSourceName
@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="wszConfigName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnChanged(ByVal dispid As Integer, ByVal wszConfigName As String) As Integer Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged
+        Public Function OnChanged(dispid As Integer, wszConfigName As String) As Integer Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
             DebugSourceName = "[Inactive Config '" & wszConfigName & "'] : " & _debugSourceName

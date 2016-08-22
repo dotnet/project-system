@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="SpecialFileId">The special file ID to create when the user clicks the link.</param>
         ''' <param name="LinkText">The text of the link message to display.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal DesignerView As ApplicationDesignerView, ByVal DesignerPanel As ApplicationDesignerPanel, ByVal SpecialFileId As Integer, ByVal LinkText As String)
+        Public Sub New(DesignerView As ApplicationDesignerView, DesignerPanel As ApplicationDesignerPanel, SpecialFileId As Integer, LinkText As String)
             Debug.Assert(DesignerView IsNot Nothing)
             _designerView = DesignerView
             Debug.Assert(DesignerPanel IsNot Nothing)
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.
                 CloseView()
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="SpecialFileId">The special file ID for IVsProjectSpecialFiles that will be used to
         '''   obtain the document filename</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal DesignerView As ApplicationDesignerView, ByVal SpecialFileId As Integer)
+        Public Sub New(DesignerView As ApplicationDesignerView, SpecialFileId As Integer)
             If DesignerView Is Nothing Then
                 Throw New ArgumentNullException("DesignerView")
             End If

@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return MyBase.CellTemplate
             End Get
-            Set(ByVal Value As DataGridViewCell)
+            Set(Value As DataGridViewCell)
                 If Value IsNot Nothing AndAlso Not TypeOf Value Is DataGridViewUITypeEditorCell Then
                     Throw New InvalidCastException()
                 End If

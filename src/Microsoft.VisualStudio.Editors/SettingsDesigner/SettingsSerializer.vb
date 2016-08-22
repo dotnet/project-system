@@ -16,11 +16,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Friend Class SettingsSerializerException
             Inherits ApplicationException
 
-            Public Sub New(ByVal message As String)
+            Public Sub New(message As String)
                 MyBase.New(message)
             End Sub
 
-            Public Sub New(ByVal message As String, ByVal inner As Exception)
+            Public Sub New(message As String, inner As Exception)
                 MyBase.New(message, inner)
             End Sub
         End Class
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Shared Sub SchemaValidationEventHandler(ByVal sender As Object, ByVal e As System.Xml.Schema.ValidationEventArgs)
+        Private Shared Sub SchemaValidationEventHandler(sender As Object, e As System.Xml.Schema.ValidationEventArgs)
             System.Diagnostics.Debug.Fail("Failed to load XML schema from manifest resource stream!")
             s_SchemaLoadFailed = True
         End Sub
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Friend Sub ValidationEventHandler(ByVal sender As Object, ByVal e As System.Xml.Schema.ValidationEventArgs)
+            Friend Sub ValidationEventHandler(sender As Object, e As System.Xml.Schema.ValidationEventArgs)
                 m_ValidationErrors.Add(e)
             End Sub
         End Class
@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Settings">Instance to populate</param>
         ''' <param name="Reader">Text reader on stream containing serialized settings</param>
         ''' <remarks></remarks>
-        Public Shared Sub Deserialize(ByVal Settings As DesignTimeSettings, ByVal Reader As TextReader, ByVal getRuntimeValue As Boolean)
+        Public Shared Sub Deserialize(Settings As DesignTimeSettings, Reader As TextReader, getRuntimeValue As Boolean)
             Dim XmlDoc As New XmlDocument()
 
 #If USE_SETTINGS_XML_SCHEMA_VALIDATION Then
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Settings">Instance to serialize</param>
         ''' <param name="Writer">Text writer on stream to serialize settings to</param>
         ''' <remarks></remarks>
-        Public Shared Sub Serialize(ByVal Settings As DesignTimeSettings, ByVal GeneratedClassNameSpace As String, ByVal ClassName As String, ByVal Writer As TextWriter, ByVal DeclareEncodingAs As System.Text.Encoding)
+        Public Shared Sub Serialize(Settings As DesignTimeSettings, GeneratedClassNameSpace As String, ClassName As String, Writer As TextWriter, DeclareEncodingAs As System.Text.Encoding)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings", Settings.Count)
 
             ' Gotta store the namespace here in case it changes from under us!

@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDeactivate(ByVal e As System.ComponentModel.CancelEventArgs)
+        Protected Overrides Sub OnDeactivate(e As System.ComponentModel.CancelEventArgs)
             e.Cancel = Not ValidateSettings()
         End Sub
 
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' Use the IVsTextManager to set the specified user preferences
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub Apply(ByVal prefs As LANGPREFERENCES)
+        Private Sub Apply(prefs As LANGPREFERENCES)
             Dim textMgr As IVsTextManager = DirectCast(Me.GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 prefs.guidLang = s_VBLangGUID

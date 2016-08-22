@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   reserved.  These could be used for overlays, common images, etc.  They will never
         '''   be recycled, and will not be changed.
         '''</remarks>
-        Public Sub New(ByVal ImageList As ImageList)
+        Public Sub New(ImageList As ImageList)
             _reservedImagesCount = ImageList.Images.Count
             _imageList = ImageList
             _mruList = New MruListItem(_maximumSuggestedCacheSize + _reservedImagesCount) {}
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _minimumSizeBeforeRecycling
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 If Value > 0 Then
                     _minimumSizeBeforeRecycling = Value
                 Else
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _maximumSuggestedCacheSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 Debug.Assert(Value > 0)
                 _maximumSuggestedCacheSize = Value
             End Set
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </param>
         ''' <returns>The index of the new image in the cache.</returns>
         ''' <remarks>The key should not already exist in the cache.</remarks>
-        Public Function Add(ByVal Key As Object, ByVal Thumbnail As Image, ByVal IsSharedImage As Boolean) As Integer
+        Public Function Add(Key As Object, Thumbnail As Image, IsSharedImage As Boolean) As Integer
             'Verify that it's not already in the cache.
             Dim CurrentIndex As Integer
             Dim ThumbnailStillInCache As Boolean
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index"> The index of the shared image.
         ''' </param>
         ''' <remarks>The key should not already exist in the cache, and it must be an index to a shared image.</remarks>
-        Public Sub ReuseSharedImage(ByVal Key As Object, ByVal Index As Integer)
+        Public Sub ReuseSharedImage(Key As Object, Index As Integer)
             Debug.Assert(Not IsInMruList(Index))
             _keys.Add(Key, Index)
         End Sub
@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Key">Key to remove if found.</param>
         ''' <remarks></remarks>
-        Public Sub InvalidateThumbnail(ByVal Key As Object)
+        Public Sub InvalidateThumbnail(Key As Object)
             Dim Index As Integer
             If GetCachedImageListIndexInternal(Key, Index) Then
                 RemoveKey(Key, Index)
@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Key">Key to remove if found.</param>
         ''' <remarks></remarks>
-        Public Function IsThumbnailInCache(ByVal Key As Object) As Boolean
+        Public Function IsThumbnailInCache(Key As Object) As Boolean
             Return _keys.ContainsKey(Key)
         End Function
 
@@ -296,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ThumbnailFound">Returns true iff the key was found in the cache.</param>
         ''' <param name="Index">The index of the found image.  If ThumbnailFail is False, this value is undefined.</param>
         ''' <remarks></remarks>
-        Public Sub GetCachedImageListIndex(ByVal Key As Object, ByRef ThumbnailFound As Boolean, ByRef Index As Integer)
+        Public Sub GetCachedImageListIndex(Key As Object, ByRef ThumbnailFound As Boolean, ByRef Index As Integer)
             ThumbnailFound = GetCachedImageListIndexInternal(Key, Index)
             If ThumbnailFound AndAlso IsInMruList(Index) Then
                 ' NOTE: It could be a reserved item (shared icon), in this case, it is not in the MRU list, and we shouldn't update the LIST.
@@ -313,7 +313,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index">The index of the found image.  If ThumbnailFail is False, this value is undefined.</param>
         ''' <returns>True if we found one</returns>
         ''' <remarks></remarks>
-        Private Function GetCachedImageListIndexInternal(ByVal Key As Object, ByRef Index As Integer) As Boolean
+        Private Function GetCachedImageListIndexInternal(Key As Object, ByRef Index As Integer) As Boolean
             Dim ThumbnailFound As Boolean
             Debug.Assert(Key IsNot Nothing)
             Dim IndexAsObject As Object = _keys(Key)
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   When you actually use the index returned from this list, you must enqueue it.
         '''</remarks>
-        Private Sub GetNextImageIndex(ByRef Index As Integer, ByRef InsertAtEnd As Boolean, Optional ByVal TryForceRecycle As Boolean = False)
+        Private Sub GetNextImageIndex(ByRef Index As Integer, ByRef InsertAtEnd As Boolean, Optional TryForceRecycle As Boolean = False)
             Dim CurrentThumbnailCount As Integer = ThumbnailCount
             Dim OldestIndex As Integer = _mruList(0).NextIndex
 
@@ -389,7 +389,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Key">Key to be removed.</param>
         ''' <param name="Index">Index at which that key is currently found.</param>
         ''' <remarks></remarks>
-        Private Sub RemoveKey(ByVal Key As Object, ByVal Index As Integer)
+        Private Sub RemoveKey(Key As Object, Index As Integer)
             ' NOTE: It could be a reserved item (shared icon), in this case, it is not in the MRU list, and we shouldn't update the LIST.
             If IsInMruList(Index) Then
                 UpdateMruList(Index, Nothing, False)
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index">Index in the ImageList.</param>
         ''' <param name="Key">Key to be removed.</param>
         ''' <param name="BeLastestItem">It should be the last item in the MRU list, otherwise, it will be the first item, and will be recycle soon.</param>
-        Private Sub UpdateMruList(ByVal Index As Integer, ByVal Key As Object, ByVal BeLastestItem As Boolean)
+        Private Sub UpdateMruList(Index As Integer, Key As Object, BeLastestItem As Boolean)
             Dim MruIndex As Integer = Index + 1
 
             ' Check whether we need grow the size of the MRU table...
@@ -450,7 +450,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index">Index in the ImageList.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsInMruList(ByVal Index As Integer) As Boolean
+        Private Function IsInMruList(Index As Integer) As Boolean
             Dim MruIndex As Integer = Index + 1
             If MruIndex >= _mruList.Length Then
                 Return False

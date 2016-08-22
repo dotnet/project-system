@@ -14,14 +14,14 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
         Private ReadOnly _serviceProvider As IServiceProvider
 
-        Public Sub New(ByVal serviceProvider As IServiceProvider)
+        Public Sub New(serviceProvider As IServiceProvider)
             If serviceProvider Is Nothing Then
                 Throw New ArgumentNullException("serviceProvider")
             End If
             _serviceProvider = serviceProvider
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
             ' Set the Font according to the system settings.
             Me.Font = DialogFont
             MyBase.OnLoad(e)

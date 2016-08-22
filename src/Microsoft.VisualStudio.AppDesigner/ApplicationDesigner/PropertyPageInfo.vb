@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Guid">The GUID to create the property page</param>
         ''' <param name="IsConfigurationDependentPage">Whether or not the page has different values for each configuration (e.g. the Debug page)</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ParentView As ApplicationDesignerView, ByVal Guid As Guid, ByVal IsConfigurationDependentPage As Boolean)
+        Public Sub New(ParentView As ApplicationDesignerView, Guid As Guid, IsConfigurationDependentPage As Boolean)
             Debug.Assert(Not Guid.Equals(System.Guid.Empty), "Empty guid?")
             Debug.Assert(ParentView IsNot Nothing)
             Me._parentView = ParentView
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 Try
                     If _comPropPageInstance IsNot Nothing Then
@@ -320,7 +320,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'No cached title yet.
                 Return Nothing
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If value Is Nothing Then
                     value = String.Empty
                 End If

@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     Public Interface ILangInactiveCfgPropertyNotifySink
 
         <PreserveSig()> _
-        Function OnChanged(ByVal dispid As Integer, <MarshalAs(UnmanagedType.LPWStr)> ByVal wszConfigName As String) As Integer
+        Function OnChanged(dispid As Integer, <MarshalAs(UnmanagedType.LPWStr)> wszConfigName As String) As Integer
 
     End Interface
 

@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="RootDesigner">Pointer to the root designer</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal RootDesigner As ResourceEditorRootDesigner)
+        Public Sub New(RootDesigner As ResourceEditorRootDesigner)
             If RootDesigner Is Nothing Then
                 Throw New ArgumentNullException("RootDesigner")
             End If
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Message"></param>
         ''' <remarks></remarks>
         <Conditional("DEBUG")> _
-        Public Shared Sub Trace(ByVal Message As String)
+        Public Shared Sub Trace(Message As String)
             Debug.WriteLineIf(Switches.RSEFindReplace.TraceVerbose, "RSE Find/Replace: " & Message)
         End Sub
 
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This should be called when resources are added or removed, so that the search 
         '''   can be reset.
         ''' </remarks>
-        Public Sub InvalidateFindLoop(ByVal ResourcesAddedOrRemoved As Boolean)
+        Public Sub InvalidateFindLoop(ResourcesAddedOrRemoved As Boolean)
             If _programmaticallyChangingSelection Then
                 Exit Sub
             End If
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pfImage">Set to True if supporting GetSearchImage - seaching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
         ''' <remarks></remarks>
-        Public Sub GetCapabilities(ByVal pfImage() As Boolean, ByVal pgrfOptions() As UInteger)
+        Public Sub GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger)
             Trace("GetCapabilities called.")
 
             ' We don't support search for text images
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pvar">Property value.</param>
         ''' <returns>S_OK if success, otherwise an error code.</returns>
         ''' <remarks>All properties are optional to handle.</remarks>
-        Public Function GetProperty(ByVal propid As UInteger, ByRef pvar As Object) As Integer
+        Public Function GetProperty(propid As UInteger, ByRef pvar As Object) As Integer
             Trace("IVsFindTarget.GetProperty: " + CType(propid, __VSFTPROPID).ToString())
 
             Select Case CType(propid, __VSFTPROPID)
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="pUnk">The find state object to hold.</param>
         ''' <remarks></remarks>
-        Public Sub SetFindState(ByVal pUnk As Object)
+        Public Sub SetFindState(pUnk As Object)
             _findState = pUnk
         End Sub
 
@@ -238,8 +238,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' - We search for the text and return an enum value to the shell to display the dialog box if not found, etc...
         ''' - We are responsible for selecting the found object and keeping track of where we are in the object list.
         ''' </remarks>
-        Public Sub Find(ByVal pszSearch As String, ByVal grfOptions As UInteger, ByVal fResetStartPoint As Integer, _
-                            ByVal pHelper As IVsFindHelper, ByRef pResult As UInteger)
+        Public Sub Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer, _
+                            pHelper As IVsFindHelper, ByRef pResult As UInteger)
             Dim FindReset As Boolean = (fResetStartPoint <> 0)
             Dim FindBackwards As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Backwards)
             Dim FindInSelection As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Selection)
@@ -414,7 +414,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Flag">The option we want to know.</param>
         ''' <returns>Value of the option, TRUE or FALSE.</returns>
         ''' <remarks></remarks>
-        Private Function CheckFindOption(ByVal grfOptions As UInteger, ByVal Flag As __VSFINDOPTIONS) As Boolean
+        Private Function CheckFindOption(grfOptions As UInteger, Flag As __VSFINDOPTIONS) As Boolean
             Return (CType(grfOptions, __VSFINDOPTIONS) And Flag) <> 0
         End Function
 
@@ -430,7 +430,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This returns True for resources which are displayed in a listview, because there is no easy way to 
         '''   highlight separate parts of the resource.
         ''' </remarks>
-        Private Function ResourceIsSearchedAsSingleUnit(ByVal Resource As Resource) As Boolean
+        Private Function ResourceIsSearchedAsSingleUnit(Resource As Resource) As Boolean
             Return Not Resource.ResourceTypeEditor.DisplayInStringTable()
         End Function
 
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FindBackwards">True if we're searching backwards</param>
         ''' <remarks></remarks>
-        Private Sub IncrementCurrentIndex(ByVal FindBackwards As Boolean)
+        Private Sub IncrementCurrentIndex(FindBackwards As Boolean)
             If FindBackwards Then
                 _currentIndex -= 1
                 If _currentIndex < 0 Then
@@ -460,7 +460,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FindBackwards">TRUE indicates finding backwards; otherwise, FALSE.</param>
         ''' <remarks></remarks>
-        Private Sub IncrementCurrentIndexAndField(ByVal FindBackwards As Boolean)
+        Private Sub IncrementCurrentIndexAndField(FindBackwards As Boolean)
             Dim NextFieldIndex As Integer = CInt(_currentFieldInCurrentIndex)
             If FindBackwards Then
                 NextFieldIndex = _currentFieldInCurrentIndex - 1
@@ -491,8 +491,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Helper">The IVsFindHelper from VisualStudio</param>
         ''' <returns>TRUE if a match was found; otherwise, FALSE.</returns>
         ''' <remarks></remarks>
-        Private Function IsMatch(ByVal SearchPattern As String, ByVal SearchText As String, _
-                                    ByVal Helper As IVsFindHelper, ByVal grfFindOptions As UInteger) As Boolean
+        Private Function IsMatch(SearchPattern As String, SearchText As String, _
+                                    Helper As IVsFindHelper, grfFindOptions As UInteger) As Boolean
             If String.IsNullOrEmpty(SearchText) Then
                 Return False
             End If
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FindInSelection">Whether or not to search only in the current selection</param>
         ''' <value>An ArrayList containing Resource instances ordered by category and names.</value>
         ''' <remarks></remarks>
-        Private ReadOnly Property GetResourcesToSearch(ByVal FindInSelection As Boolean) As Resource()
+        Private ReadOnly Property GetResourcesToSearch(FindInSelection As Boolean) As Resource()
             Get
                 Dim ResourcesToSearch As ArrayList
 
@@ -557,7 +557,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FindBackwards">True if we're searching backwards</param>
         ''' <param name="FindInSelection">True if we're finding in a selection</param>
         ''' <remarks>Sets current index and field to the determined starting location.</remarks>
-        Private Sub DetermineSearchStart(ByVal FindBackwards As Boolean, ByVal FindInSelection As Boolean)
+        Private Sub DetermineSearchStart(FindBackwards As Boolean, FindInSelection As Boolean)
             Debug.Assert(_resourcesToSearch IsNot Nothing)
             Dim StartingResource As Resource = Nothing
 

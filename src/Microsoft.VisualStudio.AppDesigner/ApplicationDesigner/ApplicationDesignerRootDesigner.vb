@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="component"></param>
         ''' <remarks>Defers to base class </remarks>
-        Public Overrides Sub Initialize(ByVal component As IComponent)
+        Public Overrides Sub Initialize(component As IComponent)
             MyBase.Initialize(component)
         End Sub
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _view IsNot Nothing Then
                     _view.Dispose()
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
-        Private Function RootDesigner_GetView(ByVal Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
+        Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
                 Throw New ArgumentException("Not a supported view technology", "Technology")
             End If
@@ -126,12 +126,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="ServiceType">The type of the service being asked for.</param>
         ''' <returns>The requested service, if it exists.</returns>
-        Public Shadows Function GetService(ByVal ServiceType As Type) As Object
+        Public Shadows Function GetService(ServiceType As Type) As Object
             Return MyBase.GetService(ServiceType)
         End Function
 
 #If 0 Then
-        Private Sub NextTabHandler(ByVal sender As Object, ByVal ev As EventArgs)
+        Private Sub NextTabHandler(sender As Object, ev As EventArgs)
             'Dim AppDesignerView As ApplicationDesignerView
             'AppDesignerView = TryCast(view.Controls(0), ApplicationDesignerView)
             'If AppDesignerView IsNot Nothing Then
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'End If
         End Sub
 
-        Private Sub PrevTabHandler(ByVal sender As Object, ByVal ev As EventArgs)
+        Private Sub PrevTabHandler(sender As Object, ev As EventArgs)
             'Dim AppDesignerView As ApplicationDesignerView
             'AppDesignerView = TryCast(view.Controls(0), ApplicationDesignerView)
             'If AppDesignerView IsNot Nothing Then

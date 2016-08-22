@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If IsInProjectCheckoutSection Then
                     'It is possible for a source code checkout operation to cause a project reload (and thus the closing/disposal of 

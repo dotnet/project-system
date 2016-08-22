@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private _lastFocus As Control
         Private _helpCallBack As IVBAddImportsDialogHelpCallback
 
-        Public Sub New(ByVal [namespace] As String, ByVal identifier As String, ByVal minimallyQualifiedName As String, ByVal helpCAllback As IVBAddImportsDialogHelpCallback, ByVal isp As IServiceProvider)
+        Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, helpCAllback As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
             Me.SuspendLayout()
             Try
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             End Try
         End Sub
 
-        Private Sub ButtonClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnOk_.Click, btnCancel_.Click
+        Private Sub ButtonClick(sender As Object, e As EventArgs) Handles btnOk_.Click, btnCancel_.Click
             Me.Close()
         End Sub
 
@@ -32,20 +32,20 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             Return CInt(pnlLayout_.Width - (pnlLayout_.ColumnStyles(0).Width + pnlLayout_.ColumnStyles(4).Width))
         End Function
 
-        Private Sub ButtonGotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles btnOk_.GotFocus, btnCancel_.GotFocus
+        Private Sub ButtonGotFocus(sender As Object, e As EventArgs) Handles btnOk_.GotFocus, btnCancel_.GotFocus
             _lastFocus = CType(sender, Control)
         End Sub
 
-        Private Sub LabelGotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMain_.GotFocus
+        Private Sub LabelGotFocus(sender As Object, e As System.EventArgs) Handles txtMain_.GotFocus
             _lastFocus.Focus()
         End Sub
 
-        Private Sub ClickHelpButton(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
+        Private Sub ClickHelpButton(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
             e.Cancel = True
             OnHelpRequested(New HelpEventArgs(Point.Empty))
         End Sub
 
-        Private Sub RequestHelp(ByVal sender As Object, ByVal hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub RequestHelp(sender As Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
             If (_helpCallBack IsNot Nothing) Then
                 _helpCallBack.InvokeHelp()
             End If

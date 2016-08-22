@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
     Friend Class XamlReadWriteException
         Inherits PropertyPageException
 
-        Public Sub New(ByVal message As String)
+        Public Sub New(message As String)
             MyBase.New(message)
         End Sub
 
@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks>
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
-        Protected Sub New(ByVal Info As SerializationInfo, ByVal Context As StreamingContext)
+        Protected Sub New(Info As SerializationInfo, Context As StreamingContext)
             MyBase.New(Info, Context)
         End Sub
 

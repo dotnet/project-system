@@ -32,17 +32,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function EditValue(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal provider As System.IServiceProvider, ByVal value As Object) As Object
+        Public Overrides Function EditValue(context As System.ComponentModel.ITypeDescriptorContext, provider As System.IServiceProvider, value As Object) As Object
             Dim result As Object = _parent.EditValue(context, provider, ConvertToUITypeEditorSource(value))
             Return ConvertToOriginal(result)
         End Function
 
 #Region "Forwarding UITypeEditor methods to our parent UITypeEditor"
-        Public Overrides Function GetEditStyle(ByVal context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
+        Public Overrides Function GetEditStyle(context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
             Return _parent.GetEditStyle(context)
         End Function
 
-        Public Overrides Sub PaintValue(ByVal e As System.Drawing.Design.PaintValueEventArgs)
+        Public Overrides Sub PaintValue(e As System.Drawing.Design.PaintValueEventArgs)
             _parent.PaintValue(e)
         End Sub
 
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Overrides Function GetPaintValueSupported(ByVal context As System.ComponentModel.ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetPaintValueSupported(context As System.ComponentModel.ITypeDescriptorContext) As Boolean
             Return _parent.GetPaintValueSupported(context)
         End Function
 #End Region
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ConvertToUITypeEditorSource(ByVal value As Object) As Object
+        Private Function ConvertToUITypeEditorSource(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing
             End If
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ConvertToOriginal(ByVal value As Object) As Object
+        Private Function ConvertToOriginal(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing
             End If

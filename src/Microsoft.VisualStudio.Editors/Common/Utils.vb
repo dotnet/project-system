@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="value"></param>
         ''' <return> return true if the variant is an integer type value</return>
         ''' <remarks></remarks>
-        Public Function TryConvertVariantToInt(ByVal obj As Object, ByRef value As Integer) As Boolean
+        Public Function TryConvertVariantToInt(obj As Object, ByRef value As Integer) As Boolean
             If obj Is Nothing Then
                 Return False
             End If
@@ -127,7 +127,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NoOverflowCUInt(ByVal obj As Object) As UInteger
+        Public Function NoOverflowCUInt(obj As Object) As UInteger
             Return NoOverflowCUInt(CLng(obj))
         End Function
 
@@ -137,11 +137,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="LongValue"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NoOverflowCUInt(ByVal LongValue As Long) As UInteger
+        Public Function NoOverflowCUInt(LongValue As Long) As UInteger
             Return CUInt(LongValue And UInt32.MaxValue)
         End Function
 
-        Public Function NoOverflowCInt(ByVal LongValue As Long) As Integer
+        Public Function NoOverflowCInt(LongValue As Long) As Integer
             If LongValue <= UInt32.MaxValue Then
                 Return CInt(LongValue)
             End If
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmap(ByVal BitmapID As String) As Bitmap
+        Public Function GetManifestBitmap(BitmapID As String) As Bitmap
             Return DirectCast(GetManifestImage(BitmapID), Bitmap)
         End Function
 
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="TransparentColor">The color that represents transparent in the bitmap</param>
         ''' <returns>The retrieved transparent bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(ByVal BitmapID As String, ByVal TransparentColor As Color) As Bitmap
+        Public Function GetManifestBitmapTransparent(BitmapID As String, TransparentColor As Color) As Bitmap
             Dim Bitmap As Bitmap = GetManifestBitmap(BitmapID)
             If Bitmap IsNot Nothing Then
                 Bitmap.MakeTransparent(TransparentColor)
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
         ''' <returns>The retrieved transparent bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(ByVal BitmapID As String) As Bitmap
+        Public Function GetManifestBitmapTransparent(BitmapID As String) As Bitmap
             Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor)
         End Function
 
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ImageID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestImage(ByVal ImageID As String) As Image
+        Public Function GetManifestImage(ImageID As String) As Image
             Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.Common.Utils).Assembly.GetManifestResourceStream(ImageID)
             If Not BitmapStream Is Nothing Then
                 Dim Image As Image = Drawing.Image.FromStream(BitmapStream)
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   evidence to suggest that the implication is incorrect).
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function Implies(ByVal a As Boolean, ByVal b As Boolean) As Boolean
+        Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
 
@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ex"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DebugMessageFromException(ByVal ex As Exception) As String
+        Public Function DebugMessageFromException(ex As Exception) As String
 #If DEBUG Then
             Dim ErrorMessage As String = ex.Message & vbCrLf & vbCrLf & vbCrLf & "[SHOWN IN DEBUG ONLY] STACK TRACE:" & vbCrLf & ex.StackTrace
             If ex.InnerException IsNot Nothing Then
@@ -296,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Value">The value to turn into a displayable string.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DebugToString(ByVal Value As Object) As String
+        Public Function DebugToString(Value As Object) As String
 #If DEBUG Then
             Dim StringValue As String = ""
             Try
@@ -328,9 +328,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ex">The exception to log.</param>
         ''' <param name="exceptionEventDescription">Additional description for the cause of the exception.</param>
         ''' <param name="throwingComponentName">Name of the component that threw that exception, generally the containing type name.</param>
-        Public Function ReportWithoutCrash(ByVal ex As Exception,
-                                           ByVal exceptionEventDescription As String,
-                                           Optional ByVal throwingComponentName As String = "general") As Boolean
+        Public Function ReportWithoutCrash(ex As Exception,
+                                           exceptionEventDescription As String,
+                                           Optional throwingComponentName As String = "general") As Boolean
             Debug.Assert(ex IsNot Nothing)
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
@@ -349,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
         ''' <remarks></remarks>
-        Public Function IsCheckoutCanceledException(ByVal ex As Exception) As Boolean
+        Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
                 (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED) _
@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NothingToEmptyString(ByVal Str As String) As String
+        Public Function NothingToEmptyString(Str As String) As String
             If Str Is Nothing Then
                 Return String.Empty
             Else
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Str"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function EmptyStringToNothing(ByVal Str As String) As String
+        Public Function EmptyStringToNothing(Str As String) As String
             If Str Is Nothing OrElse Str.Length = 0 Then
                 Return Nothing
             Else
@@ -402,7 +402,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Path">The path to get the full path from.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetFullPathTolerant(ByVal Path As String) As String
+        Public Function GetFullPathTolerant(Path As String) As String
             Try
                 Return IO.Path.GetFullPath(Path)
             Catch ex As ArgumentException
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   return just the root namespace).  Instead, use AddNamespace for that.
         ''' Handles values of Nothing, never returns Nothing.
         ''' </remarks>
-        Public Function CombineNamespaces(ByVal Namespace1 As String, ByVal Namespace2 As String) As String
+        Public Function CombineNamespaces(Namespace1 As String, Namespace2 As String) As String
             If Namespace1 = "" Then
                 Return NothingToEmptyString(Namespace2)
             End If
@@ -446,7 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ClassName">The class name to prepend the namespace to.</param>
         ''' <returns></returns>
         ''' <remarks>Handles values of Nothing, never returns Nothing.</remarks>
-        Public Function AddNamespace(ByVal [Namespace] As String, ByVal ClassName As String) As String
+        Public Function AddNamespace([Namespace] As String, ClassName As String) As String
             If ClassName = "" Then
                 'If class name is missing, then namespace + class name must also be missing.
                 Return ""
@@ -467,7 +467,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="RootNamespace">The current root namespace to remove if it exists.</param>
         ''' <returns>FullyQualifiedNamespace without the root namespace.</returns>
         ''' <remarks></remarks>
-        Public Function RemoveRootNamespace(ByVal FullyQualifiedNamespace As String, ByVal RootNamespace As String) As String
+        Public Function RemoveRootNamespace(FullyQualifiedNamespace As String, RootNamespace As String) As String
             Dim RootNamespaceLength As Integer = 0
 
             If RootNamespace Is Nothing Then
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' 
         ''' </returns>
         ''' <remarks></remarks>
-        Public Function CreateDialogFilter(ByVal FilterText As String, ByVal ParamArray Extensions() As String) As String
+        Public Function CreateDialogFilter(FilterText As String, ParamArray Extensions() As String) As String
             Dim Filter As New StringBuilder
             Dim i As Integer
 
@@ -567,7 +567,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Filters">The individual filter entries</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function CombineDialogFilters(ByVal ParamArray Filters() As String) As String
+        Public Function CombineDialogFilters(ParamArray Filters() As String) As String
             Dim CombinedFilter As New StringBuilder
 
             For Each Filter As String In Filters
@@ -591,7 +591,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="FalseExpression">What to return if the condition is False</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IIf(Of T)(ByVal Condition As Boolean, ByVal TrueExpression As T, ByVal FalseExpression As T) As T
+        Public Function IIf(Of T)(Condition As Boolean, TrueExpression As T, FalseExpression As T) As T
             If Condition Then
                 Return TrueExpression
             Else
@@ -605,7 +605,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="ComboBox">The combobox to change the width for</param>
         ''' <remarks></remarks>
-        Public Sub SetComboBoxDropdownWidth(ByVal ComboBox As ComboBox)
+        Public Sub SetComboBoxDropdownWidth(ComboBox As ComboBox)
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
             Else
@@ -621,7 +621,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' This does not take the current cell style into account - it uses the font from the parent datagridview (if any)
         ''' It also makes room for the scrollbar even though it may not be visible...
         ''' </remarks>
-        Public Sub SetComboBoxColumnDropdownWidth(ByVal column As DataGridViewComboBoxColumn)
+        Public Sub SetComboBoxColumnDropdownWidth(column As DataGridViewComboBoxColumn)
             If column IsNot Nothing AndAlso column.DataGridView IsNot Nothing Then
                 column.DropDownWidth = Math.Max(MeasureMaxTextWidth(column.DataGridView, column.Items) + SystemInformation.VerticalScrollBarWidth, column.Width)
             Else
@@ -636,7 +636,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="items"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function MeasureMaxTextWidth(ByVal ctrl As Control, ByVal items As IEnumerable) As Integer
+        Public Function MeasureMaxTextWidth(ctrl As Control, items As IEnumerable) As Integer
             Dim MaxEntryWidth As Integer = 0
             Using g As Graphics = ctrl.CreateGraphics()
                 For Each Entry As Object In items
@@ -663,7 +663,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Path">The path to add a backslash to.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function AppendBackslash(ByVal Path As String) As String
+        Friend Function AppendBackslash(Path As String) As String
             If Path <> "" AndAlso VB.Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso VB.Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
             Else
@@ -684,11 +684,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
         ''' <remarks></remarks>
-        Friend Function GetFilesViaBrowse(ByVal ServiceProvider As IServiceProvider, ByVal ParentWindow As IntPtr,
-                ByVal InitialDirectory As String, ByVal DialogTitle As String,
-                ByVal Filter As String, ByVal FilterIndex As UInteger, ByVal MutiSelect As Boolean,
-                Optional ByVal DefaultFileName As String = Nothing,
-                Optional ByVal NeedThrowError As Boolean = False) As ArrayList
+        Friend Function GetFilesViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
+                InitialDirectory As String, DialogTitle As String,
+                Filter As String, FilterIndex As UInteger, MutiSelect As Boolean,
+                Optional DefaultFileName As String = Nothing,
+                Optional NeedThrowError As Boolean = False) As ArrayList
 
             Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
                 CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
@@ -779,7 +779,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ </summary>
         '@ <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
         '@ <returns>a directory path</returns>
-        Private Function NormalizeInitialDirectory(ByVal InitialDirectory As String) As String
+        Private Function NormalizeInitialDirectory(InitialDirectory As String) As String
             If InitialDirectory IsNot Nothing Then
                 InitialDirectory = Trim(InitialDirectory)
                 If InitialDirectory = "" Then
@@ -803,7 +803,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ </summary>
         '@ <param name="Filter">file type filter</param>
         '@ <returns>a native filter string</returns>
-        Private Function GetNativeFilter(ByVal Filter As String) As String
+        Private Function GetNativeFilter(Filter As String) As String
             If Filter IsNot Nothing Then
                 Dim length As Integer = Filter.Length
                 Dim buf As Char() = New Char(length) {}
@@ -832,11 +832,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="DefaultFileName">The default file name.</param>
         '@ <param name="OverwritePrompt">If true, Windows will ask the user to overwrite the file if it already exists.</param>
         '@ <returns>The selected file/path, or Nothing if the user canceled.</returns>
-        Friend Function GetNewFileNameViaBrowse(ByVal ServiceProvider As IServiceProvider, ByVal ParentWindow As IntPtr,
-                ByVal InitialDirectory As String, ByVal DialogTitle As String,
-                ByVal Filter As String, ByVal FilterIndex As UInteger,
-                Optional ByVal DefaultFileName As String = Nothing,
-                Optional ByVal OverwritePrompt As Boolean = False) As String
+        Friend Function GetNewFileNameViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
+                InitialDirectory As String, DialogTitle As String,
+                Filter As String, FilterIndex As UInteger,
+                Optional DefaultFileName As String = Nothing,
+                Optional OverwritePrompt As Boolean = False) As String
 
             Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
                 CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
@@ -904,7 +904,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''              GetRelativePath("C:\Foo\Foo1\Foo2", "C:\Foo\Foo3\Foo4") = "..\..\Foo3\Foo4"
         '''              GetRelativePath("C:\Foo\Foo1\Foo2", "D:\Bar1\Bar2") = "D:\Bar1\Bar2"
         ''' </remarks>
-        Friend Function GetRelativePath(ByVal BaseDirectory As String, ByVal Path As String) As String
+        Friend Function GetRelativePath(BaseDirectory As String, Path As String) As String
             ' Algorithm adapted from URI.MakeRelative (sources\ndp\fx\src\Net\System\Uri.cs).
             ' 1. Start from beginning, compare each character.
             '   -   If hit the end of a path or has 2 different characters, break.
@@ -970,7 +970,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Get a full, long-format path ending with a separator for GetRelativePath.
         ''' </summary>
-        Private Function NormalizePath(ByVal Path As String) As String
+        Private Function NormalizePath(Path As String) As String
             ' Get the full path.
             Path = IO.Path.GetFullPath(Path)
 
@@ -985,7 +985,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Compare the given path with the result of IO.Path.GetPathRoot(Path).
         ''' IO.Path.GetPathRoot() will trim the ending separator, so trim the input as well.
         ''' </remarks>
-        Private Function IsRootPath(ByVal Path As String) As Boolean
+        Private Function IsRootPath(Path As String) As Boolean
             If IO.Path.IsPathRooted(Path) Then
                 Dim TrimmedPath As String = Path.TrimEnd(IO.Path.DirectorySeparatorChar, IO.Path.AltDirectorySeparatorChar)
                 Return String.Equals(TrimmedPath, IO.Path.GetPathRoot(Path), StringComparison.OrdinalIgnoreCase)
@@ -996,7 +996,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Remove the ending separators from a path if it's not a root path.
         ''' </summary>
-        Private Function RemoveEndingSeparator(ByVal Path As String) As String
+        Private Function RemoveEndingSeparator(Path As String) As String
             If Not IsRootPath(Path) Then
                 Return Path.TrimEnd(IO.Path.AltDirectorySeparatorChar, IO.Path.DirectorySeparatorChar)
             Else
@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''</summary>
         ''' <returns>a new image
         ''' </returns>
-        Friend Function MapBitmapColor(ByVal unmappedBitmap As Image, ByVal originalColor As Color, ByVal newColor As Color) As Image
+        Friend Function MapBitmapColor(unmappedBitmap As Image, originalColor As Color, newColor As Color) As Image
             Dim mappedBitmap As Bitmap = Nothing
 
             Try
@@ -1065,7 +1065,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   checkbox state was previous indeterminate because the checkbox may still be
         '''   indeterminate.
         ''' </remarks>
-        Public Sub SetCheckboxDeterminateState(ByVal CheckBox As CheckBox, ByVal Value As Boolean)
+        Public Sub SetCheckboxDeterminateState(CheckBox As CheckBox, Value As Boolean)
             CheckBox.CheckState = IIf(Value, CheckState.Checked, CheckState.Unchecked)
         End Sub
 
@@ -1075,7 +1075,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="pHier"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ServiceProviderFromHierarchy(ByVal pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As Microsoft.VisualStudio.Shell.ServiceProvider
+        Public Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As Microsoft.VisualStudio.Shell.ServiceProvider
             If pHier IsNot Nothing Then
                 Dim OLEServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
                 VSErrorHandler.ThrowOnFailure(pHier.GetSite(OLEServiceProvider))
@@ -1091,7 +1091,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="hr">error code</param>
         '@ <param name="error message">error message</param>
         '@ <returns></returns>
-        Public Sub SetErrorInfo(ByVal sp As Microsoft.VisualStudio.Shell.ServiceProvider, ByVal hr As Integer, ByVal errorMessage As String)
+        Public Sub SetErrorInfo(sp As Microsoft.VisualStudio.Shell.ServiceProvider, hr As Integer, errorMessage As String)
             Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
@@ -1116,7 +1116,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="HwndParent">The container HWND.</param>
         ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
         ''' <remarks></remarks>
-        Public Function FocusFirstOrLastTabItem(ByVal HwndParent As IntPtr, ByVal First As Boolean) As Boolean
+        Public Function FocusFirstOrLastTabItem(HwndParent As IntPtr, First As Boolean) As Boolean
             If HwndParent.Equals(IntPtr.Zero) Then
                 Return False
             End If
@@ -1167,7 +1167,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ </summary>
         '@ <param name="ch">a character to check</param>
         '@ <returns>True if it is a high-surrogate character</returns>
-        Public Function IsHighSurrogate(ByVal ch As Char) As Boolean
+        Public Function IsHighSurrogate(ch As Char) As Boolean
             Return VB.AscW(ch) >= &HD800 AndAlso VB.AscW(ch) <= &HDBFF
         End Function
 
@@ -1176,7 +1176,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ </summary>
         '@ <param name="ch">a character to check</param>
         '@ <returns>True if it is a low-surrogate character</returns>
-        Public Function IsLowSurrogate(ByVal ch As Char) As Boolean
+        Public Function IsLowSurrogate(ch As Char) As Boolean
             Return VB.AscW(ch) >= &HDC00 AndAlso VB.AscW(ch) <= &HDFFF
         End Function
 
@@ -1189,7 +1189,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="SupportCustomToolNamespace"></param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Friend Function GeneratedCodeNamespace(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal IncludeRootNamespace As Boolean, ByVal SupportCustomToolNamespace As Boolean) As String
+        Friend Function GeneratedCodeNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean, SupportCustomToolNamespace As Boolean) As String
             ' Try to get the root namespace property (if VB)
             Dim RootNamespace As String = ""
             If IsVbProject(Hierarchy) Then
@@ -1300,7 +1300,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Hierarchy"></param>
         ''' <return></return>
         ''' <remarks></remarks>
-        Private Function IsWCFReferenceValidInProject(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Private Function IsWCFReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
                 Throw New ArgumentNullException("Hierarchy")
             End If
@@ -1321,7 +1321,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
-        Friend Function IsServiceReferenceValidInProject(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Friend Function IsServiceReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
             Return IsWCFReferenceValidInProject(Hierarchy)
         End Function
 
@@ -1331,7 +1331,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Hierarchy"></param>
         ''' <return></return>
         ''' <remarks></remarks>
-        Friend Function IsWebReferenceSupportedByDefaultInProject(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Friend Function IsWebReferenceSupportedByDefaultInProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
                 Throw New ArgumentNullException("Hierarchy")
             End If
@@ -1355,7 +1355,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsVbProject(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Friend Function IsVbProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
                 Throw New ArgumentNullException("Hierarchy")
             End If
@@ -1377,7 +1377,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function GetProjectTargetFrameworkVersion(ByVal Hierarchy As IVsHierarchy) As UInteger
+        Friend Function GetProjectTargetFrameworkVersion(Hierarchy As IVsHierarchy) As UInteger
             ' Get ".Net version" using TargetFrameworkMoniker property
             Dim objVersionNumber As Object = Nothing
             VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, CInt(__VSHPROPID4.VSHPROPID_TargetFrameworkMoniker), objVersionNumber))
@@ -1403,7 +1403,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Hierarchy"></param>
         ''' <returns>True is the current Framework Profile is Client</returns>
         ''' <remarks></remarks>
-        Friend Function IsClientFrameworkSubset(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Friend Function IsClientFrameworkSubset(Hierarchy As IVsHierarchy) As Boolean
             Debug.Assert(Hierarchy IsNot Nothing, "Hierarchy is required")
             Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
             ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
@@ -1464,7 +1464,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="guid"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Friend Shared Function PageGuidToId(ByVal guid As Guid) As Byte
+            Friend Shared Function PageGuidToId(guid As Guid) As Byte
                 For i As Integer = 0 To s_sqmOrder.Length - 1
                     If s_sqmOrder(i).Equals(guid) Then
                         Return CByte(i + 1)
@@ -1486,7 +1486,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Get
         End Property
 
-        Friend Sub SetFakeHelper(ByVal fakeHelper As Helper)
+        Friend Sub SetFakeHelper(fakeHelper As Helper)
             s_instance = fakeHelper
         End Sub
 
@@ -1498,7 +1498,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Class Helper
 
-            Public Overridable Function ServiceProviderFromHierarchy(ByVal pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As System.IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
+            Public Overridable Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As System.IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
                 Return Microsoft.VisualStudio.Editors.Common.Utils.ServiceProviderFromHierarchy(pHier)
             End Function
 
@@ -1513,7 +1513,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="text"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NormalizeLineEndings(ByVal text As String) As String
+        Public Function NormalizeLineEndings(text As String) As String
             If text = "" Then
                 Return text
             End If
@@ -1623,7 +1623,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Reference"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsImplicitlyAddedReference(ByVal Reference As VSLangProj.Reference) As Boolean
+        Friend Function IsImplicitlyAddedReference(Reference As VSLangProj.Reference) As Boolean
             If Reference Is Nothing Then
                 Debug.Fail("Reference shouldn't be Nothing")
                 Return False
@@ -1651,13 +1651,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 AsTextButtonClicked
             End Enum
 
-            Public Shared Sub LogInputXmlFormEvent(ByVal eventValue As InputXmlFormEvent)
+            Public Shared Sub LogInputXmlFormEvent(eventValue As InputXmlFormEvent)
                 Dim userTask = New UserTaskEvent(InputXmlFormEventName, TelemetryResult.Success)
                 userTask.Properties("vs.projectsystem.editors.inputxmlform") = eventValue
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
-            Public Shared Sub LogInputXmlFormException(ByVal ex As Exception)
+            Public Shared Sub LogInputXmlFormException(ex As Exception)
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
         End Class
