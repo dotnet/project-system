@@ -13,16 +13,15 @@
     <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
-    <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)
-    </ManagedXamlResourcesDirectory>
+    <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
   <ItemGroup>
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
-    <!--<ProjectCapability Include="HandlesOwnReload"/>--><!--Temporary as it requires a CPS change to work-->
-    
+    <ProjectCapability Include="HandlesOwnReload"/>
+    <ProjectCapability Include="UseFileGlobs"/>
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
 
