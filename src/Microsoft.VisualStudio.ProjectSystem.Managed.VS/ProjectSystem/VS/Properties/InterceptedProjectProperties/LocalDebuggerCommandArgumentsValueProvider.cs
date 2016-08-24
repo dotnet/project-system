@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 // Get the path of the executable, and plug it into "exec path original_args"
                 var executable = await GetExecutablePath().ConfigureAwait(false);
-                commandArgs = $"exec {executable} {commandArgs}";
+                commandArgs = $@"exec ""{executable}"" {commandArgs}";
             }
 
             return commandArgs;

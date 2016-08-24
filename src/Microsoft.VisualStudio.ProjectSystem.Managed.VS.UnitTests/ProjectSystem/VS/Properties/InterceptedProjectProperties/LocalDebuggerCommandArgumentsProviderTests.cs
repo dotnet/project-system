@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var directory = Directory.GetCurrentDirectory();
             var debugger = CreateInstance(executable, executable, useOutputGroups);
             Assert.Equal(
-                $"exec {directory + Path.DirectorySeparatorChar + dll}.dll {args}",
+                $@"exec ""{directory + Path.DirectorySeparatorChar + dll}.dll"" {args}",
                 await debugger.OnGetEvaluatedPropertyValueAsync(args, properites)
                 );
         }
