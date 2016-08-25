@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code Analyzers.
+        ///   Looks up a localized string similar to Analyzers.
         /// </summary>
         internal static string AnalyzersNodeName {
             get {

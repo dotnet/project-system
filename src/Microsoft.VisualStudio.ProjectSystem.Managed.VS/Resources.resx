@@ -206,6 +206,6 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
     <value>Projects</value>
   </data>
   <data name="AnalyzersNodeName" xml:space="preserve">
-    <value>Code Analyzers</value>
+    <value>Analyzers</value>
   </data>
 </root>
