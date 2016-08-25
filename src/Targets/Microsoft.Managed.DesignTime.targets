@@ -127,8 +127,6 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAnalyzerReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-
-
   </ItemGroup>
 
   <!-- Targets -->

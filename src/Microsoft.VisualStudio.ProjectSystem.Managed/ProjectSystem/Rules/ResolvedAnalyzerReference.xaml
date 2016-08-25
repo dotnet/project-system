@@ -18,5 +18,4 @@
             <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" />
         </StringProperty.DataSource>
     </StringProperty>
-
 </Rule>
