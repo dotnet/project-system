@@ -45,6 +45,12 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
+      <DependentUpon>AnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
+      <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
@@ -237,6 +243,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>
