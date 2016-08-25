@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.Packaging
         SingleFileGenerators.TextTemplatingFileGenerator, ProjectTypeGuidFormatted)]
     internal class VisualBasicProjectSystemPackage : AsyncPackage
     {
-        public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
+        public const string ProjectTypeGuid = "778DAE3C-4631-46EA-AA77-85C1314464D9";
         private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
         public const string LegacyProjectTypeGuid = "F184B08F-C81C-45F6-A57F-5ABD9991F28F";
         public const string PackageGuid = "D15F5C78-D04F-45FD-AEA2-D7982D8FA429";
