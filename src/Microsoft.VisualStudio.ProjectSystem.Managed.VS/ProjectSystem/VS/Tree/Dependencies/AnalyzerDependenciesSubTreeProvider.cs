@@ -32,38 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 .Add(ResolvedAnalyzerReference.SchemaName);
         }
 
-        public override string ProviderType
-        {
-            get
-            {
-                return ProviderTypeString;
-            }
-        }
+        public override string ProviderType => ProviderTypeString;
 
         /// <summary>
         /// Specifies if dependency sub node thinks that it is in error state. Different sub nodes
         /// can have different conditions for error state.
         /// </summary>
-        public override bool IsInErrorState
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        private readonly List<ImageMoniker> _nodeIcons = new List<ImageMoniker>
-        {
-            KnownMonikers.CodeInformation
-        };
-
-        public override IEnumerable<ImageMoniker> Icons
-        {
-            get
-            {
-                return _nodeIcons;
-            }
-        }
+        public override bool IsInErrorState => false;
+        
+        public override IEnumerable<ImageMoniker> Icons => ImmutableArray.Create(KnownMonikers.CodeInformation);
 
         protected override IDependencyNode CreateRootNode()
         {
@@ -74,10 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         protected override IDependencyNode CreateDependencyNode(string itemSpec,
-                                                        string itemType,
-                                                        int priority = 0,
-                                                        IImmutableDictionary<string, string> properties = null,
-                                                        bool resolved = true)
+                                                                string itemType,
+                                                                int priority = 0,
+                                                                IImmutableDictionary<string, string> properties = null,
+                                                                bool resolved = true)
         {
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (resolved)
             {
-                Icon = KnownMonikers.Reference;
+                Icon = KnownMonikers.CodeInformation;
 
                 Caption = Path.GetFileNameWithoutExtension(id.ItemSpec);
             }
@@ -28,9 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Icon = KnownMonikers.ReferenceWarning;
 
-                // We don't trim extension from here because usually there is no extension, and trimming it
-                // would make "System.Xml" look like "System".
-                Caption = Path.GetFileName(id.ItemSpec);
+                // We show the full path that we couldn't resolve.
+                Caption = id.ItemSpec;
             }
 
             ExpandedIcon = Icon;

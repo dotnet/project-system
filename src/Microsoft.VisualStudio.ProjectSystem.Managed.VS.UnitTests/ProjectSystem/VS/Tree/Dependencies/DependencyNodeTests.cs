@@ -190,6 +190,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
+        [InlineData("MyAnalyzer.dll", true, "MyAnalyzer")]
+        [InlineData("C:\\MyAnalyzer.dll", false, "C:\\MyAnalyzer.dll")]
+        public void AnalyzerDependencyNode_Constructor_ResolvedUnresolved(
+                    string itemSpec,
+                    bool resolved,
+                    string expectedCaption)
+        {
+            // Arrange
+            var priority = 3;
+            var id = DependencyNodeId.FromString(
+                        "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
+            var properties = new Dictionary<string, string>().ToImmutableDictionary();
+
+            // Act
+            var node = new AnalyzerDependencyNode(id,
+                                                  ProjectTreeFlags.Empty,
+                                                  priority,
+                                                  properties,
+                                                  resolved: resolved);
+
+            // Assert
+            Assert.Equal(KnownMonikers.CodeInformation, node.Icon);
+            Assert.Equal(resolved, node.Resolved);
+            Assert.Equal(expectedCaption, node.Caption);
+
+            // Just to double-check that these properties are still set as sexpected
+            Assert.Equal(priority, node.Priority);
+            Assert.Equal(properties, node.Properties);
+            Assert.Equal(node.Icon, node.ExpandedIcon);
+        }
+
+        [Theory]
         [InlineData(false, "MyItemSpec.dll")]
         [InlineData(true, "MyItemSpec")]
         public void ComDependencyNode_Constructor(bool resolved, string expectedCaption)
