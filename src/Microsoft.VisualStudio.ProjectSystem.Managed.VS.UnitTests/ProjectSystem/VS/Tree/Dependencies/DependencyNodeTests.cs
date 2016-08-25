@@ -439,34 +439,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
-
-        [Fact]
-        public void PackageAnalyzersDependencyNode_Constructor()
-        {
-            // Arrange
-            var defaultFlags = DependencyNode.DependencyFlags.Union(DependencyNode.PreFilledFolderNode);
-
-            var caption = "Analyzers";
-            var id = DependencyNodeId.FromString(
-                        "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
-            var properties = new Dictionary<string, string>().ToImmutableDictionary();
-            var myFlags = ProjectTreeFlags.Create("MyFlag");
-
-            // Act
-            var node = new PackageAnalyzersDependencyNode(id,
-                                                          myFlags,
-                                                          properties,
-                                                          resolved: true);
-
-            // Assert
-            Assert.Equal(KnownMonikers.CodeInformation, node.Icon);
-            Assert.Equal(true, node.Resolved);
-            Assert.Equal(caption, node.Caption);
-            Assert.Equal(properties, node.Properties);
-            Assert.Equal(node.Icon, node.ExpandedIcon);
-            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
-        }
-
         [Theory]
         [InlineData(false)]
         [InlineData(true)]

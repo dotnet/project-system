@@ -347,11 +347,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("SomeUnknown", childrenArray[2].Caption);
             Assert.False(string.IsNullOrEmpty(childrenArray[2].Id.UniqueToken));
             // Analyzers
-            Assert.True(childrenArray[3] is PackageAnalyzersDependencyNode);
-            Assert.False(string.IsNullOrEmpty(childrenArray[3].Id.UniqueToken));
-            Assert.True(childrenArray[3].Children.First() is PackageAnalyzerAssemblyDependencyNode);
-            Assert.Equal("AnalyzerAssembly1", childrenArray[3].Children.First().Caption);
-            Assert.False(string.IsNullOrEmpty(childrenArray[3].Children.First().Id.UniqueToken));
+            Assert.Equal("AnalyzerAssembly1", childrenArray[3].Caption);
+            Assert.True(childrenArray[3] is PackageAnalyzerAssemblyDependencyNode);
             // Framework assemblies
             Assert.True(childrenArray[4] is PackageFrameworkAssembliesDependencyNode);
             Assert.False(string.IsNullOrEmpty(childrenArray[4].Id.UniqueToken));

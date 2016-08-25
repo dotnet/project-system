@@ -161,19 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              id,
                                              flags: NuGetSubTreeNodeFlags);
         }
-
-        private IDependencyNode CreateAnalyzersFolder()
-        {
-            var id = new DependencyNodeId(ProviderType,
-                                          "Analyzers",
-                                          ResolvedPackageReference.PrimaryDataSourceItemType,
-                                          Guid.NewGuid().ToString());
-
-            return new PackageAnalyzersDependencyNode(
-                                             id,
-                                             flags: NuGetSubTreeNodeFlags);
-        }
-        
+       
         public override IDependencyNode GetDependencyNode(DependencyNodeId id)
         {
             lock (_snapshotLock)
@@ -195,7 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 CurrentSnapshot.NodesCache.Add(id, node);
 
                 var frameworkAssemblies = new List<DependencyMetadata>();
-                var analyzerAssemblies = new List<DependencyMetadata>();
                 foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
                 {
                     DependencyMetadata childDependencyMetadata = null;
@@ -210,24 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    if (childDependencyMetadata.DependencyType == DependencyType.AnalyzerAssembly)
-                    {
-                        analyzerAssemblies.Add(childDependencyMetadata);
-                        continue;
-                    }
-
                     node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
-                }
-
-                if (analyzerAssemblies.Count > 0)
-                {
-                    var analyzerAssembliesNode = CreateAnalyzersFolder();
-                    node.AddChild(analyzerAssembliesNode);
-
-                    foreach (var analyzerAssembly in analyzerAssemblies)
-                    {
-                        analyzerAssembliesNode.AddChild(CreateDependencyNode(analyzerAssembly, topLevel: false));
-                    }
                 }
 
                 if (frameworkAssemblies.Count > 0)

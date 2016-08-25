@@ -72,7 +72,6 @@
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzerAssemblyDependencyNode.cs" />
-    <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzersDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\UI\DialogServices.cs" />
     <Compile Include="ProjectSystem\VS\UI\IDialogServices.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
