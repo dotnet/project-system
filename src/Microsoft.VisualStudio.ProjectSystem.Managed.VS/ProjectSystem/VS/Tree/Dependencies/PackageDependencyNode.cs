@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Priority = resolved 
                             ? NuGetDependenciesSubTreeProvider.PackageNodePriority 
                             : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
-            // override flags here - exclude default Reference flags since they block graph nodes at the moment
+
             Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)
                         .Add(ProjectTreeFlags.Common.ResolvedReference)
                         .Union(flags);

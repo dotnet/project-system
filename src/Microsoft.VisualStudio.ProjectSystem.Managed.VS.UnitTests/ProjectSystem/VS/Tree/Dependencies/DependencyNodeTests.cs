@@ -416,8 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void PackageFrameworkAssembliesDependencyNode_Constructor()
         {
             // Arrange
-            var defaultFlags = DependencyNode.DependencyFlags.Union(
-                                    DependencyNode.PreFilledFolderNode);
+            var defaultFlags = DependencyNode.DependencyFlags.Union(DependencyNode.PreFilledFolderNode);
 
             var caption = "Framework Assemblies";
             var id = DependencyNodeId.FromString(
@@ -433,6 +432,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Assert
             Assert.Equal(KnownMonikers.Library, node.Icon);
+            Assert.Equal(true, node.Resolved);
+            Assert.Equal(caption, node.Caption);
+            Assert.Equal(properties, node.Properties);
+            Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
+        }
+
+
+        [Fact]
+        public void PackageAnalyzersDependencyNode_Constructor()
+        {
+            // Arrange
+            var defaultFlags = DependencyNode.DependencyFlags.Union(DependencyNode.PreFilledFolderNode);
+
+            var caption = "Analyzers";
+            var id = DependencyNodeId.FromString(
+                        "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
+            var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
+
+            // Act
+            var node = new PackageAnalyzersDependencyNode(id,
+                                                          myFlags,
+                                                          properties,
+                                                          resolved: true);
+
+            // Assert
+            Assert.Equal(KnownMonikers.CodeInformation, node.Icon);
             Assert.Equal(true, node.Resolved);
             Assert.Equal(caption, node.Caption);
             Assert.Equal(properties, node.Properties);
@@ -490,6 +517,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Throws<ArgumentNullException>("caption", () => {
                 new PackageAssemblyDependencyNode(id, null, ProjectTreeFlags.Empty);
+            });
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void PackageAnalyzerAssemblyDependencyNode_Constructor(bool resolved)
+        {
+            // Arrange
+            var expectedIcon = resolved
+                ? KnownMonikers.CodeInformation
+                : KnownMonikers.ReferenceWarning;
+
+            var defaultFlags = (resolved
+                ? DependencyNode.ResolvedDependencyFlags
+                : DependencyNode.UnresolvedDependencyFlags)
+                .Add(ProjectTreeFlags.Common.ResolvedReference);
+
+            var priority = resolved
+                            ? NuGetDependenciesSubTreeProvider.AnalyzerAssemblyNodePriority
+                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+
+            var caption = "MyCaption";
+            var id = DependencyNodeId.FromString(
+                        "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
+            var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
+
+            // Act
+            var node = new PackageAnalyzerAssemblyDependencyNode(id,
+                                                                 caption,
+                                                                 myFlags,
+                                                                 properties,
+                                                                 resolved: resolved);
+
+            // Assert
+            Assert.Equal(expectedIcon, node.Icon);
+            Assert.Equal(resolved, node.Resolved);
+            Assert.Equal(priority, node.Priority);
+            Assert.Equal(caption, node.Caption);
+            Assert.Equal(node.Alias, node.Caption);
+            Assert.Equal(properties, node.Properties);
+            Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
+        }
+
+        [Fact]
+        public void PackageAnalyzerAssemblyDependencyNode_Constructor_WhenCaptionIsNullOrEmpty_ShouldThrow()
+        {
+            var id = DependencyNodeId.FromString("file:///[MyProviderType]");
+
+            Assert.Throws<ArgumentNullException>("caption", () => {
+                new PackageAnalyzerAssemblyDependencyNode(id, null, ProjectTreeFlags.Empty);
             });
         }
 

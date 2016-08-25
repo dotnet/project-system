@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
-                ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0""
+                ""Dependencies"": ""Package3/2.0.0;NotExistentPackage/2.0.0;Assembly1/1.0.0;FrameworkAssembly1/4.0.0;SomeUnknown/1.0.0;AnalyzerAssembly1/4.0.0""
             }
         },
         {
@@ -305,6 +305,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         },
         {
+            ""ItemSpec"": ""tfm1/AnalyzerAssembly1/4.0.0"",
+            ""Properties"": {
+                ""Name"": ""AnalyzerAssembly1"",
+                ""Version"": ""4.0.0"",
+                ""Type"": ""AnalyzerAssembly"",
+                ""Path"": ""SomePath"",
+                ""Resolved"": ""true"",
+                ""Dependencies"": """"
+            }
+        },
+        {
             ""ItemSpec"": ""tfm1/SomeUnknown/1.0.0"",
             ""Properties"": {
                 ""Name"": ""SomeUnknown"",
@@ -323,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var resultNode = provider.GetDependencyNode(id);
 
             Assert.NotNull(resultNode);
-            Assert.Equal(4, resultNode.Children.Count);
+            Assert.Equal(5, resultNode.Children.Count);
 
             var childrenArray = resultNode.Children.ToArray();
             Assert.True(childrenArray[0] is PackageDependencyNode);
@@ -335,11 +346,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(childrenArray[2] is PackageUnknownDependencyNode);
             Assert.Equal("SomeUnknown", childrenArray[2].Caption);
             Assert.False(string.IsNullOrEmpty(childrenArray[2].Id.UniqueToken));
-            Assert.True(childrenArray[3] is PackageFrameworkAssembliesDependencyNode);
+            // Analyzers
+            Assert.True(childrenArray[3] is PackageAnalyzersDependencyNode);
             Assert.False(string.IsNullOrEmpty(childrenArray[3].Id.UniqueToken));
-            Assert.True(childrenArray[3].Children.First() is PackageAssemblyDependencyNode);
-            Assert.Equal("FrameworkAssembly1", childrenArray[3].Children.First().Caption);
+            Assert.True(childrenArray[3].Children.First() is PackageAnalyzerAssemblyDependencyNode);
+            Assert.Equal("AnalyzerAssembly1", childrenArray[3].Children.First().Caption);
             Assert.False(string.IsNullOrEmpty(childrenArray[3].Children.First().Id.UniqueToken));
+            // Framework assemblies
+            Assert.True(childrenArray[4] is PackageFrameworkAssembliesDependencyNode);
+            Assert.False(string.IsNullOrEmpty(childrenArray[4].Id.UniqueToken));
+            Assert.True(childrenArray[4].Children.First() is PackageAssemblyDependencyNode);
+            Assert.Equal("FrameworkAssembly1", childrenArray[4].Children.First().Caption);
+            Assert.False(string.IsNullOrEmpty(childrenArray[4].Children.First().Id.UniqueToken));
 
             Assert.True(provider.GetCurrentSnapshotNodesCache().Contains(id.ItemSpec));
         }

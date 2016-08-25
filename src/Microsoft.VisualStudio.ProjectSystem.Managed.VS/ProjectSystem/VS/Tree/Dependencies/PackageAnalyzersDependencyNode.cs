@@ -5,19 +5,18 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class PackageFrameworkAssembliesDependencyNode : DependencyNode
+    public class PackageAnalyzersDependencyNode : DependencyNode
     {
-        public PackageFrameworkAssembliesDependencyNode(
-                                             DependencyNodeId id,
-                                             ProjectTreeFlags flags,
-                                             IImmutableDictionary<string, string> properties = null,
-                                             bool resolved = true)
+        public PackageAnalyzersDependencyNode(DependencyNodeId id,
+                                              ProjectTreeFlags flags,
+                                              IImmutableDictionary<string, string> properties = null,
+                                              bool resolved = true)
             : base(id, flags, 0, properties, resolved)
         {
-            Caption = Resources.FrameworkAssembliesNodeName;
-            Icon = KnownMonikers.Library;
+            Caption = Resources.AnalyzersNodeName;
+            Icon = KnownMonikers.CodeInformation;
             ExpandedIcon = Icon;
-            Priority = NuGetDependenciesSubTreeProvider.FrameworkAssemblyNodePriority;
+            Priority = NuGetDependenciesSubTreeProvider.AnalyzerAssemblyNodePriority;
 
             // Note: PreFilledFolderNode flag suggests graph provider to assume that this node already 
             // has children added to it, so it can create graph nodes right away and not query them.

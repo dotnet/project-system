@@ -22,8 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public const int DiagnosticsNodePriority = 0; // for any custom nodes like errors or warnings
         public const int UnresolvedReferenceNodePriority = 1;
         public const int PackageNodePriority = 2;
-        public const int FrameworkAssemblyNodePriority = 3;
-        public const int PackageAssemblyNodePriority = 4;
+        public const int AnalyzerAssemblyNodePriority = 3;
+        public const int FrameworkAssemblyNodePriority = 4;
+        public const int PackageAssemblyNodePriority = 5;
 
         public const string ProviderTypeString = "NuGetDependency";
 
@@ -128,6 +129,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              properties: dependencyMetadata.Properties,
                                              resolved: dependencyMetadata.Resolved);
                     break;
+                case DependencyType.AnalyzerAssembly:
+                    dependencyNode = new PackageAnalyzerAssemblyDependencyNode(
+                                             id,
+                                             caption: dependencyMetadata.Name,
+                                             flags: NuGetSubTreeNodeFlags,
+                                             properties: dependencyMetadata.Properties,
+                                             resolved: dependencyMetadata.Resolved);
+                    break;
                 default:
                     dependencyNode = new PackageUnknownDependencyNode(
                                              id,
@@ -153,6 +162,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              flags: NuGetSubTreeNodeFlags);
         }
 
+        private IDependencyNode CreateAnalyzersFolder()
+        {
+            var id = new DependencyNodeId(ProviderType,
+                                          "Analyzers",
+                                          ResolvedPackageReference.PrimaryDataSourceItemType,
+                                          Guid.NewGuid().ToString());
+
+            return new PackageAnalyzersDependencyNode(
+                                             id,
+                                             flags: NuGetSubTreeNodeFlags);
+        }
+        
         public override IDependencyNode GetDependencyNode(DependencyNodeId id)
         {
             lock (_snapshotLock)
@@ -174,6 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 CurrentSnapshot.NodesCache.Add(id, node);
 
                 var frameworkAssemblies = new List<DependencyMetadata>();
+                var analyzerAssemblies = new List<DependencyMetadata>();
                 foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
                 {
                     DependencyMetadata childDependencyMetadata = null;
@@ -188,7 +210,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
+                    if (childDependencyMetadata.DependencyType == DependencyType.AnalyzerAssembly)
+                    {
+                        analyzerAssemblies.Add(childDependencyMetadata);
+                        continue;
+                    }
+
                     node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
+                }
+
+                if (analyzerAssemblies.Count > 0)
+                {
+                    var analyzerAssembliesNode = CreateAnalyzersFolder();
+                    node.AddChild(analyzerAssembliesNode);
+
+                    foreach (var analyzerAssembly in analyzerAssemblies)
+                    {
+                        analyzerAssembliesNode.AddChild(CreateDependencyNode(analyzerAssembly, topLevel: false));
+                    }
                 }
 
                 if (frameworkAssemblies.Count > 0)
@@ -607,7 +646,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Diagnostic,
             Package,
             Assembly,
-            FrameworkAssembly            
+            FrameworkAssembly,
+            AnalyzerAssembly
         }
 
         protected static class MetadataKeys

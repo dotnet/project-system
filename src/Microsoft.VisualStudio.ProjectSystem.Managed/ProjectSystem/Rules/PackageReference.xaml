@@ -36,7 +36,7 @@
                     Visible="False" 
                     ReadOnly="True" />
 
-    <StringProperty Name="DependencyType" 
+    <StringProperty Name="Type" 
                     Visible="False" 
                     ReadOnly="True" />
 

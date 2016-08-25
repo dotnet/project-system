@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class PackageAssemblyDependencyNode : DependencyNode
+    public class PackageAnalyzerAssemblyDependencyNode : DependencyNode
     {
-        public PackageAssemblyDependencyNode(DependencyNodeId id,
+        public PackageAnalyzerAssemblyDependencyNode(DependencyNodeId id,
                                              string caption,
                                              ProjectTreeFlags flags,
                                              IImmutableDictionary<string, string> properties = null,
@@ -17,10 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNullOrEmpty(caption, nameof(caption));
 
             Caption = caption;
-            Icon = resolved ? KnownMonikers.Reference : KnownMonikers.ReferenceWarning;
+            Icon = resolved ? KnownMonikers.CodeInformation : KnownMonikers.ReferenceWarning;
             ExpandedIcon = Icon;
             Priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
+                            ? NuGetDependenciesSubTreeProvider.AnalyzerAssemblyNodePriority
                             : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
 
             Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)
