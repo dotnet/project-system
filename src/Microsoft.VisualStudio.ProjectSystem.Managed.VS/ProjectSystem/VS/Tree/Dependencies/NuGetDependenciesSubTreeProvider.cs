@@ -22,9 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public const int DiagnosticsNodePriority = 0; // for any custom nodes like errors or warnings
         public const int UnresolvedReferenceNodePriority = 1;
         public const int PackageNodePriority = 2;
-        public const int AnalyzerAssemblyNodePriority = 3;
-        public const int FrameworkAssemblyNodePriority = 4;
-        public const int PackageAssemblyNodePriority = 5;
+        public const int FrameworkAssemblyNodePriority = 3;
+        public const int PackageAssemblyNodePriority = 4;
 
         public const string ProviderTypeString = "NuGetDependency";
 

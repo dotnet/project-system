@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 .Add(ProjectTreeFlags.Common.ResolvedReference);
 
             var priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.AnalyzerAssemblyNodePriority
+                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
                             : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
 
             var caption = "MyCaption";
