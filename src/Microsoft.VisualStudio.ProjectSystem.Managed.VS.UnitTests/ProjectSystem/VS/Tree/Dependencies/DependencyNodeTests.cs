@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Arrange
             var priority = 3;
             var id = DependencyNodeId.FromString(
-                        "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
+                        $"file:///[AnalyzerDependency;{itemSpec};Analyzer;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
 
             // Act
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                   resolved: resolved);
 
             // Assert
-            Assert.Equal(KnownMonikers.CodeInformation, node.Icon);
+            Assert.Equal(resolved? KnownMonikers.CodeInformation : KnownMonikers.ReferenceWarning, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(expectedCaption, node.Caption);
 
