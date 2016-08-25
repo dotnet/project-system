@@ -128,6 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              properties: dependencyMetadata.Properties,
                                              resolved: dependencyMetadata.Resolved);
                     break;
+                case DependencyType.AnalyzerAssembly:
+                    dependencyNode = new PackageAnalyzerAssemblyDependencyNode(
+                                             id,
+                                             caption: dependencyMetadata.Name,
+                                             flags: NuGetSubTreeNodeFlags,
+                                             properties: dependencyMetadata.Properties,
+                                             resolved: dependencyMetadata.Resolved);
+                    break;
                 default:
                     dependencyNode = new PackageUnknownDependencyNode(
                                              id,
@@ -152,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              id,
                                              flags: NuGetSubTreeNodeFlags);
         }
-
+       
         public override IDependencyNode GetDependencyNode(DependencyNodeId id)
         {
             lock (_snapshotLock)
@@ -607,7 +615,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Diagnostic,
             Package,
             Assembly,
-            FrameworkAssembly            
+            FrameworkAssembly,
+            AnalyzerAssembly
         }
 
         protected static class MetadataKeys

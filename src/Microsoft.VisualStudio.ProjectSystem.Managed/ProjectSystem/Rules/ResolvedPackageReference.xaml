@@ -9,7 +9,7 @@
    
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolveDependenciesDesignTime" />
+                    SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" />
     </Rule.DataSource>
 
     <StringProperty Name="Description" 
@@ -37,7 +37,7 @@
                     Visible="False" 
                     ReadOnly="True" />
 
-    <StringProperty Name="DependencyType" 
+    <StringProperty Name="Type" 
                     Visible="False" 
                     ReadOnly="True" />
 

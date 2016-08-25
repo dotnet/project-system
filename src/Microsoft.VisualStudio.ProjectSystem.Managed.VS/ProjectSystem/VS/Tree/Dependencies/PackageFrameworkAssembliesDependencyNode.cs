@@ -19,7 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ExpandedIcon = Icon;
             Priority = NuGetDependenciesSubTreeProvider.FrameworkAssemblyNodePriority;
 
-            // override flags here - exclude default Reference flags since they block graph nodes at the moment
+            // Note: PreFilledFolderNode flag suggests graph provider to assume that this node already 
+            // has children added to it, so it can create graph nodes right away and not query them.
             Flags = DependencyFlags
                         .Union(flags)
                         .Union(PreFilledFolderNode);
