@@ -743,7 +743,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var provider = new TestableNuGetDependenciesSubTreeProvider();
 
-            Assert.Equal(5, provider.Icons.Count());
+            Assert.Equal(6, provider.Icons.Count());
 
             var iconsArray = provider.Icons.ToArray();
 
@@ -752,6 +752,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, iconsArray[2]);
             Assert.Equal(KnownMonikers.QuestionMark, iconsArray[3]);
             Assert.Equal(KnownMonikers.Library, iconsArray[4]);
+            Assert.Equal(KnownMonikers.CodeInformation, iconsArray[5]);
         }
 
         private class TestableNuGetDependenciesSubTreeProvider : NuGetDependenciesSubTreeProvider

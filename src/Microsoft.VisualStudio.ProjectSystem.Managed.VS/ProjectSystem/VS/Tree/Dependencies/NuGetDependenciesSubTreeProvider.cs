@@ -72,7 +72,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             KnownMonikers.Reference,
             KnownMonikers.ReferenceWarning,
             KnownMonikers.QuestionMark,
-            KnownMonikers.Library
+            KnownMonikers.Library,
+            KnownMonikers.CodeInformation
         };
 
         public override IEnumerable<ImageMoniker> Icons
