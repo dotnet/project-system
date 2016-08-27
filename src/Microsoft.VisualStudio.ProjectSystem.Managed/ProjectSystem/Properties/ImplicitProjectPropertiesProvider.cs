@@ -25,17 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
+        private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
-            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider, 
-            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider, 
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)
-            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item));
+            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), this);
 
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
@@ -44,11 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
-            private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+            private readonly ImplicitProjectPropertiesProvider _implicitProvider;
 
-            public ImplicitProjectProperties(IProjectProperties properties)
+            public ImplicitProjectProperties(IProjectProperties properties, ImplicitProjectPropertiesProvider implicitProvider)
                 : base(properties)
             {
+                _implicitProvider = implicitProvider;
             }
 
             /// <summary>
@@ -63,10 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // overwrite the property if it exists
                     await DelegatedProperties.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(false);
-                } else
+                }
+                else
                 {
                     // store the property in this property object, not in the project file
-                    _propertyValues[propertyName] = unevaluatedPropertyValue;
+                    _implicitProvider._propertyValues[propertyName] = unevaluatedPropertyValue;
                 }
             }
 
@@ -77,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public override Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
             {
                 string unevaluatedPropertyValue;
-                if (_propertyValues.TryRemove(propertyName, out unevaluatedPropertyValue))
+                if (_implicitProvider._propertyValues.TryRemove(propertyName, out unevaluatedPropertyValue))
                 {
                     return Task.CompletedTask;
                 }
@@ -91,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public override Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
             {
                 string unevaluatedPropertyValue;
-                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                if (_implicitProvider._propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
                 {
                     return Task.FromResult(unevaluatedPropertyValue);
                 }
@@ -105,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public override Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
             {
                 string unevaluatedPropertyValue;
-                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                if (_implicitProvider._propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
                 {
                     return Task.FromResult(unevaluatedPropertyValue);
                 }
