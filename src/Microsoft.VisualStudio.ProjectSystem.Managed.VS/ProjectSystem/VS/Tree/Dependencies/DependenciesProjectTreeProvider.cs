@@ -56,10 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportMany]
         public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        private object _lockDataSourceVersions = new object();
-        private SortedSet<IImmutableDictionary<NamedIdentity, IComparable>> _requestedTreeUpdateDataSources
-                    = new SortedSet<IImmutableDictionary<NamedIdentity, IComparable>>(
-                            new SortDataSourcesSnapshotsAscendingWithDuplicatesComparer());
+        private DataSourceVersionsSync DataSourceVersionsSync { get; } = new DataSourceVersionsSync();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -301,6 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             foreach (var provider in SubTreeProviders)
                             {
+                                provider.Value.DependenciesChanging += OnDependenciesChanging;
                                 provider.Value.DependenciesChanged += OnDependenciesChanged;
                             }
 
@@ -330,6 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var provider in SubTreeProviders)
                 {
+                    provider.Value.DependenciesChanging -= OnDependenciesChanging;
                     provider.Value.DependenciesChanged -= OnDependenciesChanged;
                 }
 
@@ -339,13 +338,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             base.Dispose(disposing);
         }
 
+        private void OnDependenciesChanging(object sender, DependenciesChangingEventArgs e)
+        {
+            // merge all data source versions for upcoming OnDependenciesChanged events early
+            DataSourceVersionsSync.PushDataSourceVersions(e.DataSourceVersions);
+        }
+
         private void OnDependenciesChanged(object sender, DependenciesChangedEventArgs e)
         {
-            lock(_lockDataSourceVersions)
-            {
-                _requestedTreeUpdateDataSources.Add(e.DataSourceVersions);
-            }
-
             var nowait = SubmitTreeUpdateAsync(
                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
@@ -358,20 +358,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    // in cases when some events processing takes longer time, we might receive OnDependenciesChanged
-                    // with data sources A that have higher versions that next OnDependenciesChanged with data sources B.
-                    // to avoid conflicts, we store all current OnDependenciesChanged requests' data sources in the
-                    // sorted set and here we always return minimal data sources in the current requests set.
-                    // this makes sure that very last request would submit tree result with highest data sources versions.
-                    // Draw back is that if someone is waiting in tree update it would need to wait on several 
-                    // OnDependenciesChanged to complete in corner cases. However benefit is that tree update requests 
-                    // are always async and independent on each other.
-                    IImmutableDictionary<NamedIdentity, IComparable> minimalDataSourceInTheQueue = null;
-                    lock (_lockDataSourceVersions)
-                    {
-                        minimalDataSourceInTheQueue = _requestedTreeUpdateDataSources.First();
-                        _requestedTreeUpdateDataSources.Remove(minimalDataSourceInTheQueue);
-                    }
+                    // In cases when some events processing takes longer time, we might receive data sources A 
+                    // that have higher versions than next OnDependenciesChanging/OnDependenciesChanged with data 
+                    // sources B. To avoid conflicts, we store all coming data sources version (received earlier 
+                    // from OnDependenciesChanging event) and here we get minimal version for each data source in
+                    // e.DataSourceVersions. This would allow to avoid higher versions posted before smaller ones
+                    // which would lead to an exception.
+                    var minimalDataSourceInTheQueue = 
+                            DataSourceVersionsSync.PopMinimalDataSourceVersions(e.DataSourceVersions);
 
                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, minimalDataSourceInTheQueue));
                 });
@@ -955,44 +949,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
-        }
-
-        private class SortDataSourcesSnapshotsAscendingWithDuplicatesComparer
-                            : IComparer<IImmutableDictionary<NamedIdentity, IComparable>>
-        {
-            /// <summary>
-            /// For comparison we assume if one dictionry has some values (data source versions)
-            /// greater than in another dictionary, all other values should be at least equal
-            /// to corresponding values of another dictionary.
-            /// </summary>
-            public int Compare(IImmutableDictionary<NamedIdentity, IComparable> left,
-                IImmutableDictionary<NamedIdentity, IComparable> right)
-            {
-                var result = 0;
-                foreach (var kvpLeft in left)
-                {
-                    IComparable rightValue = null;
-                    if (right.TryGetValue(kvpLeft.Key, out rightValue))
-                    {
-                        if (kvpLeft.Value.CompareTo(rightValue) > 0)
-                        {
-                            result++;
-                        }
-                        else if (kvpLeft.Value.CompareTo(rightValue) < 0)
-                        {
-                            result--;
-                        }
-                    }
-                }
-
-                if (result != 0)
-                {
-                    return result;
-                }
-
-                // allow duplicates
-                return left.GetHashCode().CompareTo(right.GetHashCode());
-            }
         }
     }
 }

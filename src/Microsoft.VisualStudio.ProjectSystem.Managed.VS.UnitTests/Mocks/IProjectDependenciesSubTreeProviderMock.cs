@@ -37,9 +37,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.FromResult((IEnumerable<IDependencyNode>)SearchResults.First(x => x.Equals(node)).Children);
         }
 
-        /// <summary>
-        /// Raised when provider's dependencies changed 
-        /// </summary>
+        public event DependenciesChangingEventHandler DependenciesChanging;
+
+        private void FireDependenciesChanging()
+        {
+            DependenciesChanging?.Invoke(null, null);
+        }
+
         public event DependenciesChangedEventHandler DependenciesChanged;
 
         private void FireDependenciesChanged()

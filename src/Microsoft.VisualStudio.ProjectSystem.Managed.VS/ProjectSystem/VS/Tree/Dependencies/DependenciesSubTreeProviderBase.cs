@@ -71,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         protected ImmutableHashSet<string> ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet;
 
+        public event DependenciesChangingEventHandler DependenciesChanging;
         public event DependenciesChangedEventHandler DependenciesChanged;
 
         private IDependencyNode _rootNode;
@@ -222,6 +223,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                   IProjectCatalogSnapshot,
                                                                   IProjectSharedFoldersSnapshot>> e)
         {
+            OnDependenciesChanging(e);
+
             var dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
 
             // process separatelly shared projects changes
@@ -494,6 +497,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return null;
+        }
+
+        protected void OnDependenciesChanging(IProjectVersionedValue<
+                                                Tuple<IProjectSubscriptionUpdate,
+                                                        IProjectCatalogSnapshot,
+                                                        IProjectSharedFoldersSnapshot>> e)
+        {
+            DependenciesChanging?.Invoke(this,
+                                         new DependenciesChangingEventArgs(
+                                                this,                                                
+                                                e.DataSourceVersions));
         }
 
         protected void OnDependenciesChanged(IDependenciesChangeDiff changes, 

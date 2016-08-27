@@ -60,9 +60,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm);
 
         /// <summary>
+        /// Raised before provider's dependencies changes being evaluated to notify DependenciesProjectTreeProvider
+        /// with coming data source versions. This is mandatory for all sub tree providers that rely on any project
+        /// features related to provider data updates. Data source versions in DependenciesChanging must be the same
+        /// as in DependenciesChanged event.
+        /// Note: this early notification is needed so DependenciesProjectTreeProvider could protect from race 
+        /// conditions in between different providers and always send synchronized data source versions when it does
+        /// tree updates.
+        /// </summary>
+        event DependenciesChangingEventHandler DependenciesChanging;
+
+        /// <summary>
         /// Raised when provider's dependencies changed 
+        /// Note: DataSourceVersions should be the same as in DependenciesChanging (null is allowed if provider does 
+        /// not care about data sources at all)
         /// </summary>
         event DependenciesChangedEventHandler DependenciesChanged;
+    }
+
+    public delegate void DependenciesChangingEventHandler(object sender, DependenciesChangingEventArgs e);
+
+    public class DependenciesChangingEventArgs
+    {
+        public DependenciesChangingEventArgs(IProjectDependenciesSubTreeProvider provider,
+                                            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+        {
+            Provider = provider;
+            DataSourceVersions = dataSourceVersions;
+        }
+
+        public IProjectDependenciesSubTreeProvider Provider { get; private set; }
+        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; private set; }
     }
 
     public delegate void DependenciesChangedEventHandler(object sender, DependenciesChangedEventArgs e);

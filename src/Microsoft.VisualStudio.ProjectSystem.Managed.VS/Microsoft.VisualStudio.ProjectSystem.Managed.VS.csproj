@@ -70,6 +70,7 @@
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DataSourceVersionsSync.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzerAssemblyDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\UI\DialogServices.cs" />
