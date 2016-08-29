@@ -63,8 +63,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="CanReset">TRUE means the property should have a Reset option in the property browser. Otherwise FALSE.</param>
         ''' <param name="Attributes">Optional. An array of type Attribute containing the property's attributes.</param>
         ''' <remarks>Used by Resource class to describe itself.</remarks>
-        Public Sub New(ByVal Name As String, ByVal Type As Type, ByVal IsReadOnly As Boolean, _
-               Optional ByVal CanReset As Boolean = False, Optional ByVal Attributes() As Attribute = Nothing)
+        Public Sub New(Name As String, Type As Type, IsReadOnly As Boolean, _
+               Optional CanReset As Boolean = False, Optional Attributes() As Attribute = Nothing)
             MyBase.New(Name, Attributes)
             _propertyType = Type
             _isReadOnly = IsReadOnly
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Component">The Resource instance with the property to retrieve the value.</param>
         ''' <returns>The value of the property on the specified Resource instance.</returns>
         ''' <remarks>We delegate this to the Resource instance.</remarks>
-        Public Overrides Function GetValue(ByVal Component As Object) As Object
+        Public Overrides Function GetValue(Component As Object) As Object
             Debug.Assert(Component IsNot Nothing, "component is Nothing!!!")
             Debug.Assert(TypeOf Component Is Resource, "component is not a Resource!!!")
             Return DirectCast(Component, Resource).GetPropertyValue(Me.Name)
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Component">The Resource instance with the property to set the value.</param>
         ''' <param name="Value">The new value to set the property to.</param>
         ''' <remarks>We delegate this to the Resource instance.</remarks>
-        Public Overrides Sub SetValue(ByVal Component As Object, ByVal Value As Object)
+        Public Overrides Sub SetValue(Component As Object, Value As Object)
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.SetValue: Component is Nothing")
             If Component IsNot Nothing Then
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.SetValue: Component is not a Resource")
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Component">The Resource instance with the property to be examined for persistence.</param>
         ''' <returns>TRUE if the property should be persisted. Otherwise, FALSE.</returns>
         ''' <remarks>Since these properties are for the shell's Property Window only, none needs to be persisted.</remarks>
-        Public Overrides Function ShouldSerializeValue(ByVal Component As Object) As Boolean
+        Public Overrides Function ShouldSerializeValue(Component As Object) As Boolean
             Return False
         End Function
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Component">The Resource instance to test for reset capability.</param>
         ''' <returns>TRUE if resetting the Resource instance changes this property value; otherwise, FALSE.</returns>
         ''' <remarks>Since there is no 'reset' on a resource, we always return False.</remarks>
-        Public Overrides Function CanResetValue(ByVal Component As Object) As Boolean
+        Public Overrides Function CanResetValue(Component As Object) As Boolean
             Return _canReset
         End Function
 
@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Component">The Resource instance with the property value that is to be reset.</param>
         ''' <remarks>Not implemented since there is no 'reset'.</remarks>
-        Public Overrides Sub ResetValue(ByVal Component As Object)
+        Public Overrides Sub ResetValue(Component As Object)
             Debug.Assert(_canReset)
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.ResetValue: Component is Nothing")
             If Component IsNot Nothing Then

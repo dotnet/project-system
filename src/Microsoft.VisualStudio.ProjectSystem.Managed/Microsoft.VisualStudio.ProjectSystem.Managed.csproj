@@ -7,7 +7,7 @@
     <ProjectGuid>{6C6A41CE-72C5-4D77-8208-D01693F9BC88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.VisualStudio.ProjectSystem</RootNamespace>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
@@ -32,6 +32,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
+    <Compile Include="CommonConstants.cs" />
+    <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
@@ -40,17 +43,44 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
+    <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
+      <DependentUpon>AnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
+      <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedPackageReference.cs">
+      <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\ResolvedSdkReference.cs">
+      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SdkReference.xaml.cs">
+      <DependentUpon>SdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\PackageReference.cs">
+      <DependentUpon>PackageReference.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectProperties.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ProjectFileInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileInterceptedProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
     <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
     <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
+      <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
@@ -78,6 +108,15 @@
     <Compile Include="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\AssemblyReference.cs">
+      <DependentUpon>AssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\COMReference.cs">
+      <DependentUpon>COMReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SubProject.cs">
+      <DependentUpon>SubProject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
       <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
     </Compile>
@@ -100,17 +139,37 @@
     <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\VisualBasic.cs">
+      <DependentUpon>VisualBasic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
+    <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
+    <Compile Include="ProjectSystem\Utilities\ProjectErrorUtilities.cs" />
+    <Compile Include="ProjectSystem\Utilities\ResourceUtilities.cs" />
+    <Compile Include="ProjectSystem\Utilities\TraceUtilities.cs" />
     <Compile Include="StringComparers.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\COMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SubProject.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -142,15 +201,67 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\WindowsLocalDebugger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\CSharp.BrowseObject.xaml">
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\VisualBasic.BrowseObject.xaml">
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\AnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <ItemDefinitionGroup>
+    <!-- By default, all XAML rules get generated into the same namespace -->
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>
 </Project>

@@ -9,10 +9,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     CLSCompliant(False)> _
     Friend Interface IVsBuildEventCommandLineDialogService
         <PreserveSig()> _
-        Function EditCommandLine(<InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal WindowText As String, _
-        <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal HelpID As String, _
-        <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal OriginalCommandLine As String, _
-        <InAttribute()> ByVal MacroProvider As IVsBuildEventMacroProvider, _
+        Function EditCommandLine(<InAttribute(), MarshalAs(UnmanagedType.BStr)> WindowText As String, _
+        <InAttribute(), MarshalAs(UnmanagedType.BStr)> HelpID As String, _
+        <InAttribute(), MarshalAs(UnmanagedType.BStr)> OriginalCommandLine As String, _
+        <InAttribute()> MacroProvider As IVsBuildEventMacroProvider, _
         <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef Result As String) As Integer
     End Interface
 

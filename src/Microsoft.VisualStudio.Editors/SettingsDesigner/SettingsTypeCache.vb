@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="typeResolutionService"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal vsHierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, ByVal caseSensitive As Boolean)
+        Public Sub New(vsHierarchy As IVsHierarchy, ItemId As UInteger, typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, caseSensitive As Boolean)
             If typeResolutionService Is Nothing OrElse vsHierarchy Is Nothing Then
                 Debug.Fail("We really need a type resolution service or IVsHierarchy in order to do anything interesting!")
                 Throw New ArgumentNullException()
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _caseSensitive = caseSensitive
         End Sub
 
-        Private Sub Dispose(ByVal disposing As Boolean)
+        Private Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _multiTargetService IsNot Nothing Then
                     _multiTargetService.Dispose()
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetSettingType(ByVal typeName As String) As System.Type
+        Public Function GetSettingType(typeName As String) As System.Type
             ' First, check our list of well known types...
             For Each wellKnownType As System.Type In Me.GetWellKnownTypes()
                 If String.Equals(wellKnownType.FullName, typeName) Then
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IsWellKnownType(ByVal type As System.Type) As Boolean
+        Public Function IsWellKnownType(type As System.Type) As Boolean
             For Each wellKnownType As System.Type In GetWellKnownTypes()
                 If wellKnownType Is type Then
                     Return True
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="caseSensitive"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ResolveType(ByVal persistedSettingTypeName As String, ByVal caseSensitive As Boolean) As System.Type
+        Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As System.Type
             Dim t As System.Type = Nothing
             If System.String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString)
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Public Function TypeTransformer(ByVal sourceTypeName As String) As String
+        Public Function TypeTransformer(sourceTypeName As String) As String
             Dim qualifiedAssemblyName As String = Nothing
 
             If Not String.IsNullOrEmpty(sourceTypeName) Then

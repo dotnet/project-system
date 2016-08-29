@@ -17,20 +17,20 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc.Interop
 
         <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()> _
         Function ReferenceAdded( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> ByVal pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyInfo As String _
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
         ) As Integer
 
         <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()> _
         Function ReferenceRemoved( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> ByVal pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyInfo As String _
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
         ) As Integer
 
     End Interface

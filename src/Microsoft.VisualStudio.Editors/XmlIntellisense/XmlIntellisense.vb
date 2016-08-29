@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' New:
         '   Initialize the class.
         '--------------------------------------------------------------------------
-        Friend Sub New(ByVal Container As IServiceContainer, ByVal SchemaService As XmlSchemaService)
+        Friend Sub New(Container As IServiceContainer, SchemaService As XmlSchemaService)
             _container = Container
             _schemaService = SchemaService
         End Sub
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Create an instance of XmlIntellisenseSchemas for the project with the
         '   specified GUID.
         '--------------------------------------------------------------------------
-        Public Function CreateSchemas(ByVal ProjectGuid As Guid) As IXmlIntellisenseSchemas _
+        Public Function CreateSchemas(ProjectGuid As Guid) As IXmlIntellisenseSchemas _
             Implements IXmlIntellisenseService.CreateSchemas
 
             Return New XmlIntellisenseSchemas(_container, _schemaService, ProjectGuid)
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' New:
         '   Initialize the class.
         '--------------------------------------------------------------------------
-        Friend Sub New(ByVal Container As IServiceContainer, ByVal SchemaService As XmlSchemaService, ByVal ProjectGuid As Guid)
+        Friend Sub New(Container As IServiceContainer, SchemaService As XmlSchemaService, ProjectGuid As Guid)
             _data = New XmlIntellisenseSchemasData()
             _data.m_Container = Container
             _data.m_SchemaService = SchemaService
@@ -257,7 +257,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End Get
         End Property
 
-        Private Shared Async Sub CompileCallBack(ByVal data As XmlIntellisenseSchemasData)
+        Private Shared Async Sub CompileCallBack(data As XmlIntellisenseSchemasData)
             Dim ProjectSchemas As IList(Of XmlSchemaReference)
             Dim pollInterval As Integer = s_minPollInterval
             Dim iteration As Integer = 0
@@ -292,7 +292,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' Compile:
         '   Called from CompileCallback when schemas need to be compiled
         '--------------------------------------------------------------------------
-        Private Shared Sub Compile(ByVal ProjectSchemas As IList(Of XmlSchemaReference), ByVal data As XmlIntellisenseSchemasData)
+        Private Shared Sub Compile(ProjectSchemas As IList(Of XmlSchemaReference), data As XmlIntellisenseSchemasData)
             Dim ExcludeDirectories As Dictionary(Of Uri, Uri) = data.m_ExcludeDirectories
 
             ' Now signal that we are not done with compilation yet
@@ -399,8 +399,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
         Public Sub ShowInXmlSchemaExplorer( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean) _
             Implements IXmlIntellisenseSchemas.ShowInXmlSchemaExplorer
@@ -528,18 +528,18 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return New XmlIntellisenseMember(XmlQualifiedName.Empty, Flags.None)
         End Function
 
-        Private Sub New(ByVal Name As XmlQualifiedName, ByVal MemberFlags As Flags)
+        Private Sub New(Name As XmlQualifiedName, MemberFlags As Flags)
             _name = Name
             _flags = MemberFlags
         End Sub
 
-        Public Sub New(ByVal Element As XmlSchemaElement)
+        Public Sub New(Element As XmlSchemaElement)
             _name = Element.QualifiedName
             _flags = Flags.IsElement
             _element = Element
         End Sub
 
-        Public Sub New(ByVal Attribute As XmlSchemaAttribute)
+        Public Sub New(Attribute As XmlSchemaAttribute)
             _name = Attribute.QualifiedName
         End Sub
 
@@ -553,7 +553,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Get
                 Return _children
             End Get
-            Set(ByVal Value As XmlIntellisenseMember)
+            Set(Value As XmlIntellisenseMember)
                 _children = Value
             End Set
         End Property
@@ -562,7 +562,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Get
                 Return _nextMember
             End Get
-            Set(ByVal Value As XmlIntellisenseMember)
+            Set(Value As XmlIntellisenseMember)
                 _nextMember = Value
             End Set
         End Property
@@ -571,7 +571,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Get
                 Return (_flags And Flags.IsRoot) <> 0
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 Debug.Assert(Value, "IsRoot can only be set to true")
                 _flags = _flags Or Flags.IsRoot
             End Set
@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Private Shared ReadOnly s_anyElement As XmlIntellisenseMember = XmlIntellisenseMember.AnyElement()
         Private Shared ReadOnly s_anyAttribute As XmlIntellisenseMember = XmlIntellisenseMember.AnyAttribute()
 
-        Public Sub New(ByVal SchemaSet As XmlSchemaSet, ByVal TargetNamespaces As Dictionary(Of String, String))
+        Public Sub New(SchemaSet As XmlSchemaSet, TargetNamespaces As Dictionary(Of String, String))
             Dim TypeMap As Dictionary(Of XmlSchemaType, XmlIntellisenseMember) = New Dictionary(Of XmlSchemaType, XmlIntellisenseMember)()
             Dim ChildrenFixups As FixupList = New FixupList()
             Dim Roots As List(Of XmlIntellisenseMember) = New List(Of XmlIntellisenseMember)()
@@ -688,7 +688,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         ' Returns true if the namespace is defined by some schema in the set, or there exists an element or attribute declaration
         ' that defines this name in some schema in the set
-        Public Function IsNamespaceDefined(ByVal Name As XmlQualifiedName) As Boolean
+        Public Function IsNamespaceDefined(Name As XmlQualifiedName) As Boolean
             ' If the namespace is defined, then type information is available for the name
             If _targetNamespaces.ContainsKey(Name.Namespace) Then
                 Return True
@@ -698,7 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Name.Namespace.Length = 0 AndAlso _indexedByName.ContainsKey(Name)
         End Function
 
-        Public Function FindRootsByNamespace(ByVal NamespaceName As String, ByVal Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
+        Public Function FindRootsByNamespace(NamespaceName As String, Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
             For Each Root As XmlIntellisenseMember In _roots
                 If Root.NamespaceName = NamespaceName Then
                     Results.Add(Root)
@@ -710,7 +710,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Results
         End Function
 
-        Public Function FindByNamespace(ByVal NamespaceName As String, ByVal Match As Predicate(Of XmlIntellisenseMember), ByVal Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
+        Public Function FindByNamespace(NamespaceName As String, Match As Predicate(Of XmlIntellisenseMember), Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
             Dim Members As List(Of XmlIntellisenseMember) = Nothing
 
             If _indexedByNamespace.TryGetValue(NamespaceName, Members) Then
@@ -726,7 +726,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Results
         End Function
 
-        Public Function FindByName(ByVal Name As XmlQualifiedName, ByVal Match As Predicate(Of XmlIntellisenseMember), ByVal Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
+        Public Function FindByName(Name As XmlQualifiedName, Match As Predicate(Of XmlIntellisenseMember), Results As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
             Dim o As Object = Nothing
             Dim Member As XmlIntellisenseMember
 
@@ -752,7 +752,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Results
         End Function
 
-        Private Sub AddAny(ByVal Match As Predicate(Of XmlIntellisenseMember), ByVal Results As List(Of XmlIntellisenseMember))
+        Private Sub AddAny(Match As Predicate(Of XmlIntellisenseMember), Results As List(Of XmlIntellisenseMember))
             ' FindByNamespace and FindByName should always find Any members, as long as types match
             If Match(s_anyElement) Then
                 Results.Add(s_anyElement)
@@ -763,7 +763,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End If
         End Sub
 
-        Private Function CreateElementMember(ByVal Element As XmlSchemaElement, ByVal TypeMap As Dictionary(Of XmlSchemaType, XmlIntellisenseMember), ByVal ChildrenFixups As FixupList) As XmlIntellisenseMember
+        Private Function CreateElementMember(Element As XmlSchemaElement, TypeMap As Dictionary(Of XmlSchemaType, XmlIntellisenseMember), ChildrenFixups As FixupList) As XmlIntellisenseMember
             Dim NewMember As XmlIntellisenseMember = New XmlIntellisenseMember(Element)
             Dim ExistingMember As XmlIntellisenseMember = Nothing
 
@@ -806,7 +806,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return AddToIndexes(NewMember)
         End Function
 
-        Private Function CreateContentMembers(ByVal Particle As XmlSchemaParticle, ByVal TypeMap As Dictionary(Of XmlSchemaType, XmlIntellisenseMember), ByVal ChildrenFixups As FixupList) As XmlIntellisenseMember
+        Private Function CreateContentMembers(Particle As XmlSchemaParticle, TypeMap As Dictionary(Of XmlSchemaType, XmlIntellisenseMember), ChildrenFixups As FixupList) As XmlIntellisenseMember
             ' Check for element declaration particle first
             If TypeOf Particle Is XmlSchemaElement Then
                 Return CreateElementMember(DirectCast(Particle, XmlSchemaElement), TypeMap, ChildrenFixups)
@@ -831,7 +831,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Nothing
         End Function
 
-        Private Function Concat(ByVal Left As XmlIntellisenseMember, ByVal Right As XmlIntellisenseMember) As XmlIntellisenseMember
+        Private Function Concat(Left As XmlIntellisenseMember, Right As XmlIntellisenseMember) As XmlIntellisenseMember
             Dim Current As XmlIntellisenseMember = Left
 
             If Current Is Nothing Then
@@ -846,7 +846,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Left
         End Function
 
-        Private Function AddToIndexes(ByVal Member As XmlIntellisenseMember) As XmlIntellisenseMember
+        Private Function AddToIndexes(Member As XmlIntellisenseMember) As XmlIntellisenseMember
             Dim MemberList As List(Of XmlIntellisenseMember) = Nothing
             Dim ByName As Object = Nothing
 
@@ -916,7 +916,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Initialize a list containing all possible declarations.
         '--------------------------------------------------------------------------
         Public Sub New( _
-            ByVal AllMembers As IndexedMembers _
+            AllMembers As IndexedMembers _
             )
 
             _allMembers = AllMembers
@@ -927,8 +927,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Initialize a list containing the specified members.
         '--------------------------------------------------------------------------
         Public Sub New( _
-            ByVal AllMembers As IndexedMembers, _
-            ByVal Members As IEnumerable(Of XmlIntellisenseMember) _
+            AllMembers As IndexedMembers, _
+            Members As IEnumerable(Of XmlIntellisenseMember) _
             )
 
             _allMembers = AllMembers
@@ -941,10 +941,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   previous list and following the specified axis from that point.
         '--------------------------------------------------------------------------
         Private Sub New( _
-            ByVal AllMembers As IndexedMembers, _
-            ByVal PreviousStep As XmlIntellisenseMemberList, _
-            ByVal AxisOfStep As Axis, _
-            ByVal NameOfStep As XmlQualifiedName _
+            AllMembers As IndexedMembers, _
+            PreviousStep As XmlIntellisenseMemberList, _
+            AxisOfStep As Axis, _
+            NameOfStep As XmlQualifiedName _
             )
 
             _allMembers = AllMembers
@@ -1086,7 +1086,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function ElementsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByNamespace
 
@@ -1098,8 +1098,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function ElementsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByName
 
@@ -1111,7 +1111,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function AttributesByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByNamespace
 
@@ -1123,8 +1123,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function AttributesByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByName
 
@@ -1136,7 +1136,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function DescendantsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByNamespace
 
@@ -1148,8 +1148,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function DescendantsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> ByVal LocalName As String _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByName
 
@@ -1172,7 +1172,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' MatchesType:
         '   Returns True if the specified member's axis matches this list's axis.
         '--------------------------------------------------------------------------
-        Private Function MatchesType(ByVal Member As XmlIntellisenseMember) As Boolean
+        Private Function MatchesType(Member As XmlIntellisenseMember) As Boolean
             ' Attribute axis matches only attribute members, element/descendant axes only match element members
             Return Member.IsElement = (_axis <> Axis.Attributes)
         End Function
@@ -1182,7 +1182,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Returns True if the specified member's axis matches this list's axis,
         '   and the member's name matches this list's name.
         '--------------------------------------------------------------------------
-        Private Function MatchesTypeAndName(ByVal Member As XmlIntellisenseMember) As Boolean
+        Private Function MatchesTypeAndName(Member As XmlIntellisenseMember) As Boolean
             ' Check type
             If Not MatchesType(Member) Then
                 Return False
@@ -1212,7 +1212,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Returns True if the specified member's axis matches this list's axis,
         '   and the member is not a global element or attribute declaration.
         '--------------------------------------------------------------------------
-        Private Function MatchesTypeAndNonRoot(ByVal Member As XmlIntellisenseMember) As Boolean
+        Private Function MatchesTypeAndNonRoot(Member As XmlIntellisenseMember) As Boolean
             If Not MatchesType(Member) Then
                 Return False
             End If
@@ -1224,7 +1224,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' FindChildMatches:
         '   Iterate through the list of roots and find all matches.
         '--------------------------------------------------------------------------
-        Private Function FindChildMatches(ByVal Roots As IEnumerable(Of XmlIntellisenseMember), ByVal Recurse As Boolean, ByVal Matches As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
+        Private Function FindChildMatches(Roots As IEnumerable(Of XmlIntellisenseMember), Recurse As Boolean, Matches As List(Of XmlIntellisenseMember)) As IEnumerable(Of XmlIntellisenseMember)
             Dim CheckUnique As MemberSet = New MemberSet()
 
             For Each Root As XmlIntellisenseMember In Roots
@@ -1234,7 +1234,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Matches
         End Function
 
-        Private Sub FindChildMatches(ByVal Root As XmlIntellisenseMember, ByVal Recurse As Boolean, ByVal Matches As List(Of XmlIntellisenseMember), ByVal CheckUnique As MemberSet)
+        Private Sub FindChildMatches(Root As XmlIntellisenseMember, Recurse As Boolean, Matches As List(Of XmlIntellisenseMember), CheckUnique As MemberSet)
             Dim Member As XmlIntellisenseMember = Root.Children
 
             If Member IsNot Nothing Then
@@ -1273,7 +1273,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End If
         End Sub
 
-        Private Function AddUnique(ByVal Member As XmlIntellisenseMember, ByVal CheckUnique As MemberSet) As Boolean
+        Private Function AddUnique(Member As XmlIntellisenseMember, CheckUnique As MemberSet) As Boolean
             If CheckUnique.ContainsKey(Member) Then
                 Return False
             End If
@@ -1290,7 +1290,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         Private _enumerator As IEnumerator(Of XmlIntellisenseMember)
 
-        Public Sub New(ByVal Enumerator As IEnumerator(Of XmlIntellisenseMember))
+        Public Sub New(Enumerator As IEnumerator(Of XmlIntellisenseMember))
             _enumerator = Enumerator
         End Sub
 

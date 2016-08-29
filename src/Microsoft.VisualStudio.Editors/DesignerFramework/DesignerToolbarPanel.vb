@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="h"></param>
         ''' <remarks></remarks>
-        Public Sub Activate(ByVal h As IntPtr)
+        Public Sub Activate(h As IntPtr)
             ' It seems that designers don't set the active secondary toolbar when activated -
             ' this should take care of that!
             _toolbarHost.ProcessMouseActivation(h, win.WM_SETFOCUS, 0, 0)
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="guid">GUID for the toolbar as specified in the CTC file</param>
         ''' <param name="id">Id for the toolbar as specified in the CTC file</param>
         ''' <remarks></remarks>
-        Public Sub SetToolbar(ByVal uiShell As IVsUIShell, ByVal guid As Guid, ByVal id As UInteger)
+        Public Sub SetToolbar(uiShell As IVsUIShell, guid As Guid, id As UInteger)
             If uiShell Is Nothing Then
                 Throw New ArgumentNullException()
             End If
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnHandleCreated(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnHandleCreated(e As System.EventArgs)
             MyBase.OnHandleCreated(e)
             If _associateToolbarOnHandleCreate Then
                 InternalAssociateToolbarWithHandle()
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnHandleDestroyed(e As System.EventArgs)
             MyBase.OnHandleDestroyed(e)
             If _toolbarHost IsNot Nothing Then
                 ' We had a toolbar host (which should be associated with the old handle)
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
             MyBase.OnSizeChanged(e)
             If _toolbarHost IsNot Nothing Then
                 _toolbarHost.BorderChanged()
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="borders"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetBorder(ByVal borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
+        Public Function GetBorder(borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
             Dim rect As Drawing.Rectangle = Me.Bounds
 
             Debug.Assert(borders.Length = 1)
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="borders"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function SetBorderSpace(ByVal borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.SetBorderSpace
+        Public Function SetBorderSpace(borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.SetBorderSpace
             Debug.Assert(borders IsNot Nothing)
             Debug.Assert(borders.Length = 1)
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _toolbarHost IsNot Nothing Then
                     _toolbarHost.Close(0)

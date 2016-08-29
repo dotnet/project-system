@@ -20,50 +20,50 @@ Namespace Microsoft.Internal.Performance
             '///// Code markers test function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(TestDllName, EntryPoint:="InitPerf")> _
-            Public Shared Sub TestDllInitPerf(ByVal iApp As System.Int32)
+            Public Shared Sub TestDllInitPerf(iApp As System.Int32)
             End Sub
 
             <DllImport(TestDllName, EntryPoint:="UnInitPerf")> _
-            Public Shared Sub TestDllUnInitPerf(ByVal iApp As System.Int32)
+            Public Shared Sub TestDllUnInitPerf(iApp As System.Int32)
             End Sub
 #End If 'Codemarkers_IncludeAppEnum           
 
             <DllImport(s_testDllName, EntryPoint:="PerfCodeMarker")>
-            Public Shared Sub TestDllPerfCodeMarker(ByVal nTimerID As System.Int32, ByVal uiLow As System.UInt32, ByVal uiHigh As System.UInt32)
+            Public Shared Sub TestDllPerfCodeMarker(nTimerID As System.Int32, uiLow As System.UInt32, uiHigh As System.UInt32)
             End Sub
 
             '///// Code markers product function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
-            Public Shared Sub ProductDllInitPerf(ByVal iApp As System.Int32)
+            Public Shared Sub ProductDllInitPerf(iApp As System.Int32)
             End Sub
 
             <DllImport(ProductDllName, EntryPoint:="UnInitPerf")> _
-            Public Shared Sub ProductDllUnInitPerf(ByVal iApp As System.Int32)
+            Public Shared Sub ProductDllUnInitPerf(iApp As System.Int32)
             End Sub
 #End If 'Codemarkers_IncludeAppEnum           
 
             <DllImport(s_productDllName, EntryPoint:="PerfCodeMarker")>
-            Public Shared Sub ProductDllPerfCodeMarker(ByVal nTimerID As System.Int32, ByVal uiLow As System.UInt32, ByVal uiHigh As System.UInt32)
+            Public Shared Sub ProductDllPerfCodeMarker(nTimerID As System.Int32, uiLow As System.UInt32, uiHigh As System.UInt32)
             End Sub
 
             '///// global native method imports
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Shared Function FindAtom(ByVal lpString As String) As System.UInt16
+            Public Shared Function FindAtom(lpString As String) As System.UInt16
             End Function
 
 #If Codemarkers_IncludeAppEnum Then
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)> _
-            Public Shared Function AddAtom(ByVal lpString As String) As UInt16
+            Public Shared Function AddAtom(lpString As String) As UInt16
             End Function
 
             <DllImport("kernel32.dll")> _
-            Public Shared Function DeleteAtom(ByVal atom As UInt16) As UInt16
+            Public Shared Function DeleteAtom(atom As UInt16) As UInt16
             End Function
 #End If 'Codemarkers_IncludeAppEnum                     
 
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Shared Function GetModuleHandle(ByVal lpString As String) As IntPtr
+            Public Shared Function GetModuleHandle(lpString As String) As IntPtr
             End Function
 
         End Class 'NativeMethods
@@ -119,7 +119,7 @@ Namespace Microsoft.Internal.Performance
 
         ' Implements sending the code marker value nTimerID.
         ' Implements sending the code marker value nTimerID.
-        Public Sub CodeMarker(ByVal nTimerID As Integer)
+        Public Sub CodeMarker(nTimerID As Integer)
             If Not _fUseCodeMarkers Then
                 Return
             End If
@@ -137,7 +137,7 @@ Namespace Microsoft.Internal.Performance
         End Sub 'CodeMarker
 
         ' Checks the registry to see if code markers are enabled
-        Private Shared Function UsePrivateCodeMarkers(ByVal strRegRoot As String) As Boolean
+        Private Shared Function UsePrivateCodeMarkers(strRegRoot As String) As Boolean
 
             ' SECURITY: We no longer check HKCU because that might lead to a DLL spoofing attack via
             ' the code markers DLL. Check only HKLM since that has a strong ACL. You therefore need
@@ -149,7 +149,7 @@ Namespace Microsoft.Internal.Performance
 
         ' Reads the Performance subkey from the appropriate registry key
         ' Returns: the Default value from the subkey (null if not found)
-        Private Shared Function GetPerformanceSubKey(ByVal hKey As RegistryKey, ByVal strRegRoot As String) As String
+        Private Shared Function GetPerformanceSubKey(hKey As RegistryKey, strRegRoot As String) As String
             If hKey Is Nothing Then
                 Return Nothing
             End If
@@ -168,7 +168,7 @@ Namespace Microsoft.Internal.Performance
 #If Codemarkers_IncludeAppEnum Then
         ' Check the registry and, if appropriate, loads and initializes the code markers dll.
         ' Must be used only if your code is called from outside of VS.
-        Public Sub InitPerformanceDll(ByVal iApp As Integer, ByVal strRegRoot As String)
+        Public Sub InitPerformanceDll(iApp As Integer, strRegRoot As String)
             If strRegRoot = Nothing Then
                 Throw New ArgumentNullException("regRoot")
             End If
@@ -189,7 +189,7 @@ Namespace Microsoft.Internal.Performance
         End Sub 'InitPerformanceDll
 
         ' Opposite of InitPerformanceDLL. Call it when your app does not need the code markers dll.
-        Public Sub UninitializePerformanceDLL(ByVal iApp As Integer)
+        Public Sub UninitializePerformanceDLL(iApp As Integer)
 
             Dim fUsingTestDll as Boolean? = fShouldUseTestDll ' reset which DLL we should use (needed for unit testing)
             fShouldUseTestDll = null ' reset which DLL we should use (needed for unit testing)

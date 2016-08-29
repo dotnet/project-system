@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MyApplicationGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function MyApplicationGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = MyApplicationProperties
             Return True
         End Function
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MyApplicationSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function MyApplicationSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             'Nothing for us to do
             Return True
         End Function
@@ -294,7 +294,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MyTypeGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function MyTypeGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = _myType
             Return True
         End Function
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MyTypeSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function MyTypeSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
             Dim stValue As String = CType(value, String)
 
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks>OutputType is obtained from the value in the Application Type field</remarks>
-        Protected Function OutputTypeGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function OutputTypeGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             If _usingMyApplicationTypes Then
                 Dim AppType As ApplicationTypes
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Protected Function OutputTypeSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function OutputTypeSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
             If _usingMyApplicationTypes Then
                 'No UI for OutputType, ApplicationType provides our UI selection
@@ -420,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   CustomSubMain property ID, I didn't want to change the PropertyControlData to use a custom property.  So we reverse the logic in
         '''   a custom getter/setter
         ''' </remarks>
-        Protected Function CustomSubMainGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function CustomSubMainGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If UseApplicationFrameworkCheckBox.CheckState <> CheckState.Indeterminate Then
                 value = Not UseApplicationFrameworkCheckBox.Checked 'reversed
                 Return True
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   CustomSubMain property ID, I didn't want to change the PropertyControlData to use a custom property.  So we reverse the logic in
         '''   a custom getter/setter
         ''' </remarks>
-        Protected Function CustomSubMainSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function CustomSubMainSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
                 Me.UseApplicationFrameworkCheckBox.CheckState = CheckState.Indeterminate
             Else
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function IsClassLibrary(ByVal AppType As ApplicationTypes) As Boolean
+        Private Function IsClassLibrary(AppType As ApplicationTypes) As Boolean
             If (AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl) Then
                 Return True
             End If
@@ -467,7 +467,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Enable"></param>
         ''' <remarks></remarks>
-        Private Sub EnableUseApplicationFrameworkCheckBox(ByVal Enable As Boolean)
+        Private Sub EnableUseApplicationFrameworkCheckBox(Enable As Boolean)
             If Enable Then
                 Dim useApplicationFrameworkEnabled As Boolean = MyApplicationFrameworkSupported()
                 UseApplicationFrameworkCheckBox.Enabled = useApplicationFrameworkEnabled
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function StartupObjectGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function StartupObjectGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             If Not StartUpObjectSupported() Then
                 value = ""
@@ -582,7 +582,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function StartupObjectSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function StartupObjectSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             'This is handled by the ApplicationType set, so do nothing here
             'CONSIDER: The start-up object/MainForm-handling code needs to be reworked - it makes undo/redo/external property changes 
             '  more difficult than they should be.  Get code should not be changing the value of other properties.
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MainFormNoRootNSSet(ByVal conrol As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function MainFormNoRootNSSet(conrol As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not PropertyControlData.IsSpecialValue(value) Then
                 MainFormTextboxNoRootNS.Text = DirectCast(value, String)
 
@@ -624,12 +624,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="OutputType"></param>
         ''' <remarks></remarks>
-        Private Sub PopulateControlSet(ByVal OutputType As UInteger)
+        Private Sub PopulateControlSet(OutputType As UInteger)
             Debug.Assert(m_Objects.Length <= 1, "Multiple project updates not supported")
             PopulateStartupObject(StartUpObjectSupported(OutputType), False)
         End Sub
 
-        Private Sub PopulateControlSet(ByVal AppType As ApplicationTypes)
+        Private Sub PopulateControlSet(AppType As ApplicationTypes)
             Debug.Assert(m_Objects.Length <= 1, "Multiple project updates not supported")
             PopulateStartupObject(StartUpObjectSupportedForApplicationType(AppType), False)
         End Sub
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="PopulateDropdown">If false, only the current text in the combobox is set.  If true, the entire dropdown list is populated.  For performance reasons, False should be used until the user actually drops down the list.</param>
         ''' <remarks></remarks>
-        Protected Sub PopulateSplashScreenList(ByVal PopulateDropdown As Boolean)
+        Protected Sub PopulateSplashScreenList(PopulateDropdown As Boolean)
             'Use the same list as StartupObject, but no sub main
 
             Dim StartupObjectControlData As PropertyControlData = GetPropertyControlData(Const_StartupObject)
@@ -751,7 +751,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetFormEntryPoints(ByVal IncludeSplashScreen As Boolean) As String()
+        Private Function GetFormEntryPoints(IncludeSplashScreen As Boolean) As String()
             Try
                 Dim EntryPointProvider As Interop.IVBEntryPointProvider = CType(ServiceProvider.GetService(Interop.NativeMethods.VBCompilerGuid), Interop.IVBEntryPointProvider)
                 If EntryPointProvider IsNot Nothing Then
@@ -807,7 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="StartUpObjectSupported">If false, (None) will be the only entry in the list.</param>
         ''' <param name="PopulateDropdown">If false, only the current text in the combobox is set.  If true, the entire dropdown list is populated.  For performance reasons, False should be used until the user actually drops down the list.</param>
         ''' <remarks></remarks>
-        Protected Sub PopulateStartupObject(ByVal StartUpObjectSupported As Boolean, ByVal PopulateDropdown As Boolean)
+        Protected Sub PopulateStartupObject(StartUpObjectSupported As Boolean, PopulateDropdown As Boolean)
             'overridable to support the csharpapplication page (Sub Main isn't used by C#)
             Dim InsideInitSave As Boolean = m_fInsideInit
             m_fInsideInit = True
@@ -896,7 +896,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Sub EnableControlSet(ByVal AppType As ApplicationTypes)
+        Private Sub EnableControlSet(AppType As ApplicationTypes)
             Select Case AppType
                 Case ApplicationTypes.CommandLineApp, ApplicationTypes.WindowsService
                     EnableIconComboBox(True)
@@ -929,7 +929,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="OutputType"></param>
         ''' <remarks></remarks>
-        Private Sub EnableControlSet(ByVal OutputType As VSLangProj.prjOutputType)
+        Private Sub EnableControlSet(OutputType As VSLangProj.prjOutputType)
             EnableIconComboBox(OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary)
             EnableMyApplicationControlSet()
             EnableControl(ViewUACSettingsButton, UACSettingsButtonSupported(OutputType))
@@ -1029,7 +1029,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Public Overrides Function GetUserDefinedPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             If PropertyName = Const_EnableVisualStyles Then
                 Return New UserPropertyDescriptor(PropertyName, GetType(Boolean))
 
@@ -1065,7 +1065,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function ReadUserDefinedProperty(ByVal PropertyName As String, ByRef Value As Object) As Boolean
+        Public Overrides Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
 
             If PropertyName = Const_EnableVisualStyles Then
                 If Not MyApplicationPropertiesSupported Then
@@ -1160,7 +1160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function WriteUserDefinedProperty(ByVal PropertyName As String, ByVal Value As Object) As Boolean
+        Public Overrides Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
             If PropertyName = Const_EnableVisualStyles Then
                 If Not MyApplicationPropertiesSupported Then
                     Debug.Fail("Shouldn't be trying to write this property when MyApplicationProperties is missing")
@@ -1315,7 +1315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="AppType"></param>
         ''' <remarks></remarks>
-        Private Sub SetMyType(ByVal AppType As ApplicationTypes, ByVal ReadyToApply As Boolean)
+        Private Sub SetMyType(AppType As ApplicationTypes, ReadyToApply As Boolean)
             Debug.Assert(UseApplicationFrameworkCheckBox.CheckState <> CheckState.Indeterminate OrElse Not MyApplicationFrameworkSupported() OrElse MyTypeDisabled(),
                 "UseApplicationFrameworkCheckbox shouldn't be indeterminate")
             Dim NewMyType As String = MyTypeFromApplicationType(AppType, UseApplicationFrameworkCheckBox.CheckState = CheckState.Unchecked OrElse Not MyApplicationFrameworkSupported() OrElse MyTypeDisabled())
@@ -1357,7 +1357,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="AppType"></param>
         ''' <remarks></remarks>
-        Private Function MyTypeFromApplicationType(ByVal AppType As ApplicationTypes, ByVal CustomSubMain As Boolean) As String
+        Private Function MyTypeFromApplicationType(AppType As ApplicationTypes, CustomSubMain As Boolean) As String
             Dim MyType As String
 
             Select Case AppType
@@ -1402,7 +1402,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub AssemblyInfoButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AssemblyInfoButton.Click
+        Private Sub AssemblyInfoButton_Click(sender As Object, e As System.EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
@@ -1412,7 +1412,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ComboBoxes_DropDown(ByVal sender As Object, ByVal e As EventArgs) Handles ApplicationTypeComboBox.DropDown
+        Private Sub ComboBoxes_DropDown(sender As Object, e As EventArgs) Handles ApplicationTypeComboBox.DropDown
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
@@ -1449,7 +1449,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
         End Sub
 
-        Private Sub ApplicationTypeComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles ApplicationTypeComboBox.SelectionChangeCommitted
+        Private Sub ApplicationTypeComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles ApplicationTypeComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1518,7 +1518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub StartupObjectComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartupObjectComboBox.SelectionChangeCommitted
+        Private Sub StartupObjectComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles StartupObjectComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1532,7 +1532,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewCodeButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ViewCodeButton.Click
+        Private Sub ViewCodeButton_Click(sender As Object, e As System.EventArgs) Handles ViewCodeButton.Click
             Static IsInViewCodeButtonClick As Boolean
             If IsInViewCodeButtonClick Then
                 'Avoid recursive call (possible because of DoEvents work-around in CreateNewMyEventsFile
@@ -1565,7 +1565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub SplashScreenComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles SplashScreenComboBox.DropDown
+        Private Sub SplashScreenComboBox_DropDown(sender As Object, e As System.EventArgs) Handles SplashScreenComboBox.DropDown
             PopulateSplashScreenList(True)
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1578,7 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub StartupObjectComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartupObjectComboBox.DropDown
+        Private Sub StartupObjectComboBox_DropDown(sender As Object, e As System.EventArgs) Handles StartupObjectComboBox.DropDown
             PopulateStartupObject(StartUpObjectSupported(), True)
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1610,21 +1610,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Application icon"
 
-        Private Sub IconCombobox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.DropDown
+        Private Sub IconCombobox_DropDown(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDown
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_DropDownClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.DropDownClosed
+        Private Sub IconCombobox_DropDownClosed(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDownClosed
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
+        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
             MyBase.HandleIconComboboxSelectionChangeCommitted(sender)
         End Sub
 
 #End Region
 
-        Private Sub UseApplicationFrameworkCheckBox_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles UseApplicationFrameworkCheckBox.CheckedChanged
+        Private Sub UseApplicationFrameworkCheckBox_CheckedChanged(sender As Object, e As System.EventArgs) Handles UseApplicationFrameworkCheckBox.CheckedChanged
             If m_fInsideInit Then
                 Return
             End If
@@ -1670,7 +1670,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true if start-up objects other than "(None)" are supported for this app type
         ''' </summary>
-        Private Function StartUpObjectSupportedForApplicationType(ByVal AppType As ApplicationTypes) As Boolean
+        Private Function StartUpObjectSupportedForApplicationType(AppType As ApplicationTypes) As Boolean
             Return Not IsClassLibrary(AppType)
         End Function
 
@@ -1680,7 +1680,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsNoneText(ByVal Value As String) As Boolean
+        Private Function IsNoneText(Value As String) As Boolean
             'We use ordinal because a) we put the value into the combobox, it could not have magically
             '  changed case, and b) we don't want to use culture-aware because if the user changes cultures
             '  while our page is up, our functionality might be affected
@@ -1694,7 +1694,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MyApplicationProperties_PropertyChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs) Handles _myApplicationPropertiesNotifyPropertyChanged.PropertyChanged
+        Private Sub MyApplicationProperties_PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Handles _myApplicationPropertiesNotifyPropertyChanged.PropertyChanged
             Debug.Assert(e.PropertyName <> "")
             Switches.TracePDProperties(TraceLevel.Info, "MyApplicationProperties_PropertyChanged(""" & e.PropertyName & """)")
 
@@ -1708,7 +1708,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -1726,7 +1726,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewUACSettingsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ViewUACSettingsButton.Click
+        Private Sub ViewUACSettingsButton_Click(sender As Object, e As System.EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
         End Sub
 

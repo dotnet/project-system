@@ -1,42 +1,44 @@
 <!--
 
-  This file contains C# Visual Studio and designer-related properties and items for C# projects.
-  
+  This file contains Visual Studio and designer-related properties and items for C# projects.
+
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <Import Project="Microsoft.Managed.DesignTime.targets" />
+
+  <!-- Properties -->
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
-
-    <!-- See: https://github.com/dotnet/roslyn-project-system/issues/201 -->
-    <CustomCommonXamlResourcesDirectory Condition="$(CustomCommonXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</CustomCommonXamlResourcesDirectory>
+    <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
   </PropertyGroup>
 
-  <!-- Project Capabilities -->
-  <ItemGroup>
-    <ProjectCapability Include="AppDesigner"/>
-    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
-  </ItemGroup>
-  
-  <!-- CPS Project Properties -->
-  <ItemGroup>
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)AppDesigner.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-  
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)GeneralBrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-  
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)None.xaml">
-      <Context>File;BrowseObject</Context>
-    </PropertyPageSchema>
+    <ItemGroup>
+      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
+    </ItemGroup>
 
-    <PropertyPageSchema Include="$(CustomCommonXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-  </ItemGroup>
+    <ItemGroup>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.xaml;">
+      <Context>File</Context>
+     </PropertyPageSchema>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+     </PropertyPageSchema>
+
+     <ProjectCapability Include="CSharp;Managed"/>
+    </ItemGroup>
+
+    <!-- Targets -->
+
+    <!-- Returns Csc command-line arguments for the language service -->
+    <Target Name="CompileDesignTime"
+            Returns="@(_CompilerCommandLineArgs)"
+            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          >
+    </Target>
+
 </Project>

@@ -56,11 +56,6 @@
         <Reference Include="System.Xml" />
         <Reference Include="System.Xml.Linq" />
 
-        <!-- MSBuild -->
-        <Reference Include="Microsoft.Build, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-        <Reference Include="Microsoft.Build.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-        <Reference Include="Microsoft.Build.Tasks.Core, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-
         <!-- NuGet Dependencies -->
         <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Roslyn\Roslyn.csproj">
           <Project>{cf97a73f-f2f1-4893-960c-9c2b95738870}</Project>
@@ -78,7 +73,14 @@
           <Project>{e6796b97-d5c6-45b2-ae46-351d15dcfc71}</Project>
           <Name>Metadata</Name>
         </ProjectReference>
-        
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Json.net\Json.net.csproj">
+          <Project>{ca374af1-c983-4019-8fd0-01fa510c6e56}</Project>
+          <Name>Json.net</Name>
+        </ProjectReference>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\MSBuild\MSBuild.csproj">
+          <Project>{83b4b0cc-33c2-46e3-a330-dff43a0ec18d}</Project>
+          <Name>MSBuild</Name>
+        </ProjectReference>
       </ItemGroup>
     </When>
   </Choose>
@@ -110,6 +112,16 @@
         <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.VisualStudio.GraphModel">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.GraphModel.dll</HintPath>
+        </Reference>	
+	<!-- 
+		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
+		if it is not provided here, tests fail to load this assembly at runtime.
+	-->
+        <Reference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider">
+          <HintPath>$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
+        </Reference>		
         <!-- NuGet Dependencies -->
         <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\VisualStudio\VisualStudio.csproj">
           <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>

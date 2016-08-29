@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Private _dropDownRectangle As New Rectangle
         Private _showCustomContextMenuWasHandled As Boolean
 
-        Public Event ShowCustomContextMenu(ByVal e As ShowCustomContextMenuEventArgs)
+        Public Event ShowCustomContextMenu(e As ShowCustomContextMenuEventArgs)
 
         Public Sub New()
             MyBase.New()
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Me._pushButtonWidth = DpiHelper.LogicalToDeviceUnitsX(_pushButtonWidth)
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal pevent As PaintEventArgs)
+        Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
             MyBase.OnPaint(pevent)
 
             Dim g = pevent.Graphics
@@ -114,43 +114,43 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Protected Overrides Sub OnKeyDown(ByVal kevent As KeyEventArgs)
+        Protected Overrides Sub OnKeyDown(kevent As KeyEventArgs)
             If kevent.KeyCode.Equals(Keys.Down) Then
                 ShowContextMenuOrContextMenuStrip()
             End If
         End Sub
 
-        Protected Overrides Function IsInputKey(ByVal keyData As Keys) As Boolean
+        Protected Overrides Function IsInputKey(keyData As Keys) As Boolean
             If keyData.Equals(Keys.Down) Then
                 Return True
             End If
             Return MyBase.IsInputKey(keyData)
         End Function
 
-        Protected Overrides Sub OnEnabledChanged(ByVal e As EventArgs)
+        Protected Overrides Sub OnEnabledChanged(e As EventArgs)
             SetButtonDrawState()
             MyBase.OnEnabledChanged(e)
         End Sub
 
-        Protected Overrides Sub OnGotFocus(ByVal e As EventArgs)
+        Protected Overrides Sub OnGotFocus(e As EventArgs)
             If Not State.Equals(PushButtonState.Pressed) AndAlso Not State.Equals(PushButtonState.Disabled) Then
                 State = PushButtonState.Default
             End If
         End Sub
 
-        Protected Overrides Sub OnLostFocus(ByVal e As EventArgs)
+        Protected Overrides Sub OnLostFocus(e As EventArgs)
             If Not State.Equals(PushButtonState.Pressed) AndAlso Not State.Equals(PushButtonState.Disabled) Then
                 State = PushButtonState.Normal
             End If
         End Sub
 
-        Protected Overrides Sub OnMouseEnter(ByVal e As EventArgs)
+        Protected Overrides Sub OnMouseEnter(e As EventArgs)
             If Not State.Equals(PushButtonState.Pressed) AndAlso Not State.Equals(PushButtonState.Disabled) Then
                 State = PushButtonState.Hot
             End If
         End Sub
 
-        Protected Overrides Sub OnMouseLeave(ByVal e As EventArgs)
+        Protected Overrides Sub OnMouseLeave(e As EventArgs)
             If Not State.Equals(PushButtonState.Disabled) AndAlso Not State.Equals(PushButtonState.Pressed) Then
                 If Me.Focused Then
                     State = PushButtonState.Default
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Public Overrides Function GetPreferredSize(ByVal proposedSize As Size) As Size
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             Dim preferredSize = MyBase.GetPreferredSize(proposedSize)
             If Not String.IsNullOrEmpty(Me.Text) AndAlso ((TextRenderer.MeasureText(Me.Text, Me.Font).Width + _pushButtonWidth) > preferredSize.Width) Then
                 Return preferredSize + New Size(_pushButtonWidth, 0)
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return preferredSize
         End Function
 
-        Protected Overrides Sub OnMouseDown(ByVal mevent As MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(mevent As MouseEventArgs)
             _showCustomContextMenuWasHandled = False
             If _dropDownRectangle.Contains(mevent.Location) Then
                 ShowContextMenuOrContextMenuStrip()
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Protected Overrides Sub OnMouseUp(ByVal mevent As MouseEventArgs)
+        Protected Overrides Sub OnMouseUp(mevent As MouseEventArgs)
             If _showCustomContextMenuWasHandled Then
                 Return
             End If
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Private Sub ContextMenuStrip_Closed(ByVal sender As Object, ByVal e As ToolStripDropDownClosedEventArgs)
+        Private Sub ContextMenuStrip_Closed(sender As Object, e As ToolStripDropDownClosedEventArgs)
             Dim cms = CType(sender, ContextMenuStrip)
             RemoveHandler cms.Closed, AddressOf Me.ContextMenuStrip_Closed
 
@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Get
                 Return _state
             End Get
-            Set(ByVal value As PushButtonState)
+            Set(value As PushButtonState)
                 If Not _state.Equals(value) Then
                     _state = value
                     Invalidate()
@@ -242,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Set
         End Property
 
-        Private Sub PaintArrow(ByVal g As Graphics, ByVal dropDownRect As Rectangle)
+        Private Sub PaintArrow(g As Graphics, dropDownRect As Rectangle)
             Dim middle = New Point(Convert.ToInt32(dropDownRect.Left + dropDownRect.Width / 2), Convert.ToInt32(dropDownRect.Top + dropDownRect.Height / 2))
 
             ' if the width is odd - favor pushing it over one pixel right.

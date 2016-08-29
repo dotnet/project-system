@@ -34,12 +34,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="provider"></param>
         ''' <param name="SupportToolbox"></param>
         ''' <remarks></remarks>
-        Friend Sub New(ByVal provider As IServiceProvider, ByVal SupportToolbox As Boolean)
+        Friend Sub New(provider As IServiceProvider, SupportToolbox As Boolean)
             MyBase.new(provider)
             _supportToolbox = SupportToolbox
         End Sub
 
-        Public Overrides Function CreateWindowPane(ByVal surface As DesignSurface) As DesignerWindowPane
+        Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New DesignerWindowPaneBase(surface, _supportToolbox)
         End Function
 
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="surface"></param>
             ''' <param name="SupportToolbox"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal surface As DesignSurface, ByVal SupportToolbox As Boolean)
+            Public Sub New(surface As DesignSurface, SupportToolbox As Boolean)
                 MyBase.New(surface)
 
                 _supportToolbox = SupportToolbox
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks>
             ''' We override this so we can disable toolbox support.
             ''' </remarks>
-            Protected Overrides Function GetToolboxItemSupported(ByVal toolboxItem As IOleDataObject) As Boolean
+            Protected Overrides Function GetToolboxItemSupported(toolboxItem As IOleDataObject) As Boolean
                 If Not _supportToolbox Then
                     'PERF: NOTE: If we don't need toolbox support, we simply return False here for all toolbox items (faster)
                     Return False
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="disposing"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Protected Overrides Sub Dispose(disposing As Boolean)
 
                 Dim disposedView As Control = _view
 
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnLoaded(ByVal sender As Object, ByVal e As LoadedEventArgs)
+            Private Sub OnLoaded(sender As Object, e As LoadedEventArgs)
                 PopulateView()
                 EnableUndo()
                 'ChangeFormEditorCaption()
@@ -287,7 +287,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnSurfaceUnloading(ByVal sender As Object, ByVal e As EventArgs)
+            Private Sub OnSurfaceUnloading(sender As Object, e As EventArgs)
                 DisableUndo()
             End Sub
 
@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnSurfaceUnloaded(ByVal sender As Object, ByVal e As EventArgs)
+            Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
                     Dim ctrl(_view.Controls.Count - 1) As Control
                     _view.Controls.CopyTo(ctrl, 0)
@@ -319,7 +319,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnUndoing(ByVal sender As Object, ByVal e As EventArgs)
+            Private Sub OnUndoing(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
                     Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
@@ -334,7 +334,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnUndone(ByVal sender As Object, ByVal e As EventArgs)
+            Private Sub OnUndone(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
                     Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
                     _view.Invalidate(True)
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub OnViewFocus(ByVal sender As Object, ByVal e As EventArgs)
+            Private Sub OnViewFocus(sender As Object, e As EventArgs)
                 Switches.TracePDFocus(TraceLevel.Warning, "DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.m_View.OnGotFocus (OnViewFocus)")
                 If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
                     'The view's first child should be the designer root view.  Since

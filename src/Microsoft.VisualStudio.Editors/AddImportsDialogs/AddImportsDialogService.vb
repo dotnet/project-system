@@ -14,14 +14,14 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         ''' </summary>
         ''' <param name="packageServiceProvider"></param>
         ''' <remarks></remarks>
-        Friend Sub New(ByVal packageServiceProvider As IServiceProvider)
+        Friend Sub New(packageServiceProvider As IServiceProvider)
             If packageServiceProvider Is Nothing Then
                 Throw New ArgumentNullException("packageServiceProvider")
             End If
             _serviceProvider = packageServiceProvider
         End Sub
 
-        Public Function ShowDialog(ByVal [namespace] As String, ByVal identifier As String, byval minimallyQualifiedName as String, ByVal dialogType As AddImportsDialogType, ByVal helpCallBack As IVBAddImportsDialogHelpCallback) As AddImportsResult Implements IVBAddImportsDialogService.ShowDialog
+        Public Function ShowDialog([namespace] As String, identifier As String, minimallyQualifiedName As String, dialogType As AddImportsDialogType, helpCallBack As IVBAddImportsDialogHelpCallback) As AddImportsResult Implements IVBAddImportsDialogService.ShowDialog
             Select Case dialogType
                 Case AddImportsDialogType.AddImportsCollisionDialog
                     Using d As New AutoAddImportsCollisionDialog([namespace], identifier, minimallyQualifiedName, helpCallBack, _serviceProvider)

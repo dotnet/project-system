@@ -41,4 +41,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <ItemDefinitionGroup>
+    <!-- Change the defaults for all rules so that they generate to Visual Basic properties -->
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+      <RuleInjectionClassName>VisualBasicProjectProperties</RuleInjectionClassName>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>
 </Project>

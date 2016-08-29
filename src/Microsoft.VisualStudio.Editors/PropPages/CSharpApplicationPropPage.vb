@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="PopulateDropdown">If false, only the current text in the combobox is set.  If true, the entire dropdown list is populated.  For performance reasons, False should be used until the user actually drops down the list.</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PopulateStartupObject(ByVal StartUpObjectSupported As Boolean, ByVal PopulateDropdown As Boolean)
+        Protected Overrides Sub PopulateStartupObject(StartUpObjectSupported As Boolean, PopulateDropdown As Boolean)
             Dim InsideInitSave As Boolean = m_fInsideInit
             m_fInsideInit = True
 
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Protected Overrides Function StartupObjectGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Overrides Function StartupObjectGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If Not StartUpObjectSupported() Then
                 value = ""
             Else

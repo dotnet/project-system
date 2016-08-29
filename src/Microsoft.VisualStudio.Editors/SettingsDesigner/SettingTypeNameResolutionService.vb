@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #End Region
 
-        Public Sub New(ByVal languageGuid As System.String, Optional ByVal caseSensitive As Boolean = True)
+        Public Sub New(languageGuid As System.String, Optional caseSensitive As Boolean = True)
             Dim language As Language
             Select Case languageGuid
                 Case EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function PersistedSettingTypeNameToTypeDisplayName(ByVal typeName As String) As String
+        Public Function PersistedSettingTypeNameToTypeDisplayName(typeName As String) As String
             Dim displayName As String = Nothing
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return DisplayTypeNameConnectionString
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function PersistedSettingTypeNameToFxTypeName(ByVal typeName As String) As String
+        Public Function PersistedSettingTypeNameToFxTypeName(typeName As String) As String
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(String).FullName
             ElseIf String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function TypeDisplayNameToPersistedSettingTypeName(ByVal typeName As String) As String
+        Public Function TypeDisplayNameToPersistedSettingTypeName(typeName As String) As String
             Dim persistedTypeName As String = Nothing
             If String.Equals(typeName, DisplayTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "Private implementation details"
 
-        Private Sub AddEntry(ByVal FxName As String, ByVal languageSpecificName As String)
+        Private Sub AddEntry(FxName As String, languageSpecificName As String)
             If languageSpecificName <> "" Then
                 _languageSpecificToFxTypeName(languageSpecificName) = FxName
                 _fxTypeNameToLanguageSpecific(FxName) = languageSpecificName

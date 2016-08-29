@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("TargetFramework")]
+    [ExportInterceptingPropertyValueProvider("TargetFramework", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly ProjectProperties _properties;

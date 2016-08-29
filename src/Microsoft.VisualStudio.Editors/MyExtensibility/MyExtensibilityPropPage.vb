@@ -103,32 +103,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Event handlers"
 
-        Private Sub buttonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub buttonAdd_Click(sender As Object, e As EventArgs) _
                 Handles buttonAdd.Click
             Me.AddExtension()
         End Sub
 
-        Private Sub buttonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub buttonRemove_Click(sender As Object, e As EventArgs) _
                 Handles buttonRemove.Click
             Me.RemoveExtension()
         End Sub
 
-        Private Sub listViewExtensions_AddExtension(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub listViewExtensions_AddExtension(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.AddExtension
             Me.AddExtension()
         End Sub
 
-        Private Sub listViewExtensions_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) _
+        Private Sub listViewExtensions_ColumnClick(sender As Object, e As ColumnClickEventArgs) _
                 Handles listViewExtensions.ColumnClick
             ListViewComparer.HandleColumnClick(Me.listViewExtensions, _comparer, e)
         End Sub
 
-        Private Sub listViewExtensions_RemoveExtension(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub listViewExtensions_RemoveExtension(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.RemoveExtension
             Me.RemoveExtension()
         End Sub
 
-        Private Sub listViewExtensions_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub listViewExtensions_SelectedIndexChanged(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.SelectedIndexChanged
             EnableButtonRemove()
         End Sub
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub linklabelHelp_LinkClicked( _
-                ByVal sender As Object, ByVal e As LinkLabelLinkClickedEventArgs) _
+                sender As Object, e As LinkLabelLinkClickedEventArgs) _
                 Handles linkLabelHelp.LinkClicked
             DesignUtil.DisplayTopicFromF1Keyword(ServiceProvider, HelpIDs.Dlg_AddMyNamespaceExtensions)
         End Sub
@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Return the ListViewItem for the given extension code file.
         ''' </summary>
-        Private Function ExtensionProjectItemGroupToListViewItem(ByVal extensionProjectFile As MyExtensionProjectItemGroup) _
+        Private Function ExtensionProjectItemGroupToListViewItem(extensionProjectFile As MyExtensionProjectItemGroup) _
                 As ListViewItem
             Debug.Assert(extensionProjectFile IsNot Nothing)
 

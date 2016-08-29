@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ItemId"></param>
         ''' <param name="PropertyPageInfo"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal View As ApplicationDesignerView, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal PropertyPageInfo As PropertyPageInfo)
+        Public Sub New(View As ApplicationDesignerView, Hierarchy As IVsHierarchy, ItemId As UInteger, PropertyPageInfo As PropertyPageInfo)
             Me.New(View, Hierarchy, ItemId)
 
             Debug.Assert(PropertyPageInfo IsNot Nothing)
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal View As ApplicationDesignerView, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger)
+        Public Sub New(View As ApplicationDesignerView, Hierarchy As IVsHierarchy, ItemId As UInteger)
             Debug.Assert(View IsNot Nothing)
             Debug.Assert(Hierarchy IsNot Nothing)
 
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _customViewProvider
             End Get
-            Set(ByVal value As CustomViewProvider)
+            Set(value As CustomViewProvider)
                 If _customViewProvider Is value Then
                     Exit Property
                 End If
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
-        Public Sub ShowDesigner(Optional ByVal Show As Boolean = True)
+        Public Sub ShowDesigner(Optional Show As Boolean = True)
             If _creatingDesigner Then
                 Common.Switches.TracePDFocus(TraceLevel.Info, "ShowDesigner - exiting, recursive call")
                 Return
@@ -662,7 +662,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _vsWindowFrame
             End Get
-            Set(ByVal Value As IVsWindowFrame)
+            Set(Value As IVsWindowFrame)
                 If Value IsNot _vsWindowFrame Then
                     Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerPanel.set_VsWindowFrame")
                     CloseFrame()
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _editorGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 If IsPropertyPage Then
                     Debug.Fail("Cannot change EditorGuid for property page designer panels")
                     Exit Property
@@ -722,7 +722,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _physicalView
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 _physicalView = Value
             End Set
         End Property
@@ -736,7 +736,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _editorCaption
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 _editorCaption = Value
             End Set
         End Property
@@ -756,7 +756,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Return ""
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 Debug.Assert(_mkDocument Is Nothing, "MkDocument set multiple times")
                 _mkDocument = Value
             End Set
@@ -771,7 +771,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _customMkDocumentProvider
             End Get
-            Set(ByVal Value As CustomDocumentMonikerProvider)
+            Set(Value As CustomDocumentMonikerProvider)
                 Debug.Assert(_customMkDocumentProvider Is Nothing OrElse Value Is Nothing, "m_CustomMkDocumentProvider set multiple times")
                 _customMkDocumentProvider = Value
             End Set
@@ -786,7 +786,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _docData
             End Get
-            Set(ByVal Value As Object)
+            Set(Value As Object)
                 _docData = Value
             End Set
         End Property
@@ -800,7 +800,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _docView
             End Get
-            Set(ByVal Value As System.Windows.Forms.Control)
+            Set(Value As System.Windows.Forms.Control)
                 _docView = Value
             End Set
         End Property
@@ -814,7 +814,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _editFlags
             End Get
-            Set(ByVal Value As UInteger)
+            Set(Value As UInteger)
                 _editFlags = Value
             End Set
         End Property
@@ -828,7 +828,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _tabTitle
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _tabTitle = value
 
                 ' We set Window.Text to be the page Title to help screen reader.
@@ -851,7 +851,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _tabAutomationName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _tabAutomationName = value
             End Set
         End Property
@@ -890,7 +890,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' When the size of our host panel is changed, we need to adjust the native window frame...
         ''' </summary>
-        Private Sub PageHostingPanel_Layout(ByVal sender As Object, ByVal e As LayoutEventArgs) Handles _pageHostingPanel.Layout
+        Private Sub PageHostingPanel_Layout(sender As Object, e As LayoutEventArgs) Handles _pageHostingPanel.Layout
             'PERF: it's more performant to handle Layout for control property changes because SizeChanged happens after the layout
             '  and will cause another layout.
             Common.Switches.TracePDPerf(e, "ApplicationDesignerPanel.OnPanelLayout")
@@ -937,14 +937,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _windowFrameShown = False
         End Sub
 
-        Protected Overridable Sub CloseFrameInternal(ByVal WindowFrame As IVsWindowFrame, ByVal flags As __FRAMECLOSE)
+        Protected Overridable Sub CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE)
             If WindowFrame IsNot Nothing Then
                 UnadviseWindowFrameNotify(WindowFrame)
                 Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
             End If
         End Sub
 
-        Private Sub AdviseWindowFrameNotify(ByVal windowFrame As IVsWindowFrame)
+        Private Sub AdviseWindowFrameNotify(windowFrame As IVsWindowFrame)
             Debug.Assert(windowFrame IsNot Nothing)
             Dim windowFrame2 As IVsWindowFrame2 = TryCast(windowFrame, IVsWindowFrame2)
             Debug.Assert(windowFrame2 IsNot Nothing, "Couldn't get IVsWindowFrame2 from IVsWindowFrame")
@@ -955,7 +955,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Private Sub UnadviseWindowFrameNotify(ByVal windowFrame As IVsWindowFrame)
+        Private Sub UnadviseWindowFrameNotify(windowFrame As IVsWindowFrame)
             Debug.Assert(windowFrame IsNot Nothing)
             If _windowFrameNotifyCookie <> 0 Then
                 Dim windowFrame2 As IVsWindowFrame2 = TryCast(windowFrame, IVsWindowFrame2)
@@ -967,7 +967,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Private Sub ApplicationDesignerPanel_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
+        Private Sub ApplicationDesignerPanel_VisibleChanged(sender As Object, e As System.EventArgs) Handles Me.VisibleChanged
             If VsWindowFrame IsNot Nothing Then
                 If Me.Visible Then
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=True - checking if should ShowWindowFrame")
@@ -986,7 +986,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' This function is called when the designer window is activated or deactivated
         ''' </summary>
-        Public Sub OnWindowActivated(ByVal activated As Boolean)
+        Public Sub OnWindowActivated(activated As Boolean)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel.OnWindowActivated")
             Dim designView As IVsEditWindowNotify = TryCast(DocView, IVsEditWindowNotify)
             If designView IsNot Nothing Then
@@ -1033,7 +1033,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PageHostingPanel_HandleCreated(ByVal sender As Object, ByVal e As System.EventArgs) Handles _pageHostingPanel.HandleCreated
+        Private Sub PageHostingPanel_HandleCreated(sender As Object, e As System.EventArgs) Handles _pageHostingPanel.HandleCreated
             If _vsWindowFrame IsNot Nothing Then
                 Debug.Fail("PageHostingPanel handle was recreated after the nested window frame's ParentHwnd property was set to its HWND.  " _
                     & "This is bad because now VS has a pointer to the wrong HWND, and the HWND VS was using has been destroyed.")
@@ -1048,7 +1048,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose managed resources.
 
@@ -1115,7 +1115,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'PERF: Debug tracing of Layout handling...
-        Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerPanel.OnLayout()")
             MyBase.OnLayout(levent)
             Common.Switches.TracePDPerfEnd("ApplicationDesignerPanel.OnLayout()")
@@ -1124,7 +1124,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #Region "IVsWindowFrameNotify implementation"
         'This interface is implemented only because IVsWindowFrame.Advise() requires an IVsWindowFrameNotify
         '  implementation, even though we only care about the IVsWindowFrameNotify2 methods.
-        Private Function IVsWindowFrameNotify_OnDockableChange(ByVal fDockable As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnDockableChange
+        Private Function IVsWindowFrameNotify_OnDockableChange(fDockable As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnDockableChange
             Return VSConstants.S_OK
         End Function
 
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnShow(ByVal fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnShow
+        Private Function IVsWindowFrameNotify_OnShow(fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnShow
             Return VSConstants.S_OK
         End Function
 

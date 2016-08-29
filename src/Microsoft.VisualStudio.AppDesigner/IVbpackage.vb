@@ -10,11 +10,11 @@ Namespace Microsoft.VisualStudio.Editors
     Public Interface IVBPackage
 
 
-        Function GetLastShownApplicationDesignerTab(ByVal projectHierarchy As IVsHierarchy) As Integer
+        Function GetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy) As Integer
 
-        Sub SetLastShownApplicationDesignerTab(ByVal projectHierarchy As IVsHierarchy, ByVal tab As Integer)
+        Sub SetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy, tab As Integer)
 
-        ReadOnly Property GetService(ByVal serviceType As Type) As Object
+        ReadOnly Property GetService(serviceType As Type) As Object
 
         ReadOnly Property MenuCommandService() As IMenuCommandService
 
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors
     Public Class VBPackageUtils
 
         Private Shared s_editorsPackage As IVBPackage
-        Public Delegate Function getServiceDelegate(ByVal ServiceType As Type) As Object
+        Public Delegate Function getServiceDelegate(ServiceType As Type) As Object
         ''' <summary>
         ''' 
         ''' </summary>
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared ReadOnly Property PackageInstance(ByVal GetService As getServiceDelegate) As IVBPackage
+        Public Shared ReadOnly Property PackageInstance(GetService As getServiceDelegate) As IVBPackage
             Get
                 If s_editorsPackage Is Nothing Then
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)

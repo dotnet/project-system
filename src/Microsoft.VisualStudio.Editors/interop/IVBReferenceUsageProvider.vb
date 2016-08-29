@@ -18,8 +18,8 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown), _
     CLSCompliant(False)> _
     Friend Interface IVBReferenceUsageProvider
-        Function GetUnusedReferences(ByVal Hierarchy As IVsHierarchy, ByRef ReferencePaths As String) As ReferenceUsageResult
-        Sub StopGetUnusedReferences(ByVal Hierarchy As IVsHierarchy)
+        Function GetUnusedReferences(Hierarchy As IVsHierarchy, ByRef ReferencePaths As String) As ReferenceUsageResult
+        Sub StopGetUnusedReferences(Hierarchy As IVsHierarchy)
     End Interface
 
 End Namespace

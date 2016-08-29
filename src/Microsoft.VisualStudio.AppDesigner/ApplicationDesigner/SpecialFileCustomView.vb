@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="ViewProvider"></param>
         ''' <remarks></remarks>
-        Public Sub SetSite(ByVal ViewProvider As SpecialFileCustomViewProvider)
+        Public Sub SetSite(ViewProvider As SpecialFileCustomViewProvider)
             _viewProvider = ViewProvider
             If ViewProvider IsNot Nothing Then
                 LinkLabel.Text = _viewProvider.LinkText
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub LinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
+        Private Sub LinkLabel_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
             CreateNewSpecialFile()
         End Sub
 

@@ -11,9 +11,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystemDogfoodSetup</AssemblyName>
-    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
@@ -25,6 +25,7 @@
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <UseCodebase>true</UseCodebase>
+    <Nonshipping>true</Nonshipping>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
@@ -48,6 +49,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
+      <Project>{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}</Project>
+      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj">
       <Project>{9fbd7ef2-9449-486d-9fdd-fa56160aa8bb}</Project>
       <Name>ProjectSystemSetup</Name>
@@ -56,6 +63,10 @@
       <Project>{49705330-a4f5-47ea-bb10-3b783ce91aea}</Project>
       <Name>VisualStudioEditorsSetup</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="VisualStudio\Packaging\DogfoodProjectSystemPackage.DebuggerTraceListener.cs" />
+    <Compile Include="VisualStudio\Packaging\DogfoodProjectSystemPackage.cs" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

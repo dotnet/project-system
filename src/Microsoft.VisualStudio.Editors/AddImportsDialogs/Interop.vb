@@ -28,11 +28,11 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Interface IVBAddImportsDialogService
         Function ShowDialog _
         ( _
-            ByVal [namespace] As String, _
-            ByVal identifier As String, _
-            byval minimallyQualifiedName as String, _
-            ByVal dialogType As AddImportsDialogType, _
-            ByVal helpCallBack As IVBAddImportsDialogHelpCallback _
+            [namespace] As String, _
+            identifier As String, _
+            minimallyQualifiedName as String, _
+            dialogType As AddImportsDialogType, _
+            helpCallBack As IVBAddImportsDialogHelpCallback _
         ) As AddImportsResult
     End Interface
 End Namespace

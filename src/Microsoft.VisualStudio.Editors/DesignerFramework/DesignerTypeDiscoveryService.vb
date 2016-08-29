@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sp"></param>
         ''' <param name="hierarchy"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal sp As IServiceProvider, ByVal hierarchy As IVsHierarchy)
+        Public Sub New(sp As IServiceProvider, hierarchy As IVsHierarchy)
             If sp Is Nothing Then Throw New ArgumentNullException("sp")
             If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
 
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "ITypeDiscoveryService implementation"
 
-        Private Function GetTypes(ByVal baseType As System.Type, ByVal excludeGlobalTypes As Boolean) As System.Collections.ICollection Implements System.ComponentModel.Design.ITypeDiscoveryService.GetTypes
+        Private Function GetTypes(baseType As System.Type, excludeGlobalTypes As Boolean) As System.Collections.ICollection Implements System.ComponentModel.Design.ITypeDiscoveryService.GetTypes
             Return GetReferencedTypes(baseType, excludeGlobalTypes)
         End Function
 
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="shouldExcludeGlobalTypes">Exclude types in the GAC?</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function GetReferencedTypes(ByVal baseType As System.Type, ByVal shouldExcludeGlobalTypes As Boolean) As List(Of System.Type)
+        Public Overridable Function GetReferencedTypes(baseType As System.Type, shouldExcludeGlobalTypes As Boolean) As List(Of System.Type)
             Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
                 DirectCast(_serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
 
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function GetProjectOutputs(ByVal provider As IServiceProvider, ByVal hierarchy As IVsHierarchy) As String()
+        Protected Overridable Function GetProjectOutputs(provider As IServiceProvider, hierarchy As IVsHierarchy) As String()
             Try
                 Dim buildManager As Microsoft.VisualStudio.Shell.Interop.IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
                 If buildManager Is Nothing Then Return New String() {}
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="projectOutput"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function AssemblyFromProjectOutput(ByVal typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, ByVal projectOutput As String) As System.Reflection.Assembly
+        Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
             If typeResolutionService Is Nothing Then Throw New ArgumentNullException("typeResolutionService")
 
             If typeResolutionService IsNot Nothing Then
@@ -171,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' if there is a '#' in the path, everything after this is treated as a fragment.  So
         ''' we need to append the fragment to the end of the path.
         ''' </devdoc>
-        Protected Shared Function GetLocalPath(ByVal fileName As String) As String
+        Protected Shared Function GetLocalPath(fileName As String) As String
             System.Diagnostics.Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
 
             Dim uri As New Uri(fileName)
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' VSCore does not properly escape paths with the certain characters (for example, #) in 
         ' the URIs they provide.  Instead, if the path starts with file:', we will assume
         ' the rest of the string is the non-escaped path.
-        Protected Shared Function GetLocalPathUnescaped(ByVal url As String) As String
+        Protected Shared Function GetLocalPathUnescaped(url As String) As String
             Dim filePrefix As String = "file:///"
             If url.StartsWith(filePrefix, StringComparison.OrdinalIgnoreCase) Then
                 Return url.Substring(filePrefix.Length)

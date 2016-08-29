@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("AssemblyOriginatorKeyFile")]
+    [ExportInterceptingPropertyValueProvider("AssemblyOriginatorKeyFile", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class AssemblyOriginatorKeyFileValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly UnconfiguredProject _unconfiguredProject;

@@ -25,8 +25,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Event ExtensionChanged()
 
         Public Shared Function CreateNew( _
-                ByVal projectService As MyExtensibilityProjectService, ByVal serviceProvider As IServiceProvider, _
-                ByVal project As Project, ByVal projectHierarchy As IVsHierarchy) As MyExtensibilityProjectSettings
+                projectService As MyExtensibilityProjectService, serviceProvider As IServiceProvider, _
+                project As Project, projectHierarchy As IVsHierarchy) As MyExtensibilityProjectSettings
             If projectService Is Nothing Then
                 Return Nothing
             End If
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Add the given extension template to the current project.
         ''' </summary>
-        Public Function AddExtensionTemplate(ByVal extensionTemplate As MyExtensionTemplate) As List(Of ProjectItem)
+        Public Function AddExtensionTemplate(extensionTemplate As MyExtensionTemplate) As List(Of ProjectItem)
             Debug.Assert(extensionTemplate IsNot Nothing, "NULL extensionTemplate!")
 
             ' Start monitoring the project items being added from the template.
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Find out whether there is an extension project item group with the same extension ID 
         ''' in the current project. Return Nothing if none is found.
         ''' </summary>
-        Public Function GetExtensionProjectItemGroup(ByVal extensionID As String) As MyExtensionProjectItemGroup
+        Public Function GetExtensionProjectItemGroup(extensionID As String) As MyExtensionProjectItemGroup
             If StringIsNullEmptyOrBlank(extensionID) OrElse _extProjItemGroups Is Nothing Then
                 Return Nothing
             End If
@@ -163,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Return the extension project item groups added by the given assembly.
         ''' </summary>
-        Public Function GetExtensionProjectItemGroups(ByVal assemblyFullName As String) _
+        Public Function GetExtensionProjectItemGroups(assemblyFullName As String) _
                 As List(Of MyExtensionProjectItemGroup)
             If assemblyFullName IsNot Nothing AndAlso
                     _extProjItemGroups IsNot Nothing Then
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Remove the given extension project item group from the current project.
         ''' </summary>
-        Public Sub RemoveExtensionProjectItemGroup(ByVal extensionProjectItemGroup As MyExtensionProjectItemGroup)
+        Public Sub RemoveExtensionProjectItemGroup(extensionProjectItemGroup As MyExtensionProjectItemGroup)
             If extensionProjectItemGroup Is Nothing Then
                 Exit Sub
             End If
@@ -290,9 +290,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Add the given extension project file to the list of extension project item groups.
         ''' </summary>
-        Private Sub AddExtensionProjectFile(ByVal assemblyFullName As String, ByVal extensionProjectItem As ProjectItem,
-                ByVal extensionID As String, ByVal extensionVersion As Version,
-                ByVal extensionName As String, ByVal extensionDescription As String)
+        Private Sub AddExtensionProjectFile(assemblyFullName As String, extensionProjectItem As ProjectItem,
+                extensionID As String, extensionVersion As Version,
+                extensionName As String, extensionDescription As String)
             Debug.Assert(extensionProjectItem IsNot Nothing, "NULL extensionProjectItem!")
             Debug.Assert(Not String.IsNullOrEmpty(extensionID), "extensionID is NULL or empty!")
 
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Get the MSBuild attribute for the given project item ID.
         ''' </summary>
-        Private Function GetBuildAttribute(ByVal projectItemID As UInteger, ByVal attributeName As String) As String
+        Private Function GetBuildAttribute(projectItemID As UInteger, attributeName As String) As String
             Debug.Assert(Not String.IsNullOrEmpty(attributeName), "NULL attributeName")
             Debug.Assert(_vsBuildPropertyStorage IsNot Nothing, "NULL IVsBuildPropertyStrorage!")
 
@@ -423,7 +423,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Files added to the solution. If this file is under MyExtensions folder 
         ''' and in AddTemplate state, collect them into m_ProjectItemsAddedFromTemplate.
         ''' </summary>
-        Private Sub OnAfterAddFilesEx(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSADDFILEFLAGS)
+        Private Sub OnAfterAddFilesEx(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As VSADDFILEFLAGS)
             Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
 
             If _monitorState <> MonitorState.AddTemplate Then ' Return if not monitoring add templates.
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Files removed from the solution. If the file is under MyExtensions folder and not in RemoveProjectItem state,
         ''' raise change event.
         ''' </summary>
-        Private Sub OnAfterRemoveFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSREMOVEFILEFLAGS)
+        Private Sub OnAfterRemoveFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As VSREMOVEFILEFLAGS)
             Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
 
             If _monitorState = MonitorState.RemoveProjectItem Then
@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' File (or directory??) renamed. Check and reload extension file list if neccessary.
         ''' </summary>
-        Private Sub OnAfterRenameFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As VSRENAMEFILEFLAGS)
+        Private Sub OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEFILEFLAGS)
             Debug.Assert(rgszMkNewNames IsNot Nothing, "NULL rgszMkNewNames!")
             Debug.Assert(rgszMkOldNames IsNot Nothing, "NULL rgszMkOldNames!")
 
@@ -527,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Directories removed from the solution. See if MyExtensions folder is removed.
         ''' </summary>
-        Private Sub OnAfterRemoveDirectories(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As VSREMOVEDIRECTORYFLAGS)
+        Private Sub OnAfterRemoveDirectories(cProjects As Integer, cDirectories As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As VSREMOVEDIRECTORYFLAGS)
             Debug.Assert(rgpszMkDocuments IsNot Nothing, "NULL rgpszMkDocuments!")
 
             If _monitorState <> MonitorState.Normal Then
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Directories renamed in the solution. See if MyExtensions folder is removed / readded.
         ''' </summary>
-        Private Sub OnAfterRenameDirectories(ByVal cProjects As Integer, ByVal cDirs As Integer, ByVal rgpProjects() As IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As VSRENAMEDIRECTORYFLAGS)
+        Private Sub OnAfterRenameDirectories(cProjects As Integer, cDirs As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEDIRECTORYFLAGS)
 
             If _monitorState <> MonitorState.Normal Then
                 Exit Sub
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Return the full path to a project item. If the project item becomes unavailable, return Nothing.
         ''' </summary>
-        Private Shared Function GetProjectItemPath(ByVal projectItem As ProjectItem) As String
+        Private Shared Function GetProjectItemPath(projectItem As ProjectItem) As String
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem!")
 
             Dim itemPath As String = Nothing
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Return itemPath
         End Function
 
-        Private Shared Function IsUnderFolder(ByVal filePath As String, ByVal folderPath As String) As Boolean
+        Private Shared Function IsUnderFolder(filePath As String, folderPath As String) As Boolean
             If Not StringIsNullEmptyOrBlank(filePath) Then
                 filePath = Path.GetFullPath(filePath)
                 Dim directoryPath As String = RemoveEndingSeparator(Path.GetDirectoryName(filePath))
@@ -606,14 +606,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             RaiseEvent ExtensionChanged()
         End Sub
 
-        Private Shared Function GetDirectoryName(ByVal pathStr As String) As String
+        Private Shared Function GetDirectoryName(pathStr As String) As String
             If StringIsNullEmptyOrBlank(pathStr) Then
                 Return Nothing
             End If
             Return Path.GetFileName(RemoveEndingSeparator(pathStr))
         End Function
 
-        Private Shared Function RemoveEndingSeparator(ByVal pathStr As String) As String
+        Private Shared Function RemoveEndingSeparator(pathStr As String) As String
             Debug.Assert(pathStr IsNot Nothing, "NULL path!")
             Return pathStr.TrimEnd(New Char() {Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar})
         End Function
@@ -635,7 +635,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' by appending increasing postfix into the given name until no ProjectItem 
         ''' with the same name is found under the MyExtensions folder.
         ''' </summary>
-        Private Function GetProjectItemName(ByVal templateBaseName As String) As String
+        Private Function GetProjectItemName(templateBaseName As String) As String
             If StringIsNullEmptyOrBlank(templateBaseName) Then ' Verify and fix up input.
                 templateBaseName = s_DEFAULT_CODE_FILE_NAME
             End If
@@ -656,9 +656,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Return candidateProjectItemName
         End Function
 
-        Private Sub New(ByVal projectService As MyExtensibilityProjectService, _
-                ByVal serviceProvider As IServiceProvider, ByVal project As Project, _
-                ByVal projectHierarchy As IVsHierarchy, ByVal vsBuildPropertyStorage As IVsBuildPropertyStorage)
+        Private Sub New(projectService As MyExtensibilityProjectService, _
+                serviceProvider As IServiceProvider, project As Project, _
+                projectHierarchy As IVsHierarchy, vsBuildPropertyStorage As IVsBuildPropertyStorage)
 
             Debug.Assert(projectService IsNot Nothing, "projectService")
             Debug.Assert(serviceProvider IsNot Nothing, "serviceProvider")

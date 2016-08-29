@@ -21,8 +21,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' fileName, extensionID and extensionVersion are required.
         ''' </summary>
         Public Sub New( _
-                ByVal extensionID As String, ByVal extensionVersion As Version, _
-                ByVal extensionName As String, ByVal extensionDescription As String)
+                extensionID As String, extensionVersion As Version, _
+                extensionName As String, extensionDescription As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(extensionID), "Invalid extensionID!")
             Debug.Assert(extensionVersion IsNot Nothing, "Invalid extensionVersion!")
 
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Get
         End Property
 
-        Public Sub AddProjectItem(ByVal projectItem As ProjectItem)
+        Public Sub AddProjectItem(projectItem As ProjectItem)
             If projectItem IsNot Nothing Then
                 If _projectItems Is Nothing Then
                     _projectItems = New List(Of ProjectItem)
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
         End Sub
 
-        Public Function IDEquals(ByVal id As String) As Boolean
+        Public Function IDEquals(id As String) As Boolean
             Return String.Equals(_extensionID, id, StringComparison.Ordinal)
         End Function
 

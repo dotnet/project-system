@@ -2,8 +2,6 @@ use vs
 
 package name=Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles
         version=$(Version)
-        vs.package.chip=neutral
-        vs.package.language=en-us
 
 vs.localizedResources
   vs.localizedResource language=en-us
@@ -13,9 +11,32 @@ vs.localizedResources
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(SourcePath)\Targets\Microsoft.CSharp.DesignTime.targets"
   file source="$(SourcePath)\Targets\Microsoft.VisualBasic.DesignTime.targets"
+  file source="$(SourcePath)\Targets\Microsoft.Managed.DesignTime.targets"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\AppDesigner.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\ConfigurationGeneral.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\GeneralBrowseObject.xaml"
-  file source="$(SourcePath)\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\None.xaml"
+  file source="$(OutputPath)Rules\AnalyzerReference.xaml"
+  file source="$(OutputPath)Rules\AppDesigner.xaml"
+  file source="$(OutputPath)Rules\AssemblyReference.xaml"
+  file source="$(OutputPath)Rules\CompilerCommandLineArgs.xaml"
+  file source="$(OutputPath)Rules\COMReference.xaml"
+  file source="$(OutputPath)Rules\ConfigurationGeneral.xaml"
+  file source="$(OutputPath)Rules\CSharp.BrowseObject.xaml"
+  file source="$(OutputPath)Rules\CSharp.ProjectItemsSchema.xaml"
+  file source="$(OutputPath)Rules\CSharp.xaml"
+  file source="$(OutputPath)Rules\GeneralBrowseObject.xaml"
+  file source="$(OutputPath)Rules\None.xaml"
+  file source="$(OutputPath)Rules\PackageReference.xaml"
+  file source="$(OutputPath)Rules\ProjectItemsSchema.xaml"
+  file source="$(OutputPath)Rules\ProjectReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedAnalyzerReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedAssemblyReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedCOMReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedPackageReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedProjectReference.xaml"
+  file source="$(OutputPath)Rules\ResolvedSdkReference.xaml"
+  file source="$(OutputPath)Rules\SdkReference.xaml"
+  file source="$(OutputPath)Rules\SubProject.xaml"
+  file source="$(OutputPath)Rules\VisualBasic.BrowseObject.xaml"
+  file source="$(OutputPath)Rules\VisualBasic.ProjectItemsSchema.xaml"
+  file source="$(OutputPath)Rules\VisualBasic.xaml"
+  file source="$(OutputPath)Rules\WindowsLocalDebugger.xaml"

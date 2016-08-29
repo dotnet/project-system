@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="ErrorText">The error text to display in the error control.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ErrorText As String)
+        Public Sub New(ErrorText As String)
             _errorText = ErrorText
         End Sub
 
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Exception">The exception to display in the error control.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Exception As Exception)
+        Public Sub New(Exception As Exception)
             _exception = Exception
         End Sub
 
@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.
                 CloseView()

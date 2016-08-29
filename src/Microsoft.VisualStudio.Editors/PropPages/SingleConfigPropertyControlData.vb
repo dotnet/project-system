@@ -45,27 +45,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '   Argument Config: The configuration to show the property's value from, and to affect when saving, if the project is
         '     in simplified configurations mode.
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal flags As ControlDataFlags)
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, flags As ControlDataFlags)
             Me.New(Config, id, name, control, Nothing, Nothing, flags)
         End Sub
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control)
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control)
             Me.New(Config, id, name, control, Nothing, Nothing, ControlDataFlags.None)
         End Sub
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal flags As ControlDataFlags)
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags)
             Me.New(Config, id, name, control, setter, getter, flags, Nothing)
         End Sub
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal AssocControls As System.Windows.Forms.Control())
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, AssocControls As System.Windows.Forms.Control())
             Me.New(Config, id, name, control, Nothing, Nothing, ControlDataFlags.None, AssocControls)
         End Sub
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate)
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate)
             Me.New(Config, id, name, control, setter, getter, ControlDataFlags.None, Nothing)
         End Sub
 
-        Public Sub New(ByVal Config As Configs, ByVal id As Integer, ByVal name As String, ByVal control As Control, ByVal setter As SetDelegate, ByVal getter As GetDelegate, ByVal flags As ControlDataFlags, ByVal AssocControls As System.Windows.Forms.Control())
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As System.Windows.Forms.Control())
             MyBase.New(id, name, control, setter, getter, flags, AssocControls)
             Select Case Config
                 Case Configs.Debug
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If we are not in simplified configuration mode for this project, this function will return -1 to indicate all values of the property
         '''   should be considered.
         ''' </remarks>
-        Private Function IndexOfSpecificConfig(ByVal Objects() As Object) As Integer
+        Private Function IndexOfSpecificConfig(Objects() As Object) As Integer
             Debug.Assert(_specificConfigName IsNot Nothing)
             If _specificConfigName = "" Then
                 Return -1

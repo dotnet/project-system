@@ -14,23 +14,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly Lazy<IProjectThreadingService> _threadingService;
+        private readonly Lazy<IProjectLockService> _projectLockService;
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService, ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties)
+        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService, 
+                                                 ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties,
+                                                 Lazy<IProjectLockService> projectLockService)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(activeConfiguredProjectProperties, nameof(activeConfiguredProjectProperties));
+            Requires.NotNull(projectLockService, nameof(projectLockService));
 
             _project = project;
             _projectTree = projectTree;
             _threadingService = threadingService;
             _activeConfiguredProject = activeConfiguredProject;
             _activeConfiguredProjectProperties = activeConfiguredProjectProperties;
+            _projectLockService = projectLockService;
         }
 
         public IProjectThreadingService ThreadingService
@@ -56,6 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public ProjectProperties ActiveConfiguredProjectProperties
         {
             get { return _activeConfiguredProjectProperties.Value; }
+        }
+
+        public IProjectLockService ProjectLockService
+        {
+            get { return _projectLockService.Value; }
         }
     }
 }

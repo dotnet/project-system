@@ -61,11 +61,219 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analyzers.
+        /// </summary>
+        internal static string AnalyzersNodeName {
+            get {
+                return ResourceManager.GetString("AnalyzersNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assemblies.
+        /// </summary>
+        internal static string AssembliesNodeName {
+            get {
+                return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         internal static string ClassTemplateName {
             get {
                 return ResourceManager.GetString("ClassTemplateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM.
+        /// </summary>
+        internal static string ComNodeName {
+            get {
+                return ResourceManager.GetString("ComNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project &apos;{0}&apos; has been modified outside the environment, and there are unsaved changes to the project.
+        ///
+        ///Press Save As to save the unsaved changes and load the updated project from disk.
+        ///Press Discard to discard the unsaved changes and load the updated project from disk.
+        ///Press Overwrite to overwrite the external changes with your changes.
+        ///Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
+        ///    .
+        /// </summary>
+        internal static string ConflictingModificationsPrompt {
+            get {
+                return ResourceManager.GetString("ConflictingModificationsPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conflicting Project Modification Detected.
+        /// </summary>
+        internal static string ConflictingProjectModificationTitle {
+            get {
+                return ResourceManager.GetString("ConflictingProjectModificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (Loading...).
+        /// </summary>
+        internal static string DependenciesLoadingPostfix {
+            get {
+                return ResourceManager.GetString("DependenciesLoadingPostfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Errors - see Error List).
+        /// </summary>
+        internal static string DependenciesNodeErrorsSuffix {
+            get {
+                return ResourceManager.GetString("DependenciesNodeErrorsSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        internal static string DependenciesNodeName {
+            get {
+                return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Discard.
+        /// </summary>
+        internal static string Discard {
+            get {
+                return ResourceManager.GetString("Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred attempting to watch project file &apos;{0}&apos;.
+        /// </summary>
+        internal static string FailedToWatchProject {
+            get {
+                return ResourceManager.GetString("FailedToWatchProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assemblies.
+        /// </summary>
+        internal static string FrameworkAssembliesNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency.
+        /// </summary>
+        internal static string GraphNodeCategoryDependency {
+            get {
+                return ResourceManager.GetString("GraphNodeCategoryDependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Ignore.
+        /// </summary>
+        internal static string Ignore {
+            get {
+                return ResourceManager.GetString("Ignore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore A_ll.
+        /// </summary>
+        internal static string IgnoreAll {
+            get {
+                return ResourceManager.GetString("IgnoreAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected to find item type for rule {0}. The rule file is either missing or malformed..
+        /// </summary>
+        internal static string NoItemTypeForRule {
+            get {
+                return ResourceManager.GetString("NoItemTypeForRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        internal static string NuGetPackagesNodeName {
+            get {
+                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Overwrite.
+        /// </summary>
+        internal static string Overwrite {
+            get {
+                return ResourceManager.GetString("Overwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Modification Detected.
+        /// </summary>
+        internal static string ProjectModificationDlgTitle {
+            get {
+                return ResourceManager.GetString("ProjectModificationDlgTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project &apos;{0}&apos; has been modified outside the environment.
+        ///
+        ///Press Reload to load the updated project from disk.
+        ///Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
+        ///    .
+        /// </summary>
+        internal static string ProjectModificationsPrompt {
+            get {
+                return ResourceManager.GetString("ProjectModificationsPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        internal static string ProjectsNodeName {
+            get {
+                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Reload.
+        /// </summary>
+        internal static string Reload {
+            get {
+                return ResourceManager.GetString("Reload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload A_ll.
+        /// </summary>
+        internal static string ReloadAll {
+            get {
+                return ResourceManager.GetString("ReloadAll", resourceCulture);
             }
         }
         
@@ -84,6 +292,24 @@ namespace Microsoft.VisualStudio {
         internal static string RenameSymbolPrompt {
             get {
                 return ResourceManager.GetString("RenameSymbolPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Save As.
+        /// </summary>
+        internal static string SaveAs {
+            get {
+                return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SDK.
+        /// </summary>
+        internal static string SdkNodeName {
+            get {
+                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
     }

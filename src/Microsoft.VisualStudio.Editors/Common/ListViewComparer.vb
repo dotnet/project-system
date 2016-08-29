@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Get
                 Return _sortColumn
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 _sortColumn = Value
             End Set
         End Property
@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Get
                 Return _sorting
             End Get
-            Set(ByVal value As SortOrder)
+            Set(value As SortOrder)
                 _sorting = Value
             End Set
         End Property
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <Summary>
         '@  Compare two list items
         '@ </Summary>
-        Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+        Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
             Dim ret As Integer = String.Compare(GetColumnValue(x, _sortColumn), GetColumnValue(y, _sortColumn), StringComparison.OrdinalIgnoreCase)
             If ret = 0 AndAlso _sortColumn <> 0 Then
                 ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.OrdinalIgnoreCase)
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <Summary>
         '@  Get String Value of one column
         '@ </Summary>
-        Private Function GetColumnValue(ByVal obj As Object, ByVal column As Integer) As String
+        Private Function GetColumnValue(obj As Object, column As Integer) As String
             If TypeOf obj Is ListViewItem Then
                 Dim listItem As ListViewItem = CType(obj, ListViewItem)
                 Return listItem.SubItems.Item(column).Text
@@ -72,8 +72,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return String.Empty
         End Function
 
-        Public Shared Sub HandleColumnClick(ByVal listView As ListView, ByVal comparer As ListViewComparer, _
-                ByVal e As ColumnClickEventArgs)
+        Public Shared Sub HandleColumnClick(listView As ListView, comparer As ListViewComparer, _
+                e As ColumnClickEventArgs)
             Dim focusedItem As ListViewItem = listView.FocusedItem
 
             If e.Column <> comparer.SortColumn Then

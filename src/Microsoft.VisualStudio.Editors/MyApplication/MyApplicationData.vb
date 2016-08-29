@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _dirty
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _dirty = value
             End Set
         End Property
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _mySubMain
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _mySubMain = value
                 IsDirty = True
             End Set
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _mainFormNoRootNS
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _mainFormNoRootNS = value
                 IsDirty = True
             End Set
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _singleInstance
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _singleInstance = value
                 IsDirty = True
             End Set
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _shutdownMode
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 _shutdownMode = value
                 IsDirty = True
             End Set
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _enableVisualStyles
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _enableVisualStyles = value
                 IsDirty = True
             End Set
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _authenticationMode
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 _authenticationMode = value
                 IsDirty = True
             End Set
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _splashScreenNoRootNS
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _splashScreenNoRootNS = value
                 IsDirty = True
             End Set
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _saveMySettingsOnExit
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _saveMySettingsOnExit = value
                 IsDirty = True
             End Set

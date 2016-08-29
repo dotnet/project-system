@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return _namePropertyDescriptor
         End Function
 
-        Private Function GetEditor(ByVal editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Private Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
             Return Nothing
         End Function
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return New EventDescriptorCollection(New EventDescriptor() {})
         End Function
 
-        Private Function GetEvents(ByVal attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Private Function GetEvents(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
             Return GetEvents()
         End Function
 
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return GetProperties(Nothing)
         End Function
 
-        Private Function GetProperties(ByVal attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Private Function GetProperties(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
             Return New PropertyDescriptorCollection(New PropertyDescriptor() { _
                                                             _namePropertyDescriptor, _
                                                             _roamingPropertyDescriptor, _
@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                             _serializedValuePropertyDescriptor})
         End Function
 
-        Private Function GetPropertyOwner(ByVal pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Private Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
             If pd Is Nothing Then
                 ' No property descriptor => should return the current instance...
                 Return Me
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Private _owner As DesignTimeSettingInstance
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance, ByVal name As String)
+            Public Sub New(owner As DesignTimeSettingInstance, name As String)
                 MyBase.New(name, New System.Attribute() {})
                 _owner = owner
             End Sub
@@ -194,23 +194,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides Function CanResetValue(ByVal component As Object) As Boolean
+            Public Overrides Function CanResetValue(component As Object) As Boolean
                 Return False
             End Function
 
-            Public Overrides Sub ResetValue(ByVal component As Object)
+            Public Overrides Sub ResetValue(component As Object)
                 Throw New NotSupportedException()
             End Sub
 
-            Public Overrides Function ShouldSerializeValue(ByVal component As Object) As Boolean
+            Public Overrides Function ShouldSerializeValue(component As Object) As Boolean
                 Return True
             End Function
 
-            Public Overrides Function GetValue(ByVal component As Object) As Object
+            Public Overrides Function GetValue(component As Object) As Object
                 Return GetValue(DirectCast(component, DesignTimeSettingInstance))
             End Function
 
-            Protected Overrides Sub FillAttributes(ByVal attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
                 MyBase.FillAttributes(attributeList)
                 If DescriptionAttributeText <> "" Then
                     attributeList.Add(New DescriptionAttribute(DescriptionAttributeText))
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="component"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Protected MustOverride Overloads Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected MustOverride Overloads Function GetValue(component As DesignTimeSettingInstance) As Object
         End Class
 
         ''' <summary>
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptorBase
 
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance, ByVal name As String)
+            Public Sub New(owner As DesignTimeSettingInstance, name As String)
                 MyBase.New(owner, name)
             End Sub
 
@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="component"></param>
             ''' <param name="value"></param>
             ''' <remarks></remarks>
-            Public NotOverridable Overrides Sub SetValue(ByVal component As Object, ByVal value As Object)
+            Public NotOverridable Overrides Sub SetValue(component As Object, value As Object)
                 Dim instance As DesignTimeSettingInstance = DirectCast(component, DesignTimeSettingInstance)
                 Dim ccsvc As System.ComponentModel.Design.IComponentChangeService = Nothing
                 Dim host As System.ComponentModel.Design.IDesignerHost = Nothing
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="component"></param>
             ''' <param name="value"></param>
             ''' <remarks></remarks>
-            Protected MustOverride Overloads Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected MustOverride Overloads Sub SetValue(component As DesignTimeSettingInstance, value As Object)
 
 
         End Class
@@ -327,11 +327,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class GenerateDefaultValueInCodePropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "GenerateDefaultValueInCode")
             End Sub
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.GenerateDefaultValueInCode
             End Function
 
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetGenerateDefaultValueInCode(CBool(value))
             End Sub
 
@@ -367,15 +367,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class NamePropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "Name")
             End Sub
 
-            Public Overrides Function CanResetValue(ByVal component As Object) As Boolean
+            Public Overrides Function CanResetValue(component As Object) As Boolean
                 Return False
             End Function
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.Name
             End Function
 
@@ -391,7 +391,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetName(DirectCast(value, String))
             End Sub
 
@@ -411,11 +411,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class RoamingPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "Roaming")
             End Sub
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.Roaming
             End Function
 
@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetRoaming(CBool(value))
             End Sub
 
@@ -451,11 +451,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class DescriptionPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "Description")
             End Sub
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.Description
             End Function
 
@@ -471,7 +471,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetDescription(DirectCast(value, String))
             End Sub
 
@@ -491,11 +491,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class ProviderPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "Provider")
             End Sub
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.Provider
             End Function
 
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetProvider(DirectCast(value, String))
             End Sub
 
@@ -531,11 +531,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class ScopePropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "Scope")
             End Sub
 
-            Protected Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.Scope
             End Function
 
@@ -552,11 +552,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub FillAttributes(ByVal attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
                 MyBase.FillAttributes(attributeList)
                 attributeList.Add(New TypeConverterAttribute(GetType(ScopeConverter)))
             End Sub
-            Protected Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetScope(CType(value, DesignTimeSettingInstance.SettingScope))
             End Sub
 
@@ -583,11 +583,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class SettingTypeNamePropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "SettingTypeName")
             End Sub
 
-            Protected Overloads Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overloads Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.SettingTypeName
             End Function
 
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overloads Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overloads Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetSettingTypeName(DirectCast(value, String))
             End Sub
 
@@ -624,11 +624,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class SerializedValuePropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptor
 
-            Public Sub New(ByVal owner As DesignTimeSettingInstance)
+            Public Sub New(owner As DesignTimeSettingInstance)
                 MyBase.New(owner, "SerializedValue")
             End Sub
 
-            Protected Overloads Overrides Function GetValue(ByVal component As DesignTimeSettingInstance) As Object
+            Protected Overloads Overrides Function GetValue(component As DesignTimeSettingInstance) As Object
                 Return component.SerializedValue
             End Function
 
@@ -644,7 +644,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overloads Overrides Sub SetValue(ByVal component As DesignTimeSettingInstance, ByVal value As Object)
+            Protected Overloads Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
                 component.SetSerializedValue(DirectCast(value, String))
             End Sub
 
@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Protected Overrides Sub FillAttributes(ByVal attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
                 MyBase.FillAttributes(attributeList)
                 attributeList.Add(New BrowsableAttribute(False))
             End Sub
@@ -681,7 +681,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 MyBase.New(GetType(DesignTimeSettingInstance.SettingScope))
             End Sub
 
-            Public Overrides Function CanConvertFrom(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal type As System.Type) As Boolean
+            Public Overrides Function CanConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, type As System.Type) As Boolean
                 If GetType(String).Equals(type) Then
                     Return True
                 Else
@@ -689,7 +689,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Public Overrides Function CanConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal type As System.Type) As Boolean
+            Public Overrides Function CanConvertTo(context As System.ComponentModel.ITypeDescriptorContext, type As System.Type) As Boolean
                 If GetType(String).Equals(type) Then
                     Return True
                 Else
@@ -697,7 +697,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Public Overrides Function ConvertFrom(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal culture As System.Globalization.CultureInfo, ByVal value As Object) As Object
+            Public Overrides Function ConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object) As Object
                 If TypeOf value Is String Then
                     If String.Equals(DirectCast(value, String), SR.GetString(SR.SD_ComboBoxItem_ApplicationScope), StringComparison.Ordinal) Then
                         Return DesignTimeSettingInstance.SettingScope.Application
@@ -709,7 +709,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return MyBase.ConvertFrom(context, culture, value)
             End Function
 
-            Public Overrides Function ConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal culture As System.Globalization.CultureInfo, ByVal value As Object, ByVal destinationType As System.Type) As Object
+            Public Overrides Function ConvertTo(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object, destinationType As System.Type) As Object
                 If GetType(String).Equals(destinationType) Then
                     Dim instance As DesignTimeSettingInstance = Nothing
                     If context IsNot Nothing Then
@@ -728,7 +728,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' than for other providers) we also pass in an DesignTimeSettingInstance
             ''' </summary>
             ''' <remarks>Returns the localized version for the scope</remarks>
-            Public Shared Function ConvertToLocalizedString(ByVal instance As DesignTimeSettingInstance, ByVal scope As DesignTimeSettingInstance.SettingScope) As String
+            Public Shared Function ConvertToLocalizedString(instance As DesignTimeSettingInstance, scope As DesignTimeSettingInstance.SettingScope) As String
                 Select Case scope
                     Case SettingScope.Application
                         If IsWebProvider(instance) Then
@@ -789,7 +789,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetName(ByVal value As String)
+        Public Sub SetName(value As String)
             If value = "" Then
                 Throw New ArgumentException(SR.GetString(SR.SD_ERR_NameEmpty))
             End If
@@ -834,7 +834,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetScope(ByVal value As SettingScope)
+        Public Sub SetScope(value As SettingScope)
             _settingScope = value
         End Sub
 #End Region
@@ -859,7 +859,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetSettingTypeName(ByVal value As String)
+        Public Sub SetSettingTypeName(value As String)
             _settingTypeName = value
         End Sub
 #End Region
@@ -884,7 +884,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetSerializedValue(ByVal value As String)
+        Public Sub SetSerializedValue(value As String)
             _serializedValue = value
         End Sub
 #End Region
@@ -904,7 +904,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetRoaming(ByVal value As Boolean)
+        Public Sub SetRoaming(value As Boolean)
             _roaming = value
         End Sub
 #End Region
@@ -923,7 +923,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetDescription(ByVal value As String)
+        Public Sub SetDescription(value As String)
             _description = value
         End Sub
 #End Region
@@ -942,7 +942,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetProvider(ByVal value As String)
+        Public Sub SetProvider(value As String)
             _provider = value
 
             ' Setting the provider may actually change the scope display name...
@@ -965,7 +965,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Sub SetGenerateDefaultValueInCode(ByVal value As Boolean)
+        Public Sub SetGenerateDefaultValueInCode(value As Boolean)
             _generateDefaultValueInCode = value
         End Sub
 #End Region
@@ -976,7 +976,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the provided setting instance of type connection string?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsConnectionString(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsConnectionString(instance As DesignTimeSettingInstance) As Boolean
             If instance IsNot Nothing AndAlso String.Equals(instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return True
             Else
@@ -988,7 +988,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the provided setting instance using the Web settings provider?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsWebProvider(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsWebProvider(instance As DesignTimeSettingInstance) As Boolean
             If instance IsNot Nothing AndAlso String.Equals(instance.Provider, ServicesPropPageAppConfigHelper.ClientSettingsProviderName, StringComparison.Ordinal) Then
                 Return True
             Else
@@ -1000,7 +1000,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the provided setting instance using the local file settings provider?
         ''' </summary>
         ''' <remarks>Returns true for a NULL setting instance</remarks>
-        Friend Shared Function IsLocalFileSettingsProvider(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsLocalFileSettingsProvider(instance As DesignTimeSettingInstance) As Boolean
             If instance Is Nothing Then
                 Return True
             ElseIf instance.Provider = "" Then
@@ -1017,7 +1017,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the scope for the provided setting type be read-only?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsScopeReadOnly(ByVal instance As DesignTimeSettingInstance, ByVal projectSupportsUserScopedSettings As Boolean) As Boolean
+        Friend Shared Function IsScopeReadOnly(instance As DesignTimeSettingInstance, projectSupportsUserScopedSettings As Boolean) As Boolean
             If IsConnectionString(instance) Then
                 Return True
             End If
@@ -1040,7 +1040,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="instance"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function ProjectSupportsUserScopedSettings(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function ProjectSupportsUserScopedSettings(instance As DesignTimeSettingInstance) As Boolean
             If instance Is Nothing OrElse instance.Site Is Nothing Then
                 Return True
             Else
@@ -1054,7 +1054,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function ProjectSupportsUserScopedSettings(ByVal hierarchy As IVsHierarchy) As Boolean
+        Friend Shared Function ProjectSupportsUserScopedSettings(hierarchy As IVsHierarchy) As Boolean
             If hierarchy Is Nothing Then
                 Return True
             Else
@@ -1066,7 +1066,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the roaming mode for the provided setting type be read-only?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsRoamingReadOnly(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsRoamingReadOnly(instance As DesignTimeSettingInstance) As Boolean
             If IsWebProvider(instance) Then
                 Return True
             End If
@@ -1084,7 +1084,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the name of the provided setting type be read-only?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsNameReadOnly(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsNameReadOnly(instance As DesignTimeSettingInstance) As Boolean
             If IsWebProvider(instance) Then
                 Return True
             Else
@@ -1096,7 +1096,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the type of the provided setting type be read-only?
         ''' </summary>
         ''' <remarks>Returns false for a NULL setting instance</remarks>
-        Friend Shared Function IsTypeReadOnly(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Shared Function IsTypeReadOnly(instance As DesignTimeSettingInstance) As Boolean
             If IsWebProvider(instance) Then
                 Return True
             Else
@@ -1120,7 +1120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Const s_SERIALIZATION_SCOPE As String = "Scope"
 
         'See .NET Framework Developer's Guide, "Custom Serialization" for more information
-        Protected Sub New(ByVal Info As System.Runtime.Serialization.SerializationInfo, ByVal Context As System.Runtime.Serialization.StreamingContext)
+        Protected Sub New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext)
             _description = Info.GetString(s_SERIALIZATION_DESCRIPTION)
             _generateDefaultValueInCode = Info.GetBoolean(s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE)
             _name = Info.GetString(s_SERIALIZATION_NAME)
@@ -1133,7 +1133,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
         <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
-        Private Sub GetObjectData(ByVal Info As System.Runtime.Serialization.SerializationInfo, ByVal Context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+        Private Sub GetObjectData(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
             Info.AddValue(s_SERIALIZATION_DESCRIPTION, _description)
             Info.AddValue(s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE, _generateDefaultValueInCode)
             Info.AddValue(s_SERIALIZATION_NAME, _name)

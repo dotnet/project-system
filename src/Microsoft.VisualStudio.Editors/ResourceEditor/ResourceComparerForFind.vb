@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="OrderedCategories">List of all categories, in order of desired search order</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal OrderedCategories As CategoryCollection)
+        Public Sub New(OrderedCategories As CategoryCollection)
             Debug.Assert(OrderedCategories IsNot Nothing)
             _categories = OrderedCategories
 
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">ArrayList of Resources to source (will be sorted in place)</param>
         ''' <remarks></remarks>
-        Public Sub SortResources(ByVal Resources As ArrayList)
+        Public Sub SortResources(Resources As ArrayList)
             Resources.Sort(Me)
         End Sub
 
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="y">Second object to compare.</param>
         ''' <returns>-1, 0 or 1, depending on whether x is less than, equal to or greater than y, respectively.</returns>
         ''' <remarks>This function gets called by ArrayList.Sort for each pair of resources to be sorted.</remarks>
-        Private Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+        Private Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
             Debug.Assert(TypeOf x Is Resource AndAlso TypeOf y Is Resource, "ResourceComparer: expected Resources")
             Dim Resource1 As Resource = DirectCast(x, Resource)
             Dim Resource2 As Resource = DirectCast(y, Resource)

@@ -9,6 +9,7 @@ Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Windows.Forms
 Imports Microsoft.CodeAnalysis
+Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.VisualStudio.ComponentModelHost
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
@@ -101,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.CleanupCOMReferences()
         End Sub
 
-        Protected Overrides Sub EnableAllControls(ByVal _enabled As Boolean)
+        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
             MyBase.EnableAllControls(_enabled)
 
             ReferenceList.Enabled = _enabled
@@ -181,15 +182,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
 
-        Public Overrides Function ReadUserDefinedProperty(ByVal PropertyName As String, ByRef Value As Object) As Boolean
+        Public Overrides Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
             If PropertyName = "ImportList" Then
-                Value = GetCurrentImportsList()
+                Value = GetCurrentImports()
                 Return True
             End If
             Return False
         End Function
 
-        Public Overrides Function WriteUserDefinedProperty(ByVal PropertyName As String, ByVal Value As Object) As Boolean
+        Public Overrides Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
             If PropertyName = "ImportList" Then
                 Debug.Assert(TypeOf Value Is String(), "Invalid value type")
                 SaveImportedNamespaces(DirectCast(Value, String()))
@@ -198,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Public Overrides Function GetUserDefinedPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             If PropertyName = "ImportList" Then
                 Return New UserPropertyDescriptor(PropertyName, GetType(String()))
             End If
@@ -212,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="proposedSize"></param>
         ''' <remarks>We need implement this, because split panel doesn't support AutoSize well</remarks>
-        Public Overrides Function GetPreferredSize(ByVal proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
             Dim preferredSize As Size = MyBase.GetPreferredSize(proposedSize)
             Dim referenceAreaPreferredSize As Size = System.Drawing.Size.Empty
             Dim importsAreaPreferredSize As Size = System.Drawing.Size.Empty
@@ -273,7 +274,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Note: it rarely happens. (It happens we have a post message when a third party start the compiler and wait for something.)
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub DelayPostingMessage(ByVal messageId As Object)
+        Private Sub DelayPostingMessage(messageId As Object)
             If Not IsDisposed Then
                 Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, CInt(messageId), 0, 0)
             End If
@@ -285,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="activated"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnPageActivated(ByVal activated As Boolean)
+        Protected Overrides Sub OnPageActivated(activated As Boolean)
             MyBase.OnPageActivated(activated)
             If IsActivated Then
                 PostRefreshImportListMessage()
@@ -301,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="refObject">Internal Reference Object, which we push to the property grid</param>
         ''' <returns>ListViewItem object containing information from reference</returns>
         ''' <remarks>Helper for RefreshReferenceList() and UnusedReferencePropPage</remarks>
-        Friend Shared Function ReferenceToListViewItem(ByVal ref As VSLangProj.Reference, ByVal refObject As Object) As ListViewItem
+        Friend Shared Function ReferenceToListViewItem(ref As VSLangProj.Reference, refObject As Object) As ListViewItem
 
             Debug.Assert(ref IsNot Nothing)
 
@@ -352,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="refObject">Internal Reference Object</param>
         ''' <returns>ListViewItem object containing information from reference</returns>
         ''' <remarks>Helper for RefreshReferenceList()</remarks>
-        Private Function WebReferenceToListViewItem(ByVal webRef As EnvDTE.ProjectItem, ByVal refObject As Object) As ListViewItem
+        Private Function WebReferenceToListViewItem(webRef As EnvDTE.ProjectItem, refObject As Object) As ListViewItem
             Debug.Assert(webRef IsNot Nothing)
 
             Dim lvi As ListViewItem
@@ -376,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="serviceReference">service reference component</param>
         ''' <returns>ListViewItem object containing information from reference</returns>
         ''' <remarks>Helper for RefreshReferenceList()</remarks>
-        Private Function ServiceReferenceToListViewItem(ByVal serviceReference As ServiceReferenceComponent) As ListViewItem
+        Private Function ServiceReferenceToListViewItem(serviceReference As ServiceReferenceComponent) As ListViewItem
             Debug.Assert(serviceReference IsNot Nothing)
 
             Dim lvi As ListViewItem
@@ -406,7 +407,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ReferenceListData">reference object lists</param>
         ''' <remarks></remarks>
-        Private Sub RefreshReferenceList(ByVal ReferenceListData As ArrayList)
+        Private Sub RefreshReferenceList(ReferenceListData As ArrayList)
 
             ReferenceList.BeginUpdate()
             Try
@@ -516,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="webRef"></param>
         ''' <return></return>
         ''' <remarks></remarks>
-        Private Function IsWebReferenceItem(ByVal webRef As EnvDTE.ProjectItem) As Boolean
+        Private Function IsWebReferenceItem(webRef As EnvDTE.ProjectItem) As Boolean
             Dim webRefProperty As EnvDTE.Property = Nothing
             Dim properties As EnvDTE.Properties = webRef.Properties
             If properties IsNot Nothing Then
@@ -611,13 +612,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Class
 
         Private Function NamespaceIsReferenceableFromCompilation([namespace] As INamespaceSymbol, compilation As Compilation) As Boolean
-            For Each type In [namespace].GetTypeMembers()
-                If type.CanBeReferencedByName Then
-                    If type.DeclaredAccessibility = CodeAnalysis.Accessibility.Public Then
+            For Each typeMember In [namespace].GetTypeMembers()
+                If typeMember.CanBeReferencedByName Then
+                    If typeMember.DeclaredAccessibility = CodeAnalysis.Accessibility.Public Then
                         Return True
                     End If
 
-                    If type.ContainingAssembly.Equals(compilation.Assembly) OrElse type.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
+                    If typeMember.ContainingAssembly.Equals(compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
                         Return True
                     End If
                 End If
@@ -626,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Private Sub PopulateImportsList(ByVal InitSelections As Boolean, Optional ByVal RemoveInvalidEntries As Boolean = False)
+        Private Sub PopulateImportsList(InitSelections As Boolean, Optional RemoveInvalidEntries As Boolean = False)
             Dim Namespaces As IList(Of String)
             Dim UserImports As String()
 
@@ -637,7 +638,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' get namespace list earlier to prevent reentrance in this function to cause duplicated items in the list
             Namespaces = GetReferencedNamespaceList()
-            UserImports = GetCurrentImportsList()
+            UserImports = GetCurrentImports()
 
             ' Gotta make a copy of the currently selected items so I can re-select 'em after
             ' I have repopulated the list...
@@ -710,13 +711,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableImportGroup()
         End Sub
 
-        Private Sub AddNamespaceToImportList(ByVal _namespace As String)
+        Private Sub AddNamespaceToImportList(_namespace As String)
             If ImportList.Items.IndexOf(_namespace) = -1 Then
                 ImportList.Items.Add(_namespace)
             End If
         End Sub
 
-        Private Sub SelectNamespaceInImportList(ByVal _namespace As String, ByVal MoveToTop As Boolean)
+        Private Sub SelectNamespaceInImportList(_namespace As String, MoveToTop As Boolean)
             Dim index As Integer
             index = ImportList.Items.IndexOf(_namespace)
             If index = -1 AndAlso Not MoveToTop Then
@@ -763,31 +764,61 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
         End Sub
 
-        Private Function GetCurrentImportsList(ByVal _Imports As VSLangProj.Imports) As String()
-            Dim UserImports As String()
-            Dim ImportsCount As Integer
+        Private Function GetCurrentImports() As String()
 
-            ImportsCount = _Imports.Count
-            If ImportsCount <= 0 Then
-                UserImports = New String() {}
-            Else
-                UserImports = New String(ImportsCount - 1) {}
+            Dim threadedWaitDialogFactory = DirectCast(ServiceProvider.GetService(GetType(SVsThreadedWaitDialogFactory)), IVsThreadedWaitDialogFactory)
+            Dim threadedWaitDialog2 As IVsThreadedWaitDialog2 = Nothing
+            ErrorHandler.ThrowOnFailure(threadedWaitDialogFactory.CreateInstance(threadedWaitDialog2))
 
-                For index As Integer = 0 To UBound(UserImports)
-                    UserImports(index) = _Imports.Item(index + 1)
+            Dim threadedWaitDialog3 = DirectCast(threadedWaitDialog2, IVsThreadedWaitDialog3)
+            Dim cancellationTokenSource As New CancellationTokenSource
+            Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
+            threadedWaitDialog3.StartWaitDialogWithCallback(
+                SR.GetString(SR.PropPage_CurrentImportsTitle),
+                SR.GetString(SR.PropPage_ComputingCurrentImportsMessage),
+                szProgressText:=Nothing,
+                varStatusBmpAnim:=Nothing,
+                szStatusBarText:=Nothing,
+                fIsCancelable:=True,
+                iDelayToShowDialog:=1,
+                fShowProgress:=True,
+                iTotalSteps:=0,
+                iCurrentStep:=0,
+                pCallback:=cancellationCallback)
+
+            Try
+                Dim componentModel = DirectCast(ServiceProvider.GetService(GetType(SComponentModel)), IComponentModel)
+                Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
+                Dim solution = visualStudioWorkspace.CurrentSolution
+                Dim CurrentImportNames As New List(Of String)
+
+                For Each projectId In solution.ProjectIds
+                    ' We need to find the project that matches by IVsHierarchy
+                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
+                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
+                        compilationTask.Wait(cancellationTokenSource.Token)
+                        Dim compilation = compilationTask.Result
+                        Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
+                        If (compilationOptions IsNot Nothing) Then
+                            For Each globalImport In compilationOptions.GlobalImports
+                                CurrentImportNames.Add(globalImport.Name)
+                            Next
+                            CurrentImportNames.Sort(CaseInsensitiveComparison.Comparer)
+                        End If
+                        Return CurrentImportNames.ToArray()
+                        End If
                 Next
-            End If
-            Return UserImports
-        End Function
 
-        Private Function GetCurrentImportsList() As String()
-            Dim theVSProject As VSLangProj.VSProject
-            Dim _Imports As VSLangProj.Imports
+                ' Return empty list if an error occurred
+                Return New String() {}
 
-            theVSProject = CType(DTEProject.Object, VSLangProj.VSProject)
-
-            _Imports = theVSProject.Imports
-            Return GetCurrentImportsList(_Imports)
+            Catch ex As OperationCanceledException
+                ' Return empty list if we canceled
+                Return New String() {}
+            Finally
+                Dim canceled As Integer = 0
+                threadedWaitDialog3.EndWaitDialog(canceled)
+            End Try
         End Function
 
         ''' <summary>
@@ -828,7 +859,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Each import is stored in the hashtable with the
             ' value set to "True" if it is a namespace known to the compiler
             Dim UserDefinedImports As New Dictionary(Of String, Boolean)
-            For Each UserImport As String In GetCurrentImportsList()
+            For Each UserImport As String In GetCurrentImports()
                 UserDefinedImports.Add(UserImport, ReferencedNamespaces.Contains(UserImport))
             Next
             Return UserDefinedImports
@@ -843,7 +874,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function TrimUserImports(ByVal ImportsSnapshot As IDictionary(Of String, Boolean)) As String()
+        Private Function TrimUserImports(ImportsSnapshot As IDictionary(Of String, Boolean)) As String()
             ' Let's give the compiler time to update the namespace list - it looks like we may
             ' have a race-condition here, but I can't find out why.... and o
             System.Threading.Thread.Sleep(10)
@@ -873,7 +904,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ResultList.ToArray()
         End Function
 
-        Private Sub RemoveReference_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RemoveReference.Click
+        Private Sub RemoveReference_Click(sender As Object, e As System.EventArgs) Handles RemoveReference.Click
             RemoveSelectedReference()
         End Sub
 
@@ -996,7 +1027,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub addContextMenuStrip_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles addContextMenuStrip.Opening
+        Private Sub addContextMenuStrip_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles addContextMenuStrip.Opening
             Dim vsHierarchy As IVsHierarchy = ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject)
             If vsHierarchy IsNot Nothing Then
                 webReferenceToolStripMenuItem.Visible = Utils.IsWebReferenceSupportedByDefaultInProject(vsHierarchy)
@@ -1004,7 +1035,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub referenceToolStripMenuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles referenceToolStripMenuItem.Click, addSplitButton.Click
+        Private Sub referenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles referenceToolStripMenuItem.Click, addSplitButton.Click
             Dim UIHier As IVsUIHierarchy
             If TypeOf ProjectHierarchy Is IVsUIHierarchy Then
                 Try
@@ -1040,7 +1071,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub webReferenceToolStripMenuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles webReferenceToolStripMenuItem.Click
+        Private Sub webReferenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles webReferenceToolStripMenuItem.Click
             Dim AddWebRefDlg As IVsAddWebReferenceDlg2
             Dim DiscoveryResult As IDiscoveryResult = Nothing
 
@@ -1077,7 +1108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub serviceReferenceToolStripMenuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles serviceReferenceToolStripMenuItem.Click
+        Private Sub serviceReferenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles serviceReferenceToolStripMenuItem.Click
             Dim AddServiceRefDlg As IVsAddWebReferenceDlg3
 
             AddServiceRefDlg = CType(ServiceProvider.GetService(GetType(SVsAddWebReferenceDlg3)), IVsAddWebReferenceDlg3)
@@ -1224,14 +1255,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             UpdateUserImportButton.Enabled = EnableUpdateUserImportButton
         End Sub
 
-        Private Sub ReferenceList_ItemActivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles ReferenceList.ItemActivate
+        Private Sub ReferenceList_ItemActivate(sender As Object, e As System.EventArgs) Handles ReferenceList.ItemActivate
             Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
             If items.Count > 0 Then
                 DTE.ExecuteCommand("View.PropertiesWindow", String.Empty)
             End If
         End Sub
 
-        Private Sub ReferenceList_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ReferenceList.KeyDown
+        Private Sub ReferenceList_KeyDown(sender As Object, e As KeyEventArgs) Handles ReferenceList.KeyDown
             If e.KeyCode = Keys.Delete Then
                 Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
                 If items.Count > 0 Then
@@ -1240,13 +1271,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferenceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ReferenceList.SelectedIndexChanged
+        Private Sub ReferenceList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ReferenceList.SelectedIndexChanged
             Me.EnableReferenceGroup()
 
             PushSelection()
         End Sub
 
-        Private Sub ReferenceList_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles ReferenceList.Enter
+        Private Sub ReferenceList_Enter(sender As Object, e As System.EventArgs) Handles ReferenceList.Enter
             PushSelection()
         End Sub
 
@@ -1255,11 +1286,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        Private Sub ReferenceList_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ReferenceList.ColumnClick
+        Private Sub ReferenceList_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles ReferenceList.ColumnClick
             ListViewComparer.HandleColumnClick(ReferenceList, _referenceSorter, e)
         End Sub
 
-        Private Sub UpdateReferences_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles UpdateReferences.Click
+        Private Sub UpdateReferences_Click(sender As Object, e As System.EventArgs) Handles UpdateReferences.Click
             Using New WaitCursor
                 Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
                 For Each item As ListViewItem In items
@@ -1278,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub UnusedReferences_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UnusedReferences.Click
+        Private Sub UnusedReferences_Click(sender As System.Object, e As System.EventArgs) Handles UnusedReferences.Click
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
@@ -1295,11 +1326,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferencePathsButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ReferencePathsButton.Click
+        Private Sub ReferencePathsButton_Click(sender As Object, e As System.EventArgs) Handles ReferencePathsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
         End Sub
 
-        Private Sub ImportList_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ImportList.ItemCheck
+        Private Sub ImportList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles ImportList.ItemCheck
             'Don't apply yet, this event is fired before the actual value has been updated
             If Not _updatingImportList Then
                 Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTCHANGED, e.Index, 0)
@@ -1321,7 +1352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportPanel_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles addUserImportTableLayoutPanel.Enter
+        Private Sub ImportPanel_Enter(sender As Object, e As System.EventArgs) Handles addUserImportTableLayoutPanel.Enter
             ' We restore the selection through a message pump. 
             ' The reason is vswhidbey 496909.
             ' When the user clicks an item in the ListBox to select it, we will get OnEnter first, then we noticed the selection change.
@@ -1357,7 +1388,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportPanel_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles addUserImportTableLayoutPanel.Leave
+        Private Sub ImportPanel_Leave(sender As Object, e As System.EventArgs) Handles addUserImportTableLayoutPanel.Leave
             _hidingImportListSelectedItem = True
             Try
                 _importListSelectedItem = DirectCast(Me.ImportList.SelectedItem, String)
@@ -1377,7 +1408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' CONSIDER: This is how the msvbprj code did it, and it may not work well
         '''         for other compilers (assuming this page is later shared)
         '''</remarks>
-        Private Function SaveImportedNamespaces(ByVal NewImportList As String()) As Boolean
+        Private Function SaveImportedNamespaces(NewImportList As String()) As Boolean
             Dim theVSProject As VSLangProj.VSProject
             Dim _Imports As VSLangProj.Imports
             Dim index, ListIndex As Integer
@@ -1393,7 +1424,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _ignoreImportEvent = True
 
                 'For backward compatibility we remove all non-imported ones from the current Imports before adding any new ones
-                Dim CurrentImports As String() = GetCurrentImportsList(_Imports)
+                Dim CurrentImports As String() = GetCurrentImports()
 
                 index = CurrentImports.Length
                 For index = _Imports.Count To 1 Step -1
@@ -1449,7 +1480,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return valueUpdated
         End Function
 
-        Private Function LookupInStringArray(ByVal StringArray As String(), ByVal Text As String) As Integer
+        Private Function LookupInStringArray(StringArray As String(), Text As String) As Integer
             For i As Integer = 0 To StringArray.Length - 1
                 If String.Compare(StringArray(i), Text) = 0 Then
                     Return i
@@ -1459,7 +1490,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         'Get the user selected values and update the project's Imports list
-        Private Function ImportListGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function ImportListGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             'Now add anything new
             Dim CheckedItems As CheckedListBox.CheckedItemCollection = ImportList.CheckedItems
 
@@ -1474,7 +1505,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub CheckCurrentImports(ByVal UserImports As String(), ByVal updateSelection As Boolean)
+        Private Sub CheckCurrentImports(UserImports As String(), updateSelection As Boolean)
             'Check the user imports and sort them
             Dim SaveState As Boolean = m_fInsideInit
             Dim lastUpdatedNamespace As String = Nothing
@@ -1521,17 +1552,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub CheckCurrentImports()
-            CheckCurrentImports(GetCurrentImportsList(), False)
+            CheckCurrentImports(GetCurrentImports(), False)
         End Sub
 
-        Private Function ImportListSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function ImportListSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim UserImports As String() = DirectCast(value, String()) 'GetCurrentImportsList()
             'ControlData()(0).InitialValue = UserImports 'Save import list values
             CheckCurrentImports(UserImports, True)
             Return True
         End Function
 
-        Protected Overrides Sub OnApplyComplete(ByVal ApplySuccessful As Boolean)
+        Protected Overrides Sub OnApplyComplete(ApplySuccessful As Boolean)
             'Refress the lists
             m_fInsideInit = True
             Try
@@ -1552,7 +1583,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ReferenceList">The listview control to set column widths</param>
         ''' <param name="ColOffset">Offset to "Reference Name" column</param>
         ''' <remarks></remarks>
-        Friend Shared Sub SetReferenceListColumnWidths(ByRef owner As Control, ByRef ReferenceList As ListView, ByVal ColOffset As Integer)
+        Friend Shared Sub SetReferenceListColumnWidths(ByRef owner As Control, ByRef ReferenceList As ListView, ColOffset As Integer)
             Dim _handle As IntPtr = ReferenceList.Handle
 
             ' By default size all columns by size of column header text
@@ -1592,7 +1623,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropReference
         End Function
 
-        Private Sub ImportList_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles ImportList.Validated
+        Private Sub ImportList_Validated(sender As Object, e As System.EventArgs) Handles ImportList.Validated
         End Sub
 
         ''' <summary>
@@ -1601,10 +1632,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AddUserImportButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddUserImportButton.Click
+        Private Sub AddUserImportButton_Click(sender As System.Object, e As System.EventArgs) Handles AddUserImportButton.Click
             Debug.Assert(UserImportTextBox.Text.Trim().Length > 0, "Why was the AddUserImportButton enabled when the UserImport text was empty?")
             ' Get the current list
-            Dim CurrentImports As String() = GetCurrentImportsList()
+            Dim CurrentImports As String() = GetCurrentImports()
             Dim ScrubbedUserImport As String = UserImportTextBox.Text.Trim()
 
             'Make place for one more item...
@@ -1642,7 +1673,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ImportList.SelectedIndexChanged
+        Private Sub ImportList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ImportList.SelectedIndexChanged
 
             If Not _hidingImportListSelectedItem Then
                 _importListSelectedItem = Nothing
@@ -1658,13 +1689,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UpdateUserImportButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateUserImportButton.Click
+        Private Sub UpdateUserImportButton_Click(sender As System.Object, e As System.EventArgs) Handles UpdateUserImportButton.Click
 
             Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso
                         ImportListSelectedItem IsNot Nothing AndAlso
                         ImportListSelectedItem.Length > 0, "Why do we try to update more than one selected item?!")
 
-            Dim UserImports As String() = GetCurrentImportsList()
+            Dim UserImports As String() = GetCurrentImports()
             Dim UserImportToUpdate As String = ImportListSelectedItem
             Dim ScrubbedUpdatedUserImport As String = UserImportTextBox.Text.Trim()
 
@@ -1709,11 +1740,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UserImportTextBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles UserImportTextBox.TextChanged
+        Private Sub UserImportTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles UserImportTextBox.TextChanged
             EnableImportGroup()
         End Sub
 
-        Private Sub AdviseReferencesEvents(ByVal vsProject As VSLangProj.VSProject)
+        Private Sub AdviseReferencesEvents(vsProject As VSLangProj.VSProject)
             If vsProject IsNot Nothing AndAlso _referencesEventsCookie Is Nothing Then
                 Dim projectEvents As VSLangProj.VSProjectEvents = vsProject.Events
                 Dim referencesEvents As VSLangProj.ReferencesEvents = projectEvents.ReferencesEvents
@@ -1728,7 +1759,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub AdviseImportsEvents(ByVal vsProject As VSLangProj.VSProject)
+        Private Sub AdviseImportsEvents(vsProject As VSLangProj.VSProject)
             If vsProject IsNot Nothing AndAlso _importsEventsCookie Is Nothing Then
                 Dim projectEvents As VSLangProj.VSProjectEvents = vsProject.Events
                 Dim importsEvents As VSLangProj.ImportsEvents = projectEvents.ImportsEvents
@@ -1763,7 +1794,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "VSLangProj._dispReferencesEvents"
         ' We monitor Reference collection events to update our lists...
-        Public Sub ReferenceAdded(ByVal reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceAdded
+        Public Sub ReferenceAdded(reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceAdded
             If Not _updatingReferences Then
                 If Not IsImplicitlyAddedReference(reference) Then
                     AddDelayUpdateItem(ReferenceUpdateType.ReferenceAdded, reference)
@@ -1772,14 +1803,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Public Sub ReferenceChanged(ByVal reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceChanged
+        Public Sub ReferenceChanged(reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceChanged
             If Not _updatingReferences Then
                 AddDelayUpdateItem(ReferenceUpdateType.ReferenceChanged, reference)
                 PostRefreshReferenceListMessage()
             End If
         End Sub
 
-        Public Sub ReferenceRemoved(ByVal reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceRemoved
+        Public Sub ReferenceRemoved(reference As VSLangProj.Reference) Implements VSLangProj._dispReferencesEvents.ReferenceRemoved
             If Not _updatingReferences Then
                 If Not IsImplicitlyAddedReference(reference) Then
                     AddDelayUpdateItem(ReferenceUpdateType.ReferenceRemoved, reference)
@@ -1790,14 +1821,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 #Region "VSLangProj._dispImportsEvents"
-        Public Sub ImportAdded(ByVal importNamespace As String) Implements VSLangProj._dispImportsEvents.ImportAdded
+        Public Sub ImportAdded(importNamespace As String) Implements VSLangProj._dispImportsEvents.ImportAdded
             ' We always post a refresh message when the window becomes activated. So ignore it if we are not activated.
             If Not _ignoreImportEvent AndAlso IsActivated Then
                 PostRefreshImportListMessage()
             End If
         End Sub
 
-        Public Sub ImportRemoved(ByVal importNamespace As String) Implements VSLangProj._dispImportsEvents.ImportRemoved
+        Public Sub ImportRemoved(importNamespace As String) Implements VSLangProj._dispImportsEvents.ImportRemoved
             ' We always post a refresh message when the window becomes activated. So ignore it if we are not activated.
             If Not _ignoreImportEvent AndAlso IsActivated Then
                 PostRefreshImportListMessage()
@@ -1810,7 +1841,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' We only pay attention to the WebReference items inside the project the reference page works with...
         Private WithEvents _projectItemEvents As EnvDTE.ProjectItemsEvents
 
-        Public Sub ProjectItemEvents_ItemAdded(ByVal projectItem As EnvDTE.ProjectItem) Handles _projectItemEvents.ItemAdded
+        Public Sub ProjectItemEvents_ItemAdded(projectItem As EnvDTE.ProjectItem) Handles _projectItemEvents.ItemAdded
             If Not _updatingReferences AndAlso projectItem.ContainingProject Is DTEProject Then
                 Dim theVSProject As VSLangProj.VSProject = CType(DTEProject.Object, VSLangProj.VSProject)
                 If theVSProject.WebReferencesFolder Is projectItem.Collection.Parent AndAlso IsWebReferenceItem(projectItem) Then
@@ -1820,14 +1851,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Public Sub ProjectItemEvents_ItemRemoved(ByVal projectItem As EnvDTE.ProjectItem) Handles _projectItemEvents.ItemRemoved
+        Public Sub ProjectItemEvents_ItemRemoved(projectItem As EnvDTE.ProjectItem) Handles _projectItemEvents.ItemRemoved
             If Not _updatingReferences AndAlso projectItem.ContainingProject Is DTEProject Then
                 AddDelayUpdateItem(ReferenceUpdateType.ReferenceRemoved, projectItem)
                 PostRefreshReferenceListMessage()
             End If
         End Sub
 
-        Public Sub ProjectItemEvents_ItemRenamed(ByVal projectItem As EnvDTE.ProjectItem, ByVal oldName As String) Handles _projectItemEvents.ItemRenamed
+        Public Sub ProjectItemEvents_ItemRenamed(projectItem As EnvDTE.ProjectItem, oldName As String) Handles _projectItemEvents.ItemRenamed
             If Not _updatingReferences AndAlso projectItem.ContainingProject Is DTEProject Then
                 Dim theVSProject As VSLangProj.VSProject = CType(DTEProject.Object, VSLangProj.VSProject)
                 If theVSProject.WebReferencesFolder Is projectItem.Collection.Parent AndAlso IsWebReferenceItem(projectItem) Then
@@ -1875,16 +1906,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub OnMetadataChanging(ByVal pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnMetadataChanging
+        Private Sub OnMetadataChanging(pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnMetadataChanging
         End Sub
 
-        Private Sub OnMetadataChanged(ByVal pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnMetadataChanged
+        Private Sub OnMetadataChanged(pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnMetadataChanged
         End Sub
 
-        Private Sub OnReferenceGroupPropertiesChanging(ByVal pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanging
+        Private Sub OnReferenceGroupPropertiesChanging(pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanging
         End Sub
 
-        Private Sub OnReferenceGroupPropertiesChanged(ByVal pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanged
+        Private Sub OnReferenceGroupPropertiesChanged(pReferenceGroup As IVsWCFReferenceGroup) Implements IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanged
             AddDelayUpdateItem(ReferenceUpdateType.ReferenceChanged, pReferenceGroup)
             PostRefreshReferenceListMessage()
         End Sub
@@ -1945,17 +1976,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private _webReference As EnvDTE.ProjectItem
             Private _serviceReference As IVsWCFReferenceGroup
 
-            Friend Sub New(ByVal updateType As ReferenceUpdateType, ByVal reference As VSLangProj.Reference)
+            Friend Sub New(updateType As ReferenceUpdateType, reference As VSLangProj.Reference)
                 _updateType = updateType
                 _reference = reference
             End Sub
 
-            Friend Sub New(ByVal updateType As ReferenceUpdateType, ByVal item As EnvDTE.ProjectItem)
+            Friend Sub New(updateType As ReferenceUpdateType, item As EnvDTE.ProjectItem)
                 _updateType = updateType
                 _webReference = item
             End Sub
 
-            Friend Sub New(ByVal updateType As ReferenceUpdateType, ByVal item As IVsWCFReferenceGroup)
+            Friend Sub New(updateType As ReferenceUpdateType, item As IVsWCFReferenceGroup)
                 _updateType = updateType
                 _serviceReference = item
             End Sub
@@ -1989,7 +2020,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <Summary>
         ''' We save information in a collection when we receive Reference change event.
         ''' </Summary>
-        Private Overloads Sub AddDelayUpdateItem(ByVal updateType As ReferenceUpdateType, ByVal reference As VSLangProj.Reference)
+        Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, reference As VSLangProj.Reference)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
             End If
@@ -1999,7 +2030,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <Summary>
         ''' We save information in a collection when we receive WebReference change event.
         ''' </Summary>
-        Private Overloads Sub AddDelayUpdateItem(ByVal updateType As ReferenceUpdateType, ByVal item As EnvDTE.ProjectItem)
+        Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, item As EnvDTE.ProjectItem)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
             End If
@@ -2009,7 +2040,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <Summary>
         ''' We save information in a collection when we receive ServiceReference change event.
         ''' </Summary>
-        Private Overloads Sub AddDelayUpdateItem(ByVal updateType As ReferenceUpdateType, ByVal item As IVsWCFReferenceGroup)
+        Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, item As IVsWCFReferenceGroup)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
             End If
@@ -2136,7 +2167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <Summary>
         ''' This function will be called when the customer change the property on the propertyPage, we need update our UI as well...
         ''' </Summary>
-        Friend Sub OnWebReferencePropertyChanged(ByVal webReference As WebReferenceComponent)
+        Friend Sub OnWebReferencePropertyChanged(webReference As WebReferenceComponent)
             HoldSelectionChange(True)
             Try
                 For i As Integer = 0 To ReferenceList.Items.Count - 1
@@ -2161,7 +2192,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' This is the interface we implement to push the object to the propertyGrid...
 
         ' get the number of the objects in the whole collection or only selected objects
-        Private Function CountObjects(ByVal flags As UInteger, ByRef pc As UInteger) As Integer Implements ISelectionContainer.CountObjects
+        Private Function CountObjects(flags As UInteger, ByRef pc As UInteger) As Integer Implements ISelectionContainer.CountObjects
             If flags = 1 Then   ' GETOBJS_ALL
                 pc = CUInt(ReferenceList.Items.Count)
             ElseIf flags = 2 Then ' GETOBJS_SELECTED
@@ -2173,7 +2204,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' get objects in the whole collection or only selected objects
-        Private Function GetObjects(ByVal flags As UInteger, ByVal cObjects As UInteger, ByVal objects As Object()) As Integer Implements ISelectionContainer.GetObjects
+        Private Function GetObjects(flags As UInteger, cObjects As UInteger, objects As Object()) As Integer Implements ISelectionContainer.GetObjects
             If flags = 1 Then   ' GETOBJS_ALL
                 For i As Integer = 0 To Math.Min(ReferenceList.Items.Count, CInt(cObjects)) - 1
                     objects(i) = ReferenceList.Items(i).Tag
@@ -2190,7 +2221,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' select objects -- it will be called when the customer changes selection on the dropdown box of the propertyGrid
-        Private Function SelectObjects(ByVal ucSelected As UInteger, ByVal objects As Object(), ByVal flags As UInteger) As Integer Implements ISelectionContainer.SelectObjects
+        Private Function SelectObjects(ucSelected As UInteger, objects As Object(), flags As UInteger) As Integer Implements ISelectionContainer.SelectObjects
             HoldSelectionChange(True)
             Try
                 ReferenceList.Select()
@@ -2215,7 +2246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ' This is a state when we shouldn't push the selection to the propertyGrid.
         ' We can not push the selection when the propertyGrid calls us to change the selection, and sometime, we hold it to prevent refreshing the propertyGrid when we do something...
-        Private Sub HoldSelectionChange(ByVal needHold As Boolean)
+        Private Sub HoldSelectionChange(needHold As Boolean)
             If needHold Then
                 _holdSelectionChange = _holdSelectionChange + 1
             Else
@@ -2301,7 +2332,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Creates a new instance of the <see cref="ImportIdentity"/> structure.
         ''' </summary>
         ''' <param name="import">The imports statement (without 'Imports' keyword)</param>
-        Public Sub New(ByVal import As String)
+        Public Sub New(import As String)
             Debug.Assert(import IsNot Nothing)
 
             ' Trim the string to get rid of leading/trailing spaces.
@@ -2337,7 +2368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="other">The imports to compare to.</param>
         ''' <returns>True if both imports are XML (both are non-XML) and identities much case-sensitive (case-insensitive).</returns>
         ''' <remarks>Checks a</remarks>
-        Public Shadows Function Equals(ByVal other As ImportIdentity) As Boolean Implements IEquatable(Of ImportIdentity).Equals
+        Public Shadows Function Equals(other As ImportIdentity) As Boolean Implements IEquatable(Of ImportIdentity).Equals
             Return _kind = other._kind AndAlso
                 _identity.Equals(other._identity,
                     Utils.IIf(_kind = ImportKind.XmlNamespace, StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase))

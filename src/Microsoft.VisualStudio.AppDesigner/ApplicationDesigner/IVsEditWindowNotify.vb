@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <remarks></remarks>
     <ComVisible(False)> _
     Public Interface IVsEditWindowNotify
-        Sub OnActivated(ByVal activated As Boolean)
+        Sub OnActivated(activated As Boolean)
     End Interface
 
 End Namespace

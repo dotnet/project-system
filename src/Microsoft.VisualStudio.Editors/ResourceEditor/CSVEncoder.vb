@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Text">The CSV text to encode</param>
         ''' <param name="EncodingType"></param>
         ''' <remarks></remarks>
-        Public Shared Function IsSimpleString(ByVal Text As String, ByVal EncodingType As EncodingType, ByRef SimpleString As String) As Boolean
+        Public Shared Function IsSimpleString(Text As String, EncodingType As EncodingType, ByRef SimpleString As String) As Boolean
             If Text Is Nothing Then
                 Text = String.Empty
             End If
@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="View">The ResourceEditorView.  This is used for displaying messageboxes and creating resources.</param>
         ''' <param name="EncodingType"></param>
         ''' <remarks></remarks>
-        Public Shared Function DecodeResources(ByVal Text As String, ByVal View As ResourceEditorView, ByVal EncodingType As EncodingType) As Resource()
+        Public Shared Function DecodeResources(Text As String, View As ResourceEditorView, EncodingType As EncodingType) As Resource()
             Dim ResourceList As New Generic.List(Of Resource)
 
             If Text Is Nothing Then
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The Resource array to encode</param>
         ''' <remarks>Returns Nothing if there are no resources to encode</remarks>
-        Public Shared Function EncodeResources(ByVal Resources() As Resource, ByVal EncodingType As EncodingType) As String
+        Public Shared Function EncodeResources(Resources() As Resource, EncodingType As EncodingType) As String
             If Resources Is Nothing OrElse Resources.Length = 0 Then
                 Return Nothing
             End If
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Field">The string field to encode.</param>
         ''' <remarks></remarks>
-        Private Shared Function EscapeField(ByVal Field As String, ByVal EncodingType As EncodingType) As String
+        Private Shared Function EscapeField(Field As String, EncodingType As EncodingType) As String
             If Field Is Nothing Then
                 Field = ""
             End If

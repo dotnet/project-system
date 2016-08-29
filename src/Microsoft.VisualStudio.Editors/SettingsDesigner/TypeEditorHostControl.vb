@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         'UserControl1 overrides dispose to clean up the component list. 
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _innerValueType
             End Get
-            Set(ByVal Value As Type)
+            Set(Value As Type)
                 _innerValueType = Value
 
                 ' Let's try and get a UITypeEditor for this type! 
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return _innerValue
             End Get
-            Set(ByVal Value As Object)
+            Set(Value As Object)
                 If Value IsNot Nothing Then
                     ValueType = Value.GetType()
                 End If
@@ -228,15 +228,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Protected Overridable Function GetSpecificEditorForType(ByVal KnownType As Type) As UITypeEditor
+        Protected Overridable Function GetSpecificEditorForType(KnownType As Type) As UITypeEditor
             Return Nothing
         End Function
 
-        Protected Overridable Function FormatValue(ByVal ValueToFormat As Object) As String
+        Protected Overridable Function FormatValue(ValueToFormat As Object) As String
             Return _typeConverter.ConvertToString(ValueToFormat)
         End Function
 
-        Protected Overridable Function ParseValue(ByVal SerializedValue As String, ByVal ValueType As Type) As Object
+        Protected Overridable Function ParseValue(SerializedValue As String, ValueType As Type) As Object
             Return _typeConverter.ConvertFromString(SerializedValue)
         End Function
 
@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PreviewPanel_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles _previewPanel.Paint
+        Private Sub PreviewPanel_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles _previewPanel.Paint
             If Not _typeEditor Is Nothing Then
                 If _typeEditor.GetPaintValueSupported Then
                     Using ForegroundPen As New Pen(Me.ForeColor)
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLayout(ByVal e As LayoutEventArgs)
+        Protected Overrides Sub OnLayout(e As LayoutEventArgs)
             MyBase.OnLayout(e)
 
             ' Left position of text box - will be bumped by preview panel if showing
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ShowEditorButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _showEditorButton.Click
+        Private Sub ShowEditorButton_Click(sender As System.Object, e As System.EventArgs) Handles _showEditorButton.Click
             Debug.Assert(Not _typeEditor Is Nothing)
             ShowUITypeEditor()
         End Sub
@@ -385,7 +385,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub TextChangedHandler(ByVal sender As Object, ByVal e As EventArgs) Handles _valueTextBox.TextChanged, _valueComboBox.TextChanged
+        Private Sub TextChangedHandler(sender As Object, e As EventArgs) Handles _valueTextBox.TextChanged, _valueComboBox.TextChanged
             If Not _ignoreTextChangeEvents Then
                 TextValueDirty = True
                 OnValueChanged()
@@ -399,7 +399,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub KeyDownHandler(ByVal sender As Object, ByVal e As KeyEventArgs) Handles _valueTextBox.KeyDown
+        Private Sub KeyDownHandler(sender As Object, e As KeyEventArgs) Handles _valueTextBox.KeyDown
             If _typeEditor IsNot Nothing Then
                 If _typeEditor.GetEditStyle() = UITypeEditorEditStyle.DropDown Then
                     If e.Alt AndAlso (e.KeyCode And Keys.KeyCode) = Keys.Down Then
@@ -428,7 +428,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function IsInputKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function IsInputKey(keyData As System.Windows.Forms.Keys) As Boolean
             If keyData = Keys.Enter Then
                 If _showEditorButton.Focused AndAlso _typeEditor IsNot Nothing AndAlso _typeEditor.GetEditStyle() = UITypeEditorEditStyle.Modal Then
                     Return True
@@ -446,11 +446,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _dialog.Hide()
         End Sub
 
-        Private Sub DropDownHolderSizeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub DropDownHolderSizeChanged(sender As Object, e As EventArgs)
             DropDownHolderSize(TryCast(sender, System.Windows.Forms.Control))
         End Sub
 
-        Private Sub DropDownHolderSize(ByVal control As System.Windows.Forms.Control)
+        Private Sub DropDownHolderSize(control As System.Windows.Forms.Control)
             If _dialog IsNot Nothing AndAlso control IsNot Nothing Then
 
                 ' Calculate size & position
@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Public Sub DropDownControl(ByVal control As System.Windows.Forms.Control) Implements System.Windows.Forms.Design.IWindowsFormsEditorService.DropDownControl
+        Public Sub DropDownControl(control As System.Windows.Forms.Control) Implements System.Windows.Forms.Design.IWindowsFormsEditorService.DropDownControl
             If _dialog Is Nothing Then
                 _dialog = New DropDownHolder
             End If
@@ -508,7 +508,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             RemoveHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
         End Sub
 
-        Public Function ShowDialog(ByVal dialog As System.Windows.Forms.Form) As System.Windows.Forms.DialogResult Implements System.Windows.Forms.Design.IWindowsFormsEditorService.ShowDialog
+        Public Function ShowDialog(dialog As System.Windows.Forms.Form) As System.Windows.Forms.DialogResult Implements System.Windows.Forms.Design.IWindowsFormsEditorService.ShowDialog
             Dim UiSvc As IUIService = DirectCast(GetService(GetType(IUIService)), IUIService)
             If Not UiSvc Is Nothing Then
                 Return UiSvc.ShowDialog(dialog)
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 #Region "IServiceProvider implementation"
-        Public Function IServiceProvider_GetService(ByVal serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Public Function IServiceProvider_GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
             If serviceType.Equals(GetType(IWindowsFormsEditorService)) Then
                 Return Me
             Else
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnDeactivate(ByVal e As System.EventArgs)
+            Protected Overrides Sub OnDeactivate(e As System.EventArgs)
                 Me.HideForm()
             End Sub
 
@@ -620,7 +620,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Return Nothing
                     End If
                 End Get
-                Set(ByVal Value As Control)
+                Set(Value As Control)
                     Controls.Clear()
                     If Not Value Is Nothing Then
                         Value.Dock = DockStyle.Fill
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ValueComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _valueComboBox.SelectedIndexChanged
+        Private Sub ValueComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles _valueComboBox.SelectedIndexChanged
             _innerValue = _valueComboBox.SelectedItem
             TextValueDirty = False
             OnValueChanged()
@@ -666,7 +666,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _textValueDirty
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _textValueDirty = value
             End Set
         End Property
@@ -698,7 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectionLength
                 End If
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectionLength = value
                 Else
@@ -722,7 +722,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectionStart
                 End If
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectionStart = value
                 Else
@@ -746,7 +746,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectedText
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectedText = value
                 Else
@@ -765,7 +765,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return EditControl.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Dim savedIgnoreTextChangeEvents As Boolean = _ignoreTextChangeEvents
                 Try
                     _ignoreTextChangeEvents = True
@@ -789,7 +789,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox
                 End If
             End Get
-            Set(ByVal value As Control)
+            Set(value As Control)
                 For Each ctrl As Control In _editControls
                     If ctrl Is value Then
                         ctrl.Visible = True
@@ -883,7 +883,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Get
                     Return _paintStyle
                 End Get
-                Set(ByVal value As PaintStyles)
+                Set(value As PaintStyles)
                     Select Case value
                         Case PaintStyles.DotDotDot, PaintStyles.DropDown
                             ' Everything is cool
@@ -900,7 +900,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseEnter(ByVal e As System.EventArgs)
+            Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
                 _drawHot = True
                 Invalidate()
                 MyBase.OnMouseEnter(e)
@@ -911,7 +911,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseLeave(ByVal e As System.EventArgs)
+            Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
                 _drawHot = False
                 Invalidate()
                 MyBase.OnMouseLeave(e)
@@ -922,7 +922,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="pevent"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnPaint(ByVal pevent As System.Windows.Forms.PaintEventArgs)
+            Protected Overrides Sub OnPaint(pevent As System.Windows.Forms.PaintEventArgs)
                 MyBase.OnPaint(pevent)
                 Select Case PaintStyle
                     Case PaintStyles.DotDotDot

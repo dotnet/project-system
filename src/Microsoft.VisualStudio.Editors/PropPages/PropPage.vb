@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' should be fine
                 Return New System.Drawing.Size(Integer.MaxValue, Integer.MaxValue)
             End Get
-            Set(ByVal value As System.Drawing.Size)
+            Set(value As System.Drawing.Size)
                 MyBase.DefaultSize = value
             End Set
         End Property

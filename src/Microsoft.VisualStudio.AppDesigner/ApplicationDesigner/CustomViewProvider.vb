@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overridable Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.
             End If

@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to the exact point at which the file is saved, just to when the IDE thinks
         '''   it needs an updated version of the file contents).
         ''' </remarks>
-        Protected Overrides Sub HandleFlush(ByVal SerializationManager As IDesignerSerializationManager)
+        Protected Overrides Sub HandleFlush(SerializationManager As IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
             Try
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   will automatically be added to the ErrorList by VSDesignerLoader.  If there
         '''   are more specific local exceptions, they can be added to ErrorList manually.
         ''' </remarks>
-        Protected Overrides Sub HandleLoad(ByVal SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
             Dim NewResourceEditorRoot As ResourceEditorRootComponent = Nothing
             Using New WaitCursor
                 If LoaderHost IsNot Nothing Then
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ResXFile"></param>
         ''' <returns>The ResX in a string.</returns>
         ''' <remarks></remarks>
-        Private Function SerializeResourcesToText(ByVal ResXFile As ResourceFile) As String
+        Private Function SerializeResourcesToText(ResXFile As ResourceFile) As String
             If _rootComponent IsNot Nothing Then
                 ' Make sure the ResourceFile is up to date with any pending user changes
                 _rootComponent.RootDesigner.CommitAnyPendingChanges()
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Activated"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDesignerWindowActivated(ByVal Activated As Boolean)
+        Protected Overrides Sub OnDesignerWindowActivated(Activated As Boolean)
             MyBase.OnDesignerWindowActivated(Activated)
             If _rootComponent IsNot Nothing AndAlso _rootComponent.RootDesigner IsNot Nothing Then
                 If _rootComponent.RootDesigner.HasView Then

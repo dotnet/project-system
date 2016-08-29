@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
-        Friend Function FileName(ByVal ProjectItem As EnvDTE.ProjectItem) As String
+        Friend Function FileName(ProjectItem As EnvDTE.ProjectItem) As String
             If ProjectItem Is Nothing Then
                 System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
                 Throw New System.ArgumentNullException()
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function ItemId(ByVal Hierarchy As IVsHierarchy, ByVal ProjectItem As EnvDTE.ProjectItem) As UInteger
+        Friend Function ItemId(Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem) As UInteger
             Dim FoundItemId As UInteger
             VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(FileName(ProjectItem), FoundItemId))
             Return FoundItemId
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="FullFilePath"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsFileInProject(ByVal project As IVsProject, ByVal FullFilePath As String) As Boolean
+        Friend Function IsFileInProject(project As IVsProject, FullFilePath As String) As Boolean
             Dim found As Integer
             Dim prio(0) As Microsoft.VisualStudio.Shell.Interop.VSDOCUMENTPRIORITY
             prio(0) = Microsoft.VisualStudio.Shell.Interop.VSDOCUMENTPRIORITY.DP_Standard
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ItemId"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function PersistedNamespaceIncludesRootNamespace(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger) As Boolean
+        Friend Function PersistedNamespaceIncludesRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As Boolean
             If Common.Utils.IsVbProject(Hierarchy) Then
                 Return False
             Else
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ClassName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function FullyQualifiedClassName(ByVal [Namespace] As String, ByVal ClassName As String) As String
+        Friend Function FullyQualifiedClassName([Namespace] As String, ClassName As String) As String
             Dim sectionName As String
 
             If [Namespace] = "" Then
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ItemId"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function GeneratedSettingsClassNamespace(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger) As String
+        Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As String
             Dim IncludeRootNamespace As Boolean = PersistedNamespaceIncludesRootNamespace(Hierarchy, ItemId)
             Return GeneratedSettingsClassNamespace(Hierarchy, ItemId, IncludeRootNamespace)
         End Function
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="IncludeRootNamespace"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function GeneratedSettingsClassNamespace(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal IncludeRootNamespace As Boolean) As String
+        Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean) As String
             Return Common.Utils.GeneratedCodeNamespace(Hierarchy, ItemId, IncludeRootNamespace, True)
         End Function
 
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Item"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsDefaultSettingsFile(ByVal Hierarchy As IVsHierarchy, ByVal Item As EnvDTE.ProjectItem) As Boolean
+        Friend Function IsDefaultSettingsFile(Hierarchy As IVsHierarchy, Item As EnvDTE.ProjectItem) As Boolean
             If Hierarchy Is Nothing Then
                 Debug.Fail("Can't get the special files from a NULL Hierarchy!")
                 Throw New ArgumentNullException()
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ProjectItem"></param>
         ''' <param name="CodeProvider"></param>
         ''' <remarks></remarks>
-        Friend Sub OpenAndMaybeAddExtendingFile(ByVal ClassName As String, ByVal SuggestedFileName As String, ByVal sp As IServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal ProjectItem As EnvDTE.ProjectItem, ByVal CodeProvider As System.CodeDom.Compiler.CodeDomProvider, ByVal View As DesignerFramework.BaseDesignerView)
+        Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As System.CodeDom.Compiler.CodeDomProvider, View As DesignerFramework.BaseDesignerView)
             Dim SettingClassElement As EnvDTE.CodeElement = FindElement(ProjectItem, False, True, New KnownClassName(ClassName))
 
             Dim cc2 As EnvDTE80.CodeClass2 = TryCast(SettingClassElement, EnvDTE80.CodeClass2)
@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="CollectionToAddTo"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function AddNewProjectItemExtendingClass(ByVal cc2 As EnvDTE80.CodeClass2, ByVal NewFilePath As String, ByVal Generator As CodeDomProvider, ByVal supportsDeclarativeEventHandlers As Boolean, Optional ByVal CollectionToAddTo As EnvDTE.ProjectItems = Nothing) As EnvDTE.ProjectItem
+        Private Function AddNewProjectItemExtendingClass(cc2 As EnvDTE80.CodeClass2, NewFilePath As String, Generator As CodeDomProvider, supportsDeclarativeEventHandlers As Boolean, Optional CollectionToAddTo As EnvDTE.ProjectItems = Nothing) As EnvDTE.ProjectItem
             If cc2 Is Nothing Then
                 Debug.Fail("CodeClass2 isntance to extend can't be NULL!")
                 Throw New ArgumentNullException()
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
 
         Friend Interface IFindFilter
-            Function IsMatch(ByVal Element As EnvDTE.CodeElement) As Boolean
+            Function IsMatch(Element As EnvDTE.CodeElement) As Boolean
         End Interface
 
         ''' <summary>
@@ -386,12 +386,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Private _className As String
             Private _classOrModule As ClassOrModule
 
-            Friend Sub New(ByVal ClassName As String, Optional ByVal ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
+            Friend Sub New(ClassName As String, Optional ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
                 _className = ClassName
                 _classOrModule = ClassOrModule
             End Sub
 
-            Public Function IsMatch(ByVal Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
+            Public Function IsMatch(Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
                 Select Case _classOrModule
                     Case ClassOrModule.ClassOnly
                         If Element.Kind <> EnvDTE.vsCMElement.vsCMElementClass Then
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ''' <remarks></remarks>
             Private _classToExpand As EnvDTE80.CodeClass2
 
-            Friend Sub New(ByVal ClassToExpand As EnvDTE80.CodeClass2)
+            Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
                 If ClassToExpand Is Nothing Then
                     Debug.Fail("Can't find a class that expands a NULL class...")
                     Throw New System.ArgumentNullException()
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 _classToExpand = ClassToExpand
             End Sub
 
-            Public Function IsMatch(ByVal Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
+            Public Function IsMatch(Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
                 If Element.Kind = EnvDTE.vsCMElement.vsCMElementClass AndAlso _
                     (Not FileName(_classToExpand.ProjectItem).Equals(FileName(Element.ProjectItem), System.StringComparison.Ordinal)) AndAlso _
                     _classToExpand.FullName.Equals(Element.FullName) _
@@ -458,7 +458,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Private _containtingClass As EnvDTE.CodeElement
             Private _propertyName As String
 
-            Public Sub New(ByVal ContainingClass As EnvDTE.CodeElement, ByVal PropertyName As String)
+            Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
                 If ContainingClass Is Nothing Then
                     Debug.Fail("Can't find property in unknown class!")
                     Throw New ArgumentNullException()
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 _propertyName = PropertyName
             End Sub
 
-            Public Function IsMatch(ByVal Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
+            Public Function IsMatch(Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
                 If Element.Kind <> EnvDTE.vsCMElement.vsCMElementProperty Then
                     Return False
                 End If
@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Private _containtingClass As EnvDTE.CodeElement
             Private _functionName As String
 
-            Public Sub New(ByVal ContainingClass As EnvDTE.CodeElement, ByVal FunctionName As String)
+            Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)
                 If ContainingClass Is Nothing Then
                     Debug.Fail("Can't find property in unknown class!")
                     Throw New ArgumentNullException()
@@ -534,7 +534,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ''' <summary>
             ''' Check whether a code element meets our requirement.
             ''' </summary>
-            Public Function IsMatch(ByVal Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
+            Public Function IsMatch(Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
                 If Element.Kind <> EnvDTE.vsCMElement.vsCMElementFunction Then
                     Return False
                 End If
@@ -579,7 +579,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Filter">The IFilter to satisfy</param>
         ''' <returns>The found element, NULL if no matching element found</returns>
         ''' <remarks></remarks>
-        Friend Function FindElement(ByVal Project As EnvDTE.Project, ByVal ExpandChildElements As Boolean, ByVal ExpandChildItems As Boolean, ByVal Filter As IFindFilter) As EnvDTE.CodeElement
+        Friend Function FindElement(Project As EnvDTE.Project, ExpandChildElements As Boolean, ExpandChildItems As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             For Each Item As EnvDTE.ProjectItem In Project.ProjectItems
                 Dim Result As EnvDTE.CodeElement = FindElement(Item, ExpandChildElements, ExpandChildItems, Filter)
                 If Result IsNot Nothing Then
@@ -599,7 +599,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Filter">The IFilter to satisfy</param>
         ''' <returns>The found element, NULL if no matching element found</returns>
         ''' <remarks></remarks>
-        Friend Function FindElement(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal ExpandChildElements As Boolean, ByVal ExpandChildItems As Boolean, ByVal Filter As IFindFilter) As EnvDTE.CodeElement
+        Friend Function FindElement(ProjectItem As EnvDTE.ProjectItem, ExpandChildElements As Boolean, ExpandChildItems As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             If ProjectItem.FileCodeModel IsNot Nothing Then
                 For Each Element As EnvDTE.CodeElement In ProjectItem.FileCodeModel.CodeElements
                     Dim Result As EnvDTE.CodeElement = FindElement(Element, ExpandChildElements, Filter)
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Filter">The filter to satisfy</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindElement(ByVal Element As EnvDTE.CodeElement, ByVal ExpandChildren As Boolean, ByVal Filter As IFindFilter) As EnvDTE.CodeElement
+        Private Function FindElement(Element As EnvDTE.CodeElement, ExpandChildren As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             If Filter.IsMatch(Element) Then
                 Return Element
             End If
@@ -667,7 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ct"></param>
         ''' <param name="generator"></param>
         ''' <remarks></remarks>
-        Private Sub GenerateExtendingClassInstructions(ByVal ct As CodeTypeDeclaration, ByVal generator As CodeDomProvider)
+        Private Sub GenerateExtendingClassInstructions(ct As CodeTypeDeclaration, generator As CodeDomProvider)
             Const SettingChangingEventName As String = "SettingChanging"
             Const SettingsSavingEventName As String = "SettingsSaving"
 
@@ -722,7 +722,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CommentStatement(ByVal statement As CodeStatement, ByVal generator As CodeDomProvider, ByVal doubleCommentComments As Boolean) As CodeCommentStatement
+        Private Function CommentStatement(statement As CodeStatement, generator As CodeDomProvider, doubleCommentComments As Boolean) As CodeCommentStatement
             ' If this is already a comment and we don't want to double comment it, just return the statement...
             If TypeOf statement Is CodeCommentStatement AndAlso Not doubleCommentComments Then
                 Return DirectCast(statement, CodeCommentStatement)
@@ -745,7 +745,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="VsHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function AppConfigOrProjectFileNameForCheckout(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal VsHierarchy As IVsHierarchy) As String
+        Friend Function AppConfigOrProjectFileNameForCheckout(ProjectItem As EnvDTE.ProjectItem, VsHierarchy As IVsHierarchy) As String
             ' We also want to check out the app.config and possibly the project file(s)...
             If ProjectItem IsNot Nothing Then
                 ' We try to check out the app.config file...
@@ -776,7 +776,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="cc2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function CodeModelToCodeDomTypeAttributes(ByVal cc2 As EnvDTE80.CodeClass2) As System.Reflection.TypeAttributes
+        Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As System.Reflection.TypeAttributes
             If cc2 Is Nothing Then
                 Throw New ArgumentNullException("cc2")
             End If

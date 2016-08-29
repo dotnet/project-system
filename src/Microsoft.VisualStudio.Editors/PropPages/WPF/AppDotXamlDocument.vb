@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ''' <param name="sourceEnd"></param>
             ''' <param name="newText"></param>
             ''' <remarks></remarks>
-            Sub ReplaceText(ByVal sourceStart As Location, ByVal sourceEnd As Location, ByVal newText As String)
+            Sub ReplaceText(sourceStart As Location, sourceEnd As Location, newText As String)
 
         End Interface
 
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Public LineIndex As Integer 'Zero-based line #
             Public CharIndex As Integer 'Zero-based character on line
 
-            Public Sub New(ByVal lineIndex As Integer, ByVal charOnLineIndex As Integer)
+            Public Sub New(lineIndex As Integer, charOnLineIndex As Integer)
                 If lineIndex < 0 Then
                     Throw CreateArgumentException("lineIndex")
                 End If
@@ -77,11 +77,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ''' </summary>
             ''' <param name="reader"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal reader As XmlReader)
+            Public Sub New(reader As XmlReader)
                 Me.New(CType(reader, IXmlLineInfo).LineNumber - 1, CType(reader, IXmlLineInfo).LinePosition - 1)
             End Sub
 
-            Public Function Shift(ByVal charIndexToAdd As Integer) As Location
+            Public Function Shift(charIndexToAdd As Integer) As Location
                 Return New Location(Me.LineIndex, Me.CharIndex + charIndexToAdd)
             End Function
 
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private _buffer As IVsTextLines
             Private _debugLockCheck As IDebugLockCheck 'Used by the document to verify BufferLock is used when it's needed
 
-            Public Sub New(ByVal buffer As IVsTextLines, ByVal debugLockCheck As IDebugLockCheck)
+            Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
                 If buffer Is Nothing Then
                     Throw New ArgumentNullException("buffer")
                 End If
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #Region "IDisposable Support"
 
-            Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+            Protected Overridable Sub Dispose(disposing As Boolean)
                 Try
                     If disposing Then
                         If Not _isDisposed Then
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Sub
 
             Public Sub Dispose() Implements IDisposable.Dispose
-                ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+                ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
                 Dispose(True)
                 GC.SuppressFinalize(Me)
             End Sub
@@ -179,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
 
 
-            Public Sub New(ByVal vsTextLines As IVsTextLines, ByVal startLocation As Location, ByVal endLocation As Location, ByVal unescapedValue As String, ByVal definitionIncludesQuotes As Boolean)
+            Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
                 If vsTextLines Is Nothing Then
                     Throw New ArgumentNullException("vsTextLines")
                 End If
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ''' <param name="replaceTextInstance"></param>
             ''' <param name="value"></param>
             ''' <remarks></remarks>
-            Public Overridable Sub SetProperty(ByVal replaceTextInstance As IReplaceText, ByVal value As String)
+            Public Overridable Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
                 If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Friend Class XamlPropertyInAttributeSyntax
             Inherits XamlProperty
 
-            Public Sub New(ByVal vsTextLines As IVsTextLines, ByVal definitionStart As Location, ByVal definitionEnd As Location, ByVal unescapedValue As String)
+            Public Sub New(vsTextLines As IVsTextLines, definitionStart As Location, definitionEnd As Location, unescapedValue As String)
                 MyBase.New(vsTextLines, definitionStart, definitionEnd, unescapedValue, definitionIncludesQuotes:=True)
             End Sub
 
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Friend Class XamlPropertyInPropertyElementSyntax
             Inherits XamlProperty
 
-            Public Sub New(ByVal vsTextLines As IVsTextLines, ByVal valueStart As Location, ByVal valueEnd As Location, ByVal unescapedValue As String)
+            Public Sub New(vsTextLines As IVsTextLines, valueStart As Location, valueEnd As Location, unescapedValue As String)
                 MyBase.New(vsTextLines, valueStart, valueEnd, unescapedValue, definitionIncludesQuotes:=False)
             End Sub
         End Class
@@ -312,7 +312,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '''   location pair indicates the start/end of the tag itself, not the value (since there is no
             '''   value - the element is an empty tag).
             ''' </remarks>
-            Public Sub New(ByVal vsTextLines As IVsTextLines, ByVal fullyQualifiedPropertyName As String, ByVal elementStart As Location, ByVal elementEnd As Location)
+            Public Sub New(vsTextLines As IVsTextLines, fullyQualifiedPropertyName As String, elementStart As Location, elementEnd As Location)
                 MyBase.New(vsTextLines, elementStart, elementEnd, UnescapedValue:="")
 
                 If fullyQualifiedPropertyName Is Nothing Then
@@ -328,7 +328,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End Get
             End Property
 
-            Public Overrides Sub SetProperty(ByVal replaceTextInstance As IReplaceText, ByVal value As String)
+            Public Overrides Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
                 If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
@@ -361,7 +361,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #Region "Constructor"
 
-        Public Sub New(ByVal vsTextLines As IVsTextLines)
+        Public Sub New(vsTextLines As IVsTextLines)
             If vsTextLines Is Nothing Then
                 Throw New ArgumentNullException("vsTextLines")
             End If
@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         End Sub
 
         ' IDisposable
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        Protected Overridable Sub Dispose(disposing As Boolean)
             If Not Me._isDisposed Then
                 If disposing Then
                     Debug.Assert(_debugBufferLockCount = 0, "Missing buffer unlock")
@@ -390,7 +390,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="endIndex"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetText(ByVal startLine As Integer, ByVal startIndex As Integer, ByVal endLine As Integer, ByVal endIndex As Integer) As String
+        Private Function GetText(startLine As Integer, startIndex As Integer, endLine As Integer, endIndex As Integer) As String
             Dim text As String = Nothing
             ErrorHandler.ThrowOnFailure(_vsTextLines.GetLineText(startLine, startIndex, endLine, endIndex, text))
             Return text
@@ -422,7 +422,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="count">Count of characters to return</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetText(ByVal startLine As Integer, ByVal startIndex As Integer, ByVal count As Integer) As String
+        Private Function GetText(startLine As Integer, startIndex As Integer, count As Integer) As String
             Return GetText(startLine, startIndex, startLine, startIndex + count)
         End Function
 
@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetText(ByVal startLocation As Location, ByVal endLocation As Location) As String
+        Private Function GetText(startLocation As Location, endLocation As Location) As String
             Return GetText(startLocation.LineIndex, startLocation.CharIndex, endLocation.LineIndex, endLocation.CharIndex)
         End Function
 
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetText(ByVal startLocation As Location, ByVal count As Integer) As String
+        Private Function GetText(startLocation As Location, count As Integer) As String
             Return GetText(startLocation.LineIndex, startLocation.CharIndex, count)
         End Function
 
@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function EscapeXmlString(ByVal value As String) As String
+        Public Shared Function EscapeXmlString(value As String) As String
             If value Is Nothing Then
                 value = String.Empty
             End If
@@ -488,7 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function UnescapeXmlContent(ByVal value As String) As String
+        Public Shared Function UnescapeXmlContent(value As String) As String
             If value Is Nothing Then
                 value = String.Empty
             End If
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="reader"></param>
         ''' <remarks></remarks>
-        Public Shared Sub MoveToApplicationRootElement(ByVal reader As XmlTextReader)
+        Public Shared Sub MoveToApplicationRootElement(reader As XmlTextReader)
             'XAML files must have only one root element.  For app.xaml, it must be "Application"
             If reader.MoveToContent() = XmlNodeType.Element And reader.Name = s_ELEMENT_APPLICATION Then
                 'Okay
@@ -553,7 +553,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetApplicationPropertyValue(ByVal propertyName As String) As String
+        Public Function GetApplicationPropertyValue(propertyName As String) As String
             Using lock As New BufferLock(_vsTextLines, Me)
                 Dim reader As XmlTextReader = CreateXmlTextReader()
                 Dim prop As XamlProperty = FindApplicationPropertyInXaml(reader, propertyName)
@@ -572,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="line"></param>
         ''' <returns>The index on the line where the closing angle bracket is found, or -1 if not found.</returns>
         ''' <remarks></remarks>
-        Public Function FindClosingAngleBracketHelper(ByVal line As String) As Integer
+        Public Function FindClosingAngleBracketHelper(line As String) As Integer
             Dim index As Integer = 0
 
             Const SingleQuote As Char = "'"c
@@ -629,7 +629,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks>
         ''' It's assumed that the XML is well-formed
         ''' </remarks>
-        Public Function FindClosingAngleBracket(ByVal startLocation As Location) As Location
+        Public Function FindClosingAngleBracket(startLocation As Location) As Location
             Dim iLastLine, iLastIndex As Integer
             ErrorHandler.ThrowOnFailure(_vsTextLines.GetLastLineIndex(iLastLine, iLastIndex))
 
@@ -669,7 +669,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="reader"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function FindApplicationPropertyInXaml(ByVal reader As XmlTextReader, ByVal propertyName As String) As XamlProperty
+        Public Function FindApplicationPropertyInXaml(reader As XmlTextReader, propertyName As String) As XamlProperty
             MoveToApplicationRootElement(reader)
             Dim prop As XamlProperty = FindPropertyAsAttributeInCurrentElement(reader, s_ELEMENT_APPLICATION, propertyName)
             If prop Is Nothing Then
@@ -686,7 +686,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="reader"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindPropertyAsAttributeInCurrentElement(ByVal reader As XmlTextReader, ByVal optionalPropertyQualifier As String, ByVal propertyName As String) As XamlPropertyInAttributeSyntax
+        Private Function FindPropertyAsAttributeInCurrentElement(reader As XmlTextReader, optionalPropertyQualifier As String, propertyName As String) As XamlPropertyInAttributeSyntax
             'Look for either simple attribute syntax (StartupUri=xxx) or
             '  fully-qualified attribute syntax (Application.StartupUri=xxx)
             Dim fullyQualifiedPropertyName As String = Nothing
@@ -776,7 +776,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="reader"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindPropertyAsChildElementInCurrentElement(ByVal reader As XmlTextReader, ByVal propertyQualifier As String, ByVal propertyName As String) As XamlPropertyInPropertyElementSyntax
+        Private Function FindPropertyAsChildElementInCurrentElement(reader As XmlTextReader, propertyQualifier As String, propertyName As String) As XamlPropertyInPropertyElementSyntax
             'See http://windowssdk.msdn.microsoft.com/en-us/library/ms788723(VS.80).aspx#PESyntax
             '
             'Looking for something of this form:
@@ -880,7 +880,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   the property is not set in the xaml, an empty string is returned.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub SetApplicationPropertyValue(ByVal propertyName As String, ByVal value As String)
+        Public Sub SetApplicationPropertyValue(propertyName As String, value As String)
             If value Is Nothing Then
                 value = ""
             End If
@@ -939,7 +939,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Replace the text at the given location in the buffer with new text.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ReplaceText(ByVal sourceStart As Location, ByVal sourceLength As Integer, ByVal newText As String)
+        Private Sub ReplaceText(sourceStart As Location, sourceLength As Integer, newText As String)
             ReplaceText(sourceStart, New Location(sourceStart.LineIndex, sourceStart.CharIndex + sourceLength), newText)
         End Sub
 
@@ -950,7 +950,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sourceEnd"></param>
         ''' <param name="newText"></param>
         ''' <remarks></remarks>
-        Private Sub ReplaceText(ByVal sourceStart As Location, ByVal sourceEnd As Location, ByVal newText As String) Implements IReplaceText.ReplaceText
+        Private Sub ReplaceText(sourceStart As Location, sourceEnd As Location, newText As String) Implements IReplaceText.ReplaceText
             If newText Is Nothing Then
                 newText = String.Empty
             End If
@@ -974,7 +974,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="tagStartLocation"></param>
         ''' <param name="elementName">The name of the element at the given location</param>
         ''' <remarks></remarks>
-        Public Sub MakeSureElementHasStartAndEndTags(ByVal tagStartLocation As Location, ByVal elementName As String)
+        Public Sub MakeSureElementHasStartAndEndTags(tagStartLocation As Location, elementName As String)
             If Not "<".Equals(GetText(tagStartLocation, 1), StringComparison.Ordinal) Then
                 Debug.Fail("MakeSureElementHasStartAndEndTags: The start location doesn't point to the start of an element tag")
                 ThrowUnexpectedFormatException(tagStartLocation)
@@ -1022,7 +1022,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   the property is not set in the xaml, an empty string is returned.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub SetStartupUri(ByVal value As String)
+        Public Sub SetStartupUri(value As String)
             SetApplicationPropertyValue(s_PROPERTY_STARTUPURI, value)
         End Sub
 
@@ -1045,7 +1045,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   the property is not set in the xaml, an empty string is returned.
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub SetShutdownMode(ByVal value As String)
+        Public Sub SetShutdownMode(value As String)
             SetApplicationPropertyValue(s_PROPERTY_SHUTDOWNMODE, value)
         End Sub
 
@@ -1058,7 +1058,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="location"></param>
         ''' <remarks></remarks>
-        Private Sub ThrowUnexpectedFormatException(ByVal location As Location)
+        Private Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException( _
                 SR.GetString(SR.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))

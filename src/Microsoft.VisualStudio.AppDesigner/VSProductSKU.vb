@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Private Shared Sub Init(ByVal ServiceProvider As IServiceProvider)
+        Private Shared Sub Init(ServiceProvider As IServiceProvider)
             Dim VsAppIdService As Interop.IVsAppId
             Dim objSKU As Object = Nothing
             Dim objSubSKU As Object = Nothing

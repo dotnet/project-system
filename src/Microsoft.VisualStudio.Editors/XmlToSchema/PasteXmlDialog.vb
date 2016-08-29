@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Property
 
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
-        Protected Overrides Sub OnClosing(ByVal e As System.ComponentModel.CancelEventArgs)
+        Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
             If Me.DialogResult = DialogResult.OK Then
                 Try
                     _xml = XElement.Parse(_xmlTextBox.Text)

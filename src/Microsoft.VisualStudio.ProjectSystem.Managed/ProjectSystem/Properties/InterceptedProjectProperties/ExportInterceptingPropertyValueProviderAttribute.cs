@@ -17,12 +17,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/> class.
         /// </summary>
-        public ExportInterceptingPropertyValueProviderAttribute(string propertyName)
-            : base(typeof(IInterceptingPropertyValueProvider))
+        public ExportInterceptingPropertyValueProviderAttribute(string propertyName, ExportInterceptingPropertyValueProviderFile file)
+            : base(GetFile(file), typeof(IInterceptingPropertyValueProvider))
         {
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
             PropertyName = propertyName;
         }
+
+        public static string GetFile(ExportInterceptingPropertyValueProviderFile file)
+        {
+            switch (file)
+            {
+                case ExportInterceptingPropertyValueProviderFile.ProjectFile:
+                    return ContractNames.ProjectPropertyProviders.ProjectFile;
+                case ExportInterceptingPropertyValueProviderFile.UserFile:
+                    return ContractNames.ProjectPropertyProviders.UserFile;
+                case ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults:
+                    return ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults;
+                default:
+                    return string.Empty;
+            }
+        }
+    }
+
+    public enum ExportInterceptingPropertyValueProviderFile
+    {
+        ProjectFile,
+        UserFile,
+        UserFileWithXamlDefaults
     }
 }

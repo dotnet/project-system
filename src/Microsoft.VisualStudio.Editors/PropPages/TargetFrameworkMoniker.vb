@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Constructor that uses the target framework moniker and display name provided by DTAR
         ''' </summary>
-        Public Sub New(ByVal moniker As String, ByVal displayName As String)
+        Public Sub New(moniker As String, displayName As String)
 
             _moniker = moniker
             _displayName = displayName
@@ -52,8 +52,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="vsFrameworkMultiTargeting"></param>
         Public Shared Function GetSupportedTargetFrameworkMonikers(
-            ByVal vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting,
-            ByVal currentProject As Project) As IEnumerable(Of TargetFrameworkMoniker)
+            vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting,
+            currentProject As Project) As IEnumerable(Of TargetFrameworkMoniker)
 
             Dim supportedFrameworksArray As Array = Nothing
             VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetSupportedFrameworks(supportedFrameworksArray))

@@ -15,9 +15,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <remarks></remarks>
     Public Interface IPropertyPageSiteOwner
         Function GetLocaleID() As UInteger
-        Sub DsMsgBox(ByVal ex As Exception, Optional ByVal HelpLink As String = Nothing)
+        Sub DsMsgBox(ex As Exception, Optional HelpLink As String = Nothing)
         Sub DelayRefreshDirtyIndicators()
-        Function GetService(ByVal ServiceType As Type) As Object
+        Function GetService(ServiceType As Type) As Object
     End Interface
 
     ''' <summary>
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   ApplicationDesignerView, except for unit testing.</param>
         ''' <param name="PropPage"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal View As IPropertyPageSiteOwner, ByVal PropPage As OleInterop.IPropertyPage)
+        Public Sub New(View As IPropertyPageSiteOwner, PropPage As OleInterop.IPropertyPage)
             Debug.Assert(View IsNot Nothing AndAlso PropPage IsNot Nothing)
             _appDesView = View
             _propPage = PropPage
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _backingServiceProvider
             End Get
-            Set(ByVal value As IServiceProvider)
+            Set(value As IServiceProvider)
 #If DEBUG Then
                 If value IsNot Nothing Then
                     Dim NativeServiceProvider As OLE.Interop.IServiceProvider = TryCast(value.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _hasBeenSetDirty
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _hasBeenSetDirty = value
             End Set
         End Property
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Throw New NotImplementedException
         End Sub
 
-        Public Sub OnStatusChange(ByVal dwFlags As UInteger) Implements OleInterop.IPropertyPageSite.OnStatusChange
+        Public Sub OnStatusChange(dwFlags As UInteger) Implements OleInterop.IPropertyPageSite.OnStatusChange
             ApplyStatusChange(dwFlags)
         End Sub
 
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''  We will apply changes if needed
         ''' </summary>
         ''' <returns>return False if it failed</returns>
-        Private Function ApplyStatusChange(ByVal dwFlags As UInteger) As Boolean
+        Private Function ApplyStatusChange(dwFlags As UInteger) As Boolean
             Static InsideOnStatusChange As Boolean
 
             If InsideOnStatusChange Then
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
-        Public Function TranslateAccelerator(ByVal pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer Implements OleInterop.IPropertyPageSite.TranslateAccelerator
+        Public Function TranslateAccelerator(pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer Implements OleInterop.IPropertyPageSite.TranslateAccelerator
             Common.Switches.TracePDMessageRouting(TraceLevel.Error, "PropertyPageSite.TranslateAccelerator")
 
             'We're not currently interested in any message filtering from the property pages.
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _propPage IsNot Nothing Then
                     _propPage = Nothing
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="serviceType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetService(ByVal serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Public Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
             'A couple of specific services we delegate to the application designer, but other than
             '  those exceptions, we want the services coming from the passed-in backing service (which
             '  will come from the PropPageDesignerView).

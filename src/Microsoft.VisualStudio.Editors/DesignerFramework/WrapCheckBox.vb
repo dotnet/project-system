@@ -22,17 +22,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Me.AutoSize = True
         End Sub
 
-        Protected Overrides Sub OnTextChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnTextChanged(e As System.EventArgs)
             MyBase.OnTextChanged(e)
             CacheTextSize()
         End Sub
 
-        Protected Overrides Sub OnFontChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnFontChanged(e As System.EventArgs)
             MyBase.OnFontChanged(e)
             CacheTextSize()
         End Sub
 
-        Public Overrides Function GetPreferredSize(ByVal proposedsize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedsize As System.Drawing.Size) As System.Drawing.Size
             Dim prefSize As Size = MyBase.GetPreferredSize(proposedsize)
             If (proposedsize.Width > 1) AndAlso _
                     (prefSize.Width > proposedsize.Width) AndAlso _

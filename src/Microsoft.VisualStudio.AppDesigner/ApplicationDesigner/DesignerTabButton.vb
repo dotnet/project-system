@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _dirtyIndicator
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value <> _dirtyIndicator Then
                     _dirtyIndicator = value
                     Invalidate()
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return MyBase.Location
             End Get
-            Set(ByVal value As Point) 'Make inaccessible except to this assembly 'CONSIDER: this is non-CLS-compliant, should change if make control public
+            Set(value As Point) 'Make inaccessible except to this assembly 'CONSIDER: this is non-CLS-compliant, should change if make control public
                 MyBase.Location = value
             End Set
         End Property
@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-        Public Sub SetIndex(ByVal index As Integer)
+        Public Sub SetIndex(index As Integer)
             _index = index
         End Sub
 
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Property
 
 
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
             Dim parent As ProjectDesignerTabControl = ParentTabControl
             If parent IsNot Nothing Then
                 parent.Renderer.RenderButton(e.Graphics, Me, Me Is parent.SelectedItem, Me Is parent.HoverItem)
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         '''</summary>
         '''<remarks> We need handle OnClick to make Accessiblity work... </remarks>
-        Protected Overrides Sub OnClick(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnClick(e As System.EventArgs)
             MyBase.OnClick(e)
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl
@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnMouseEnter(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
             MyBase.OnMouseEnter(e)
             Dim parent As ProjectDesignerTabControl = ParentTabControl
             If parent IsNot Nothing Then
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnMouseLeave(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             MyBase.OnMouseLeave(e)
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ProjectDesignerTabButton.OnGotFocus - forwarding to parent")
             MyBase.OnGotFocus(e)
 
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ' button which this accessible object belongs to
             Private _button As ProjectDesignerTabButton
 
-            Public Sub New(ByVal owner As ProjectDesignerTabButton)
+            Public Sub New(owner As ProjectDesignerTabButton)
                 MyBase.New(owner)
                 _button = owner
             End Sub

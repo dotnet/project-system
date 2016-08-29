@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Private ReadOnly _projectPath As String
         Private ReadOnly _schemaFileName As String
 
-        Public Sub New(ByVal project As EnvDTE.Project, ByVal projectPath As String, ByVal schemaFileName As String)
+        Public Sub New(project As EnvDTE.Project, projectPath As String, schemaFileName As String)
             MyBase.New(Nothing)
 
             InitializeComponent()
@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FormOpened)
         End Sub
 
-        Protected Overrides Sub ScaleControl(ByVal factor As System.Drawing.SizeF, ByVal specified As System.Windows.Forms.BoundsSpecified)
+        Protected Overrides Sub ScaleControl(factor As System.Drawing.SizeF, specified As System.Windows.Forms.BoundsSpecified)
             'First do standard DPI scaling logic
             MyBase.ScaleControl(factor, specified)
 
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Me.MaximumSize = Screen.FromHandle(Me.Handle).WorkingArea.Size
         End Sub
 
-        Private Function ContainsFile(ByVal filePath As String) As Boolean
+        Private Function ContainsFile(filePath As String) As Boolean
             Dim fileUri As New Uri(filePath, UriKind.RelativeOrAbsolute)
             For Each item As ListViewItem In _listView.Items
                 If Uri.IsWellFormedUriString(item.Text, UriKind.RelativeOrAbsolute) Then
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Return False
         End Function
 
-        Private Sub AddFile(ByVal filePath As String)
+        Private Sub AddFile(filePath As String)
             If Not String.IsNullOrEmpty(filePath) AndAlso Not ContainsFile(filePath) Then
                 Dim item As New ListViewItem("File") With {.Tag = filePath}
                 item.SubItems.Add(filePath)
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End If
         End Sub
 
-        Private Sub _addFromFileButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _addFromFileButton.Click
+        Private Sub _addFromFileButton_Click(sender As Object, e As EventArgs) Handles _addFromFileButton.Click
             _xmlFileDialog.InitialDirectory = _projectPath
             If _xmlFileDialog.ShowDialog() = DialogResult.OK Then
                 Dim anyInvalid = False
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromFileButtonClicked)
         End Sub
 
-        Private Sub _addFromWebButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _addFromWebButton.Click
+        Private Sub _addFromWebButton_Click(sender As Object, e As EventArgs) Handles _addFromWebButton.Click
             Using dialog As New WebUrlDialog()
                 dialog.ServiceProvider = ServiceProvider
                 Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Using
         End Sub
 
-        Private Sub _addAsTextButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _addAsTextButton.Click
+        Private Sub _addAsTextButton_Click(sender As Object, e As EventArgs) Handles _addAsTextButton.Click
             Using dialog As New PasteXmlDialog()
                 dialog.ServiceProvider = ServiceProvider
                 Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
-        Private Sub _okButtonClick(ByVal sender As Object, ByVal e As EventArgs) Handles _okButton.Click
+        Private Sub _okButtonClick(sender As Object, e As EventArgs) Handles _okButton.Click
             If _listView.Items.Count = 0 Then
                 Return
             End If
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             reader.DtdProcessing = DtdProcessing.Prohibit
         End Function
 
-        Private Sub _listViewKeyPress(ByVal o As Object, ByVal e As KeyEventArgs) Handles _listView.KeyDown
+        Private Sub _listViewKeyPress(o As Object, e As KeyEventArgs) Handles _listView.KeyDown
             If e.KeyCode = Keys.Delete Then
                 Dim toDelete = New List(Of ListViewItem)
                 For Each cur As ListViewItem In _listView.SelectedItems

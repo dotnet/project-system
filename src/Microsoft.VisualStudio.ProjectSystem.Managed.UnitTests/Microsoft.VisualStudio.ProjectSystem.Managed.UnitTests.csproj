@@ -41,13 +41,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\DispatchThread.cs" />
+    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectInstancePropertiesProviderFactory.cs" />
     <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />
@@ -59,6 +63,8 @@
     <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
@@ -81,6 +87,7 @@
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
+    <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
     <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
   </ItemGroup>
@@ -93,7 +100,9 @@
     </None>
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>

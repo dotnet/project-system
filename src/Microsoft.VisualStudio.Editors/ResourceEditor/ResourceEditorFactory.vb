@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub 'OnSited
 
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _vsTrackProjectDocumentsEventsCookie <> 0 Then
                     If Not (_vsTrackProjectDocuments Is Nothing) Then
@@ -98,29 +98,29 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "IVsRunningDocTableEvents2 Implementation"
         ' The following code is stripped from SettingsGlobalObjectProvider
         ' 
-        Private Function OnAfterAddDirectoriesEx(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSADDDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddDirectoriesEx
+        Private Function OnAfterAddDirectoriesEx(cProjects As Integer, cDirectories As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSADDDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddDirectoriesEx
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnAfterAddFilesEx(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSADDFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddFilesEx
+        Private Function OnAfterAddFilesEx(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSADDFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterAddFilesEx
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnAfterRemoveDirectories(ByVal cProjects As Integer, ByVal cDirectories As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSREMOVEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveDirectories
+        Private Function OnAfterRemoveDirectories(cProjects As Integer, cDirectories As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSREMOVEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnAfterRemoveFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSREMOVEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveFiles
+        Private Function OnAfterRemoveFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSREMOVEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRemoveFiles
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnAfterRenameDirectories(ByVal cProjects As Integer, ByVal cDirs As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSRENAMEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameDirectories
+        Private Function OnAfterRenameDirectories(cProjects As Integer, cDirs As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSRENAMEDIRECTORYFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameDirectories
             Return NativeMethods.S_OK
         End Function
 
         ' If the resource file is renamed/moved while it's open in the editor, we need to force a reload so that we pick up
         ' the correct new location for relative linked files
-        Private Function OnAfterRenameFiles(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSRENAMEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
+        Private Function OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSRENAMEFILEFLAGS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
@@ -163,31 +163,31 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnAfterSccStatusChanged(ByVal cProjects As Integer, ByVal cFiles As Integer, ByVal rgpProjects() As Shell.Interop.IVsProject, ByVal rgFirstIndices() As Integer, ByVal rgpszMkDocuments() As String, ByVal rgdwSccStatus() As UInteger) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterSccStatusChanged
+        Private Function OnAfterSccStatusChanged(cProjects As Integer, cFiles As Integer, rgpProjects() As Shell.Interop.IVsProject, rgFirstIndices() As Integer, rgpszMkDocuments() As String, rgdwSccStatus() As UInteger) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnAfterSccStatusChanged
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryAddDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirectories As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYADDDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddDirectories
+        Private Function OnQueryAddDirectories(pProject As Shell.Interop.IVsProject, cDirectories As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYADDDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYADDDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryAddFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYADDFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYADDFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYADDFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddFiles
+        Private Function OnQueryAddFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYADDFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYADDFILERESULTS, rgResults() As Shell.Interop.VSQUERYADDFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryAddFiles
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryRemoveDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirectories As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYREMOVEDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveDirectories
+        Private Function OnQueryRemoveDirectories(pProject As Shell.Interop.IVsProject, cDirectories As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYREMOVEDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYREMOVEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryRemoveFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgpszMkDocuments() As String, ByVal rgFlags() As Shell.Interop.VSQUERYREMOVEFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYREMOVEFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYREMOVEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveFiles
+        Private Function OnQueryRemoveFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgpszMkDocuments() As String, rgFlags() As Shell.Interop.VSQUERYREMOVEFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYREMOVEFILERESULTS, rgResults() As Shell.Interop.VSQUERYREMOVEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRemoveFiles
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryRenameDirectories(ByVal pProject As Shell.Interop.IVsProject, ByVal cDirs As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSQUERYRENAMEDIRECTORYFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS, ByVal rgResults() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameDirectories
+        Private Function OnQueryRenameDirectories(pProject As Shell.Interop.IVsProject, cDirs As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSQUERYRENAMEDIRECTORYFLAGS, pSummaryResult() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS, rgResults() As Shell.Interop.VSQUERYRENAMEDIRECTORYRESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameDirectories
             Return NativeMethods.S_OK
         End Function
 
-        Private Function OnQueryRenameFiles(ByVal pProject As Shell.Interop.IVsProject, ByVal cFiles As Integer, ByVal rgszMkOldNames() As String, ByVal rgszMkNewNames() As String, ByVal rgFlags() As Shell.Interop.VSQUERYRENAMEFILEFLAGS, ByVal pSummaryResult() As Shell.Interop.VSQUERYRENAMEFILERESULTS, ByVal rgResults() As Shell.Interop.VSQUERYRENAMEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameFiles
+        Private Function OnQueryRenameFiles(pProject As Shell.Interop.IVsProject, cFiles As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As Shell.Interop.VSQUERYRENAMEFILEFLAGS, pSummaryResult() As Shell.Interop.VSQUERYRENAMEFILERESULTS, rgResults() As Shell.Interop.VSQUERYRENAMEFILERESULTS) As Integer Implements Shell.Interop.IVsTrackProjectDocumentsEvents2.OnQueryRenameFiles
             Return NativeMethods.S_OK
         End Function
 

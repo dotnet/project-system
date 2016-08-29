@@ -1,0 +1,32 @@
+﻿<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<ui:DialogWindow  x:Class="Microsoft.VisualStudio.ProjectSystem.VS.UI.MultiChoiceMsgBox"
+        xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Path=DialogTitle}"
+        x:ClassModifier="internal" 
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"                    
+        x:Uid="multiChoiceMsgBox"
+        xmlns:vsui="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.UI"
+        MaxWidth="700"
+        Width="700" SizeToContent="WidthAndHeight">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="ErrorIcon" UriSource="../../../warning.ico" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+    <Image DockPanel.Dock="Left" VerticalAlignment="Top" Stretch="None" Source="{StaticResource ErrorIcon}" Margin="10,14,10,0" />
+    <StackPanel Margin="12,14">
+        <TextBlock TextWrapping="WrapWithOverflow" x:Name="WarnText"  Text="{Binding Path=ErrorMsgText, Mode=OneWay}"/>
+        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" >
+        <Button x:Uid="Button4" x:Name="Button4" Margin="6,14,0,0" Command="{Binding Path=ButtonClickCommand}"  CommandParameter="{x:Static vsui:MultiChoiceMsgBoxResult.Button4}"  IsDefault="False" Padding="20,2"  Visibility="{Binding Path=Button4Visibility, Mode=OneTime}" Content="{Binding Path=Button4Text, Mode=OneWay}" />
+        <Button x:Uid="Button3" x:Name="Button3" Margin="6,14,0,0" Command="{Binding Path=ButtonClickCommand}"  CommandParameter="{x:Static vsui:MultiChoiceMsgBoxResult.Button3}" IsDefault="False" Padding="20,5" Visibility="{Binding Path=Button3Visibility, Mode=OneTime}" Content="{Binding Path=Button3Text, Mode=OneWay}" />
+        <Button x:Uid="Button2" x:Name="Button2" Margin="6,14,0,0" Command="{Binding Path=ButtonClickCommand}"  CommandParameter="{x:Static vsui:MultiChoiceMsgBoxResult.Button2}"  IsDefault="False" Padding="20,2" Visibility="{Binding Path=Button2Visibility, Mode=OneTime}" Content="{Binding Path=Button2Text, Mode=OneWay}" />
+        <Button x:Uid="Button1" x:Name="Button1" Margin="6,14,0,0" Command="{Binding Path=ButtonClickCommand}"  CommandParameter="{x:Static vsui:MultiChoiceMsgBoxResult.Button1}" IsDefault="True" Padding="20,2"  Visibility="{Binding Path=Button1Visibility, Mode=OneTime}" Content="{Binding Path=Button1Text, Mode=OneWay}" />
+        </StackPanel>
+    </StackPanel>
+</DockPanel>
+</ui:DialogWindow>

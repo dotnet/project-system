@@ -44,19 +44,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
         }
 
-        public Task<AddMessageResult> AddMessageAsync(TargetGeneratedTask task)
+        public Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
         {
-            Requires.NotNull(task, nameof(task));
+            Requires.NotNull(error, nameof(error));
 
-            return AddMessageCoreAsync(task);
+            return AddMessageCoreAsync(error);
         }
 
-        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedTask task)
+        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             ErrorListDetails details;
-            if (!TryExtractErrorListDetails(task.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
+            if (!TryExtractErrorListDetails(error.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
                 return await NotHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();

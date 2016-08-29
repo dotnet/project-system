@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="MatchedIndex">[out optional] Set to the index of the extension which matched, or -1 if none.</param>
         ''' <returns>True if the extension is found in the list.</returns>
         ''' <remarks></remarks>
-        Protected Shared Function MatchAgainstListOfExtensions(ByVal Extension As String, ByVal Extensions() As String, Optional ByRef MatchedIndex As Integer = -1) As Boolean
+        Protected Shared Function MatchAgainstListOfExtensions(Extension As String, Extensions() As String, Optional ByRef MatchedIndex As Integer = -1) As Boolean
             Debug.Assert(Extension = "" OrElse Extension.Chars(0) = "."c, "HandlesExtension: must start extension with dot")
             MatchedIndex = -1
 
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Extensions">An array of extensions supported, e.g. {".wmf", ".emf")</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Shared Function CreateSingleDialogFilter(ByVal FilterText As String, ByVal Extensions() As String) As String
+        Protected Shared Function CreateSingleDialogFilter(FilterText As String, Extensions() As String) As String
             Return Common.Utils.CreateDialogFilter(FilterText, Extensions)
         End Function
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ManifestResourceId">ID of the resource in the manifest, *not* including the namespace.</param>
         ''' <param name="FilePath">Path and name of the file to save to.</param>
         ''' <remarks>Caller responsible for handling exceptions.</remarks>
-        Protected Shared Sub SaveFileFromManifestResource(ByVal ManifestResourceId As String, ByVal FilePath As String)
+        Protected Shared Sub SaveFileFromManifestResource(ManifestResourceId As String, FilePath As String)
             Debug.Assert(ManifestResourceId <> "")
             Dim DataStream As Stream = GetType(ResourceEditorView).Assembly.GetManifestResourceStream(GetType(ResourceEditorView), ManifestResourceId)
             If Not DataStream Is Nothing Then
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly file size as string.</returns>
         ''' <remarks></remarks>
-        Protected Shared Function GetLinkedResourceFriendlySize(ByVal Resource As IResource) As String
+        Protected Shared Function GetLinkedResourceFriendlySize(Resource As IResource) As String
             If Resource.IsLink Then
                 Dim SizeInBytes As Long = New FileInfo(Resource.LinkedFilePath).Length
                 Return GetKBDisplay(SizeInBytes)
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance to validate</param>
         ''' <param name="ExpectedTypes">The type(s) which the resource is expected to be (optional).</param>
         ''' <remarks>Verifies that ResourceValue is not Nothing, and that it is of type ExpectedType.</remarks>
-        Protected Shared Sub ValidateResourceValue(ByVal Resource As IResource, ByVal ParamArray ExpectedTypes() As System.Type)
+        Protected Shared Sub ValidateResourceValue(Resource As IResource, ParamArray ExpectedTypes() As System.Type)
             If Resource Is Nothing Then
                 Debug.Fail("Resource should not be nothing")
                 Throw New InternalException
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns> The function should return true, if the resource item is valid. Otherwise, it should return False
         ''' </returns>
         ''' <remarks>We need call the function implemented by the base class before it returns true</remarks>
-        Public Overrides Function IsResourceItemValid(ByVal NewResource As IResource, ByVal ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
+        Public Overrides Function IsResourceItemValid(NewResource As IResource, ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
             If ResourceContentFile.IsInsideDeviceProject Then
                 Dim typeName As String = CType(NewResource, Resource).ValueTypeNameWithoutAssemblyInfo
                 'CONSIDER: We should consider a general way to check whether the type is supported or not.

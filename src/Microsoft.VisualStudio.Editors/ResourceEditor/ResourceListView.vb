@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             StopIdleMessage()
 
             'Disable item retrieval so that if we get asked for more information
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Fail("MyBase.View should not have been any other value")
                 End Select
             End Get
-            Set(ByVal Value As ResourceView)
+            Set(Value As ResourceView)
                 Select Case Value
                     Case ResourceView.Details
                         InitializeColumns()
@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _disableItemRetrieval
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _disableItemRetrieval = Value
             End Set
         End Property
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ResourceFile">The resources from which the displayed resources will be pulled.</param>
         ''' <param name="CategoryToFilterOn">The category of resources to display.</param>
         ''' <remarks></remarks>
-        Public Sub Populate(ByVal ResourceFile As ResourceFile, ByVal CategoryToFilterOn As Category)
+        Public Sub Populate(ResourceFile As ResourceFile, CategoryToFilterOn As Category)
             MyBase.VirtualListSize = 0
             _resourceFile = ResourceFile
 
@@ -475,7 +475,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="InvalidateThumbnail">If True, also invalidates the Resource's thumbnail image and other cached
         '''   info so that it is re-created on the next redraw.</param>
         ''' <remarks></remarks>
-        Public Sub InvalidateResource(ByVal Resource As Resource, Optional ByVal InvalidateThumbnail As Boolean = False)
+        Public Sub InvalidateResource(Resource As Resource, Optional InvalidateThumbnail As Boolean = False)
             Debug.Assert(Resource IsNot Nothing)
             If Not _virtualResourceList.Contains(Resource) Then
                 Exit Sub
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnBeforeLabelEdit(ByVal e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnBeforeLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
             If ParentView.ReadOnlyMode Then
                 e.CancelEdit = True
                 Return
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We use this event to detect that the user has changed the name of a Resource by editing the label
         '''   on a listview item.
         ''' </remarks>
-        Protected Overrides Sub OnAfterLabelEdit(ByVal e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnAfterLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
             MyBase.OnAfterLabelEdit(e)
             ParentView.OnItemEndEdit()
 
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Causes the listview to go into label edit mode
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub BeginLabelEdit(ByVal Resource As Resource)
+        Public Sub BeginLabelEdit(Resource As Resource)
             If Me.LabelEdit AndAlso Resource IsNot Nothing Then
                 Dim Index As Integer = IndexOf(Resource)
                 SelectResource(Index, True)
@@ -606,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnColumnClick(ByVal e As ColumnClickEventArgs)
+        Protected Overrides Sub OnColumnClick(e As ColumnClickEventArgs)
             If e.Column <> _sorter.ColumnIndex Then
                 SortOnColumn(e.Column, False)
             Else
@@ -621,7 +621,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="originalSorter"></param>
         ''' <remarks></remarks>
-        Friend Sub RestoreSorter(ByVal originalSorter As IComparer)
+        Friend Sub RestoreSorter(originalSorter As IComparer)
             Dim listViewSorter As DetailViewSorter = TryCast(originalSorter, DetailViewSorter)
             If listViewSorter IsNot Nothing Then
                 SortOnColumn(listViewSorter.ColumnIndex, listViewSorter.InReverseOrder)
@@ -636,7 +636,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
         ''' <remarks></remarks>
-        Private Sub SortOnColumn(ByVal columnIndex As Integer, ByVal inReverseOrder As Boolean)
+        Private Sub SortOnColumn(columnIndex As Integer, inReverseOrder As Boolean)
             Dim currentResource As Resource = Nothing
             Dim selectedResources() As Resource
 
@@ -693,7 +693,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
         ''' <remarks></remarks>
-        Private Sub SetColumnSortImage(ByVal columnIndex As Integer, ByVal inReverseOrder As Boolean)
+        Private Sub SetColumnSortImage(columnIndex As Integer, inReverseOrder As Boolean)
             Dim headerHandle As IntPtr
             headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
@@ -725,7 +725,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="columnIndex"></param>
         ''' <remarks></remarks>
-        Private Sub ClearColumnSortImage(ByVal columnIndex As Integer)
+        Private Sub ClearColumnSortImage(columnIndex As Integer)
             Dim headerHandle As IntPtr
             headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
@@ -751,7 +751,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnSystemColorsChanged(ByVal e As EventArgs)
+        Protected Overrides Sub OnSystemColorsChanged(e As EventArgs)
             MyBase.OnSystemColorsChanged(e)
 
             ' Update sort indicator...
@@ -780,7 +780,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCacheVirtualItems(ByVal e As System.Windows.Forms.CacheVirtualItemsEventArgs)
+        Protected Overrides Sub OnCacheVirtualItems(e As System.Windows.Forms.CacheVirtualItemsEventArgs)
             MyBase.OnCacheVirtualItems(e)
 
             If _thumbnailCache IsNot Nothing Then
@@ -826,7 +826,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="StartIndex"></param>
         ''' <param name="EndIndex"></param>
         ''' <remarks></remarks>
-        Private Sub RequireCacheImage(ByVal StartIndex As Integer, ByVal EndIndex As Integer)
+        Private Sub RequireCacheImage(StartIndex As Integer, EndIndex As Integer)
             If Not _onIdleEnabled Then
                 _imageStartIndex = StartIndex
                 _imageEndIndex = EndIndex
@@ -891,7 +891,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e">Event arguments</param>
         ''' <remarks></remarks>
-        Private Sub OnDelayLoadImages(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnDelayLoadImages(sender As Object, e As EventArgs)
             Debug.Assert(_thumbnailCache IsNot Nothing)
             _needLoadVisibleItem = False
             If _thumbnailCache IsNot Nothing Then
@@ -963,7 +963,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Retrieval arguments</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnRetrieveVirtualItem(ByVal e As System.Windows.Forms.RetrieveVirtualItemEventArgs)
+        Protected Overrides Sub OnRetrieveVirtualItem(e As System.Windows.Forms.RetrieveVirtualItemEventArgs)
             MyBase.OnRetrieveVirtualItem(e)
 
             If ResourceFile Is Nothing Then
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="OnlyCachedValue">if it is true, we won't do slow operations, like loading external files to get the value</param>
         ''' <returns>String Value of the column</returns>
         ''' <remarks>We only use OnlyCachedValue when we will load the real value on the Idle time</remarks>
-        Friend Shared Function GetDetailViewColumn(ByVal Resource As Resource, ByVal ColumnIndex As Integer, Optional ByVal OnlyCachedValue As Boolean = False) As String
+        Friend Shared Function GetDetailViewColumn(Resource As Resource, ColumnIndex As Integer, Optional OnlyCachedValue As Boolean = False) As String
             '*****
             '***** WARNING: The number of columns *MUST* match the code in InitializeColumns
             '*****
@@ -1103,7 +1103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="AllowDelayLoading">If it is true, we won't load image, and leave it to the idle time</param>
         ''' <returns>The index into the imagelist for the resource's thumbnail</returns>
         ''' <remarks></remarks>
-        Private Function GetThumbnailIndex(ByVal Resource As Resource, ByVal AllowDelayLoading As Boolean) As Integer
+        Private Function GetThumbnailIndex(Resource As Resource, AllowDelayLoading As Boolean) As Integer
             'Verify that the error glyphs aren't too big (we don't expand them, so being too small
             '  is okay)
             Debug.Assert(ParentView.CachedResources.ErrorGlyphLarge.Size.Width <= _largeImageWidthHeight _
@@ -1197,7 +1197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Index">The virtual index to retrieve</param>
         ''' <returns>The Resource from that index.</returns>
         ''' <remarks>Throws an exception if out of bounds</remarks>
-        Public Function GetResourceFromVirtualIndex(ByVal Index As Integer) As Resource
+        Public Function GetResourceFromVirtualIndex(Index As Integer) As Resource
             If Index < 0 OrElse Index >= _virtualResourceList.Count Then
                 Debug.Fail("GetResourceFromVirtualIndex: virtual resource index out of bounds")
                 Return Nothing
@@ -1214,7 +1214,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource to get the ListViewItem index of</param>
         ''' <returns>The index of that resource's ListViewItem</returns>
         ''' <remarks>Returns -1 if not found.</remarks>
-        Public Function IndexOf(ByVal Resource As Resource) As Integer
+        Public Function IndexOf(Resource As Resource) As Integer
             Debug.Assert(Resource IsNot Nothing)
             Return _virtualResourceList.IndexOf(Resource)
         End Function
@@ -1250,7 +1250,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The Resources to highlight</param>
         ''' <remarks></remarks>
-        Friend Sub HighlightResources(ByVal Resources As ICollection)
+        Friend Sub HighlightResources(Resources As ICollection)
             Dim firstOne As Boolean = True
             For Each Resource As Resource In Resources
                 Dim IndexOfResource As Integer = IndexOf(Resource)
@@ -1287,14 +1287,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public puColumns As IntPtr
         End Structure
 
-        Private Declare Auto Function SendMessage Lib "User32" (ByVal hWnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, ByRef lParam As LVITEM) As IntPtr
+        Private Declare Auto Function SendMessage Lib "User32" (hWnd As IntPtr, msg As Integer, wParam As Integer, ByRef lParam As LVITEM) As IntPtr
 
         Private Const s_LVIF_STATE As Integer = &H8
         Private Const s_LVIS_SELECTED As Integer = &H2
         Private Const s_LVM_SETITEMSTATE As Integer = (&H1000 + 43)
 
 
-        Private Sub SetItemState(ByVal index As Integer, ByVal state As Integer, ByVal mask As Integer)
+        Private Sub SetItemState(index As Integer, state As Integer, mask As Integer)
             If index < 0 OrElse index >= MyBase.VirtualListSize Then
                 Debug.Fail("")
                 Exit Sub
@@ -1309,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-        Public Sub SelectResource(ByVal ResourceIndex As Integer, ByVal Selected As Boolean)
+        Public Sub SelectResource(ResourceIndex As Integer, Selected As Boolean)
             If ResourceIndex < 0 OrElse ResourceIndex >= MyBase.VirtualListSize Then
                 Debug.Fail("SelectResource: index out of bounds")
                 Exit Sub
@@ -1322,7 +1322,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-        Public Sub SelectResource(ByVal Resource As Resource, ByVal Selected As Boolean)
+        Public Sub SelectResource(Resource As Resource, Selected As Boolean)
             SelectResource(IndexOf(Resource), Selected)
         End Sub
 
@@ -1357,7 +1357,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   The resources are added to the end of the list, alphabetized.
         ''' </remarks>
-        Public Sub AddResources(ByVal Resources As IList)
+        Public Sub AddResources(Resources As IList)
             UnselectAll()
             Debug.Assert(_virtualResourceList.Count = MyBase.VirtualListSize)
 
@@ -1402,7 +1402,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The set of Resources to remove from view.</param>
         ''' <remarks></remarks>
-        Public Sub RemoveResources(ByVal Resources As IList)
+        Public Sub RemoveResources(Resources As IList)
             UnselectAll()
             Debug.Assert(_virtualResourceList.Count = MyBase.VirtualListSize)
 
@@ -1434,7 +1434,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private _columnIndex As Integer
             Private _reverseOrder As Boolean
 
-            Public Sub New(ByVal columnIndex As Integer, ByVal reverseOrder As Boolean)
+            Public Sub New(columnIndex As Integer, reverseOrder As Boolean)
                 _columnIndex = columnIndex
                 _reverseOrder = reverseOrder
             End Sub
@@ -1446,7 +1446,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Get
                     Return _columnIndex
                 End Get
-                Set(ByVal value As Integer)
+                Set(value As Integer)
                     _columnIndex = value
                 End Set
             End Property
@@ -1458,7 +1458,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Get
                     Return _reverseOrder
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     _reverseOrder = value
                 End Set
             End Property
@@ -1466,7 +1466,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Compare two list items
             ''' </Summary>
-            Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> 0 Then
                     ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.CurrentCultureIgnoreCase)
@@ -1480,7 +1480,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Get String Value of one column
             ''' </Summary>
-            Private Function GetColumnValue(ByVal obj As Object, ByVal column As Integer) As String
+            Private Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
                     Return ResourceListView.GetDetailViewColumn(DirectCast(obj, Resource), column)
                 End If
@@ -1508,7 +1508,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </Summary>
             ''' <param name="StartIndex"></param>
             ''' <param name="EndIndex"></param>
-            Public Sub New(ByVal StartIndex As Integer, ByVal EndIndex As Integer)
+            Public Sub New(StartIndex As Integer, EndIndex As Integer)
                 Me.StartIndex = StartIndex
                 Me.EndIndex = EndIndex
             End Sub
