@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ExportInterceptingPropertyValueProvider("TargetFrameworkMoniker")]
+    [ExportInterceptingPropertyValueProvider("TargetFrameworkMoniker", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkMonikerValueProvider : InterceptingPropertyValueProviderBase
     {
         private IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
