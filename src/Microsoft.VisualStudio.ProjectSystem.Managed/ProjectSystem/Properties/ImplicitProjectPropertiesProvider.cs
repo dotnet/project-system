@@ -25,17 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
+        private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
-            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider, 
-            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider, 
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
+            [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)
-            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item));
+            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyValues);
 
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
@@ -44,11 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
-            private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+            private readonly ConcurrentDictionary<string, string> _propertyValues;
 
-            public ImplicitProjectProperties(IProjectProperties properties)
+            public ImplicitProjectProperties(IProjectProperties properties, ConcurrentDictionary<string, string> propertyValues)
                 : base(properties)
             {
+                _propertyValues = propertyValues;
             }
 
             /// <summary>
@@ -63,7 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // overwrite the property if it exists
                     await DelegatedProperties.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(false);
-                } else
+                }
+                else
                 {
                     // store the property in this property object, not in the project file
                     _propertyValues[propertyName] = unevaluatedPropertyValue;
