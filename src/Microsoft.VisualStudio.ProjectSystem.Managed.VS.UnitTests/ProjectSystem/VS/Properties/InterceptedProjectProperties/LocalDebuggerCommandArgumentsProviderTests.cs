@@ -58,15 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Theory]
-        [InlineData("consoleapp1.exe", "consoleapp1", false, "arg1 arg2")]
-        [InlineData("consoleapp1.exe", "consoleapp1", true, "arg1 arg2")]
-        public async Task LocalDebuggerCommandArgumentsProvider_EmptyCommand_ReturnsExec(string executable, string dll, bool useOutputGroups, string args)
+        [InlineData("C:\\Temp\\consoleapp1.exe", "arg1 arg2", false,  "exec \"C:\\Temp\\consoleapp1.dll\" arg1 arg2")]
+        [InlineData("C:\\Temp\\consoleapp1.exe", "arg1 arg2", true,   "exec \"C:\\Temp\\consoleapp1.dll\" arg1 arg2")]
+        public async Task LocalDebuggerCommandArgumentsProvider_EmptyCommand_ReturnsExec(string executable, string args, bool useOutputGroups, string expected)
         {
             var properites = IProjectPropertiesFactory.CreateWithPropertyAndValue(WindowsLocalDebugger.LocalDebuggerCommandProperty, "");
-            var directory = Directory.GetCurrentDirectory();
+
             var debugger = CreateInstance(executable, executable, useOutputGroups);
-            Assert.Equal(
-                $@"exec ""{directory + Path.DirectorySeparatorChar + dll}.dll"" {args}",
+            Assert.Equal(expected, 
                 await debugger.OnGetEvaluatedPropertyValueAsync(args, properites)
                 );
         }
