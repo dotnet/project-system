@@ -49,8 +49,8 @@
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandArgumentsValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkMonikerValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProject.cs" />
