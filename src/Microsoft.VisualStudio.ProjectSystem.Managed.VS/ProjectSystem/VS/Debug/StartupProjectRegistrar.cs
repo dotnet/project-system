@@ -25,31 +25,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
 
+        internal WrapperMethod WrapperMethodCaller { get; set; }
+
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
             IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
-            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
+            Requires.NotNull(launchProviders, nameof(launchProviders));
 
+            _projectVsServices = projectVsServices;
             _startupProjectsListService = serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             _threadingService = threadingService;
-            _projectVsServices = projectVsServices;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
+
+            WrapperMethodCaller = new WrapperMethod(new StaticWrapper());
         }
 
         [ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        private async Tasks.Task OnProjectFactoryCompletedAsync()
+        internal async Tasks.Task OnProjectFactoryCompletedAsync()
         {
             ConfigurationGeneral projectProperties =
                 await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
@@ -66,13 +69,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
             var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                 ConfigurationGeneralRuleBlock_ChangedAsync);
-            _evaluationSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+            IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = 
+                _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock;
+            _evaluationSubscriptionLink = WrapperMethodCaller.LinkTo(
+                sourceBlock,
                 evaluationBlock,
                 ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates:true
                 );
         }
 
-        private async Tasks.Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        internal async Tasks.Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
 
@@ -151,6 +157,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 get;
             }
+        }
+
+        internal class WrapperMethod
+        {
+            private IStaticWrapper _wrapper;
+
+            public WrapperMethod(IStaticWrapper wrapper)
+            {
+                _wrapper = wrapper;
+            }
+
+            public IDisposable LinkTo(
+                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
+                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+                IEnumerable<string> ruleNames,
+                bool suppressVersionOnlyUpdates)
+            {
+                return _wrapper.LinkTo(sourceBlock, target, ruleNames, suppressVersionOnlyUpdates);
+            }
+        }
+
+        internal class StaticWrapper : IStaticWrapper
+        {
+            public IDisposable LinkTo(
+                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
+                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+                IEnumerable<string> ruleNames,
+                bool suppressVersionOnlyUpdates)
+            {
+                return sourceBlock.LinkTo(
+                    target: target,
+                    ruleNames: ruleNames,
+                    suppressVersionOnlyUpdates: suppressVersionOnlyUpdates);
+            }
+        }
+
+        public interface IStaticWrapper
+        {
+            IDisposable LinkTo(
+                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
+                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+                IEnumerable<string> ruleNames,
+                bool suppressVersionOnlyUpdates);
         }
     }
 }

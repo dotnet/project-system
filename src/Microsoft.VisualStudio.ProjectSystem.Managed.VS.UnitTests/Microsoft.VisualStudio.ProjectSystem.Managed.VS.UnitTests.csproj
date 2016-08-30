@@ -50,6 +50,9 @@
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
     <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
+    <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
+    <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />
@@ -64,10 +67,13 @@
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDiffFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDescriptionFactory.cs" />
+    <Compile Include="Mocks\IProjectValueDataSourceFactory.cs" />
+    <Compile Include="Mocks\IReceivableSourceBlockFactory.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
     <Compile Include="Mocks\IServiceProviderMoq.cs" />
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
+    <Compile Include="Mocks\IVsStartupProjectsListServiceFactory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
@@ -86,6 +92,7 @@
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugLaunchProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
