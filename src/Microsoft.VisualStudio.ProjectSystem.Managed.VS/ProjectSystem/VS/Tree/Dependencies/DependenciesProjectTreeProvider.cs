@@ -347,7 +347,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, e.DataSourceVersions));
+                    // Note: temporary workaround to prevent data sources being out of sync is send null always,
+                    // this would stop error dialog, however subscribers could not check for Dependencies tree changes
+                    // until real fix is checked it (its fine since there probably should not be any at the moment).
+                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null /*e.DataSourceVersions*/));
                 });
         }
 
