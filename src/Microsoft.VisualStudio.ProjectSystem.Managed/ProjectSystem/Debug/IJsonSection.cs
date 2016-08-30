@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Used to get to the JsonString exported attribute by importers of ILaunchSettingsSerializationProvider
     /// </summary>
-    internal interface IJsonSection
+    public interface IJsonSection
     {
         string JsonSection { get; }
         Type SerializationType { get; }

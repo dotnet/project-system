@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Given an ILaunchProfile, it will enumerate the items and do replacement on the 
     /// </summary>
-    internal interface IDebugTokenReplacer
+    public interface IDebugTokenReplacer
     {
         Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile);
 
