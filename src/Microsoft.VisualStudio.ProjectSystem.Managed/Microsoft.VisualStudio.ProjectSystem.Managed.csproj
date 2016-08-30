@@ -41,8 +41,6 @@
     <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
-    <Compile Include="ProjectSystem\Debug\IMutableLaunchProfile.cs" />
-    <Compile Include="ProjectSystem\Debug\IMutableLaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
@@ -291,7 +289,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>
     <!-- By default, all XAML rules get generated into the same namespace -->
