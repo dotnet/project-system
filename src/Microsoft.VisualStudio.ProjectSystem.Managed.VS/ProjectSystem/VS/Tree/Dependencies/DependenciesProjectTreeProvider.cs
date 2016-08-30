@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
+using System.Collections;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -26,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [Export(typeof(IDependenciesGraphProjectContext))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesProjectTreeProvider : ProjectTreeProviderBase, 
-                                                     IProjectTreeProvider, 
+    internal class DependenciesProjectTreeProvider : ProjectTreeProviderBase,
+                                                     IProjectTreeProvider,
                                                      IDependenciesGraphProjectContext
     {
         private static readonly ProjectTreeFlags DependenciesRootNodeFlags
@@ -55,11 +56,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportMany]
         public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
+        private DataSourceVersionsSync DataSourceVersionsSync { get; } = new DataSourceVersionsSync();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
         /// </summary>
         [ImportingConstructor]
-        public DependenciesProjectTreeProvider(IProjectThreadingService threadingService, 
+        public DependenciesProjectTreeProvider(IProjectThreadingService threadingService,
                                                UnconfiguredProject unconfiguredProject)
             : base(threadingService, unconfiguredProject)
         {
@@ -94,8 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </param>
         /// <param name="deleteOriginal"><c>true</c> for a move operation; <c>false</c> for a copy operation.</param>
         /// <returns><c>true</c> if such a move/copy operation would be allowable; <c>false</c> otherwise.</returns>
-        public override bool CanCopy(IImmutableSet<IProjectTree> nodes, 
-                                     IProjectTree receiver, 
+        public override bool CanCopy(IImmutableSet<IProjectTree> nodes,
+                                     IProjectTree receiver,
                                      bool deleteOriginal = false)
         {
             return false;
@@ -116,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="deleteOptions">
         /// A value indicating whether the items should be deleted from disk as well as from the project file.
         /// </param>
-        public override bool CanRemove(IImmutableSet<IProjectTree> nodes, 
+        public override bool CanRemove(IImmutableSet<IProjectTree> nodes,
                                        DeleteOptions deleteOptions = DeleteOptions.None)
         {
             if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
@@ -124,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags) 
+            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags)
                                         && node.BrowseObjectProperties != null)
                                      || node.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
         }
@@ -144,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </param>
         /// <exception cref="InvalidOperationException">Thrown when <see cref="IProjectTreeProvider.CanRemove"/> 
         /// would return <c>false</c> for this operation.</exception>
-        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, 
+        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes,
                                                DeleteOptions deleteOptions = DeleteOptions.None)
         {
             if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
@@ -153,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             // Get the list of shared import nodes.
-            IEnumerable<IProjectTree> sharedImportNodes = nodes.Where(node => 
+            IEnumerable<IProjectTree> sharedImportNodes = nodes.Where(node =>
                     node.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
 
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
@@ -179,8 +182,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     var nodeItemContext = node.BrowseObjectProperties.Context;
                     var unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
-                        .FirstOrDefault(item => string.Equals(item.ItemType, 
-                                                              nodeItemContext.ItemType, 
+                        .FirstOrDefault(item => string.Equals(item.ItemType,
+                                                              nodeItemContext.ItemType,
                                                               StringComparison.OrdinalIgnoreCase));
 
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
@@ -201,13 +204,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // imports the project file whose full path matches the specified one.
                     var matchingImports = from import in project.Imports
                                           where import.ImportingElement.ContainingProject == projectXml
-                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath, 
+                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath,
                                                                       sharedImportNode.FilePath)
                                           select import;
                     foreach (var importToRemove in matchingImports)
                     {
                         var importingElementToRemove = importToRemove.ImportingElement;
-                        Report.IfNot(importingElementToRemove != null, 
+                        Report.IfNot(importingElementToRemove != null,
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
                         {
@@ -295,19 +298,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             foreach (var provider in SubTreeProviders)
                             {
+                                provider.Value.DependenciesChanging += OnDependenciesChanging;
                                 provider.Value.DependenciesChanged += OnDependenciesChanged;
                             }
 
                             Verify.NotDisposed(this);
                             var nowait = SubmitTreeUpdateAsync(
                                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
-                                    {
-                                        var dependenciesNode = CreateDependenciesFolder(null);                                        
-                                        dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
-                                                                                              cancellationToken);
+                                {
+                                    var dependenciesNode = CreateDependenciesFolder(null);
+                                    dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode,
+                                                                                          cancellationToken);
 
-                                        return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
-                                    });                            
+                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
+                                });
                         }
 
                     },
@@ -324,6 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var provider in SubTreeProviders)
                 {
+                    provider.Value.DependenciesChanging -= OnDependenciesChanging;
                     provider.Value.DependenciesChanged -= OnDependenciesChanged;
                 }
 
@@ -331,6 +336,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             base.Dispose(disposing);
+        }
+
+        private void OnDependenciesChanging(object sender, DependenciesChangingEventArgs e)
+        {
+            // merge all data source versions for upcoming OnDependenciesChanged events early
+            DataSourceVersionsSync.PushDataSourceVersions(e.DataSourceVersions);
         }
 
         private void OnDependenciesChanged(object sender, DependenciesChangedEventArgs e)
@@ -347,7 +358,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, e.DataSourceVersions));
+                    // In cases when some events processing takes longer time, we might receive data sources A 
+                    // that have higher versions than next OnDependenciesChanging/OnDependenciesChanged with data 
+                    // sources B. To avoid conflicts, we store all coming data sources version (received earlier 
+                    // from OnDependenciesChanging event) and here we get minimal version for each data source in
+                    // e.DataSourceVersions. This would allow to avoid higher versions posted before smaller ones
+                    // which would lead to an exception.
+                    var minimalDataSourceInTheQueue = 
+                            DataSourceVersionsSync.PopMinimalDataSourceVersions(e.DataSourceVersions);
+
+                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, minimalDataSourceInTheQueue));
                 });
         }
 
@@ -399,13 +419,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     break;
                 }
 
-                var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode, 
+                var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
                                                               subTreeProvider.Value.RootNode.Flags);
                 // since this method only creates dependencies providers sub tree nodes
                 // at initialization time, changes and catalogs could be null.
                 dependenciesNode = CreateOrUpdateSubTreeProviderNode(dependenciesNode,
                                                                      subTreeProvider.Value,
-                                                                     changes: null,                                                                    
+                                                                     changes: null,
                                                                      catalogs: null,
                                                                      cancellationToken: cancellationToken);
             }
@@ -509,7 +529,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             return dependenciesNode;
                         }
-                      
+
                         var treeNode = providerRootTreeNode.FindNodeByPath(addedItem.Id.ToString());
                         if (treeNode == null)
                         {
@@ -699,7 +719,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </param>
         /// <param name="namedCatalogs">The dictionary of catalogs.</param>
         /// <returns>The sequence of matching rules.  Hopefully having exactly one element.</returns>
-        private IEnumerable<Rule> GetSchemaForReference(string itemType, 
+        private IEnumerable<Rule> GetSchemaForReference(string itemType,
                                                         bool resolved,
                                                         IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs)
         {
@@ -708,10 +728,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
             return from schemaName in browseObjectCatalog.GetPropertyPagesSchemas(itemType)
                    let schema = browseObjectCatalog.GetSchema(schemaName)
-                   where schema.DataSource != null 
+                   where schema.DataSource != null
                          && string.Equals(itemType, schema.DataSource.ItemType, StringComparison.OrdinalIgnoreCase)
-                         && (resolved == string.Equals(schema.DataSource.SourceType, 
-                                                       RuleDataSourceTypes.TargetResults, 
+                         && (resolved == string.Equals(schema.DataSource.SourceType,
+                                                       RuleDataSourceTypes.TargetResults,
                                                        StringComparison.OrdinalIgnoreCase))
                    select schema;
         }
@@ -720,9 +740,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Gets an IRule to attach to a project item so that browse object properties will be displayed.
         /// </summary>
         private IRule GetRuleForResolvableReference(
-                        IProjectPropertiesContext unresolvedContext, 
-                        KeyValuePair<string, IImmutableDictionary<string, string>> resolvedReference, 
-                        IProjectCatalogSnapshot catalogs, 
+                        IProjectPropertiesContext unresolvedContext,
+                        KeyValuePair<string, IImmutableDictionary<string, string>> resolvedReference,
+                        IProjectCatalogSnapshot catalogs,
                         ConfiguredProjectExports configuredProjectExports)
         {
             Requires.NotNull(unresolvedContext, nameof(unresolvedContext));
@@ -732,9 +752,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (schemas.Count == 1)
             {
                 IRule rule = configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
-                                schemas[0], 
-                                unresolvedContext, 
-                                resolvedReference.Key, 
+                                schemas[0],
+                                unresolvedContext,
+                                resolvedReference.Key,
                                 resolvedReference.Value);
                 return rule;
             }
@@ -743,7 +763,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (schemas.Count > 1)
                 {
                     TraceUtilities.TraceWarning(
-                        "Too many rule schemas ({0}) in the BrowseObject context were found.  Only 1 is allowed.", 
+                        "Too many rule schemas ({0}) in the BrowseObject context were found.  Only 1 is allowed.",
                         schemas.Count);
                 }
 
@@ -751,9 +771,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // pages can pop up.
                 var emptyRule = RuleExtensions.SynthesizeEmptyRule(unresolvedContext.ItemType);
                 return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
-                            emptyRule, 
-                            unresolvedContext.File, 
-                            unresolvedContext.ItemType, 
+                            emptyRule,
+                            unresolvedContext.File,
+                            unresolvedContext.ItemType,
                             unresolvedContext.ItemName);
             }
         }
@@ -761,8 +781,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets an IRule to attach to a project item so that browse object properties will be displayed.
         /// </summary>
-        private IRule GetRuleForUnresolvableReference(IProjectPropertiesContext unresolvedContext, 
-                                                      IProjectCatalogSnapshot catalogs, 
+        private IRule GetRuleForUnresolvableReference(IProjectPropertiesContext unresolvedContext,
+                                                      IProjectCatalogSnapshot catalogs,
                                                       ConfiguredProjectExports configuredProjectExports)
         {
             Requires.NotNull(unresolvedContext, nameof(unresolvedContext));
@@ -780,7 +800,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (schemas.Count > 1)
             {
                 TraceUtilities.TraceWarning(
-                    "Too many rule schemas ({0}) in the BrowseObject context were found. Only 1 is allowed.", 
+                    "Too many rule schemas ({0}) in the BrowseObject context were found. Only 1 is allowed.",
                     schemas.Count);
             }
 
@@ -788,9 +808,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // pages can pop up.
             var emptyRule = RuleExtensions.SynthesizeEmptyRule(unresolvedContext.ItemType);
             return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
-                        emptyRule, 
-                        unresolvedContext.File, 
-                        unresolvedContext.ItemType, 
+                        emptyRule,
+                        unresolvedContext.File,
+                        unresolvedContext.ItemType,
                         unresolvedContext.ItemName);
         }
 
