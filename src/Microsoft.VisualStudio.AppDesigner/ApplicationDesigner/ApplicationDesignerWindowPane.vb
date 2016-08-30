@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="surface"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal surface As DesignSurface)
+        Public Sub New(surface As DesignSurface)
             MyBase.New(surface)
             'Create our view control and hook its focus event.
             'Do not be tempted to create a container control here
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>
         ''' We override this so we can disable toolbox support for the project designer.
         ''' </remarks>
-        Protected Overrides Function GetToolboxItemSupported(ByVal toolboxItem As IOleDataObject) As Boolean
+        Protected Overrides Function GetToolboxItemSupported(toolboxItem As IOleDataObject) As Boolean
             'PERF: NOTE: We don't need toolbox support for the project designer itself, and this takes up 
             '  performance, so we simply return False here for all toolbox items
             Return False
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnViewFocus(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnViewFocus(sender As Object, e As EventArgs)
             'Note: this sub never seems to get hit when controls count > 0
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.OnViewFocus (Project Designer's window pane)")
             If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''  it will display the error control.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub PopulateView(ByVal guidLogicalView As Guid)
+        Private Sub PopulateView(guidLogicalView As Guid)
             'Debug.Assert(guidLogicalView.Equals(Guid.Empty), "NYI: PopulateView with a non-empty GUID")
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.PopulateView")
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '     information then it could still have the error control on it,
         '     in which case we should dispose it.
         ' </devdoc>
-        Private Sub OnSurfaceUnloaded(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
             If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
                 Dim controls As Control() = New Control(_view.Controls.Count - 1) {}
                 _view.Controls.CopyTo(controls, 0)
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="LogicalView"></param>
         ''' <remarks></remarks>
-        Private Sub SetActiveView(ByVal LogicalView As Guid)
+        Private Sub SetActiveView(LogicalView As Guid)
             If AppDesignerView IsNot Nothing Then
                 AppDesignerView.ActiveView = LogicalView
             End If
@@ -353,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="flags"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CloseFrameInternal(ByVal WindowFrame As IVsWindowFrame, ByVal flags As __FRAMECLOSE) As Integer
+        Private Function CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE) As Integer
             If WindowFrame IsNot Nothing Then
                 Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
                 Return hr
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' We do saving of children specifically rather than letting devenv handle it, because otherwise we would
         '''   end up with multiple save dialogs instead of a single one.
         ''' </remarks>
-        Public Function SaveChildren(ByVal flags As __VSRDTSAVEOPTIONS) As Integer
+        Public Function SaveChildren(flags As __VSRDTSAVEOPTIONS) As Integer
             If AppDesignerView IsNot Nothing Then
                 ' we should commit pending changes before saving
                 If Not AppDesignerView.CommitAnyPendingChanges() Then
@@ -465,11 +465,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #Region "IVsBackForwardNavigation"
 #If 0 Then 'CONSIDER implementing
-        Public Sub IsEqual(ByVal pFrame As Shell.Interop.IVsWindowFrame, ByVal bstrData As String, ByVal punk As Object, ByRef fReplaceSelf As Integer) Implements Shell.Interop.IVsBackForwardNavigation.IsEqual
+        Public Sub IsEqual(pFrame As Shell.Interop.IVsWindowFrame, bstrData As String, punk As Object, ByRef fReplaceSelf As Integer) Implements Shell.Interop.IVsBackForwardNavigation.IsEqual
             fReplaceSelf = 0
         End Sub
 
-        Public Sub NavigateTo(ByVal pFrame As Shell.Interop.IVsWindowFrame, ByVal bstrData As String, ByVal punk As Object) Implements Shell.Interop.IVsBackForwardNavigation.NavigateTo
+        Public Sub NavigateTo(pFrame As Shell.Interop.IVsWindowFrame, bstrData As String, punk As Object) Implements Shell.Interop.IVsBackForwardNavigation.NavigateTo
 
         End Sub
 #End If
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing"></param>
         ''' <remarks></remarks>
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             Dim disposedView As Control = _view
 
             Try

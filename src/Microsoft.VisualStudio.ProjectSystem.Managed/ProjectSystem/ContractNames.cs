@@ -45,5 +45,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             /// </summary>
             internal const string AssemblyReference = Prefix + "AssemblyReference";
         }
+
+        /// <summary>
+        /// Contracts used by tree providers.
+        /// </summary>
+        internal static class ProjectTreeProviders
+        {
+            /// <summary>
+            /// The tree of the exact contents of the project directory.
+            /// </summary>
+            internal const string FileSystemDirectoryTree = Prefix + "FileSystemDirectory";
+        }
     }
 }

@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' is that it sends it directly to the editing control, and not to the editing controls focused child 
         ''' control where we want it to end up.... 
         '''</remarks>
-        Protected Overrides Sub OnKeyPress(ByVal e As KeyPressEventArgs)
+        Protected Overrides Sub OnKeyPress(e As KeyPressEventArgs)
             MyBase.OnKeyPress(e)
 
             SelectedText = e.KeyChar
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Because of the way we are showing the UI Type editor drop-down, there may be cases where we could end up leaving
         ''' the cell before the UI Type editor control has had the chance to push its value to the current cell
         '''</remarks>
-        Private Sub CellValidatingHandler(ByVal sender As Object, ByVal e As DataGridViewCellValidatingEventArgs)
+        Private Sub CellValidatingHandler(sender As Object, e As DataGridViewCellValidatingEventArgs)
             If IsShowingUITypeEditor Then
                 e.Cancel = True
             End If
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _dataGridView
             End Get
-            Set(ByVal Value As System.Windows.Forms.DataGridView)
+            Set(Value As System.Windows.Forms.DataGridView)
                 DisconnectDataGridViewEventHandlers()
                 _dataGridView = Value
                 ConnectDataGridViewEventHandlers()
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return GetFormattedValue(System.Windows.Forms.DataGridViewDataErrorContexts.Formatting)
             End Get
-            Set(ByVal Value As Object)
+            Set(Value As Object)
                 Debug.Assert(TypeOf Value Is String, String.Format("Why did someone try to set my formatted value to an object of type {0}? Expected type string!", Value.GetType().ToString()))
                 Text = DirectCast(Value, String)
             End Set
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Function GetFormattedValue(ByVal context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object Implements System.Windows.Forms.IDataGridViewEditingControl.GetEditingControlFormattedValue
+        Public Function GetFormattedValue(context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object Implements System.Windows.Forms.IDataGridViewEditingControl.GetEditingControlFormattedValue
             If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso Me.ValueType.Equals(GetType(SerializableConnectionString)) Then
                 Dim scs As SerializableConnectionString = TryCast(Me.Value, SerializableConnectionString)
                 If scs Is Nothing Then
@@ -141,12 +141,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _rowIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 _rowIndex = Value
             End Set
         End Property
 
-        Public Function IDataGridViewEditingControl_IsInputKey(ByVal keyData As Keys, ByVal dataGridViewWantsInputKey As Boolean) As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlWantsInputKey
+        Public Function IDataGridViewEditingControl_IsInputKey(keyData As Keys, dataGridViewWantsInputKey As Boolean) As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlWantsInputKey
             ' This code was copied from the DataGridViewTextBoxEditingControl
             Select Case (keyData And Keys.KeyCode)
                 Case Keys.Right
@@ -214,13 +214,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Not dataGridViewWantsInputKey
         End Function
 
-        Public Sub PrepareForEdit(ByVal selectAll As Boolean) Implements System.Windows.Forms.IDataGridViewEditingControl.PrepareEditingControlForEdit
+        Public Sub PrepareForEdit(selectAll As Boolean) Implements System.Windows.Forms.IDataGridViewEditingControl.PrepareEditingControlForEdit
             If selectAll Then
                 Me.SelectAll()
             End If
         End Sub
 
-        Public Sub UseCellStyle(ByVal dataGridViewCellStyle As System.Windows.Forms.DataGridViewCellStyle) Implements System.Windows.Forms.IDataGridViewEditingControl.ApplyCellStyleToEditingControl
+        Public Sub UseCellStyle(dataGridViewCellStyle As System.Windows.Forms.DataGridViewCellStyle) Implements System.Windows.Forms.IDataGridViewEditingControl.ApplyCellStyleToEditingControl
             Me.Font = dataGridViewCellStyle.Font
             Me.BackColor = dataGridViewCellStyle.BackColor
             Me.ForeColor = dataGridViewCellStyle.ForeColor
@@ -230,7 +230,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _valueChanged
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _valueChanged = Value
                 If _dataGridView.CurrentCellAddress.X = -1 OrElse _dataGridView.CurrentCellAddress.Y = -1 Then
                     Debug.Assert(_dataGridView.IsCurrentCellInEditMode, "Why did the value change when we aren't in edit mode!?")
@@ -251,12 +251,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _serviceProvider
             End Get
-            Set(ByVal Value As IServiceProvider)
+            Set(Value As IServiceProvider)
                 _serviceProvider = Value
             End Set
         End Property
 
-        Protected Overrides Function GetService(ByVal service As System.Type) As Object
+        Protected Overrides Function GetService(service As System.Type) As Object
             If _serviceProvider IsNot Nothing Then
                 Dim requestedService As Object = _serviceProvider.GetService(service)
                 If requestedService IsNot Nothing Then
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #End Region
 
 
-        Protected Overrides Function FormatValue(ByVal ValueToFormat As Object) As String
+        Protected Overrides Function FormatValue(ValueToFormat As Object) As String
             If ValueToFormat IsNot Nothing AndAlso ValueToFormat.GetType().Equals(GetType(SerializableConnectionString)) Then
                 Return DirectCast(ValueToFormat, SerializableConnectionString).ConnectionString
             Else
@@ -277,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Protected Overrides Function ParseValue(ByVal SerializedRepresentation As String, ByVal ValueType As Type) As Object
+        Protected Overrides Function ParseValue(SerializedRepresentation As String, ValueType As Type) As Object
             If ValueType Is GetType(SerializableConnectionString) Then
                 Dim retVal As SerializableConnectionString
                 If Me.InnerValue IsNot Nothing Then
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ValueChanged = True
         End Sub
 
-        Protected Overrides Function GetSpecificEditorForType(ByVal KnownType As Type) As UITypeEditor
+        Protected Overrides Function GetSpecificEditorForType(KnownType As Type) As UITypeEditor
             If KnownType Is GetType(SerializableConnectionString) Then
                 Return New ConnectionStringUITypeEditor
             ElseIf KnownType Is GetType(System.Collections.Specialized.StringCollection) Then
@@ -327,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Private _instance As DesignTimeSettingInstance
 
-            Public Sub New(ByVal instance As DesignTimeSettingInstance)
+            Public Sub New(instance As DesignTimeSettingInstance)
                 _instance = instance
             End Sub
 
@@ -390,7 +390,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="serviceType"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Function GetService(ByVal serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+            Public Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
                 Return Nothing
             End Function
         End Class

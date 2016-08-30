@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
         public const string CSharpOrVisualBasicLanguageService = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ") & " + ProjectCapabilities.LanguageService;
         public const string AppDesigner = nameof(AppDesigner);
+        public const string DependenciesTree = nameof(DependenciesTree);
         public const string LaunchProfiles = "LaunchProfiles";
     }
 }

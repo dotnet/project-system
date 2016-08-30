@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Instance">Instance of the class. In our case, a Resource instance.</param>
         ''' <returns>A new ResourceTypeDescriptor for the specified Resource instance.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetTypeDescriptor(ByVal ObjectType As Type, ByVal Instance As Object) As ICustomTypeDescriptor
+        Public Overrides Function GetTypeDescriptor(ObjectType As Type, Instance As Object) As ICustomTypeDescriptor
             If Instance Is Nothing Then
                 Return MyBase.GetTypeDescriptor(ObjectType, Instance)
             End If

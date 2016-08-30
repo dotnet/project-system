@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>True iff the resource type editor supports saving the specific resource value to a file.</returns>
         ''' <remarks>Handles all Image types</remarks>
-        Public Overrides Function CanSaveResourceToFile(ByVal Resource As IResource) As Boolean
+        Public Overrides Function CanSaveResourceToFile(Resource As IResource) As Boolean
             ValidateResourceValue(Resource)
             Return True
         End Function
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Caller is responsible for handling exceptions raised by this method.
         '''   Handles all Image types.
         ''' </remarks>
-        Public Overrides Sub SaveResourceToFile(ByVal Resource As IResource, ByVal FilePath As String)
+        Public Overrides Sub SaveResourceToFile(Resource As IResource, FilePath As String)
             ValidateResourceValue(Resource)
             Dim Image As Image = CType(Resource.GetValue(), Image)
             Image.Save(FilePath, Image.RawFormat)
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   period.  E.g. ".bmp".  Returns Nothing or an empty string if this is not applicable for 
         '''   this resource.</returns>
         ''' <remarks>Handles all Image types.</remarks>
-        Public Overrides Function GetResourceFileExtension(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFileExtension(Resource As IResource) As String
             ValidateResourceValue(Resource)
 
             Dim ImageFormat As ImageFormat = CType(Resource.GetValue(), Image).RawFormat
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
         ''' <remarks>Handles all Image types</remarks>
-        Public Overrides Function GetResourceFriendlyTypeDescription(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource)
 
             Dim ImageFormat As ImageFormat = CType(Resource.GetValue(), Image).RawFormat
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
         ''' <remarks>Handles all Image types</remarks>
-        Public Overrides Function GetResourceFriendlySize(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Dim Image As Image = DirectCast(Resource.GetValue(), Image)
             Return String.Format(SR.GetString(SR.RSE_GraphicSizeFormat, Image.Width, Image.Height))
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns> The function should return true, if the resource item is valid. Otherwise, it should return False
         ''' </returns>
         ''' <remarks>We need call the function implemented by the base class before it returns true</remarks>
-        Public Overrides Function IsResourceItemValid(ByVal NewResource As IResource, ByVal ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
+        Public Overrides Function IsResourceItemValid(NewResource As IResource, ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
             ValidateResourceValue(NewResource)
             If ResourceContentFile.IsInsideDeviceProject() Then
                 Dim Extension As String = String.Empty

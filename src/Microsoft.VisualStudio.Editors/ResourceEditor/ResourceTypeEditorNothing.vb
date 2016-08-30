@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   This function only needs to be implemented if StringValueCanBeEdited returns True for the class.
         '''   This function is not exposed publicly, because the class it is defined on is not public.
         ''' </remarks>
-        Public Overrides Function StringGetFormattedCellValue(ByVal Resource As Resource, ByVal ResourceValue As Object) As String
+        Public Overrides Function StringGetFormattedCellValue(Resource As Resource, ResourceValue As Object) As String
             'Don't validate the ResourceValue - it is allowed to be Nothing for this one resource type editor class.
             If Resource Is Nothing Then
                 Debug.Fail("Resource shouldn't be nothing")

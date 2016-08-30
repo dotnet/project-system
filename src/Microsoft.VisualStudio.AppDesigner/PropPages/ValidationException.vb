@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _validationResult As ValidationResult
         Private _control As Control
 
-        Public Sub New(ByVal result As ValidationResult, ByVal message As String, Optional ByVal control As Control = Nothing, Optional ByVal InnerException As Exception = Nothing)
+        Public Sub New(result As ValidationResult, message As String, Optional control As Control = Nothing, Optional InnerException As Exception = Nothing)
             MyBase.New(message, InnerException)
 
             _validationResult = result

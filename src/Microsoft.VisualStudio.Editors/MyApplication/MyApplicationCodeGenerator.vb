@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
         ''' <remarks></remarks>
-        Private Function Generate(ByVal wszInputFilePath As String, ByVal bstrInputFileContents As String, ByVal wszDefaultNamespace As String, ByVal rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, ByVal pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
+        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
             Dim BufPtr As IntPtr
             Try
 
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyApplication">DesignTimeSettings class to generate a CodeCompileUnit from</param>
         ''' <param name="ProjectRootNamespace">The root namespace of the project.  If Nothing, the form will be non-fully qualified.</param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        Private Function Create(ByVal MyApplication As MyApplicationData, ByVal ProjectRootNamespace As String, ByVal pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeCompileUnit
+        Private Function Create(MyApplication As MyApplicationData, ProjectRootNamespace As String, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeCompileUnit
             Dim CompileUnit As New CodeCompileUnit
 
             'Set Option Strict On
@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="AttributeType">The type of the attribute, e.g. GetType(System.Diagnostics.DebuggerStepThroughAttribute)</param>
         ''' <param name="PrependGlobal">If true, then "Global." is prepended to the attribute name</param>
         ''' <remarks></remarks>
-        Private Shared Sub AddAttribute(ByVal Member As CodeTypeMember, ByVal AttributeType As Type, ByVal PrependGlobal As Boolean)
+        Private Shared Sub AddAttribute(Member As CodeTypeMember, AttributeType As Type, PrependGlobal As Boolean)
 
             If Member.CustomAttributes Is Nothing Then
                 Member.CustomAttributes = New CodeAttributeDeclarationCollection()
@@ -327,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         ' Adds a statement to 'Method' in the form of ' FieldName = Expression ' 
-        Private Shared Sub AddFieldAssignment(ByVal Method As CodeMemberMethod, ByVal FieldName As String, ByVal Expression As CodeExpression)
+        Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, Expression As CodeExpression)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
             Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         ' Adds a statement to 'Method' in the form of ' FieldName = Value ' 
-        Private Shared Sub AddFieldPrimitiveAssignment(ByVal Method As CodeMemberMethod, ByVal FieldName As String, ByVal Value As Object)
+        Private Shared Sub AddFieldPrimitiveAssignment(Method As CodeMemberMethod, FieldName As String, Value As Object)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
             Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         ' Adds a statement to 'Method' in the form of ' FieldName = EnumType.EnumField ' 
-        Private Shared Sub AddFieldAssignment(ByVal Method As CodeMemberMethod, ByVal FieldName As String, ByVal EnumType As Type, ByVal EnumFieldName As String)
+        Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, EnumType As Type, EnumFieldName As String)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
             Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
@@ -367,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="RootNamespace">The root namespace, if any (including empty string if none), or else Nothing if reference should be declared without using the root namespace.</param>
         ''' <param name="FormNameWithoutRootNamespace">The name of the form, without the root namespace.</param>
         ''' <remarks></remarks>
-        Private Shared Sub AddDefaultFormAssignment(ByVal Method As CodeMemberMethod, ByVal FieldName As String, ByVal RootNamespace As String, ByVal FormNameWithoutRootNamespace As String)
+        Private Shared Sub AddDefaultFormAssignment(Method As CodeMemberMethod, FieldName As String, RootNamespace As String, FormNameWithoutRootNamespace As String)
             '
             '  GENERATED CODE:
             '      Me.MainForm = Global.WindowsApplication1.FormXXX
@@ -391,7 +391,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeMyApplicationData(ByVal InputString As String, ByVal GenerateProgress As Shell.Interop.IVsGeneratorProgress) As MyApplicationData
+        Private Function DeserializeMyApplicationData(InputString As String, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As MyApplicationData
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Debug.Assert(Hierarchy IsNot Nothing, "Failed to get a Hierarchy item for item to generate code from")
             Dim data As MyApplicationData = Nothing
@@ -422,7 +422,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
                 Return _codeDomProvider
             End Get
-            Set(ByVal Value As CodeDomProvider)
+            Set(Value As CodeDomProvider)
                 If Value Is Nothing Then
                     Throw New ArgumentNullException()
                 End If
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Try
         End Sub
 
-        Private Sub SetSite(ByVal pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
+        Private Sub SetSite(pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
             _site = pUnkSite
         End Sub
 #End Region
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
         ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         ''' <returns>error code</returns>
-        Protected Function OnBeforeGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
+        Protected Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Dim changesRequired As Boolean = False
 
@@ -571,7 +571,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
         ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         ''' <returns>error code</returns>
-        Protected Function OnGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
+        Protected Function OnGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
             Debug.Assert(cRQNames = 1, String.Format("Why Do we get {0} symbols to rename?", cRQNames))
 
             Dim designerPrjItem As ProjectItem = Me.GetDesignerProjectItem(phier, itemId)
@@ -632,7 +632,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Protected Function OnBeforeAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Protected Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <returns>error code</returns>
-        Protected Function OnAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
+        Protected Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -666,7 +666,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Protected Function OnBeforeReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
+        Protected Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -682,7 +682,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <returns>error code</returns>
-        Protected Function OnReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
+        Protected Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -698,7 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Protected Function OnBeforeRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
+        Protected Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -714,7 +714,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <returns>error code</returns>
-        Protected Function OnRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
+        Protected Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -727,7 +727,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="phier">the IVsHierarchy to get the ProjectItem from</param>
         ''' <param name="itemId">the ItemId corresponding to the ProjectItem</param>
         ''' <returns>the ProjectItem found</returns>
-        Private Function GetDesignerProjectItem(ByVal phier As IVsHierarchy, ByVal itemId As UInteger) As ProjectItem
+        Private Function GetDesignerProjectItem(phier As IVsHierarchy, itemId As UInteger) As ProjectItem
             ' retrieve the ProjectItem corresponding to the itemId; it's the generated code file
             Dim o As Object = Nothing
             VSErrorHandler.ThrowOnFailure(phier.GetProperty(itemId, Microsoft.VisualStudio.Shell.Interop.__VSHPROPID.VSHPROPID_ExtObject, o))
@@ -747,7 +747,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="dd">the DocData to load the ApplicationData from</param>
         ''' <returns>the ApplicationData loaded from the ProjectItem</returns>
-        Private Function GetApplicationData(ByVal dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As MyApplicationData
+        Private Function GetApplicationData(dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As MyApplicationData
             Dim data As MyApplicationData = Nothing
             If (dd IsNot Nothing) Then
                 ' read the content of this ProjectItem into a MyApplicationData object
@@ -764,7 +764,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="rqName">the aggregate name to parse</param>
         ''' <returns>the class name including sub-namespaces, but without the root namespace</returns>
-        Private Function GetSymbolNameNoRootNamespace(ByVal rqName As String, ByVal currentProject As Project) As String
+        Private Function GetSymbolNameNoRootNamespace(rqName As String, currentProject As Project) As String
             ' extract the class name we want to change from the aggregate name provided by the language service
             Dim symbolName As String = RenamingHelper.ParseRQName(rqName)
 
@@ -790,7 +790,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="serviceType">The type of service requested</param>
         ''' <returns>An instance of the service, or nothing if service not found</returns>
         ''' <remarks></remarks>
-        Private Function GetService(ByVal serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Private Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
             Else

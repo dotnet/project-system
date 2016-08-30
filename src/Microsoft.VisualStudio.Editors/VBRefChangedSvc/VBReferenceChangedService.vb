@@ -28,11 +28,11 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
         End Sub
 
         Private Function ReferenceAdded( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> ByVal pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyInfo As String _
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceAdded
 
@@ -43,11 +43,11 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
         End Function
 
         Private Function ReferenceRemoved( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> ByVal pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> ByVal strAssemblyInfo As String _
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceRemoved
 

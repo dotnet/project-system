@@ -172,6 +172,42 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
   <data name="FailedToWatchProject" xml:space="preserve">
     <value>An unexpected error occurred attempting to watch project file '{0}'</value>
   </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>Framework Assemblies</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (Loading...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(Errors - see Error List)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="GraphNodeCategoryDependency" xml:space="preserve">
+    <value>Dependency</value>
+  </data>
+  <data name="NoItemTypeForRule" xml:space="preserve">
+    <value>Expected to find item type for rule {0}. The rule file is either missing or malformed.</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>Analyzers</value>
+  </data>
   <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
     <value>There aren't any active launch profiles configured for this project.</value>
   </data>

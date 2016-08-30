@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Constructor that uses the provided value and display name
         ''' </summary>
-        Private Sub New(ByVal value As String, ByVal displayName As String)
+        Private Sub New(value As String, displayName As String)
 
             _value = value
             _displayName = displayName

@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End If
         End Sub
 
-        Private Function OnCreateService(ByVal container As IServiceContainer, ByVal serviceType As Type) As Object
+        Private Function OnCreateService(container As IServiceContainer, serviceType As Type) As Object
             If (serviceType Is GetType(WindowPaneProviderService)) Then
                 Return New DeferrableWindowPaneProviderService(container, m_DocDataService.PrimaryDocData)
             End If
@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ItemId"></param>
         ''' <param name="punkDocData"></param>
         ''' <remarks></remarks>
-        Public Sub InitializeEx(ByVal ServiceProvider As Shell.ServiceProvider, ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal punkDocData As Object)
+        Public Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If m_DocDataService IsNot Nothing Then
                 Debug.Fail("InitializeEx() should only be called once!")
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PerformFlush(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformFlush(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' will automatically be added to the ErrorList by VSDesignerLoader.  If there
         ''' are more specific local exceptions, they can be added to ErrorList manually.
         '''</remarks>
-        Protected Overrides Sub PerformLoad(ByVal serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformLoad(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
 
             'Do nothing but add a root component
             '... BasicDesignerLoader requires that we call SetBaseComponentClassName() during load.
@@ -150,10 +150,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 #If DEBUG Then
-        Private Declare Auto Function GetDC Lib "user32" (ByVal hWnd As IntPtr) As IntPtr
-        Private Declare Auto Function ReleaseDC Lib "user32" (ByVal hWnd As IntPtr, ByVal hDC As IntPtr) As Integer
+        Private Declare Auto Function GetDC Lib "user32" (hWnd As IntPtr) As IntPtr
+        Private Declare Auto Function ReleaseDC Lib "user32" (hWnd As IntPtr, hDC As IntPtr) As Integer
         Private _designerChangeCount As Integer = 0
-        Private Sub OnActiveDesignerChanged(ByVal sender As Object, ByVal e As ActiveDesignerEventArgs)
+        Private Sub OnActiveDesignerChanged(sender As Object, e As ActiveDesignerEventArgs)
             _designerChangeCount += 1
             If Common.Switches.PDDesignerActivations.TraceWarning Then
                 Dim s As New StringBuilder
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="disposing">True if calling from Dispose()</param>
         ''' <remarks></remarks>
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 LoaderHost.RemoveService(GetType(DesignerDocDataService))
 

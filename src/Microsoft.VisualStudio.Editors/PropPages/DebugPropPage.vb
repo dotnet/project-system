@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 MyBase.Multiline = True
             End Sub
 
-            Protected Overrides Function IsInputChar(ByVal charCode As Char) As Boolean
+            Protected Overrides Function IsInputChar(charCode As Char) As Boolean
                 If charCode = vbLf OrElse charCode = vbCr Then
                     Return False
                 End If
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return MyBase.IsInputChar(charCode)
             End Function
 
-            Protected Overrides Function ProcessDialogChar(ByVal charCode As Char) As Boolean
+            Protected Overrides Function ProcessDialogChar(charCode As Char) As Boolean
                 If charCode = vbLf OrElse charCode = vbCr Then
                     Return True
                 End If
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Private Function StartActionSet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Private Function StartActionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim originalInsideInit As Boolean = MyBase.m_fInsideInit
             MyBase.m_fInsideInit = True
             Try
@@ -164,12 +164,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return action
         End Function
 
-        Private Function StartActionGet(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function StartActionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             value = StartActionGetValue()
             Return True
         End Function
 
-        Protected Overrides Sub EnableAllControls(ByVal _enabled As Boolean)
+        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
             MyBase.EnableAllControls(_enabled)
 
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartAction).EnableControls(_enabled)
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Size = Me.GetPreferredSize(System.Drawing.Size.Empty)
         End Sub
 
-        Private Sub rbStartAction_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
+        Private Sub rbStartAction_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
             Dim action As VSLangProj.prjStartAction = StartActionGetValue()
             Me.StartProgram.Enabled = (action = VSLangProj.prjStartAction.prjStartActionProgram)
             Me.StartProgramBrowse.Enabled = Me.StartProgram.Enabled
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub StartWorkingDirectoryBrowse_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartWorkingDirectoryBrowse.Click
+        Private Sub StartWorkingDirectoryBrowse_Click(sender As Object, e As System.EventArgs) Handles StartWorkingDirectoryBrowse.Click
             Dim sInitialDirectory As String
             Dim DirName As String = ""
 
@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub RemoteDebugEnabled_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RemoteDebugEnabled.CheckedChanged
+        Private Sub RemoteDebugEnabled_CheckedChanged(sender As Object, e As System.EventArgs) Handles RemoteDebugEnabled.CheckedChanged
             RemoteDebugMachine.Enabled = RemoteDebugEnabled.Checked
 
             If Not m_fInsideInit Then
@@ -323,7 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub StartProgramBrowse_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartProgramBrowse.Click
+        Private Sub StartProgramBrowse_Click(sender As Object, e As System.EventArgs) Handles StartProgramBrowse.Click
             Dim FileName As String = Nothing
 
             SkipValidating(StartProgram)
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' validate a property
         ''' </summary>
-        Protected Overrides Function ValidateProperty(ByVal controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
+        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             Select Case controlData.DispId
                 Case VsProjPropId.VBPROJPROPID_StartProgram
                     If rbStartProgram.Checked Then
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Using
         End Sub
 
-        Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
             SetStartArgumentsHeight()
             MyBase.OnLayout(levent)
         End Sub

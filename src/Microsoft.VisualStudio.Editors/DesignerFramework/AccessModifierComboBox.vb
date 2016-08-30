@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             [Friend]
         End Enum
 
-        Public Sub New(ByVal provider As CodeDomProvider)
+        Public Sub New(provider As CodeDomProvider)
             If provider IsNot Nothing Then
                 Dim converter As TypeConverter = provider.GetConverter(GetType(MemberAttributes))
 
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="accessibility"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ConvertToString(ByVal accessibility As AccessModifierConverter.Access) As String
+        Public Function ConvertToString(accessibility As AccessModifierConverter.Access) As String
             Select Case accessibility
                 Case AccessModifierConverter.Access.Friend
                     If _converter IsNot Nothing Then
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private MustInherit Class CodeGenerator
             Private _customToolValue As String
 
-            Public Sub New(ByVal customToolValue As String)
+            Public Sub New(customToolValue As String)
                 If customToolValue Is Nothing Then
                     Throw New ArgumentNullException("customToolValue")
                 End If
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Private _displayName As String
 
-            Public Sub New(ByVal displayName As String, ByVal customToolValue As String)
+            Public Sub New(displayName As String, customToolValue As String)
                 MyBase.New(customToolValue)
 
                 If displayName Is Nothing Then
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Private _accessibility As AccessModifierConverter.Access
             Private _serviceProvider As IServiceProvider
 
-            Public Sub New(ByVal accessibility As AccessModifierConverter.Access, ByVal serviceProvider As IServiceProvider, ByVal customToolValue As String)
+            Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
 
                 If serviceProvider Is Nothing Then
@@ -194,7 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' 
             Private Shared s_packageCommandForwarderLists As New Dictionary(Of CommandID, LinkedList(Of DesignerMenuCommand))
 
-            Public Shared Sub RegisterMenuCommandForwarder(ByVal commandID As CommandID, ByVal forwarder As DesignerMenuCommand)
+            Public Shared Sub RegisterMenuCommandForwarder(commandID As CommandID, forwarder As DesignerMenuCommand)
                 Dim menuCommandService As IMenuCommandService = VBPackage.Instance.MenuCommandService
                 If menuCommandService IsNot Nothing Then
                     ' Remove previous active command (if any) and tell the shell that this is no longer the active 
@@ -213,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
             End Sub
 
-            Public Shared Sub UnregisterMenuCommandForwarder(ByVal commandID As CommandID, ByVal forwarder As DesignerMenuCommand)
+            Public Shared Sub UnregisterMenuCommandForwarder(commandID As CommandID, forwarder As DesignerMenuCommand)
                 Dim menuCommandService As IMenuCommandService = VBPackage.Instance.MenuCommandService
                 If menuCommandService IsNot Nothing Then
                     ' Remove the currently active command (if any) from the MenuCommandService
@@ -247,7 +247,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' The first command at the head of the queue, or NULL if no the queue is emty
             ''' </returns>
             ''' <remarks></remarks>
-            Protected Shared Function GetMenuCommandAtHeadOfInternalList(ByVal cmdId As CommandId) As DesignerMenuCommand
+            Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandId) As DesignerMenuCommand
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If (Not s_packageCommandForwarderLists.TryGetValue(cmdId, list)) OrElse list Is Nothing OrElse list.Count = 0 Then
                     Return Nothing
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If the command is in the list, but isn't the first command, we move it to the head of the list
             ''' </summary>
             ''' <remarks></remarks>
-            Protected Shared Sub AddMenuCommandForwarderToInternalList(ByVal cmdId As CommandId, ByVal command As DesignerMenuCommand)
+            Protected Shared Sub AddMenuCommandForwarderToInternalList(cmdId As CommandId, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
 
                 ' Demand create the list corresponding to this cmdId
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Remove a menu command forwarder from our internal LIFO queue. 
             ''' </summary>
             ''' <remarks></remarks>
-            Protected Shared Sub RemoveMenuCommandForwarderFromInternalList(ByVal cmdId As CommandId, ByVal command As DesignerMenuCommand)
+            Protected Shared Sub RemoveMenuCommandForwarderFromInternalList(cmdId As CommandId, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If s_packageCommandForwarderLists.TryGetValue(cmdId, list) Then
                     list.Remove(command)
@@ -312,7 +312,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   default for VB (My.Resources).
         ''' </param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal rootDesigner As BaseRootDesigner, ByVal serviceProvider As IServiceProvider, ByVal projectItem As EnvDTE.ProjectItem, ByVal namespaceToOverrideIfCustomToolIsEmpty As String)
+        Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
             If rootDesigner Is Nothing Then
                 Throw New ArgumentNullException("rootDesigner")
             End If
@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="accessibility"></param>
         ''' <param name="customToolValue"></param>
         ''' <remarks></remarks>
-        Public Sub AddCodeGeneratorEntry(ByVal accessibility As AccessModifierConverter.Access, ByVal customToolValue As String)
+        Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierConverter.Access, customToolValue As String)
             Debug.Assert(System.Enum.IsDefined(GetType(AccessModifierConverter.Access), accessibility))
 
             Dim entry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="displayName"></param>
         ''' <param name="customToolValue"></param>
         ''' <remarks></remarks>
-        Public Sub AddCodeGeneratorEntry(ByVal displayName As String, ByVal customToolValue As String)
+        Public Sub AddCodeGeneratorEntry(displayName As String, customToolValue As String)
             Dim entry As New CodeGeneratorWithName(displayName, customToolValue)
             _codeGeneratorEntries.Add(entry)
             AddRecognizedCustomToolValue(entry.CustomToolValue)
@@ -365,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="customToolValue"></param>
         ''' <remarks></remarks>
-        Public Sub AddRecognizedCustomToolValue(ByVal customToolValue As String)
+        Public Sub AddRecognizedCustomToolValue(customToolValue As String)
             If Not _recognizedCustomToolValues.Contains(customToolValue) Then
                 _recognizedCustomToolValues.Add(customToolValue)
                 ' We also make sure to reset the cached value for if the custom tool(s)
@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Protected Function GetMenuCommandsToRegister(ByVal commandIdCombobox As CommandID, ByVal commandIdGetDropdownValues As CommandID) As ICollection
+        Protected Function GetMenuCommandsToRegister(commandIdCombobox As CommandID, commandIdGetDropdownValues As CommandID) As ICollection
             ' For a dynamic combobox, we need to add two commands, one to handle the combobox, and one to fill
             ' it with items...
             Dim MenuCommands As New List(Of MenuCommand)
@@ -450,7 +450,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Set the current accessibility value
         ''' </summary>
         ''' <param name="value"></param>
-        Private Sub SetCurrentValue(ByVal value As String)
+        Private Sub SetCurrentValue(value As String)
             Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & Me.GetType.Name & ": " & value)
 
             For Each entry As CodeGenerator In _codeGeneratorEntries
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="value"></param>
         ''' <remarks></remarks>
-        Private Sub TrySetCustomToolValue(ByVal value As String)
+        Private Sub TrySetCustomToolValue(value As String)
             Try
                 Dim ToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
                 Dim ToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
@@ -520,7 +520,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Protected MustOverride Function IsDesignerEditable() As Boolean
 
-        Private Function EnabledHandler(ByVal MenuCommand As DesignerMenuCommand) As Boolean
+        Private Function EnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Try
                 Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
                 Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
@@ -601,7 +601,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "IDisposable"
 
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        Protected Overridable Sub Dispose(disposing As Boolean)
             If Not _isDisposed Then
                 If disposing Then
                     UnregisterMenuCommandForwarder()
@@ -612,7 +612,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
@@ -621,7 +621,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "Menu command forwarding to the package.  See comments in DesignerMenuCommandForwarder"
 
-        Friend Sub OnDesignerWindowActivated(ByVal activated As Boolean)
+        Friend Sub OnDesignerWindowActivated(activated As Boolean)
             If activated Then
                 RegisterMenuCommandForwarder()
                 'Note: we don't unregister it until we are Disposed.  This allow us

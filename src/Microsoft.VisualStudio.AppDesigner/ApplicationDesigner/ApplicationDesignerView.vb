@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="serviceProvider">The service provider from the root designer.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal serviceProvider As IServiceProvider)
+        Public Sub New(serviceProvider As IServiceProvider)
             MyBase.New()
             Me.SuspendLayout()
             MyBase.HostingPanel.SuspendLayout()
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
                 Return 0
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim editorsPackage As IVBPackage = Package
                 If editorsPackage IsNot Nothing Then
                     editorsPackage.SetLastShownApplicationDesignerTab(_projectHierarchy, value)
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ItemId"></param>
         ''' <returns></returns>
         ''' <remarks>Used by view to prompt for saving changes</remarks>
-        Private Function IsDocDataDirty(ByVal DocCookie As UInteger, ByRef Hierarchy As IVsHierarchy, ByRef ItemId As UInteger) As Boolean
+        Private Function IsDocDataDirty(DocCookie As UInteger, ByRef Hierarchy As IVsHierarchy, ByRef ItemId As UInteger) As Boolean
             Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
             Dim hr As Integer
             Dim flags, readLocks, editLocks As UInteger
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="flags"></param>
         ''' <value></value>
         ''' <remarks>Used to build table of documents to save</remarks>
-        Public ReadOnly Property GetSaveTreeItems(ByVal flags As __VSRDTSAVEOPTIONS) As VSSAVETREEITEM()
+        Public ReadOnly Property GetSaveTreeItems(flags As __VSRDTSAVEOPTIONS) As VSSAVETREEITEM()
             Get
                 Dim items As VSSAVETREEITEM() = New VSSAVETREEITEM(_designerPanels.Length - 1) {}
                 Dim Count As Integer
@@ -460,7 +460,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Property
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
 #If DEBUG Then
                 RemoveHandler HostingPanel.Layout, AddressOf HostingPanel_Layout
@@ -630,7 +630,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return Panel.ActualGuid
             End Get
 
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerView: set_ActiveView")
                 'Find the guid and switch to that tab
                 'Keep the current tab if guid not found
@@ -657,7 +657,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="FileExists">[Out] True if the given tab's file actually exists currently.  Always false if Not TabSupported.</param>
         ''' <param name="FullPathToProjectItem">[Out] The full path to the given tab's file.  If TabSupported is True but FileExists is False, this value indicates the preferred file and location for the project for this special file.</param>
         ''' <remarks></remarks>
-        Private Sub CheckIfTabSupported(ByVal FileId As Integer, ByRef TabSupported As Boolean, ByRef FileExists As Boolean, ByRef FullPathToProjectItem As String)
+        Private Sub CheckIfTabSupported(FileId As Integer, ByRef TabSupported As Boolean, ByRef FileExists As Boolean, ByRef FullPathToProjectItem As String)
             TabSupported = False
             FileExists = False
             FullPathToProjectItem = Nothing
@@ -689,7 +689,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="PropertyPages">The list of property pages to display</param>
         ''' <remarks></remarks>
-        Private Sub AddTabs(ByVal PropertyPages() As PropertyPageInfo)
+        Private Sub AddTabs(PropertyPages() As PropertyPageInfo)
             SuspendLayout()
             HostingPanel.SuspendLayout()
 
@@ -850,7 +850,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Recognized tabs will be placed in a specific order.  All others will be placed at the end,
         '''   in the order passed in to this method.
         ''' </remarks>
-        Private Sub OrderTabs(ByVal DesignerPanels() As ApplicationDesignerPanel)
+        Private Sub OrderTabs(DesignerPanels() As ApplicationDesignerPanel)
 
             'A default list of known editor guids and the order we want when they appear.  We only
             '  use this list if we can't get the order from the IVsHierarchy for some reason.
@@ -937,7 +937,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="BrowseObject"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetPageGuids(ByVal BrowseObject As Object) As Guid()
+        Private Function GetPageGuids(BrowseObject As Object) As Guid()
             If TypeOf BrowseObject Is IVsSpecifyProjectDesignerPages Then
                 Dim CauuidPages() As OleInterop.CAUUID = New OleInterop.CAUUID(1) {}
                 Try
@@ -952,14 +952,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return New Guid() {}
         End Function
 
-        Private Sub SetSite(ByVal serviceProvider As IServiceProvider)
+        Private Sub SetSite(serviceProvider As IServiceProvider)
             _serviceProvider = serviceProvider
 
             'Set the provider into the base tab control so it can get access to fonts and colors
             MyBase.ServiceProvider = _serviceProvider
         End Sub
 
-        Public Shadows Function GetService(ByVal ServiceType As Type) As Object Implements System.IServiceProvider.GetService, IPropertyPageSiteOwner.GetService
+        Public Shadows Function GetService(ServiceType As Type) As Object Implements System.IServiceProvider.GetService, IPropertyPageSiteOwner.GetService
             Dim Service As Object
 
             If ServiceType Is GetType(PropPageDesigner.ConfigurationState) Then
@@ -1000,7 +1000,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Index">Index of Designer panel to show</param>
         ''' <param name="ForceShow">Forces the Show code to go through, even if the current panel is the same as the one requested.</param>
         ''' <remarks></remarks>
-        Private Sub ShowTab(ByVal Index As Integer, Optional ByVal ForceShow As Boolean = False)
+        Private Sub ShowTab(Index As Integer, Optional ForceShow As Boolean = False)
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.ShowTab(" & Index & ")")
             If _inShowTab Then
@@ -1177,11 +1177,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
         ''' <remarks></remarks>
-        Public Function DsMsgBox(ByVal Message As String,
-                ByVal Buttons As MessageBoxButtons,
-                ByVal Icon As MessageBoxIcon,
-                Optional ByVal DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
-                Optional ByVal HelpLink As String = Nothing) As DialogResult
+        Public Function DsMsgBox(Message As String,
+                Buttons As MessageBoxButtons,
+                Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing) As DialogResult
 
             Debug.Assert(_serviceProvider IsNot Nothing)
             Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, Me._messageBoxCaption,
@@ -1195,8 +1195,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ex">The exception whose text should be displayed.</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <remarks></remarks>
-        Public Sub DsMsgBox(ByVal ex As Exception,
-                Optional ByVal HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
+        Public Sub DsMsgBox(ex As Exception,
+                Optional HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
 
             Debug.Assert(_serviceProvider IsNot Nothing)
             AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, Me._messageBoxCaption, HelpLink:=HelpLink)
@@ -1208,7 +1208,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="forward">If true, moves forward a tab.  If false, moves back a tab.</param>
         ''' <remarks></remarks>
-        Public Sub SwitchTab(ByVal forward As Boolean)
+        Public Sub SwitchTab(forward As Boolean)
             Dim Index As Integer = _activePanelIndex
             If forward Then
                 Index += 1
@@ -1228,7 +1228,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="item"></param>
         ''' <remarks></remarks>
-        Public Overrides Sub OnItemClick(ByVal item As ProjectDesignerTabButton)
+        Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.OnItemClick")
             MyBase.OnItemClick(item)
             ShowTab(SelectedIndex, ForceShow:=True)
@@ -1388,7 +1388,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsProjectFileDirty(ByVal Project As Project) As Boolean
+        Private Function IsProjectFileDirty(Project As Project) As Boolean
             Debug.Assert(Project IsNot Nothing)
 
             Dim hr As Integer = NativeMethods.E_FAIL
@@ -1422,7 +1422,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectFileCookie(ByVal Project As Project) As UInteger
+        Private Function GetProjectFileCookie(Project As Project) As UInteger
             Debug.Assert(Project IsNot Nothing)
 
             Dim hr As Integer = NativeMethods.E_FAIL
@@ -1458,7 +1458,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Dirty">If true, the asterisk is added, if false, it is removed.</param>
         ''' <remarks></remarks>
-        Private Sub SetFrameDirtyIndicator(ByVal Dirty As Boolean)
+        Private Sub SetFrameDirtyIndicator(Dirty As Boolean)
             If Not _projectDesignerDirtyStateInitialized OrElse _lastProjectDesignerDirtyState <> Dirty Then
                 Dim Frame As IVsWindowFrame = Me.WindowFrame
                 If Frame IsNot Nothing Then
@@ -1489,7 +1489,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnCmdUIContextChanged(ByVal dwCmdUICookie As UInteger, ByVal fActive As Integer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnCmdUIContextChanged
+        Public Function OnCmdUIContextChanged(dwCmdUICookie As UInteger, fActive As Integer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnCmdUIContextChanged
             Return NativeMethods.S_OK
         End Function
 
@@ -1508,7 +1508,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnElementValueChanged(ByVal elementid As UInteger, ByVal varValueOld As Object, ByVal varValueNew As Object) As Integer Implements Shell.Interop.IVsSelectionEvents.OnElementValueChanged
+        Public Function OnElementValueChanged(elementid As UInteger, varValueOld As Object, varValueNew As Object) As Integer Implements Shell.Interop.IVsSelectionEvents.OnElementValueChanged
             If elementid = 1 AndAlso _designerPanels IsNot Nothing AndAlso varValueOld IsNot varValueNew Then ' WindowFrame changed
                 For Each panel As ApplicationDesignerPanel In _designerPanels
                     If panel.VsWindowFrame Is varValueOld Then
@@ -1557,7 +1557,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnSelectionChanged(ByVal pHierOld As Shell.Interop.IVsHierarchy, ByVal itemidOld As UInteger, ByVal pMISOld As Shell.Interop.IVsMultiItemSelect, ByVal pSCOld As Shell.Interop.ISelectionContainer, ByVal pHierNew As Shell.Interop.IVsHierarchy, ByVal itemidNew As UInteger, ByVal pMISNew As Shell.Interop.IVsMultiItemSelect, ByVal pSCNew As Shell.Interop.ISelectionContainer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnSelectionChanged
+        Public Function OnSelectionChanged(pHierOld As Shell.Interop.IVsHierarchy, itemidOld As UInteger, pMISOld As Shell.Interop.IVsMultiItemSelect, pSCOld As Shell.Interop.ISelectionContainer, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger, pMISNew As Shell.Interop.IVsMultiItemSelect, pSCNew As Shell.Interop.ISelectionContainer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnSelectionChanged
             Return NativeMethods.S_OK
         End Function
 
@@ -1606,7 +1606,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="grfAttribs"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterAttributeChange(ByVal docCookie As UInteger, ByVal grfAttribs As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterAttributeChange
+        Public Function OnAfterAttributeChange(docCookie As UInteger, grfAttribs As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterAttributeChange
             Const InterestingFlags As Long = __VSRDTATTRIB.RDTA_DocDataIsDirty Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty Or __VSRDTATTRIB.RDTA_NOTIFYDOCCHANGEDMASK
             If (grfAttribs And InterestingFlags) <> 0 Then
                 'CONSIDER: better would be to check it against all of our DocData's.  But we don't have a simple, static list
@@ -1625,7 +1625,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pFrame"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterDocumentWindowHide(ByVal docCookie As UInteger, ByVal pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
+        Public Function OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
             Return NativeMethods.S_OK
         End Function
 
@@ -1638,7 +1638,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="dwEditLocksRemaining"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterFirstDocumentLock(ByVal docCookie As UInteger, ByVal dwRDTLockType As UInteger, ByVal dwReadLocksRemaining As UInteger, ByVal dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
+        Public Function OnAfterFirstDocumentLock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
             Return NativeMethods.S_OK
         End Function
 
@@ -1648,7 +1648,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="docCookie"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterSave(ByVal docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
+        Public Function OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
             Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
             If _designerPanels IsNot Nothing Then
                 'Was the project file saved?
@@ -1670,7 +1670,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pFrame"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeDocumentWindowShow(ByVal docCookie As UInteger, ByVal fFirstShow As Integer, ByVal pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
+        Public Function OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
             Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
             If _designerPanels IsNot Nothing Then
                 If Not _inShowTab Then
@@ -1700,7 +1700,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="dwEditLocksRemaining"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeLastDocumentUnlock(ByVal docCookie As UInteger, ByVal dwRDTLockType As UInteger, ByVal dwReadLocksRemaining As UInteger, ByVal dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
+        Public Function OnBeforeLastDocumentUnlock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
         ''' <summary>
@@ -1711,7 +1711,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="MkDocument"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeFirstDocumentLock(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal MkDocument As String) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
+        Public Function OnBeforeFirstDocumentLock(Hierarchy As IVsHierarchy, ItemId As UInteger, MkDocument As String) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
             Return NativeMethods.S_OK
         End Function
         ''' <summary>
@@ -1751,7 +1751,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ClosedWithoutSaving"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterLastDocumentUnlock(ByVal Hierarchy As IVsHierarchy, ByVal ItemId As UInteger, ByVal MkDocument As String, ByVal ClosedWithoutSaving As Integer) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
+        Public Function OnAfterLastDocumentUnlock(Hierarchy As IVsHierarchy, ItemId As UInteger, MkDocument As String, ClosedWithoutSaving As Integer) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
 
@@ -1778,21 +1778,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #Region "Debug tracing for OnLayout/Size events..."
 
-        Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerView.OnLayout()")
             MyBase.OnLayout(levent)
             Common.Switches.TracePDPerfEnd("ApplicationDesignerView.OnLayout()")
         End Sub
 
-        Private Sub HostingPanel_Layout(ByVal sender As Object, ByVal levent As LayoutEventArgs)
+        Private Sub HostingPanel_Layout(sender As Object, levent As LayoutEventArgs)
             Common.Switches.TracePDPerf(levent, "ApplicationDesignerView.HostingPanel_Layout()")
         End Sub
 
-        Private Sub HostingPanel_SizeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub HostingPanel_SizeChanged(sender As Object, e As EventArgs)
             Common.Switches.TracePDPerf("ApplicationDesignerView.HostingPanel_SizeChanged: " & HostingPanel.Size.ToString())
         End Sub
 
-        Private Sub ApplicationDesignerView_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
+        Private Sub ApplicationDesignerView_SizeChanged(sender As Object, e As System.EventArgs) Handles Me.SizeChanged
             Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Me.Size.ToString())
         End Sub
 

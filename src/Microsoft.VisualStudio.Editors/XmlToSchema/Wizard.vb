@@ -10,23 +10,23 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
     Public NotInheritable Class Wizard
         Implements IWizard
 
-        Public Sub BeforeOpeningFile(ByVal projectItem As ProjectItem) Implements IWizard.BeforeOpeningFile
+        Public Sub BeforeOpeningFile(projectItem As ProjectItem) Implements IWizard.BeforeOpeningFile
         End Sub
 
-        Public Sub ProjectFinishedGenerating(ByVal project As Project) Implements IWizard.ProjectFinishedGenerating
+        Public Sub ProjectFinishedGenerating(project As Project) Implements IWizard.ProjectFinishedGenerating
         End Sub
 
-        Public Sub ProjectItemFinishedGenerating(ByVal projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
+        Public Sub ProjectItemFinishedGenerating(projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
         End Sub
 
         Public Sub RunFinished() Implements IWizard.RunFinished
         End Sub
 
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
-        Public Sub RunStarted(ByVal automationObject As Object, _
-                              ByVal replacementsDictionary As Dictionary(Of String, String), _
-                              ByVal runKind As WizardRunKind, _
-                              ByVal customParams() As Object) Implements IWizard.RunStarted
+        Public Sub RunStarted(automationObject As Object, _
+                              replacementsDictionary As Dictionary(Of String, String), _
+                              runKind As WizardRunKind, _
+                              customParams() As Object) Implements IWizard.RunStarted
             If automationObject Is Nothing OrElse replacementsDictionary Is Nothing Then
                 Return
             End If
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Try
         End Sub
 
-        Public Function ShouldAddProjectItem(ByVal filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
+        Public Function ShouldAddProjectItem(filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
             Return False
         End Function
     End Class

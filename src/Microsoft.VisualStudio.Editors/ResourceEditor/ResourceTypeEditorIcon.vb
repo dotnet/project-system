@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceTypeEditorNonStringConvertible and ResourceTypeEditorStringConvertible).
         '''  Because the resource file in different platform doesn't support all types, we should pick up the right type for the platform it targets.
         ''' </remarks>
-        Public Overrides Function GetDefaultResourceTypeName(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             If ResourceContentFile.IsSupportedType(GetType(Icon)) Then
                 Return GetType(Icon).AssemblyQualifiedName
             Else
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>True iff the resource type editor supports saving the specific resource value to a file.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function CanSaveResourceToFile(ByVal Resource As IResource) As Boolean
+        Public Overrides Function CanSaveResourceToFile(Resource As IResource) As Boolean
             ValidateResourceValue(Resource)
             Return True
         End Function
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <param name="FilePath">File path and name of the file to save to.</param>
         ''' <remarks>Caller is responsible for handling exceptions raised by this method.</remarks>
-        Public Overrides Sub SaveResourceToFile(ByVal Resource As IResource, ByVal FilePath As String)
+        Public Overrides Sub SaveResourceToFile(Resource As IResource, FilePath As String)
             ValidateResourceValue(Resource)
             Dim Icon As Icon = DirectCast(Resource.GetValue(), Icon)
             Dim IconStream As New MemoryStream
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This function need not be implemented if CanSaveResourceToFile() is implemented to return False.
         ''' Caller is responsible for handling exceptions.
         ''' </remarks>
-        Public Overrides Sub CreateNewResourceFile(ByVal FilePath As String)
+        Public Overrides Sub CreateNewResourceFile(FilePath As String)
             SaveFileFromManifestResource("BlankIcon", FilePath)
         End Sub
 
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   period.  E.g. ".bmp".  Returns Nothing or an empty string if this is not applicable for 
         '''   this resource.</returns>
         ''' <remarks>The default implementation returns Nothing.</remarks>
-        Public Overrides Function GetResourceFileExtension(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFileExtension(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Return EXT_ICO
         End Function
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
-        Public Overrides Function GetOpenFileDialogFilter(ByVal ResourceContentFile As IResourceContentFile) As String
+        Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
             Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Icon), _extensions)
         End Function
 
@@ -163,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   
         '''   "Windows metafile (*.wmf)|*.wmf|Windows Enhanced Metafile (*.emf)|*.emf|Windows Bitmap (*.bmp;*.dib)|*.bmp;*.dib"
         ''' </remarks>
-        Public Overrides Function GetSaveFileDialogFilter(ByVal Extension As String) As String
+        Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
             Return CreateSingleDialogFilter(SR.GetString(SR.RSE_FilterSave_Icon), New String() {EXT_ICO})
         End Function
 
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   after the thumbnail image is created).
         ''' Default implementation returns an empty bitmap.
         ''' </remarks>
-        Public Overrides Function GetImageForThumbnail(ByVal Resource As IResource, background As Color) As Image
+        Public Overrides Function GetImageForThumbnail(Resource As IResource, background As Color) As Image
             'Convert the icon to a bitmap
             ValidateResourceValue(Resource)
             Dim Icon As Icon = DirectCast(Resource.GetValue(), Icon)
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   should be given to this resource editor.  The higher the value, the higher the priority.
         ''' </returns>
         ''' <remarks>Extension should be checked case-insensitively.</remarks>
-        Public Overrides Function GetExtensionPriority(ByVal Extension As String) As Integer
+        Public Overrides Function GetExtensionPriority(Extension As String) As Integer
             If MatchAgainstListOfExtensions(Extension, _extensions) Then
                 Return ExtensionPriorities.Normal
             Else
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetResourceFriendlyTypeDescription(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Return SR.GetString(SR.RSE_Type_Icon)
         End Function
@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetResourceFriendlySize(ByVal Resource As IResource) As String
+        Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Dim Icon As Icon = DirectCast(Resource.GetValue(), Icon)
             Return String.Format(SR.GetString(SR.RSE_GraphicSizeFormat, Icon.Width, Icon.Height))

@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Disposing"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Dispose(ByVal Disposing As Boolean)
+        Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 'We might be being disposed in order to perform a reload on the DocData.  If
                 '  so, we need to save our UI state so we can restore it after the reload.
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 Return _isInReloading
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _isInReloading = value
             End Set
         End Property
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Technology"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IRootDesigner_GetView(ByVal Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
+        Private Function IRootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
                 Throw New ArgumentException("Not a supported view technology", "Technology")
             End If
@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Initialize is called to bind the designer to the component. 
         '''  We need override this function to start listen to the events in the designerHost.
         ''' </summary>
-        Public Overrides Sub Initialize(ByVal component As IComponent)
+        Public Overrides Sub Initialize(component As IComponent)
             MyBase.Initialize(component)
 
             _designerHost = CType(GetService(GetType(IDesignerHost)), IDesignerHost)
@@ -319,7 +319,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResXResourceFile"></param>
         ''' <remarks></remarks>
-        Friend Sub SetResourceFile(ByVal ResXResourceFile As ResourceFile)
+        Friend Sub SetResourceFile(ResXResourceFile As ResourceFile)
             GetView().SetResourceFile(ResXResourceFile)
         End Sub
 
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This should be called when resources are added or removed, so that the search 
         '''   can be reset.
         ''' </remarks>
-        Friend Sub InvalidateFindLoop(ByVal ResourcesAddedOrRemoved As Boolean)
+        Friend Sub InvalidateFindLoop(ResourcesAddedOrRemoved As Boolean)
             _findReplace.InvalidateFindLoop(ResourcesAddedOrRemoved)
         End Sub
 
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pfImage">Set to True if supporting GetSearchImage - seaching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
         ''' <remarks></remarks>
-        Private Function GetCapabilities(ByVal pfImage() As Boolean, ByVal pgrfOptions() As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.GetCapabilities
+        Private Function GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.GetCapabilities
             _findReplace.GetCapabilities(pfImage, pgrfOptions)
             Return NativeMethods.S_OK
         End Function
@@ -537,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pvar">Property value.</param>
         ''' <returns>S_OK if success, otherwise an error code.</returns>
         ''' <remarks></remarks>
-        Private Function GetProperty(ByVal propid As UInteger, ByRef pvar As Object) As Integer Implements TextManager.Interop.IVsFindTarget.GetProperty
+        Private Function GetProperty(propid As UInteger, ByRef pvar As Object) As Integer Implements TextManager.Interop.IVsFindTarget.GetProperty
             Return _findReplace.GetProperty(propid, pvar)
         End Function
 
@@ -558,7 +558,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="pUnk">The find state object to hold.</param>
         ''' <remarks></remarks>
-        Private Function SetFindState(ByVal pUnk As Object) As Integer Implements TextManager.Interop.IVsFindTarget.SetFindState
+        Private Function SetFindState(pUnk As Object) As Integer Implements TextManager.Interop.IVsFindTarget.SetFindState
             _findReplace.SetFindState(pUnk)
             Return NativeMethods.S_OK
         End Function
@@ -579,8 +579,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' - We search for the text and return an enum value to the shell to display the dialog box if not found, etc...
         ''' - We are responsible for selecting the found object and keeping track of where we are in the object list.
         ''' </remarks>
-        Private Function Find(ByVal pszSearch As String, ByVal grfOptions As UInteger, ByVal fResetStartPoint As Integer, _
-                            ByVal pHelper As IVsFindHelper, ByRef pResult As UInteger) As Integer Implements IVsFindTarget.Find
+        Private Function Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer, _
+                            pHelper As IVsFindHelper, ByRef pResult As UInteger) As Integer Implements IVsFindTarget.Find
             _findReplace.Find(pszSearch, grfOptions, fResetStartPoint, pHelper, pResult)
             Return NativeMethods.S_OK
         End Function
@@ -603,8 +603,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''      to search for the next object. Therefore, at the beginning of Replace, we check to see Replace was clicked first.
         '''      If it's true, we don't do anything and let shell call our Find. The next time we will replace.
         ''' </remarks>
-        Private Function Replace(ByVal pszSearch As String, ByVal pszReplace As String, ByVal grfOptions As UInteger, _
-                                ByVal fResetStartPoint As Integer, ByVal pHelper As TextManager.Interop.IVsFindHelper, ByRef pfReplaced As Integer) As Integer _
+        Private Function Replace(pszSearch As String, pszReplace As String, grfOptions As UInteger, _
+                                fResetStartPoint As Integer, pHelper As TextManager.Interop.IVsFindHelper, ByRef pfReplaced As Integer) As Integer _
                                 Implements TextManager.Interop.IVsFindTarget.Replace
             'We don't currently support replace.  NOP
             Return NativeMethods.E_NOTIMPL
@@ -615,27 +615,27 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ' NOTE: HuyN: We don't implement the methods below since we handle the search / replace ourselves.
 
-        Private Function GetCurrentSpan(ByVal pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.GetCurrentSpan
+        Private Function GetCurrentSpan(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.GetCurrentSpan
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function GetMatchRect(ByVal prc() As OLE.Interop.RECT) As Integer Implements TextManager.Interop.IVsFindTarget.GetMatchRect
+        Private Function GetMatchRect(prc() As OLE.Interop.RECT) As Integer Implements TextManager.Interop.IVsFindTarget.GetMatchRect
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function GetSearchImage(ByVal grfOptions As UInteger, ByVal ppSpans() As TextManager.Interop.IVsTextSpanSet, ByRef ppTextImage As TextManager.Interop.IVsTextImage) As Integer Implements TextManager.Interop.IVsFindTarget.GetSearchImage
+        Private Function GetSearchImage(grfOptions As UInteger, ppSpans() As TextManager.Interop.IVsTextSpanSet, ByRef ppTextImage As TextManager.Interop.IVsTextImage) As Integer Implements TextManager.Interop.IVsFindTarget.GetSearchImage
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function MarkSpan(ByVal pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.MarkSpan
+        Private Function MarkSpan(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.MarkSpan
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function NavigateTo(ByVal pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.NavigateTo
+        Private Function NavigateTo(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.NavigateTo
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function NotifyFindTarget(ByVal notification As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.NotifyFindTarget
+        Private Function NotifyFindTarget(notification As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.NotifyFindTarget
             'Debug.WriteLine("DSRootDesigner.NotifyFindTarget: " + CType(notification, __VSFTNOTIFY).ToString)
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -656,7 +656,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' See comments in ResourceEditorView.HandleViewHelperCommandExec for why we are implementing IOleCommandTarget.
         ''' </remarks>
-        Public Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, ByVal nCmdID As UInteger, ByVal nCmdexecopt As UInteger, ByVal pvaIn As System.IntPtr, ByVal pvaOut As System.IntPtr) As Integer _
+        Public Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As System.IntPtr, pvaOut As System.IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.Exec
             Dim View As ResourceEditorView = _view
             If View IsNot Nothing Then
@@ -680,7 +680,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pCmdText">[unique][in,out] Pointer to an OLECMDTEXT structure in which to return name and/or status information of a single command. Can be NULL to indicate that the caller does not need this information. </param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, ByVal cCmds As UInteger, ByVal prgCmds As OLE.Interop.OLECMD(), ByVal pCmdText As System.IntPtr) As Integer _
+        Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As System.IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.QueryStatus
             'We don't implement this.
             Return Interop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We need get undoEngine to monitor undo state. But it is not available when the designer is just loaded. We do this on the first transaction (change) happens in the designer.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub DesignerHost_TransactionOpening(ByVal sender As Object, ByVal e As System.EventArgs) Handles _designerHost.TransactionOpening
+        Private Sub DesignerHost_TransactionOpening(sender As Object, e As System.EventArgs) Handles _designerHost.TransactionOpening
             If _undoEngine Is Nothing Then
                 _undoEngine = DirectCast(GetService(GetType(UndoEngine)), UndoEngine)
                 ' We get UndoEngine here, because we need monitor undo start/end event. But when this trasaction itself is caused by an UNDO operation,
@@ -743,7 +743,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
         ''' <remarks></remarks>
-        Private Sub BuildBegin(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
+        Private Sub BuildBegin(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
             Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
             If DesignerLoaderService IsNot Nothing Then
                 DesignerLoader.SetReadOnlyMode(True, String.Empty)
@@ -757,7 +757,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
         ''' <remarks></remarks>
-        Private Sub BuildDone(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
+        Private Sub BuildDone(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
             Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
             If DesignerLoaderService IsNot Nothing Then
                 DesignerLoader.SetReadOnlyMode(False, String.Empty)
@@ -802,7 +802,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' handle DebugMode change event, disable the designer when in debug mode...
         ''' </summary>
         ''' <param name="dbgmodeNew"></param>
-        Private Function OnModeChange(ByVal dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
+        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
             Try
                 If _view IsNot Nothing Then
                     If dbgmodeNew = DBGMODE.DBGMODE_Design Then
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UndoEngine_Undoing(ByVal sender As Object, ByVal e As System.EventArgs) Handles _undoEngine.Undoing
+        Private Sub UndoEngine_Undoing(sender As Object, e As System.EventArgs) Handles _undoEngine.Undoing
             If _view IsNot Nothing Then
                 _view.OnUndoing()
             End If
@@ -844,7 +844,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UndoEngine_Undone(ByVal sender As Object, ByVal e As System.EventArgs) Handles _undoEngine.Undone
+        Private Sub UndoEngine_Undone(sender As Object, e As System.EventArgs) Handles _undoEngine.Undone
             If _view IsNot Nothing Then
                 _view.OnUndone()
             End If

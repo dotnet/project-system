@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _projectItemid As UInteger
         Private _vsHierarchy As IVsHierarchy
 
-        Public Sub New(ByVal ServiceProvider As IServiceProvider, ByVal vsHierarchy As IVsHierarchy, ByVal ItemId As UInteger)
+        Public Sub New(ServiceProvider As IServiceProvider, vsHierarchy As IVsHierarchy, ItemId As UInteger)
             MyBase.New(ServiceProvider)
 
             _vsHierarchy = vsHierarchy
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (_components Is Nothing) Then
                     _components.Dispose()
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _typeTreeView As TypeTV
 
-        Private Sub TypeTreeViewAfterSelectHandler(ByVal sender As Object, ByVal e As TreeViewEventArgs)
+        Private Sub TypeTreeViewAfterSelectHandler(sender As Object, e As TreeViewEventArgs)
             If e.Node IsNot Nothing Then
                 Dim Node As TypeTVNode = TryCast(e.Node, TypeTVNode)
                 If Node IsNot Nothing Then
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Sub TypeTreeViewBeforeExpandHandler(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs)
+        Private Sub TypeTreeViewBeforeExpandHandler(sender As Object, e As TreeViewCancelEventArgs)
             If e.Node IsNot Nothing Then
                 Dim Node As TypeTVNode = TryCast(e.Node, TypeTVNode)
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Function GetAssemblyCallback(ByVal an As AssemblyName) As Assembly
+        Private Function GetAssemblyCallback(an As AssemblyName) As Assembly
             Dim Resolver As SettingsTypeCache = DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache)
             If Resolver IsNot Nothing Then
                 'Return Resolver.GetAssembly(an, False)
@@ -227,12 +227,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return TypeTextBox.Text.Trim()
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 TypeTextBox.Text = Value
             End Set
         End Property
 
-        Public Sub SetServiceProvider(ByVal Provider As IServiceProvider)
+        Public Sub SetServiceProvider(Provider As IServiceProvider)
             ServiceProvider = Provider
         End Sub
 
@@ -247,7 +247,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Private Sub SetAvailableTypes(ByVal types As IEnumerable(Of System.Type))
+        Private Sub SetAvailableTypes(types As IEnumerable(Of System.Type))
             TypeTextBox.AutoCompleteCustomSource.Clear()
             If types IsNot Nothing Then
                 For Each availableType As System.Type In types
@@ -295,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_OkButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_OkButton.Click
+        Private Sub m_OkButton_Click(sender As Object, e As System.EventArgs) Handles m_OkButton.Click
             If QueryClose() Then
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Hide()
@@ -367,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="displayName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NormalizeTypeName(ByVal displayName As String) As String
+        Private Function NormalizeTypeName(displayName As String) As String
             Dim typeNameResolutionService As SettingTypeNameResolutionService = _
                 DirectCast(GetService(GetType(SettingTypeNameResolutionService)), SettingTypeNameResolutionService)
 
@@ -452,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Common.DTEUtils.ApplyTreeViewThemeStyles(Me.Handle)
             End Sub
 
-            Public Sub AddAssemblyNode(ByVal assemblyName As String)
+            Public Sub AddAssemblyNode(assemblyName As String)
                 If Not String.IsNullOrEmpty(assemblyName) AndAlso Not Me.Nodes.ContainsKey(assemblyName) Then
                     Dim asNode As TypeTVNode = New TypeTVNode(NodeType.ASSEMBLY_NODE)
                     asNode.Text = assemblyName
@@ -462,7 +462,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Sub
 
-            Public Sub AddTypeNode(ByVal asNode As TypeTVNode, ByVal typeFullName As String)
+            Public Sub AddTypeNode(asNode As TypeTVNode, typeFullName As String)
                 Dim nodes As TreeNodeCollection = Me.Nodes
                 If asNode IsNot Nothing Then
                     nodes = asNode.Nodes
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Private Const s_typeImageIndex As Integer = 2
             Private Const s_selectedTypeImageIndex As Integer = 2
 
-            Public Sub New(ByVal nodeType As NodeType)
+            Public Sub New(nodeType As NodeType)
                 Me._nodeType = nodeType
 
                 Select Case nodeType
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
 #If DRILL_DOWN_NAMESPACES Then
-            Friend Shared Function ExtractName(ByVal Path As String) As String
+            Friend Shared Function ExtractName(Path As String) As String
                 Dim PointPos As Integer = Path.IndexOf(".")
                 If PointPos <> -1 Then
                     Return Path.Substring(0, PointPos)
@@ -575,7 +575,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Friend Shared Function ExtractChildPath(ByVal Path As String) As String
+            Friend Shared Function ExtractChildPath(Path As String) As String
                 Dim PointPos As Integer = Path.IndexOf(".")
                 If PointPos <> -1 Then
                     Return Path.Substring(PointPos + 1)
@@ -584,7 +584,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 #Else
-            Friend Shared Function ExtractName(ByVal Path As String) As String
+            Friend Shared Function ExtractName(Path As String) As String
                 Dim PointPos As Integer = Path.LastIndexOf(".")
                 If PointPos <> -1 Then
                     Return Path.Substring(0, PointPos)
@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Friend Shared Function ExtractChildPath(ByVal Path As String) As String
+            Friend Shared Function ExtractChildPath(Path As String) As String
                 Dim PointPos As Integer = Path.LastIndexOf(".")
                 If PointPos <> -1 Then
                     Return Path.Substring(PointPos + 1)
@@ -610,11 +610,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub TypePickerDialog_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        Private Sub TypePickerDialog_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
             s_previousSize = Me.Size
         End Sub
 
-        Private Sub TypePickerDialog_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub TypePickerDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

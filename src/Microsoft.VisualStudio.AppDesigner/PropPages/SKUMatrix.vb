@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")> _
-        Public Shared Function IsHidden(ByVal PropertyId As Integer) As Boolean
+        Public Shared Function IsHidden(PropertyId As Integer) As Boolean
 
             If VSProductSKU.IsExpress Then
                 'These properties are to be hidden for all Express SKU

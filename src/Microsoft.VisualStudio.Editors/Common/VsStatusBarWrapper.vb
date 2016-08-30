@@ -12,13 +12,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' </summary>
     Friend Class VsStatusBarWrapper
 
-        Public Sub New(ByVal vsStatusBar As IVsStatusbar)
+        Public Sub New(vsStatusBar As IVsStatusbar)
             Debug.Assert(vsStatusBar IsNot Nothing, "Must provide IVsStatusBar!")
 
             _vsStatusBar = vsStatusBar
         End Sub
 
-        Public Sub StartProgress(ByVal label As String, ByVal total As Integer)
+        Public Sub StartProgress(label As String, total As Integer)
             Debug.Assert(total > 0, "total must > 0!")
             _vsStatusBarCookie = 0
             _completed = 0
@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             _vsStatusBar.Progress(_vsStatusBarCookie, 1, label, CUInt(_completed), CUInt(_total))
         End Sub
 
-        Public Sub UpdateProgress(ByVal label As String)
+        Public Sub UpdateProgress(label As String)
             Debug.Assert(_vsStatusBarCookie > 0, "Haven't StartProgress!")
             If _vsStatusBarCookie = 0 Then
                 Exit Sub
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Public Sub StopProgress(ByVal label As String)
+        Public Sub StopProgress(label As String)
             Debug.Assert(_vsStatusBarCookie > 0, "Haven't StartProgress!")
             If _vsStatusBarCookie = 0 Then
                 Exit Sub
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             _vsStatusBar.Progress(_vsStatusBarCookie, 0, label, CUInt(_total), CUInt(_total))
         End Sub
 
-        Public Sub SetText(ByVal text As String)
+        Public Sub SetText(text As String)
             _vsStatusBar.SetText(text)
         End Sub
 

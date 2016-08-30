@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
-        Private Sub New(ByVal Info As SerializationInfo, ByVal Context As StreamingContext)
+        Private Sub New(Info As SerializationInfo, Context As StreamingContext)
             MyBase.New(Info, Context)
         End Sub
 

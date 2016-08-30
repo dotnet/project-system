@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We need hook up events from the hosting dialog
         ''' </summary>
         ''' <remarks>Called by ApplyPageChanges so project is in batch edit mode.</remarks>
-        Protected Overrides Sub OnParentChanged(ByVal e As EventArgs)
+        Protected Overrides Sub OnParentChanged(e As EventArgs)
             m_HostDialog = TryCast(Me.ParentForm, PropPageHostDialog)
             If m_HostDialog IsNot Nothing Then
                 With m_HostDialog
@@ -179,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="_enabled">Enable or disable</param>
         ''' <remarks>Use when proppage is on a PropPageHostDialog</remarks>
-        Private Sub EnableRemoveRefs(ByVal _enabled As Boolean)
+        Private Sub EnableRemoveRefs(_enabled As Boolean)
 
             If Me.ParentForm IsNot Nothing Then
                 Debug.Assert(TypeOf Me.ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Status">Current status of proppage (equivalent to status of GetUnusedRefsList call)</param>
         ''' <remarks></remarks>
-        Private Sub UpdateStatus(ByVal Status As ReferenceUsageResult)
+        Private Sub UpdateStatus(Status As ReferenceUsageResult)
 
             ' Only update status when necessary
             If Status <> _lastStatus Then
@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="UnusedRefsList"> a list of VSLangProj.Reference object.</param>
         ''' <remarks>Uses ReferencePropPage.ReferenceToListViewItem to extract reference properties</remarks>
-        Private Sub UpdateUnusedReferenceList(ByVal UnusedRefsList As ArrayList)
+        Private Sub UpdateUnusedReferenceList(UnusedRefsList As ArrayList)
 
             ' Add all unused references to list view
             UnusedReferenceList.BeginUpdate()
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Event Handlers "
 
-        Private Sub UnusedReferenceList_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
+        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
 
             ' Since CheckIndicies is updated after this event, we enable remove button if
             ' there are more than one check references or there are none and one is being checked
@@ -504,11 +504,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub UnusedRerenceList_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
+        Private Sub UnusedRerenceList_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
             ListViewComparer.HandleColumnClick(UnusedReferenceList, _referenceSorter, e)
         End Sub
 
-        Private Sub GetUnusedRefsTimer_Tick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub GetUnusedRefsTimer_Tick(sender As Object, e As System.EventArgs)
 
             ' Poll compiler
             GetUnusedRefs()
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub dialog_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_HostDialog.Shown
+        Private Sub dialog_Shown(sender As Object, e As System.EventArgs) Handles m_HostDialog.Shown
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance
@@ -541,7 +541,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub dialog_Close(ByVal sender As Object, ByVal e As FormClosedEventArgs)
+        Private Sub dialog_Close(sender As Object, e As FormClosedEventArgs)
 
             ' Stop getting unused references list
             Me.Abort()

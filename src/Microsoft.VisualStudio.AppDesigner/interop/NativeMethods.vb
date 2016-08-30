@@ -40,15 +40,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Shared ReadOnly IID_IMetaDataImport As Guid = New Guid("7DAC8207-D3AE-4c75-9B67-92801A497D44")
 
 
-        Public Shared Function Succeeded(ByVal hr As Integer) As Boolean
+        Public Shared Function Succeeded(hr As Integer) As Boolean
             Return hr >= 0
         End Function 'Succeeded
 
-        Public Shared Function Failed(ByVal hr As Integer) As Boolean
+        Public Shared Function Failed(hr As Integer) As Boolean
             Return hr < 0
         End Function 'Failed
 
-        Public Shared Function HRESULT_FROM_WIN32(ByVal x As Integer) As Integer
+        Public Shared Function HRESULT_FROM_WIN32(x As Integer) As Integer
             If x <> 0 Then
                 Return (x And &HFFFF) Or (AppDesInterop.win.FACILITY_WIN32 * &H10000) Or &H80000000
             Else
@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             '/ Creates a connection point to of the given interface type.
             '/ which will call on a managed code sink that implements that interface.
             '/ </devdoc>
-            Public Sub New(ByVal [source] As Object, ByVal sink As Object, ByVal eventInterface As Type)
+            Public Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
 
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             '/ Creates a connection point to of the given interface type.
             '/ which will call on a managed code sink that implements that interface.
             '/ </devdoc>
-            Public Sub New(ByVal [source] As Object, ByVal sink As Object, ByVal eventInterface As Type, ByVal throwException As Boolean)
+            Public Sub New([source] As Object, sink As Object, eventInterface As Type, throwException As Boolean)
                 Dim ex As Exception = Nothing
                 If sink Is Nothing OrElse Not eventInterface.IsInstanceOfType(sink) Then
                     ex = New InvalidCastException("The sink object does not implement the eventInterface.")
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             '/ Disconnect the current connection point.  If the object is not connected,
             '/ this method will do nothing.
             '/ </devdoc>
-            Public Overloads Sub Disconnect(ByVal release As Boolean)
+            Public Overloads Sub Disconnect(release As Boolean)
                 If _cookie <> 0 Then
                     Try
                         If _connectionPoint IsNot Nothing Then
@@ -226,19 +226,19 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         End Class 'ConnectionPointCookie
 
         'NOTE: pcbKeyBlob is really a unsigned Integer, but we're treating as signed for ease of use
-        'Public Declare Unicode Function StrongNameKeyGen Lib "mscoree.dll" (<MarshalAs(UnmanagedType.LPWStr)> ByVal wszKeyContainer As String, ByVal dwFlags As UInteger, _
+        'Public Declare Unicode Function StrongNameKeyGen Lib "mscoree.dll" (<MarshalAs(UnmanagedType.LPWStr)> wszKeyContainer As String, dwFlags As UInteger, _
         '    ByRef ppbKeyBlob As IntPtr, ByRef pcbKeyBlob As Integer) As Integer
         '
-        'Public Declare Unicode Sub StrongNameFreeBuffer Lib "mscoree.dll" (ByVal ppbKeyBlob As IntPtr)
+        'Public Declare Unicode Sub StrongNameFreeBuffer Lib "mscoree.dll" (ppbKeyBlob As IntPtr)
 
         <PreserveSig()> Public Declare Function _
             SetParent _
-                Lib "user32" (ByVal hwnd As IntPtr, ByVal hWndParent As IntPtr) As IntPtr
+                Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
 
 
         <PreserveSig()> Public Declare Function _
             GetParent _
-                Lib "user32" (ByVal hwnd As IntPtr) As IntPtr
+                Lib "user32" (hwnd As IntPtr) As IntPtr
 
         <PreserveSig()> Public Declare Function _
             GetFocus _
@@ -246,23 +246,23 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <PreserveSig()> Public Declare Function _
             SetFocus _
-                Lib "user32" (ByVal hwnd As IntPtr) As Integer
+                Lib "user32" (hwnd As IntPtr) As Integer
 
         <PreserveSig()> Public Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As HandleRef, ByVal msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
+                Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
         <PreserveSig()> Public Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As HandleRef, ByVal msg As Integer, ByVal wParam As Integer, ByRef lParam As TVITEM) As IntPtr
+                Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, ByRef lParam As TVITEM) As IntPtr
 
         <PreserveSig()> Public Declare Auto Function _
             SendMessage _
-                Lib "user32" (ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
+                Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
 
         <PreserveSig()> Public Declare Auto Function _
             PostMessage _
-                Lib "user32" (ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
+                Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
         <PreserveSig()> Public Declare Auto Function _
             WaitMessage _
@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <PreserveSig()> Public Declare Auto Function _
             IsDialogMessage _
-                Lib "user32" (ByVal hwnd As HandleRef, ByRef msg As MSG) As Boolean
+                Lib "user32" (hwnd As HandleRef, ByRef msg As MSG) As Boolean
 
         <PreserveSig()> Public Declare Auto Function _
             TranslateMessage _
@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <PreserveSig()> Public Declare Auto Function _
             GetKeyState _
-                Lib "user32" (ByVal nVirtKey As Keys) As Int16
+                Lib "user32" (nVirtKey As Keys) As Int16
 
         ''' <summary>
         ''' The GetNextDlgTabItem function retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control. 
@@ -287,39 +287,39 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         ''' <remarks></remarks>
         <PreserveSig()> Public Declare Auto Function _
             GetNextDlgTabItem _
-                Lib "user32" (ByVal hDlg As IntPtr, ByVal hCtl As IntPtr, ByVal bPrevious As Boolean) As IntPtr
+                Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
         <PreserveSig()> _
-        Public Declare Auto Function GetWindow Lib "user32" (ByVal Hwnd As IntPtr, ByVal uCmd As UInteger) As IntPtr
+        Public Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
         <PreserveSig()> _
-        Public Declare Auto Function DragQueryFile Lib "shell32" (ByVal hDrop As IntPtr, ByVal iFile As Integer, ByVal lpszFile As String, ByVal cch As Integer) As Integer
+        Public Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
         <PreserveSig()> _
         Public Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
         <PreserveSig()> _
-        Public Declare Function GetTopWindow Lib "user32" (ByVal Hwnd As IntPtr) As IntPtr
+        Public Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
         <PreserveSig()> _
-        Public Declare Auto Function SetWindowLong Lib "user32" (ByVal hWnd As IntPtr, ByVal Index As Integer, ByVal Value As IntPtr) As IntPtr
+        Public Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
         <PreserveSig()> _
-        Public Declare Auto Function GetWindowLong Lib "user32" (ByVal Hwnd As IntPtr, ByVal Index As Integer) As IntPtr
+        Public Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
         <PreserveSig()> _
-        Public Declare Auto Function GetWindowText Lib "user32" (ByVal hWnd As IntPtr, ByVal lpString As String, ByVal nMaxCount As Integer) As Integer
+        Public Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
         <DllImport("user32", CharSet:=CharSet.Auto)> _
-        Public Shared Function GetWindowRect(ByVal hwnd As IntPtr, ByRef rect As RECT) As Integer
+        Public Shared Function GetWindowRect(hwnd As IntPtr, ByRef rect As RECT) As Integer
         End Function
 
         Public Declare Function MoveWindow Lib "user32" _
-          (ByVal hWnd As IntPtr, _
-            ByVal x As Integer, ByVal y As Integer, _
-            ByVal nWidth As Integer, _
-            ByVal nHeight As Integer, _
-            ByVal bRepaint As Integer) As Integer
+          (hWnd As IntPtr, _
+            x As Integer, y As Integer, _
+            nWidth As Integer, _
+            nHeight As Integer, _
+            bRepaint As Integer) As Integer
 
         <StructLayout(LayoutKind.Sequential)> _
         Public Structure RECT
@@ -330,23 +330,23 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         End Structure
 
         <PreserveSig()> _
-        Public Declare Auto Function IsChild Lib "user32" (ByVal hWndParent As IntPtr, ByVal hWnd As IntPtr) As Boolean
+        Public Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
         <PreserveSig()> _
-        Public Declare Auto Function EnableWindow Lib "user32" (ByVal hWnd As IntPtr, ByVal bEnable As Boolean) As Boolean
+        Public Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<PreserveSig()> _
-        'Public Declare Auto Sub ShowWindow Lib "user32" (ByVal Hwnd As IntPtr, ByVal Flags As Integer)
+        'Public Declare Auto Sub ShowWindow Lib "user32" (Hwnd As IntPtr, Flags As Integer)
         '
         '<PreserveSig()> _
-        'Public Declare Auto Function SetWindowPos Lib "user32" (ByVal Hwnd As IntPtr, ByVal HwndInsertAfter As IntPtr, ByVal x As Integer, _
-        '    ByVal y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal flags As Integer) As Boolean
+        'Public Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
+        '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
         <PreserveSig()> _
-        Public Declare Auto Function SystemParametersInfo Lib "user32" (ByVal uiAction As UInteger, ByVal uiParam As UInteger, ByVal pvParam As IntPtr, ByVal fWinIni As UInteger) As Integer
+        Public Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
         <PreserveSig()> _
-        Public Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (ByVal nCount As Integer, ByVal pHandles As IntPtr, ByVal fWaitAll As Boolean, ByVal dwMilliSeconds As Integer, ByVal dwWakeMask As Integer) As Integer
+        Public Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Public Const GWL_EXSTYLE As Integer = -20
         Public Const GWL_STYLE As Integer = -16
@@ -357,9 +357,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Const WS_EX_CONTROLPARENT As Integer = &H10000
         Public Const WS_TABSTOP As Integer = &H10000
         Public Const DS_CONTROL As Integer = &H400
-        Public Declare Auto Function IsValidCodePage Lib "kernel32" (ByVal CodePage As UInteger) As Boolean
+        Public Declare Auto Function IsValidCodePage Lib "kernel32" (CodePage As UInteger) As Boolean
 
-        Public Declare Function IsWindowUnicode Lib "user32" (ByVal hWnd As IntPtr) As Boolean
+        Public Declare Function IsWindowUnicode Lib "user32" (hWnd As IntPtr) As Boolean
 
         <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)> _
         Public Structure TVITEM
@@ -376,7 +376,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         End Structure
 
         <DllImport("user32")> _
-        Public Shared Function GetComboBoxInfo(ByVal hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
+        Public Shared Function GetComboBoxInfo(hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
         End Function
 
         <StructLayout(LayoutKind.Sequential)> _
@@ -400,7 +400,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Sub BeginBatch()
         Sub EndBatch()
         Sub IsBatchModeEnabled(<InAttribute(), Out()> ByRef BatchModeEnabled As Boolean)
-        Sub PushOptionsToCompiler(ByVal dispid As UInteger)
+        Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
     <ComImport()> _

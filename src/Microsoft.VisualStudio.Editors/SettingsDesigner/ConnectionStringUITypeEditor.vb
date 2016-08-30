@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context">The context parameter is ignored...</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetEditStyle(ByVal context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
+        Public Overrides Function GetEditStyle(context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
             Return UITypeEditorEditStyle.Modal
         End Function
 
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="oValue"></param>
         ''' <returns></returns>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
-        Public Overrides Function EditValue(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal ServiceProvider As System.IServiceProvider, ByVal oValue As Object) As Object
+        Public Overrides Function EditValue(context As System.ComponentModel.ITypeDescriptorContext, ServiceProvider As System.IServiceProvider, oValue As Object) As Object
             Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
             If dataConnectionDialogFactory Is Nothing Then
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ByVal ProviderManager As IVsDataProviderManager, ByVal DataProvider As Guid, ByVal ConnectionString As String) As Boolean
+        Private Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
             If ConnectionString = "" Then
                 Return False
             End If
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ByVal ServiceProvider As IServiceProvider, ByVal DataProvider As Guid, ByVal ConnectionString As String) As Boolean
+        Private Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
             Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
             If providerManager IsNot Nothing Then
                 Return ContainsSensitiveData(providerManager, DataProvider, ConnectionString)
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' there exists sensitive information in the string and whether the user chooses to persist it
         '''</returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionString(ByVal ServiceProvider As IServiceProvider, ByVal Dialog As IVsDataConnectionDialog, ByVal PromptIfContainsSensitiveData As Boolean) As String
+        Private Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
 
             If Dialog Is Nothing Then
                 Throw New ArgumentNullException("Dialog")
@@ -260,7 +260,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionStringProperties(ByVal ProviderManager As IVsDataProviderManager, ByVal ProviderGUID As Guid, ByVal ConnectionString As String) As IVsDataConnectionProperties
+        Private Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
             Dim provider As IVsDataProvider = Nothing
             If ProviderManager.Providers.ContainsKey(ProviderGUID) Then
                 provider = ProviderManager.Providers(ProviderGUID)
@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionProperties"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ByVal ConnectionProperties As IVsDataConnectionProperties) As Boolean
+        Private Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
             If ConnectionProperties Is Nothing Then
                 Debug.Fail("We can't tell if it contains sensitive data if we didn't get a bag of properties!")
                 Throw New ArgumentNullException()
@@ -292,7 +292,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "Mapping provider GUIDs <-> display names"
 
-        Private Shared Function GetInvariantProviderNameFromGuid(ByVal ProviderMapper As IDTAdoDotNetProviderMapper, ByVal providerGuid As Guid) As String
+        Private Shared Function GetInvariantProviderNameFromGuid(ProviderMapper As IDTAdoDotNetProviderMapper, providerGuid As Guid) As String
             If ProviderMapper Is Nothing Then
                 Debug.Fail("Failed to get a IDTAdoDotNetProviderMapper")
                 Return providerGuid.ToString()
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return invariantName
         End Function
 
-        Private Shared Function GetGuidFromInvariantProviderName(ByVal ProviderMapper As IDTAdoDotNetProviderMapper, ByVal providerName As String, ByVal ConnectionString As String, ByVal EncryptedString As Boolean) As Guid
+        Private Shared Function GetGuidFromInvariantProviderName(ProviderMapper As IDTAdoDotNetProviderMapper, providerName As String, ConnectionString As String, EncryptedString As Boolean) As Guid
             If providerMapper Is Nothing Then
                 Debug.Fail("Failed to get a IDTAdoDotNetProviderMapper")
                 Return Guid.Empty
@@ -332,11 +332,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class DataConnectionDialogFilterer
             Private _targetProject As EnvDTE.Project
 
-            Public Sub New(ByVal project As EnvDTE.Project)
+            Public Sub New(project As EnvDTE.Project)
                 Me._targetProject = project
             End Sub
 
-            Public Function IsCombinationSupported(ByVal source As Guid, ByVal provider As Guid) As Boolean
+            Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
                 Return Microsoft.VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, Me._targetProject)
             End Function
         End Class

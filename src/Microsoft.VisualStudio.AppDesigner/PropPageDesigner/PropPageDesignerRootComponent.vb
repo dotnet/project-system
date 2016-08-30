@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Get
                 Return _hierarchy
             End Get
-            Set(ByVal Value As IVsHierarchy)
+            Set(Value As IVsHierarchy)
                 _hierarchy = Value
             End Set
         End Property
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Get
                 Return _itemId
             End Get
-            Set(ByVal Value As System.UInt32)
+            Set(Value As System.UInt32)
                 _itemId = Value
             End Set
         End Property

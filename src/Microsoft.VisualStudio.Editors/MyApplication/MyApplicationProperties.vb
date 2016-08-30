@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)> _
     Friend Interface IVsMyAppManager
         <PreserveSig()> _
-        Function Init(<[In]()> ByVal ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
+        Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
 
         <PreserveSig()> _
         Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyAppliationProperties object
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="ProjectHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function Init(ByVal ProjectHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements IVsMyAppManager.Init
+        Private Function Init(ProjectHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements IVsMyAppManager.Init
             If ProjectHierarchy Is Nothing Then
                 Throw New ArgumentNullException("ProjectHierarchy")
             End If
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Event PropertyChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
 #End Region
 
 
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
         ''' <remarks></remarks>
-        Friend Sub Init(ByVal ProjectHierarchy As IVsHierarchy)
+        Friend Sub Init(ProjectHierarchy As IVsHierarchy)
             Dim hr As Integer
             Dim obj As Object = Nothing
 
@@ -415,7 +415,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-        Protected Overloads Function AddFileToProject(ByVal ProjectItems As EnvDTE.ProjectItems, ByVal FileName As String, ByVal CopyFile As Boolean) As EnvDTE.ProjectItem
+        Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
             Dim ProjectItem As EnvDTE.ProjectItem = MyAppProjectItem
 
             'First see if it is already in the project
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return Not _myAppData.MySubMain AndAlso IsMySubMainSupported(_projectHierarchy)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If _myAppData.MySubMain <> (Not value) Then
                     CheckOutDocData()
                     _myAppData.MySubMain = Not value
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Return AddNamespace(GetRootNamespace(), _myAppData.MainFormNoRootNS)
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
@@ -519,7 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return NothingToEmptyString(_myAppData.MainFormNoRootNS)
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.MainFormNoRootNS = EmptyStringToNothing(value)
@@ -539,7 +539,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _myAppData.SingleInstance
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If _myAppData.SingleInstance <> value Then
                     CheckOutDocData()
                     _myAppData.SingleInstance = value
@@ -555,7 +555,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _myAppData.ShutdownMode
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Select Case value
                     Case _
                     Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses, _
@@ -580,7 +580,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _myAppData.EnableVisualStyles
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If _myAppData.EnableVisualStyles <> value Then
                     CheckOutDocData()
                     _myAppData.EnableVisualStyles = value
@@ -596,7 +596,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _myAppData.SaveMySettingsOnExit
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If _myAppData.SaveMySettingsOnExit <> value Then
                     CheckOutDocData()
                     _myAppData.SaveMySettingsOnExit = value
@@ -612,7 +612,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return _myAppData.AuthenticationMode
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Select Case value
                     Case _
                     Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows, _
@@ -646,7 +646,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Return AddNamespace(GetRootNamespace(), _myAppData.SplashScreenNoRootNS)
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 SplashScreenNoRootNS = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
@@ -664,7 +664,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 Return NothingToEmptyString(_myAppData.SplashScreenNoRootNS)
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.SplashScreenNoRootNS = EmptyStringToNothing(value)
@@ -850,7 +850,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectItemProperty(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal PropertyName As String) As EnvDTE.Property
+        Private Function GetProjectItemProperty(ProjectItem As EnvDTE.ProjectItem, PropertyName As String) As EnvDTE.Property
             If ProjectItem.Properties Is Nothing Then
                 Return Nothing
             End If
@@ -869,7 +869,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   generation is hooked up.
         ''' </summary>
         ''' <remarks>Caller is responsible for catching exceptions</remarks>
-        Private Sub SetCustomTool(ByVal ProjectItem As EnvDTE.ProjectItem, ByVal Value As String)
+        Private Sub SetCustomTool(ProjectItem As EnvDTE.ProjectItem, Value As String)
             Dim ToolProperty As EnvDTE.Property = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOL)
             Dim NamespaceProperty As EnvDTE.Property = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
@@ -906,7 +906,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyEventsClassName">The name of the partial class to use</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CreateNewMyEventsFile(ByVal DestinationProjectItems As EnvDTE.ProjectItems, ByVal MyEventsFileName As String, ByVal MyEventsNamespaceName As String, ByVal MyEventsClassName As String) As EnvDTE.ProjectItem
+        Private Function CreateNewMyEventsFile(DestinationProjectItems As EnvDTE.ProjectItems, MyEventsFileName As String, MyEventsNamespaceName As String, MyEventsClassName As String) As EnvDTE.ProjectItem
             Debug.Assert(IO.Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
 
             'Create the new file
@@ -1094,7 +1094,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="ProjectHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetProjectItemForProjectDesigner(ByVal ProjectHierarchy As IVsHierarchy) As EnvDTE.ProjectItem
+        Friend Shared Function GetProjectItemForProjectDesigner(ProjectHierarchy As IVsHierarchy) As EnvDTE.ProjectItem
             Dim SpecialFiles As IVsProjectSpecialFiles = CType(ProjectHierarchy, IVsProjectSpecialFiles)
             Dim ProjectDesignerItemId As UInteger
             Dim ProjectDesignerDirName As String = Nothing
@@ -1170,7 +1170,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 Close()
             End If
@@ -1203,7 +1203,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function FilesToCheckOut(ByVal CreateIfNotExist As Boolean) As String()
+        Public Overrides Function FilesToCheckOut(CreateIfNotExist As Boolean) As String()
             If CreateIfNotExist Then
                 PrepareMyAppDocData()
             End If
@@ -1225,7 +1225,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MyAppDocDataChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _myAppDocData.DataChanged
+        Private Sub MyAppDocDataChanged(sender As Object, e As EventArgs) Handles _myAppDocData.DataChanged
             'Now read the data 
             Using Reader As TextReader = GetMyAppTextReader()
                 Dim NewValues As MyApplicationData = MyApplication.MyApplicationSerializer.Deserialize(Reader)
@@ -1249,7 +1249,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="OldValues"></param>
         ''' <param name="NewValues"></param>
         ''' <remarks></remarks>
-        Private Sub FireChangeNotificationsForNewValues(ByVal OldValues As MyApplication.MyApplicationData, ByVal NewValues As MyApplication.MyApplicationData)
+        Private Sub FireChangeNotificationsForNewValues(OldValues As MyApplication.MyApplicationData, NewValues As MyApplication.MyApplicationData)
             'AuthenticationMode
             If OldValues.AuthenticationMode <> NewValues.AuthenticationMode Then
                 OnPropertyChanged(s_PROPNAME_AuthenticationMode)
@@ -1299,7 +1299,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="String2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function StringPropertyValuesEqual(ByVal String1 As String, ByVal String2 As String) As Boolean
+        Private Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
             Return Utils.NothingToEmptyString(String1).Equals(Utils.NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
 
@@ -1309,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="PropertyName">The name of the property whose value has changed</param>
         ''' <remarks></remarks>
-        Private Sub OnPropertyChanged(ByVal PropertyName As String)
+        Private Sub OnPropertyChanged(PropertyName As String)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
         End Sub
 
@@ -1324,11 +1324,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Class MyAppTextWriter
             Inherits DocDataTextWriter
 
-            Friend Sub New(ByVal docData As DocData)
+            Friend Sub New(docData As DocData)
                 MyBase.New(docData)
             End Sub
 
-            Friend Sub New(ByVal docData As DocData, ByVal disposeDocData As Boolean)
+            Friend Sub New(docData As DocData, disposeDocData As Boolean)
                 MyBase.New(docData, disposeDocData)
 
             End Sub
@@ -1374,7 +1374,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyType">Current value of MyType in the project</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function ApplicationTypeFromOutputType(ByVal OutputType As UInteger, ByVal MyType As String) As ApplicationTypes
+        Friend Shared Function ApplicationTypeFromOutputType(OutputType As UInteger, MyType As String) As ApplicationTypes
             Select Case OutputType
 
                 Case CUInt(VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_Exe)
@@ -1441,7 +1441,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="AppType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function OutputTypeFromApplicationType(ByVal AppType As ApplicationTypes) As UInteger
+        Friend Shared Function OutputTypeFromApplicationType(AppType As ApplicationTypes) As UInteger
             Select Case AppType
 
                 Case ApplicationTypes.WindowsApp
@@ -1465,7 +1465,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function IsMySubMainSupported(ByVal Hierarchy As IVsHierarchy) As Boolean
+        Friend Shared Function IsMySubMainSupported(Hierarchy As IVsHierarchy) As Boolean
             Try
                 Dim obj As Object = Nothing
                 If Hierarchy IsNot Nothing Then

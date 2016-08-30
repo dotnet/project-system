@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <returns></returns>
         ''' <remarks></remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
-        Friend Shared Function GetString(ByVal s As String, ByVal ParamArray Arguments() As Object) As String
+        Friend Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then
                 Return s
             Else
@@ -116,7 +116,7 @@ End Namespace
 '        '/// <param name='description'>
 '        '///     description text.
 '        '/// </param>
-'        Public Sub New(ByVal description As String)
+'        Public Sub New(description As String)
 '            MyBase.New(description)
 '        End Sub
 
@@ -142,11 +142,11 @@ End Namespace
 '    Friend NotInheritable Class SRCategoryAttribute
 '        Inherits CategoryAttribute
 
-'        Public Sub New(ByVal category As String)
+'        Public Sub New(category As String)
 '            MyBase.New(category)
 '        End Sub
 
-'        Protected Overrides Function GetLocalizedString(ByVal value As String) As String
+'        Protected Overrides Function GetLocalizedString(value As String) As String
 '            Return SR.GetString(SR.Culture, value)
 '        End Function
 '    End Class
@@ -638,13 +638,13 @@ End Namespace
 '            End Get
 '        End Property
 
-'        Public Shared Function GetString(ByVal name As String, ByVal ParamArray args As Object()) As String
+'        Public Shared Function GetString(name As String, ParamArray args As Object()) As String
 '            '// null CultureInfo: let ResouceManager determine the culture
 '            '// fxcop complains about not suppling a culture
 '            Return GetString(SR.Culture, name, args)
 '        End Function
 
-'        Public Shared Function GetString(ByVal culture As CultureInfo, ByVal name As String, ByVal ParamArray args As Object()) As String
+'        Public Shared Function GetString(culture As CultureInfo, name As String, ParamArray args As Object()) As String
 '            Dim sys As SR = GetLoader()
 '            If (sys Is Nothing) Then
 '                Return Nothing
@@ -658,11 +658,11 @@ End Namespace
 '            End If
 '        End Function
 
-'        Public Shared Function GetString(ByVal name As String) As String
+'        Public Shared Function GetString(name As String) As String
 '            Return GetString(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetString(ByVal culture As CultureInfo, ByVal name As String) As String
+'        Public Shared Function GetString(culture As CultureInfo, name As String) As String
 '            Dim sys As SR = GetLoader()
 '            If (sys Is Nothing) Then
 '                Return Nothing
@@ -670,11 +670,11 @@ End Namespace
 '            Return sys.resources.GetString(name, culture)
 '        End Function
 
-'        Public Shared Function GetBoolean(ByVal name As String) As Boolean
+'        Public Shared Function GetBoolean(name As String) As Boolean
 '            Return GetBoolean(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetBoolean(ByVal culture As CultureInfo, ByVal name As String) As Boolean
+'        Public Shared Function GetBoolean(culture As CultureInfo, name As String) As Boolean
 '            Dim val As Boolean = False
 
 '            Dim sys As SR = GetLoader()
@@ -687,11 +687,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetChar(ByVal name As String) As Char
+'        Public Shared Function GetChar(name As String) As Char
 '            Return GetChar(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetChar(ByVal culture As CultureInfo, ByVal name As String) As Char
+'        Public Shared Function GetChar(culture As CultureInfo, name As String) As Char
 '            Dim val As Char
 
 '            Dim sys As SR = GetLoader()
@@ -704,11 +704,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetByte(ByVal name As String) As Byte
+'        Public Shared Function GetByte(name As String) As Byte
 '            Return GetByte(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetByte(ByVal culture As CultureInfo, ByVal name As String) As Byte
+'        Public Shared Function GetByte(culture As CultureInfo, name As String) As Byte
 '            Dim val As Byte = 0
 
 '            Dim sys As SR = GetLoader()
@@ -721,11 +721,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetShort(ByVal name As String) As Short
+'        Public Shared Function GetShort(name As String) As Short
 '            Return GetShort(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetShort(ByVal culture As CultureInfo, ByVal name As String) As Short
+'        Public Shared Function GetShort(culture As CultureInfo, name As String) As Short
 '            Dim val As Short = 0
 
 '            Dim sys As SR = GetLoader()
@@ -738,11 +738,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetInt(ByVal name As String) As Integer
+'        Public Shared Function GetInt(name As String) As Integer
 '            Return GetInt(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetInt(ByVal culture As CultureInfo, ByVal name As String) As Integer
+'        Public Shared Function GetInt(culture As CultureInfo, name As String) As Integer
 '            Dim val As Integer = 0
 
 '            Dim sys As SR = GetLoader()
@@ -755,11 +755,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetLong(ByVal name As String) As Long
+'        Public Shared Function GetLong(name As String) As Long
 '            Return GetLong(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetLong(ByVal culture As CultureInfo, ByVal name As String) As Long
+'        Public Shared Function GetLong(culture As CultureInfo, name As String) As Long
 '            Dim val As Long = 0
 
 '            Dim sys As SR = GetLoader()
@@ -772,11 +772,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetFloat(ByVal name As String) As Single
+'        Public Shared Function GetFloat(name As String) As Single
 '            Return GetFloat(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetFloat(ByVal culture As CultureInfo, ByVal name As String) As Single
+'        Public Shared Function GetFloat(culture As CultureInfo, name As String) As Single
 '            Dim val As Single = 0
 
 '            Dim sys As SR = GetLoader()
@@ -789,11 +789,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetDouble(ByVal name As String) As Double
+'        Public Shared Function GetDouble(name As String) As Double
 '            Return GetDouble(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetDouble(ByVal culture As CultureInfo, ByVal name As String) As Double
+'        Public Shared Function GetDouble(culture As CultureInfo, name As String) As Double
 '            Dim val As Double = 0.0
 
 '            Dim sys As SR = GetLoader()
@@ -806,11 +806,11 @@ End Namespace
 '            Return val
 '        End Function
 
-'        Public Shared Function GetObject(ByVal name As String) As Object
+'        Public Shared Function GetObject(name As String) As Object
 '            Return GetObject(SR.Culture, name)
 '        End Function
 
-'        Public Shared Function GetObject(ByVal culture As CultureInfo, ByVal name As String) As Object
+'        Public Shared Function GetObject(culture As CultureInfo, name As String) As Object
 '            Dim sys As SR = GetLoader()
 '            If (sys Is Nothing) Then
 '                Return Nothing

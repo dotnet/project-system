@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="PropDesc">The property descriptor that is being wrapped.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal PropDesc As PropertyDescriptor, ByVal PropertyName As String)
+        Public Sub New(PropDesc As PropertyDescriptor, PropertyName As String)
             MyBase.New(PropDesc)
 
             Debug.Assert(PropDesc IsNot Nothing)
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Component">The component instance with the property to retrieve the value.</param>
         ''' <returns>The value of the property on the specified component instance.</returns>
-        Public Overrides Function GetValue(ByVal Component As Object) As Object
+        Public Overrides Function GetValue(Component As Object) As Object
             Debug.Assert(Component IsNot Nothing, "component is Nothing!!!")
             If TypeOf Component Is PropPageDesignerRootComponent Then
                 Dim View As PropPageDesignerView = DirectCast(Component, PropPageDesignerRootComponent).RootDesigner.GetView()
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Component">The component instance with the property to set the value.</param>
         ''' <param name="Value">The new value to set the property to.</param>
-        Public Overrides Sub SetValue(ByVal Component As Object, ByVal Value As Object)
+        Public Overrides Sub SetValue(Component As Object, Value As Object)
             Debug.Fail("This shouldn't get called directly - instead the serialization store should be calling in to the prop page designer view")
             If TypeOf Component Is PropPageDesignerRootComponent Then
                 Dim View As PropPageDesignerView
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Component">The component instance with the property to be examined for persistence.</param>
         ''' <returns>TRUE if the property should be persisted. Otherwise, FALSE.</returns>
         ''' <remarks>Since these properties are for the shell's Property Window only, none needs to be persisted.</remarks>
-        Public Overrides Function ShouldSerializeValue(ByVal Component As Object) As Boolean
+        Public Overrides Function ShouldSerializeValue(Component As Object) As Boolean
             Return False
         End Function
 
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''  Indicates whether resetting an object changes its value.
         ''' </summary>
         ''' <param name="Component">The component instance to test for reset capability.</param>
-        Public Overrides Function CanResetValue(ByVal Component As Object) As Boolean
+        Public Overrides Function CanResetValue(Component As Object) As Boolean
             Return False
         End Function
 
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Component">The component instance with the property value that is to be reset.</param>
         ''' <remarks>Not implemented since there is no 'reset'.</remarks>
-        Public Overrides Sub ResetValue(ByVal Component As Object)
+        Public Overrides Sub ResetValue(Component As Object)
             Debug.Fail("No ResetValue implementation!!!  Shouldn't have been enabled in the properties window because CanResetValue always returns False.")
         End Sub
 
@@ -194,7 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Get
         End Property
 
-        Public Overrides Function GetChildProperties(ByVal instance As Object, ByVal filter As Attribute()) As PropertyDescriptorCollection
+        Public Overrides Function GetChildProperties(instance As Object, filter As Attribute()) As PropertyDescriptorCollection
             If _propDesc IsNot Nothing Then
                 Return _propDesc.GetChildProperties(instance, filter)
             End If
@@ -207,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="editorBaseType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetEditor(ByVal editorBaseType As Type) As Object
+        Public Overrides Function GetEditor(editorBaseType As Type) As Object
             If _propDesc IsNot Nothing Then
                 Return _propDesc.GetEditor(editorBaseType)
             End If

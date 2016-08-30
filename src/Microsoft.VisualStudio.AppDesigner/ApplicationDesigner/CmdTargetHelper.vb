@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private _windowPane As ApplicationDesignerWindowPane
 
-        Public Sub New(ByVal WindowPane As ApplicationDesignerWindowPane)
+        Public Sub New(WindowPane As ApplicationDesignerWindowPane)
             Debug.Assert(WindowPane IsNot Nothing)
             _windowPane = WindowPane
         End Sub
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   OLECMDERR_E_CANCELED 
         '''     The user canceled the execution of the command. 
         ''' </remarks>
-        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, ByVal nCmdID As UInteger, ByVal nCmdexecopt As UInteger, ByVal pvaIn As System.IntPtr, ByVal pvaOut As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.Exec
+        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As System.IntPtr, pvaOut As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.Exec
             Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & nCmdID)
 
             If _windowPane Is Nothing Then
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' Callers use IOleCommandTarget::QueryStatus to determine which commands are supported by a target object. The caller can then disable unavailable commands that would otherwise be routed to the object. The caller can also use this method to get the name or status of a single command.
         ''' </remarks>
-        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, ByVal cCmds As UInteger, ByVal prgCmds As OLE.Interop.OLECMD(), ByVal pCmdText As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
+        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
             'Grab certain commands and handle ourselves
 
             Const Supported As UInteger = CUInt(OleInterop.OLECMDF.OLECMDF_SUPPORTED)
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnDockableChange(ByVal fDockable As Integer, ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnDockableChange
+        Private Function OnDockableChange(fDockable As Integer, x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnDockableChange
             Return NativeMethods.S_OK
         End Function
 
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnMove(ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnMove
+        Private Function OnMove(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnMove
             Return NativeMethods.S_OK
         End Function
 
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="fShow"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnShow(ByVal fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnShow
+        Private Function OnShow(fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnShow
             'NOTE: In error cases, m_WindowPane.AppDesignerView may be Nothing, so we must guard against
             '  its use.
 
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnSize(ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnSize
+        Private Function OnSize(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnSize
             Return NativeMethods.S_OK
         End Function
 

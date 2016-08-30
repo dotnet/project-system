@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ImageListTransparentColor">The TransparentColor property of the ImageList that this will be used for.  This is required to get the selection border drawing to work properly.</param>
         ''' <returns>The drawn thumbnail image</returns>
         ''' <remarks></remarks>
-        Public Function CreateThumbnail(ByVal SourceImage As Image, ByVal ThumbnailSize As Size, ByVal DrawBorder As Boolean, ByVal BorderWidth As Integer, ByVal SelectionBorderWidth As Integer, ByVal ImageListTransparentColor As Color) As Bitmap
+        Public Function CreateThumbnail(SourceImage As Image, ThumbnailSize As Size, DrawBorder As Boolean, BorderWidth As Integer, SelectionBorderWidth As Integer, ImageListTransparentColor As Color) As Bitmap
             If SourceImage Is Nothing Then
                 Debug.Fail("SourceImage can't be nothing")
                 Return Nothing
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''    scaled upward.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ScaleSizeProportionally(ByVal OriginalSize As Size, ByVal MaxScaledSize As Size, ByVal OnlyScaleDownward As Boolean) As Size
+        Private Function ScaleSizeProportionally(OriginalSize As Size, MaxScaledSize As Size, OnlyScaleDownward As Boolean) As Size
             'Get the scale required to match the original width to the maximum scaled width
             Dim ScaleBasedOnWidth As Double = MaxScaledSize.Width / OriginalSize.Width
 
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="SuggestedFileName">The suggested (desired) filename, with no path</param>
         ''' <returns>A valid path based on the suggested one.</returns>
         ''' <remarks></remarks>
-        Public Function CreateLegalFileName(ByVal SuggestedFileName As String) As String
+        Public Function CreateLegalFileName(SuggestedFileName As String) As String
             Debug.Assert(SuggestedFileName <> "")
             If SuggestedFileName = "" Then
                 Return ""
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="StringValue">The string value to check against Nothing.</param>
         ''' <returns>Empty string if the string is Nothing, or else the original string value.</returns>
         ''' <remarks></remarks>
-        Public Function NonNothingString(ByVal StringValue As String) As String
+        Public Function NonNothingString(StringValue As String) As String
             If StringValue Is Nothing Then
                 Return ""
             Else
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''
         ''' Guessing may be less accurate for very small files.
         ''' </remarks>
-        Public Function GuessFileEncoding(ByVal FilePath As String) As Encoding
+        Public Function GuessFileEncoding(FilePath As String) As Encoding
             'The StreamReader knows how to interpret the byte order marks at the beginning of a file, so we'll let it do just
             '  that.  We create a StreamReader that starts out in ANSI with detectEncodingFromByteOrderMarks:=True.  After reading
             '  a few bytes, if it detects a BOM, it will change the encoding to the proper one.
@@ -277,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' If the encoding is invalid UTF-8, returns False.
         ''' </remarks>
-        Private Function IsLikelyUtf8FileWithoutBOM(ByVal FilePath As String) As Boolean
+        Private Function IsLikelyUtf8FileWithoutBOM(FilePath As String) As Boolean
             Dim Stream As FileStream = File.Open(FilePath, FileMode.Open, FileAccess.Read)
 
             'If the file doesn't violate the UTF-8 encoding, *and* it also contains UTF-8
@@ -365,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' Shamelessly stolen from System.Windows.Forms.SoundPlayer code
         ''' </remarks>
-        Public Function IsWavSoundFile(ByVal Data As Stream) As Boolean
+        Public Function IsWavSoundFile(Data As Stream) As Boolean
             'Need to seek to the beginning.  With our streams we always assume we want the full data in the stream.
             Data.Seek(0, SeekOrigin.Begin)
 
@@ -389,7 +389,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' Shamelessly stolen from System.Windows.Forms.SoundPlayer code
         ''' </remarks>
-        Public Function IsWavSoundFile(ByVal Data As Byte()) As Boolean
+        Public Function IsWavSoundFile(Data As Byte()) As Boolean
             Try
                 Dim Position As Integer = 0
                 Dim wFormatTag As Int16 = -1
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ch1">Second byte</param>
         ''' <returns>The Int16combined from the bytes</returns>
         ''' <remarks></remarks>
-        Private Function BytesToInt16(ByVal ch0 As Byte, ByVal ch1 As Byte) As Int16
+        Private Function BytesToInt16(ch0 As Byte, ch1 As Byte) As Int16
             Return CShort(ch1) Or CShort(CInt(ch0) << 8)
         End Function
 
@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ch3">Fourth byte</param>
         ''' <returns>The Int32 combined from these four bytes in a way used by the mmio functions.</returns>
         ''' <remarks></remarks>
-        Private Function BytesToInt(ByVal ch0 As Byte, ByVal ch1 As Byte, ByVal ch2 As Byte, ByVal ch3 As Byte) As Integer
+        Private Function BytesToInt(ch0 As Byte, ch1 As Byte, ch2 As Byte, ch3 As Byte) As Integer
             Dim Result As Integer = 0
             Result = ch3
             Result = Result Or (CInt(ch2) << 8)
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="LengthInBytes">The length in bytes</param>
         ''' <returns>A friendly formatted string</returns>
         ''' <remarks></remarks>
-        Public Function GetKBDisplay(ByVal LengthInBytes As Long) As String
+        Public Function GetKBDisplay(LengthInBytes As Long) As String
             Const BytesInKilobyte As Integer = 1024
 
             If LengthInBytes > BytesInKilobyte Then
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="InnerException">The inner exception.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function NewException(ByVal Message As String, Optional ByVal HelpLink As String = Nothing, Optional ByVal InnerException As Exception = Nothing) As Exception
+        Public Function NewException(Message As String, Optional HelpLink As String = Nothing, Optional InnerException As Exception = Nothing) As Exception
             Dim ex As Exception
             If InnerException IsNot Nothing Then
                 ex = New Exception(Message, InnerException)
@@ -545,7 +545,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FilePath">The full path and filename of the file</param>
         ''' <returns>The filename only, as actually found in the file system.</returns>
         ''' <remarks></remarks>
-        Public Function GetFileNameInActualCase(ByVal FilePath As String) As String
+        Public Function GetFileNameInActualCase(FilePath As String) As String
             If File.Exists(FilePath) Then
                 'Strange, but there appears to be no way to do this from the CLR/NDP, other than searching for it.
                 Dim FilesMatchingName() As String = Directory.GetFiles(Path.GetDirectoryName(FilePath), Path.GetFileName(FilePath))
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FontResourceString">The font described as a string, just as if it were in a form's resx file.  Example: "Arial, 12pt"</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetFontFromResources(ByVal FontResourceString As String) As Font
+        Public Function GetFontFromResources(FontResourceString As String) As Font
             Dim FontAsString As String = FontResourceString
 
             If FontAsString = "" Then

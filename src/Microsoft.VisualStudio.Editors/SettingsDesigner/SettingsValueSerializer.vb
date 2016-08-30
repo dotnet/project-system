@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <remarks></remarks>
     Friend Class SettingsValueSerializer
 
-        Public Function Deserialize(ByVal ValueType As System.Type, ByVal serializedValue As String, ByVal culture As System.Globalization.CultureInfo) As Object
+        Public Function Deserialize(ValueType As System.Type, serializedValue As String, culture As System.Globalization.CultureInfo) As Object
             If ValueType Is GetType(String) Then
                 ' VsWhidbey 270764:
                 ' Strings require special handling, since the ConfigHelper API assumes that all serialized representations
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Nothing
         End Function
 
-        Public Function Serialize(ByVal value As Object, ByVal culture As System.Globalization.CultureInfo) As String
+        Public Function Serialize(value As Object, culture As System.Globalization.CultureInfo) As String
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Private Function SerializeImpl(ByVal value As Object, ByVal culture As System.Globalization.CultureInfo) As String
+        Private Function SerializeImpl(value As Object, culture As System.Globalization.CultureInfo) As String
             If value Is Nothing Then
                 Return ""
             ElseIf value.GetType().Equals(GetType(String)) Then
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Normalize(ByVal serializedValue As String, ByVal type As System.Type) As String
+        Public Function Normalize(serializedValue As String, type As System.Type) As String
             If SettingTypeValidator.IsTypeObsolete(type) Then
                 Return serializedValue
             Else

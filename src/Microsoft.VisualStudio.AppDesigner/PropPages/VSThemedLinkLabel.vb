@@ -19,7 +19,7 @@ Public Class VSThemedLinkLabel
 
     End Sub
 
-    Public Sub SetThemedColor(ByVal vsUIShell5 As IVsUIShell5)
+    Public Sub SetThemedColor(vsUIShell5 As IVsUIShell5)
 
         Dim environmentThemeCategory As Guid = New Guid("624ed9c3-bdfd-41fa-96c3-7c824ea32e3d")
 

@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _authenticationUrl As String
 
         <SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")>
-        Public Sub New(ByVal authenticationUrl As String, ByVal authenticationHost As String, ByVal serviceProvider As IServiceProvider)
+        Public Sub New(authenticationUrl As String, authenticationHost As String, serviceProvider As IServiceProvider)
             InitializeComponent()
             AuthenticationServiceUrl.Text = authenticationHost
             _authenticationUrl = authenticationUrl
@@ -51,11 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Sub ServiceAuthenticationForm_HelpButtonClicked(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
+        Private Sub ServiceAuthenticationForm_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
             ShowHelp()
         End Sub
 
-        Private Sub ServiceAuthenticationForm_HelpRequested(ByVal sender As System.Object, ByVal hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub ServiceAuthenticationForm_HelpRequested(sender As System.Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
             ShowHelp()
         End Sub
 
@@ -64,17 +64,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _loadAnonymous
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _loadAnonymous = value
             End Set
         End Property
 
-        Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+        Private Sub Cancel_Click(sender As System.Object, e As System.EventArgs) Handles Cancel.Click
             _loadAnonymous = True
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         End Sub
 
-        Protected Overrides Function ProcessDialogKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
             If keyData = Keys.Escape Then
                 Me.Close()
             End If

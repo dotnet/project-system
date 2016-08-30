@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.25422.0
+VisualStudioVersion = 15.0.25605.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -82,6 +82,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemDogfoodSetup", "ProjectSystemDogfoodSetup\ProjectSystemDogfoodSetup.csproj", "{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.net", "Dependencies\Json.net\Json.net.csproj", "{CA374AF1-C983-4019-8FD0-01FA510C6E56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSBuild", "Dependencies\MSBuild\MSBuild.csproj", "{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,6 +212,10 @@ Global
 		{CA374AF1-C983-4019-8FD0-01FA510C6E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA374AF1-C983-4019-8FD0-01FA510C6E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA374AF1-C983-4019-8FD0-01FA510C6E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -225,5 +231,6 @@ Global
 		{4D52C1E5-6F4B-4CDE-8149-AC374F018245} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{CA374AF1-C983-4019-8FD0-01FA510C6E56} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
+		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 	EndGlobalSection
 EndGlobal

@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents Cancel As System.Windows.Forms.Button
         Private _components As System.ComponentModel.IContainer
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 If disposing AndAlso _components IsNot Nothing Then
                     _components.Dispose()

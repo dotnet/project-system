@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Provider">Ignored.</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Provider As IServiceProvider)
+        Public Sub New(Provider As IServiceProvider)
             'We don't need the service provider, we ignore it.
         End Sub
 
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Stream">The stream to load from.</param>
         ''' <returns>The loaded store for resources.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function LoadStore(ByVal Stream As Stream) As SerializationStore
+        Public Overrides Function LoadStore(Stream As Stream) As SerializationStore
             If Stream Is Nothing Then
                 Throw New ArgumentNullException("Stream")
             End If
@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Value">The object (must be a Resource instance) to serialize into the store.</param>
         ''' <remarks></remarks>
-        Public Overrides Sub Serialize(ByVal Store As SerializationStore, ByVal Value As Object)
+        Public Overrides Sub Serialize(Store As SerializationStore, Value As Object)
             If Store Is Nothing Then
                 Throw New ArgumentNullException("Store")
             End If
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             RFStore.AddObject(Component)
         End Sub
 
-        Public Overrides Sub SerializeAbsolute(ByVal store As SerializationStore, ByVal value As Object)
+        Public Overrides Sub SerializeAbsolute(store As SerializationStore, value As Object)
             Serialize(store, value)
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Member">The property whose value needs to be serialized into the store.</param>
         ''' <remarks>
         ''' </remarks>
-        Public Overrides Sub SerializeMember(ByVal Store As SerializationStore, ByVal OwningObject As Object, ByVal Member As MemberDescriptor)
+        Public Overrides Sub SerializeMember(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
             If Store Is Nothing Then
                 Throw New ArgumentNullException("Store")
             End If
@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="OwningObject">The object (must be a Resource instance) whose property (member) you are trying to serialize into the store.</param>
         ''' <param name="Member">The property whose value needs to be serialized into the store.</param>
         ''' <remarks></remarks>
-        Public Overrides Sub SerializeMemberAbsolute(ByVal Store As SerializationStore, ByVal OwningObject As Object, ByVal Member As MemberDescriptor)
+        Public Overrides Sub SerializeMemberAbsolute(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
             'This method is intended for properties such as collections which might have had only some of their
             '  members changed.
             'The resource editor doesn't have any such properties, so we just treat this the same
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <returns>The set of components that were deserialized.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function Deserialize(ByVal Store As SerializationStore) As ICollection
+        Public Overrides Function Deserialize(Store As SerializationStore) As ICollection
             If Store Is Nothing Then
                 Throw New ArgumentNullException("Store")
             End If
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
         ''' <remarks></remarks>
-        Public Overrides Function Deserialize(ByVal Store As SerializationStore, ByVal Container As IContainer) As ICollection
+        Public Overrides Function Deserialize(Store As SerializationStore, Container As IContainer) As ICollection
             If Store Is Nothing Then
                 Throw New ArgumentNullException("Store")
             End If
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <remarks></remarks>
-        Public Overrides Sub DeserializeTo(ByVal Store As SerializationStore, ByVal Container As IContainer, ByVal ValidateRecycledTypes As Boolean, ByVal applyDefaults As Boolean)
+        Public Overrides Sub DeserializeTo(Store As SerializationStore, Container As IContainer, ValidateRecycledTypes As Boolean, applyDefaults As Boolean)
             If Store Is Nothing Then
                 Throw New ArgumentNullException("Store")
             End If

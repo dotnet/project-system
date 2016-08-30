@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Constructor
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub New(ByVal Project As EnvDTE.Project, ByVal ProjectHierarchy As IVsHierarchy, ByVal View As ApplicationDesigner.ApplicationDesignerView)
+        Public Sub New(Project As EnvDTE.Project, ProjectHierarchy As IVsHierarchy, View As ApplicationDesigner.ApplicationDesignerView)
             If Project Is Nothing OrElse ProjectHierarchy Is Nothing OrElse View Is Nothing Then
                 Debug.Fail("")
                 Throw New ArgumentNullException()
@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="PreferExactMatch">For more information, see comments for FindItemToSelect.</param>
         ''' <param name="FireNotifications">If true, notifications are sent to the pages (but only if the selection actually changed)</param>
         ''' <remarks></remarks>
-        Public Sub ChangeSelection(ByVal ConfigName As String, ByVal ConfigSelectionType As SelectionTypes, ByVal PlatformName As String, ByVal PlatformSelectionType As SelectionTypes, ByVal PreferExactMatch As Boolean, ByVal FireNotifications As Boolean)
+        Public Sub ChangeSelection(ConfigName As String, ConfigSelectionType As SelectionTypes, PlatformName As String, PlatformSelectionType As SelectionTypes, PreferExactMatch As Boolean, FireNotifications As Boolean)
             Dim NewSelectedConfigIndex As Integer = FindItemToSelect(_configurationDropdownEntries, _selectedConfigIndex, ConfigName, ConfigSelectionType, PreferExactMatch)
             Dim NewSelectedPlatformIndex As Integer = FindItemToSelect(_platformDropdownEntries, _selectedPlatformIndex, PlatformName, PlatformSelectionType, PreferExactMatch)
             Debug.Assert(NewSelectedConfigIndex >= 0 AndAlso NewSelectedConfigIndex < _configurationDropdownEntries.Length)
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="PlatformIndex">The index to select in the platform list</param>
         ''' <param name="FireNotifications">If true, notifications are sent to the pages (but only if the selection actually changed)</param>
         ''' <remarks></remarks>
-        Public Sub ChangeSelection(ByVal ConfigIndex As Integer, ByVal PlatformIndex As Integer, ByVal FireNotifications As Boolean)
+        Public Sub ChangeSelection(ConfigIndex As Integer, PlatformIndex As Integer, FireNotifications As Boolean)
             Debug.Assert(ConfigIndex >= 0 AndAlso ConfigIndex < _configurationDropdownEntries.Length)
             Debug.Assert(PlatformIndex >= 0 AndAlso PlatformIndex < _platformDropdownEntries.Length)
 
@@ -453,8 +453,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''     when searching for a "Normal" selection type.</param>
         ''' <returns>The new index into the ExistingItems array of the found item.</returns>
         ''' <remarks></remarks>
-        Private Function FindItemToSelect(ByVal ExistingItems() As DropdownItem, ByVal CurrentIndex As Integer, ByVal DesiredName As String, ByVal DesiredSelectionType As SelectionTypes, _
-            ByVal PreferExactMatch As Boolean _
+        Private Function FindItemToSelect(ExistingItems() As DropdownItem, CurrentIndex As Integer, DesiredName As String, DesiredSelectionType As SelectionTypes, _
+            PreferExactMatch As Boolean _
         ) As Integer
             If DesiredSelectionType = SelectionTypes.All Then
                 'All configurations or platforms
@@ -572,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="KeepCurrentSelection">If True, then attempts to keep the current selection after the list is updated.  If false, then
         '''   the current "active" configuration and platform will be selected.</param>
         ''' <remarks></remarks>
-        Private Sub UpdateEntriesAndNotifyPages(ByVal KeepCurrentSelection As Boolean)
+        Private Sub UpdateEntriesAndNotifyPages(KeepCurrentSelection As Boolean)
             Dim CurrentConfigName As String = ConfigurationDropdownEntries(_selectedConfigIndex).Name
             Dim CurrentConfigSelectionType As SelectionTypes = ConfigurationDropdownEntries(_selectedConfigIndex).SelectionType
             Dim CurrentPlatformName As String = PlatformDropdownEntries(_selectedPlatformIndex).Name
@@ -598,7 +598,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="pszCfgName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnCfgNameAdded(ByVal pszCfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameAdded
+        Public Function OnCfgNameAdded(pszCfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameAdded: Updating list")
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
@@ -615,7 +615,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="CfgName"></param>
         ''' <remarks></remarks>
-        Public Function OnCfgNameDeleted(ByVal CfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameDeleted
+        Public Function OnCfgNameDeleted(CfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameDeleted: Clearing undo/redo stack")
 
@@ -637,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="OldName"></param>
         ''' <param name="NewName"></param>
         ''' <remarks></remarks>
-        Public Function OnCfgNameRenamed(ByVal OldName As String, ByVal NewName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameRenamed
+        Public Function OnCfgNameRenamed(OldName As String, NewName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameRenamed
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameRenamed: Clearing undo/redo stack")
 
@@ -658,7 +658,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
         ''' <remarks></remarks>
-        Public Function OnPlatformNameAdded(ByVal pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameAdded
+        Public Function OnPlatformNameAdded(pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameAdded: Updating list")
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
@@ -675,7 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
         ''' <remarks></remarks>
-        Public Function OnPlatformNameDeleted(ByVal pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameDeleted
+        Public Function OnPlatformNameDeleted(pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameDeleted: Clearing undo/redo stack")
 
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="pIVsHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnActiveProjectCfgChange(ByVal pIVsHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.OnActiveProjectCfgChange
+        Public Function OnActiveProjectCfgChange(pIVsHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.OnActiveProjectCfgChange
             Try
                 If pIVsHierarchy Is Nothing OrElse pIVsHierarchy Is _projectHierarchy Then
                     Common.Switches.TracePDConfigs("OnActiveProjectCfgChange: Hierarchy matches or is Nothing, changing configs")
@@ -728,7 +728,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return VSConstants.S_OK
         End Function
 
-        Public Function UpdateSolution_Done(ByVal fSucceeded As Integer, ByVal fModified As Integer, ByVal fCancelCommand As Integer) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_Done
+        Public Function UpdateSolution_Done(fSucceeded As Integer, fModified As Integer, fCancelCommand As Integer) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_Done
             CheckForModeChanges()
             Return VSConstants.S_OK
         End Function
@@ -759,7 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="Name">The configuration or platform name</param>
             ''' <param name="SelectionType">Type of entry</param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal Name As String, ByVal SelectionType As SelectionTypes)
+            Public Sub New(Name As String, SelectionType As SelectionTypes)
                 Debug.Assert(Name <> "")
                 Debug.Assert([Enum].IsDefined(GetType(SelectionTypes), SelectionType))
 

@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _useSpecialClassName
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _useSpecialClassName = value
             End Set
         End Property
@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Return _persistedNamespace
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _persistedNamespace = value
             End Set
         End Property
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="instanceToIgnore">If we want to rename an existing setting, we want to that particular it from the unique name check</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsValidName(ByVal Name As String, Optional ByVal checkForUniqueness As Boolean = False, Optional ByVal instanceToIgnore As DesignTimeSettingInstance = Nothing) As Boolean
+        Friend Function IsValidName(Name As String, Optional checkForUniqueness As Boolean = False, Optional instanceToIgnore As DesignTimeSettingInstance = Nothing) As Boolean
             Return IsValidIdentifier(Name) AndAlso (Not checkForUniqueness OrElse IsUniqueName(Name, instanceToIgnore))
         End Function
 
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="IgnoreThisInstance"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function IsUniqueName(ByVal Name As String, Optional ByVal IgnoreThisInstance As DesignTimeSettingInstance = Nothing) As Boolean
+        Friend Function IsUniqueName(Name As String, Optional IgnoreThisInstance As DesignTimeSettingInstance = Nothing) As Boolean
             ' Empty name not considered unique!
             If Name = "" Then
                 Return False
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We need to know the un-escaped identifier ('cause that is what's going in to the app.config file), so we can't
         ''' allow that...
         ''' </remarks>
-        Private Function IsValidIdentifier(ByVal Name As String) As Boolean
+        Private Function IsValidIdentifier(Name As String) As Boolean
             If Name Is Nothing Then
                 Return False
             End If
@@ -176,11 +176,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Id2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function EqualIdentifiers(ByVal Id1 As String, ByVal Id2 As String) As Boolean
+        Friend Shared Function EqualIdentifiers(Id1 As String, Id2 As String) As Boolean
             Return String.Equals(Id1, Id2, StringComparison.OrdinalIgnoreCase)
         End Function
 
-        Friend Function CreateUniqueName(Optional ByVal Base As String = Nothing) As String
+        Friend Function CreateUniqueName(Optional Base As String = Nothing) As String
             If String.IsNullOrEmpty(Base) Then
                 Base = SR.SD_DefaultSettingName
             End If
@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return ""
         End Function
 
-        Private Function MakeValidIdentifier(ByVal name As String) As String
+        Private Function MakeValidIdentifier(name As String) As String
             If CodeProvider IsNot Nothing AndAlso Not IsValidIdentifier(name) Then
                 Return CodeProvider.CreateValidIdentifier(name)
             Else
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="AllowMakeUnique">If true, we are allowed to change the name in order to make this setting unique</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function AddNew(ByVal TypeName As String, ByVal SettingName As String, ByVal AllowMakeUnique As Boolean) As DesignTimeSettingInstance
+        Friend Function AddNew(TypeName As String, SettingName As String, AllowMakeUnique As Boolean) As DesignTimeSettingInstance
             Dim Instance As New DesignTimeSettingInstance
             Instance.SetSettingTypeName(TypeName)
             If Not IsUniqueName(SettingName) Then
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Instance"></param>
         ''' <param name="MakeNameUnique"></param>
         ''' <remarks></remarks>
-        Friend Sub Add(ByVal Instance As DesignTimeSettingInstance, Optional ByVal MakeNameUnique As Boolean = False)
+        Friend Sub Add(Instance As DesignTimeSettingInstance, Optional MakeNameUnique As Boolean = False)
             If Contains(Instance) Then
                 Return
             End If
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks>
         ''' Useful to prevent adding the same setting multiple times
         ''' </remarks>
-        Friend Function Contains(ByVal instance As DesignTimeSettingInstance) As Boolean
+        Friend Function Contains(instance As DesignTimeSettingInstance) As Boolean
             Return _settings.Contains(instance)
         End Function
 
@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="instance"></param>
         ''' <remarks></remarks>
-        Friend Sub Remove(ByVal instance As DesignTimeSettingInstance)
+        Friend Sub Remove(instance As DesignTimeSettingInstance)
             ' If the instance is site:ed, and it's containers components contains the instance, we better remove it...
             ' ...but only if our m_settings collection contains this instance...
             '

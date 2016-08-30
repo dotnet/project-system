@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="surface"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal surface As DesignSurface)
+        Public Sub New(surface As DesignSurface)
             MyBase.New(surface, SupportToolBox:=False)
         End Sub
 

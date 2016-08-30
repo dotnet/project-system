@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Perform OrdinalIgnoreCase string comparison.
         ''' </summary>
-        Public Shared Function StringEquals(ByVal s1 As String, ByVal s2 As String) As Boolean
+        Public Shared Function StringEquals(s1 As String, s2 As String) As Boolean
             Return String.Equals(s1, s2, StringComparison.OrdinalIgnoreCase)
         End Function
 
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Check if the given string is null, empty or all blank spaces.
         ''' </summary>
-        Public Shared Function StringIsNullEmptyOrBlank(ByVal s As String) As Boolean
+        Public Shared Function StringIsNullEmptyOrBlank(s As String) As Boolean
             Return String.IsNullOrEmpty(s) OrElse s.Trim().Length = 0
         End Function
 
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Get the trimed attribute with the given name from the given xml element.
         ''' Return Nothing if such attributes don't exist.
         ''' </summary>
-        Public Shared Function GetAttributeValue(ByVal xmlElement As XmlElement, ByVal attributeName As String) _
+        Public Shared Function GetAttributeValue(xmlElement As XmlElement, attributeName As String) _
                 As String
             Dim xmlAttribute As XmlAttribute = xmlElement.Attributes(attributeName)
 
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Construct a Version instance from the given string, return Version(0.0.0.0)
         ''' if the string format is incorrect.
         ''' </summary>
-        Public Shared Function GetVersion(ByVal versionString As String) As Version
+        Public Shared Function GetVersion(versionString As String) As Version
             Dim result As New Version(0, 0, 0, 0)
             If Not String.IsNullOrEmpty(versionString) Then
                 Try
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Given an assembly full name, return a full name containing only name and version.
         ''' </summary>
-        Public Shared Function NormalizeAssemblyFullName(ByVal assemblyFullName As String) As String
+        Public Shared Function NormalizeAssemblyFullName(assemblyFullName As String) As String
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Return Nothing
             End If
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Add the given item with the given assemblyFullName to the dictionary.
         ''' </summary>
-        Public Sub AddItem(ByVal assemblyFullName As String, ByVal item As T)
+        Public Sub AddItem(assemblyFullName As String, item As T)
             If item Is Nothing Then
                 Exit Sub
             End If
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Remove the given item from the dictionary.
         ''' </summary>
-        Public Sub RemoveItem(ByVal item As T)
+        Public Sub RemoveItem(item As T)
             If item Is Nothing Then
                 Exit Sub
             End If
@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Get a list of item with the given assembly full name from the dictionary.
         ''' </summary>
-        Public Function GetItems(ByVal assemblyFullName As String) As List(Of T)
+        Public Function GetItems(assemblyFullName As String) As List(Of T)
             Dim assemblyName As String = Nothing
             Dim assemblyVersion As Version = Nothing
             Me.ParseAssemblyFullName(assemblyFullName, assemblyName, assemblyVersion)
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
         End Sub
 
-        Private Sub ParseAssemblyFullName(ByVal assemblyFullName As String,
+        Private Sub ParseAssemblyFullName(assemblyFullName As String,
                 ByRef assemblyName As String, ByRef assemblyVersion As Version)
 
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ''' <summary>
             ''' Add an item with the given version to the dictionary.
             ''' </summary>
-            Public Sub AddItem(ByVal version As Version, ByVal item As Y)
+            Public Sub AddItem(version As Version, item As Y)
                 If item Is Nothing Then
                     Exit Sub
                 End If
@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ''' <summary>
             ''' Get a list of items for the given version.
             ''' </summary>
-            Public Function GetItems(ByVal version As Version) As List(Of Y)
+            Public Function GetItems(version As Version) As List(Of Y)
                 Dim result As New List(Of Y)
 
                 ' Always include version independent list.
@@ -329,7 +329,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ''' <summary>
             ''' Remove an item from the dictionary.
             ''' </summary>
-            Public Sub RemoveItem(ByVal item As Y)
+            Public Sub RemoveItem(item As Y)
                 If item Is Nothing Then
                     Exit Sub
                 End If
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
                 MarshalTypeRef:=GetType(EnumeratorToEnumVariantMarshaler))> IEnumerator
 
         <DispId(0)> _
-        ReadOnly Property Item(ByVal index As Integer) As <MarshalAs(UnmanagedType.Interface)> Template
+        ReadOnly Property Item(index As Integer) As <MarshalAs(UnmanagedType.Interface)> Template
 
         <DispId(10)> _
         ReadOnly Property Count() As Integer
@@ -420,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
         Inherits EnvDTE80.Solution2
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(0)> _
-        Overloads Function Item(<[In](), MarshalAs(UnmanagedType.Struct)> ByVal index As Object) As <MarshalAs(UnmanagedType.Interface)> Project
+        Overloads Function Item(<[In](), MarshalAs(UnmanagedType.Struct)> index As Object) As <MarshalAs(UnmanagedType.Interface)> Project
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), TypeLibFunc(CShort(1)), DispId(-4)> _
         Overloads Function GetEnumerator() As <MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef:=GetType(EnumeratorToEnumVariantMarshaler))> IEnumerator
@@ -438,19 +438,19 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
         Overloads ReadOnly Property FileName() As <MarshalAs(UnmanagedType.BStr)> String
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(14)> _
-        Overloads Sub SaveAs(<[In](), MarshalAs(UnmanagedType.BStr)> ByVal FileName As String)
+        Overloads Sub SaveAs(<[In](), MarshalAs(UnmanagedType.BStr)> FileName As String)
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(15)> _
-        Overloads Function AddFromTemplate(<[In](), MarshalAs(UnmanagedType.BStr)> ByVal FileName As String, <[In](), MarshalAs(UnmanagedType.BStr)> ByVal Destination As String, <[In](), MarshalAs(UnmanagedType.BStr)> ByVal ProjectName As String, <[In]()> Optional ByVal Exclusive As Boolean = False) As <MarshalAs(UnmanagedType.Interface)> Project
+        Overloads Function AddFromTemplate(<[In](), MarshalAs(UnmanagedType.BStr)> FileName As String, <[In](), MarshalAs(UnmanagedType.BStr)> Destination As String, <[In](), MarshalAs(UnmanagedType.BStr)> ProjectName As String, <[In]()> Optional Exclusive As Boolean = False) As <MarshalAs(UnmanagedType.Interface)> Project
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(16)> _
-        Overloads Function AddFromFile(<[In](), MarshalAs(UnmanagedType.BStr)> ByVal FileName As String, <[In]()> Optional ByVal Exclusive As Boolean = False) As <MarshalAs(UnmanagedType.Interface)> Project
+        Overloads Function AddFromFile(<[In](), MarshalAs(UnmanagedType.BStr)> FileName As String, <[In]()> Optional Exclusive As Boolean = False) As <MarshalAs(UnmanagedType.Interface)> Project
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(17)> _
-        Overloads Sub Open(<[In](), MarshalAs(UnmanagedType.BStr)> ByVal FileName As String)
+        Overloads Sub Open(<[In](), MarshalAs(UnmanagedType.BStr)> FileName As String)
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(18)> _
-        Overloads Sub Close(<[In]()> Optional ByVal SaveFirst As Boolean = False)
+        Overloads Sub Close(<[In]()> Optional SaveFirst As Boolean = False)
 
         <DispId(19)> _
         Overloads ReadOnly Property Properties() As <MarshalAs(UnmanagedType.Interface)> Properties
@@ -459,10 +459,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
         Overloads Property IsDirty() As Boolean
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(25)> _
-        Overloads Sub Remove(<[In](), MarshalAs(UnmanagedType.Interface)> ByVal proj As Project)
+        Overloads Sub Remove(<[In](), MarshalAs(UnmanagedType.Interface)> proj As Project)
 
         <DispId(26)> _
-        Overloads ReadOnly Property TemplatePath(ByVal ProjectType As String) As <MarshalAs(UnmanagedType.BStr)> String
+        Overloads ReadOnly Property TemplatePath(ProjectType As String) As <MarshalAs(UnmanagedType.BStr)> String
 
         <DispId(28)> _
         Overloads ReadOnly Property FullName() As <MarshalAs(UnmanagedType.BStr)> String
@@ -477,7 +477,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
         Overloads ReadOnly Property AddIns() As <MarshalAs(UnmanagedType.Interface)> AddIns
 
         <DispId(33)> _
-        Overloads ReadOnly Property Extender(ByVal ExtenderName As String) As <MarshalAs(UnmanagedType.IDispatch)> Object
+        Overloads ReadOnly Property Extender(ExtenderName As String) As <MarshalAs(UnmanagedType.IDispatch)> Object
 
         <DispId(34)> _
         Overloads ReadOnly Property ExtenderNames() As <MarshalAs(UnmanagedType.Struct)> Object
@@ -492,27 +492,27 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
         Overloads ReadOnly Property SolutionBuild() As <MarshalAs(UnmanagedType.Interface)> SolutionBuild
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(40)> _
-        Overloads Sub Create(<MarshalAs(UnmanagedType.BStr)> ByVal Destination As String, <MarshalAs(UnmanagedType.BStr)> ByVal Name As String)
+        Overloads Sub Create(<MarshalAs(UnmanagedType.BStr)> Destination As String, <MarshalAs(UnmanagedType.BStr)> Name As String)
 
         <DispId(41)> _
         Overloads ReadOnly Property Projects() As <MarshalAs(UnmanagedType.Interface)> Projects
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(42)> _
-        Overloads Function FindProjectItem(<MarshalAs(UnmanagedType.BStr)> ByVal FileName As String) As <MarshalAs(UnmanagedType.Interface)> ProjectItem
+        Overloads Function FindProjectItem(<MarshalAs(UnmanagedType.BStr)> FileName As String) As <MarshalAs(UnmanagedType.Interface)> ProjectItem
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(43)> _
-        Overloads Function ProjectItemsTemplatePath(<MarshalAs(UnmanagedType.BStr)> ByVal ProjectKind As String) As <MarshalAs(UnmanagedType.BStr)> String
+        Overloads Function ProjectItemsTemplatePath(<MarshalAs(UnmanagedType.BStr)> ProjectKind As String) As <MarshalAs(UnmanagedType.BStr)> String
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(102)> _
-        Overloads Function AddSolutionFolder(<MarshalAs(UnmanagedType.BStr)> ByVal Name As String) As <MarshalAs(UnmanagedType.Interface)> Project
+        Overloads Function AddSolutionFolder(<MarshalAs(UnmanagedType.BStr)> Name As String) As <MarshalAs(UnmanagedType.Interface)> Project
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(103)> _
-        Overloads Function GetProjectTemplate(<MarshalAs(UnmanagedType.BStr)> ByVal TemplateName As String, <MarshalAs(UnmanagedType.BStr)> ByVal Language As String) As <MarshalAs(UnmanagedType.BStr)> String
+        Overloads Function GetProjectTemplate(<MarshalAs(UnmanagedType.BStr)> TemplateName As String, <MarshalAs(UnmanagedType.BStr)> Language As String) As <MarshalAs(UnmanagedType.BStr)> String
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(104)> _
-        Overloads Function GetProjectItemTemplate(<MarshalAs(UnmanagedType.BStr)> ByVal TemplateName As String, <MarshalAs(UnmanagedType.BStr)> ByVal Language As String) As <MarshalAs(UnmanagedType.BStr)> String
+        Overloads Function GetProjectItemTemplate(<MarshalAs(UnmanagedType.BStr)> TemplateName As String, <MarshalAs(UnmanagedType.BStr)> Language As String) As <MarshalAs(UnmanagedType.BStr)> String
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime), DispId(205)> _
-        Overloads Function GetProjectItemTemplates(<MarshalAs(UnmanagedType.BStr)> ByVal Language As String, <MarshalAs(UnmanagedType.BStr)> ByVal CustomDataSignature As String) As <MarshalAs(UnmanagedType.Interface)> Templates
+        Overloads Function GetProjectItemTemplates(<MarshalAs(UnmanagedType.BStr)> Language As String, <MarshalAs(UnmanagedType.BStr)> CustomDataSignature As String) As <MarshalAs(UnmanagedType.Interface)> Templates
     End Interface
 End Namespace

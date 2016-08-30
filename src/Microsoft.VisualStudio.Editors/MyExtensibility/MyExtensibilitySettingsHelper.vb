@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Class AssemblyAutoOption
 
-            Public Sub New(ByVal autoAdd As AssemblyOption, ByVal autoRemove As AssemblyOption)
+            Public Sub New(autoAdd As AssemblyOption, autoRemove As AssemblyOption)
                 _autoAdd = autoAdd
                 _autoRemove = autoRemove
             End Sub
@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Get
                     Return _autoAdd
                 End Get
-                Set(ByVal value As AssemblyOption)
+                Set(value As AssemblyOption)
                     _autoAdd = value
                 End Set
             End Property
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Get
                     Return _autoRemove
                 End Get
-                Set(ByVal value As AssemblyOption)
+                Set(value As AssemblyOption)
                     _autoRemove = value
                 End Set
             End Property

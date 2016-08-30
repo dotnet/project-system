@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private _version As UInteger
             Private _description As String
 
-            Public Sub New(ByVal version As UInteger, ByVal description As String)
+            Public Sub New(version As UInteger, description As String)
                 If description Is Nothing Then
                     Throw New ArgumentNullException("description")
                 End If
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="vsTargetFrameworkAssemblies"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetSupportedTargetFrameworkAssemblies(ByVal vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As IEnumerable(Of TargetFramework)
+        Public Shared Function GetSupportedTargetFrameworkAssemblies(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As IEnumerable(Of TargetFramework)
             Dim versions As UInteger() = GetSupportedTargetFrameworkAssemblyVersions(vsTargetFrameworkAssemblies)
             Dim targetFrameworks As New List(Of TargetFramework)
             For Each version As UInteger In versions
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="version"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GetTargetFrameworkDescriptionFromVersion(ByVal vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies, ByVal version As UInteger) As String
+        Private Shared Function GetTargetFrameworkDescriptionFromVersion(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies, version As UInteger) As String
             Dim pszDescription As String = Nothing
             VSErrorHandler.ThrowOnFailure(vsTargetFrameworkAssemblies.GetTargetFrameworkDescription(version, pszDescription))
             Return pszDescription
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="vsTargetFrameworkAssemblies"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function GetSupportedTargetFrameworkAssemblyVersions(ByVal vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As UInteger()
+        Private Shared Function GetSupportedTargetFrameworkAssemblyVersions(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As UInteger()
             Dim targetFrameworkEnumerator As IEnumTargetFrameworks = Nothing
             VSErrorHandler.ThrowOnFailure(vsTargetFrameworkAssemblies.GetSupportedFrameworks(targetFrameworkEnumerator))
             Dim supportedFrameworks As New List(Of UInteger)

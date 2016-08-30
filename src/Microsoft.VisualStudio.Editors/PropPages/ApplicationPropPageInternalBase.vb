@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true if start-up objects other than "(None)" are supported for this output type
         ''' </summary>
-        Protected Function StartUpObjectSupported(ByVal OutputType As UInteger) As Boolean
+        Protected Function StartUpObjectSupported(OutputType As UInteger) As Boolean
             Return OutputType = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_Exe OrElse
                    OutputType = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_WinExe
         End Function
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function SetTargetFrameworkMoniker(ByVal control As Control, ByVal prop As PropertyDescriptor, ByVal value As Object) As Boolean
+        Protected Function SetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim combobox As ComboBox = CType(control, ComboBox)
             combobox.SelectedIndex = -1
             If value Is Nothing Or PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetTargetFrameworkMoniker(ByVal control As Control, ByVal prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Function GetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim currentTarget As TargetFrameworkMoniker = CType(CType(control, ComboBox).SelectedItem, TargetFrameworkMoniker)
             If currentTarget IsNot Nothing Then
                 value = currentTarget.Moniker

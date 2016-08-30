@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="projectItem"></param>
         ''' <remarks></remarks>
-        Public Sub BeforeOpeningFile(ByVal projectItem As EnvDTE.ProjectItem) Implements IWizard.BeforeOpeningFile
+        Public Sub BeforeOpeningFile(projectItem As EnvDTE.ProjectItem) Implements IWizard.BeforeOpeningFile
         End Sub
 
         ''' <summary>
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="project"></param>
         ''' <remarks></remarks>
-        Public Sub ProjectFinishedGenerating(ByVal project As EnvDTE.Project) Implements IWizard.ProjectFinishedGenerating
+        Public Sub ProjectFinishedGenerating(project As EnvDTE.Project) Implements IWizard.ProjectFinishedGenerating
         End Sub
 
         ''' <summary>
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="projectItem"></param>
         ''' <remarks></remarks>
-        Public Sub ProjectItemFinishedGenerating(ByVal projectItem As EnvDTE.ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
+        Public Sub ProjectItemFinishedGenerating(projectItem As EnvDTE.ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
 
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
             If (projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing) Then
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="runKind"></param>
         ''' <param name="customParams"></param>
         ''' <remarks></remarks>
-        Public Sub RunStarted(ByVal automationObject As Object, ByVal replacementsDictionary As System.Collections.Generic.Dictionary(Of String, String), ByVal runKind As WizardRunKind, ByVal customParams() As Object) Implements IWizard.RunStarted
+        Public Sub RunStarted(automationObject As Object, replacementsDictionary As System.Collections.Generic.Dictionary(Of String, String), runKind As WizardRunKind, customParams() As Object) Implements IWizard.RunStarted
 
             ' we can't do any work if the dictionary is nothing...
             '
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="filePath"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ShouldAddProjectItem(ByVal filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
+        Public Function ShouldAddProjectItem(filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
             Return True
         End Function
     End Class

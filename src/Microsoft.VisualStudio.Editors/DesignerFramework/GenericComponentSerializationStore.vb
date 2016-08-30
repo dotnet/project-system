@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="context">Serialization context</param>
         ''' <remarks></remarks>
         <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
-        Public Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+        Public Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
             info.AddValue(s_KEY_STATE, _serializedState)
         End Sub
 
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Info">Serialization info</param>
         ''' <param name="Context">Serialization context</param>
         ''' <remarks></remarks>
-        Private Sub New(ByVal Info As SerializationInfo, ByVal Context As StreamingContext)
+        Private Sub New(Info As SerializationInfo, Context As StreamingContext)
             _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Stream">The stream to load from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function Load(ByVal Stream As IO.Stream) As GenericComponentSerializationStore
+        Public Shared Function Load(Stream As IO.Stream) As GenericComponentSerializationStore
             Dim f As New BinaryFormatter
             Return DirectCast(f.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="stream">The stream to save to</param>
         ''' <remarks></remarks>
-        Public Overrides Sub Save(ByVal Stream As System.IO.Stream)
+        Public Overrides Sub Save(Stream As System.IO.Stream)
             Close()
 
             Dim f As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Again, the object isn't actually serialized until Close(), it's just put in
         '''   our list of things to be serialized.
         ''' </remarks>
-        Public Sub AddObject(ByVal Component As Object)
+        Public Sub AddObject(Component As Object)
             If _serializedState IsNot Nothing Then
                 Debug.Fail("State already serialization, shouldn't be adding new stuff")
                 Throw New Package.InternalException
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Again, the property isn't actually serialized until Close(), it's just put in
         '''   our list of things to be serialized.
         ''' </remarks>
-        Friend Sub AddMember(ByVal Component As Object, ByVal Member As PropertyDescriptor)
+        Friend Sub AddMember(Component As Object, Member As PropertyDescriptor)
             If _serializedState IsNot Nothing Then
                 Debug.Fail("State already serialization, shouldn't be adding new stuff")
                 Throw New Package.InternalException
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Component">The component from which we want to serialize something.</param>
         ''' <returns>The DataToSerialize object associated with this component.</returns>
         ''' <remarks></remarks>
-        Private Function GetSerializationData(ByVal Component As Object) As ObjectData
+        Private Function GetSerializationData(Component As Object) As ObjectData
             Dim Data As ObjectData
             If _hashedObjectsToSerialize.ContainsKey(Component) Then
                 Data = CType(_hashedObjectsToSerialize(Component), ObjectData)
@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <remarks></remarks>
-        Friend Sub DeserializeTo(ByVal Container As IContainer)
+        Friend Sub DeserializeTo(Container As IContainer)
             DeserializeHelper(Container, True)
         End Sub
 
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
         ''' <remarks></remarks>
-        Friend Function Deserialize(ByVal Container As IContainer) As ICollection
+        Friend Function Deserialize(Container As IContainer) As ICollection
             Return DeserializeHelper(Container, False)
         End Function
 
@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   instances of components (this is always the case for Undo/Redo).</param>
         ''' <returns>The objects which have been serialized.</returns>
         ''' <remarks></remarks>
-        Private Function DeserializeHelper(ByVal Container As IContainer, ByVal RecycleInstances As Boolean) As ICollection
+        Private Function DeserializeHelper(Container As IContainer, RecycleInstances As Boolean) As ICollection
             Dim NewObjects As New ArrayList(_serializedState.Count)
 
             'Handle each individual component or property at a time...
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal Value As Object)
+            Public Sub New(Value As Object)
                 If Value Is Nothing Then
                     Throw New ArgumentNullException("Value")
                 End If
@@ -414,7 +414,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Get
                     Return _isEntireObject
                 End Get
-                Set(ByVal Value As Boolean)
+                Set(Value As Boolean)
                     If Value AndAlso _members IsNot Nothing Then
                         _members.Clear()
                     End If
@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal Value As ObjectData)
+            Friend Sub New(Value As ObjectData)
                 If Value Is Nothing Then
                     Throw New ArgumentNullException("Value")
                 End If
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal Value As ObjectData, ByVal [Property] As PropertyDescriptor)
+            Public Sub New(Value As ObjectData, [Property] As PropertyDescriptor)
                 If Value Is Nothing Then
                     Throw New ArgumentNullException("Value")
                 End If
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End Get
             End Property
 
-            Friend Shared Function SerializeObject(ByVal [Object] As Object) As Byte()
+            Friend Shared Function SerializeObject([Object] As Object) As Byte()
                 If [Object] Is Nothing Then
                     Return New Byte() {}
                 Else

@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sp"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal sp As IServiceProvider, ByVal Hierarchy As IVsHierarchy)
+        Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
             If sp Is Nothing Then
                 Throw New ArgumentNullException("sp")
             End If
@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="mkDocument"></param>
         ''' <remarks></remarks>
-        Public Sub ManageFile(ByVal mkDocument As String)
+        Public Sub ManageFile(mkDocument As String)
             _managedFiles(mkDocument) = True
         End Sub
 
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>
         ''' It is OK to pass in the name of a file that isn't currently managed...
         ''' </remarks>
-        Public Sub StopManagingFile(ByVal mkDocument As String)
+        Public Sub StopManagingFile(mkDocument As String)
             Debug.WriteLineIf(Common.Switches.MSVBE_SCC.TraceInfo, String.Format("Stop managing {0}'s SCC status", mkDocument))
             _managedFiles.Remove(mkDocument)
         End Sub
@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Get
                 Return New List(Of String)(_managedFiles.Keys)
             End Get
-            Set(ByVal value As List(Of String))
+            Set(value As List(Of String))
                 _managedFiles.Clear()
                 For Each file As String In value
                     _managedFiles(file) = True
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="throwOnFailure">If the method should throw a CheckoutException on failure</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function QueryEditableFilesInternal(ByVal checkOnly As Boolean, ByVal throwOnFailure As Boolean) As Boolean
+        Private Function QueryEditableFilesInternal(checkOnly As Boolean, throwOnFailure As Boolean) As Boolean
             ' Do actual checkout here...
             Return QueryEditableFiles(_serviceProvider, ManagedFiles, throwOnFailure, checkOnly)
         End Function
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="checkOnly">Only check if it is OK to edit files (don't actually check out)</param>
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean, ByVal checkOnly As Boolean) As Boolean
+        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean) As Boolean
             Dim dummy As Boolean
             Return QueryEditableFiles(sp, files, throwOnFailure, checkOnly, dummy)
         End Function
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <param name="fileReloaded">Out: Set to true if one or more files were reloaded...</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean, ByVal checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional ByVal allowInMemoryEdits As Boolean = True, Optional ByVal allowFileReload As Boolean = True) As Boolean
+        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
             If sp Is Nothing Then
                 Throw New ArgumentNullException("sp")
             End If
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="throwOnFailure">Should we throw if the save fails?</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function QuerySave(ByVal sp As IServiceProvider, ByVal files As Collections.Generic.List(Of String), ByVal throwOnFailure As Boolean) As Boolean
+        Public Shared Function QuerySave(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean) As Boolean
             If sp Is Nothing Then
                 Throw New ArgumentNullException("sp")
             End If

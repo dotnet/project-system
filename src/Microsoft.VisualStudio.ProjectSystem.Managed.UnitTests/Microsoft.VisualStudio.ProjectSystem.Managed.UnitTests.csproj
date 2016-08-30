@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
+    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
     <Compile Include="Mocks\IFileSystemMoq.cs" />
@@ -51,7 +52,6 @@
     <Compile Include="Mocks\IFileSystemFactory.cs" />
     <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
     <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
-    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
     <Compile Include="Mocks\IProjectInstancePropertiesProviderFactory.cs" />
@@ -66,6 +66,8 @@
     <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
     <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />

@@ -4,7 +4,7 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Module Util
-        Public Function ProcessMnemonicString(ByVal input As String) As Nullable(Of Char)
+        Public Function ProcessMnemonicString(input As String) As Nullable(Of Char)
             Dim mnemonicChar As Nullable(Of Char) = Nothing
             Dim i As Integer = 0
 
@@ -39,15 +39,15 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             Return mnemonicChar
         End Function
 
-        Public Function NextControl(ByVal c As Control) As Control
+        Public Function NextControl(c As Control) As Control
             Return CType(c.Tag, ControlNavigationInfo).NextControl
         End Function
 
-        Public Function PreviousControl(ByVal c As Control) As Control
+        Public Function PreviousControl(c As Control) As Control
             Return CType(c.Tag, ControlNavigationInfo).PreviousControl
         End Function
 
-        Public Sub SetNavigationInfo(ByVal c As Control, ByVal nextControl As Control, ByVal previousControl As Control)
+        Public Sub SetNavigationInfo(c As Control, nextControl As Control, previousControl As Control)
             c.Tag = New ControlNavigationInfo(nextControl, previousControl)
         End Sub
     End Module

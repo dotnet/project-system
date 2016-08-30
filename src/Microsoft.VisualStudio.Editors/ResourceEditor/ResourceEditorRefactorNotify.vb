@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Private Function OnBeforeGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
+        Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
             prgAdditionalCheckoutVSITEMIDS = Nothing
             If AllowSymbolRename Then
                 Return NativeMethods.S_OK
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
         ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
         ''' <returns>error code</returns>
-        Private Function OnGlobalSymbolRenamed(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal cRQNames As UInteger, ByVal rglpszRQName() As String, ByVal lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
+        Private Function OnGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
             'VSWhidbey #452759: Always return S_OK in OnGlobalSymbolRenamed.
             Return NativeMethods.S_OK
         End Function
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Private Function OnBeforeAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <returns>error code</returns>
-        Private Function OnAddParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParams As UInteger, ByVal rgszParamIndexes() As UInteger, ByVal rgszRQTypeNames() As String, ByVal rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
+        Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Private Function OnBeforeReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
+        Private Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <returns>error code</returns>
-        Private Function OnReorderParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
+        Private Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Private Function OnBeforeRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
+        Private Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <returns>error code</returns>
-        Private Function OnRemoveParams(ByVal phier As IVsHierarchy, ByVal itemId As UInteger, ByVal lpszRQName As String, ByVal cParamIndexes As UInteger, ByVal rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
+        Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL

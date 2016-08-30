@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Create an instance of MyExtensibilitySettings. Triggering assembly settings is loaded
         ''' from the settings file in the specified folderPath.
         ''' </summary>
-        Public Sub New(ByVal folderPath As String)
+        Public Sub New(folderPath As String)
             Try ' Attempt to construct the setting file path. Ignore ArgumentException.
                 _settingsFilePath = Path.Combine(folderPath, s_ASM_SETTINGS_FILE_NAME)
             Catch ex As ArgumentException
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' This list will contains only extensions with the latest version.
         ''' </summary>
         Public Function GetExtensionTemplates( _
-                ByVal projectTypeID As String, ByVal project As Project, ByVal assemblyFullName As String) _
+                projectTypeID As String, project As Project, assemblyFullName As String) _
                 As List(Of MyExtensionTemplate)
             If project Is Nothing Then
                 Return Nothing
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Get the list of extension templates for the given project's type.
         ''' </summary>
-        Public Function GetExtensionTemplates(ByVal projectTypeID As String, ByVal project As Project) As List(Of MyExtensionTemplate)
+        Public Function GetExtensionTemplates(projectTypeID As String, project As Project) As List(Of MyExtensionTemplate)
             If project Is Nothing Then
                 Return Nothing
             End If
@@ -115,8 +115,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' CONSIDER: (HuyN) What to do with partial match (i.e id but not version).
         '''     Behavior now is to return nothing.
         ''' </remarks>
-        Public Sub GetExtensionTemplateNameAndDescription(ByVal projectTypeID As String, ByVal project As Project, _
-                ByVal id As String, ByVal version As Version, ByVal assemblyName As String, _
+        Public Sub GetExtensionTemplateNameAndDescription(projectTypeID As String, project As Project, _
+                id As String, version As Version, assemblyName As String, _
                 ByRef name As String, ByRef description As String)
             name = Nothing
             description = Nothing
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Return if the templates associated with the given assembly should be auto-added into the project
         ''' with the assembly.
         ''' </summary>
-        Public Function GetAssemblyAutoAdd(ByVal assemblyFullName As String) As AssemblyOption
+        Public Function GetAssemblyAutoAdd(assemblyFullName As String) As AssemblyOption
             Return Me.GetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName)
         End Function
 
@@ -171,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Return if the templates associated with the given assembly should be auto-removed from the project
         ''' with the assembly.
         ''' </summary>
-        Public Function GetAssemblyAutoRemove(ByVal assemblyFullName As String) As AssemblyOption
+        Public Function GetAssemblyAutoRemove(assemblyFullName As String) As AssemblyOption
             Return Me.GetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName)
         End Function
 
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Save user's choice if the templates associated with the given assembly should be auto-added into the project
         ''' with the assembly.
         ''' </summary>
-        Public Sub SetAssemblyAutoAdd(ByVal assemblyFullName As String, ByVal autoAdd As Boolean)
+        Public Sub SetAssemblyAutoAdd(assemblyFullName As String, autoAdd As Boolean)
             Me.SetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName, autoAdd)
         End Sub
 
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Save user's choice if the templates associated with the given assembly should be auto-removed from the project
         ''' with the assembly.
         ''' </summary>
-        Public Sub SetAssemblyAutoRemove(ByVal assemblyFullName As String, ByVal autoRemove As Boolean)
+        Public Sub SetAssemblyAutoRemove(assemblyFullName As String, autoRemove As Boolean)
             Me.SetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName, autoRemove)
         End Sub
 
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Get the given auto option for the given assembly.
         ''' </summary>
-        Private Function GetAssemblyAutoOption(ByVal addOrRemove As AddRemoveAction, ByVal assemblyFullName As String) As AssemblyOption
+        Private Function GetAssemblyAutoOption(addOrRemove As AddRemoveAction, assemblyFullName As String) As AssemblyOption
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Return AssemblyOption.Prompt
             End If
@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' - query VSCore for project item templates with custom data
         ''' - parse the custom data to add extension templates to mapping
         ''' </summary>
-        Private Sub InitializeProjectKindSettings(ByVal projectTypeID As String, ByVal project As Project)
+        Private Sub InitializeProjectKindSettings(projectTypeID As String, project As Project)
             If project Is Nothing Then
                 Exit Sub
             End If
@@ -362,7 +362,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Set the given auto option for the given assembly.
         ''' </summary>
-        Private Sub SetAssemblyAutoOption(ByVal addOrRemove As AddRemoveAction, ByVal assemblyFullName As String, ByVal value As Boolean)
+        Private Sub SetAssemblyAutoOption(addOrRemove As AddRemoveAction, assemblyFullName As String, value As Boolean)
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Exit Sub
             End If
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Read an assembly option attribute from the given XML element.
         ''' Return AssemblyOption.Prompt if error occurred.
         ''' </summary>
-        Private Shared Function ReadAssemblyOptionAttribute(ByVal xmlElement As XmlElement, ByVal attributeName As String) _
+        Private Shared Function ReadAssemblyOptionAttribute(xmlElement As XmlElement, attributeName As String) _
                 As AssemblyOption
             Dim result As AssemblyOption = AssemblyOption.Prompt
             Dim attributeValue As String = GetAttributeValue(xmlElement, attributeName)
@@ -424,8 +424,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Write an AssemblyOption value into the specified attribute using the specified XML text writer.
         ''' Try to use TypeConverter.ConvertToInvariantString, if fail, use the numeric value.
         ''' </summary>
-        Private Shared Sub WriteAssemblyOptionAttribute(ByVal writer As XmlTextWriter,
-                ByVal attributeName As String, ByVal value As AssemblyOption)
+        Private Shared Sub WriteAssemblyOptionAttribute(writer As XmlTextWriter,
+                attributeName As String, value As AssemblyOption)
             Debug.Assert(writer IsNot Nothing, "Null writer!")
             Debug.Assert(Not StringIsNullEmptyOrBlank(attributeName), "Null attribute name!")
             Debug.Assert(value = AssemblyOption.Yes OrElse value = AssemblyOption.No _

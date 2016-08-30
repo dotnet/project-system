@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private _lastFocus As Control
         Private _helpCallBack As IVBAddImportsDialogHelpCallback
 
-        Public Sub New(ByVal [namespace] As String, ByVal identifier As String, ByVal minimallyQualifiedName As String, ByVal callBack As IVBAddImportsDialogHelpCallback, ByVal isp As IServiceProvider)
+        Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, callBack As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
             _lastFocus = Me
             _helpCallBack = callBack
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             End Try
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
             MyBase.OnLoad(e)
             FixupForRadioButtonLimitations(m_rbImportsAnyways, m_lblImportsAnyways)
             FixupForRadioButtonLimitations(m_rbQualifyCurrentLine, m_lblQualifyCurrentLine)
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         End Sub
 
 
-        Private Sub FixupForRadioButtonLimitations(ByVal radioButtonToLayout As RadioButton, ByVal dummyLabel As Label)
+        Private Sub FixupForRadioButtonLimitations(radioButtonToLayout As RadioButton, dummyLabel As Label)
 
             radioButtonToLayout.AutoSize = False
             radioButtonToLayout.Text = dummyLabel.Text
@@ -66,16 +66,16 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         End Sub
 
 
-        Private Sub ButtonClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_cancelButton.Click, m_okButton.Click
+        Private Sub ButtonClick(sender As Object, e As EventArgs) Handles m_cancelButton.Click, m_okButton.Click
             Me.Close()
         End Sub
 
-        Private Sub ClickHelpButton(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
+        Private Sub ClickHelpButton(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
             e.Cancel = True
             OnHelpRequested(New HelpEventArgs(Point.Empty))
         End Sub
 
-        Private Sub RequestHelp(ByVal sender As Object, ByVal hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub RequestHelp(sender As Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
             If (_helpCallBack IsNot Nothing) Then
                 _helpCallBack.InvokeHelp()
             End If

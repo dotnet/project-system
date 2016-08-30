@@ -1,13 +1,13 @@
 <!--
 
   This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
-  
+
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="Microsoft.Managed.DesignTime.targets" />
-  
+
   <!-- Properties -->
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -16,18 +16,30 @@
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">Visual Basic</LanguageServiceName>
   </PropertyGroup>
 
-  <!-- Targets -->
-
-  <!-- Returns Vbc command-line arguments for the language service -->
-  <Target Name="CompileDesignTime"
-          Returns="@(_CompilerCommandLineArgs)"
-          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-          >
-
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+     <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
     </ItemGroup>
 
+    <ItemGroup>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.xaml;">
+      <Context>File</Context>
+     </PropertyPageSchema>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+     </PropertyPageSchema>
+
+     <ProjectCapability Include="VB;Managed"/>
+    </ItemGroup>
+
+    <!-- Targets -->
+    
+    <!-- Returns Vbc command-line arguments for the language service -->
+    <Target Name="CompileDesignTime"
+            Returns="@(_CompilerCommandLineArgs)"
+            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          >
+        
   </Target>
-  
+
 </Project>

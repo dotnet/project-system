@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.New(Nothing)
         End Sub
 
-        Protected Sub New(ByVal serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider)
+        Protected Sub New(serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider)
             MyBase.New()
             Me.SuspendLayout()
 
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'Form overrides dispose to clean up the component list.
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             'Release unmanaged resources
 
             If disposing Then
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Public DispId As Integer
             Public Source As PropertyChangeSource
 
-            Public Sub New(ByVal DispId As Integer, ByVal Source As PropertyChangeSource)
+            Public Sub New(DispId As Integer, Source As PropertyChangeSource)
                 Me.DispId = DispId
                 Me.Source = Source
             End Sub
@@ -329,7 +329,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _pageRequiresScaling
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _pageRequiresScaling = Value
             End Set
         End Property
@@ -343,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _manualPageScaling
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _manualPageScaling = value
             End Set
         End Property
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Return _pageEnabledState
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _pageEnabledState = value
                 SetEnabledState()
             End Set
@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="obj">Value of property being requested.</param>
         ''' <returns>True if property value returned, False if property not found.</returns>
         ''' <remarks>If multiple pages host a property, this will return the first value found.</remarks>
-        Protected Shared Function GetPropertyFromRunningPages(ByVal SourcePage As PropPageUserControlBase, ByVal dispid As Integer, ByRef obj As Object) As Boolean
+        Protected Shared Function GetPropertyFromRunningPages(SourcePage As PropPageUserControlBase, dispid As Integer, ByRef obj As Object) As Boolean
             Debug.Assert(SourcePage.CommonPropertiesObject IsNot Nothing)
             SyncLock s_runningPropertyPages
                 For Each page As PropPageUserControlBase In s_runningPropertyPages
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Protected ReadOnly Property GetServiceFromPropertyPageSite(ByVal ServiceType As Type) As Object
+        Protected ReadOnly Property GetServiceFromPropertyPageSite(ServiceType As Type) As Object
             Get
                 If _site IsNot Nothing Then
                     Dim OleSite As OLE.Interop.IPropertyPageSite = PropertyPageSite
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   or subset for special purposes.
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Function RawPropertiesObjects(ByVal Data As PropertyControlData) As Object()
+        Protected Function RawPropertiesObjects(Data As PropertyControlData) As Object()
             Return Data.RawPropertiesObjects
         End Function
 
@@ -512,7 +512,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   contain a superset or subset for special purposes.
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Function ExtendedPropertiesObjects(ByVal Data As PropertyControlData) As Object()
+        Protected Function ExtendedPropertiesObjects(Data As PropertyControlData) As Object()
             Return Data.ExtendedPropertiesObjects
         End Function
 
@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="DispId">The DISPID to ignore changes from.  If DISPID_UNKNOWN, then all property changes will be ignored.</param>
         ''' <remarks></remarks>
-        Public Sub SuspendPropertyChangeListening(ByVal DispId As Integer)
+        Public Sub SuspendPropertyChangeListening(DispId As Integer)
             _suspendPropertyChangeListeningDispIds.Add(DispId)
         End Sub
 
@@ -546,7 +546,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   SuspendPropertyChangeListening/ResumeropertyChangeListening pairs have been made
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub ResumePropertyChangeListening(ByVal DispId As Integer)
+        Public Sub ResumePropertyChangeListening(DispId As Integer)
             _suspendPropertyChangeListeningDispIds.Remove(DispId)
             CheckPlayCachedPropertyChanges()
         End Sub
@@ -606,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="obj">[out] Returns the property's value, if found.</param>
         ''' <returns>True on success and False if the property is not found.</returns>
         ''' <remarks></remarks>
-        Protected Overridable Function GetProperty(ByVal dispid As Integer, ByRef obj As Object) As Boolean
+        Protected Overridable Function GetProperty(dispid As Integer, ByRef obj As Object) As Boolean
             obj = Nothing
             For Each _controlData As PropertyControlData In ControlData
                 If _controlData.DispId = dispid Then
@@ -638,7 +638,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>
         ''' The property name and DISPIDs must both refer to the same property.
         ''' </remarks>
-        Protected Function GetCurrentProperty(ByVal dispid As Integer, ByVal PropertyName As String, ByRef obj As Object) As Boolean
+        Protected Function GetCurrentProperty(dispid As Integer, PropertyName As String, ByRef obj As Object) As Boolean
             PropertyName = Common.Utils.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
 
             'Check current property pages
@@ -825,7 +825,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Enables or disables the given control on the page.  However, if the control is associated with
         '  a property on the page, and that property is hidden or read-only, the enabled state of the control
         '  will not be changed.
-        Protected Sub EnableControl(ByVal control As Control, ByVal enabled As Boolean)
+        Protected Sub EnableControl(control As Control, enabled As Boolean)
             If control Is Nothing Then
                 Debug.Fail("control is nothing")
                 Return
@@ -989,7 +989,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="HelpDir">Not used.</param>
         ''' <remarks></remarks>
-        Private Sub IProperyPageInternal_Help(ByVal HelpDir As String) Implements IPropertyPageInternal.Help
+        Private Sub IProperyPageInternal_Help(HelpDir As String) Implements IPropertyPageInternal.Help
             AppDesDesignerFramework.DesignUtil.DisplayTopicFromF1Keyword(ServiceProvider, GetF1HelpKeyword)
         End Sub
 
@@ -998,7 +998,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="HelpTopic">The help string that identifiers the help topic.</param>
         ''' <remarks></remarks>
-        Public Overridable Sub Help(ByVal HelpTopic As String)
+        Public Overridable Sub Help(HelpTopic As String)
             AppDesDesignerFramework.DesignUtil.DisplayTopicFromF1Keyword(ServiceProvider, HelpTopic)
         End Sub
 
@@ -1067,7 +1067,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="objects"></param>
         ''' <remarks></remarks>
-        Private Sub CheckMultipleProjectsSelected(ByVal objects() As Object)
+        Private Sub CheckMultipleProjectsSelected(objects() As Object)
             If objects Is Nothing OrElse objects.Length <= 1 Then
                 'Cannot be multiple projects
             Else
@@ -1090,7 +1090,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ThisObj"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectHierarchyFromObject(ByVal ThisObj As Object) As IVsHierarchy
+        Private Function GetProjectHierarchyFromObject(ThisObj As Object) As IVsHierarchy
 
             Dim Hier As IVsHierarchy = Nothing
             Dim ItemId As UInteger
@@ -1118,7 +1118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   IMPORTANT NOTE: Depending on the property page host and project, the objects may be IVsCfg objects 
         '''   or they may be something else.
         '''</remarks>
-        Private Sub IPropertyPageInternal_SetObjects(ByVal objects() As Object) Implements IPropertyPageInternal.SetObjects
+        Private Sub IPropertyPageInternal_SetObjects(objects() As Object) Implements IPropertyPageInternal.SetObjects
             SetObjects(objects)
         End Sub
 
@@ -1130,7 +1130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Properties">The properties to print to trace output.</param>
         ''' <remarks></remarks>
         <Conditional("DEBUG")>
-        Private Sub TraceTypeDescriptorCollection(ByVal DebugMessage As String, ByVal Properties As PropertyDescriptorCollection)
+        Private Sub TraceTypeDescriptorCollection(DebugMessage As String, Properties As PropertyDescriptorCollection)
 #If DEBUG Then
             If Common.Switches.PDExtenders.TraceVerbose Then
                 Trace.WriteLine("PDExtenders: " & DebugMessage)
@@ -1149,7 +1149,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="site"></param>
         ''' <remarks></remarks>
-        Private Sub SetPageSite(ByVal site As IPropertyPageSiteInternal) Implements IPropertyPageInternal.SetPageSite
+        Private Sub SetPageSite(site As IPropertyPageSiteInternal) Implements IPropertyPageInternal.SetPageSite
             DisconnectDebuggerEvents()
             _site = site
 
@@ -1181,7 +1181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="site"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub OnSetSite(ByVal site As OLE.Interop.IPropertyPageSite)
+        Protected Overridable Sub OnSetSite(site As OLE.Interop.IPropertyPageSite)
         End Sub
 
         ''' <summary>
@@ -1189,7 +1189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="dispid"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub EditProperty(ByVal dispid As Integer) Implements IPropertyPageInternal.EditProperty
+        Protected Overridable Sub EditProperty(dispid As Integer) Implements IPropertyPageInternal.EditProperty
             Dim cntrl As Control = GetPropertyControl(dispid)
             If cntrl IsNot Nothing Then
                 'SetFocus here
@@ -1242,7 +1242,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   IMPORTANT NOTE: Depending on the property page host and project, the objects may be IVsCfg objects 
         '''   or they may be something else.
         '''</remarks>
-        Public Overridable Sub SetObjects(ByVal objects() As Object)
+        Public Overridable Sub SetObjects(objects() As Object)
             Debug.Assert(_site IsNot Nothing OrElse (objects Is Nothing OrElse objects.Length = 0), "SetObjects() called (with non-null objects), but we are not sited!")
             m_Objects = Nothing
 
@@ -1430,7 +1430,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PropertyId"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function GetPropertyControl(ByVal PropertyId As Integer) As Control
+        Protected Overridable Function GetPropertyControl(PropertyId As Integer) As Control
             For Each ControlData As PropertyControlData In Me.ControlData
                 If ControlData.DispId = PropertyId Then
                     Return ControlData.FormControl
@@ -1452,7 +1452,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   offered up by the page in the page's implementation of the ControlData property.
         ''' To determine if a property is supported by the project system, use GetControlDataFromXXX().IsMissing
         ''' </remarks>
-        Protected Overridable Function GetPropertyControlData(ByVal PropertyId As Integer) As PropertyControlData
+        Protected Overridable Function GetPropertyControlData(PropertyId As Integer) As PropertyControlData
             For Each ControlData As PropertyControlData In Me.ControlData
                 If ControlData.DispId = PropertyId Then
                     Return ControlData
@@ -1473,7 +1473,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   offered up by the page in the page's implementation of the ControlData property.
         ''' To determine if a property is supported by the project system, use GetControlDataFromXXX().IsMissing
         ''' </remarks>
-        Protected Overridable Function GetPropertyControlData(ByVal PropertyName As String) As PropertyControlData
+        Protected Overridable Function GetPropertyControlData(PropertyName As String) As PropertyControlData
             For Each pcd As PropertyControlData In Me.ControlData
                 If pcd.PropertyName.Equals(PropertyName, StringComparison.Ordinal) Then
                     Return pcd
@@ -1516,7 +1516,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="dataControl"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindControlGroup(ByVal dataControl As Control) As Integer
+        Private Function FindControlGroup(dataControl As Control) As Integer
             Dim group As Control()() = ValidationControlGroups
             If group IsNot Nothing Then
                 For i As Integer = 0 To group.Length - 1
@@ -1537,7 +1537,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="groupID"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsFocusInControlGroup(ByVal groupID As Integer) As Boolean
+        Private Function IsFocusInControlGroup(groupID As Integer) As Boolean
             Dim controlList As Control() = ValidationControlGroups(groupID)
             For Each c As Control In controlList
                 If c.ContainsFocus Then
@@ -1552,7 +1552,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="dataControl"></param>
         ''' <remarks></remarks>
-        Protected Sub SkipValidating(ByVal dataControl As Control)
+        Protected Sub SkipValidating(dataControl As Control)
             If _delayValidationQueue IsNot Nothing Then
                 For Each item As PropertyControlData In ControlData
                     If item.FormControl Is dataControl Then
@@ -1568,7 +1568,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="dataControl"></param>
         ''' <remarks></remarks>
-        Protected Sub DelayValidate(ByVal dataControl As Control)
+        Protected Sub DelayValidate(dataControl As Control)
             Dim controlGroup As Integer = FindControlGroup(dataControl)
             Debug.Assert(controlGroup >= 0, "The control doesn't belong to a group?")
             If controlGroup >= 0 Then
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="controlGroup"></param>
         ''' <param name="items"></param>
         ''' <remarks></remarks>
-        Private Sub DelayValidate(ByVal controlGroup As Integer, ByVal items As ArrayList)
+        Private Sub DelayValidate(controlGroup As Integer, items As ArrayList)
             Dim oldItems As ListDictionary = Nothing
             If _delayValidationGroup < 0 Then
 
@@ -1627,7 +1627,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="canThrow"></param>
         ''' <returns>return false if the validation failed</returns>
         ''' <remarks></remarks>
-        Protected Function ProcessDelayValidationQueue(ByVal canThrow As Boolean) As Boolean
+        Protected Function ProcessDelayValidationQueue(canThrow As Boolean) As Boolean
             Dim oldItems As ListDictionary = _delayValidationQueue
 
             If _delayValidationGroup >= 0 Then
@@ -1649,7 +1649,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="items"></param>
         ''' <returns>return false if the validation failed</returns>
         ''' <remarks>a helper function</remarks>
-        Private Function ProcessDelayValidationQueue(ByVal items As ListDictionary, ByVal canThrow As Boolean) As Boolean
+        Private Function ProcessDelayValidationQueue(items As ListDictionary, canThrow As Boolean) As Boolean
             Dim firstControl As Control = Nothing
             Dim finalMessage As String = String.Empty
             Dim finalResult As ValidationResult = ValidationResult.Succeeded
@@ -1728,7 +1728,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' the event handler to handle focus leaving
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub OnLeavingControlGroup(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnLeavingControlGroup(sender As Object, e As System.EventArgs)
             PostValidation()
         End Sub
 
@@ -1756,7 +1756,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Code to validate the page
         ''' </summary>
         ''' <remarks>This is called when changes are saved or applied to the object</remarks>
-        Protected Sub ValidatePageChanges(ByVal allowDelayValidation As Boolean)
+        Protected Sub ValidatePageChanges(allowDelayValidation As Boolean)
             Dim firstControl As Control = Nothing
             Dim finalMessage As String = String.Empty
             Dim finalResult As ValidationResult = ValidationResult.Succeeded
@@ -1830,7 +1830,7 @@ NextControl:
         ''' <param name="returnControl"></param>
         ''' <returns></returns>
         ''' <remarks>Different pages should override it to do the validation</remarks>
-        Protected Overridable Function ValidateProperty(ByVal controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
+        Protected Overridable Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             Return ValidationResult.Succeeded
         End Function
 
@@ -2266,7 +2266,7 @@ NextControl:
             Return Nothing
         End Function
 
-        Public Overridable Sub CommitTransaction(ByVal Transaction As DesignerTransaction)
+        Public Overridable Sub CommitTransaction(Transaction As DesignerTransaction)
             If Transaction IsNot Nothing Then
                 Transaction.Commit()
             End If
@@ -2282,7 +2282,7 @@ NextControl:
         ''' <param name="PropertyName"></param>
         ''' <param name="PropDesc"></param>
         ''' <remarks></remarks>
-        Public Overridable Sub OnPropertyChanging(ByVal PropertyName As String, ByVal PropDesc As PropertyDescriptor)
+        Public Overridable Sub OnPropertyChanging(PropertyName As String, PropDesc As PropertyDescriptor)
             If Me._propPageUndoSite IsNot Nothing Then
                 _propPageUndoSite.OnPropertyChanging(PropertyName, PropDesc)
             End If
@@ -2297,7 +2297,7 @@ NextControl:
         ''' </summary>
         ''' <param name="PropertyName"></param>
         ''' <remarks></remarks>
-        Public Overridable Sub OnPropertyChanged(ByVal PropertyName As String, ByVal PropDesc As PropertyDescriptor, ByVal OldValue As Object, ByVal NewValue As Object)
+        Public Overridable Sub OnPropertyChanged(PropertyName As String, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
             If Me._propPageUndoSite IsNot Nothing Then
                 _propPageUndoSite.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
             End If
@@ -2313,7 +2313,7 @@ NextControl:
         ''' This is where the page would be refreshed to reflect any changes made in the data.
         '''   Called only after all processing has been done.
         ''' </remarks>
-        Protected Overridable Sub OnApplyComplete(ByVal ApplySuccessful As Boolean)
+        Protected Overridable Sub OnApplyComplete(ApplySuccessful As Boolean)
 
         End Sub
 
@@ -2384,7 +2384,7 @@ NextControl:
         ''' <param name="PropertyName">Name of the property requested.</param>
         ''' <returns>The PropertyDescriptor for the property.</returns>
         ''' <remarks></remarks>
-        Protected Function GetPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Protected Function GetPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Return m_ObjectsPropertyDescriptorsArray(0)(PropertyName)
         End Function
 #End Region
@@ -2406,7 +2406,7 @@ NextControl:
         ''' <remarks>
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Public Function GetCommonPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Public Function GetCommonPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Return m_CommonPropertyDescriptors.Item(PropertyName)
         End Function
 
@@ -2421,7 +2421,7 @@ NextControl:
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Protected Function GetCommonPropertyValueNative(ByVal prop As PropertyDescriptor) As Object
+        Protected Function GetCommonPropertyValueNative(prop As PropertyDescriptor) As Object
             Dim commonPropObject = CommonPropertiesObject
 
             If commonPropObject IsNot Nothing Then
@@ -2442,7 +2442,7 @@ NextControl:
         ''' This must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Protected Function GetCommonPropertyValueNative(ByVal PropertyName As String) As Object
+        Protected Function GetCommonPropertyValueNative(PropertyName As String) As Object
             If PropertyName.Equals("FullPath") Then
                 Return GetProjectPath()
             End If
@@ -2461,7 +2461,7 @@ NextControl:
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Protected Function GetCommonPropertyValue(ByVal prop As PropertyDescriptor) As Object
+        Protected Function GetCommonPropertyValue(prop As PropertyDescriptor) As Object
             Return PropertyControlData.GetCommonPropertyValue(prop, Me.CommonPropertiesObject)
         End Function
 
@@ -2476,7 +2476,7 @@ NextControl:
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Protected Function GetCommonPropertyValue(ByVal PropertyName As String) As Object
+        Protected Function GetCommonPropertyValue(PropertyName As String) As Object
             Return GetCommonPropertyValue(GetCommonPropertyDescriptor(PropertyName))
         End Function
 
@@ -2489,7 +2489,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
-        Protected Sub SetCommonPropertyValue(ByVal prop As PropertyDescriptor, ByVal Value As Object)
+        Protected Sub SetCommonPropertyValue(prop As PropertyDescriptor, Value As Object)
             Dim _TypeConverter As TypeConverter = prop.Converter
 
             If (_TypeConverter IsNot Nothing) AndAlso _TypeConverter.GetStandardValuesSupported Then
@@ -2508,7 +2508,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
-        Protected Sub SetCommonPropertyValue(ByVal PropertyName As String, ByVal value As Object)
+        Protected Sub SetCommonPropertyValue(PropertyName As String, value As Object)
             SetCommonPropertyValue(GetCommonPropertyDescriptor(PropertyName), value)
         End Sub
 
@@ -2521,7 +2521,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
-        Protected Sub SetCommonPropertyValueNative(ByVal prop As PropertyDescriptor, ByVal Value As Object)
+        Protected Sub SetCommonPropertyValueNative(prop As PropertyDescriptor, Value As Object)
             SuspendPropertyChangeListening(DISPID_UNKNOWN)
             Try
                 PropertyControlData.SetCommonPropertyValueNative(prop, Value, Me.CommonPropertiesObject)
@@ -2539,7 +2539,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' Must be a common property.
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
-        Protected Sub SetCommonPropertyValueNative(ByVal PropertyName As String, ByVal Value As Object)
+        Protected Sub SetCommonPropertyValueNative(PropertyName As String, Value As Object)
             SuspendPropertyChangeListening(DISPID_UNKNOWN)
             Try
                 SetCommonPropertyValueNative(GetCommonPropertyDescriptor(PropertyName), Value)
@@ -2558,7 +2558,7 @@ NextControl:
         ''' <param name="name"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetControlValue(ByVal name As String) As Object
+        Protected Function GetControlValue(name As String) As Object
             Dim pcd As PropertyControlData = GetPropertyControlData(name)
             Return pcd.GetControlValue()
         End Function
@@ -2570,7 +2570,7 @@ NextControl:
         ''' <param name="name"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetControlValueNative(ByVal name As String) As Object
+        Protected Function GetControlValueNative(name As String) As Object
             Dim pcd As PropertyControlData = GetPropertyControlData(name)
             Return pcd.GetControlValueNative()
         End Function
@@ -2584,7 +2584,7 @@ NextControl:
         ''' <param name="Descriptor">The property descriptor for the property to get the value from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function TryGetNonCommonPropertyValue(ByVal Descriptor As PropertyDescriptor) As Object
+        Protected Function TryGetNonCommonPropertyValue(Descriptor As PropertyDescriptor) As Object
             Dim extenders As Object() = Me.m_ExtendedObjects
             Return PropertyControlData.TryGetNonCommonPropertyValueNative(Descriptor, extenders)
         End Function
@@ -2598,7 +2598,7 @@ NextControl:
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <remarks></remarks>
-        Protected Sub ApplyChanges(ByVal sender As Object)
+        Protected Sub ApplyChanges(sender As Object)
             If m_fInsideInit Then
                 Return
             End If
@@ -2634,7 +2634,7 @@ NextControl:
         '''   to be changed in the same undo/redo transaction (apply batches up all current changes into a single transaction).
         ''' </param>
         ''' <remarks></remarks>
-        Public Sub SetDirty(ByVal ReadyToApply As Boolean)
+        Public Sub SetDirty(ReadyToApply As Boolean)
             If m_fInsideInit Then
                 Return
             End If
@@ -2664,7 +2664,7 @@ NextControl:
         '''   to be changed in the same undo/redo transaction (apply batches up all current changes into a single transaction).
         ''' </param>
         ''' <remarks></remarks>
-        Public Sub SetDirty(ByVal sender As Object, ByVal ReadyToApply As Boolean)
+        Public Sub SetDirty(sender As Object, ReadyToApply As Boolean)
             If m_fInsideInit Then
                 Return
             End If
@@ -2700,7 +2700,7 @@ NextControl:
         ''' <remarks>
         ''' If the CanApplyNow property is true, then changes will be applied immediately.
         ''' </remarks>
-        Protected Sub SetDirty(ByVal sender As Object)
+        Protected Sub SetDirty(sender As Object)
             SetDirty(sender, CanApplyNow)
         End Sub
 
@@ -2715,7 +2715,7 @@ NextControl:
         ''' <remarks>
         ''' If the CanApplyNow property is true, then changes will be applied immediately.
         ''' </remarks>
-        Protected Sub SetDirty(ByVal dispid As Integer)
+        Protected Sub SetDirty(dispid As Integer)
             SetDirty(dispid, CanApplyNow)
         End Sub
 
@@ -2733,7 +2733,7 @@ NextControl:
         '''   to be changed in the same undo/redo transaction (apply batches up all current changes into a single transaction).
         ''' </param>
         ''' <remarks></remarks>
-        Protected Sub SetDirty(ByVal dispid As Integer, ByVal ReadyToApply As Boolean)
+        Protected Sub SetDirty(dispid As Integer, ReadyToApply As Boolean)
             If m_fInsideInit Then
                 Return
             End If
@@ -2762,7 +2762,7 @@ NextControl:
         ''' <param name="sender"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetDirty(ByVal sender As Object) As Boolean
+        Protected Function GetDirty(sender As Object) As Boolean
             Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
 
             For Each _controlData As PropertyControlData In ControlData
@@ -2807,7 +2807,7 @@ NextControl:
         '''   uses the information already in the PropertyControlData for the page.
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overridable Sub EnableAllControls(ByVal _enabled As Boolean)
+        Protected Overridable Sub EnableAllControls(_enabled As Boolean)
             For Each _controlData As PropertyControlData In ControlData
                 _controlData.EnableControls(_enabled)
             Next _controlData
@@ -2844,7 +2844,7 @@ NextControl:
         ''' This method must be overridden to handle all user-defined properties defined in a page.  The easiest way to implement
         '''   this is to return a new instance of the UserPropertyDescriptor class, which was created for that purpose.
         ''' </remarks>
-        Public Overridable Function GetUserDefinedPropertyDescriptor(ByVal PropertyName As String) As PropertyDescriptor
+        Public Overridable Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Return Nothing
         End Function
 
@@ -2855,7 +2855,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function ReadUserDefinedProperty(ByVal PropertyName As String, ByRef Value As Object) As Boolean
+        Public Overridable Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
             Return False
         End Function
 
@@ -2866,7 +2866,7 @@ NextControl:
         ''' <param name="Value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function WriteUserDefinedProperty(ByVal PropertyName As String, ByVal Value As Object) As Boolean
+        Public Overridable Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
             Return False
         End Function
 
@@ -2874,7 +2874,7 @@ NextControl:
             Get
                 Return _canApplyNow
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 _canApplyNow = Value
             End Set
         End Property
@@ -2889,7 +2889,7 @@ NextControl:
             Get
                 Return m_IsDirty
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 If m_fInsideInit Then
                     Return
                 End If
@@ -2919,7 +2919,7 @@ NextControl:
         ''' </summary>
         ''' <param name="ex">The exception to get the error message from</param>
         ''' <remarks></remarks>
-        Public Sub ShowErrorMessage(ByVal ex As Exception)
+        Public Sub ShowErrorMessage(ex As Exception)
             ShowErrorMessage(ex, ex.HelpLink)
         End Sub
 
@@ -2929,7 +2929,7 @@ NextControl:
         ''' <param name="ex">The exception to get the error message from</param>
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
-        Protected Sub ShowErrorMessage(ByVal ex As Exception, ByVal HelpLink As String)
+        Protected Sub ShowErrorMessage(ex As Exception, HelpLink As String)
             Dim Caption As String = SR.GetString(SR.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, "", ex, Caption, HelpLink)
         End Sub
@@ -2939,7 +2939,7 @@ NextControl:
         ''' </summary>
         ''' <param name="errorMessage">The error message to display</param>
         ''' <remarks></remarks>
-        Protected Sub ShowErrorMessage(ByVal errorMessage As String)
+        Protected Sub ShowErrorMessage(errorMessage As String)
             ShowErrorMessage(errorMessage, "")
         End Sub
 
@@ -2949,7 +2949,7 @@ NextControl:
         ''' <param name="errorMessage">The error message to display</param>
         ''' <param name="ex">The exception to include in the message.  The exception's message will be on a second line after errorMessage.</param>
         ''' <remarks></remarks>
-        Protected Sub ShowErrorMessage(ByVal errorMessage As String, ByVal ex As Exception)
+        Protected Sub ShowErrorMessage(errorMessage As String, ex As Exception)
             Dim Caption As String = SR.GetString(SR.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, ex, Caption)
         End Sub
@@ -2960,7 +2960,7 @@ NextControl:
         ''' <param name="errorMessage">The error message to display</param>
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
-        Protected Sub ShowErrorMessage(ByVal errorMessage As String, ByVal HelpLink As String)
+        Protected Sub ShowErrorMessage(errorMessage As String, HelpLink As String)
             Dim Caption As String = SR.GetString(SR.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, HelpLink)
         End Sub
@@ -3032,7 +3032,7 @@ NextControl:
         ''' </summary>
         ''' <param name="FileName">Full path to the file to add</param>
         ''' <remarks></remarks>
-        Protected Overloads Function AddFileToProject(ByVal FileName As String) As EnvDTE.ProjectItem
+        Protected Overloads Function AddFileToProject(FileName As String) As EnvDTE.ProjectItem
             Return AddFileToProject(FileName, True)
         End Function
 
@@ -3042,7 +3042,7 @@ NextControl:
         ''' <param name="FileName">Full path to the file to add</param>
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <remarks></remarks>
-        Protected Overloads Function AddFileToProject(ByVal FileName As String, ByVal CopyFile As Boolean) As EnvDTE.ProjectItem
+        Protected Overloads Function AddFileToProject(FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
             Dim ProjectItems As EnvDTE.ProjectItems = DTEProject.ProjectItems
             Return AddFileToProject(DTEProject.ProjectItems, FileName, CopyFile)
         End Function
@@ -3054,7 +3054,7 @@ NextControl:
         ''' <param name="FileName">Full path to the file to add</param>
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <remarks>Will throw an exception on failure.</remarks>
-        Protected Overloads Function AddFileToProject(ByVal ProjectItems As EnvDTE.ProjectItems, ByVal FileName As String, ByVal CopyFile As Boolean) As EnvDTE.ProjectItem
+        Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
             Debug.Assert(IO.Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
 
             'Canonicalize the file name
@@ -3084,7 +3084,7 @@ NextControl:
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <param name="BuildAction">The value to set the BuildAction property to (if it exists for this project).</param>
         ''' <remarks>Will throw an exception on failure.</remarks>
-        Protected Overloads Function AddFileToProject(ByVal ProjectItems As EnvDTE.ProjectItems, ByVal FileName As String, ByVal CopyFile As Boolean, ByVal BuildAction As VSLangProj.prjBuildAction) As EnvDTE.ProjectItem
+        Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean, BuildAction As VSLangProj.prjBuildAction) As EnvDTE.ProjectItem
             Dim NewProjectItem As EnvDTE.ProjectItem = AddFileToProject(ProjectItems, FileName, CopyFile)
             If NewProjectItem IsNot Nothing Then
                 AppDesCommon.DTEUtils.SetBuildAction(NewProjectItem, BuildAction)
@@ -3100,7 +3100,7 @@ NextControl:
         ''' <param name="ChildPage"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetPropPageHostDialog(ByVal ChildPage As PropPageUserControlBase) As PropPageHostDialog
+        Private Function GetPropPageHostDialog(ChildPage As PropPageUserControlBase) As PropPageHostDialog
             Return TryCast(ChildPage.ParentForm, PropPageHostDialog)
         End Function
 
@@ -3111,7 +3111,7 @@ NextControl:
         ''' <param name="PageType">Type of property page class to be instantiated.</param>
         ''' <returns>DialogResult returned from the host dialog.</returns>
         ''' <remarks></remarks>
-        Protected Function ShowChildPage(ByVal Title As String, ByVal PageType As System.Type) As DialogResult
+        Protected Function ShowChildPage(Title As String, PageType As System.Type) As DialogResult
             Return ShowChildPage(Title, PageType, Nothing)
         End Function
 
@@ -3123,7 +3123,7 @@ NextControl:
         ''' <param name="F1Keyword">Help keyword.  If empty or Nothing, the property page itself will be queried for the help topic.</param>
         ''' <returns>DialogResult returned from the host dialog.</returns>
         ''' <remarks></remarks>
-        Protected Function ShowChildPage(ByVal Title As String, ByVal PageType As System.Type, ByVal F1Keyword As String) As DialogResult
+        Protected Function ShowChildPage(Title As String, PageType As System.Type, F1Keyword As String) As DialogResult
             Dim Page As PropPageUserControlBase
 
             If _site Is Nothing Then
@@ -3202,7 +3202,7 @@ NextControl:
         ''' <param name="NewValue">The newly-selected directory, relative to the project directory, if True was returned.  Always returned with a backslash at the end.</param>
         ''' <returns>True if the user selected a directory, otherwise False.</returns>
         ''' <remarks></remarks>
-        Protected Function GetDirectoryViaBrowseRelativeToProject(ByVal InitialDirectory As String, ByVal DialogTitle As String, ByRef NewValue As String) As Boolean
+        Protected Function GetDirectoryViaBrowseRelativeToProject(InitialDirectory As String, DialogTitle As String, ByRef NewValue As String) As Boolean
             Return GetDirectoryViaBrowseRelative(InitialDirectory, GetProjectPath(), DialogTitle, NewValue)
         End Function
 
@@ -3215,7 +3215,7 @@ NextControl:
         ''' <param name="NewRelativePath">The newly-selected directory, relative to BasePath, if True was returned.  Always returned with a backslash at the end.</param>
         ''' <returns>True if the user selected a directory, otherwise False.</returns>
         ''' <remarks></remarks>
-        Protected Function GetDirectoryViaBrowseRelative(ByVal RelativeInitialDirectory As String, ByVal BasePath As String, ByVal DialogTitle As String, ByRef NewRelativePath As String) As Boolean
+        Protected Function GetDirectoryViaBrowseRelative(RelativeInitialDirectory As String, BasePath As String, DialogTitle As String, ByRef NewRelativePath As String) As Boolean
             RelativeInitialDirectory = Trim(RelativeInitialDirectory)
             BasePath = Trim(BasePath)
 
@@ -3245,7 +3245,7 @@ NextControl:
         ''' <param name="NewValue">The newly-selected directory, if True was returned.  Always returned with a backslash at the end.</param>
         ''' <returns>True if the user selected a directory, otherwise False.</returns>
         ''' <remarks></remarks>
-        Protected Function GetDirectoryViaBrowse(ByVal InitialDirectory As String, ByVal DialogTitle As String, ByRef NewValue As String) As Boolean
+        Protected Function GetDirectoryViaBrowse(InitialDirectory As String, DialogTitle As String, ByRef NewValue As String) As Boolean
             Dim Success As Boolean
 
             ' Browsing for directory.
@@ -3325,7 +3325,7 @@ NextControl:
         ''' <param name="Filter"></param>
         ''' <returns>True if the user selected a file, otherwise False.</returns>
         ''' <remarks></remarks>
-        Protected Function GetFileViaBrowse(ByVal InitialDirectory As String, ByRef NewValue As String, ByVal Filter As String) As Boolean
+        Protected Function GetFileViaBrowse(InitialDirectory As String, ByRef NewValue As String, Filter As String) As Boolean
             Dim fileNames As ArrayList = Common.Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, InitialDirectory, SR.GetString(SR.PPG_SelectFileTitle), Filter, 0, False)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 NewValue = CStr(fileNames(0))
@@ -3362,7 +3362,7 @@ NextControl:
         ''' <param name="DirectoryPath">File or Directory path to make relative</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetProjectRelativeDirectoryPath(ByVal DirectoryPath As String) As String
+        Protected Function GetProjectRelativeDirectoryPath(DirectoryPath As String) As String
             Return GetRelativeDirectoryPath(GetProjectPath(), DirectoryPath)
         End Function
 
@@ -3372,7 +3372,7 @@ NextControl:
         ''' <param name="FilePath">File or Directory path to make relative</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetProjectRelativeFilePath(ByVal FilePath As String) As String
+        Protected Function GetProjectRelativeFilePath(FilePath As String) As String
             Return GetRelativeFilePath(GetProjectPath(), FilePath)
         End Function
 
@@ -3386,7 +3386,7 @@ NextControl:
         ''' <param name="DirectoryPath">The full path to the directory (with or without backslash at the end)</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetRelativeDirectoryPath(ByVal BasePath As String, ByVal DirectoryPath As String) As String
+        Protected Function GetRelativeDirectoryPath(BasePath As String, DirectoryPath As String) As String
             Dim RelativePath As String = ""
 
             BasePath = Common.Utils.AppendBackslash(BasePath)
@@ -3424,7 +3424,7 @@ NextControl:
         ''' <param name="FilePath">The full path.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function GetRelativeFilePath(ByVal BasePath As String, ByVal FilePath As String) As String
+        Protected Function GetRelativeFilePath(BasePath As String, FilePath As String) As String
             Debug.Assert(VB.Right(FilePath, 1) <> Path.DirectorySeparatorChar AndAlso VB.Right(FilePath, 1) <> Path.AltDirectorySeparatorChar, "Passed in a directory instead of a file to RelativeFilePath")
 
             If Len(FilePath) > 0 Then
@@ -3530,7 +3530,7 @@ NextControl:
         '''   should be found in a child page.</param>
         ''' <returns></returns>
         ''' <remarks>See the ChildPageSite class for more information.</remarks>
-        Private Function GetNestedPropertyControlData(ByVal EncodedPropertyName As String) As PropertyControlData
+        Private Function GetNestedPropertyControlData(EncodedPropertyName As String) As PropertyControlData
             If EncodedPropertyName Is Nothing Then
                 EncodedPropertyName = ""
             End If
@@ -3559,7 +3559,7 @@ NextControl:
         ''' <param name="PropertyName">The name of the property whose current value is being queried.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function IVsProjectDesignerPage_GetPropertyValue(ByVal PropertyName As String) As Object Implements IVsProjectDesignerPage.GetProperty
+        Protected Overridable Function IVsProjectDesignerPage_GetPropertyValue(PropertyName As String) As Object Implements IVsProjectDesignerPage.GetProperty
             'Return the last saved value, not the current edit
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
@@ -3593,7 +3593,7 @@ NextControl:
         ''' During undo/redo serialization/deserialization, enums may be converted to integral
         '''   types.  This converts them back to an enum so that undo code will work properly.
         ''' </remarks>
-        Private Sub ConvertToEnum(ByVal Prop As PropertyControlData, ByRef Value As Object)
+        Private Sub ConvertToEnum(Prop As PropertyControlData, ByRef Value As Object)
             If Prop IsNot Nothing AndAlso Prop.PropDesc IsNot Nothing Then
                 If Prop.PropDesc.PropertyType.IsEnum AndAlso Value IsNot Nothing AndAlso Not Value.GetType.IsEnum Then
                     Value = Prop.PropDesc.Converter.ConvertTo(Value, Prop.PropDesc.PropertyType)
@@ -3609,7 +3609,7 @@ NextControl:
         ''' <param name="PropertyName">The name of the property whose current value should be changed.</param>
         ''' <param name="Value">The value to set into the given property.</param>
         ''' <remarks></remarks>
-        Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValue(ByVal PropertyName As String, ByVal Value As Object) Implements IVsProjectDesignerPage.SetProperty
+        Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValue(PropertyName As String, Value As Object) Implements IVsProjectDesignerPage.SetProperty
             Debug.Assert(Not PropertyControlData.IsSpecialValue(Value))
             Dim _ControlData As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If _ControlData Is Nothing Then
@@ -3637,7 +3637,7 @@ NextControl:
         ''' <param name="PropertyName">The name of the property.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function IVsProjectDesignerPage_SupportsMultipleValueUndo(ByVal PropertyName As String) As Boolean Implements IVsProjectDesignerPage.SupportsMultipleValueUndo
+        Protected Overridable Function IVsProjectDesignerPage_SupportsMultipleValueUndo(PropertyName As String) As Boolean Implements IVsProjectDesignerPage.SupportsMultipleValueUndo
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
                 Debug.Fail("Couldn't find the requested property in IVsProjectDesignerPage_SupportsMultipleValueUndo")
@@ -3657,7 +3657,7 @@ NextControl:
         ''' <param name="Data">The PropertyControlData to check for support.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SupportsMultipleValueUndo(ByVal Data As PropertyControlData) As Boolean
+        Private Function SupportsMultipleValueUndo(Data As PropertyControlData) As Boolean
             If Data Is Nothing Then
                 Throw New ArgumentNullException
             End If
@@ -3678,7 +3678,7 @@ NextControl:
         ''' <param name="Values">[out] The current values of the property for each configuration (corresponding to Objects)</param>
         ''' <returns>True if the property has multiple values to be read.</returns>
         ''' <remarks></remarks>
-        Protected Overridable Function IVsProjectDesignerPage_GetPropertyMultipleValues(ByVal PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
+        Protected Overridable Function IVsProjectDesignerPage_GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
                 Throw AppDesCommon.CreateArgumentException("PropertyName")
@@ -3712,7 +3712,7 @@ NextControl:
         ''' <param name="objects">The set of objects (configurations) which should have their value changed for the given property.</param>
         ''' <param name="values">The set of new values which correspond to the set of objects passed in.</param>
         ''' <remarks></remarks>
-        Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValueMultipleValues(ByVal PropertyName As String, ByVal Objects() As Object, ByVal Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
+        Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValueMultipleValues(PropertyName As String, Objects() As Object, Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
             If Objects Is Nothing OrElse Objects.Length = 0 OrElse Values Is Nothing OrElse Values.Length <> Objects.Length Then
                 Debug.Fail("unexpected")
                 Throw AppDesCommon.CreateArgumentException("Objects, Values")
@@ -3746,7 +3746,7 @@ NextControl:
         ''' </summary>
         ''' <param name="site"></param>
         ''' <remarks></remarks>
-        Private Sub IVsProjectDesignerPage_SetSite(ByVal Site As IVsProjectDesignerPageSite) Implements IVsProjectDesignerPage.SetSite
+        Private Sub IVsProjectDesignerPage_SetSite(Site As IVsProjectDesignerPageSite) Implements IVsProjectDesignerPage.SetSite
             _propPageUndoSite = Site
         End Sub
 
@@ -3768,7 +3768,7 @@ NextControl:
         ''' </summary>
         ''' <param name="activated">True if the page has been activated, or False if it has been deactivated.</param>
         ''' <remarks></remarks>
-        Private Sub OnActivated(ByVal activated As Boolean) Implements IVsProjectDesignerPage.OnActivated
+        Private Sub OnActivated(activated As Boolean) Implements IVsProjectDesignerPage.OnActivated
             If _activated <> activated Then
                 _activated = activated
                 OnPageActivated(activated)
@@ -3780,13 +3780,13 @@ NextControl:
         ''' </summary>
         ''' <param name="activated"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub OnPageActivated(ByVal activated As Boolean)
+        Protected Overridable Sub OnPageActivated(activated As Boolean)
         End Sub
 
 
 #End Region
 
-        Private Function OnModeChange(ByVal dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
+        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
             Me.UpdateDebuggerStatus(dbgmodeNew)
         End Function
 
@@ -3827,7 +3827,7 @@ NextControl:
         ''' <param name="lParam"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnBroadcastMessage(ByVal msg As UInteger, ByVal wParam As System.IntPtr, ByVal lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
+        Private Function OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
             If msg = AppDesInterop.win.WM_SETTINGCHANGE Then
                 If Me.IsHandleCreated Then
                     m_ScalingCompleted = False
@@ -3840,7 +3840,7 @@ NextControl:
         ''' Set font and scale page accordingly
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overridable Sub SetDialogFont(ByVal ScaleDialog As Boolean)
+        Protected Overridable Sub SetDialogFont(ScaleDialog As Boolean)
             If ManualPageScaling Then
                 Exit Sub
             End If
@@ -3922,7 +3922,7 @@ NextControl:
         '''   Calculate Font Size to scale the page
         '''  NOTE: We copied from WinForm
         ''' </summary>
-        Private Shared Function GetFontScaleSize(ByVal font As Font) As SizeF
+        Private Shared Function GetFontScaleSize(font As Font) As SizeF
 
             Dim dx As Single = 9.0
             Dim dy As Single = font.Height
@@ -3947,7 +3947,7 @@ NextControl:
         '''   NOTE: We override GetPreferredSize, because the one from WinForm doesn't do the job correctly.
         '''      We should consider to remove it if WinForm team fixes the issue
         ''' </summary>
-        Public Overrides Function GetPreferredSize(ByVal startSize As Size) As Size
+        Public Overrides Function GetPreferredSize(startSize As Size) As Size
             Dim preferredSize As Size = MyBase.GetPreferredSize(startSize)
             If Controls.Count() = 1 AndAlso Controls(0).Dock = DockStyle.Fill Then
                 startSize.Width = Math.Max(startSize.Width - Padding.Horizontal, 0)
@@ -3963,7 +3963,7 @@ NextControl:
         ''' <summary>
         '''     Scales a given size with the provided values.
         ''' </summary>
-        Private Function ScaleSize(ByVal startSize As Size, ByVal x As Single, ByVal y As Single) As Size
+        Private Function ScaleSize(startSize As Size, x As Single, y As Single) As Size
             If Not GetStyle(ControlStyles.FixedWidth) Then
                 startSize.Width = CInt(Math.Round(startSize.Width * x))
             End If
@@ -4012,7 +4012,7 @@ NextControl:
         ''' The method performs no processing on keys that include the ALT or
         '''     CONTROL modifiers.
         ''' </devdoc>
-        Protected Overrides Function ProcessDialogKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
             If (keyData And (Keys.Alt Or Keys.Control)) = Keys.None Then
                 Dim keyCode As Keys = keyData And Keys.KeyCode
 
@@ -4104,7 +4104,7 @@ NextControl:
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function DisableWhenDebugMode(ByVal mode As DBGMODE) As Boolean
+        Protected Overridable Function DisableWhenDebugMode(mode As DBGMODE) As Boolean
             Return (mode <> DBGMODE.DBGMODE_Design)
         End Function
 
@@ -4183,7 +4183,7 @@ NextControl:
         ''' </summary>
         ''' <param name="mode"></param>
         ''' <remarks></remarks>
-        Private Sub UpdateDebuggerStatus(ByVal mode As DBGMODE)
+        Private Sub UpdateDebuggerStatus(mode As DBGMODE)
             _currentDebugMode = mode
             If DisableOnDebug AndAlso DisableWhenDebugMode(mode) Then
                 _pageEnabledPerDebugMode = False
@@ -4199,7 +4199,7 @@ NextControl:
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
         ''' <remarks></remarks>
-        Private Sub BuildBegin(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
+        Private Sub BuildBegin(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
             Debug.Assert(DisableOnBuild, "Why did we get a BuildBegin event when we shouldn't be listening?")
             _pageEnabledPerBuildMode = False
             SetEnabledState()
@@ -4211,7 +4211,7 @@ NextControl:
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
         ''' <remarks></remarks>
-        Private Sub BuildDone(ByVal scope As EnvDTE.vsBuildScope, ByVal action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
+        Private Sub BuildDone(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
             Debug.Assert(DisableOnBuild, "Why did we get a BuildDone event when we shouldn't be listening?")
             _pageEnabledPerBuildMode = True
             SetEnabledState()
@@ -4308,7 +4308,7 @@ NextControl:
         ''' <param name="EventSource">The object to try listening to property changes on.</param>
         ''' <param name="DebugSourceName">A debug name for the source</param>
         ''' <remarks></remarks>
-        Private Sub AttemptConnectPropertyNotifyObject(ByVal EventSource As Object, ByVal DebugSourceName As String)
+        Private Sub AttemptConnectPropertyNotifyObject(EventSource As Object, DebugSourceName As String)
             Dim Listener As PropertyListener = PropertyListener.TryCreate(Me, EventSource, DebugSourceName, _projectHierarchy, TypeOf EventSource Is IVsCfgBrowseObject)
             If Listener IsNot Nothing Then
                 _propertyListeners.Add(Listener)
@@ -4343,7 +4343,7 @@ NextControl:
         '''   attempt to use an error code (such as E_NOTIMPL) to determine whether to not send the notification 
         '''   in the future. Such semantics are not part of this interface.
         ''' </remarks>
-        Public Sub OnExternalPropertyChanged(ByVal DISPID As Integer, ByVal DebugSourceName As String)
+        Public Sub OnExternalPropertyChanged(DISPID As Integer, DebugSourceName As String)
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "[" & Me.GetType.Name & "] External property changed: DISPID=" & DISPID & ", Source=" & DebugSourceName)
             If m_fInsideInit Then
                 Exit Sub
@@ -4397,7 +4397,7 @@ NextControl:
         ''' The default implementation OnExternalPropertyChanged(PropertyControlData, Source) if it finds a PropertyControlData
         '''   with the given DISPID.
         ''' </remarks>
-        Protected Overridable Sub OnExternalPropertyChanged(ByVal DISPID As Integer, ByVal Source As PropertyChangeSource)
+        Protected Overridable Sub OnExternalPropertyChanged(DISPID As Integer, Source As PropertyChangeSource)
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "OnExternalPropertyChanged(DISPID=" & DISPID & ", Source=" & Source.ToString() & ")")
             'Go through all the properties on the page to see if any match the DISPID that changed.
             For Each Data As PropertyControlData In ControlData
@@ -4424,7 +4424,7 @@ NextControl:
         ''' <remarks>
         ''' The default implementation calls RefreshProperty if the Source is not Direct.
         ''' </remarks>
-        Protected Overridable Sub OnExternalPropertyChanged(ByVal Data As PropertyControlData, ByVal Source As PropertyChangeSource)
+        Protected Overridable Sub OnExternalPropertyChanged(Data As PropertyControlData, Source As PropertyChangeSource)
             If Source <> PropertyChangeSource.Direct Then
                 Data.RefreshValue()
             End If
@@ -4479,7 +4479,7 @@ NextControl:
         '''   the property is unavailable and thus cannot be validated. This method's only purpose is to allow the sink to enforce 
         '''   a read-only state on a property.
         ''' </remarks>
-        Public Sub OnExternalPropertyRequestEdit(ByVal DISPID As Integer, ByVal DebugSourceName As String)
+        Public Sub OnExternalPropertyRequestEdit(DISPID As Integer, DebugSourceName As String)
             'Nothing to do
         End Sub
 
@@ -4492,7 +4492,7 @@ NextControl:
         ''' </summary>
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLayout(ByVal levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
             AppDesCommon.Switches.TracePDPerfBegin(levent, "PropPageUserControlBase.OnLayout()")
             MyBase.OnLayout(levent)
             AppDesCommon.Switches.TracePDPerfEnd("PropPageUserControlBase.OnLayout()")
