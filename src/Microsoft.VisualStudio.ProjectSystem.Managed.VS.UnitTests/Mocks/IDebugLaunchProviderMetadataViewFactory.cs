@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Debug;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
@@ -7,8 +9,7 @@ namespace Microsoft.VisualStudio.Mocks
     {
         public static IDebugLaunchProviderMetadataView CreateInstance()
         {
-            var iDebugLaunchProviderMetadataView = new Mock<IDebugLaunchProviderMetadataView>();
-            return iDebugLaunchProviderMetadataView.Object;
+            return Mock.Of<IDebugLaunchProviderMetadataView>();
         }
     }
 }

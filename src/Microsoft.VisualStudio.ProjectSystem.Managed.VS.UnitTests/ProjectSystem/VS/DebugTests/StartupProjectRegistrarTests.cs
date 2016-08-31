@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Xunit;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Tasks = System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
+using Microsoft.VisualStudio.Shell;
 using Moq;
+using Xunit;
+using Tasks = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -34,12 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new StartupProjectRegistrar.WrapperMethod(new TestWrapperMethod());
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
             await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
 
             mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Once);
+            mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Never);
         }
 
         [Fact]
@@ -61,12 +61,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new StartupProjectRegistrar.WrapperMethod(new TestWrapperMethod());
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
             await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Once);
+            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
         }
 
         [Fact]
@@ -89,12 +90,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new StartupProjectRegistrar.WrapperMethod(new TestWrapperMethod());
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
             await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Once);
+            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
         }
 
         [Fact]
@@ -116,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new StartupProjectRegistrar.WrapperMethod(new TestWrapperMethod());
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
             await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
@@ -161,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new StartupProjectRegistrar.WrapperMethod(new TestWrapperMethod());
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
             await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
@@ -189,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private StartupProjectRegistrar.DebuggerLaunchProviders CreateDebuggerLaunchProviderInstance()
         {
-            return new StartupProjectRegistrar.DebuggerLaunchProviders(IConfiguredProjectFactory.Create());
+            return new StartupProjectRegistrar.DebuggerLaunchProviders(ConfiguredProjectFactory.Create());
         }
 
         private Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView> GetLazyDebugLaunchProvider(bool debugs)

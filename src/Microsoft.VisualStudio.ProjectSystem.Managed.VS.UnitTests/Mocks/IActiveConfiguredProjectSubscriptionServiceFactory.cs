@@ -12,12 +12,12 @@ namespace Microsoft.VisualStudio.Mocks
     {
         public static IActiveConfiguredProjectSubscriptionService CreateInstance()
         {
-            var iActiveConfiguredProjectSubscriptionService = new Mock<IActiveConfiguredProjectSubscriptionService>();
+            var mock = new Mock<IActiveConfiguredProjectSubscriptionService>();
 
-            iActiveConfiguredProjectSubscriptionService.SetupGet(s => s.ProjectRuleSource)
-                                                       .Returns(() => IProjectValueDataSourceFactory.CreateInstance<IProjectSubscriptionUpdate>());
+            mock.SetupGet(s => s.ProjectRuleSource)
+                .Returns(() => IProjectValueDataSourceFactory.CreateInstance<IProjectSubscriptionUpdate>());
 
-            return iActiveConfiguredProjectSubscriptionService.Object;
+            return mock.Object;
         }
     }
 }

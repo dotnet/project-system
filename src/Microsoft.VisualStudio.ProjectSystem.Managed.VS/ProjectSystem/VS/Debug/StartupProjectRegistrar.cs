@@ -1,17 +1,20 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.ComponentModel.Composition;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks.Dataflow;
 using Tasks = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
+    /// <summary>
+    /// <see cref="StartupProjectRegistrar"/> is responsible for adding or removing a project from the Startup list
+    /// depending on whether the active configuration of the a project is debuggable or not.
+    /// </summary>
     internal class StartupProjectRegistrar :
         IDisposable
     {
@@ -25,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
 
-        internal WrapperMethod WrapperMethodCaller { get; set; }
+        internal DataFlowExtensionMethodCaller WrapperMethodCaller { get; set; }
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
@@ -47,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
 
-            WrapperMethodCaller = new WrapperMethod(new StaticWrapper());
+            WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
         [ProjectAutoLoad]
@@ -82,6 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
 
+            /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
+               There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
+               For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
+               */
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
                 await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
@@ -111,6 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
+                // DebugLaunchOptions.StopAtEntryPoint seems like a valid option to use. It works.
+                // Not sure if there is a better option for this scenario.
                 if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.StopAtEntryPoint).ConfigureAwait(true))
                 {
                     return true;
@@ -143,6 +152,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
         #endregion
 
+        // Creating a class which provides the LaunchProviders is a workaround because importing an OrderPrecendenceImportCollection
+        // with 2 Type arguments does not work.
         [Export]
         internal class DebuggerLaunchProviders
         {
@@ -157,49 +168,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 get;
             }
-        }
-
-        internal class WrapperMethod
-        {
-            private IStaticWrapper _wrapper;
-
-            public WrapperMethod(IStaticWrapper wrapper)
-            {
-                _wrapper = wrapper;
-            }
-
-            public IDisposable LinkTo(
-                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
-                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
-                IEnumerable<string> ruleNames,
-                bool suppressVersionOnlyUpdates)
-            {
-                return _wrapper.LinkTo(sourceBlock, target, ruleNames, suppressVersionOnlyUpdates);
-            }
-        }
-
-        internal class StaticWrapper : IStaticWrapper
-        {
-            public IDisposable LinkTo(
-                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
-                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
-                IEnumerable<string> ruleNames,
-                bool suppressVersionOnlyUpdates)
-            {
-                return sourceBlock.LinkTo(
-                    target: target,
-                    ruleNames: ruleNames,
-                    suppressVersionOnlyUpdates: suppressVersionOnlyUpdates);
-            }
-        }
-
-        public interface IStaticWrapper
-        {
-            IDisposable LinkTo(
-                IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,
-                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
-                IEnumerable<string> ruleNames,
-                bool suppressVersionOnlyUpdates);
         }
     }
 }

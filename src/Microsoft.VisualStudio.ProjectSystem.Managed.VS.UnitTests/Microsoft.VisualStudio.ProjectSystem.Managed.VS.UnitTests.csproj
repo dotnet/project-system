@@ -68,7 +68,7 @@
     <Compile Include="Mocks\IProjectChangeDiffFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDescriptionFactory.cs" />
     <Compile Include="Mocks\IProjectValueDataSourceFactory.cs" />
-    <Compile Include="Mocks\IReceivableSourceBlockFactory.cs" />
+    <Compile Include="Mocks\DataFlowExtensionMethodWrapperMock.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
     <Compile Include="Mocks\IServiceProviderMoq.cs" />
     <Compile Include="Mocks\IVsSolutionFactory.cs" />

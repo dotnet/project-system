@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
-    <Compile Include="Mocks\IConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />

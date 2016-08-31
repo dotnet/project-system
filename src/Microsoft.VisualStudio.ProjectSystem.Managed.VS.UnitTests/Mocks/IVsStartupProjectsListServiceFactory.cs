@@ -1,10 +1,8 @@
-﻿using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell.Interop;
+using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
@@ -12,12 +10,15 @@ namespace Microsoft.VisualStudio.Mocks
     {
         public static Mock<IVsStartupProjectsListService> CreateMockInstance(Guid projectGuid)
         {
-            var iVsStartupProjectsListService = new Mock<IVsStartupProjectsListService>();
+            var mock = new Mock<IVsStartupProjectsListService>();
 
-            iVsStartupProjectsListService.Setup(s => s.AddProject(ref projectGuid));
-            iVsStartupProjectsListService.Setup(s => s.RemoveProject(ref projectGuid));
+            // Some random guid from It.IsAny<Guid> cannot be used because the parameter is ref parameter.
+            // This is a known restriction in Mock. Hence the object which is called here must be the same 
+            // Guid object that is used in the test as well
+            mock.Setup(s => s.AddProject(ref projectGuid));
+            mock.Setup(s => s.RemoveProject(ref projectGuid));
 
-            return iVsStartupProjectsListService;
+            return mock;
         }
     }
 }
