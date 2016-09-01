@@ -17,7 +17,11 @@
   </Rule.DataSource>
 
   <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
-  <DynamicEnumProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker" EnumProvider="TargetFrameworkMoniker" />
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="AssemblyName" DisplayName="Assembly Name" />
   <StringProperty Name="Name" Visible="False" />
   <StringProperty Name="RootNamespace" DisplayName="Root namespace" />

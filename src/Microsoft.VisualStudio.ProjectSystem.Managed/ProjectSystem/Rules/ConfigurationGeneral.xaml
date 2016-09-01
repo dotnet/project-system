@@ -20,10 +20,26 @@
             <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
-    <DynamicEnumProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker" EnumProvider="TargetFrameworkMoniker" />
-    <StringProperty Name="TargetFrameworkIdentifier" Visible="False" />
-    <StringProperty Name="TargetFrameworkVersion" Visible="False" />
-    <StringProperty Name="TargetFrameworkProfile" Visible="False" />
+    <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>    
+    <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />

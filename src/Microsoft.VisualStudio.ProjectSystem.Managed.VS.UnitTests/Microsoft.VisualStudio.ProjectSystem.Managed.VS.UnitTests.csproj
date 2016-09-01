@@ -98,7 +98,6 @@
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
