@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     escapedArgs = escapedArgs.Replace(">","^>");
                     escapedArgs = escapedArgs.Replace("&","^&");
                 }
-                finalArguments = "/c \"\"{debugExe}\" {escapedArgs} & pause\"";
+                finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
             else

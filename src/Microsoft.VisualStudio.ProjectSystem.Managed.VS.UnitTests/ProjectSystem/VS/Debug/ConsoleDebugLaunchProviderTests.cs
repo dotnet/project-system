@@ -27,6 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
 
         ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {
+            _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
+            _mockFS.CreateDirectory(@"c:\test\Project");
+            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+
+            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
@@ -70,14 +75,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsTests()
+        public void ConsoleDebugLaunchProvider_GetExeAndArguments()
         {
             var debugger = GetDebugTargetsProvider();
 
             string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string argsIn = "/foo /bar";
-            string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             debugger.GetExeAndArguments(false, exeIn, argsIn, out finalExePath, out finalArguments);
@@ -85,30 +89,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.True(finalArguments.Equals(argsIn));
 
             debugger.GetExeAndArguments(true, exeIn, argsIn, out finalExePath, out finalArguments);
-            Assert.True(finalExePath.Equals(cmdExePath));
-            Assert.True(finalArguments.Equals("/c \"\"c:\\foo\\bar.exe\" /foo /bar & pause\""));
-
-            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
-            Assert.True(finalExePath.Equals(cmdExePath));
-            Assert.True(finalArguments.Equals("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\""));
-
-            debugger.GetExeAndArguments(false, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
-            Assert.True(finalExePath.Equals(exeIn));
-            Assert.True(finalArguments.Equals(argsInWithEscapes));
-
-            // null args
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
-            Assert.True(finalExePath.Equals(cmdExePath));
-            Assert.True(finalArguments.Equals("/c \"\"c:\\foo\\bar.exe\"  & pause\""));
-
-            // empty string args
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
-            Assert.True(finalExePath.Equals(cmdExePath));
-            Assert.True(finalArguments.Equals("/c \"\"c:\\foo\\bar.exe\"  & pause\""));
+            Assert.Equal(cmdExePath, finalExePath);
+            Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar & pause\"", finalArguments);
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncTests()
+        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithEscapedArgs()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            string finalExePath, finalArguments;
+            string exeIn = @"c:\foo\bar.exe";
+            string argsInWithEscapes = "/foo /bar ^ < > &";
+            string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+
+            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
+            Assert.Equal(cmdExePath, finalExePath);
+            Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
+
+            debugger.GetExeAndArguments(false, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
+            Assert.Equal(exeIn, finalExePath);
+            Assert.Equal(argsInWithEscapes, finalArguments);
+        }
+
+        [Fact]
+        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithNullArgs()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            string finalExePath, finalArguments;
+            string exeIn = @"c:\foo\bar.exe";
+            string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+
+            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            Assert.Equal(cmdExePath, finalExePath);
+            Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
+
+        }
+
+        [Fact]
+        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithEmptyArgs()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            string finalExePath, finalArguments;
+            string exeIn = @"c:\foo\bar.exe";
+            string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+
+            // empty string args
+            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            Assert.Equal(cmdExePath, finalExePath);
+            Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
+        }
+
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -123,11 +158,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("\"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
+        }
 
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncCtrlF5()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
 
             // Now control-F5, add env
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
-            targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
+            var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Equal(1, targets.Count);
             Assert.True(targets[0].Executable.EndsWith(@"\cmd.exe", StringComparison.OrdinalIgnoreCase));
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
@@ -135,21 +177,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.True(targets[0].Environment.ContainsKey("var1"));
             Assert.Equal("/c \"\"c:\\program files\\dotnet\\dotnet.exe\" \"c:\\test\\project\\bin\\project.dll\" --someArgs & pause\"", targets[0].Arguments);
-
-            // Validate that when the DLO_Profiling is set we don't run the cmd.exe
-            targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
-            Assert.True(targets.Count == 1);
-            Assert.Equal("c:\\program files\\dotnet\\dotnet.exe", targets[0].Executable);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncTests()
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncProfile()
         {
             var debugger = GetDebugTargetsProvider();
 
-            _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
-            _mockFS.CreateDirectory(@"c:\test\Project");
+            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+
+            // Validate that when the DLO_Profiling is set we don't run the cmd.exe
+            var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
+            Assert.True(targets.Count == 1);
+            Assert.Equal("c:\\program files\\dotnet\\dotnet.exe", targets[0].Executable);
+            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
+        }
+
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncF5()
+        {
+            var debugger = GetDebugTargetsProvider();
 
             LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
@@ -159,38 +206,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("--someArgs", targets[0].Arguments);
+        }
 
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncCtrlF5()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
 
             // Now control-F5, add env vars
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
-            targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
+            var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Equal(1, targets.Count);
             Assert.True(targets[0].Executable.EndsWith(@"\cmd.exe", StringComparison.OrdinalIgnoreCase));
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("/c \"\"" + activeProfile.ExecutablePath + "\" --someArgs & pause\"", targets[0].Arguments);
+        }
+
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir()
+        {
+            var debugger = GetDebugTargetsProvider();
 
             // Exe relative, no working dir
             _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
-            activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
-            targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Equal(1, targets.Count);
             Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
             Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
+        }
 
+        [Fact]
+        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
+        {
+            var debugger = GetDebugTargetsProvider();
+            
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=@"c:\WorkingDir"};
-            targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=@"c:\WorkingDir"};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Equal(1, targets.Count);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
             Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_ValidateSettingsTests()
+        public void ConsoleDebugLaunchProvider_ValidateSettingsNoExe()
         {
             string executable = null;
             string workingDir= null;
@@ -206,6 +272,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 Assert.True(ex.Message.Equals(string.Format(VSResources.NoDebugExecutableSpecified, profileName)));
             }
 
+        }
+
+        [Fact]
+        public void ConsoleDebugLaunchProvider_ValidateSettingsExeNotFound()
+        {
+            string executable = null;
+            string workingDir= null;
+            var debugger = GetDebugTargetsProvider();
+            var profileName="run";
             try
             {   
                 executable = @"c:\foo\bar.exe";
@@ -219,6 +294,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(true);
             }
+
+        }
+
+        [Fact]
+        public void ConsoleDebugLaunchProvider_ValidateSettingsWorkingDir()
+        {
+            string executable = null;
+            string workingDir= null;
+            var debugger = GetDebugTargetsProvider();
+            var profileName="run";
 
             // No path elements should be ok. Expect it to be on the path
             executable = @"bar.exe";

@@ -84,7 +84,6 @@
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacerTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
-    <Compile Include="ProjectSystem\Debug\ManagedDebuggerImageTypeServiceTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\Properties\ApplicationManifestValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
