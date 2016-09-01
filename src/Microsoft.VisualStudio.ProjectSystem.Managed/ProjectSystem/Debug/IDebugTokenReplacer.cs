@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Given an ILaunchProfile, it will enumerate the items and do replacement on the 
+    /// Given an ILaunchProfile, it will enumerate the items and do replacement on the each string
+    /// entry.
     /// </summary>
     public interface IDebugTokenReplacer
     {

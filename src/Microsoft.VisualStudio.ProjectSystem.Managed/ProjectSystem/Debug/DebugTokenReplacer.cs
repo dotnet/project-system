@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     // For each token we try to get a replacement value.
                     foreach(Match match in matches)
                     {
-                        // Resovlve with msbuild. If will return the empty string if not found
+                        // Resovlve with msbuild. It will return the empty string if not found
                         updatedString = updatedString.Replace(match.Value, project.ExpandString(match.Value));
                     }
                 }

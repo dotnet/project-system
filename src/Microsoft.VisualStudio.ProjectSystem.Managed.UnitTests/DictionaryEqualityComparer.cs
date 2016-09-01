@@ -68,6 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 return true;
             }
+            
+            if (dictionary2 == null)
+            {
+                return false;
+            }
 
             var concreteDictionary1 = dictionary1 as ImmutableDictionary<TKey, TValue>;
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
@@ -80,16 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue> dictionary1, IReadOnlyDictionary<TKey, TValue> dictionary2, IEqualityComparer<TValue> valueComparer)
         {
             Requires.NotNull(valueComparer, "valueComparer");
-
-            if (dictionary1 == dictionary2)
-            {
-                return true;
-            }
-
-            if ((dictionary1 == null) ^ (dictionary2 == null)) // XOR
-            {
-                return false;
-            }
 
             if (dictionary1.Count != dictionary2.Count)
             {

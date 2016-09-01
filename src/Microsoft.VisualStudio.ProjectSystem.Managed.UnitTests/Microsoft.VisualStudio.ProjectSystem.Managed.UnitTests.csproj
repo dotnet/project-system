@@ -46,7 +46,7 @@
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
-    <Compile Include="Mocks\IFileSystemMoq.cs" />
+    <Compile Include="Mocks\IFileSystemMock.cs" />
     <Compile Include="Mocks\ISourceCodeControlIntegrationFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />

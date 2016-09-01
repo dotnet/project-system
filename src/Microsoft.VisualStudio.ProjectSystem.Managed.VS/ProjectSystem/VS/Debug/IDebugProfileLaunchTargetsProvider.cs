@@ -14,14 +14,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     public interface IDebugProfileLaunchTargetsProvider
     {
+        /// <summary>
+        /// Return true if this provider supports this profile type.
+        /// </summary>
         bool SupportsProfile(ILaunchProfile profile);
 
+        /// <summary>
+        /// Called in response to an F5/Ctrl+F5 operation to get the debug launch settings to pass to the
+        /// debugger for the active profile
+        /// </summary>
         Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 
-        // Called just prior to launch to allow the provider to do additional work.
+        /// <summary>
+        /// Called just prior to launch to allow the provider to do additional work.
+        /// </summary>
         Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 
-        // Called right after launch to allow the provider to do additional work.
+        /// <summary>
+        /// Called right after launch to allow the provider to do additional work.
+        /// </summary>
         Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
     }
 }

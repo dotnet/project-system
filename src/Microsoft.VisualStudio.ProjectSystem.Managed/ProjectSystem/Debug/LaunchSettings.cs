@@ -11,9 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
 
         /// <summary>
-        /// Represents the current set of launch settings. Creation from an existing set of profiles. Note that it takes ownership of the profiles, it
-        /// does not copy them, unless makeCopy is true. Note that iisSettings can be null if there are no
-        /// settings
+        /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
         public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
         {

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
 
         Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        IFileSystemMoq _mockFS = new IFileSystemMoq();
+        IFileSystemMock _mockFS = new IFileSystemMock();
         Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
         ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)

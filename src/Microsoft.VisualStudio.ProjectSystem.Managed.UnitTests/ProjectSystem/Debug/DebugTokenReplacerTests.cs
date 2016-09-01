@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
                 return str;
             });
-
         }
 
         [Fact]
@@ -72,36 +71,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("Property3", resolvedProfile.EnvironmentVariables["var2"]);
             Assert.Equal("envVariable1", resolvedProfile.OtherSettings["setting1"]);
             Assert.Equal(true, resolvedProfile.OtherSettings["setting2"]);
-
         }
         
-        [Fact]
-        public async Task DebugTokenReplacer_ReplaceTokensInStringTests()
+        [Theory]
+        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 envVariable1",  true)]
+        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 %env1%",        false)]
+        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %env1%",                "this is msbuild:  envVariable1",           true)]
+        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %Unknown%",             "this is msbuild:  %Unknown%",              true)]
+        [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
+        [InlineData(null, null, true)]
+        [InlineData(" ", " ", true)]
+        public async Task DebugTokenReplacer_ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
             var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object);
 
             // Test msbuild vars
-            string result = await replacer.ReplaceTokensInStringAsync("this is msbuild: $(msbuildProperty5) %env1%", true);
-            Assert.Equal("this is msbuild: Property5 envVariable1", result);
-
-            result = await replacer.ReplaceTokensInStringAsync("this is msbuild: $(msbuildProperty5) %env1%", false);
-            Assert.Equal("this is msbuild: Property5 %env1%", result);
-
-            result = await replacer.ReplaceTokensInStringAsync("this is msbuild: $(UnknownMsbuildProperty) %env1%", true);
-            Assert.Equal("this is msbuild:  envVariable1", result);
-
-            result = await replacer.ReplaceTokensInStringAsync("this is msbuild: $(UnknownMsbuildProperty) %Unknown%", true);
-            Assert.Equal("this is msbuild:  %Unknown%", result);
-
-            result = await replacer.ReplaceTokensInStringAsync("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)", true);
-            Assert.Equal("this is msbuild: Property6 Property2 Property3", result);
-
-            result = await replacer.ReplaceTokensInStringAsync(null, true);
-            Assert.True(result == null);
-            result = await replacer.ReplaceTokensInStringAsync(" ", true);
-            Assert.True(result == " ");
+            string result = await replacer.ReplaceTokensInStringAsync(input, expandEnvVars);
+            Assert.Equal(expected, result);
         }
     }
 

@@ -203,9 +203,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to convert an ILaunchProfile back to its serializable form. It deos some
-        /// fixup. Like setting empty values to null, and for IIS Express profiles sets the 
-        /// command name to the IIS Epress one so we recognize oa such on deserialize.
+        /// Helper to convert an ILaunchProfile back to its serializable form. It does some
+        /// fixup. Like setting empty values to null.
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {

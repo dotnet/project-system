@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             ProjectSubscriptionService = projectSubscriptionService;
         }
 
+        // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
         //protected IProjectErrorManager ProjectErrorManager { get; }
 
         private Lazy<ISourceCodeControlIntegration> SourceControlIntegration { get; }
@@ -59,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // Used to track our errors so we can flush them later
         public  const string ErrorOwnerString = "LaunchSettingProvider";
-        public  const string IISExpressProfileName = "IIS Express";
         
         public const string LaunchSettingsFilename = @"launchSettings.json";
         public const string DefaultSettingsFileFolder = "Properties";
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Handles changes to the ProjectDebugger properties. Gets the active profile and generates a lsunch settings update if it
+        /// Handles changes to the ProjectDebugger properties. Gets the active profile and generates a launch settings update if it
         /// has changed. The first evaluation generally kicks off the first snapshot
         /// </summary>
         protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate)
@@ -255,7 +255,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if(activeProfile == null)
                 {
                     var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    activeProfile = await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) as string;
+                    var activeProfileVal = await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) as IEnumValue;
+                    if (activeProfileVal != null)
+                    {
+                        activeProfile = activeProfileVal.Name;
+                    }
                 }
 
                 var launchSettingData = GetLaunchSettings();
@@ -340,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 // Still clear errors even if no file on disk. This handles the case where there was a file with errors on
                 // disk and the user deletes the file.
-                //ProjectErrorManager.ClearErrorsForOwner(ErrorOwnerString);
+                ClearErrors();
                 settings = new LaunchSettingsData();
             }
 
@@ -434,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 if(!string.IsNullOrWhiteSpace(kvp.Key))
                 {
-                    // The name is if the proflie is set to the value key
+                    // The name is if the profile is set to the value key
                     kvp.Value.Name = kvp.Key;
                     validProfiles.Add(kvp.Value);
                 }

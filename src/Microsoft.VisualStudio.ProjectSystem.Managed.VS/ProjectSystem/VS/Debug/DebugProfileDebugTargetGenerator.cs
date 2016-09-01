@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
 
         /// <summary>
-        /// This providers access to the class which creates the list of browser values..
+        /// This provides access to the class which creates the list of debugger values..
         /// </summary>
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<Microsoft.Build.Framework.XamlTypes.NameValuePair> options)
         {

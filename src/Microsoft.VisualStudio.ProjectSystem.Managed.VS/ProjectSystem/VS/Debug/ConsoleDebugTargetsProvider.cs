@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just prior to launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just after the launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just after the launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
@@ -83,10 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// This is called on F5\Ctrl-F5 to return the list of debug targets.What we return depends on the type
-        /// of project.  The dth port contains the port of the design time host. The cmdArgs will only be 
-        /// specified if a command (from project.json) was selected as the target. Note that debugging
-        /// url can be null
+        /// This is called on F5/Ctrl-F5 to return the list of debug targets.What we return depends on the type
+        /// of project.  
         /// </summary>
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
@@ -102,9 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // We want to launch the process via the command shell when not debugging, except when this debug session is being launched for profiling.
             bool useCmdShell = (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
-            var conosoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, projectFolder, useCmdShell).ConfigureAwait(true);
+            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, projectFolder, useCmdShell).ConfigureAwait(true);
 
-            launchTargets.Add(conosoleTarget);
+            launchTargets.Add(consoleTarget);
 
             return launchTargets.ToArray();
         }
@@ -144,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     escapedArgs = escapedArgs.Replace(">","^>");
                     escapedArgs = escapedArgs.Replace("&","^&");
                 }
-                finalArguments = string.Format("/c \"\"{0}\" {1} & pause\"", debugExe, escapedArgs);
+                finalArguments = "/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
             else
@@ -228,10 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             GetExeAndArguments(useCmdShell, executable, arguments, out finalExecutable, out finalArguments);
 
 
-            // Do env variables if any
-            // We always want to set our defaults first and then set the profile ones. This permits a 
-            // profile to override ours
-
+            // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
             {
                 foreach(var kvp in resolvedProfile.EnvironmentVariables)
@@ -244,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync().ConfigureAwait(false); //.GetDebugEngineForFramework(runningFramework);
+            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync().ConfigureAwait(false);
             settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
             if(settings.Environment.Count > 0)
             {
@@ -258,6 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             // Assumes dotnet.exe is on the the path. This will be replaced by accessing a property from the project file
+            // TODO: tracked by issue https://github.com/dotnet/roslyn-project-system/issues/423
             string executable, arguments;
             var targetPath = await properties.GetEvaluatedPropertyValueAsync("TargetPath").ConfigureAwait(false);
             if (targetPath.EndsWith(".exe"))
@@ -283,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
 
-            return ProjectDebuggerProvider.GetDebugEngineForFramework(framework);
+            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
         }
 
         /// <summary>

@@ -15,6 +15,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
     <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
@@ -68,10 +69,6 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)WindowsLocalDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 

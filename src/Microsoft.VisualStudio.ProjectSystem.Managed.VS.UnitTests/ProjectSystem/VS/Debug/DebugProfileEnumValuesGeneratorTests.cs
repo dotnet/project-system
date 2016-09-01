@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     public class DebugProfileEnumValuesGenerator_Tests
     {
         List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
-            {new LaunchProfile() {Name=LaunchSettingsProvider.IISExpressProfileName, LaunchBrowser=true}},
+            {new LaunchProfile() {Name="Profile1", LaunchBrowser=true}},
             {new LaunchProfile() { Name = "MyCommand"} },
             {new LaunchProfile() { Name = "Foo"} },
             {new LaunchProfile() {Name="Bar"} }
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DebugProfileEnumValuesGenerator generator =  new DebugProfileEnumValuesGenerator(moqProfileProvider.Object); 
             ICollection<IEnumValue> results = await generator.GetListedValuesAsync();
             Assert.True(results.Count == 4);
-            Assert.True(results.ElementAt(0).Name == LaunchSettingsProvider.IISExpressProfileName &&  results.ElementAt(0).DisplayName == LaunchSettingsProvider.IISExpressProfileName );
+            Assert.True(results.ElementAt(0).Name == "Profile1" &&  results.ElementAt(0).DisplayName == "Profile1" );
             Assert.True(results.ElementAt(1).Name == "MyCommand" &&  results.ElementAt(1).DisplayName == "MyCommand" );
             Assert.True(results.ElementAt(2).Name == "Foo" &&  results.ElementAt(2).DisplayName == "Foo" );
             Assert.True(results.ElementAt(3).Name == "Bar" &&  results.ElementAt(3).DisplayName == "Bar" );
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DebugProfileEnumValuesGenerator generator =  new DebugProfileEnumValuesGenerator(moqProfileProvider.Object); 
 
             Assert.False(generator.AllowCustomValues);
-            IEnumValue result = await generator.TryCreateEnumValueAsync(LaunchSettingsProvider.IISExpressProfileName);
-            Assert.True(result.Name == LaunchSettingsProvider.IISExpressProfileName &&  result.DisplayName == LaunchSettingsProvider.IISExpressProfileName );
+            IEnumValue result = await generator.TryCreateEnumValueAsync("Profile1");
+            Assert.True(result.Name == "Profile1" &&  result.DisplayName == "Profile1" );
             result = await generator.TryCreateEnumValueAsync("MyCommand");
             Assert.True(result.Name == "MyCommand" &&  result.DisplayName == "MyCommand" );
             

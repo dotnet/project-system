@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// Maintaining the integrity of file system is the responsibility of caller. (Like creating
     /// files and folders in a proper way)
     /// </summary>
-    internal class IFileSystemMoq : IFileSystem
+    internal class IFileSystemMock : IFileSystem
     {
         class FileData
         {
