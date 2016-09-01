@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
     /// Provides QueryDebugTargetsAsync() support for running the project output or any random executable. It is not an exported
-    /// CPS debugger but hooks into the launch profiles extensility point. The order of this provider is 
+    /// CPS debugger but hooks into the launch profiles extensibility point. The order of this provider is 
     /// near the bottom to ensure other providers get chance to handle it first
     /// </summary>
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private ProjectProperties Properties { get; }
 
         /// <summary>
-        /// This provider handles running the Project and empty empty commandName (this generally just runs the executable)
+        /// This provider handles running the Project and empty commandName (this generally just runs the executable)
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             string projectFolder = Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath);
 
-            List<DebugLaunchSettings> launchTargets = new List<DebugLaunchSettings>();
+            List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
 
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -102,9 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool useCmdShell = (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
             var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, projectFolder, useCmdShell).ConfigureAwait(true);
 
-            launchTargets.Add(consoleTarget);
+            launchSettings.Add(consoleTarget);
 
-            return launchTargets.ToArray();
+            return launchSettings.ToArray();
         }
 
         /// <summary>
@@ -245,6 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
             }
+
             return settings;
         }
 
@@ -268,6 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {
                     executable = "dotnet.exe";
                 }
+
                 arguments = targetPath.QuoteString();
             }
 
@@ -311,8 +313,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {
                 }
             }
+
             return null;
         }
-
     }
 }
