@@ -4,6 +4,7 @@ package name=Microsoft.VisualStudio.Editors
         version=15.0.0.0
         vs.package.type=vsix
         vs.package.vsixId=F6B5EACA-7FA1-4591-8D40-A38234763621
+        vs.package.installSize=2363392
 
 vs.localizedResources
   vs.localizedResource language=en-us
