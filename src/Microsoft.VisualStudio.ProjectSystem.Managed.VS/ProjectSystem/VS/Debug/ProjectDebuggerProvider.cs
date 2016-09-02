@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Now find the DebugTargets provider for this profile
-            var launchProvider = GetLaunchTargetsProviderForProfile(activeProfile);
+            var launchProvider = GetLaunchTargetsProvider(activeProfile);
             if(launchProvider == null)
             {
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Returns the provider which knows how to launch the profile type.
         /// </summary>
-        public IDebugProfileLaunchTargetsProvider GetLaunchTargetsProviderForProfile(ILaunchProfile profile)
+        public IDebugProfileLaunchTargetsProvider GetLaunchTargetsProvider(ILaunchProfile profile)
         {
             // We search through the imports in order to find the one which supports the profile
             foreach(var provider in ProfileLaunchTargetsProviders)
@@ -151,11 +151,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
-            var targetProfile = GetLaunchTargetsProviderForProfile(activeProfile);
+            var targetProfile = GetLaunchTargetsProvider(activeProfile);
             if(targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(true);
-            }                                                                        
+            } 
+                                                                                   
             await DoLaunchAsync(targets.ToArray()).ConfigureAwait(true);
 
             if(targetProfile != null)

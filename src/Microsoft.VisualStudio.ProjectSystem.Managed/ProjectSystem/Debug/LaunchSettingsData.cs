@@ -12,7 +12,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public  Dictionary<string, object> OtherSettings { get; set; }
         
         public List<LaunchProfileData> Profiles { get; set; }
-
     }
-
 }

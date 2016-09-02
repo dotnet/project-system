@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected IFileSystem FileManager { get; set; }
 
         // Used to track our errors so we can flush them later
-        public  const string ErrorOwnerString = "LaunchSettingProvider";
+        public  const string ErrorOwnerString = nameof(LaunchSettingsProvider);
         
         public const string LaunchSettingsFilename = @"launchSettings.json";
         public const string DefaultSettingsFileFolder = "Properties";

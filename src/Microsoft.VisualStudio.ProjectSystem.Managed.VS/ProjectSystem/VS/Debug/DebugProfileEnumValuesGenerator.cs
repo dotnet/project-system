@@ -35,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     return Task.FromResult(GetEnumeratorEnumValues(curSnapshot));
                 }
+
                 ICollection<IEnumValue> emptyCollection = new List<IEnumValue>();
                 return Task.FromResult(emptyCollection);
             });

@@ -72,10 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void ProjectDebuggerProvider_GetLaunchTargetsProviderForProfileTests()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
-            Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProviderForProfile(new LaunchProfile() {Name = "test", CommandName = "IISExpress"}));
-            Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProviderForProfile(new LaunchProfile() {Name = "test", CommandName = "Docker"}));
-            Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProviderForProfile(new LaunchProfile() {Name = "test", CommandName = "Project"}));
-            Assert.Equal(null, debugger.GetLaunchTargetsProviderForProfile(new LaunchProfile() {Name = "test",CommandName = "IIS"}));
+            Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "IISExpress"}));
+            Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "Docker"}));
+            Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "Project"}));
+            Assert.Equal(null, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test",CommandName = "IIS"}));
         }
 
         [Fact]

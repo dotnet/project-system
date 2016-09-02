@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
+
             GlobalSettings = globalSettings == null? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
 
             _activeProfileName = activeProfile;
@@ -32,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
+            
             GlobalSettings = settingsData.OtherSettings == null? ImmutableDictionary<string, object>.Empty : settingsData.OtherSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
         }
@@ -67,6 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         _activeProfile =  Profiles.Count > 0 ? Profiles[0] : null;
                     }
                 }
+
                 return _activeProfile;
             }
          }

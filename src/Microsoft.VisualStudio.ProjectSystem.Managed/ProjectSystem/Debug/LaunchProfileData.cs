@@ -142,6 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     profileData.OtherSettings = customSettings;
                 }
+
                 profiles.Add(profile.Key, profileData);
             }
 
