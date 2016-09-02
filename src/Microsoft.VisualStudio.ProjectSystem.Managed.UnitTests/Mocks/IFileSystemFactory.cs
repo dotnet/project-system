@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.Mocks
         {
             var mock = new Mock<IFileSystem>();
 
-            mock.Setup(f => f.Exists(It.IsAny<string>())).Returns(existsFunc);
+            mock.Setup(f => f.FileExists(It.IsAny<string>())).Returns(existsFunc);
 
             if (createFunc != null)
             {

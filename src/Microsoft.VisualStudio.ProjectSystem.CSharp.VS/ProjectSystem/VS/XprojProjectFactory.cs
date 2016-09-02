@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     0,
                     ref emptyGuid,
                     null,
-                    Resources.DotNetCoreProjectsNotSupported,
+                    VSResources.DotNetCoreProjectsNotSupported,
                     null,
                     0,
                     OLEMSGBUTTON.OLEMSGBUTTON_OK,

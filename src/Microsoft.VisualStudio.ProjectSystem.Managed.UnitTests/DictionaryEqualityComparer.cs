@@ -1,0 +1,113 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+namespace Microsoft.VisualStudio.ProjectSystem
+{
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
+
+    /// <summary>
+    /// Provides simple dictionary equality checks.
+    /// </summary>
+    internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
+    {
+        /// <summary>
+        /// Backing field for the <see cref="Instance"/> static property.
+        /// </summary>
+        private static DictionaryEqualityComparer<TKey, TValue> defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
+
+        /// <summary>
+        /// Initializes a new instance of the DictionaryEqualityComparer class.
+        /// </summary>
+        private DictionaryEqualityComparer()
+        {
+        }
+
+        /// <summary>
+        /// Gets a dictionary equality comparer instance appropriate for dictionaries that use the default key comparer for the <typeparamref name="TKey"/> type.
+        /// </summary>
+        internal static IEqualityComparer<IImmutableDictionary<TKey, TValue>> Instance
+        {
+            get { return defaultInstance; }
+        }
+
+        /// <summary>
+        /// Checks two dictionaries for equality.
+        /// </summary>
+        public bool Equals(IImmutableDictionary<TKey, TValue> x, IImmutableDictionary<TKey, TValue> y)
+        {
+            return AreEquivalent(x, y);
+        }
+
+        /// <summary>
+        /// Calculates a hash code for a dictionary.
+        /// </summary>
+        public int GetHashCode(IImmutableDictionary<TKey, TValue> obj)
+        {
+            int hashCode = 0;
+
+            var concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
+            IEqualityComparer<TKey> keyComparer = concreteDictionary1 != null ? concreteDictionary1.KeyComparer : EqualityComparer<TKey>.Default;
+            IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
+            if (obj != null)
+            {
+                foreach (var pair in obj)
+                {
+                    hashCode += keyComparer.GetHashCode(pair.Key) + valueComparer.GetHashCode(pair.Value);
+                }
+            }
+
+            return hashCode;
+        }
+        /// <summary>
+        /// Tests two dictionaries to see if their contents are identical.
+        /// </summary>
+        private static bool AreEquivalent(IImmutableDictionary<TKey, TValue> dictionary1, IImmutableDictionary<TKey, TValue> dictionary2)
+        {
+            Requires.NotNull(dictionary1, "dictionary1");
+            if (dictionary1 == dictionary2)
+            {
+                return true;
+            }
+            
+            if (dictionary2 == null)
+            {
+                return false;
+            }
+
+            var concreteDictionary1 = dictionary1 as ImmutableDictionary<TKey, TValue>;
+            IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
+            return AreEquivalent((IReadOnlyDictionary<TKey, TValue>)dictionary1, (IReadOnlyDictionary<TKey, TValue>)dictionary2, valueComparer);
+        }
+
+        /// <summary>
+        /// Tests two dictionaries to see if their contents are identical.
+        /// </summary>
+        private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue> dictionary1, IReadOnlyDictionary<TKey, TValue> dictionary2, IEqualityComparer<TValue> valueComparer)
+        {
+            Requires.NotNull(valueComparer, "valueComparer");
+
+            if (dictionary1.Count != dictionary2.Count)
+            {
+                return false;
+            }
+
+            if (dictionary1.Count == 0)
+            {
+                // both dictionaries are empty, so bail out early to avoid
+                // allocating an IEnumerator.
+                return true;
+            }
+
+            foreach (KeyValuePair<TKey, TValue> pair in dictionary1)
+            {
+                TValue value;
+                if (!dictionary2.TryGetValue(pair.Key, out value) || !valueComparer.Equals(value, pair.Value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+}

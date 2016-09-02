@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal class DependenciesGraphSchema
     {
         public static readonly GraphSchema Schema = new GraphSchema("Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesSchema");
-        public static readonly GraphCategory CategoryDependency = Schema.Categories.AddNewCategory(Resources.GraphNodeCategoryDependency);
+        public static readonly GraphCategory CategoryDependency = Schema.Categories.AddNewCategory(VSResources.GraphNodeCategoryDependency);
 
         private static readonly string ProviderPropertyId = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProviderProperyId";
         public static readonly GraphProperty ProviderProperty;

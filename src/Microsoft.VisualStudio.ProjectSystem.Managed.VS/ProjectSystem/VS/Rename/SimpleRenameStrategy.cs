@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             if (!renamedSolutionApplied)
             {
-                string failureMessage = string.Format(CultureInfo.CurrentCulture, Resources.RenameSymbolFailed, oldFileName);
+                string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldFileName);
                 await _threadingService.SwitchToUIThread();
                 _userNotificationServices.NotifyFailure(failureMessage);
             }

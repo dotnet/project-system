@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
             Assumes.Present(addItemDialog);
             HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref guid, _projectVsServices.VsProject, (uint)uiFlags,
-                DirName, Resources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
+                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
             // handler isn't called after we run.

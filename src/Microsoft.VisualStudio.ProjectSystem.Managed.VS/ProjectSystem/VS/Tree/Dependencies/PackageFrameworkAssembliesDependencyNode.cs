@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              bool resolved = true)
             : base(id, flags, 0, properties, resolved)
         {
-            Caption = Resources.FrameworkAssembliesNodeName;
+            Caption = VSResources.FrameworkAssembliesNodeName;
             Icon = KnownMonikers.Library;
             ExpandedIcon = Icon;
             Priority = NuGetDependenciesSubTreeProvider.FrameworkAssemblyNodePriority;

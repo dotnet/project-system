@@ -13,7 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IUnconfiguredProjectCommonServices Create(UnconfiguredProject project = null, IPhysicalProjectTree projectTree = null, IProjectThreadingService threadingService = null, ConfiguredProject configuredProject = null, ProjectProperties projectProperties = null)
+        public static IUnconfiguredProjectCommonServices Create(UnconfiguredProject project = null, IPhysicalProjectTree projectTree = null, IProjectThreadingService threadingService = null, 
+                                                                ConfiguredProject configuredProject = null, ProjectProperties projectProperties = null,
+                                                                IProjectLockService projectLockService = null)
         {
             var mock = new Mock<IUnconfiguredProjectCommonServices>();
 
@@ -36,6 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (projectProperties != null)
                 mock.Setup(s => s.ActiveConfiguredProjectProperties)
                     .Returns(projectProperties);
+
+            if (projectLockService != null)
+                mock.Setup(s => s.ProjectLockService)
+                    .Returns(projectLockService);
 
             return mock.Object;
         }
