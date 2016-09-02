@@ -117,7 +117,7 @@ Root (flags: {ProjectRoot})
         {
 
             var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "Project", PropertyName = "ProjectGuid", Value = Guid.NewGuid().ToString() }
+                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
@@ -141,7 +141,7 @@ Root (flags: {ProjectRoot})
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
             var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "Project", PropertyName = "ProjectGuid", Value = Guid.NewGuid().ToString() }
+                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
@@ -179,7 +179,7 @@ Root (flags: {ProjectRoot})
             }, g, folder, string.Empty, 0);
 
             var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "Project", PropertyName = "ProjectGuid", Value = g.ToString() }
+                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg, properties: () => projectProperties);
@@ -202,7 +202,7 @@ Root (flags: {ProjectRoot})
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
             var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "Project", PropertyName = "ProjectGuid", Value = Guid.NewGuid().ToString() }
+                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:

@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
-                    Caption = Resources.DependenciesNodeName,
+                    Caption = VSResources.DependenciesNodeName,
                     Icon = KnownMonikers.Reference.ToProjectSystemType(),
                     ExpandedIcon = KnownMonikers.Reference.ToProjectSystemType(),
                     Flags = DependenciesRootNodeFlags

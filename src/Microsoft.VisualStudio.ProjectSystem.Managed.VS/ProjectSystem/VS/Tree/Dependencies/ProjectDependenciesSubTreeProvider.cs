@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         protected override IDependencyNode CreateRootNode()
         {
             return new SubTreeRootDependencyNode(ProviderType, 
-                                                 Resources.ProjectsNodeName,
+                                                 VSResources.ProjectsNodeName,
                                                  ProjectSubTreeRootNodeFlags,
                                                  KnownMonikers.ApplicationGroup);
         }

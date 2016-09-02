@@ -7,12 +7,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectPropertiesProviderFactory
     {
-        public static IProjectPropertiesProvider Create(IProjectProperties props)
+        public static IProjectPropertiesProvider Create(IProjectProperties props = null, IProjectProperties commonProps = null)
         {
             var mock = new Mock<IProjectPropertiesProvider>();
 
-            mock.Setup(t => t.GetProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(props);
+            if (props != null)
+            {
+                mock.Setup(t => t.GetProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                                .Returns(props);
+            }
+
+            if (commonProps != null)
+            {
+                mock.Setup(t => t.GetCommonProperties()).Returns(commonProps);
+            }
 
             return mock.Object;
         }

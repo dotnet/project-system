@@ -11,6 +11,10 @@
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed.VS</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <ImportVSSDKTargets>true</ImportVSSDKTargets>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
@@ -30,6 +34,13 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\ManagedProjectSystemPackage.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\DebugProfileDebugTargetGenerator.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGenerator.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\IDebugProfileLaunchTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProvider.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Extensibility\ProjectExportProvider.cs" />
@@ -46,8 +57,6 @@
     <Compile Include="ProjectSystem\VS\IRoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\IUserNotificationServices.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandArgumentsValueProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\LocalDebuggerCommandValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkMonikerValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
@@ -115,10 +124,10 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
-    <Compile Include="Resources.Designer.cs">
+    <Compile Include="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>VSResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
@@ -138,10 +147,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
+    <EmbeddedResource Include="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +167,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="Menus.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

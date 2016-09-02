@@ -542,7 +542,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             ProjectErrorUtilities.VerifyThrowProjectException(
-                itemType != null || allowNull, Resources.NoItemTypeForRule, ruleName);
+                itemType != null || allowNull, VSResources.NoItemTypeForRule, ruleName);
 
             return itemType;
         }
@@ -578,7 +578,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             ProjectErrorUtilities.VerifyThrowProjectException(ruleName != null || allowNull,
-                                                              Resources.NoItemTypeForRule,
+                                                              VSResources.NoItemTypeForRule,
                                                               itemType);
 
             return ruleName;

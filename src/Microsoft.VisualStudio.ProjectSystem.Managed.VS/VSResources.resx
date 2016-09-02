@@ -208,4 +208,36 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
   <data name="AnalyzersNodeName" xml:space="preserve">
     <value>Analyzers</value>
   </data>
+  <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
+    <value>There aren't any active launch profiles configured for this project.</value>
+  </data>
+  <data name="DontKnowHowToRunProfile" xml:space="preserve">
+    <value>The project doesn't know how to run the profile {0}.</value>
+  </data>
+  <data name="ErrorInProfilesFile" xml:space="preserve">
+    <value>An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</value>
+  </data>
+  <data name="ErrorInProfilesFile2" xml:space="preserve">
+    <value>An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</value>
+  </data>
+  <data name="ProjectNotRunnableDirectly" xml:space="preserve">
+    <value>A project with an Output Type of Class Library cannot be started directly.
+
+In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</value>
+  </data>
+  <data name="NoUrlSpecified" xml:space="preserve">
+    <value>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</value>
+  </data>
+  <data name="InvalidAbsoluteUrlSpecified" xml:space="preserve">
+    <value>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</value>
+  </data>
+  <data name="NoDebugExecutableSpecified" xml:space="preserve">
+    <value>The debug profile '{0}' is missing the path to the executable to debug.</value>
+  </data>
+  <data name="DebugExecutableNotFound" xml:space="preserve">
+    <value>The debug executable '{0}' specified in the '{1}' debug profile does not exist.</value>
+  </data>
+  <data name="WorkingDirecotryInvalid" xml:space="preserve">
+    <value>The working directory '{0}' specified in the '{1}' debug profile does not exist.</value>
+  </data>
 </root>
