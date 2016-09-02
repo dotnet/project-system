@@ -208,4 +208,7 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
   <data name="AnalyzersNodeName" xml:space="preserve">
     <value>Analyzers</value>
   </data>
+  <data name="DotNetCoreProjectsNotSupported" xml:space="preserve">
+    <value>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</value>
+  </data>
 </root>

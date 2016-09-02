@@ -157,6 +157,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update..
+        /// </summary>
+        internal static string DotNetCoreProjectsNotSupported {
+            get {
+                return ResourceManager.GetString("DotNetCoreProjectsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An unexpected error occurred attempting to watch project file &apos;{0}&apos;.
         /// </summary>
         internal static string FailedToWatchProject {

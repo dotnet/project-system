@@ -129,4 +129,7 @@
   <data name="4" xml:space="preserve">
     <value>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</value>
   </data>
+  <data name="5" xml:space="preserve">
+    <value>XProj Files (*.xproj);*.xproj</value>
+  </data>
 </root>
