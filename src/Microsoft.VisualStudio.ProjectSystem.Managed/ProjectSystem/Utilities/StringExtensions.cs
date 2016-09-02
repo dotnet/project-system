@@ -5,7 +5,7 @@
     /// <summary>
     /// Extensions to the string class.
     ///</summary>
-    public static class StringExtensions
+    internal static class StringExtensions
     {
 
         /// <summary>

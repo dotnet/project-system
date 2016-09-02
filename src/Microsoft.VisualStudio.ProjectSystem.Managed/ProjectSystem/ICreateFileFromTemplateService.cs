@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     /// This service creates a file from a given file template.
     /// </summary>
-    public interface ICreateFileFromTemplateService
+    internal interface ICreateFileFromTemplateService
     {
         /// <summary>
         /// Create a file with the given template file and add it to the parent node.

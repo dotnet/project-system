@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class ComDependencyNode : DependencyNode
+    internal class ComDependencyNode : DependencyNode
     {
         public ComDependencyNode(DependencyNodeId id,
                                  ProjectTreeFlags flags,

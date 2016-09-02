@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class AssemblyDependencyNode : DependencyNode
+    internal class AssemblyDependencyNode : DependencyNode
     {
         public AssemblyDependencyNode(DependencyNodeId id,
                                       ProjectTreeFlags flags,

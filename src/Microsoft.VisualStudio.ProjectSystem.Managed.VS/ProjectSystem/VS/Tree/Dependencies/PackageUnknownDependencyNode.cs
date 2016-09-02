@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class PackageUnknownDependencyNode : DependencyNode
+    internal class PackageUnknownDependencyNode : DependencyNode
     {
         public PackageUnknownDependencyNode(
                                      DependencyNodeId id,

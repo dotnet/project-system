@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class SharedProjectDependencyNode : DependencyNode
+    internal class SharedProjectDependencyNode : DependencyNode
     {
         public SharedProjectDependencyNode(DependencyNodeId id,
                                            ProjectTreeFlags flags,
