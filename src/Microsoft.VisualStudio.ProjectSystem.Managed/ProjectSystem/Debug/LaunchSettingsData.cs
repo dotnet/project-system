@@ -4,10 +4,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
-    // This class is used to serialize the data to/from the json file. 
-    // Test Adapter has its own copy of these classes for de-serialization. If there is any change to these classes, 
-    // Test Adapter also needs to be updated.
+    /// <summary>
+    /// This class is used to hold the data serialized from the json file.  
+    /// </summary>
     internal class LaunchSettingsData
     {
         public  Dictionary<string, object> OtherSettings { get; set; }
