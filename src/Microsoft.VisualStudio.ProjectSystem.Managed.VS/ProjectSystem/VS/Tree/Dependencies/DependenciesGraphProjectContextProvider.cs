@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     [Export(typeof(IDependenciesGraphProjectContextProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    public class DependenciesGraphProjectContextProvider : IDependenciesGraphProjectContextProvider
+    internal class DependenciesGraphProjectContextProvider : IDependenciesGraphProjectContextProvider
     {
         [ImportingConstructor]
         public DependenciesGraphProjectContextProvider(IProjectExportProvider projectExportProvider, 

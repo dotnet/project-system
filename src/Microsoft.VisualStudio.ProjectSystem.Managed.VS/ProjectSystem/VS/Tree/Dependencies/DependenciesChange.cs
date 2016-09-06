@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class DependenciesChange
+    internal class DependenciesChange
     {
         public DependenciesChange()
         {

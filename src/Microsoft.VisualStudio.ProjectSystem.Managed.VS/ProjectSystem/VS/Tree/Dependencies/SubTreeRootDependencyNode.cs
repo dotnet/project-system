@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class SubTreeRootDependencyNode : DependencyNode
+    internal class SubTreeRootDependencyNode : DependencyNode
     {
         public SubTreeRootDependencyNode(string providerType,
                                          string caption,

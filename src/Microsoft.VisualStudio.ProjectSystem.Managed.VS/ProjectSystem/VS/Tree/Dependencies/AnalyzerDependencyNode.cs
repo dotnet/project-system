@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class AnalyzerDependencyNode : DependencyNode
+    internal class AnalyzerDependencyNode : DependencyNode
     {
         public AnalyzerDependencyNode(DependencyNodeId id,
                                       ProjectTreeFlags flags,

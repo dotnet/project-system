@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-    public sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
+    internal sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
     {
         public string PropertyName { get; }
 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
     }
 
-    public enum ExportInterceptingPropertyValueProviderFile
+    internal enum ExportInterceptingPropertyValueProviderFile
     {
         ProjectFile,
         UserFile,

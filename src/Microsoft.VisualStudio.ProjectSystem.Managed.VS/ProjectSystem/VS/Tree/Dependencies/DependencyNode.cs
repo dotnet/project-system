@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class DependencyNode : IDependencyNode
+    internal class DependencyNode : IDependencyNode
     {
         /// <summary>
         /// The set of flags common to all Reference nodes.

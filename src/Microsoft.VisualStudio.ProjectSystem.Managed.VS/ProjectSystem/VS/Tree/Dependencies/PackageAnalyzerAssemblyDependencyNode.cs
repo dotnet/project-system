@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class PackageAnalyzerAssemblyDependencyNode : DependencyNode
+    internal class PackageAnalyzerAssemblyDependencyNode : DependencyNode
     {
         public PackageAnalyzerAssemblyDependencyNode(DependencyNodeId id,
                                              string caption,

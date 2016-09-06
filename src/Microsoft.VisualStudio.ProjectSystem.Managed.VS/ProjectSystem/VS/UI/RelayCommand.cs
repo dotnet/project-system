@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// CanExecute handlers. If no CanExecute is specified it returns true in the CanExecute
     /// method.
     /// </summary>
-    public class RelayCommand : ICommand
+    internal class RelayCommand : ICommand
     {
         /// <summary>
         /// Creates a new command that is always enabled

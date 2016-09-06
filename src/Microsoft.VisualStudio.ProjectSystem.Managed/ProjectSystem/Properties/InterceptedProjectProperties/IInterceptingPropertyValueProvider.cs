@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// A project property provider that intercepts all the callbacks for a specific property name
     /// on the default <see cref="IProjectPropertiesProvider"/> for validation and/or transformation of the property value.
     /// </summary>
-    public interface IInterceptingPropertyValueProvider
+    internal interface IInterceptingPropertyValueProvider
     {
         /// <summary>
         /// Validate and/or transform the given evaluated property value.
