@@ -101,6 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
                There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
                For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
+               Tracking bug: https://github.com/dotnet/roslyn-project-system/issues/455
                */
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
