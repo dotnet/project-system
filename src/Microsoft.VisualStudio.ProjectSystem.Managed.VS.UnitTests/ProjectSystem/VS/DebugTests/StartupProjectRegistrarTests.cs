@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView> GetLazyDebugLaunchProvider(bool debugs)
         {
             return new Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView>(
-                () => IDebugLaunchProviderFactory.CreateInstance(debugs),
+                () => IDebugLaunchProviderFactory.ImplementCanLaunchAsync(debugs),
                 IDebugLaunchProviderMetadataViewFactory.CreateInstance());
         }
 

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.Mocks
 {
     public class IDebugLaunchProviderFactory
     {
-        public static IDebugLaunchProvider CreateInstance(bool debugs)
+        public static IDebugLaunchProvider ImplementCanLaunchAsync(bool debugs)
         {
             var mock = new Mock<IDebugLaunchProvider>();
 

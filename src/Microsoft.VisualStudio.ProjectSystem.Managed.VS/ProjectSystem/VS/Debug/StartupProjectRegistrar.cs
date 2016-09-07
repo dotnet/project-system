@@ -2,12 +2,14 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Tasks = System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -15,8 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// <see cref="StartupProjectRegistrar"/> is responsible for adding or removing a project from the Startup list
     /// depending on whether the active configuration of the a project is debuggable or not.
     /// </summary>
-    internal class StartupProjectRegistrar :
-        IDisposable
+    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
         private readonly IVsStartupProjectsListService _startupProjectsListService;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -37,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
+            : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
@@ -57,12 +59,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal async Tasks.Task OnProjectFactoryCompletedAsync()
         {
+            await InitializeCoreAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        protected override async Tasks.Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
             ConfigurationGeneral projectProperties =
                 await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             _guid = new Guid((string)await projectProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false));
             Assumes.False(_guid == Guid.Empty);
 
             await InitializeAsync().ConfigureAwait(false);
+        }
+
+        protected override Tasks.Task DisposeCoreAsync(bool initialized)
+        {
+            _evaluationSubscriptionLink?.Dispose();
+            return TplExtensions.CompletedTask;
         }
 
         public async Tasks.Task InitializeAsync()
@@ -118,9 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
-                // DebugLaunchOptions.StopAtEntryPoint seems like a valid option to use. It works.
-                // Not sure if there is a better option for this scenario.
-                if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.StopAtEntryPoint).ConfigureAwait(true))
+                if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
+                                        .ConfigureAwait(true))
                 {
                     return true;
                 }
@@ -129,31 +141,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return false;
         }
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _evaluationSubscriptionLink?.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-        #endregion
-
-        // Creating a class which provides the LaunchProviders is a workaround because importing an OrderPrecendenceImportCollection
-        // with 2 Type arguments does not work.
+        // Creating a class which provides the LaunchProviders is a workaround because importing ActiveConfiguredProject
+        // with 2 arguments does not work.
         [Export]
         internal class DebuggerLaunchProviders
         {
