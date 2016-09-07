@@ -25,19 +25,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
-        private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+        private readonly ImplicitProjectPropertiesStore<string, string> _propertyStore;
 
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
+            ImplicitProjectPropertiesStore<string, string> propertyStore,
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
+            Requires.NotNull(propertyStore, nameof(propertyStore));
+            _propertyStore = propertyStore;
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)
-            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyValues);
+            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyStore);
 
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
