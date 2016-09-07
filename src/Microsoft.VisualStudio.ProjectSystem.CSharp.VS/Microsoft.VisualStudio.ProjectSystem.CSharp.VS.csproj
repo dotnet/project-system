@@ -53,6 +53,7 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectGuidProvider.cs" />
+    <Compile Include="ProjectSystem\VS\XprojProjectFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

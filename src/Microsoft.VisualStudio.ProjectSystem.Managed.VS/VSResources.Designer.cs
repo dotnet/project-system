@@ -61,6 +61,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There aren&apos;t any active launch profiles configured for this project..
+        /// </summary>
+        internal static string ActiveLaunchProfileNotFound {
+            get {
+                return ResourceManager.GetString("ActiveLaunchProfileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analyzers.
         /// </summary>
         internal static string AnalyzersNodeName {
@@ -75,15 +84,6 @@ namespace Microsoft.VisualStudio {
         internal static string AssembliesNodeName {
             get {
                 return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There aren&apos;t any active launch profiles configured for this project..
-        /// </summary>
-        internal static string ActiveLaunchProfileNotFound {
-            get {
-                return ResourceManager.GetString("ActiveLaunchProfileNotFound", resourceCulture);
             }
         }
         
@@ -130,6 +130,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The debug executable &apos;{0}&apos; specified in the &apos;{1}&apos; debug profile does not exist..
+        /// </summary>
+        internal static string DebugExecutableNotFound {
+            get {
+                return ResourceManager.GetString("DebugExecutableNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  (Loading...).
         /// </summary>
         internal static string DependenciesLoadingPostfix {
@@ -157,15 +166,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The debug executable &apos;{0}&apos; specified in the &apos;{1}&apos; debug profile does not exist..
-        /// </summary>
-        internal static string DebugExecutableNotFound {
-            get {
-                return ResourceManager.GetString("DebugExecutableNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to _Discard.
         /// </summary>
         internal static string Discard {
@@ -180,6 +180,15 @@ namespace Microsoft.VisualStudio {
         internal static string DontKnowHowToRunProfile {
             get {
                 return ResourceManager.GetString("DontKnowHowToRunProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update..
+        /// </summary>
+        internal static string DotNetCoreProjectsNotSupported {
+            get {
+                return ResourceManager.GetString("DotNetCoreProjectsNotSupported", resourceCulture);
             }
         }
         
@@ -247,24 +256,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expected to find item type for rule {0}. The rule file is either missing or malformed..
-        /// </summary>
-        internal static string NoItemTypeForRule {
-            get {
-                return ResourceManager.GetString("NoItemTypeForRule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NuGet.
-        /// </summary>
-        internal static string NuGetPackagesNodeName {
-            get {
-                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}.
         /// </summary>
         internal static string InvalidAbsoluteUrlSpecified {
@@ -283,11 +274,29 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected to find item type for rule {0}. The rule file is either missing or malformed..
+        /// </summary>
+        internal static string NoItemTypeForRule {
+            get {
+                return ResourceManager.GetString("NoItemTypeForRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; has requested a web browser be launched, but a URL was not specified..
         /// </summary>
         internal static string NoUrlSpecified {
             get {
                 return ResourceManager.GetString("NoUrlSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        internal static string NuGetPackagesNodeName {
+            get {
+                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
             }
         }
         
@@ -323,15 +332,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects.
-        /// </summary>
-        internal static string ProjectsNodeName {
-            get {
-                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to A project with an Output Type of Class Library cannot be started directly.
         ///
         ///In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project..
@@ -339,6 +339,15 @@ namespace Microsoft.VisualStudio {
         internal static string ProjectNotRunnableDirectly {
             get {
                 return ResourceManager.GetString("ProjectNotRunnableDirectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        internal static string ProjectsNodeName {
+            get {
+                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
             }
         }
         

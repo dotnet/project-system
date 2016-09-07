@@ -124,14 +124,14 @@
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
+    <Compile Include="Shell\HierarchyId.cs" />
+    <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
+    <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
     <Compile Include="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VSResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Shell\HierarchyId.cs" />
-    <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
-    <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\VisualStudio\VisualStudio.csproj">
