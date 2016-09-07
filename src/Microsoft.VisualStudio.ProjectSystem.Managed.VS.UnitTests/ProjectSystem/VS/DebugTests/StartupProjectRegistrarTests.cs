@@ -207,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ActiveConfiguredProject<StartupProjectRegistrar.DebuggerLaunchProviders> launchProviders)
         {
             var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "Project", PropertyName = "ProjectGuid", Value = guid.ToString() }
+                    new PropertyPageData { Category = "ConfigurationGeneral", PropertyName = "ProjectGuid", Value = guid.ToString() }
                 });
 
             return CreateInstance(
