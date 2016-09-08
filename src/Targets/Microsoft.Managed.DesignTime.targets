@@ -9,9 +9,12 @@
   <PropertyGroup>
   <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
        currently matches what is in common targets, but removes BuildWindowsDesktopTarget -->
-    <DefineCommonCapabilities>false</DefineCommonCapabilities>
-    
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>    
     <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
+
+    <DefineCommonManagedCapabilities Condition=" '$(DefineCommonManagedCapabilities)' == '' ">true</DefineCommonManagedCapabilities>
+    <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
+    
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
     <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
@@ -19,11 +22,12 @@
   </PropertyGroup>
 
   <!-- Project Capabilities -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
     <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
+    
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />
@@ -45,9 +49,8 @@
                           DeclaredSourceItems;
                           UserSourceItems;" />
 
-    <!-- And from Microsoft.Csharp/VisualBasic.Currentversion.targets. ReferencesFolder is removed-->
-      <ProjectCapability Include="LanguageService" />
-      <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
+    <ProjectCapability Include="LanguageService" />
+    <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
  </ItemGroup>
   
   <!-- CPS Project Properties -->
@@ -76,11 +79,17 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
     <!-- Assembly references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AssemblyReference.xaml">
       <Context>;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAssemblyReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
@@ -89,7 +98,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)COMReference.xaml">
       <Context>;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCOMReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
@@ -98,11 +107,11 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
       <Context>;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedProjectReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <!-- Sdk references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SdkReference.xaml">
       <Context>;BrowseObject</Context>
@@ -121,16 +130,13 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <!-- Analyzer references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AnalyzerReference.xaml">
       <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAnalyzerReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
-    </PropertyPageSchema>
-    
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
-      <Context>Project</Context>
     </PropertyPageSchema>
   </ItemGroup>
 
