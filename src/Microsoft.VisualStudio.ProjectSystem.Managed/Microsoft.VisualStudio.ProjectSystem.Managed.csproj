@@ -54,8 +54,10 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\IUnconfiguredProjectPropertyProviderService.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\Properties\UnconfiguredProjectPropertyProviderService.cs" />
     <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
