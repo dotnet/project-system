@@ -1,5 +1,6 @@
 // Import the utility functionality.
-import jobs.generation.Utilities;
+import jobs.generation.*;
+import jobs.generation.InternalUtilities;
 
 // Defines a the new of the repo, used elsewhere in the file
 def project = GithubProject
@@ -54,7 +55,7 @@ git submodule init
 git submodule sync
 git submodule update --init --recursive
 
-set TEMP=%WORKSPACE%\\Open\\Binaries\\Temp
+set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
@@ -84,3 +85,8 @@ addVsiArchive(newVsiJob)
 Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
 Utilities.addGithubPushTrigger(newVsiJob)
 Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
+
+// Make the call to generate the help job
+Utilities.createHelperJob(this, project, branch,
+    "Welcome to the ${project} Repository",  // This is prepended to the help message
+    "Have a nice day!")  // This is appended to the help message.  You might put known issues here.
