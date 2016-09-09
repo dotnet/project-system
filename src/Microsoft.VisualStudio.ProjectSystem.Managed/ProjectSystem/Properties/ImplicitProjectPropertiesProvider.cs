@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
-    /// Provides project properties that normally should not live in the project file but may be 
-    /// written from an external source (e.g. the solution file). This provider avoids writing 
-    /// these properties to the project file, but if they are already present there, it updates 
+    /// Provides project properties that normally should not live in the project file but may be
+    /// written from an external source (e.g. the solution file). This provider avoids writing
+    /// these properties to the project file, but if they are already present there, it updates
     /// the value to keep in sync with the external source.
     /// Values that are not written are held in memory so they can be read for the lifetime of this
-    /// provider. If the property is changed after loading the project file, the file may be out of 
-    /// sync until a full project reload occurs. Specifically, if provider is managing property in 
-    /// memory, and a property is added the project file, all operations ignore the value in the 
+    /// provider. If the property is changed after loading the project file, the file may be out of
+    /// sync until a full project reload occurs. Specifically, if provider is managing property in
+    /// memory, and a property is added the project file, all operations ignore the value in the
     /// project file until this property is deleted or a full reload of the project system occurs.
     /// </summary>
     [Export("ImplicitProjectFile", typeof(IProjectPropertiesProvider))]
@@ -25,19 +25,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
-        private readonly ConcurrentDictionary<string, string> _propertyValues = new ConcurrentDictionary<string, string>();
+        private readonly ImplicitProjectPropertiesStore<string, string> _propertyStore;
 
         [ImportingConstructor]
         public ImplicitProjectPropertiesProvider(
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
+            ImplicitProjectPropertiesStore<string, string> propertyStore,
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
+            _propertyStore = propertyStore;
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)
-            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyValues);
+            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyStore);
 
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
@@ -56,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             /// <summary>
             /// If a property exists in the delegated properties object, then pass the set
-            /// through (overwrite). Otherwise manage the value in memory in this properties 
+            /// through (overwrite). Otherwise manage the value in memory in this properties
             /// object.
             /// </summary>
             public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
