@@ -1,6 +1,5 @@
 // Import the utility functionality.
 import jobs.generation.*;
-import jobs.generation.InternalUtilities;
 
 // Defines a the new of the repo, used elsewhere in the file
 def project = GithubProject
