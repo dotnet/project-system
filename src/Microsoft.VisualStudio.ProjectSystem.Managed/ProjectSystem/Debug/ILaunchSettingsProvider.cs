@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Interface definition for the LaunchSettingsProvider.
     /// </summary>
-    internal interface ILaunchSettingsProvider
+    public interface ILaunchSettingsProvider
     {
         IReceivableSourceBlock<ILaunchSettings> SourceBlock { get; }
 
