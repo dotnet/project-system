@@ -50,14 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var mockMetadata = new Mock<IOrderPrecedenceMetadataView>();
             var mockIJsonSection = new Mock<IJsonSection>();
             mockIJsonSection.Setup(s => s.JsonSection).Returns("iisSettings");
+            mockIJsonSection.Setup(s => s.SerializationType).Returns(typeof(IISSettingsData));
             var lazyProvider = new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() =>
             {
                 var mockSerializer = new Mock<ILaunchSettingsSerializationProvider>();
-                mockSerializer.Setup(s => s.SerializationType).Returns(typeof(IISSettingsData));
                 return mockSerializer.Object;
             }, mockIJsonSection.Object, true);
-            var settingsProviders = new OrderPrecedenceImportCollection<Lazy<ILaunchSettingsSerializationProvider, IJsonSection>>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
-            settingsProviders.Add(new Lazy<Lazy<ILaunchSettingsSerializationProvider, IJsonSection>, IOrderPrecedenceMetadataView>(() => lazyProvider, mockMetadata.Object));
+            var settingsProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
+            settingsProviders.Add(new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() => lazyProvider.Value, mockIJsonSection.Object));
             provider.SetSettingsProviderCollection(settingsProviders);
 
         }
@@ -546,7 +546,7 @@ string JsonString1 = @"{
                    _broadcastBlock == null;
         }
 
-        internal void SetSettingsProviderCollection(OrderPrecedenceImportCollection<Lazy<ILaunchSettingsSerializationProvider, IJsonSection>> settingsProviders)
+        internal void SetSettingsProviderCollection(OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> settingsProviders)
         {
             JsonSerializationProviders = settingsProviders;
         }
