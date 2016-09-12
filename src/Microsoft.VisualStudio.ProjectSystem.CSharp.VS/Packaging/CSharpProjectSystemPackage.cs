@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(XprojProjectFactory), "XProj Migration Factory", "#5", "xproj", "xproj", null)]
+    [ProvideProjectFactory(typeof(XprojProjectFactory), null, null, null, null, null)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
         SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
