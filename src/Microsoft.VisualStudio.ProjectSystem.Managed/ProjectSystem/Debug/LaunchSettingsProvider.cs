@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             ProjectServices = projectServices;
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
-            JsonSerializationProviders = new OrderPrecedenceImportCollection<Lazy<ILaunchSettingsSerializationProvider, IJsonSection>>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, 
+            JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, 
                                                                                                                     unconfiguredProject);;
             ProjectSubscriptionService = projectSubscriptionService;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; }
 
         [ImportMany]
-        protected OrderPrecedenceImportCollection<Lazy<ILaunchSettingsSerializationProvider, IJsonSection>> JsonSerializationProviders { get; set; }
+        protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
@@ -383,10 +383,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     else
                     {
                         // Find the matching json serialization handler for this section
-                        var handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Value.Metadata.JsonSection, pair.Key));
+                        var handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, pair.Key));
                         if (handler != null)
                         {
-                            object sectionObject = JsonConvert.DeserializeObject(pair.Value.ToString(), handler.Value.Value.SerializationType);
+                            object sectionObject = JsonConvert.DeserializeObject(pair.Value.ToString(), handler.Metadata.SerializationType);
                             launchSettingsData.OtherSettings.Add(pair.Key, sectionObject);
                         }
                         else
