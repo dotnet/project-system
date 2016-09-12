@@ -50,6 +50,20 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\AdditionalFilesItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\AnalyzerItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceRuleHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceCommandLineHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
@@ -175,7 +189,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StringComparers.cs" />
+    <Compile Include="Threading\Tasks\ITaskScheduler.cs" />
     <Compile Include="Threading\Tasks\TaskResult.cs" />
+    <Compile Include="Threading\Tasks\TaskSchedulerPriority.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">

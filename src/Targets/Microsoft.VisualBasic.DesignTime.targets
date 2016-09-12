@@ -17,10 +17,6 @@
   </PropertyGroup>
 
     <ItemGroup>
-     <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
-    </ItemGroup>
-
-    <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.xaml;">
       <Context>File</Context>
@@ -39,6 +35,10 @@
             Returns="@(_CompilerCommandLineArgs)"
             DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
           >
+
+      <ItemGroup>
+        <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+      </ItemGroup>
         
   </Target>
 
