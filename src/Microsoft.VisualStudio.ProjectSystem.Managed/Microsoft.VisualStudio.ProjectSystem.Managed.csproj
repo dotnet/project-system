@@ -67,6 +67,7 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesStore.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />

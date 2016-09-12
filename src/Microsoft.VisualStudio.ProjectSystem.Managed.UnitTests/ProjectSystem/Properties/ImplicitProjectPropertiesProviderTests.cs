@@ -10,10 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         [Fact]
         public void Constructor_NullDelegatedProvider_ThrowsArgumentNullException()
-        {            
-            Assert.Throws<ArgumentNullException>("provider", () => 
+        {
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            Assert.Throws<ArgumentNullException>("provider", () =>
             {
-                new ImplicitProjectPropertiesProvider(null, IProjectInstancePropertiesProviderFactory.Create(), IUnconfiguredProjectFactory.Create());
+                new ImplicitProjectPropertiesProvider(null,
+                                                      IProjectInstancePropertiesProviderFactory.Create(),
+                                                      new ImplicitProjectPropertiesStore<string, string>(),
+                                                      unconfiguredProject);
             });
         }
 
@@ -25,13 +29,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
 
             Assert.Throws<ArgumentNullException>("instanceProvider", () =>
             {
-                new ImplicitProjectPropertiesProvider(delegateProvider, null, IUnconfiguredProjectFactory.Create());
+                new ImplicitProjectPropertiesProvider(delegateProvider,
+                                                      null,
+                                                      new ImplicitProjectPropertiesStore<string, string>(),
+                                                      unconfiguredProject);
             });
         }
-
 
         [Fact]
         public void Constructor_NullUnconfiguredProject_ThrowsArgumentNullException()
@@ -44,7 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
             {
-                new ImplicitProjectPropertiesProvider(delegateProvider, IProjectInstancePropertiesProviderFactory.Create(), null);
+                new ImplicitProjectPropertiesProvider(delegateProvider,
+                                                      IProjectInstancePropertiesProviderFactory.Create(),
+                                                      new ImplicitProjectPropertiesStore<string, string>(),
+                                                      null);
             });
         }
 
@@ -59,8 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>();
 
-            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject);
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
             var properties = provider.GetProperties("path/to/project.testproj", null, null);
 
             // calls delegate above with matching values
@@ -81,8 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>();
 
-            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject);
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
             var properties = provider.GetProperties("path/to/project.testproj", null, null);
 
             // does not call the set property on the delegated property above
