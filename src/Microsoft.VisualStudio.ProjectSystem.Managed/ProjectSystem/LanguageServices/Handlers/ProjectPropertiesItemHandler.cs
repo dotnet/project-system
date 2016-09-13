@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
     [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService2)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class ProjectPropertiesItemHandler : ILanguageServiceRuleHandler
     {
         private readonly UnconfiguredProject _project;
