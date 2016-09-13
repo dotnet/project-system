@@ -112,9 +112,6 @@
         <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.VisualStudio.GraphModel">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.GraphModel.dll</HintPath>
-        </Reference>	
 	<!-- 
 		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
 		if it is not provided here, tests fail to load this assembly at runtime.
