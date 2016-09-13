@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// <summary>
     /// Metadata mapping interface for the <see cref="ExportInterceptingPropertyValueProviderAttribute"/>.
     /// </summary>
-    internal interface IInterceptingPropertyValueProviderMetadata
+    public interface IInterceptingPropertyValueProviderMetadata
     {
         string PropertyName { get; }
     }

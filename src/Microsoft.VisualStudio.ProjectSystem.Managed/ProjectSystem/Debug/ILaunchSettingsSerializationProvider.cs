@@ -6,10 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
     /// Interface implemented by providers of custom data. When the launch settings file is read the top level token matching the attribute
-    /// "JsonSection" is invoked to deserialize the json to an object. The export needs the attribute [ExportMetadata("JsonSection", "nameofjsonsection")]
+    /// "JsonSection" is invoked to deserialize the json to an object. The export needs the attribute 
+    /// [ExportMetadata("JsonSection", "nameofjsonsection")]
+    /// [ExportMetadata("SerializationProvider", typeof(objectToSerialize))]
     /// </summary>
     public interface ILaunchSettingsSerializationProvider
     {
-        Type SerializationType {get;}
     }
 }
