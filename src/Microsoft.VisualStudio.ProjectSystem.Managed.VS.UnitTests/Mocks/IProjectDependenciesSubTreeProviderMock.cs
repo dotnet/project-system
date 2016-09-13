@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Raised when provider's dependencies changed 
         /// </summary>
-        public event DependenciesChangedEventHandler DependenciesChanged;
+        public event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
 
         private void FireDependenciesChanged()
         {
