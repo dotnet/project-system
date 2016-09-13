@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
-    /// Provides project properties that normally should not live in the project file but may be
-    /// written from an external source (e.g. the solution file). This provider avoids writing
-    /// these properties to the project file, but if they are already present there, it updates
+    /// Provides project properties that normally should not live in the project file but may be 
+    /// written from an external source (e.g. the solution file). This provider avoids writing 
+    /// these properties to the project file, but if they are already present there, it updates 
     /// the value to keep in sync with the external source.
     /// Values that are not written are held in memory so they can be read for the lifetime of this
-    /// provider. If the property is changed after loading the project file, the file may be out of
-    /// sync until a full project reload occurs. Specifically, if provider is managing property in
-    /// memory, and a property is added the project file, all operations ignore the value in the
+    /// provider. If the property is changed after loading the project file, the file may be out of 
+    /// sync until a full project reload occurs. Specifically, if provider is managing property in 
+    /// memory, and a property is added the project file, all operations ignore the value in the 
     /// project file until this property is deleted or a full reload of the project system occurs.
     /// </summary>
     [Export("ImplicitProjectFile", typeof(IProjectPropertiesProvider))]
@@ -35,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
+            Requires.NotNull(propertyStore, nameof(propertyStore));
             _propertyStore = propertyStore;
         }
 
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             /// <summary>
             /// If a property exists in the delegated properties object, then pass the set
-            /// through (overwrite). Otherwise manage the value in memory in this properties
+            /// through (overwrite). Otherwise manage the value in memory in this properties 
             /// object.
             /// </summary>
             public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)

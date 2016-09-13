@@ -12,10 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     [Export(typeof(ImplicitProjectPropertiesStore<,>))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Host)]
     internal class ImplicitProjectPropertiesStore<T1, T2> : ConcurrentDictionary<T1, T2>
     {
+        // We import UnconfiguredProject here to ensure that we're loaded into the UnconfiguredProject scope.
+        // However, we don't need the project for anything.
         [ImportingConstructor]
-        public ImplicitProjectPropertiesStore() { }
+        public ImplicitProjectPropertiesStore(UnconfiguredProject project) { }
     }
 }
