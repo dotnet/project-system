@@ -130,12 +130,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets called when context (projec dependencies) change
         /// </summary>
-        public event ProjectContextEventHandler ProjectContextChanged;
+        public event EventHandler<ProjectContextEventArgs> ProjectContextChanged;
 
         /// <summary>
         /// Gets called when project unloads to notify GraphProvider to release
         /// any data associated with the project.
         /// </summary>
-        public event ProjectContextEventHandler ProjectContextUnloaded;
+        public event EventHandler<ProjectContextEventArgs> ProjectContextUnloaded;
     }
 }

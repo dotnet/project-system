@@ -875,12 +875,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets called when dependencies change
         /// </summary>
-        public event ProjectContextEventHandler ProjectContextChanged;
+        public event EventHandler<ProjectContextEventArgs> ProjectContextChanged;
 
         /// <summary>
         /// Gets called when project is unloading and dependencies subtree is disposing
         /// </summary>
-        public event ProjectContextEventHandler ProjectContextUnloaded;
+        public event EventHandler<ProjectContextEventArgs> ProjectContextUnloaded;
 
         #endregion
 

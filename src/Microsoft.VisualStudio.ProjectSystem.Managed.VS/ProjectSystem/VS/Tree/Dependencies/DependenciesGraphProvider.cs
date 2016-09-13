@@ -22,10 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
     /// </summary>
-    [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider")]
-    // TODO We are adding a way to filter GraphProviders by capability instead of ProjectKind. Specify 
-    // capability when change is ready.
-    //      ProjectKind = ProjectSystemPackage.ProjectTypeGuidStringWithParentheses)]
+    [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider", 
+                   ProjectCapability = "DependenciesTree")]
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider
     {
         private readonly GraphCommand ContainsGraphCommand = new GraphCommand(
@@ -548,6 +546,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 try
                 {
                     var value = id.GetNestedValueByName<Uri>(idPartName);
+
+                    // for idPartName == CodeGraphNodeIdName.File it can be null, avoid unnecessary exception
+                    if (value == null)
+                    {
+                        return null;
+                    }
 
                     // Assembly and File are represented by a Uri, extract LocalPath string from Uri
                     return (value.IsAbsoluteUri ? value.LocalPath : value.ToString()).Trim('/');
