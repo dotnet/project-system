@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             UnconfiguredProject unconfiguredProject)
             : base(provider, instanceProvider, unconfiguredProject)
         {
-            Requires.NotNull(propertyStore, nameof(propertyStore));
             _propertyStore = propertyStore;
         }
 
