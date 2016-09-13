@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
@@ -20,20 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     {
         private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private readonly static Task<AddMessageResult> NotHandled = Task.FromResult(AddMessageResult.NotHandled);
+        private readonly ILanguageServiceHost _host;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
-        public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject)
+        public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject, ILanguageServiceHost host)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(host, nameof(host));
 
-            ProjectsWithIntellisense = new OrderPrecedenceImportCollection<IProjectWithIntellisense>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, unconfiguredProject);
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectWithIntellisense> ProjectsWithIntellisense
-        {
-            get;
+            _host = host;
         }
 
         public void SuspendRefresh()
@@ -103,17 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private void InitializeBuildErrorReporter()
         {
             // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
-            if (_languageServiceBuildErrorReporter == null && ProjectsWithIntellisense.Count > 0)
+            if (_languageServiceBuildErrorReporter == null)
             {
-                var project = ProjectsWithIntellisense.First();
-
-                // TODO: VB's IVsIntellisenseProject::GetExternalErrorReporter() does not return the correct instance which should be QIed from the inner IVbCompilerProject (BUG 1024166),
-                // so this code works on C# only.
-                IVsReportExternalErrors reportExternalErrors;
-                if (project.Value.IntellisenseProject.GetExternalErrorReporter(out reportExternalErrors) == 0)
-                {
-                    _languageServiceBuildErrorReporter = reportExternalErrors as IVsLanguageServiceBuildErrorReporter2;
-                }
+                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_host.HostSpecificErrorReporter;
             }
         }
 

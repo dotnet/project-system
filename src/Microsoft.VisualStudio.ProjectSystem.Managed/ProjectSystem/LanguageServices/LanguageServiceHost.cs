@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
+    [Export(typeof(ILanguageServiceHost))]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync
     {
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -43,6 +44,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
 
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
+        }
+
+        public object ErrorReporter
+        {
+            // IWorkspaceProjectContext implements the VS-only interface IVsLanguageServiceBuildErrorReporter2
+            get { return _projectContext; }
         }
 
         [ImportMany]

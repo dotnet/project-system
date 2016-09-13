@@ -58,6 +58,7 @@
     <Compile Include="ProjectSystem\LanguageServices\Handlers\ProjectPropertiesItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceCommandLineHandler.cs" />
