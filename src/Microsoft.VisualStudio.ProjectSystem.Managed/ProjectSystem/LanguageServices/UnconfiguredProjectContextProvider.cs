@@ -126,6 +126,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return guid;
         }
 
+        private async Task<string> GetTargetPathAsync()
+        {
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
+                                                                                                     .ConfigureAwait(false);
+            return (string)await properties.TargetPath.GetValueAsync()
+                                                      .ConfigureAwait(false);
+        }
+
         private ProjectData GetProjectData()
         {
             string filePath = _commonServices.Project.FullPath;
@@ -143,6 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return null;
             
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
+            string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
@@ -154,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 var projectData = GetProjectData();
 
-                return _contextFactory.Value.CreateProjectContext(languageName, projectData.DisplayName, projectData.FullPath, projectGuid, _commonServices.Project.Services.HostObject, string.Empty);
+                return _contextFactory.Value.CreateProjectContext(languageName, projectData.DisplayName, projectData.FullPath, projectGuid, _commonServices.Project.Services.HostObject, targetPath);
             });
         }
 

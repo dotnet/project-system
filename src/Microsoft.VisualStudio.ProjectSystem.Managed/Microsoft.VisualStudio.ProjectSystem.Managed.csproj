@@ -55,6 +55,7 @@
     <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AdditionalFilesItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AnalyzerItemHandler.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\ProjectPropertiesItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
