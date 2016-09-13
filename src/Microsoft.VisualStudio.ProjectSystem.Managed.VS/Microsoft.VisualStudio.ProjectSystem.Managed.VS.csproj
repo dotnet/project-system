@@ -127,6 +127,7 @@
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
+    <Compile Include="Threading\Tasks\VsTaskScheduler.cs" />
     <Compile Include="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
