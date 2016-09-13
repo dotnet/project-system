@@ -25,6 +25,7 @@
     "Microsoft.VisualStudio.ImageCatalog": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.Shell.Design": "15.0.25123-Dev15Preview",
     "Microsoft.VisualStudio.Shell.15.0": "15.0.25123-Dev15Preview",
+    "RoslynDependencies.Microsoft.VisualStudio.GraphModel" : "15.0.25713",
     "Microsoft.VisualStudio.Telemetry": {
 		"version": "15.0.691-master31907920",
 		"exclude": "build"
