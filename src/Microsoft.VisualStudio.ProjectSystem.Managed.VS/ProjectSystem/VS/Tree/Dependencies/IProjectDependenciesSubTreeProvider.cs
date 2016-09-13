@@ -62,10 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Raised when provider's dependencies changed 
         /// </summary>
-        event DependenciesChangedEventHandler DependenciesChanged;
+        event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
     }
-
-    public delegate void DependenciesChangedEventHandler(object sender, DependenciesChangedEventArgs e);
 
     public class DependenciesChangedEventArgs
     {

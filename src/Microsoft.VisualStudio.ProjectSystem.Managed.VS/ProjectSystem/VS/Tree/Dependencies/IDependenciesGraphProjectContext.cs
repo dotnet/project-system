@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// node and it's first children sub nodes associated with dependency types are regular IProjectTree nodes, but 
     /// then actual dependencies under them will be dynamic graph nodes for perf reasons.
     /// </summary>
-    public interface IDependenciesGraphProjectContext
+    internal interface IDependenciesGraphProjectContext
     {
         /// <summary>
         /// Returns a dependencies node sub tree provider for given dependency provider type.
@@ -37,17 +37,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets called when dependencies change
         /// </summary>
-        event ProjectContextEventHandler ProjectContextChanged;
+        event EventHandler<ProjectContextEventArgs> ProjectContextChanged;
 
         /// <summary>
         /// Gets called when project is unloading and dependencies subtree is disposing
         /// </summary>
-        event ProjectContextEventHandler ProjectContextUnloaded;
+        event EventHandler<ProjectContextEventArgs> ProjectContextUnloaded;
     }
 
-    public delegate void ProjectContextEventHandler(object sender, ProjectContextEventArgs e);
-
-    public class ProjectContextEventArgs : EventArgs
+    internal class ProjectContextEventArgs : EventArgs
     {
         public ProjectContextEventArgs(IDependenciesGraphProjectContext context)
         {

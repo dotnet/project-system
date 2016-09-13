@@ -27,6 +27,13 @@
     </ProjectReference>
   </ItemDefinitionGroup>
 
+  <!-- This is a workaround for build failures in WPT branch, like:
+       "Menus.vsct(18,11): error VSCT1118: File not found: Unable to locate 'stdidcmd.h' on the include paths provided"
+  --> 
+  <ItemGroup>
+    <VSCTIncludePath Include="$(VSSDK150Install)\VisualStudioIntegration\Common\Inc" />
+  </ItemGroup>
+
   <!-- This file is imported by all projects at the end of the project files -->
   <!-- Update common properties -->
   <PropertyGroup>

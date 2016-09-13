@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         protected ImmutableHashSet<string> ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet;
 
-        public event DependenciesChangedEventHandler DependenciesChanged;
+        public event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
 
         private IDependencyNode _rootNode;
         public IDependencyNode RootNode
@@ -502,12 +502,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         IProjectCatalogSnapshot,
                                                         IProjectSharedFoldersSnapshot>> e)
         {
-            DependenciesChanged?.Invoke(this, 
-                                        new DependenciesChangedEventArgs(
-                                                this, 
-                                                changes, 
-                                                e.Value.Item2, 
-                                                e.DataSourceVersions));
+            DependenciesChanged(this, 
+                                new DependenciesChangedEventArgs(
+                                        this, 
+                                        changes, 
+                                        e.Value.Item2, 
+                                        e.DataSourceVersions));
         }
 
         /// <summary>
