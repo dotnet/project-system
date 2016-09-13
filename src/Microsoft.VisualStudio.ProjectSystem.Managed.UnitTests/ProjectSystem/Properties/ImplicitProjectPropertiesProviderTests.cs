@@ -41,6 +41,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
+        public void Constructor_NullPropertiesStore_ThrowsArgumentNullException()
+        {
+            var delegatePropertiesMock = IProjectPropertiesFactory
+                .MockWithPropertyAndValue("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
+
+            var delegateProperties = delegatePropertiesMock.Object;
+            var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+
+            Assert.Throws<ArgumentNullException>("propertyStore", () =>
+            {
+                new ImplicitProjectPropertiesProvider(delegateProvider,
+                                                      IProjectInstancePropertiesProviderFactory.Create(),
+                                                      null,
+                                                      IUnconfiguredProjectFactory.Create());
+            });
+        }
+
+        [Fact]
         public void Constructor_NullUnconfiguredProject_ThrowsArgumentNullException()
         {
             var delegatePropertiesMock = IProjectPropertiesFactory
