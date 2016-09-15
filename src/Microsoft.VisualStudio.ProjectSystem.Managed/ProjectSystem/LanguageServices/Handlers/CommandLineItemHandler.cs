@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange)
         {
             // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
-            // Unless the design-time build failured, we should have at least some arguments to the compiler
-            // Ignore the results if we don't.
+            // Check if the design-time build failed, if we have no arguments, then that is likely the 
+            // case and we should ignore the results.
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
 
