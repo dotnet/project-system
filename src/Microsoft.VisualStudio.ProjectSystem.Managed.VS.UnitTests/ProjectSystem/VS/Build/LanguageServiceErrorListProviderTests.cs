@@ -4,6 +4,8 @@ using System;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -13,8 +15,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [Fact]
         public void Constructor_NullAsUnconfiguedProject_ThrowsArgumentNull()
         {
+            var host = Mock.Of<ILanguageServiceHost>();
+
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
-                new LanguageServiceErrorListProvider((UnconfiguredProject)null);
+                new LanguageServiceErrorListProvider((UnconfiguredProject)null, host);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsHost_ThrowsArgumentNull()
+        {
+            var project = IUnconfiguredProjectFactory.Create();
+            Assert.Throws<ArgumentNullException>("host", () => {
+                new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
             });
         }
 
@@ -33,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public void ClearAllAsync_WhenNoProjectsWithIntellisense_ReturnsCompletedTask()
+        public void ClearAllAsync_WhenNoHostSpecificErrorReporter_ReturnsCompletedTask()
         {
             var provider = CreateInstance();
 
@@ -43,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public void ClearMessageFromTargetAsync_WhenNoProjectsWithIntellisense_ReturnsCompletedTask()
+        public void ClearMessageFromTargetAsync_WhenNoHostSpecificErrorReporter_ReturnsCompletedTask()
         {
             var provider = CreateInstance();
 
@@ -53,13 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void ClearAllAsync_WhenProjectWithIntellisense_CallsClearErrors()
+        public async void ClearAllAsync_WhenHostSpecificErrorReporter_CallsClearErrors()
         {
             int callCount = 0;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
             var task = CreateDefaultTask();
-            var provider = CreateInstance(project);
+            var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(task);   // Force initialization
 
@@ -80,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenNoProjectsWithIntellisense_ReturnsNotHandled()
+        public async void AddMessageAsync_WhenNoHostSpecificErrorReporter_ReturnsNotHandled()
         {
             var provider = CreateInstance();
 
@@ -117,15 +130,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenReporterThrowsNotImplemented_ReturnsNotHandled()
+        public async void AddMessageAsync_WhenHostSpecificErrorReporterThrowsNotImplemented_ReturnsNotHandled()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 throw new NotImplementedException();
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
             var result = await provider.AddMessageAsync(task);
@@ -134,15 +147,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenReporterThrows_Throws()
+        public async void AddMessageAsync_WhenHostSpecificErrorReporterThrows_Throws()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 throw new Exception();
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
             await Assert.ThrowsAsync<Exception>(() => {
@@ -154,8 +167,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async void AddMessageAsync_ReturnsHandledAndStopProcessing()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
             var result = await provider.AddMessageAsync(task);
@@ -170,8 +183,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
                 result = nPriority;
             });
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
@@ -185,8 +198,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
                 result = nPriority;
             });
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
@@ -200,8 +213,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
                 result = nPriority;
             });
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
-            var provider = CreateInstance(project);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
@@ -227,9 +240,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 errorIdResult = bstrErrorId;
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
 
-            var provider = CreateInstance(project);
+            var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, code, "File", 0, 0, 0, 0, errorMessage, "HelpKeyword", "Sender")));
 
 
@@ -258,9 +271,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 columnResult = iColumn;
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
 
-            var provider = CreateInstance(project);
+            var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, 0, 0, "ErrorMessage", "HelpKeyword", "Sender")));
 
 
@@ -290,9 +303,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 endColumnResult = iEndColumn;
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
 
-            var provider = CreateInstance(project);
+            var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, endLineNumber, endColumnNumber, "ErrorMessage", "HelpKeyword", "Sender")));
 
 
@@ -324,9 +337,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 fileNameResult = bstrFileName;
             });
 
-            var project = IProjectWithIntellisenseFactory.ImplementGetExternalErrorReporter(reporter);
+            var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
 
-            var provider = CreateInstance(project);
+            var provider = CreateInstance(host);
 
             var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender");
             args.ProjectFile = projectFile;
@@ -345,12 +358,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return CreateInstance(null);
         }
 
-        private static LanguageServiceErrorListProvider CreateInstance(IProjectWithIntellisense project)
+        private static LanguageServiceErrorListProvider CreateInstance(ILanguageServiceHost host)
         {
-            var provider = new LanguageServiceErrorListProvider(IUnconfiguredProjectFactory.Create("CSharp"));
+            host = host ?? ILanguageServiceHostFactory.Create();
 
-            if (project != null)
-                provider.ProjectsWithIntellisense.Add(project, "CSharp");
+            var provider = new LanguageServiceErrorListProvider(IUnconfiguredProjectFactory.Create(), host);
 
             return provider;
         }

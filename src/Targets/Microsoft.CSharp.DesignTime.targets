@@ -17,10 +17,6 @@
   </PropertyGroup>
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
-    </ItemGroup>
-
-    <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.xaml;">
       <Context>File</Context>
@@ -39,6 +35,11 @@
             Returns="@(_CompilerCommandLineArgs)"
             DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
           >
+
+      <ItemGroup>
+        <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
+      </ItemGroup>
+      
     </Target>
 
 </Project>

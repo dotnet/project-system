@@ -72,7 +72,7 @@
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
     <Compile Include="Mocks\IOptionsSettingsFactory.cs" />
-    <Compile Include="Mocks\IProjectWithIntelliSenseFactory.cs" />
+    <Compile Include="Mocks\ILanguageServiceHostFactory.cs" />
     <Compile Include="Mocks\IUserNotificationServicesFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectVsServicesFactory.cs" />
     <Compile Include="Mocks\IVsLanguageServiceBuildErrorReporter2Factory.cs" />

@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\VS\VisualBasicProjectCompatibilityProvider.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicLanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPage.cs" />
     <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPageProvider.cs" />

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -10,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public const string AlwaysAvailable = ProjectCapabilities.AlwaysApplicable;
         public const string CSharp = ProjectCapabilities.CSharp;
-        public const string VisualBasic = ProjectCapabilities.VB;        
+        public const string VisualBasic = ProjectCapabilities.VB;
         public const string VisualBasicLanguageService = ProjectCapabilities.VB + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
