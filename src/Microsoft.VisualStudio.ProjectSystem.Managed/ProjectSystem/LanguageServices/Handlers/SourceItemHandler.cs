@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     string fullPath = _project.MakeRooted(filePath);
 
                     RemoveSourceFile(fullPath);
-                    AddSourceFile(filePath);
+                    AddSourceFile(fullPath);
                 }
             }
         }
