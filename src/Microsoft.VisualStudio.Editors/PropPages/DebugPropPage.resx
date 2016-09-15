@@ -915,39 +915,6 @@
   <data name="&gt;&gt;EnableSQLServerDebugging.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="UseVSHostingProcess.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="UseVSHostingProcess.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="UseVSHostingProcess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 279</value>
-  </data>
-  <data name="UseVSHostingProcess.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 3, 3, 11</value>
-  </data>
-  <data name="UseVSHostingProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 17</value>
-  </data>
-  <data name="UseVSHostingProcess.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="UseVSHostingProcess.Text" xml:space="preserve">
-    <value>Enable the Visual Studio h&amp;osting process</value>
-  </data>
-  <data name="&gt;&gt;UseVSHostingProcess.Name" xml:space="preserve">
-    <value>UseVSHostingProcess</value>
-  </data>
-  <data name="&gt;&gt;UseVSHostingProcess.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;UseVSHostingProcess.Parent" xml:space="preserve">
-    <value>overarchingTableLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;UseVSHostingProcess.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="overarchingTableLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>

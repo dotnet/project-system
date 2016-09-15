@@ -96,9 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", Me.RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_UseVSHostingProcess, "UseVSHostingProcess", Me.UseVSHostingProcess)
-                    datalist.Add(data)
-
                     m_ControlData = datalist.ToArray()
 
 
@@ -135,13 +132,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.rbStartProgram.Checked = (action = VSLangProj.prjStartAction.prjStartActionProgram)
                 Me.rbStartURL.Checked = (action = VSLangProj.prjStartAction.prjStartActionURL)
                 Me.StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
-
-                If action = VSLangProj.prjStartAction.prjStartActionProject Then
-                    EnableControl(UseVSHostingProcess, True)
-                Else
-                    ' We don't want to enable this unless the the startup action is to start the project
-                    UseVSHostingProcess.Enabled = False
-                End If
             Finally
                 MyBase.m_fInsideInit = originalInsideInit
             End Try
@@ -175,13 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartAction).EnableControls(_enabled)
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram).EnableControls(_enabled)
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartURL).EnableControls(_enabled)
-
-            If _enabled AndAlso StartActionGetValue() = VSLangProj.prjStartAction.prjStartActionProject Then
-                EnableControl(Me.UseVSHostingProcess, True)
-            Else
-                ' We don't want to enable this unless the the startup action is to start the project
-                Me.UseVSHostingProcess.Enabled = False
-            End If
         End Sub
 
         ''' <summary>
@@ -263,13 +246,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Else
                     'IsDirty = True
                     SetDirty(VsProjPropId.VBPROJPROPID_StartAction, False)
-                End If
-
-                If StartActionGetValue() = VSLangProj.prjStartAction.prjStartActionProject Then
-                    EnableControl(Me.UseVSHostingProcess, True)
-                Else
-                    ' We don't want to enable this unless the the startup action is to start the project
-                    Me.UseVSHostingProcess.Enabled = False
                 End If
 
                 If Me.StartProgram.Enabled Then
