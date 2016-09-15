@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 }
 
                 foreach (string filePath in diff.ChangedItems)
-                {   // We add and then remove, ChangedItems to handle Linked metadata changes.
+                {   // We add and then remove ChangedItems to handle Linked metadata changes
 
                     string fullPath = _project.MakeRooted(filePath);
 
