@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
             {
-                // Make sure the tree matches the same version of the evalutation that we're handling
+                // Make sure the tree matches the same version of the evaluation that we're handling
                 IProjectTreeServiceState treeState = await _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree:true)
                                                                                    .ConfigureAwait(true); // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
 
