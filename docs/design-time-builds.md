@@ -107,7 +107,7 @@ For a failing build, look for errors at the end of the log:
 ```
 Build FAILED.
 
-c:\Projects\MyProject\MyProject.csproj(17,5): error : An error occured!
+c:\Projects\MyProject\MyProject.csproj(17,5): error : An error occurred!
     0 Warning(s)
     1 Error(s)
 ```
