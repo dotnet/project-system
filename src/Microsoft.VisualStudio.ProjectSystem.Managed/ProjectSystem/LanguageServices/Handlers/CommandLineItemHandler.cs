@@ -60,10 +60,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
-            ProcessOptions(projectChange);
-            ProcessItems(projectChange);
+
+            if (!ProcessDesignTimeBuildFailure(projectChange))
+            {
+                ProcessOptions(projectChange);
+                ProcessItems(projectChange);
+            }
 
             return Task.CompletedTask;
+        }
+
+        private bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange)
+        {
+            // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
+            // Unless the design-time build failured, we should have at least some arguments to the compiler
+            // Ignore the results if we don't.
+
+            bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
+
+            _context.LastDesignTimeBuildSucceeded = designTimeBuildFailed;
+
+            return designTimeBuildFailed;
         }
 
         private void ProcessOptions(IProjectChangeDescription projectChange)
