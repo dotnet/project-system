@@ -78,10 +78,39 @@ static void addVsiArchive(def myJob) {
   Utilities.addArchival(myJob, archiveSettings)
 }
 
-addVsiArchive(newVsiJob)
+// ISSUE: Temporary until a full builder for multi-scm source control is available.
+// Replace the scm settings with a multiScm setup.  Note that this will not work for PR jobs
+static void addVsiMultiScm(def myJob, def project) {
+    myJob.with {
+        multiscm {
+            git {
+                remote {
+                    url('https://github.com/dotnet/roslyn-internal')
+                    credentials('efd43e00-50a0-4247-8664-15f7fac9713d')
+                }
+                relativeTargetDir('roslyn-internal')
+                // roslyn-internal always pulls from master
+                // If needed, a direct hash can be placed here.
+                branch('*/master')
+            }
+            git {
+                remote {
+                    // Use the input project
+                    github(project)
+                }
+                // Pull from the desired branch input branch passed as a parameter (set up by standardJobSetup)
+                branch('${GitBranchOrCommit}')
+            }
+        }
+    }
+}
+// END ISSUE
 
+addVsiArchive(newVsiJob)
 // For now, trigger VSI jobs only on explicit request.
 Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
+// ISSUE: Temporary until a full builder for source control is available.
+addVsiMultiScm(newVsiJob, project)
 Utilities.addGithubPushTrigger(newVsiJob)
 Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
 
