@@ -313,7 +313,7 @@
     <value>StartProgram</value>
   </data>
   <data name="&gt;&gt;StartProgram.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;StartProgram.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
@@ -343,13 +343,13 @@
     <value>StartURL</value>
   </data>
   <data name="&gt;&gt;StartURL.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;StartURL.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;StartURL.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="StartProgramBrowse.AccessibleName" xml:space="preserve">
     <value>Browse for external program</value>
@@ -538,7 +538,7 @@
     <value>23, 254</value>
   </data>
   <data name="RemoteDebugEnabled.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 3, 3, 3</value>
+    <value>23, 3, 3, 11</value>
   </data>
   <data name="RemoteDebugEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>123, 17</value>
@@ -586,7 +586,7 @@
     <value>StartArguments</value>
   </data>
   <data name="&gt;&gt;StartArguments.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage+MultilineTextBoxRejectsEnter, Microsoft.VisualStudio.Editors, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage+MultilineTextBoxRejectsEnter, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;StartArguments.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
@@ -610,7 +610,7 @@
     <value>StartWorkingDirectory</value>
   </data>
   <data name="&gt;&gt;StartWorkingDirectory.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;StartWorkingDirectory.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
@@ -626,6 +626,9 @@
   </data>
   <data name="RemoteDebugMachine.Location" type="System.Drawing.Point, System.Drawing">
     <value>166, 253</value>
+  </data>
+  <data name="RemoteDebugMachine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 11</value>
   </data>
   <data name="RemoteDebugMachine.Size" type="System.Drawing.Size, System.Drawing">
     <value>292, 20</value>
@@ -643,7 +646,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;RemoteDebugMachine.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.AccessibleName" xml:space="preserve">
     <value>Browse for working directory</value>
@@ -853,7 +856,7 @@
     <value>2</value>
   </data>
   <data name="enableDebuggersTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 307</value>
+    <value>0, 284</value>
   </data>
   <data name="enableDebuggersTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -889,7 +892,7 @@
     <value>NoControl</value>
   </data>
   <data name="EnableSQLServerDebugging.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 354</value>
+    <value>23, 331</value>
   </data>
   <data name="EnableSQLServerDebugging.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 0, 1</value>
@@ -946,13 +949,13 @@
     <value>0</value>
   </data>
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="startActionTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbStartProject" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbStartProgram" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartProgram" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartProgramBrowse" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="rbStartURL" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="startOptionsTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="CommandLineArgsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartArguments" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WorkingDirLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectory" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectoryBrowse" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugEnabled" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="enableDebuggersTableLayoutPanel" Row="9" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="EnableUnmanagedDebugging" Row="10" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="EnableSQLServerDebugging" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="UseVSHostingProcess" Row="8" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="StartURL" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugMachine" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="startActionTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbStartProject" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbStartProgram" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartProgram" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartProgramBrowse" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="rbStartURL" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="startOptionsTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="CommandLineArgsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartArguments" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WorkingDirLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectory" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectoryBrowse" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugEnabled" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="enableDebuggersTableLayoutPanel" Row="9" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="EnableUnmanagedDebugging" Row="10" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="EnableSQLServerDebugging" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="StartURL" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugMachine" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="EnableUnmanagedDebugging.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="EnableUnmanagedDebugging.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 331</value>
+    <value>23, 308</value>
   </data>
   <data name="EnableUnmanagedDebugging.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 11, 0, 3</value>
@@ -1000,6 +1003,6 @@
     <value>DebugPropPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
