@@ -44,12 +44,19 @@ def newVsiJob = job(newVsiJobName) {
 
     // This opens the set of build steps that will be run.
     steps {
-        // Build roslyn-project-system repo.
-        batchFile("build.cmd /release")
+        // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
 
-        // git clone roslyn-internal to build and run VSI tao tests.
-        batchFile("""git clone https://github.com/dotnet/roslyn-internal.git
-pushd roslyn-internal
+build.cmd /release""")
+
+        // Build roslyn-internal and run netcore VSI tao tests.
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+
+pushd %WORKSPACE%\\roslyn-internal
 git submodule init
 git submodule sync
 git submodule update --init --recursive
@@ -58,7 +65,7 @@ set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-BuildAndTest.cmd -build:true -clean:false -deployExtensions:false -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -dependencies:true -samples:false -devDivInsertionFiles:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
+BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -dependencies:true -samples:false -devDivInsertionFiles:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
 popd""")
     }
 }
@@ -75,6 +82,8 @@ static void addVsiArchive(def myJob) {
   archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Obj/**')
   archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Bootstrap/**')
 
+  archiveSettings.setArchiveOnFailure()
+  archiveSettings.setFailIfNothingArchived()
   Utilities.addArchival(myJob, archiveSettings)
 }
 
@@ -85,21 +94,21 @@ static void addVsiMultiScm(def myJob, def project) {
         multiscm {
             git {
                 remote {
-                    url('https://github.com/dotnet/roslyn-internal')
-                    credentials('efd43e00-50a0-4247-8664-15f7fac9713d')
-                }
-                relativeTargetDir('roslyn-internal')
-                // roslyn-internal always pulls from master
-                // If needed, a direct hash can be placed here.
-                branch('*/master')
-            }
-            git {
-                remote {
                     // Use the input project
                     github(project)
                 }
                 // Pull from the desired branch input branch passed as a parameter (set up by standardJobSetup)
                 branch('${GitBranchOrCommit}')
+            }
+            git {
+                remote {
+                    url('https://github.com/dotnet/roslyn-internal')
+                    credentials('efd43e00-50a0-4247-8664-15f7fac9713d')
+                }
+                relativeTargetDir('roslyn-internal')
+                // roslyn-internal - pull in a specific LKG commit from master.
+                // In future, '*/master' can be placed here to pull latest sources.
+                branch('8b317590243b3d567687a4204833fe3631970a9d')
             }
         }
     }
