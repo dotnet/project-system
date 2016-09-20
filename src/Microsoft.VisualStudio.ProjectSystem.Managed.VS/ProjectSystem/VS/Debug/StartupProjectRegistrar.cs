@@ -111,12 +111,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Tasks.Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
         {
-            bool isDebuggable = await IsDebuggable().ConfigureAwait(false);
+            await _threadingService.SwitchToUIThread();
+            bool isDebuggable = await IsDebuggable().ConfigureAwait(true);
 
             if (initialize || isDebuggable != _isDebuggable)
             {
                 _isDebuggable = isDebuggable;
-                await _threadingService.SwitchToUIThread();
                 if (isDebuggable)
                 {
                     _startupProjectsListService.AddProject(ref _guid);
