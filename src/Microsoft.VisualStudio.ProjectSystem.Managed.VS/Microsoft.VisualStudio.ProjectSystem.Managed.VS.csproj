@@ -41,6 +41,7 @@
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGenerator.cs" />
     <Compile Include="ProjectSystem\VS\Debug\IDebugProfileLaunchTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Debug\StartupProjectRegistrar.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGeneratorRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Extensibility\ProjectExportProvider.cs" />

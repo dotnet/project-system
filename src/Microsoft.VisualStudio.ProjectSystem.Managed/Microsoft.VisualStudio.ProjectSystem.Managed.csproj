@@ -110,6 +110,9 @@
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
+    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
+    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
+    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
     <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
