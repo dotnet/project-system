@@ -113,4 +113,7 @@
   <data name="NoActionProfileName" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="JsonErrorNeedToBeCorrected" xml:space="preserve">
+    <value>Errors in '{0}' need to be corrected before applying changes.</value>
+  </data>
 </root>
