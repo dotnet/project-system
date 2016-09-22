@@ -79,6 +79,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes..
+        /// </summary>
+        internal static string JsonErrorNeedToBeCorrected {
+            get {
+                return ResourceManager.GetString("JsonErrorNeedToBeCorrected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error reading the launch settings file. This error will need to be corrected in order to debug this project. &apos;{0}&apos; .
         /// </summary>
         internal static string JsonErrorReadingLaunchSettings {

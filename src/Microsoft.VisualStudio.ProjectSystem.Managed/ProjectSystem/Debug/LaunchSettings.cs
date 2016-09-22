@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     internal class LaunchSettings : ILaunchSettings
     {
-
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
@@ -38,11 +36,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _activeProfileName = activeProfile;
         }
 
+        public LaunchSettings()
+        {
+            Profiles = ImmutableList<ILaunchProfile>.Empty;
+            GlobalSettings = ImmutableDictionary<string, object>.Empty;
+        }
+
         private string  _activeProfileName { get; } 
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
 
-        public ImmutableDictionary<string, object> GlobalSettings {get;}
+        public ImmutableDictionary<string, object> GlobalSettings { get; }
 
         public object GetGlobalSetting(string settingName)
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -259,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Write a json file containing extension settings
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
         
-                // Set the serialization provider
+            // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
             var launchSettings = provider.ReadSettingsFileFromDiskTest();
@@ -309,7 +310,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile));
         }
-
 
         [Fact]
         public async Task LaunchSettingsProvider_LaunchSettingsFile_Changed()
@@ -408,6 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return profiles.ToImmutableList();
             });
+
             testSettings.Setup(m => m.GlobalSettings).Returns(() =>
             {
                 IISSettingsData iisSettings = new IISSettingsData()
@@ -431,6 +432,245 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check snapshot
             Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+        }
+
+        [Theory]
+        [InlineData(true, 0)]
+        [InlineData(false, 2)]
+        public async Task LaunchSettingsProvider_AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex)
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+            };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test" };
+
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
+            Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
+        }
+
+        [Theory]
+        [InlineData(true, 0)]
+        [InlineData(false, 1)]
+        public async Task LaunchSettingsProvider_AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex)
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} },
+                {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+            };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test" };
+
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Equal("test", provider.CurrentSnapshot.Profiles[expectedIndex].Name);
+            Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
+            Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_RemoveProfileAsync_ProfileExists()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} },
+                {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+            };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name.Equals("test")));
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_RemoveProfileAsync_ProfileDoesntExists()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+            };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+
+            // Check disk file was not written
+            Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_AddOrUpdateGlobalSettingAsync_SettingDoesntExist()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            // Set the serialization provider
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newSettings = new IISSettingsData() { WindowsAuthentication = true };
+
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            object updatedSettings;
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_AddOrUpdateGlobalSettingAsync_SettingExists()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            // Set the serialization provider
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableDictionary<string, object>.Empty
+                                                    .Add("test", new LaunchProfile())
+                                                    .Add("iisSettings", new IISSettingsData()); 
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newSettings = new IISSettingsData() { WindowsAuthentication = true };
+
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            object updatedSettings;
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+        }
+        [Fact]
+        public async Task LaunchSettingsProvider_RemoveGlobalSettingAsync_SettingDoesntExist()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            // Set the serialization provider
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+
+            // Check disk file was not written
+            Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_RemoveGlobalSettingAsync_SettingExists()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+
+            // Set the serialization provider
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableDictionary<string, object>.Empty
+                                                    .Add("test", new LaunchProfile())
+                                                    .Add("iisSettings", new IISSettingsData()); 
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+
+            // Check disk file was written
+            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            object updatedSettings;
+            Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
         }
 
 string JsonString1 = @"{
