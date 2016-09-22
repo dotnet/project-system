@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task RemoveGlobalSettingAsync(string settingName);
 
         /// <summary>
-        /// Sets the active profile. This just sets te propery it does not validate that the setting matches an
+        /// Sets the active profile. This just sets the property it does not validate that the setting matches an
         /// existing profile
         /// </summary>
         Task SetActiveProfileAsync(string profileName);

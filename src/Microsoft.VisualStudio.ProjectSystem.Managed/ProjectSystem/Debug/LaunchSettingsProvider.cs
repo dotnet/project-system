@@ -723,7 +723,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             else
             {
-                // Asertion index will be set to the current count (end of list) if an existing item was not found otherwise
+                // Insertion index will be set to the current count (end of list) if an existing item was not found otherwise
                 // it will point to where the previous one was found
                 profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
             }
@@ -800,7 +800,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Sets the active profile. This just sets te propery it does not validate that the setting matches an
+        /// Sets the active profile. This just sets the property it does not validate that the setting matches an
         /// existing profile
         /// </summary>
         public async Task SetActiveProfileAsync(string profileName)
@@ -808,6 +808,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
             await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
         }
-
     }
 }

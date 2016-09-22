@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     internal class LaunchSettings : ILaunchSettings
     {
-
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
