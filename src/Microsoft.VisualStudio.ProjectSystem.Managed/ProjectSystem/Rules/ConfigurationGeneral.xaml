@@ -52,6 +52,7 @@
     </StringProperty>
     <StringProperty Name="OutputName" />
     <StringProperty Name="OutputPath" />
+    <StringProperty Name="BaseIntermediateOutputPath" />
     <EnumProperty Name="OutputType">
         <EnumValue Name="Library" DisplayName="Class Library" />
         <EnumValue Name="exe" DisplayName="Console Application" />

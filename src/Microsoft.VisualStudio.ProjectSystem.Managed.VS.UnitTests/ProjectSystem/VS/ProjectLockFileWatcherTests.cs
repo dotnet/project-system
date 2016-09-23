@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         [Theory]
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", null)]
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", @"C:\Foo\obj\project.assets.json")]
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     project.json, FilePath: ""C:\Foo\project.json""", @"C:\Foo\project.lock.json")]
@@ -25,9 +25,17 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
+            var propertyData = new PropertyPageData
+            {
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
+                Value = "obj\\"
+            };
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(IUnconfiguredProjectFactory.Create(filePath:@"C:\Foo\foo.proj")),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
+                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
                                                      IProjectLockServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(inputTree);
@@ -43,12 +51,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", @"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
-    project.json, FilePath: ""C:\Foo\project.json""", 1, 0)]
+    project.json, FilePath: ""C:\Foo\project.json""", 2, 1)]
         // Remove file
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     project.json, FilePath: ""C:\Foo\project.json""", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", 1, 1)]
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", 2, 1)]
         // Rename file to projectName.project.json
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
@@ -60,7 +68,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     project.json, FilePath: ""C:\Foo\foo.project.json""", @"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
-    fooproject.json, FilePath: ""C:\Foo\fooproject.json""", 1, 1)]
+    fooproject.json, FilePath: ""C:\Foo\fooproject.json""", 2, 1)]
         // Unrelated change
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
@@ -76,9 +84,17 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
+            var propertyData = new PropertyPageData
+            {
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
+                Value = "obj\\"
+            };
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj")),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
+                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
                                                      IProjectLockServiceFactory.Create());
 
             var firstTree = ProjectTreeParser.Parse(inputTree);
