@@ -4,12 +4,8 @@
 // Project-level suppressions either have no target or are given 
 // a specific target and scoped to a namespace, type, member, etc.
 
-// https://github.com/dotnet/roslyn-analyzers/issues/955
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharpProjectImageProvider")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharpCodeDomProvider")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharpLanguageFeaturesProvider")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharpLanguageServiceHost")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharpProjectDesignerPageProvider")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.CSharpProjectCompatibilityProvider")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "RS0006:Do not mix attributes from different versions of MEF", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.CSharpProjectGuidProvider")]
-
+// workaround for https://github.com/dotnet/roslyn-analyzers/issues/955
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+                "Reliability",
+                "RS0006:Do not mix attributes from different versions of MEF",
+                Justification = "<Pending>")]
