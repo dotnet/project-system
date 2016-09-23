@@ -7,6 +7,7 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using TPL = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -16,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
+        private readonly IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
@@ -35,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
             _projectLockService = projectLockService;
+            _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Called on changes to the project tree.
         /// </summary>
-        internal void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
+        internal async void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
         {
             var newTree = treeSnapshot.Value.Tree;
             if (newTree == null)
@@ -72,25 +75,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            // If there' no project.json in the project, there's nothing to watch.
-            IProjectTree projectJsonNode = FindProjectJsonNode(newTree);
-            if (projectJsonNode == null)
-            {
-                // project.json may have been deleted.
-                UnregisterFileWatcherIfAny();
-                return;
-            }
-
-            var projectDirectory = Path.GetDirectoryName(_projectServices.Project.FullPath);
-            var projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
+            var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
 
             // project.json may have been renamed to {projectName}.project.json. In that case change the file watcher.
-            if (!PathHelper.IsSamePath(projectLockJsonFilePath, _fileBeingWatched))
+            if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
                 UnregisterFileWatcherIfAny();
-                RegisterFileWatcher(projectLockJsonFilePath);
-                _fileBeingWatched = projectLockJsonFilePath;
+                RegisterFileWatcherAsync(projectLockFilePath);
+                _fileBeingWatched = projectLockFilePath;
             }
+        }
+
+        private async TPL.Task<String> GetProjectLockFilePathAsync(IProjectTree newTree)
+        {
+            // First check to see if the project has a project.json. 
+            IProjectTree projectJsonNode = FindProjectJsonNode(newTree);
+            if (projectJsonNode != null)
+            {
+                var projectDirectory = Path.GetDirectoryName(_projectServices.Project.FullPath);
+                var projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
+                return projectLockJsonFilePath;
+            }
+
+            // If there is no project.json then get the patch to obj\project.assets.json file which is generated for projects
+            // with <PackageReference> items.
+            var configurationGeneral = await _projectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            var objDirectory = (string) await configurationGeneral.BaseIntermediateOutputPath.GetValueAsync().ConfigureAwait(false);
+            objDirectory = _projectServices.Project.MakeRooted(objDirectory);
+            var projectAssetsFilePath = PathHelper.Combine(objDirectory, "project.assets.json");
+            return projectAssetsFilePath;
         }
 
         private IProjectTree FindProjectJsonNode(IProjectTree newTree)
@@ -109,27 +122,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return null;
         }
-
-        private void RegisterFileWatcher(string projectLockJsonFilePath)
+        
+        private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
-            IVsFileChangeEx fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-            if (fileChangeService != null)
+            if (_fileChangeService != null)
             {
-                int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
+                int hr = _fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
                 ErrorHandler.ThrowOnFailure(hr);
             }
         }
 
         private void UnregisterFileWatcherIfAny()
         {
-            if (_filechangeCookie != VSConstants.VSCOOKIE_NIL)
+            if (_filechangeCookie != VSConstants.VSCOOKIE_NIL && _fileChangeService != null)
             {
-                IVsFileChangeEx fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-                if (fileChangeService != null)
-                {
-                    // There's nothing for us to do if this fails. So ignore the return value.
-                    fileChangeService.UnadviseFileChange(_filechangeCookie);
-                }
+                // There's nothing for us to do if this fails. So ignore the return value.
+                _fileChangeService?.UnadviseFileChange(_filechangeCookie);
             }
         }
 
