@@ -1,0 +1,30 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
+{
+    /// <summary>
+    ///     Exposes a VS specific API related to <see cref="IVsContainedLanguage"/>
+    /// </summary>
+    public interface IVsContainedLanguageComponentsFactory
+    {
+        /// <summary>
+        ///     Gets an object that represents a host-specific IVsContainedLanguageFactory implementation.
+        ///     Note: currently we have only one target framework and IVsHierarchy and itemId is returned as 
+        ///     they are from the unconfigured project. Later when combined intellisense is implemented, depending
+        ///     on implementation we might need to have a logic that returns IVsHierarchy and itemId specific to 
+        ///     currently active target framework (thats how it was in Dev14's dnx/dotnet project system)
+        /// </summary>
+        /// <param name="filePath">Path to a file</param>
+        /// <param name="hierarchy">Project hierarchy containing given file for current language service</param>
+        /// <param name="itemid">item id of the given file</param>
+        /// <param name="containedLanguageFactory">an instance of IVsContainedLanguageFactory specific for current language service</param>
+        /// <returns></returns>
+        int GetContainedLanguageFactoryForFile(string filePath, 
+                                               out IVsHierarchy hierarchy, 
+                                               out uint itemid, 
+                                               out IVsContainedLanguageFactory containedLanguageFactory);
+    }
+}
