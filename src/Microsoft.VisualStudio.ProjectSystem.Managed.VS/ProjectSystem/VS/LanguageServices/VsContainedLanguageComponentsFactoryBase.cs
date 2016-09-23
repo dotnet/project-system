@@ -8,7 +8,7 @@ using IOLEServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    internal class VsContainedLanguageComponentsFactoryBase : IVsContainedLanguageComponentsFactory
+    internal abstract class VsContainedLanguageComponentsFactoryBase : IVsContainedLanguageComponentsFactory
     {
         public VsContainedLanguageComponentsFactoryBase(SVsServiceProvider serviceProvider,
                                                         IUnconfiguredProjectVsServices projectServices,
