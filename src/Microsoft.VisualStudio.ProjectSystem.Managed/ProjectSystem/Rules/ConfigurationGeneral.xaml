@@ -25,6 +25,11 @@
             <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
+    <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
     <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />

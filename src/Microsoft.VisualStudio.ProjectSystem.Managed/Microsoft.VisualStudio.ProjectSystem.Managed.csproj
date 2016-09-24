@@ -109,6 +109,7 @@
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
