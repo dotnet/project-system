@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     internal class TargetFrameworkProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";
-        private const string DefaultTargetFrameworkValue = "netcoreapp1.0";
         private readonly IProjectLockService _projectLockService;
         
         [ImportingConstructor]
@@ -32,7 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             // First target framework is the default one.
             var targetFrameworks = await GetOrderedTargetFrameworksAsync(project).ConfigureAwait(false);
-            return ImmutableArray.Create(new KeyValuePair<string, string>(TargetFrameworkPropertyName, targetFrameworks.FirstOrDefault()));
+            if (targetFrameworks.IsEmpty)
+            {
+                return ImmutableArray<KeyValuePair<string, string>>.Empty;
+            }
+
+            return ImmutableArray.Create(new KeyValuePair<string, string>(TargetFrameworkPropertyName, targetFrameworks.First()));
         }
 
         public async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(UnconfiguredProject project)
@@ -55,29 +59,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 // Read the "TargetFrameworks" properties from msbuild project evaluation.
                 var configuredProject = await project.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
                 var msbuildProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(false);
-                var targetFrameworksStrings = msbuildProject.Properties.Where(p => p.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase));
+                var targetFrameworksProperty = msbuildProject.Properties
+                    .Where(p => p.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
+                    .LastOrDefault();
 
-                if (!targetFrameworksStrings.Any())
+                if (targetFrameworksProperty == null)
                 {
                     return ImmutableArray<string>.Empty;
                 }
 
-                // We need to ensure that we return the target frameworks in specified order.
-                var targetFrameworks = ImmutableArray.CreateBuilder<string>();
-                foreach (var frameworksString in targetFrameworksStrings)
+                // TargetFrameworks contains semicolon delimited list of frameworks, for example "net45;netcoreapp1.0;netstandard1.4"
+                var targetFrameworksValue = targetFrameworksProperty.EvaluatedValue.Split(';').Select(f => f.Trim());
+
+                // We need to ensure that we return the target frameworks in the specified order.
+                var targetFrameworksBuilder = ImmutableArray.CreateBuilder<string>();
+                foreach (var targetFramework in targetFrameworksValue)
                 {
-                    // TargetFrameworks contains semicolon delimited list of frameworks, for example "net45;netcoreapp1.0;netstandard1.4"
-                    foreach (var framework in frameworksString.EvaluatedValue.Split(';').Select(f => f.Trim()))
+                    if (!string.IsNullOrEmpty(targetFramework))
                     {
-                        if (!string.IsNullOrEmpty(framework))
-                        {
-                            // CONSIDER: Do we need to do additional TFM validation here?
-                            targetFrameworks.Add(framework);
-                        }
+                        targetFrameworksBuilder.Add(targetFramework);
                     }
                 }
 
-                return targetFrameworks.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
+                return targetFrameworksBuilder.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
             }
         }
     }
