@@ -3,7 +3,9 @@
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
+using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -16,7 +18,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(XprojProjectFactory), null, null, null, null, null)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, null, null, null, null)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
         SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
@@ -35,7 +37,7 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
         private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
 
-        private XprojProjectFactory _factory;
+        private IVsProjectFactory _factory;
 
         public CSharpProjectSystemPackage()
         {
@@ -43,7 +45,8 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            _factory = new XprojProjectFactory(this);
+            _factory = new MigrateXprojProjectFactory();
+            _factory.SetSite(this);
             RegisterProjectFactory(_factory);
             return Tasks.Task.CompletedTask;
         }
