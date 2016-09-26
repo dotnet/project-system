@@ -45,7 +45,11 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
-
+    <StringProperty Name="TargetFrameworks" DisplayName="List of Supported Target Frameworks">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
     <StringProperty Name="AssemblyName" />
