@@ -41,6 +41,7 @@
                           AssemblyReferences;
                           COMReferences;
                           ProjectReferences;
+                          PackageReferences;
                           SharedProjectReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
