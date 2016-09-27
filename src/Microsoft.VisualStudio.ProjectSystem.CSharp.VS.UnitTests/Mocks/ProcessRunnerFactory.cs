@@ -2,12 +2,7 @@
 
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -18,30 +13,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return Mock.Of<ProcessRunner>();
         }
 
-        public static ProcessRunner ImplementRunner(string outputText = "", string errorText = "", int exitCode = 0)
+        public static ProcessRunner ImplementRunner(Action<ProcessStartInfo> callback, string outputText = "", string errorText = "", int exitCode = 0)
         {
             var mock = new Mock<ProcessRunner>();
 
-            mock.Setup(pr => pr.Start(It.IsAny<ProcessStartInfo>())).Returns(CreateProcess(outputText, errorText, exitCode));
+            mock.Setup(pr => pr.Start(It.IsAny<ProcessStartInfo>())).Returns(CreateProcess(outputText, errorText, exitCode)).Callback(callback);
 
             return mock.Object;
         }
 
-        public static Process CreateProcess(string outputText = "", string errorText = "", int exitCode = 0)
+        public static ProcessWrapper CreateProcess(string outputText = "", string errorText = "", int exitCode = 0)
         {
-            var processMock = new Mock<Process>();
-            var soMock = new Mock<StreamReader>();
-            var seMock = new Mock<StreamReader>();
+            var processMock = new Mock<ProcessWrapper>(new object[] { null });
 
             processMock.Setup(p => p.ExitCode).Returns(exitCode);
 
             // Mock standard output and standard error
-            soMock.Setup(so => so.ReadToEnd()).Returns(outputText);
-            seMock.Setup(se => se.ReadToEnd()).Returns(errorText);
-            processMock.Setup(p => p.StandardOutput).Returns(soMock.Object);
-            processMock.Setup(p => p.StandardError).Returns(seMock.Object);
+            processMock.Setup(p => p.StandardOutput).Returns(new System.IO.StringReader(outputText));
+            processMock.Setup(p => p.StandardError).Returns(new System.IO.StringReader(errorText));
 
-            return null;
+            return processMock.Object;
         }
     }
 }

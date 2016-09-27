@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Shell.Interop;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,16 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void MigrateXprojProjectFactory_NonExistantProjectJson_DoesNotBackUp()
         {
-            var tuple = CreateTempProjectLocation();
-            var backupDirectory = tuple.Item1;
-            var xproj = tuple.Item2;
-            var projectJson = tuple.Item3;
+            var backupDirectory = @"C:\NonExistent";
+            var xproj = @"C:\NonExistent\XprojMigrationTests.xproj";
+            var projectJson = @"C:\NonExistent\project.json";
 
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var migrator = new MigrateXprojProjectFactory(procRunner);
-
-            // Ensure that there's no project.json
-            File.Delete(projectJson);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -81,7 +78,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal("XprojMigrationTests", loggedMessages[0].Project);
             Assert.Equal(projectJson, loggedMessages[0].File);
             Assert.Equal($"Failed to migrate XProj project XprojMigrationTests. Could not find project.json at {projectJson}.", loggedMessages[0].Message);
-            Assert.Equal(0, Directory.EnumerateFiles(backupDirectory).Count());
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_ValidPaths_CallMigrateCorrectly()
+        {
+            var projectDirectory = @"C:\Test";
+            var xproj = @"C:\Test\XprojMigrationTests.xproj";
+
+            // Runner returns valid response, standard exit code
+            var procRunner = ProcessRunnerFactory.ImplementRunner(pr =>
+            {
+                Assert.Equal("dotnet.exe", pr.FileName);
+                Assert.Equal("migrate -s -p \"C:\\Test\" -x \"C:\\Test\\XprojMigrationTests.xproj\"", pr.Arguments);
+            });
+            var migrator = new MigrateXprojProjectFactory(procRunner);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+
+            Assert.True(migrator.MigrateProject(projectDirectory, xproj, "XprojMigrationTests", logger));
+            Assert.Equal(0, loggedMessages.Count);
         }
 
         private Tuple<string, string, string> CreateTempProjectLocation()
