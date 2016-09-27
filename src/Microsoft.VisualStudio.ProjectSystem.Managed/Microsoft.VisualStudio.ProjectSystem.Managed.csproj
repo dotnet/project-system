@@ -35,6 +35,7 @@
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
+    <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />

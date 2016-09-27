@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class TargetFrameworkProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider
     {
-        private const string TargetFrameworkPropertyName = "TargetFramework";
+        internal const string TargetFrameworkPropertyName = "TargetFramework";
         private readonly IProjectLockService _projectLockService;
         
         [ImportingConstructor]
@@ -56,9 +56,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                // Read the "TargetFrameworks" properties from msbuild project evaluation.
                 var configuredProject = await project.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
                 var msbuildProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(false);
+                
+                // If the project already defines a specific "TargetFramework" to target, then this is not a cross-targeting project and we don't need a target framework dimension.
+                if (msbuildProject.Properties.Any(p => p.Name.Equals(TargetFrameworkPropertyName, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(p.EvaluatedValue)))
+                {
+                    return ImmutableArray<string>.Empty;
+                }
+
+                // Read the "TargetFrameworks" properties from msbuild project evaluation.
                 var targetFrameworksProperty = msbuildProject.Properties
                     .Where(p => p.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
                     .LastOrDefault();

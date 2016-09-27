@@ -49,7 +49,6 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
