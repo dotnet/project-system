@@ -14,6 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     [Guid(CSharpProjectSystemPackage.XprojTypeGuid)]
     internal sealed class MigrateXprojProjectFactory : FlavoredProjectFactoryBase, IVsProjectUpgradeViaFactory, IVsProjectUpgradeViaFactory4
     {
+        private readonly ProcessRunner _runner;
+
+        public MigrateXprojProjectFactory(ProcessRunner runner)
+        {
+            _runner = runner;
+        }
+
         public int UpgradeProject(string bstrFileName, uint fUpgradeFlag, string bstrCopyLocation, out string pbstrUpgradedFullyQualifiedFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory)
         {
             bool success;
@@ -53,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             pInfo.UseShellExecute = false;
             pInfo.RedirectStandardError = true;
             pInfo.RedirectStandardOutput = true;
-            var process = Process.Start(pInfo);
+            var process = _runner.Start(pInfo);
             process.WaitForExit();
 
             // TODO: we need to read the output from the migration report in addition to console output.

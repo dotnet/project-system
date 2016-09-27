@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            _factory = new MigrateXprojProjectFactory();
+            _factory = new MigrateXprojProjectFactory(new ProcessRunner());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
             return Tasks.Task.CompletedTask;
