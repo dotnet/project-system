@@ -58,6 +58,8 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\IVsUpgradeLoggerFactory.cs" />
+    <Compile Include="Mocks\ProcessRunnerFactory.cs" />
     <Compile Include="Packaging\CSharpProjectSystemPackageTests.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProviderTests.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Test\App.config">
