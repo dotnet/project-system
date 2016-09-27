@@ -42,11 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DictionaryEqualityComparer.cs" />
+    <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
     <Compile Include="Mocks\IFileSystemMock.cs" />
+    <Compile Include="Mocks\IProjectFaultHandlerServiceFactory.cs" />
+    <Compile Include="Mocks\IProjectServicesFactory.cs" />
+    <Compile Include="Mocks\IProjectServiceFactory.cs" />
     <Compile Include="Mocks\ISourceCodeControlIntegrationFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />
@@ -79,6 +83,7 @@
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
+    <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileDataTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileTests.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacerTests.cs" />
@@ -114,6 +119,7 @@
   <ItemGroup>
     <Reference Include="WindowsBase" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>
