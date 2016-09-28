@@ -52,6 +52,8 @@ Use the `DesignTimeBuild` property to differentiate between when a target is run
      ...
   </Target>
 ```
+
+__NOTE:__ The DesignTimeBuild property is typically empty ('') inside of a normal build, so avoid comparisons to `false`.
  
 ### Specifying explicit dependencies
 
