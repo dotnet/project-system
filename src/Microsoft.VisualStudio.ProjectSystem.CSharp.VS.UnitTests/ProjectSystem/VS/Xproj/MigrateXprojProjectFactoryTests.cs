@@ -22,6 +22,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
+        public void MigrateXprojProjectFactory_ValidArgs_BackupsCorrectly()
+        {
+            var tuple = CreateTempProjectLocation();
+            var backupDirectory = tuple.Item1;
+            var xproj = tuple.Item2;
+            var projectJson = tuple.Item3;
+
+            var procRunner = ProcessRunnerFactory.CreateRunner();
+            var migrator = new MigrateXprojProjectFactory(procRunner);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+
+            Assert.True(migrator.BackupProject(backupDirectory, xproj, "XprojMigrationTests", logger));
+
+            // We expect 2 informational messages about what files were backed up.
+            Assert.Equal(2, loggedMessages.Count);
+            loggedMessages.ForEach(message =>
+            {
+                Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, message.Level);
+                Assert.Equal("XprojMigrationTests", message.Project);
+            });
+
+            // The first message should be about the old xproj, the second about the project.json
+            Assert.Equal(xproj, loggedMessages[0].File);
+            Assert.Equal(projectJson, loggedMessages[1].File);
+            Assert.Equal($"Backing up {xproj} to {Path.Combine(backupDirectory, "XprojMigrationTests.xproj")}.", loggedMessages[0].Message);
+            Assert.Equal($"Backing up {projectJson} to {Path.Combine(backupDirectory, "project.json")}.", loggedMessages[1].Message);
+
+            // Finally, assert that there actually are backup files in the backup directory
+            var backedUpFiles = Directory.GetFiles(backupDirectory);
+            Assert.Equal(2, backedUpFiles.Count());
+            Assert.True(backedUpFiles.Any(file => file.EndsWith("project.json")));
+            Assert.True(backedUpFiles.Any(file => file.EndsWith("XprojMigrationTests.xproj")));
+        }
+
+        [Fact]
         public void MigrateXprojProjectFactory_NonExistantProjectJson_DoesNotBackUp()
         {
             var backupDirectory = @"C:\NonExistent";
