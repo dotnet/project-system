@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
@@ -108,9 +105,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var backupDirectory = Path.Combine(directory, "backup");
             Directory.CreateDirectory(backupDirectory);
             var xproj = Path.Combine(directory, "XprojMigrationTests.xproj");
-            File.Create(xproj);
+            File.Create(xproj).Dispose();
             var projectJson = Path.Combine(directory, "project.json");
-            File.Create(projectJson);
+            File.Create(projectJson).Dispose();
 
             return Tuple.Create(backupDirectory, xproj, projectJson);
         }
