@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
@@ -51,7 +52,9 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AdditionalFilesItemHandler.cs" />
@@ -60,12 +63,15 @@
     <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContext.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceCommandLineHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ActiveConfiguredProjectIgnoringTargetFrameworkProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />

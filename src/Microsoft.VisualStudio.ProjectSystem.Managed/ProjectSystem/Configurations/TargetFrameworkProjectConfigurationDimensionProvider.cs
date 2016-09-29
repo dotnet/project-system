@@ -59,12 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 var configuredProject = await project.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
                 var msbuildProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(false);
                 
-                // If the project already defines a specific "TargetFramework" to target, then this is not a cross-targeting project and we don't need a target framework dimension.
-                if (msbuildProject.Properties.Any(p => p.Name.Equals(TargetFrameworkPropertyName, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(p.EvaluatedValue)))
-                {
-                    return ImmutableArray<string>.Empty;
-                }
-
                 // Read the "TargetFrameworks" properties from msbuild project evaluation.
                 var targetFrameworksProperty = msbuildProject.Properties
                     .Where(p => p.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))

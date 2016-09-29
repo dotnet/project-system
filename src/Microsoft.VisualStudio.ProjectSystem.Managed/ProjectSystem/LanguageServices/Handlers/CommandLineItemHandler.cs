@@ -13,11 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(ILanguageServiceRuleHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class CommandLineItemHandler : ILanguageServiceRuleHandler
+    internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
     {
         private readonly ICommandLineParserService _commandLineParser;
-        private IWorkspaceProjectContext _context;
-
+        
         [ImportingConstructor]
         public CommandLineItemHandler(UnconfiguredProject project, ICommandLineParserService commandLineParser)
         {
@@ -33,72 +32,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get;
         }
 
-        public string RuleName
+        public override string RuleName
         {
             get { return CompilerCommandLineArgs.SchemaName; }
         }
 
-        public RuleHandlerType HandlerType
+        public override RuleHandlerType HandlerType
         {
             get { return RuleHandlerType.DesignTimeBuild; }
         }
 
-        public void SetContext(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _context = context;
-
-            foreach (var handler in Handlers)
-            {
-                handler.Value.SetContext(_context);
-            }
-        }
-
-        public Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange)
+        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
 
-            if (!ProcessDesignTimeBuildFailure(projectChange))
+            if (!ProcessDesignTimeBuildFailure(projectChange, context))
             {
-                ProcessOptions(projectChange);
-                ProcessItems(projectChange);
+                ProcessOptions(projectChange, context);
+                ProcessItems(projectChange, context);
             }
 
             return Task.CompletedTask;
         }
 
-        private bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange)
+        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
             // Check if the design-time build failed, if we have no arguments, then that is likely the 
             // case and we should ignore the results.
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
-
-            _context.LastDesignTimeBuildSucceeded = designTimeBuildFailed;
-
+            context.LastDesignTimeBuildSucceeded = designTimeBuildFailed;
             return designTimeBuildFailed;
         }
 
-        private void ProcessOptions(IProjectChangeDescription projectChange)
+        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             // We don't pass differences to Roslyn for options, we just pass them all
             IEnumerable<string> commandlineArguments = projectChange.After.Items.Keys;
-
-            _context.SetOptions(string.Join(",", commandlineArguments));
+            var commandLine = string.Join(",", commandlineArguments);
+            context.SetOptions(commandLine);
         }
 
-        private void ProcessItems(IProjectChangeDescription projectChange)
+        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             CommandLineArguments addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             CommandLineArguments removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {
-                handler.Value.Handle(addedItems, removedItems);
+                handler.Value.Handle(addedItems, removedItems, context);
             }
         }
     }

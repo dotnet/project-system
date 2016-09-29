@@ -36,6 +36,8 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostProvider.HostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="ProjectSystem\VS\ManagedProjectSystemPackage.cs" />

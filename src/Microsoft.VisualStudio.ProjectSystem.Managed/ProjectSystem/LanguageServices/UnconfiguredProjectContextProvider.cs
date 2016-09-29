@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,36 +13,44 @@ using Microsoft.VisualStudio.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
-    ///     Implementation of <see cref="IProjectContextProvider"/> that creates an <see cref="IWorkspaceProjectContext"/>
-    ///     based on the an <see cref="UnconfiguredProject"/>.
+    ///     Implementation of <see cref="IProjectContextProvider"/> that creates an <see cref="AggregateWorkspaceProjectContext"/>
+    ///     based on the unique TargetFramework configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IProjectContextProvider))]
-    internal partial class UnconfiguedProjectContextProvider : OnceInitializedOnceDisposed, IProjectContextProvider
+    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposed, IProjectContextProvider
     {
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
         private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
         private readonly ITaskScheduler _taskScheduler;
-        private readonly List<IWorkspaceProjectContext> _contexts = new List<IWorkspaceProjectContext>();
+        private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
+        private readonly IProjectHostProvider _projectHostProvider;
+        private readonly ActiveConfiguredProjectIgnoringTargetFrameworkProvider _activeConfiguredProjectIgnoringTargetFrameworkProvider;
 
         [ImportingConstructor]
-        public UnconfiguedProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
+        public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
                                                  Lazy<IWorkspaceProjectContextFactory> contextFactory,
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
-                                                 ITaskScheduler taskScheduler)
+                                                 ITaskScheduler taskScheduler,
+                                                 IProjectHostProvider projectHostProvider,
+                                                 ActiveConfiguredProjectIgnoringTargetFrameworkProvider activeConfiguredProjectIgnoringTargetFrameworkProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
             Requires.NotNull(taskScheduler, nameof(taskScheduler));
+            Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
+            Requires.NotNull(activeConfiguredProjectIgnoringTargetFrameworkProvider, nameof(activeConfiguredProjectIgnoringTargetFrameworkProvider));
 
             _commonServices = commonServices;
             _contextFactory = contextFactory;
             _asyncLoadDashboard = asyncLoadDashboard;
             _taskScheduler = taskScheduler;
+            _projectHostProvider = projectHostProvider;
+            _activeConfiguredProjectIgnoringTargetFrameworkProvider = activeConfiguredProjectIgnoringTargetFrameworkProvider;
         }
 
-        public async Task<IWorkspaceProjectContext> CreateProjectContextAsync()
+        public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
         {
             EnsureInitialized();
 
@@ -55,16 +64,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 // the project could have been renamed, handle this.
                 var projectData = GetProjectData();
 
-                context.ProjectFilePath = projectData.FullPath;
-                context.DisplayName = projectData.DisplayName;
-
+                context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 _contexts.Add(context);
             }
 
             return context;
         }
 
-        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContext context)
+        public async Task ReleaseProjectContextAsync(AggregateWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -98,8 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 foreach (var context in _contexts)
                 {
-                    context.ProjectFilePath = projectData.FullPath;
-                    context.DisplayName = projectData.DisplayName;
+                    context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 }
             }
 
@@ -144,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             };
         }
 
-        private async Task<IWorkspaceProjectContext> CreateProjectContextAsyncCore()
+        private async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsyncCore()
         {
             string languageName = await GetLanguageServiceName().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
@@ -162,9 +168,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
+                var projectHost = _projectHostProvider.GetProjectHostObject(_commonServices.Project);
 
-                return _contextFactory.Value.CreateProjectContext(languageName, projectData.DisplayName, projectData.FullPath, projectGuid, _commonServices.Project.Services.HostObject, targetPath);
+                // Get the set of active configured projects ignoring target framework.
+                var configuredProjectsMap = await _activeConfiguredProjectIgnoringTargetFrameworkProvider.GetConfiguredProjectsMapAsync().ConfigureAwait(true);
+
+                var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
+                foreach (var kvp in configuredProjectsMap)
+                {
+                    var targetFramework = kvp.Key;
+                    var configuredProject = kvp.Value;
+
+                    // Get the target path for the configured project.
+                    var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                    var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                    targetPath = NormalizeTargetPath(targetPath, projectData);
+
+                    // For cross targeting projects, we need to ensure that the display name is unique per every target framework.
+                    // This is needed for couple of reasons:
+                    //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
+                    //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
+                    var displayName = configuredProject.ProjectConfiguration.IsCrossTargeting() ?
+                        $"{projectData.DisplayName}({targetFramework})" :
+                        projectData.DisplayName;
+
+                    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                    await _commonServices.ThreadingService.SwitchToUIThread();
+                    var workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, projectHost, targetPath);
+                    innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
+                }
+
+                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable());
             });
+        }
+
+        private static string NormalizeTargetPath(string targetPath, ProjectData projectData)
+        {
+            Requires.NotNullOrEmpty(targetPath, nameof(targetPath));
+            
+            if (!Path.IsPathRooted(targetPath))
+            {
+                var directory = Path.GetDirectoryName(projectData.FullPath);
+                targetPath = Path.Combine(directory, targetPath);
+            }
+
+            return targetPath;
         }
 
         private struct ProjectData

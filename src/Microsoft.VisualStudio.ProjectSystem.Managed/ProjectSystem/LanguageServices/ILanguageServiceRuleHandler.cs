@@ -13,18 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface ILanguageServiceRuleHandler
     {
         /// <summary>
-        ///     Sets the context that the handler manipulates.
-        /// </summary>
-        /// <param name="context">
-        ///     The <see cref="IWorkspaceProjectContext"/> that the <see cref="ILanguageServiceRuleHandler"/> 
-        ///     manipulates.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="context"/> is <see langword="null"/>.
-        /// </exception>
-        void SetContext(IWorkspaceProjectContext context);
-
-        /// <summary>
         ///     Gets the rule this handler handles.
         /// </summary>
         /// <value>
@@ -50,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
-        ///     to the <see cref="IWorkspaceProjectContext"/>.
+        ///     to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="e">
         ///     A <see cref="IProjectVersionedValue{IProjectSubscriptionService}"/> representing 
@@ -59,6 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="projectChange">
         ///     A <see cref="IProjectChangeDescription"/> representing the set of 
         ///     changes made to the project.
+        /// <param name="context">
+        ///     A <see cref="IWorkspaceProjectContext"/> to update.
+        /// </param>
         /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="e"/> is <see langword="null"/>.
@@ -67,6 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="projectChange"/> is <see langword="null"/>.
         /// </exception>
-        Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange);
+        Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context);
+
+        /// <summary>
+        /// Handles clearing any state specific to the given context being released.
+        /// </summary>
+        /// <param name="context">
+        ///     A <see cref="IWorkspaceProjectContext"/> being released.
+        /// </param>
+        Task OnContextReleasedAsync(IWorkspaceProjectContext context);
     }
 }

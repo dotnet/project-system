@@ -13,33 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class AnalyzerItemHandler : ILanguageServiceCommandLineHandler
     {
-        private IWorkspaceProjectContext _context;
-
         [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project)
         {
         }
 
-        public void SetContext(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _context = context;
-        }
-
-        public void Handle(CommandLineArguments added, CommandLineArguments removed)
+        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
-                _context.RemoveAnalyzerReference(analyzer.FilePath);
+                context.RemoveAnalyzerReference(analyzer.FilePath);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
-                _context.AddAnalyzerReference(analyzer.FilePath);
+                context.AddAnalyzerReference(analyzer.FilePath);
             }
         }
     }
