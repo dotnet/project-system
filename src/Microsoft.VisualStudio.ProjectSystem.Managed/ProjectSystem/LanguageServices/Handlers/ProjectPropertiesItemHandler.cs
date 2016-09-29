@@ -65,7 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetPathProperty))
             {
-                _context.BinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
+                // LanguageServices requires a normalized absolute target path, but there seem to be cases during initialization where we receive an empty target path here.
+                var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
+                if (!string.IsNullOrEmpty(newBinOutputPath))
+                {
+                    _context.BinOutputPath = newBinOutputPath;
+                }
             }
 
             return Task.CompletedTask;
