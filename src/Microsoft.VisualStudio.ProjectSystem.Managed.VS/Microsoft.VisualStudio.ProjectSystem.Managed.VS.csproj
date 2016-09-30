@@ -38,7 +38,7 @@
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
-    <Compile Include="ProjectSystem\VS\ManagedProjectSystemPackage.cs" />
+    <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileDebugTargetGenerator.cs" />
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGenerator.cs" />
     <Compile Include="ProjectSystem\VS\Debug\IDebugProfileLaunchTargetsProvider.cs" />
