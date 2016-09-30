@@ -3,9 +3,8 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     internal static class TaskExtensions
     {
         /// <summary>
