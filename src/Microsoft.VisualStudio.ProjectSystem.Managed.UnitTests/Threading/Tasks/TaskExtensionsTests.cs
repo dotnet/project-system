@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Threading.Tasks
 {
     [ProjectSystemTrait]
     public class TaskExtensionsTests

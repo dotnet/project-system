@@ -101,7 +101,7 @@
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
-    <Compile Include="ProjectSystem\Utilities\TaskExtensionsTests.cs" />
+    <Compile Include="Threading\Tasks\TaskExtensionsTests.cs" />
     <Compile Include="ProjectSystem\Utilities\StringExtensionsTests .cs" />
     <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
     <Compile Include="Properties\AssemblyAttributes.cs" />
