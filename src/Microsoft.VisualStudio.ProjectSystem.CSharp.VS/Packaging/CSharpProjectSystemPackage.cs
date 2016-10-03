@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            _factory = new MigrateXprojProjectFactory(new ProcessRunner());
+            _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new FileSystem());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
             return Tasks.Task.CompletedTask;

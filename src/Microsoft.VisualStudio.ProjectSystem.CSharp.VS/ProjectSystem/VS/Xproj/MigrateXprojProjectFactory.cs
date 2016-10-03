@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -15,14 +16,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     internal sealed class MigrateXprojProjectFactory : FlavoredProjectFactoryBase, IVsProjectUpgradeViaFactory, IVsProjectUpgradeViaFactory4
     {
         private readonly ProcessRunner _runner;
+        private readonly IFileSystem _fileSystem;
 
-        public MigrateXprojProjectFactory(ProcessRunner runner)
+        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem)
         {
             Requires.NotNull(runner, nameof(runner));
+            Requires.NotNull(fileSystem, nameof(fileSystem));
             _runner = runner;
+            _fileSystem = fileSystem;
         }
 
-        public int UpgradeProject(string bstrFileName, uint fUpgradeFlag, string bstrCopyLocation, out string pbstrUpgradedFullyQualifiedFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory)
+        public int UpgradeProject(string bstrFileName, uint fUpgradeFlag, string bstrCopyLocation, out string pbstrUpgradedFullyQualifiedFileName,
+            IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory)
         {
             bool success;
             uint dummy;
@@ -79,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var backupProjectJsonPath = Path.Combine(backupLocation, "project.json");
 
             // We don't need to check the xproj path. That's being given to us by VS and was specified in the solution.
-            if (!File.Exists(projectJsonPath))
+            if (!_fileSystem.FileExists(projectJsonPath))
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, projectJsonPath,
                     string.Format(VSResources.XprojMigrationFailedProjectJsonFileNotFound, projectName, projectJsonPath));
@@ -91,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, projectJsonPath,
                 string.Format(VSResources.MigrationBackupFile, projectJsonPath, backupProjectJsonPath));
 
-            File.Copy(xprojLocation, backupXprojPath, true);
-            File.Copy(projectJsonPath, backupProjectJsonPath, true);
+            _fileSystem.CopyFile(xprojLocation, backupXprojPath, true);
+            _fileSystem.CopyFile(projectJsonPath, backupProjectJsonPath, true);
 
             return true;
         }
@@ -137,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             // TODO: We need to find the newly created csproj. This will only be necessary until dotnet migrate adds a Migration Report.
             // https://github.com/dotnet/roslyn-project-system/issues/507
-            var files = Directory.EnumerateFiles(projectDirectory);
+            var files = _fileSystem.EnumerateFiles(projectDirectory, "*", SearchOption.TopDirectoryOnly);
             var csproj = files.FirstOrDefault(file => file.EndsWith(".csproj")) ?? "";
             if (string.IsNullOrEmpty(csproj))
             {
