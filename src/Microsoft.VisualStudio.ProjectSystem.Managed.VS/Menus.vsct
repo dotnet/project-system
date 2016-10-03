@@ -23,10 +23,6 @@
   <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
   <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
 
-  <Commands package="PackageGuidString">
-
-  </Commands>
-
   <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the 
        debug (play button) menu contoller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
   -->
@@ -45,20 +41,43 @@
       </Button>
     </Buttons>
   </Commands>
-    
+
+  <Commands package="PackageGuidString">
+    <Groups>
+      <Group guid="guidDotnetProjectSystemCommandSet" id="cmdidEditProjFileGrp" priority="0x200">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidDotnetProjectSystemCommandSet" id="cmdidEditCsproj" priority="0x200">
+        <Parent guid="guidDotnetProjectSystemCommandSet" id="cmdidEditProjFileGrp" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>Edit .csproj</ButtonText>
+          <ToolTipText>Edit .csproj</ToolTipText>
+          <CommandName>EditCsproj</CommandName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
 
   <Symbols>
     <!-- This is out managed package guid. -->
     <GuidSymbol name="PackageGuidString" value="{A4F9D880-9492-4072-8BF3-2B5EEEDC9E68}" />
-    
+
     <GuidSymbol name="guidDebugTargetHandlerPackage" value="{6e87cfad-6c05-4adf-9cd7-3b7943875b7c}">
       <IDSymbol name="DebugTargetMenuControllerGroup" value="0x1000" />
       <IDSymbol name="DebugTargetMenuControllerFooterGroup" value="0x2000" />
     </GuidSymbol>
-    
+
     <GuidSymbol name="guidDotnetProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
       <!-- Note that these need room to grow hence they need to be spaced out-->
-      <IDSymbol name="cmdidProjectDebugger" value="0x100" />      
+      <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
+      <IDSymbol name="cmdidEditProjFileGrp" value="0x1000"/>
+      <IDSymbol name="cmdidEditCsproj" value="0x1001" />
     </GuidSymbol>
   </Symbols>
 
