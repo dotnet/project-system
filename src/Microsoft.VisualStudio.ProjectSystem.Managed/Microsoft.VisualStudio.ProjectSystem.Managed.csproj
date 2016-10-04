@@ -190,7 +190,7 @@
     <Compile Include="ProjectSystem\Utilities\ProjectErrorUtilities.cs" />
     <Compile Include="ProjectSystem\Utilities\ResourceUtilities.cs" />
     <Compile Include="ProjectSystem\Utilities\TraceUtilities.cs" />
-    <Compile Include="ProjectSystem\Utilities\TaskExtensions.cs" />
+    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
