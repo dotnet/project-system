@@ -2,14 +2,19 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
+using System;
 
 namespace Microsoft.VisualStudio.Mocks
 {
     public class IDebugLaunchProviderMetadataViewFactory
     {
-        public static IDebugLaunchProviderMetadataView CreateInstance()
+        public static IDebugLaunchProviderMetadataView ImplementDebuggerName(Func<string> func)
         {
-            return Mock.Of<IDebugLaunchProviderMetadataView>();
+            var mock = new Mock<IDebugLaunchProviderMetadataView>();
+            mock.SetupGet(h => h.DebuggerName)
+                .Returns(func);
+
+            return mock.Object;
         }
     }
 }

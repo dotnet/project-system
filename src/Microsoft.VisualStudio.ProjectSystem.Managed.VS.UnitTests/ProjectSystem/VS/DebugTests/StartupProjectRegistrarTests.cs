@@ -43,6 +43,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Tasks.Task VerifyProjectNotAdded_NotProjectDebugger()
+        {
+            var projectGuid = Guid.NewGuid();
+
+            var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
+            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
+
+            var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
+
+            var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
+            debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true, debuggerName: "RandomDebugger"));
+            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+
+            var startupProjectRegistrar = CreateInstance(
+                projectGuid,
+                serviceProvider,
+                activeConfiguredProjectWithLaunchProviders);
+
+            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
+            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
+
+            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+
+            mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Never);
+            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Once);
+        }
+
+        [Fact]
         public async Tasks.Task VerifyProjectAdded()
         {
             var projectGuid = Guid.NewGuid();
@@ -194,11 +222,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new StartupProjectRegistrar.DebuggerLaunchProviders(ConfiguredProjectFactory.Create());
         }
 
-        private Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView> GetLazyDebugLaunchProvider(bool debugs)
+        private Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView> GetLazyDebugLaunchProvider(bool debugs, string debuggerName = "ProjectDebugger")
         {
             return new Lazy<IDebugLaunchProvider, IDebugLaunchProviderMetadataView>(
                 () => IDebugLaunchProviderFactory.ImplementCanLaunchAsync(debugs),
-                IDebugLaunchProviderMetadataViewFactory.CreateInstance());
+                IDebugLaunchProviderMetadataViewFactory.ImplementDebuggerName(() => debuggerName));
         }
 
         private StartupProjectRegistrar CreateInstance(
