@@ -3,13 +3,13 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Tasks = System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -57,12 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal async Tasks.Task OnProjectFactoryCompletedAsync()
+        internal async Task OnProjectFactoryCompletedAsync()
         {
             await InitializeCoreAsync(CancellationToken.None).ConfigureAwait(false);
         }
 
-        protected override async Tasks.Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             ConfigurationGeneral projectProperties =
                 await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
@@ -72,13 +72,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             await InitializeAsync().ConfigureAwait(false);
         }
 
-        protected override Tasks.Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             _evaluationSubscriptionLink?.Dispose();
             return TplExtensions.CompletedTask;
         }
 
-        public async Tasks.Task InitializeAsync()
+        public async Task InitializeAsync()
         {
             await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
 
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 );
         }
 
-        internal async Tasks.Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        internal async Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
 
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private async Tasks.Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
+        private async Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
         {
             await _threadingService.SwitchToUIThread();
             bool isDebuggable = await IsDebuggable().ConfigureAwait(true);
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private async Tasks.Task<bool> IsDebuggable()
+        private async Task<bool> IsDebuggable()
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
