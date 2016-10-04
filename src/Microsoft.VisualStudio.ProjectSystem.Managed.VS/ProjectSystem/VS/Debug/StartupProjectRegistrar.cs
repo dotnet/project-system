@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         protected override Task DisposeCoreAsync(bool initialized)
         {
             _evaluationSubscriptionLink?.Dispose();
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         public async Task InitializeAsync()
