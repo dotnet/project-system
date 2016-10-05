@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
+        private const string DebuggerName = "ProjectDebugger";
         private readonly IVsStartupProjectsListService _startupProjectsListService;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
-        [ProjectAutoLoad]
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal async Task OnProjectFactoryCompletedAsync()
         {
@@ -131,7 +132,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
-                if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
+                if (string.Equals(DebuggerName, provider.Metadata.DebuggerName, StringComparison.OrdinalIgnoreCase) &&
+                    await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
                                         .ConfigureAwait(true))
                 {
                     return true;
