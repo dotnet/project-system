@@ -104,5 +104,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedResult, id1.Equals(id2));
             Assert.Equal(expectedResult, id2.Equals(id1));
         }
+
+        [Theory]
+        [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]",
+                    "file:///[myprovidertype;myitemspec;myitemtype;myuniquetoken]",
+                    true)]
+        public void DependencyNodeId_GetHashCode(string firstIdString,
+                                                 string secondIdString,
+                                                 bool expectedResult)
+        {
+            var id1 = DependencyNodeId.FromString(firstIdString);
+            var id2 = DependencyNodeId.FromString(secondIdString);
+
+            Assert.Equal(id1.GetHashCode(), id2.GetHashCode());
+        }
     }
 }
