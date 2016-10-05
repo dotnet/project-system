@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
-        //[ProjectAutoLoad]
+        [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal Task Load()
         {
