@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                             var project = await access.GetProjectAsync(_projectPropertiesProvider.UnconfiguredProjectService.ActiveConfiguredProject).ConfigureAwait(true);
                             project.MarkDirty();
                             _projectPropertiesProvider.UnconfiguredProjectService.ActiveConfiguredProject.NotifyProjectChange();
-                            //await _projectPropertiesProvider.OnProjectPropertyChangedAsync(DelegatedProperties.FileFullPath, propertyName).ConfigureAwait(false);
+                            await _projectPropertiesProvider.OnProjectPropertyChangedAsync(DelegatedProperties.FileFullPath, propertyName).ConfigureAwait(false);
                         }
                     }, options: ForkOptions.StartOnThreadPool, unconfiguredProject: _projectPropertiesProvider.UnconfiguredProject);
 
