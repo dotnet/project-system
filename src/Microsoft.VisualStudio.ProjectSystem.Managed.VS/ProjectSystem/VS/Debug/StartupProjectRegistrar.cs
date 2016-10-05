@@ -29,6 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         internal DataFlowExtensionMethodCaller WrapperMethodCaller { get; set; }
 
+        [ImportMany]
+        private OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices { get; set; }
+        private Lazy<IProjectGuidService> ProjectGuidService
+        {
+            get { return this.ProjectGuidServices.FirstOrDefault(); }
+        }
+
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
@@ -47,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
 
+            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
@@ -55,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal Task Load()
         {
-            this.EnsureInitialized();
+            EnsureInitialized();
             return Task.CompletedTask;
         }
 
@@ -83,26 +91,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         internal async Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
-            IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
-
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
+            if (_guid == Guid.Empty && ProjectGuidService != null)
             {
-                Guid result;
-                if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
-                {
-                    _guid = result;
-                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
-                }
+                _guid = ProjectGuidService.Value.ProjectGuid;
+            }
 
+            if (_guid == Guid.Empty)
+            {
                 return;
             }
+
+            IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
 
             /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
                There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
                For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
                Tracking bug: https://github.com/dotnet/roslyn-project-system/issues/455
                */
-            if (_guid != Guid.Empty && projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
+            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
                 await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
             }
@@ -110,8 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
         {
-            await _threadingService.SwitchToUIThread();
             bool isDebuggable = await IsDebuggable().ConfigureAwait(true);
+            await _threadingService.SwitchToUIThread();
 
             if (initialize || isDebuggable != _isDebuggable)
             {
