@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
-        private readonly ActiveConfiguredProjectIgnoringTargetFrameworkProvider _activeConfiguredProjectIgnoringTargetFrameworkProvider;
+        private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
 
         [ImportingConstructor]
         public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
@@ -33,21 +33,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 ActiveConfiguredProjectIgnoringTargetFrameworkProvider activeConfiguredProjectIgnoringTargetFrameworkProvider)
+                                                 ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
             Requires.NotNull(taskScheduler, nameof(taskScheduler));
             Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
-            Requires.NotNull(activeConfiguredProjectIgnoringTargetFrameworkProvider, nameof(activeConfiguredProjectIgnoringTargetFrameworkProvider));
+            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
 
             _commonServices = commonServices;
             _contextFactory = contextFactory;
             _asyncLoadDashboard = asyncLoadDashboard;
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
-            _activeConfiguredProjectIgnoringTargetFrameworkProvider = activeConfiguredProjectIgnoringTargetFrameworkProvider;
+            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 var projectHost = _projectHostProvider.GetProjectHostObject(_commonServices.Project);
 
                 // Get the set of active configured projects ignoring target framework.
-                var configuredProjectsMap = await _activeConfiguredProjectIgnoringTargetFrameworkProvider.GetConfiguredProjectsMapAsync().ConfigureAwait(true);
+                var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
                 foreach (var kvp in configuredProjectsMap)

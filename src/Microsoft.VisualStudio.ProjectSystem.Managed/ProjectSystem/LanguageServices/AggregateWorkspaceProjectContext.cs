@@ -28,23 +28,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IEnumerable<IWorkspaceProjectContext> InnerProjectContexts => _configuredProjectContextsByTargetFrameworks.Values;
 
+        private bool IsCrossTargeting => _configuredProjectContextsByTargetFrameworks.Count > 1;
+
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
-            var isCrossTargeting = _configuredProjectContextsByTargetFrameworks.Count > 1;
-
             // Update the project file path and display name for all the inner project contexts.
             foreach (var innerProjectContextKvp in _configuredProjectContextsByTargetFrameworks)
             {
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 var targetFramework = innerProjectContextKvp.Key;
                 var innerProjectContext = innerProjectContextKvp.Value;
-                innerProjectContext.DisplayName = isCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
+                innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
 
                 innerProjectContext.ProjectFilePath = projectFilePath;
             }
         }
 
-        public IWorkspaceProjectContext GetProjectContext(ProjectConfiguration projectConfiguration)
+        public IWorkspaceProjectContext GetInnerWorkspaceProjectContext(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.IsCrossTargeting())
             {
@@ -53,7 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
             else
             {
-                Requires.Range(_configuredProjectContextsByTargetFrameworks.Count == 1, nameof(_configuredProjectContextsByTargetFrameworks));
+                if (IsCrossTargeting)
+                {
+                    return null;
+                }
+
                 return InnerProjectContexts.Single();
             }
         }

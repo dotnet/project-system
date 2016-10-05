@@ -37,6 +37,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
+        ///     Gets a value indicating the handler should be invoked even for updates with no underlying project changes (e.g. broken design time builds).
+        /// </summary>
+        bool ReceiveUpdatesWithEmptyProjectChange
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>

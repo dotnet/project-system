@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -7,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -27,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///         Debug | AnyCPU | net45
     ///         Debug | AnyCPU | net46
     /// </summary>
-    [Export(typeof(ActiveConfiguredProjectIgnoringTargetFrameworkProvider))]
-    internal class ActiveConfiguredProjectIgnoringTargetFrameworkProvider : OnceInitializedOnceDisposedAsync
+    [Export(typeof(ActiveConfiguredProjectsIgnoringTargetFrameworkProvider))]
+    internal class ActiveConfiguredProjectsIgnoringTargetFrameworkProvider : OnceInitializedOnceDisposedAsync
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectServices _services;
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private IDisposable _evaluationSubscriptionLink;
 
         [ImportingConstructor]
-        public ActiveConfiguredProjectIgnoringTargetFrameworkProvider(
+        public ActiveConfiguredProjectsIgnoringTargetFrameworkProvider(
             IUnconfiguredProjectServices services,
             IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             using (_tasksService.LoadedProject())
             {
-                await GetConfiguredProjectsMapAsync().ConfigureAwait(false);
+                await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
 
                 // Listen to changes to "TargetFrameworks" property.
                 var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty))
             {
                 var targetFrameworks = projectChange.After.Properties[ConfigurationGeneral.TargetFrameworksProperty];
-                await GetConfiguredProjectsMapAsync(targetFrameworks).ConfigureAwait(false);
+                await GetActiveConfiguredProjectsMapAsync(targetFrameworks).ConfigureAwait(false);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         /// Gets the active configured projects for the given set of "TargetFrameworks" for a cross-targeting project.
         /// </summary>
-        public async Task<ImmutableDictionary<string, ConfiguredProject>> GetConfiguredProjectsMapAsync(string targetFrameworks)
+        private async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync(string targetFrameworks)
         {
             lock (_gate)
             {
@@ -172,20 +172,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// Gets the active configured projects by target framework for the current value of "TargetFrameworks" for a cross-targeting project.
         /// </summary>
         /// <returns>Map from target framework to active configured project.</returns>
-        public async Task<ImmutableDictionary<string, ConfiguredProject>> GetConfiguredProjectsMapAsync()
+        public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
             var properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             var targetFrameworks = (string)await properties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
-            return await GetConfiguredProjectsMapAsync(targetFrameworks).ConfigureAwait(false);
+            return await GetActiveConfiguredProjectsMapAsync(targetFrameworks).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Gets the active configured projects for the current value of "TargetFrameworks" for a cross-targeting project.
         /// </summary>
         /// <returns>Set of active configured projects.</returns>
-        public async Task<ImmutableArray<ConfiguredProject>> GetConfiguredProjectsAsync()
+        public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
-            var projectMap = await GetConfiguredProjectsMapAsync().ConfigureAwait(false);
+            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
             return projectMap.Values.ToImmutableArray();
         }
     }

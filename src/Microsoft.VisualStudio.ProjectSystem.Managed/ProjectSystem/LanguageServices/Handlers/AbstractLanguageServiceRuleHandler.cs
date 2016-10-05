@@ -12,6 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public abstract String RuleName { get; }
 
+        public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
+
         public virtual Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             return Task.CompletedTask;

@@ -42,11 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return RuleHandlerType.DesignTimeBuild; }
         }
 
+        // Broken design time builds generates updates with no changes.
+        public override bool ReceiveUpdatesWithEmptyProjectChange => true;
+
         public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
-
 
             if (!ProcessDesignTimeBuildFailure(projectChange, context))
             {
@@ -64,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // case and we should ignore the results.
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
-            context.LastDesignTimeBuildSucceeded = designTimeBuildFailed;
+            context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
             return designTimeBuildFailed;
         }
 

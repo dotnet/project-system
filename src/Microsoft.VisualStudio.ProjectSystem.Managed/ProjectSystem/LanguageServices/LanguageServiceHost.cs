@@ -24,40 +24,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly AggregateWorkspaceProjectContextProvider _projectContextProvider;
-        private readonly ActiveConfiguredProjectIgnoringTargetFrameworkProvider _targetFrameworkConfiguredProjectProvider;
+        private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
 
-        private IDisposable _evaluationSubscriptionLink;
-        private IDisposable _designTimeBuildSubscriptionLink;
+        private readonly List<IDisposable> _evaluationSubscriptionLinks;
+        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
 
         // TargetFrameworks and the associated AggregateWorkspaceProjectContext for the current project state.
         private string _latestTargetFrameworks;
-        private AggregateWorkspaceProjectContext _projectContext;
+        private AggregateWorkspaceProjectContext _aggregateProjectContext;
 
         [ImportingConstructor]
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-                                   ActiveConfiguredProjectIgnoringTargetFrameworkProvider targetFrameworkConfiguredProjectProvider)
+                                   ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(targetFrameworkConfiguredProjectProvider, nameof(targetFrameworkConfiguredProjectProvider));
+            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
 
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _projectContextProvider = new AggregateWorkspaceProjectContextProvider(contextProvider);
-            _targetFrameworkConfiguredProjectProvider = targetFrameworkConfiguredProjectProvider;
+            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
 
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
+            _evaluationSubscriptionLinks = new List<IDisposable>();
+            _designTimeBuildSubscriptionLinks = new List<IDisposable>();
         }
 
         public object HostSpecificErrorReporter
         {
-            get { return _projectContext?.HostSpecificErrorReporter; }
+            get { return _aggregateProjectContext?.HostSpecificErrorReporter; }
         }
 
         [ImportMany]
@@ -75,13 +77,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
-                _designTimeBuildSubscriptionLink = _activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                   new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild)),
-                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true);
+                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
 
-                _evaluationSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)),
-                    ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true);
+                    ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
             }
 
             return Task.CompletedTask;
@@ -105,19 +107,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await InitializeAsync().ConfigureAwait(false);
 
-            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
-            string newTargetFrameworks;
-            if (HasTargetFrameworksChanged(e, out newTargetFrameworks))
-            {
-                await UpdateProjectContextAndSubscriptionsAsync(newTargetFrameworks).ConfigureAwait(false);
-            }
+            await OnProjectChangedCoreAsync(e, handlerType).ConfigureAwait(false);
+        }
 
+        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        {
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             await _commonServices.ThreadingService.SwitchToUIThread();
 
             using (_tasksService.LoadedProject())
             {
-                await HandleAsync(e, handlerType, _projectContext).ConfigureAwait(false);
+                await HandleAsync(e, handlerType, _aggregateProjectContext).ConfigureAwait(false);
+            }
+
+            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
+            string newTargetFrameworks;
+            if (HasTargetFrameworksChanged(e, out newTargetFrameworks))
+            {
+                await UpdateProjectContextAndSubscriptionsAsync(newTargetFrameworks).ConfigureAwait(false);
             }
         }
 
@@ -137,49 +144,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AggregateWorkspaceProjectContext previousProjectContext;
             lock (_projectContextProvider)
             {
-                if (newProjectContext == _projectContext)
+                if (newProjectContext == _aggregateProjectContext)
                 {
                     // Another thread has already completed the update.
                     Requires.Range(string.Equals(targetFrameworks, _latestTargetFrameworks, StringComparison.OrdinalIgnoreCase), nameof(targetFrameworks));
                     return;
                 }
 
-                previousProjectContext = _projectContext;
-                _projectContext = newProjectContext;
+                previousProjectContext = _aggregateProjectContext;
+                _aggregateProjectContext = newProjectContext;
                 _latestTargetFrameworks = targetFrameworks;
             }
 
             await ResetSubscriptionsAsync().ConfigureAwait(false);
 
-            foreach (var innerContext in previousProjectContext?.InnerProjectContexts)
+            if (previousProjectContext != null)
             {
-                foreach (var handler in Handlers)
+                foreach (var innerContext in previousProjectContext.InnerProjectContexts)
                 {
-                    await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
+                    foreach (var handler in Handlers)
+                    {
+                        await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
+                    }
                 }
             }
         }
 
         private async Task ResetSubscriptionsAsync()
         {
-            // TODO: Design time builds for all active configured projects (https://github.com/dotnet/roslyn-project-system/issues/532)
-            //_designTimeBuildSubscriptionLink?.Dispose();
-            _evaluationSubscriptionLink?.Dispose();
+            DisposeAndClearSubscriptions();
 
             using (_tasksService.LoadedProject())
             {
-                var currentProjects = await _targetFrameworkConfiguredProjectProvider.GetConfiguredProjectsAsync().ConfigureAwait(false);
+                var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+                var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+                var activeConfiguredProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
 
-                // TODO: Design time builds for all active configured projects (https://github.com/dotnet/roslyn-project-system/issues/532)
-                //var sourceBlocks = currentProjects.Select(
-                //    cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
-                //var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(s => ProjectPropertyChangedAsync(s, RuleHandlerType.DesignTimeBuild));
-                //_designTimeBuildSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, null);
+                foreach (var project in activeConfiguredProjects)
+                {
+                    _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
+                        ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
 
-                var sourceBlocks = currentProjects.Select(
-                    cp => cp.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
-                var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(s => ProjectPropertyChangedAsync(s, RuleHandlerType.Evaluation));
-                _evaluationSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, null);
+                    _evaluationSubscriptionLinks.Add(project.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
+                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
+                        ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
+                }
             }
         }
 
@@ -196,19 +206,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var handlers = Handlers.Select(h => h.Value)
                                    .Where(h => h.HandlerType == handlerType);
 
-            // Get the inner workspace project context(s) to update.
-            var workspaceProjectContextsToUpdate = GetWorkspaceProjectContextsToUpdate(update);
+            // Get the inner workspace project context to update for this change.
+            // TODO: Figure out why are we recevi
+            var projectContextToUpdate = _aggregateProjectContext?.GetInnerWorkspaceProjectContext(update.Value.ProjectConfiguration);
+            if (projectContextToUpdate == null)
+            {
+                return;
+            }
+
+            // Broken design time builds sometimes cause updates with no project changes and sometimes cause updates with a project change that has no difference.
+            // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
+            if (update.Value.ProjectChanges.Count == 0)
+            {
+                if (handlerType == RuleHandlerType.DesignTimeBuild)
+                {
+                    projectContextToUpdate.LastDesignTimeBuildSucceeded = false;
+                }
+
+                return;
+            }
 
             foreach (var handler in handlers)
             {
                 IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
-                if (projectChange.Difference.AnyChanges)
+                if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
                 {
-                    foreach (var context in workspaceProjectContextsToUpdate)
-                    {
-                        await handler.HandleAsync(update, projectChange, context)
-                                     .ConfigureAwait(false);
-                    }
+                    await handler.HandleAsync(update, projectChange, projectContextToUpdate).ConfigureAwait(false);
                 }
             }
         }
@@ -221,30 +244,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                            .ToArray();
         }
 
-        private ImmutableArray<IWorkspaceProjectContext> GetWorkspaceProjectContextsToUpdate(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
-        {
-            // Get the set of workspace project contexts to update for the changed ProjectConfiguration.
-            var contextBuilder = ImmutableArray.CreateBuilder<IWorkspaceProjectContext>();
-            if (update.Value.ProjectConfiguration.IsCrossTargeting())
-            {
-                // This change affects a specific TargetFramework for a cross-targeting project.
-                var contextToUpdate = _projectContext.GetProjectContext(update.Value.ProjectConfiguration);
-                contextBuilder.Add(contextToUpdate);
-            }
-            else
-            {
-                // We either have a project targeting a single framework OR a change that affects all target frameworks of a cross-targeting project.
-                // For both these cases, we need to update all the inner workspace project contexts.
-                contextBuilder.AddRange(_projectContext.InnerProjectContexts);
-            }
-
-            return contextBuilder.ToImmutable();
-        }
-
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e, out string targetFrameworks)
         {
-            IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty))
+            IProjectChangeDescription projectChange;
+            if (e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out projectChange) &&
+                projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty))
             {
                 targetFrameworks = projectChange.After.Properties[ConfigurationGeneral.TargetFrameworksProperty];
                 return true;
@@ -258,11 +262,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (initialized)
             {
-                _evaluationSubscriptionLink?.Dispose();
-                _designTimeBuildSubscriptionLink?.Dispose();
-
-                await _projectContextProvider.DisposeAsync().ConfigureAwait(false); ;
+                DisposeAndClearSubscriptions();
+                await _projectContextProvider.DisposeAsync().ConfigureAwait(false);
             }
+        }
+
+        private void DisposeAndClearSubscriptions()
+        {
+            foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
+            {
+                link.Dispose();
+            }
+
+            _evaluationSubscriptionLinks.Clear();
+            _designTimeBuildSubscriptionLinks.Clear();
         }
     }
 }
