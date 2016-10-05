@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
-        [ProjectAutoLoad]
+        //[ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal async Task OnProjectFactoryCompletedAsync()
         {
