@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -19,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchProfile(LaunchProfileData data)
         {
             Name = data.Name;
+            Kind = data.Kind;
             ExecutablePath = data.ExecutablePath;
             CommandName = data.CommandName;
             CommandLineArgs = data.CommandLineArgs; 
@@ -36,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchProfile(ILaunchProfile existingProfile)
         {
            Name = existingProfile.Name;
+           Kind = existingProfile.Kind;
            ExecutablePath = existingProfile.ExecutablePath;
            CommandName = existingProfile.CommandName;
            CommandLineArgs = existingProfile.CommandLineArgs; 
@@ -85,12 +88,98 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
+        public ProfileKind Kind { get; set; }
+
+        public string ApplicationUrl { get; set; }
+
+        public string SDKVersion { get; set; }
+
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>
         public static bool IsSameProfileName(string name1, string name2)
         {
             return string.Equals(name1, name2, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Compares two IDebugProfiles to see if they contain the same values. Note that it doesn't compare
+        /// the kind field unless includeProfileKind is true
+        /// </summary>
+        public static bool ProfilesAreEqual(ILaunchProfile debugProfile1, ILaunchProfile debugProfile2, bool includeProfileKind)
+        {
+            // Same instance better return they are equal
+            if (debugProfile1 == debugProfile2)
+            {
+                return true;
+            }
+
+            if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.ApplicationUrl, debugProfile2.ApplicationUrl, StringComparison.Ordinal) ||
+               (debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser) ||
+               !string.Equals(debugProfile1.SDKVersion, debugProfile2.SDKVersion, StringComparison.Ordinal) ||
+               (includeProfileKind && debugProfile1.Kind != debugProfile2.Kind))
+            {
+                return false;
+            }
+
+            // Same collection or both null
+            if (debugProfile1.EnvironmentVariables == debugProfile2.EnvironmentVariables)
+            {
+                return true;
+            }
+
+            // XOR. One null the other non-null. Consider. Should empty dictionary be treated the same as null??
+            if ((debugProfile1.EnvironmentVariables == null) ^ (debugProfile2.EnvironmentVariables == null))
+            {
+                return false;
+            }
+            return DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables, debugProfile2.EnvironmentVariables);
+        }
+        
+        internal IDictionary<string, string> MutableEnvironmentVariables
+        {
+            get
+            {
+                return _environmentVariables;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _environmentVariables = null;
+                }
+                else
+                {
+                    _environmentVariables = new Dictionary<string, string>(value);
+                }
+            }
+        }
+
+        public Boolean IsDefaultIISExpressProfile
+        {
+            get
+            {
+                return Kind == ProfileKind.IISExpress && IsDefaultWebProfileName(Name);
+            }
+        }
+
+       
+        /// <summary>
+        /// Special treatment for command profiles that use self host servers like "web"
+        /// NOTE That this command will only be set once code in #if ENABLE_SELFHOSTSERVER
+        /// blocks is enabled. There is no code to set it
+        /// </summary>
+        public bool IsWebServerCmdProfile { get; set; }
+
+        public static bool IsDefaultWebProfileName(string name)
+        {
+            return IsSameProfileName(name, LaunchSettingsProvider.IISExpressProfileName);
         }
     }
 }

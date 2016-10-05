@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class LaunchSettings : ILaunchSettings
     {
+
+        public IIISSettings IISSettings { get; private set; }
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
@@ -55,6 +58,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return o;
         }
 
+        public Boolean ProfilesAreDifferent(IList<ILaunchProfile> profilesToCompare)
+        {
+            bool detectedChanges = Profiles == null || Profiles.Count != profilesToCompare.Count;
+            if (!detectedChanges)
+            {
+                // Now compare each item
+                foreach (var profile in profilesToCompare)
+                {
+                    var existingProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
+                    if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
+                    {
+                        detectedChanges = true;
+                        break;
+                    }
+                }
+            }
+            return detectedChanges;
+        }
+
+        public Boolean IISSettingsAreDifferent(IIISSettings settingsToCompare)
+        {
+            if (IISSettings == null)
+            {
+                // Treat empty and null as equivalent
+                return !(settingsToCompare == null || IISSettingsProfile.IsEmptySettings(settingsToCompare));
+            }
+            else if (settingsToCompare == null)
+            {
+                return !IISSettingsProfile.IsEmptySettings(IISSettings);
+            }
+
+            // Compare each item
+            return IISSettingsProfile.SettingsDiffer(IISSettings, settingsToCompare);
+        }
+
         private ILaunchProfile _activeProfile;
         public ILaunchProfile ActiveProfile 
         { 
@@ -77,5 +115,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _activeProfile;
             }
          }
+
+        public String ActiveProfileName
+        {
+            get
+            {
+                return ActiveProfile.Name;
+            }
+        }
     }
 }

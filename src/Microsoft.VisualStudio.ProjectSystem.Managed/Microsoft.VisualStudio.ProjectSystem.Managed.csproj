@@ -41,8 +41,11 @@
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
     <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
+    <Compile Include="ProjectSystem\Debug\IIISSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\IISSettingsProfile.cs" />
     <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
+    <Compile Include="ProjectSystem\Debug\ISSLPortProvider.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchProfile.cs" />
@@ -112,6 +115,7 @@
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
+    <Compile Include="ProjectSystem\Utilities\DictionaryEqualityComparer.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />

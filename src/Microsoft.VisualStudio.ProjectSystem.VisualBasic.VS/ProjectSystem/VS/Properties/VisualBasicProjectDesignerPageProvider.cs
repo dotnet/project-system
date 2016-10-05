@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 new IPageMetadata[] {
                     VisualBasicProjectDesignerPage.Application,
                     VisualBasicProjectDesignerPage.References,
+                    VisualBasicProjectDesignerPage.Debug,
             });
         }
     }
