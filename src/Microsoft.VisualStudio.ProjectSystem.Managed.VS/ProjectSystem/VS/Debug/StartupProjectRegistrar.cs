@@ -54,7 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
-        [ProjectAutoLoad]
+        // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
+        //[ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal async Task OnProjectFactoryCompletedAsync()
         {
