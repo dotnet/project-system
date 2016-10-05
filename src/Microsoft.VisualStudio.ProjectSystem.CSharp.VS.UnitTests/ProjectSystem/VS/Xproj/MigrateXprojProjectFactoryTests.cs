@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private void ProcessVerifier(ProcessStartInfo info)
         {
             Assert.Equal("dotnet.exe", info.FileName);
-            Assert.Equal($"migrate -s -p \"{RootLocation}\" -x \"{XprojLocation}\"", info.Arguments);
+            Assert.Equal($"migrate -s -x \"{XprojLocation}\" \"{RootLocation}\"", info.Arguments);
         }
 
         private IFileSystem CreateFileSystem(bool withEntries = true)

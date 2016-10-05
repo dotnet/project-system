@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate -s -p \"{projectDirectory}\" -x \"{xprojLocation}\"");
+            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate -s -x \"{xprojLocation}\" \"{projectDirectory}\"");
             pInfo.UseShellExecute = false;
             pInfo.RedirectStandardError = true;
             pInfo.RedirectStandardOutput = true;
