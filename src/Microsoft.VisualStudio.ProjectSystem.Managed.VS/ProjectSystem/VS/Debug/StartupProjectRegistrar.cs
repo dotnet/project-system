@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// <see cref="StartupProjectRegistrar"/> is responsible for adding or removing a project from the Startup list
     /// depending on whether the active configuration of the a project is debuggable or not.
     /// </summary>
-    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
+    internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
         private readonly IVsStartupProjectsListService _startupProjectsListService;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
 
-        private Guid _guid;
+        private Guid _guid = Guid.Empty;
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
 
@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
-            : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
@@ -57,31 +56,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
         //[ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal async Task OnProjectFactoryCompletedAsync()
+        internal void OnProjectFactoryCompletedAsync()
         {
-            await InitializeCoreAsync(CancellationToken.None).ConfigureAwait(false);
+            this.EnsureInitialized();
         }
 
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override void Dispose(bool disposing)
         {
-            ConfigurationGeneral projectProperties =
-                await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            _guid = new Guid((string)await projectProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false));
-            Assumes.False(_guid == Guid.Empty);
-
-            await InitializeAsync().ConfigureAwait(false);
+            if (disposing)
+            {
+                _evaluationSubscriptionLink?.Dispose();
+            }
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override void Initialize()
         {
-            _evaluationSubscriptionLink?.Dispose();
-            return Task.CompletedTask;
-        }
-
-        public async Task InitializeAsync()
-        {
-            await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
-
             var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
             var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                 ConfigurationGeneralRuleBlock_ChangedAsync);
@@ -98,12 +87,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
 
+            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
+            {
+                Guid result;
+                if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
+                {
+                    _guid = result;
+                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
+                }
+
+                return;
+            }
+
             /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
                There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
                For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
                Tracking bug: https://github.com/dotnet/roslyn-project-system/issues/455
                */
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
+            if (_guid != Guid.Empty && projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
                 await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
             }
