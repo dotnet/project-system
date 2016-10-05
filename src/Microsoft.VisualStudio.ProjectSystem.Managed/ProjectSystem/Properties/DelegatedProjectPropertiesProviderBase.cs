@@ -44,19 +44,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public virtual string DefaultProjectPath => UnconfiguredProject.FullPath;
 
-        public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
+        public virtual event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
         {
             add { DelegatedProvider.ProjectPropertyChanged += value; }
             remove { DelegatedProvider.ProjectPropertyChanged += value; }
         }
 
-        public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter
+        public virtual event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter
         {
             add { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
             remove { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
         }
 
-        public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging
+        public virtual event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging
         {
             add { DelegatedProvider.ProjectPropertyChanging += value; }
             remove { DelegatedProvider.ProjectPropertyChanging += value; }
@@ -74,16 +74,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public virtual IProjectProperties GetProperties(string file, string itemType, string item)
             => DelegatedProvider.GetProperties(file, itemType, item);
 
-        public IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
+        public virtual IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
             => DelegatedInstanceProvider.GetCommonProperties(projectInstance);
 
-        public IProjectProperties GetItemTypeProperties(ProjectInstance projectInstance, string itemType)
+        public virtual IProjectProperties GetItemTypeProperties(ProjectInstance projectInstance, string itemType)
             => DelegatedInstanceProvider.GetItemTypeProperties(projectInstance, itemType);
 
-        public IProjectProperties GetItemProperties(ProjectInstance projectInstance, string itemType, string itemName)
+        public virtual IProjectProperties GetItemProperties(ProjectInstance projectInstance, string itemType, string itemName)
             => DelegatedInstanceProvider.GetItemProperties(projectInstance, itemType, itemName);
 
-        public IProjectProperties GetItemProperties(ITaskItem taskItem)
+        public virtual IProjectProperties GetItemProperties(ITaskItem taskItem)
             => DelegatedInstanceProvider.GetItemProperties(taskItem);
     }
 }

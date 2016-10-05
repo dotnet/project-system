@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
         private readonly IVsStartupProjectsListService _startupProjectsListService;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
@@ -32,19 +31,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(launchProviders, nameof(launchProviders));
 
-            _projectVsServices = projectVsServices;
             _startupProjectsListService = serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
@@ -54,11 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
-        //[ProjectAutoLoad]
+        [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal void OnProjectFactoryCompletedAsync()
+        internal Task Load()
         {
-            this.EnsureInitialized();
+            EnsureInitialized();
+            return Task.CompletedTask;
         }
 
         protected override void Dispose(bool disposing)
@@ -93,9 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
                 {
                     _guid = result;
-                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
+                    await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
                 }
 
+                return;
+            }
+
+            if (_guid == Guid.Empty)
+            {
                 return;
             }
 
@@ -104,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
                Tracking bug: https://github.com/dotnet/roslyn-project-system/issues/455
                */
-            if (_guid != Guid.Empty && projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
+            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
                 await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
             }
@@ -112,8 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
         {
+            bool isDebuggable = await IsDebuggable().ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
-            bool isDebuggable = await IsDebuggable().ConfigureAwait(true);
 
             if (initialize || isDebuggable != _isDebuggable)
             {

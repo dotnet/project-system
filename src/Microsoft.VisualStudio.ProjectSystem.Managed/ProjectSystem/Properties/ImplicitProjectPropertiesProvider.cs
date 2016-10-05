@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.Build.Execution;
+using Microsoft.Build.Framework;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -43,6 +45,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override IProjectProperties GetProperties(string file, string itemType, string item)
             => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyStore);
 
+        public override IProjectProperties GetCommonProperties()
+            => new ImplicitProjectProperties(DelegatedProvider.GetCommonProperties(), _propertyStore);
+
+        public override IProjectProperties GetItemProperties(System.String itemType, System.String item)
+            => new ImplicitProjectProperties(DelegatedProvider.GetItemProperties(itemType, item), _propertyStore);
+
+        public override IProjectProperties GetItemTypeProperties(System.String itemType)
+            => new ImplicitProjectProperties(DelegatedProvider.GetItemTypeProperties(itemType), _propertyStore);
+
+        public override IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
+            => new ImplicitProjectProperties(DelegatedInstanceProvider.GetCommonProperties(projectInstance), _propertyStore);
+
+        public override IProjectProperties GetItemTypeProperties(ProjectInstance projectInstance, string itemType)
+            => new ImplicitProjectProperties(DelegatedInstanceProvider.GetItemTypeProperties(projectInstance, itemType), _propertyStore);
+
+        public override IProjectProperties GetItemProperties(ProjectInstance projectInstance, string itemType, string itemName)
+            => new ImplicitProjectProperties(DelegatedInstanceProvider.GetItemProperties(projectInstance, itemType, itemName), _propertyStore);
+
+        public override IProjectProperties GetItemProperties(ITaskItem taskItem)
+            => new ImplicitProjectProperties(DelegatedInstanceProvider.GetItemProperties(taskItem), _propertyStore);
+
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
         /// already exist (i.e. are being updated) and delegates the rest of its operations
@@ -52,7 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             private readonly ConcurrentDictionary<string, string> _propertyValues;
 
-            public ImplicitProjectProperties(IProjectProperties properties, ConcurrentDictionary<string, string> propertyValues)
+            public ImplicitProjectProperties(
+                IProjectProperties properties,
+                ConcurrentDictionary<string, string> propertyValues)
                 : base(properties)
             {
                 _propertyValues = propertyValues;
@@ -118,6 +143,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     return Task.FromResult(unevaluatedPropertyValue);
                 }
                 return DelegatedProperties.GetUnevaluatedPropertyValueAsync(propertyName);
+            }
+
+            public override async Task<IEnumerable<System.String>> GetPropertyNamesAsync()
+            {
+                var builder = new List<string>(await base.GetPropertyNamesAsync().ConfigureAwait(false));
+                builder.AddRange(_propertyValues.Keys);
+                return builder.AsEnumerable();
             }
         }
     }
