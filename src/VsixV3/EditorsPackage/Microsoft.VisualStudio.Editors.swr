@@ -13,3 +13,6 @@ vs.localizedResources
 
 vs.payloads
   vs.payload source=$(OutputPath)\VisualStudioEditorsSetup.vsix
+
+vs.dependencies
+  vs.dependency id=Microsoft.VisualStudio.MinShell
