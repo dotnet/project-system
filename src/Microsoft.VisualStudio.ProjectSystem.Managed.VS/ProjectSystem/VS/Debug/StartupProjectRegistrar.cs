@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
         private readonly IVsStartupProjectsListService _startupProjectsListService;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
@@ -32,19 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            IUnconfiguredProjectVsServices projectVsServices,
+            UnconfiguredProject project,
             SVsServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(launchProviders, nameof(launchProviders));
 
-            _projectVsServices = projectVsServices;
             _startupProjectsListService = serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
@@ -56,9 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
         //[ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal void OnProjectFactoryCompletedAsync()
+        internal Task Load()
         {
             this.EnsureInitialized();
+            return Task.CompletedTask;
         }
 
         protected override void Dispose(bool disposing)
