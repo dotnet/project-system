@@ -49,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
-        // Temporarily disabling this component. https://github.com/dotnet/roslyn-project-system/issues/514
         [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal Task Load()
@@ -90,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
                 {
                     _guid = result;
-                    await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
+                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
                 }
 
                 return;
