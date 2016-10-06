@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -27,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
+        private readonly IEventDispatcherService _eventDispatcher;
         private readonly ImplicitProjectPropertiesStore<string, string> _propertyStore;
 
         [ImportingConstructor]
@@ -34,14 +36,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             ImplicitProjectPropertiesStore<string, string> propertyStore,
-            UnconfiguredProject unconfiguredProject)
+            IEventDispatcherService eventDispatcher,
+            UnconfiguredProject unconfiguredProject,
+            IUnconfiguredProjectCommonServices unconfiguredProjectService)
             : base(provider, instanceProvider, unconfiguredProject)
         {
+            UnconfiguredProjectService = unconfiguredProjectService;
+            _eventDispatcher = eventDispatcher;
             _propertyStore = propertyStore;
         }
 
         public override IProjectProperties GetProperties(string file, string itemType, string item)
-            => new ImplicitProjectProperties(DelegatedProvider.GetProperties(file, itemType, item), _propertyStore);
+            => new ImplicitProjectProperties(this, DelegatedProvider.GetProperties(file, itemType, item), _propertyStore);
+
+        public override event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged;
+        public override event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging;
+        public override event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter;
+
+        internal IUnconfiguredProjectCommonServices UnconfiguredProjectService { get; private set; }
+
+        internal Task OnProjectPropertyChangedAsync(string propertySheet, string propertyName)
+        {
+            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+
+            return _eventDispatcher.FireProjectChangeEventsAsync(
+                this,
+                new ProjectPropertyChangedEventArgs(propertySheet, propertyName),
+                this.ProjectPropertyChanging,
+                this.ProjectPropertyChangedOnWriter,
+                this.ProjectPropertyChanged);
+        }
 
         /// <summary>
         /// Implementation of IProjectProperties that avoids writing properties unless they
@@ -51,10 +75,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private class ImplicitProjectProperties : DelegatedProjectPropertiesBase
         {
             private readonly ConcurrentDictionary<string, string> _propertyValues;
+            private readonly ImplicitProjectPropertiesProvider _projectPropertiesProvider;
 
-            public ImplicitProjectProperties(IProjectProperties properties, ConcurrentDictionary<string, string> propertyValues)
+            public ImplicitProjectProperties(
+                ImplicitProjectPropertiesProvider projectPropertiesProvider,
+                IProjectProperties properties,
+                ConcurrentDictionary<string, string> propertyValues)
                 : base(properties)
             {
+                _projectPropertiesProvider = projectPropertiesProvider;
                 _propertyValues = propertyValues;
             }
 
@@ -75,6 +104,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // store the property in this property object, not in the project file
                     _propertyValues[propertyName] = unevaluatedPropertyValue;
+
+                    _projectPropertiesProvider.UnconfiguredProjectService.ThreadingService.Fork(async () => {
+                        using (var access = await _projectPropertiesProvider.UnconfiguredProjectService.ProjectLockService.WriteLockAsync())
+                        {
+                            // Inside a write lock, we should get back to the same thread.
+                            var project = await access.GetProjectAsync(_projectPropertiesProvider.UnconfiguredProjectService.ActiveConfiguredProject).ConfigureAwait(true);
+                            project.MarkDirty();
+                            _projectPropertiesProvider.UnconfiguredProjectService.ActiveConfiguredProject.NotifyProjectChange();
+                            await _projectPropertiesProvider.OnProjectPropertyChangedAsync(DelegatedProperties.FileFullPath, propertyName).ConfigureAwait(false);
+                        }
+                    }, options: ForkOptions.StartOnThreadPool, unconfiguredProject: _projectPropertiesProvider.UnconfiguredProject);
+
+                    //using (var access = await _projectPropertiesProvider.UnconfiguredProjectService.ProjectLockService.UpgradeableReadLockAsync())
+                    //{
+                    //    await _projectPropertiesProvider.OnProjectPropertyChangedAsync(DelegatedProperties.FileFullPath, propertyName).ConfigureAwait(false);
+                    //}
                 }
             }
 
