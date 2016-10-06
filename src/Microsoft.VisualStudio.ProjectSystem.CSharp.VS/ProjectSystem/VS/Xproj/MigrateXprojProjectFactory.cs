@@ -115,7 +115,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             // Skip it.
             pInfo.EnvironmentVariables.Add("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true");
 
-
             var process = _runner.Start(pInfo);
 
             // Create strings to hold the output and error text
