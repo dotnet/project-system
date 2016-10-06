@@ -29,8 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             processMock.Setup(p => p.ExitCode).Returns(exitCode);
 
             // Mock standard output and standard error
-            processMock.Setup(p => p.StandardOutput).Returns(new System.IO.StringReader(outputText));
-            processMock.Setup(p => p.StandardError).Returns(new System.IO.StringReader(errorText));
+            processMock.Setup(p => p.AddOutputDataReceivedHandler(It.IsAny<Action<string>>())).Callback<Action<string>>(h =>
+            {
+                if (!string.IsNullOrWhiteSpace(outputText)) h(outputText);
+            });
+            processMock.Setup(p => p.AddErrorDataReceivedHandler(It.IsAny<Action<string>>())).Callback<Action<string>>(h =>
+            {
+                if (!string.IsNullOrWhiteSpace(errorText)) h(errorText);
+            });
 
             return processMock.Object;
         }
