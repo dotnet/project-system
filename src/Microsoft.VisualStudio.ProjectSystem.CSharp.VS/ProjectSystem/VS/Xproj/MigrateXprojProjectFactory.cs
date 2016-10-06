@@ -109,6 +109,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             pInfo.UseShellExecute = false;
             pInfo.RedirectStandardError = true;
             pInfo.RedirectStandardOutput = true;
+
+            // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
+            // Skip it.
+            pInfo.EnvironmentVariables.Add("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true");
+
             var process = _runner.Start(pInfo);
             process.WaitForExit();
 
