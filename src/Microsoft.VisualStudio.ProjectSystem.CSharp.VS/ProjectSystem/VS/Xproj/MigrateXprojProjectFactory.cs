@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -114,14 +115,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             // Skip it.
             pInfo.EnvironmentVariables.Add("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true");
 
+
             var process = _runner.Start(pInfo);
+
+            // Create strings to hold the output and error text
+            var outputBuilder = new StringBuilder();
+            var errBuilder = new StringBuilder();
+
+            process.AddOutputDataReceivedHandler(o =>
+            {
+                outputBuilder.AppendLine(o);
+            });
+
+            process.AddErrorDataReceivedHandler(e =>
+            {
+                errBuilder.AppendLine(e);
+            });
+
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+
             process.WaitForExit();
 
             // TODO: we need to read the output from the migration report in addition to console output.
             // We'll still want to read console output in case of a bug in the dotnet cli, and it errors with some exception
             // https://github.com/dotnet/roslyn-project-system/issues/507
-            var output = process.StandardOutput.ReadToEnd();
-            var err = process.StandardError.ReadToEnd();
+            var output = outputBuilder.ToString().Trim();
+            var err = errBuilder.ToString().Trim();
 
             if (!string.IsNullOrEmpty(output))
             {

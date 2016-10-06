@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -36,10 +37,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public virtual int ExitCode => _process.ExitCode;
 
-        // Note: for ease of mocking, these are changed from StreamReader to TextReader, as TextReader exposes all the APIs we need
-        // and can be mocked by Moq.
-        public virtual TextReader StandardOutput => _process.StandardOutput;
+        public virtual void AddOutputDataReceivedHandler(Action<string> handler)
+        {
+            _process.OutputDataReceived += new DataReceivedEventHandler((sender, o) =>
+            {
+                handler(o.Data);
+            });
+        }
 
-        public virtual TextReader StandardError => _process.StandardError;
+        public virtual void AddErrorDataReceivedHandler(Action<string> handler)
+        {
+            _process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                handler(e.Data);
+            });
+        }
+
+        public virtual void BeginOutputReadLine()
+        {
+            _process.BeginOutputReadLine();
+        }
+
+        public virtual void BeginErrorReadLine()
+        {
+            _process.BeginOutputReadLine();
+        }
     }
 }
