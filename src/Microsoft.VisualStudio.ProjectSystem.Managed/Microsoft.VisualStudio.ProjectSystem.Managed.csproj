@@ -52,6 +52,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\ProjectConfigurationsInferredFromUsageCapabilitiesProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />
@@ -196,7 +197,7 @@
     <Compile Include="ProjectSystem\Utilities\ProjectErrorUtilities.cs" />
     <Compile Include="ProjectSystem\Utilities\ResourceUtilities.cs" />
     <Compile Include="ProjectSystem\Utilities\TraceUtilities.cs" />
-    <Compile Include="ProjectSystem\Utilities\TaskExtensions.cs" />
+    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

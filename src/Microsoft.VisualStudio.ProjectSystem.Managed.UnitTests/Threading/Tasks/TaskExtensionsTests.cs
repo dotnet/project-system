@@ -3,29 +3,11 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Threading.Tasks
 {
     [ProjectSystemTrait]
     public class TaskExtensionsTests
     {
-        [Fact]
-        public async Task TaskExtensiosns_WaitForCompleteOrTimeoutTests()
-        {
-            var t1 = Task.FromResult(true);
-            await t1.WaitForCompleteOrTimeout(1000);
-            Assert.True(true);
-
-            var t2 = Task.Delay(10000);
-            try
-            {
-                await t2.WaitForCompleteOrTimeout(20);
-                Assert.True(false);
-            }
-            catch (System.TimeoutException)
-            {
-            }
-        }
-
         [Fact]
         public async Task TaskExtensiosns_TryWaitForCompleteOrTimeoutTests()
         {
