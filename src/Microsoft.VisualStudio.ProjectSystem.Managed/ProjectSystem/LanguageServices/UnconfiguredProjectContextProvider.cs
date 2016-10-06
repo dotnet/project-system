@@ -152,6 +152,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(targetPath))
+                return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
