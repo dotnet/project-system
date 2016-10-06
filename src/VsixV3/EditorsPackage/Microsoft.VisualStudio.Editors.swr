@@ -13,7 +13,3 @@ vs.localizedResources
 
 vs.payloads
   vs.payload source=$(OutputPath)\VisualStudioEditorsSetup.vsix
-
-# Needed so VSIXInstaller is around on uninstall
-vs.dependencies
-  vs.dependency id=Microsoft.VisualStudio.MinShell
