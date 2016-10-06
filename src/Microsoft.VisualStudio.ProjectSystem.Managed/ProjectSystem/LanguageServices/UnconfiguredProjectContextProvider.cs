@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     based on the an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IProjectContextProvider))]
-    internal partial class UnconfiguedProjectContextProvider : OnceInitializedOnceDisposed, IProjectContextProvider
+    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposed, IProjectContextProvider
     {
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly List<IWorkspaceProjectContext> _contexts = new List<IWorkspaceProjectContext>();
 
         [ImportingConstructor]
-        public UnconfiguedProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
+        public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
                                                  Lazy<IWorkspaceProjectContextFactory> contextFactory,
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler)
