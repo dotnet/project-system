@@ -193,14 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private async Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources, RuleHandlerType handlerType)
-        {
-            foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> change in sources.Item1)
-            {
-                await OnProjectChangedAsync(change, handlerType).ConfigureAwait(false);
-            }
-        }
-
         private async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, AggregateWorkspaceProjectContext projectContext)
         {
             var handlers = Handlers.Select(h => h.Value)
