@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     /// Provides "TargetFramework" project configuration dimension and values.
     /// </summary>
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapabilities.ProjectConfigurationsInferredFromUsage)]
     internal class TargetFrameworkProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider
     {
         internal const string TargetFrameworkPropertyName = "TargetFramework";

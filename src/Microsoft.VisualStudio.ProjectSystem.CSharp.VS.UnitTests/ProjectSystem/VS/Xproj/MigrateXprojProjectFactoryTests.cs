@@ -240,6 +240,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             Assert.Equal("dotnet.exe", info.FileName);
             Assert.Equal($"migrate -s -x \"{XprojLocation}\" \"{RootLocation}\"", info.Arguments);
+            Assert.True(info.EnvironmentVariables.ContainsKey("DOTNET_SKIP_FIRST_TIME_EXPERIENCE"));
+            Assert.Equal("true", info.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"]);
         }
 
         private IFileSystem CreateFileSystem(bool withEntries = true)
