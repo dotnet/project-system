@@ -34,7 +34,7 @@
     <Target Name="CompileDesignTime"
             Returns="@(_CompilerCommandLineArgs)"
             DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-            Condition="'$(IsCrossTargetingBuild)' == 'false'"
+            Condition="'$(IsCrossTargetingBuild)' != 'true'"
           >
 
       <ItemGroup>
