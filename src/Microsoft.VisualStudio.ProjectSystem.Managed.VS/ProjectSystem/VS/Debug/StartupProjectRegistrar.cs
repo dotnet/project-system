@@ -18,11 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
-        private readonly IVsStartupProjectsListService _startupProjectsListService;
+        private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
 
+        private IVsStartupProjectsListService _startupProjectsListService;
         private Guid _guid = Guid.Empty;
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(launchProviders, nameof(launchProviders));
 
-            _startupProjectsListService = serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
+            _serviceProvider = serviceProvider;
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
@@ -116,6 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool isDebuggable = await IsDebuggable().ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
 
+            _startupProjectsListService = _startupProjectsListService ?? _serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             if (initialize || isDebuggable != _isDebuggable)
             {
                 _isDebuggable = isDebuggable;
@@ -135,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
                 if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
-                                        .ConfigureAwait(true))
+                                        .ConfigureAwait(false))
                 {
                     return true;
                 }
