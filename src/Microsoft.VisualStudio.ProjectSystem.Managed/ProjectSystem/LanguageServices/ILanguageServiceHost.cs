@@ -22,5 +22,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             get;
         }
+
+        /// <summary>
+        ///     Gets the workspace project context that provides access to the language service.
+        /// </summary>
+        /// <value>
+        ///     An <see cref="IWorkspaceProjectContext"/> that providers access to the language service.
+        /// </value>
+        IWorkspaceProjectContext ProjectContext
+        {
+            get;
+        }
     }
 }
