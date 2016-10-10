@@ -3,13 +3,12 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Tasks = System.Threading.Tasks;
-using Microsoft.VisualStudio.Threading;
+using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -17,15 +16,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// <see cref="StartupProjectRegistrar"/> is responsible for adding or removing a project from the Startup list
     /// depending on whether the active configuration of the a project is debuggable or not.
     /// </summary>
-    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
+    internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
-        private readonly IVsStartupProjectsListService _startupProjectsListService;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
 
-        private Guid _guid;
+        private IVsStartupProjectsListService _startupProjectsListService;
+        private Guid _guid = Guid.Empty;
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
 
@@ -33,21 +32,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
-            : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(launchProviders, nameof(launchProviders));
 
-            _projectVsServices = projectVsServices;
-            _startupProjectsListService = serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
+            _serviceProvider = serviceProvider;
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
@@ -55,33 +50,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
-        [ProjectAutoLoad]
+        [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal async Tasks.Task OnProjectFactoryCompletedAsync()
+        internal Task Load()
         {
-            await InitializeCoreAsync(CancellationToken.None).ConfigureAwait(false);
+            EnsureInitialized();
+            return Task.CompletedTask;
         }
 
-        protected override async Tasks.Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override void Dispose(bool disposing)
         {
-            ConfigurationGeneral projectProperties =
-                await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            _guid = new Guid((string)await projectProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false));
-            Assumes.False(_guid == Guid.Empty);
-
-            await InitializeAsync().ConfigureAwait(false);
+            if (disposing)
+            {
+                _evaluationSubscriptionLink?.Dispose();
+            }
         }
 
-        protected override Tasks.Task DisposeCoreAsync(bool initialized)
+        protected override void Initialize()
         {
-            _evaluationSubscriptionLink?.Dispose();
-            return TplExtensions.CompletedTask;
-        }
-
-        public async Tasks.Task InitializeAsync()
-        {
-            await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
-
             var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
             var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                 ConfigurationGeneralRuleBlock_ChangedAsync);
@@ -94,9 +80,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 );
         }
 
-        internal async Tasks.Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        internal async Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
+
+            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
+            {
+                Guid result;
+                if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
+                {
+                    _guid = result;
+                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
+                }
+
+                return;
+            }
+
+            if (_guid == Guid.Empty)
+            {
+                return;
+            }
 
             /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
                There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
@@ -109,11 +112,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private async Tasks.Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
+        private async Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
         {
+            bool isDebuggable = await IsDebuggable().ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
-            bool isDebuggable = await IsDebuggable().ConfigureAwait(true);
 
+            _startupProjectsListService = _startupProjectsListService ?? _serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             if (initialize || isDebuggable != _isDebuggable)
             {
                 _isDebuggable = isDebuggable;
@@ -128,12 +132,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private async Tasks.Task<bool> IsDebuggable()
+        private async Task<bool> IsDebuggable()
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
                 if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
-                                        .ConfigureAwait(true))
+                                        .ConfigureAwait(false))
                 {
                     return true;
                 }

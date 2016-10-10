@@ -124,7 +124,7 @@
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>
   <data name="3" xml:space="preserve">
-    <value>Console Application (.NET Core)</value>
+    <value>Console App (.NET Core)</value>
   </data>
   <data name="4" xml:space="preserve">
     <value>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</value>

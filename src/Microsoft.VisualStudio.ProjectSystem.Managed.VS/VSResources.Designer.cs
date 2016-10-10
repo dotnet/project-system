@@ -265,6 +265,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backing up {0} to {1}..
+        /// </summary>
+        internal static string MigrationBackupFile {
+            get {
+                return ResourceManager.GetString("MigrationBackupFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; is missing the path to the executable to debug..
         /// </summary>
         internal static string NoDebugExecutableSpecified {
@@ -279,6 +288,15 @@ namespace Microsoft.VisualStudio {
         internal static string NoItemTypeForRule {
             get {
                 return ResourceManager.GetString("NoItemTypeForRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected to find migrated cpsroj in {0}, but did not find any..
+        /// </summary>
+        internal static string NoMigratedCSProjFound {
+            get {
+                return ResourceManager.GetString("NoMigratedCSProjFound", resourceCulture);
             }
         }
         
@@ -411,6 +429,24 @@ namespace Microsoft.VisualStudio {
         internal static string WorkingDirecotryInvalid {
             get {
                 return ResourceManager.GetString("WorkingDirecotryInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate -s -p &quot;{1}&quot; -x &quot;{2}&quot;&apos; exited with error code {3}..
+        /// </summary>
+        internal static string XprojMigrationFailed {
+            get {
+                return ResourceManager.GetString("XprojMigrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. Could not find project.json at {1}..
+        /// </summary>
+        internal static string XprojMigrationFailedProjectJsonFileNotFound {
+            get {
+                return ResourceManager.GetString("XprojMigrationFailedProjectJsonFileNotFound", resourceCulture);
             }
         }
     }

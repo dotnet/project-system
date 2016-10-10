@@ -60,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
-
             if (!ProcessDesignTimeBuildFailure(projectChange))
             {
                 ProcessOptions(projectChange);

@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override int GetHashCode()
         {
-            return unchecked(ToString().GetHashCode());
+            return unchecked(ToString().ToLowerInvariant().GetHashCode());
         }
 
         public override bool Equals(object obj)

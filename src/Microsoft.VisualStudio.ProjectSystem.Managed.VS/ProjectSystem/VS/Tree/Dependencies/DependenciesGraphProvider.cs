@@ -73,14 +73,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             ProjectContextProvider.ProjectContextChanged += ProjectContextProvider_ProjectContextChanged;
 
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
             ProjectContextProvider.ProjectContextChanged -= ProjectContextProvider_ProjectContextChanged;
 
-            return TplExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private async Task EnsureInitializedAsync()

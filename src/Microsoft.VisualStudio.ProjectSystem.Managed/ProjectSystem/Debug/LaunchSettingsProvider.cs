@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -586,9 +587,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected void EnsureSettingsFolder()
         {
-            if(!FileManager.DirectoryExists(LaunchSettingsFileFolder))
+            var launchSettingsFileFolderPath = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), LaunchSettingsFileFolder);
+            if (!FileManager.DirectoryExists(launchSettingsFileFolderPath))
             {
-                FileManager.CreateDirectory(LaunchSettingsFileFolder);
+                FileManager.CreateDirectory(launchSettingsFileFolderPath);
             }
         }
 
