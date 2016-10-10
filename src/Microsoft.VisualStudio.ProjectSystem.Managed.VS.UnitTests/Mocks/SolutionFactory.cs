@@ -2,19 +2,23 @@
 
 using System;
 using EnvDTE;
-using EnvDTE80;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace EnvDTE80
 {
     internal static class SolutionFactory
     {
-        public static Solution CreateWithGetProjectItemTemplate(Func<string, string, string> projectItemsTemplatePathFunc)
+        public static Solution Create()
         {
-            var mock = new Mock<Solution>();
+            var mock = new Mock<Solution2>();
+            return mock.As<Solution>().Object;
+        }
 
-            mock.As<Solution2>()
-                .Setup(s => s.GetProjectItemTemplate(It.IsAny<string>(), It.IsAny<string>()))
+        public static Solution2 CreateWithGetProjectItemTemplate(Func<string, string, string> projectItemsTemplatePathFunc)
+        {
+            var mock = new Mock<Solution2>();
+            mock.As<Solution>();
+            mock.Setup(s => s.GetProjectItemTemplate(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(projectItemsTemplatePathFunc);
 
             return mock.Object;

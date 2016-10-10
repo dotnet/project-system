@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
