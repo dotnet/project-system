@@ -72,15 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // These are used internally to loop in debuggers to handle F5 when there are errors in 
         // the launch settings file or when there are no profiles specified (like class libraries)
         public  const string ErrorProfileCommandName = "ErrorProfile";
-
-        // Have a bit of special treatment for the web command
-        public const string WebCommandName = "web";
-
-        // IIS Specific 
-        public const string IISExpressProfileCommandName = "IISExpress";
-        public const string IISExpressProfileName = "IIS Express";
-        public const string IISProfileCommandName = "IIS";
-
+       
         protected SimpleFileWatcher FileWatcher { get; set; }
 
         // When we are saveing the file we set this to minimize noise from the file change

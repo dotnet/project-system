@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages"
-             xmlns:common="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;assembly=Microsoft.VisualStudio.ProjectSystem.Managed.VS"
              xmlns:util="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.Utilities"
              mc:Ignorable="d" 
              x:ClassModifier="internal"
@@ -176,29 +175,6 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=IsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseExecutableCommand}"/>
-            <Label 
-                Grid.Row="3"
-                x:Uid="commandLabel"
-                Margin="4,5,3,4"
-                Content="Command:"
-                IsTabStop="False" 
-                VerticalAlignment="Center"
-                Visibility="{Binding Path=IsCommand, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                Target="{Binding ElementName=commandCombo}"/>
-            <ComboBox 
-                Grid.Row="3"
-                Grid.Column="1"
-                x:Name="commandCombo"
-                MinWidth="200"
-                MinHeight="23"
-                Margin="5,7,2,6"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                Visibility="{Binding Path=IsCommand, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                ItemsSource="{Binding Path=CommandNames, Mode=OneWay}"
-                SelectedValue="{Binding Path=SelectedCommandName, Mode=TwoWay}"
-                IsEnabled="{Binding Path=IsBuiltInProfile, Converter={StaticResource inverseConverter}}"
-                IsReadOnly="True"/>
             <Label 
                 Grid.Row="4"
                 x:Uid="argumentsLabel"

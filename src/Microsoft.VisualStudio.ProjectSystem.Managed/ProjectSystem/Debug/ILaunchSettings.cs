@@ -10,8 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface ILaunchSettings
     {
-        string ActiveProfileName { get; }
-
+        
         ILaunchProfile  ActiveProfile { get; }        
 
         /// <summary>
@@ -19,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         ImmutableList<ILaunchProfile> Profiles { get; }
         
-        IIISSettings IISSettings { get; }
         /// <summary>
         /// Provides access to custom global launch settings data. The returned value depends
         /// on the section being retrieved. The settingsName matches the section in the
@@ -34,8 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ImmutableDictionary<string, object>  GlobalSettings { get; }
 
         bool ProfilesAreDifferent(IList<ILaunchProfile> profilesToCompare);
-
-        bool IISSettingsAreDifferent(IIISSettings settingsToCompare);
-                
+                        
     }
 }

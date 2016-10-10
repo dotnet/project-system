@@ -168,7 +168,6 @@
     <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\UriUtilities.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\WpfHelper.cs" />
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />

@@ -88,7 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Task<T> t = asyncFunc();
                 return t.Result;
             }
-            //Assert(_threadHandling != null);
             return _threadHandling.ExecuteSynchronously<T>(asyncFunc);
         }
 
@@ -105,7 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return;
             }
 
-            //Debug.Assert(ThreadHandling != null);
             _threadHandling.ExecuteSynchronously(asyncFunc);
         }
 
@@ -392,8 +390,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
 
-                        IUnconfiguredProjectVsServices _projectVsServices = _unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                        _threadHandling = _projectVsServices.ThreadingService;
+                        IUnconfiguredProjectVsServices projectVsServices = _unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                        _threadHandling = projectVsServices.ThreadingService;
                     }
                 }
             }

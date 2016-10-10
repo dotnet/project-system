@@ -23,9 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private readonly string _executableFilter = String.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
         private bool _useTaskFactory = true;
-        // This holds the set of shared IIS settings. This affects windows\anon auth (shared across iis\iisExpress) and
-        // the IIS and IIS Express bindings. 
-        private IISSettings _currentIISSettings;
+        
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
         {
@@ -99,64 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(ref _commandNames, value);
             }
         }
-
-        /// <summary>
-        /// Where the data is bound depends on the currently active profile. IIS\IIS Express have specific binding information
-        /// in the IISSEttings. However, profiles (web based) have an ApplicationUrl property
-        /// </summary>
-        public string ApplicationUrl
-        {
-            get
-            {
-                if (SelectedDebugProfile != null)
-                {
-                    if (SelectedDebugProfile.Kind == ProfileKind.IISExpress)
-                    {
-                        return _currentIISSettings?.IISExpressBindingData?.ApplicationUrl;
-                    }
-                    else if (SelectedDebugProfile.Kind == ProfileKind.IIS)
-                    {
-                        return _currentIISSettings?.IISBindingData?.ApplicationUrl;
-                    }
-                    else if (SelectedDebugProfile.IsWebServerCmdProfile)
-                    {
-                        return SelectedDebugProfile.ApplicationUrl;
-                    }
-                }
-                return string.Empty;
-            }
-            set
-            {
-                if (value != ApplicationUrl)
-                {
-                    if (SelectedDebugProfile != null)
-                    {
-                        if (SelectedDebugProfile.Kind == ProfileKind.IISExpress)
-                        {
-                            if (_currentIISSettings != null && _currentIISSettings.IISExpressBindingData != null)
-                            {
-                                _currentIISSettings.IISExpressBindingData.ApplicationUrl = value;
-                                OnPropertyChanged(nameof(ApplicationUrl));
-                            }
-                        }
-                        else if (SelectedDebugProfile.Kind == ProfileKind.IIS)
-                        {
-                            if (_currentIISSettings != null && _currentIISSettings.IISBindingData != null)
-                            {
-                                _currentIISSettings.IISBindingData.ApplicationUrl = value;
-                                OnPropertyChanged(nameof(ApplicationUrl));
-                            }
-                        }
-                        else if (SelectedDebugProfile.IsWebServerCmdProfile)
-                        {
-                            SelectedDebugProfile.ApplicationUrl = value;
-                            OnPropertyChanged(nameof(ApplicationUrl));
-                        }
-                    }
-                }
-            }
-        }
-
+        
         private List<LaunchType> _launchTypes;
         public List<LaunchType> LaunchTypes
         {
@@ -184,68 +125,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // Existing commands are shown in the UI as project
                     // since that is what is run when that command is selected. However, we don't want to just update the actual
                     // profile to this value - we want to treat them as equivalent.
-                    if (_selectedLaunchType != null && !IsEquivalentProfileKind(SelectedDebugProfile, _selectedLaunchType.Kind))
+                    if (_selectedLaunchType != null)
                     {
-                        SelectedDebugProfile.Kind = _selectedLaunchType.Kind;
-                        if (_selectedLaunchType.Kind == ProfileKind.Executable)
+                        SelectedDebugProfile.CommandName = _selectedLaunchType.CommandName;
+                        if (_selectedLaunchType.CommandName == ProfileCommandNames.Executable)
                         {
                             ExecutablePath = String.Empty;
-                            SelectedCommandName = null;
-                            
                         }
-                        else if (_selectedLaunchType.Kind == ProfileKind.IISExpress)
+                        else if (_selectedLaunchType.CommandName == ProfileCommandNames.IISExpress)
                         {
                             ExecutablePath = String.Empty;
-                            SelectedCommandName = LaunchSettingsProvider.IISExpressProfileCommandName;
                             HasLaunchOption = true;
                         }
                         else
                         {
-                            SelectedCommandName = CommandNames[0];
                             ExecutablePath = null;
                         }
 
-                        OnPropertyChanged(nameof(IsCommand));
                         OnPropertyChanged(nameof(IsExecutable));
                         OnPropertyChanged(nameof(IsProject));
-                        OnPropertyChanged(nameof(IsIISExpress));
-                        OnPropertyChanged(nameof(ShowVersionSelector));
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// Existing commands is shown in the UI as project
-        /// since that is what is run when that command is selected. However, we don't want tojust update the actual
-        /// profile to this value - we want to treat them as equivalent.
-        ///</summary>
-        private bool IsEquivalentProfileKind(LaunchProfile profile, ProfileKind kind)
-        {
-
-            if (kind == ProfileKind.Project)
-            {
-                return profile.Kind == ProfileKind.Project ||
-                       profile.Kind == ProfileKind.BuiltInCommand ||
-                       profile.Kind == ProfileKind.CustomizedCommand;
-            }
-
-            return profile.Kind == kind;
-        }
-
-        public bool IsBuiltInProfile
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return SelectedDebugProfile.Kind == ProfileKind.BuiltInCommand;
-            }
-        }
-
+        
         public string CommandLineArguments
         {
             get
@@ -360,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                return SelectedLaunchType.Kind == ProfileKind.Executable;
+                return SelectedLaunchType.CommandName == ProfileCommandNames.Executable;
             }
         }
 
@@ -373,91 +276,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                return SelectedLaunchType.Kind == ProfileKind.Project;
+                return SelectedLaunchType.CommandName == ProfileCommandNames.Project;
             }
         }
-
-        public bool IsCommand
-        {
-            get
-            {
-                if (SelectedLaunchType == null)
-                {
-                    return false;
-                }
-
-                return SelectedLaunchType.Kind == ProfileKind.BuiltInCommand || SelectedLaunchType.Kind == ProfileKind.CustomizedCommand;
-            }
-        }
-
+        
         public bool IsProfileSelected
         {
             get
             {
                 return SelectedDebugProfile != null;
-            }
-        }
-
-        public bool IsIISExpress
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return SelectedDebugProfile.Kind == ProfileKind.IISExpress;
-            }
-        }
-
-        public bool IsIISOrIISExpress
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return SelectedDebugProfile.Kind == ProfileKind.IIS || SelectedDebugProfile.Kind == ProfileKind.IISExpress;
-            }
-        }
-
-        public bool IsWebProfile
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return IsIISOrIISExpress;
-            }
-        }
-
-        public bool ShowVersionSelector
-        {
-            get
-            {
-                return !IsExecutable;
-            }
-        }
-        public bool IsCustomType
-        {
-            get
-            {
-                if (SelectedLaunchType == null || SelectedDebugProfile == null)
-                {
-                    return false;
-                }
-
-                return SelectedLaunchType.Kind == ProfileKind.CustomizedCommand ||
-                       SelectedLaunchType.Kind == ProfileKind.Executable ||
-                       SelectedLaunchType.Kind == ProfileKind.IIS ||
-                       (SelectedDebugProfile.Kind == ProfileKind.IISExpress && !SelectedDebugProfile.IsDefaultIISExpressProfile) ||
-                       (SelectedDebugProfile.Kind == ProfileKind.Project && !LaunchProfile.IsSameProfileName(SelectedDebugProfile.Name, UnconfiguredProject.FullPath));
             }
         }
 
@@ -492,6 +319,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(HasProfiles));
         }
 
+        public bool IsWebProfile 
+        {
+            get
+            {
+                return false; // TODO: implement once web interfaces are handled (https://github.com/dotnet/roslyn-project-system/issues/585)
+            }
+        }
+
+        public bool IsIISOrIISExpress
+        {
+            get
+            {
+                return false; // TODO: implement once web interfaces are handled (https://github.com/dotnet/roslyn-project-system/issues/585)
+            }
+        }
         public bool HasProfiles
         {
             get
@@ -517,175 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
         }
-
-        public bool SSLEnabled
-        {
-            get
-            {
-                if (_currentIISSettings != null && SelectedDebugProfile != null)
-                {
-                    if (SelectedDebugProfile.Kind == ProfileKind.IISExpress && _currentIISSettings.IISExpressBindingData != null)
-                    {
-                        return _currentIISSettings.IISExpressBindingData.SSLPort != 0;
-                    }
-                    else if (SelectedDebugProfile.Kind == ProfileKind.IIS && _currentIISSettings.IISBindingData != null)
-                    {
-                        return _currentIISSettings.IISBindingData.SSLPort != 0;
-                    }
-                }
-                return false;
-            }
-            set
-            {
-                // When transitioning to enabled we want to go get an ssl port. Of course when loading (ignore events is true) we don't 
-                // want to do this.
-                if (value != SSLEnabled && !IgnoreEvents)
-                {
-                    ServerBinding binding = null;
-                    if (_currentIISSettings != null)
-                    {
-                        if (SelectedDebugProfile.Kind == ProfileKind.IISExpress && _currentIISSettings.IISExpressBindingData != null)
-                        {
-                            binding = _currentIISSettings.IISExpressBindingData;
-                        }
-                        else if (SelectedDebugProfile.Kind == ProfileKind.IIS && _currentIISSettings.IISBindingData != null)
-                        {
-                            binding = _currentIISSettings.IISBindingData;
-                        }
-                    }
-                    if (binding != null)
-                    {
-                        // When setting we need to configure the port
-                        if (value == true)
-                        {
-                            // If we are already have a port (say the guy was enabling\disabing over and over), use that (nothing to do here)
-                            if (string.IsNullOrWhiteSpace(SSLUrl))
-                            {
-                                ValidateApplicationUrl();
-
-                                // No existing value. Go get one and set the url
-                                // First we must validate the ApplicationUrl is valid. W/O it we don't know the host header
-                                if (SelectedDebugProfile.Kind == ProfileKind.IISExpress)
-                                {
-                                    // Get the SSLPort provider
-                                    var sslPortProvider = GetSSLPortProvider();
-                                    if (sslPortProvider != null)
-                                    {
-                                        binding.SSLPort = sslPortProvider.GetAvailableSSLPort(ApplicationUrl);
-                                    }
-                                    else
-                                    {
-                                        // Just set it to a default iis express value
-                                        binding.SSLPort = 44300;
-                                    }
-                                }
-                                else
-                                {
-                                    //For IIS use 443 as the binding
-                                    binding.SSLPort = 443;
-                                }
-                            }
-                            else
-                            {
-                                binding.SSLPort = new Uri(SSLUrl).Port;
-                            }
-                        }
-                        else
-                        {
-                            // Just clear the port. We don't clear the SSL url so that it persists (disabled) until we update.
-                            binding.SSLPort = 0;
-                        }
-                    }
-                }
-                OnPropertyChanged(nameof(SSLEnabled));
-                OnPropertyChanged(nameof(SSLUrl));
-            }
-        }
-
-        /// <summary>
-        /// This property is synthesized from the SSLPort changing.
-        /// </summary>
-        public string SSLUrl
-        {
-            get
-            {
-                int sslPort = 0;
-                if (_currentIISSettings != null && SelectedDebugProfile != null)
-                {
-                    if (SelectedDebugProfile.Kind == ProfileKind.IISExpress && _currentIISSettings.IISExpressBindingData != null)
-                    {
-                        sslPort = _currentIISSettings.IISExpressBindingData.SSLPort;
-                    }
-                    else if (SelectedDebugProfile.Kind == ProfileKind.IIS && _currentIISSettings.IISBindingData != null)
-                    {
-                        sslPort = _currentIISSettings.IISBindingData.SSLPort;
-                    }
-
-                    if (sslPort != 0)
-                    {
-                        try
-                        {
-                            // Application url could be bad so we need to protect ourself.
-                            if (!string.IsNullOrWhiteSpace(ApplicationUrl))
-                            {
-                                return UriUtilities.MakeSecureUrl(ApplicationUrl, sslPort);
-                            }
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// IIS\IISExpress specific property (shared between them) and stored in  _currentIISSetings 
-        /// </summary>
-        public bool AnonymousAuthenticationEnabled
-        {
-            get
-            {
-                if (_currentIISSettings == null)
-                {
-                    return false;
-                }
-                return _currentIISSettings.AnonymousAuthentication;
-            }
-            set
-            {
-                if (_currentIISSettings != null && _currentIISSettings.AnonymousAuthentication != value)
-                {
-                    _currentIISSettings.AnonymousAuthentication = value;
-                    OnPropertyChanged(nameof(AnonymousAuthenticationEnabled));
-                }
-            }
-        }
-
-        /// <summary>
-        /// IIS\IISExpress specific property (shared between them) and stored in  _currentIISSetings 
-        /// </summary>
-        public bool WindowsAuthenticationEnabled
-        {
-            get
-            {
-                if (_currentIISSettings == null)
-                {
-                    return false;
-                }
-                return _currentIISSettings.WindowsAuthentication;
-            }
-            set
-            {
-                if (_currentIISSettings != null && _currentIISSettings.WindowsAuthentication != value)
-                {
-                    _currentIISSettings.WindowsAuthentication = value;
-                    OnPropertyChanged(nameof(WindowsAuthenticationEnabled));
-                }
-            }
-        }
-
+        
         private bool _removeEnvironmentVariablesRow;
         public bool RemoveEnvironmentVariablesRow
         {
@@ -769,39 +443,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 // these have no backing store in the viewmodel, we need to send notifications when we change selected profiles
                 // consider a better way of doing this
                 OnPropertyChanged(nameof(SelectedDebugProfile));
-                OnPropertyChanged(nameof(IsBuiltInProfile));
-                OnPropertyChanged(nameof(IsIISExpress));
-                OnPropertyChanged(nameof(IsIISOrIISExpress));
-                OnPropertyChanged(nameof(IsWebProfile));
                 OnPropertyChanged(nameof(CommandLineArguments));
                 OnPropertyChanged(nameof(ExecutablePath));
                 OnPropertyChanged(nameof(LaunchPage));
                 OnPropertyChanged(nameof(HasLaunchOption));
                 OnPropertyChanged(nameof(WorkingDirectory));
                 OnPropertyChanged(nameof(SelectedCommandName));
-
-                OnPropertyChanged(nameof(SSLEnabled));
-                OnPropertyChanged(nameof(SSLUrl));
-                OnPropertyChanged(nameof(ApplicationUrl));
-                OnPropertyChanged(nameof(WindowsAuthenticationEnabled));
-                OnPropertyChanged(nameof(AnonymousAuthenticationEnabled));
-
-
+                
                 SetLaunchType();
 
-                OnPropertyChanged(nameof(IsCustomType));
-                OnPropertyChanged(nameof(IsCommand));
                 OnPropertyChanged(nameof(IsExecutable));
                 OnPropertyChanged(nameof(IsProject));
                 OnPropertyChanged(nameof(IsProfileSelected));
                 OnPropertyChanged(nameof(DeleteProfileEnabled));
-                OnPropertyChanged(nameof(ShowVersionSelector));
-
-                if (oldProfile != null && !UseSpecificRuntime)
-                {
-                    oldProfile.SDKVersion = null;
-                }
-
+                
                 UseSpecificRuntime = true;
                 
                 SetEnvironmentGrid(oldProfile);
@@ -840,10 +495,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 SelectedDebugProfile.MutableEnvironmentVariables = null;
             }
-            
-            //await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, GetIISSettings(), SelectedDebugProfile != null ? SelectedDebugProfile.Name : null));
-            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, null, SelectedDebugProfile != null ? SelectedDebugProfile.Name : null)).ConfigureAwait(false);
-
+            var globalSettings = provider.CurrentSnapshot.GlobalSettings;
+            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, globalSettings, SelectedDebugProfile != null ? SelectedDebugProfile.Name : null)).ConfigureAwait(false);
         }
 
         private void SetEnvironmentGrid(LaunchProfile oldProfile)
@@ -896,7 +549,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (DebugProfiles != null)
             {
                 profilesChanged = profiles.ProfilesAreDifferent(DebugProfiles.Select(p => (ILaunchProfile)p).ToList());
-                IISSettingsChanged = profiles.IISSettingsAreDifferent(GetIISSettings());
                 if (!profilesChanged && !IISSettingsChanged)
                 {
                     return;
@@ -919,24 +571,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     foreach (var profile in profiles.Profiles)
                     {
                         // Don't show the dummy NoAction profile
-                        if (profile.Kind != ProfileKind.NoAction)
+                        if (profile.CommandName != ProfileCommandNames.NoAction)
                         {
                             var newProfile = new LaunchProfile(profile);
                             debugProfiles.Add(newProfile);
                         }
                     }
-
-                    CommandNames = new ObservableCollection<string>(debugProfiles.Where(p => p.Kind == ProfileKind.BuiltInCommand).Select(pr => pr.CommandName));
-
+                                        
                     DebugProfiles = debugProfiles;
 
                     // If we have a selection, we want to leave it as is
                     if (curProfileName == null || profiles.Profiles.FirstOrDefault(p => { return LaunchProfile.IsSameProfileName(p.Name, curProfileName); }) == null)
                     {
                         // Note that we have to be careful since the collection can be empty. 
-                        if (!string.IsNullOrEmpty(profiles.ActiveProfileName))
+                        if (!string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                         {
-                            SelectedDebugProfile = DebugProfiles.Where((p) => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfileName)).Single();
+                            SelectedDebugProfile = DebugProfiles.Where((p) => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
                         }
                         else
                         {
@@ -955,10 +605,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         SelectedDebugProfile = DebugProfiles.Where((p) => LaunchProfile.IsSameProfileName(p.Name, curProfileName)).Single();
                     }
                 }
-                if (IISSettingsChanged)
-                {
-                    InitializeIISSettings(profiles.IISSettings);
-                }
+                
             }
             finally
             {
@@ -1000,120 +647,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Called whenever new settings are retrieved. Note that the controls which are affected depend heavily on the
-        /// currently selected profile.
-        /// </summary>
-        private void InitializeIISSettings(IIISSettings iisSettings)
-        {
-            if (iisSettings == null)
-            {
-                _currentIISSettings = null;
-                return;
-            }
-
-            _currentIISSettings = IISSettings.FromIIISSettings(iisSettings);
-
-            OnPropertyChanged(nameof(ApplicationUrl));
-            OnPropertyChanged(nameof(SSLEnabled));
-            OnPropertyChanged(nameof(SSLUrl));
-            OnPropertyChanged(nameof(WindowsAuthenticationEnabled));
-            OnPropertyChanged(nameof(AnonymousAuthenticationEnabled));
-        }
-
-        /// <summary>
         /// Called when then the user saves the form.
         /// </summary>
         public async override Task<int> Save()
         {
-
-            // For web projects, we need to validate the settings -especially the appUrl from which everything else hangs.
-            /* Uncomment the validation once IISsettings is working
-             * if (ContainsProfileKind(ProfileKind.IISExpress))
-            {
-                if (_currentIISSettings == null || _currentIISSettings.IISExpressBindingData == null || string.IsNullOrEmpty(_currentIISSettings.IISExpressBindingData.ApplicationUrl))
-                {
-                    throw new Exception(PropertyPageResources.IISExpressMissingAppUrl);
-                }
-                try
-                {
-                    Uri appUri = new Uri(_currentIISSettings.IISExpressBindingData.ApplicationUrl, UriKind.Absolute);
-                    if (appUri.Port < 1024)
-                    {
-                        throw new Exception(PropertyPageResources.AdminRequiredForPort);
-                    }
-                }
-                catch (UriFormatException ex)
-                {
-                    throw new Exception(string.Format(PropertyPageResources.InvalidIISExpressAppUrl, ex.Message));
-                }
-            }*/
-            if (ContainsProfileKind(ProfileKind.IIS))
-            {
-                if (_currentIISSettings == null || _currentIISSettings.IISBindingData == null || string.IsNullOrEmpty(_currentIISSettings.IISBindingData.ApplicationUrl))
-                {
-                    throw new Exception(PropertyPageResources.IISMissingAppUrl);
-                }
-                try
-                {
-                    Uri appUri = new Uri(_currentIISSettings.IISBindingData.ApplicationUrl, UriKind.Absolute);
-                }
-                catch (UriFormatException ex)
-                {
-                    throw new Exception(string.Format(PropertyPageResources.InvalidIISAppUrl, ex.Message));
-                }
-            }
-
-            // Persist the settings. The change in IIS Express settings will be tracked by the WebStateManager which will 
-            // configure the IIS Express server as needed.
             await SaveLaunchSettings().ConfigureAwait(false);
 
             return VSConstants.S_OK;
         }
-
-        /// <summary>
-        ///  Helper to determine if an IIS Express profile is defined
-        /// </summary>
-        private void ValidateApplicationUrl()
-        {
-            if (string.IsNullOrEmpty(ApplicationUrl))
-            {
-                throw new Exception(PropertyPageResources.IISExpressMissingAppUrl);
-            }
-            try
-            {
-                Uri appUri = new Uri(ApplicationUrl, UriKind.Absolute);
-                if (appUri.Port < 1024)
-                {
-                    throw new Exception(PropertyPageResources.AdminRequiredForPort);
-                }
-            }
-            catch (UriFormatException ex)
-            {
-                throw new Exception(string.Format(PropertyPageResources.InvalidAppUrl, ex.Message));
-            }
-        }
-
-        /// <summary>
-        ///  Helper to determine if a particular profile type is defined
-        /// </summary>
-        private bool ContainsProfileKind(ProfileKind kind)
-        {
-            return DebugProfiles != null && DebugProfiles.FirstOrDefault(p => p.Kind == kind) != null;
-        }
-
-        /// <summary>
-        /// Helper to get the IIS Settings
-        /// </summary>
-        private IISSettingsProfile GetIISSettings()
-        {
-            if (_currentIISSettings != null)
-            {
-                return new IISSettingsProfile(_currentIISSettings);
-            }
-
-            return null;
-        }
-
+                
+                
         private ICommand _addEnironmentVariableRowCommand;
         public ICommand AddEnvironmentVariableRowCommand
         {
@@ -1202,19 +745,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }));
             }
         }
-        private ICommand _copySSLUrlCommand;
-        public ICommand CopySSLUrlCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _copySSLUrlCommand, () =>
-                    new DelegateCommand((state) =>
-                    {
-                        Clipboard.SetText(SSLUrl);
-                    }));
-            }
-        }
-
+        
         public string CopyHyperlinkText
         {
             get
@@ -1246,7 +777,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                                                              IsNewProfileNameValid);
                       if (dialog.ShowModal() == true)
                       {
-                          CreateProfile(dialog.ProfileName, ProfileKind.Executable);
+                          CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
                       }
                   })); 
             }
@@ -1261,7 +792,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                return !IsBuiltInProfile && !SelectedDebugProfile.IsDefaultIISExpressProfile;
+                return true;
             }
         }
 
@@ -1281,9 +812,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        internal LaunchProfile CreateProfile(string name, ProfileKind kind)
+        internal LaunchProfile CreateProfile(string name, string commandName)
         {
-            var profile = new LaunchProfile() { Name = name, Kind = kind };
+            var profile = new LaunchProfile() { Name = name, CommandName = commandName };
             DebugProfiles.Add(profile);
 
             // Fire a property changed so we can get the page to be dirty when we add a new profile
@@ -1324,20 +855,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 _launchTypes = new List<LaunchType>();
             }
-            else if (SelectedDebugProfile.Kind == ProfileKind.CustomizedCommand || SelectedDebugProfile.Kind == ProfileKind.IIS ||
-                     SelectedDebugProfile.Kind == ProfileKind.Executable ||
-                     (SelectedDebugProfile.Kind == ProfileKind.IISExpress && !SelectedDebugProfile.IsDefaultIISExpressProfile))
+            else if (SelectedDebugProfile.CommandName == ProfileCommandNames.Executable ||
+                     (SelectedDebugProfile.CommandName == ProfileCommandNames.IISExpress))
             {
-                // For customized commands, exe, IIS and non-built in IIS Express we allow the user to switch between them. Two cases, one where we have commands
-                // and one where there are no commands defined in project.json
-                if (CommandNames.Count > 0)
-                {
-                    _launchTypes = IsWebProject ? LaunchType.GetWebCustomizedLaunchTypes().ToList<LaunchType>() : LaunchType.GetCustomizedLaunchTypes().ToList<LaunchType>();
-                }
-                else
-                {
-                    _launchTypes = IsWebProject ? LaunchType.GetWebExecutableOnlyLaunchTypes().ToList<LaunchType>() : LaunchType.GetExecutableOnlyLaunchTypes().ToList<LaunchType>();
-                }
+
+                _launchTypes = LaunchType.GetExecutableOnlyLaunchTypes().ToList<LaunchType>();
+
             }
             else
             {
@@ -1353,12 +876,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             else
             {
-                var selKind = SelectedDebugProfile.Kind;
-                if ((selKind == ProfileKind.BuiltInCommand || selKind == ProfileKind.CustomizedCommand))
-                {
-                    selKind = ProfileKind.Project;
-                }
-                SelectedLaunchType = LaunchType.GetAllLaunchTypes().Where(lt => lt.Kind == selKind).SingleOrDefault();
+                var selCommandName = SelectedDebugProfile.CommandName;
+                SelectedLaunchType = LaunchType.GetAllLaunchTypes().Where(lt => lt.CommandName == selCommandName).SingleOrDefault();
             }
         }
         public virtual Task<bool> IsWebProjectAsync()
@@ -1394,36 +913,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _debugProfileProviderLink = null;
             }
         }
-
-        [ExcludeFromCodeCoverage]
-        protected virtual IEnumerable<string> GetAvailableVersions()
-        {
-            return null;
-        }
-
+        
         [ExcludeFromCodeCoverage]
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
             return UnconfiguredProject.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
         }
-
-        [ExcludeFromCodeCoverage]
-        protected virtual ISSLPortProvider GetSSLPortProvider()
-        {
-            try
-            {
-                return UnconfiguredProject.Services.ExportProvider.GetExportedValue<ISSLPortProvider>();
-            }
-            catch
-            {
-            }
-            return null;
-            
-        }
-
+                
         public class LaunchType
         {
-            public ProfileKind Kind { get; set; }
+            public String CommandName { get; set; }
             public string Name { get; set; }
 
             public override bool Equals(object obj)
@@ -1431,7 +930,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 LaunchType oth = obj as LaunchType;
                 if (oth != null)
                 {
-                    return Kind.Equals(oth.Kind);
+                    return CommandName.Equals(oth.CommandName);
                 }
 
                 return false;
@@ -1439,59 +938,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             public override int GetHashCode()
             {
-                return Kind.GetHashCode();
+                return CommandName.GetHashCode();
             }
 
-            public static readonly LaunchType CustomizedCommand = new LaunchType() { Kind = ProfileKind.CustomizedCommand, Name = PropertyPageResources.ProfileKindCommandName };
-            public static readonly LaunchType BuiltInCommand = new LaunchType() { Kind = ProfileKind.BuiltInCommand, Name = PropertyPageResources.ProfileKindCommandName };
-            public static readonly LaunchType Executable = new LaunchType() { Kind = ProfileKind.Executable, Name = PropertyPageResources.ProfileKindExecutableName };
-            public static readonly LaunchType Project = new LaunchType() { Kind = ProfileKind.Project, Name = PropertyPageResources.ProfileKindProjectName };
-            public static readonly LaunchType IISExpress = new LaunchType() { Kind = ProfileKind.IISExpress, Name = PropertyPageResources.ProfileKindIISExpressName };
+            public static readonly LaunchType Executable = new LaunchType() { CommandName = ProfileCommandNames.Executable, Name = PropertyPageResources.ProfileKindExecutableName };
+            public static readonly LaunchType Project = new LaunchType() { CommandName = ProfileCommandNames.Project, Name = PropertyPageResources.ProfileKindProjectName };
+            public static readonly LaunchType IISExpress = new LaunchType() { CommandName = ProfileCommandNames.IISExpress, Name = PropertyPageResources.ProfileKindIISExpressName };
 
             public static LaunchType[] GetAllLaunchTypes()
             {
                 return _allLaunchTypes;
             }
-
-            public static LaunchType[] GetWebCustomizedLaunchTypes()
-            {
-                return _webCustomizedLaunchTypes;
-            }
-            public static LaunchType[] GetCustomizedLaunchTypes()
-            {
-                return _customizedLaunchTypes;
-            }
-
+            
             public static LaunchType[] GetBuiltInLaunchTypes()
             {
                 return  _builtInLaunchTypes;
             }
-
-            public static LaunchType[] GetWebExecutableOnlyLaunchTypes()
-            {
-                return _webExecutableOnlyLaunchType;
-            }
-
+            
             public static LaunchType[] GetExecutableOnlyLaunchTypes()
             {
                 return _executableOnlyLaunchType;
             }
 
-            // billhie: IIS is disabled until RC2 once we have sorted out the hosting story so we don't define an IIS launch type. 
-#if IISSUPPORT
-            public static readonly LaunchType IIS = new LaunchType() { Kind = ProfileKind.IIS, Name = Resources.ProfileKindIISName };
-            public static readonly LaunchType[] AllLaunchTypes = new LaunchType[] { Executable, IISExpress, IIS, Project };
-            public static readonly LaunchType[] WebCustomizedLaunchTypes = new LaunchType[] { Executable, IISExpress, IIS, Project };
-            public static readonly LaunchType[] WebExecutableOnlyLaunchType = new LaunchType[] { Executable, IISExpress, IIS, Project };
-#else
+
             private static readonly LaunchType[] _allLaunchTypes = new LaunchType[] { Executable, IISExpress, Project };
-            private static readonly LaunchType[] _webCustomizedLaunchTypes = new LaunchType[] { Executable, IISExpress, Project };
-            private static readonly LaunchType[] _webExecutableOnlyLaunchType = new LaunchType[] { Executable, IISExpress, Project };
-#endif
-            private static readonly LaunchType[] _builtInLaunchTypes = new LaunchType[] { Executable, IISExpress, Project };
-            private static readonly LaunchType[] _customizedLaunchTypes = new LaunchType[] { Executable, Project };
+            private static readonly LaunchType[] _builtInLaunchTypes = new LaunchType[] { Executable, Project };
             private static readonly LaunchType[] _executableOnlyLaunchType = new LaunchType[] { Executable, Project };
             
         }
+    }
+
+    public static class ProfileCommandNames
+    {
+        public const string Project = "Project";
+        public const string IISExpress = "IISExpress";
+        public const string Executable = "Executable";
+        public const string NoAction = "NoAction";
     }
 }

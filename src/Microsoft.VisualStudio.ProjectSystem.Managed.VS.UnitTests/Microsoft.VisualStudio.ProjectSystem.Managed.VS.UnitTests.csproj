@@ -108,7 +108,6 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\TestPropertyProviders.cs" />
-    <Compile Include="ProjectSystem\VS\PropertyPages\Utilities.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />

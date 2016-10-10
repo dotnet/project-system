@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchProfile(LaunchProfileData data)
         {
             Name = data.Name;
-            Kind = data.Kind;
             ExecutablePath = data.ExecutablePath;
             CommandName = data.CommandName;
             CommandLineArgs = data.CommandLineArgs; 
@@ -38,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchProfile(ILaunchProfile existingProfile)
         {
            Name = existingProfile.Name;
-           Kind = existingProfile.Kind;
            ExecutablePath = existingProfile.ExecutablePath;
            CommandName = existingProfile.CommandName;
            CommandLineArgs = existingProfile.CommandLineArgs; 
@@ -87,13 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _otherSettings = value;
             }
         }
-
-        public ProfileKind Kind { get; set; }
-
-        public string ApplicationUrl { get; set; }
-
-        public string SDKVersion { get; set; }
-
+               
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>
@@ -120,10 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparison.Ordinal) ||
                !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
                !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.ApplicationUrl, debugProfile2.ApplicationUrl, StringComparison.Ordinal) ||
                (debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser) ||
-               !string.Equals(debugProfile1.SDKVersion, debugProfile2.SDKVersion, StringComparison.Ordinal) ||
-               (includeProfileKind && debugProfile1.Kind != debugProfile2.Kind))
+               (includeProfileKind && debugProfile1.CommandName != debugProfile2.CommandName))
             {
                 return false;
             }
@@ -160,26 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
         }
-
-        public Boolean IsDefaultIISExpressProfile
-        {
-            get
-            {
-                return Kind == ProfileKind.IISExpress && IsDefaultWebProfileName(Name);
-            }
-        }
-
-       
-        /// <summary>
-        /// Special treatment for command profiles that use self host servers like "web"
-        /// NOTE That this command will only be set once code in #if ENABLE_SELFHOSTSERVER
-        /// blocks is enabled. There is no code to set it
-        /// </summary>
-        public bool IsWebServerCmdProfile { get; set; }
-
-        public static bool IsDefaultWebProfileName(string name)
-        {
-            return IsSameProfileName(name, LaunchSettingsProvider.IISExpressProfileName);
-        }
+        
     }
 }

@@ -41,11 +41,8 @@
     <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
     <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
-    <Compile Include="ProjectSystem\Debug\IIISSettings.cs" />
-    <Compile Include="ProjectSystem\Debug\IISSettingsProfile.cs" />
     <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
-    <Compile Include="ProjectSystem\Debug\ISSLPortProvider.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchProfile.cs" />

@@ -19,11 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             public TestUnconfiguredPropertyProvider UnconfiguredProvider { get; set; }
             public IList<ILaunchProfile> Profiles { get; set; }
-            public IIISSettings IISSettings { get; set; }
-            public ILaunchSettingsProvider ProfileProvider { get; set;}
+            public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
         }
-        
+
         private Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
         {
             // Setup the debug profiles
@@ -43,12 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             mockProfiles.Setup(m => m.Profiles).Returns(() =>
             {
-                return data.Profiles == null ?  null : data.Profiles.ToImmutableList();
-            });
-
-            mockProfiles.Setup(m => m.IISSettings).Returns(() =>
-            {
-                return data.IISSettings == null ?  null : data.IISSettings;
+                return data.Profiles == null ? null : data.Profiles.ToImmutableList();
             });
 
             mockProfiles.Setup(m => m.ProfilesAreDifferent(It.IsAny<IList<ILaunchProfile>>())).Returns((IList<ILaunchProfile> profilesToCompare) =>
@@ -70,21 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return detectedChanges;
             });
 
-            mockProfiles.Setup(m => m.IISSettingsAreDifferent(It.IsAny<IISSettingsProfile>())).Returns<IISSettingsProfile>((settingsToCompare) =>
-            {
-                if(data.IISSettings == null)
-                {
-                    // Treat empty and null as equivalent
-                    return !(settingsToCompare == null || IISSettingsProfile.IsEmptySettings(settingsToCompare));
-                }
-                else if(settingsToCompare == null)
-                {
-                    return !IISSettingsProfile.IsEmptySettings(data.IISSettings);
-                }
-        
-                // Compare each item
-                return IISSettingsProfile.SettingsDiffer(data.IISSettings, settingsToCompare);
-            });
 
             data.LaunchProfiles = mockProfiles.Object;
 
@@ -94,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             mockProfileProvider.Setup(m => m.UpdateAndSaveSettingsAsync(It.IsAny<ILaunchSettings>())).Callback((ILaunchSettings newProfiles) =>
                     {
                         data.Profiles = new List<ILaunchProfile>(newProfiles.Profiles);
-                        data.IISSettings = newProfiles.IISSettings;
                     }
                 ).Returns(Task.Run(() => { })).Verifiable();
 
@@ -104,67 +82,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             viewModel.Protected().Setup<ILaunchSettingsProvider>("GetDebugProfileProvider").Returns(mockProfileProvider.Object);
             return viewModel;
         }
-
-        [Fact]
-        public async Task DebugPageViewModel_AddAndDeleteProfiles()
-        {
-            TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
-       
-            var profiles = new List<ILaunchProfile>();
-            profiles.Add(new LaunchProfile() { Name = "MyCommand" });
-
-            var viewModelData = new ViewModelData()
-            {
-                UnconfiguredProvider = unconfiguredProvider,
-                Profiles = profiles,
-            };
-
-            var viewModel = CreateViewModel(viewModelData);
-            await viewModel.Object.Initialize();
-            Utilities.WaitForAsyncOperation(1800000, () => viewModel.Object.EnvironmentVariables != null);
-
-            viewModel.Object.DebugProfiles.Add(new LaunchProfile() { Name = "NewProfile", Kind = ProfileKind.CustomizedCommand });
-
-            viewModel.Object.SelectedDebugProfile = viewModel.Object.DebugProfiles[1];
-            Assert.False(viewModel.Object.IsCustomType);
-
-            // swap out for new set of profiles
-            viewModelData.Profiles = new List<ILaunchProfile>();
-            viewModelData.Profiles.Add(new LaunchProfile() { Name = "MyOtherCommand" });
-
-            viewModel.Object.InitializeDebugTargetsCore(viewModelData.LaunchProfiles);
-            Assert.Equal(1, viewModel.Object.DebugProfiles.Count);
-
-            Assert.Equal(viewModelData.Profiles[0].Name, viewModelData.Profiles[0].Name);
-            viewModel.Object.SelectedCommandName = "NewCommandName";
-            await viewModel.Object.Save();
-            Assert.Equal("NewCommandName", viewModel.Object.SelectedCommandName);
-
-            viewModel.Object.DeleteProfileCommand.Execute(null);
-            Assert.Equal(0, viewModel.Object.DebugProfiles.Count);
-            Assert.Equal(viewModel.Object.SelectedDebugProfile, null);
-        }
-        
+               
         [Fact]
         public void DebugPageViewModel_UICommands()
         {
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var viewModel = new DebugPageViewModel(false,unconfiguredProject);
- 
+            var viewModel = new DebugPageViewModel(false, unconfiguredProject);
+
             Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
             Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
             Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.NewProfileCommand);
             Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
         }
-
+        
         [Fact]
-        public async Task DebugPageViewModel_EnvironmentCommands()
+        public async Task DebugPageViewModel_NoProfiles()
         {
             TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
-        
             var profiles = new List<ILaunchProfile>();
-            profiles.Add(new LaunchProfile() { Name = "Run", WorkingDirectory = "c:\\somepath", Kind = ProfileKind.BuiltInCommand });
-            profiles.Add(new LaunchProfile() { Name = "MyCommand", Kind = ProfileKind.Executable });
 
             var viewModelData = new ViewModelData()
             {
@@ -172,121 +107,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Profiles = profiles,
             };
 
-            // setup the viewmodel
             var viewModel = CreateViewModel(viewModelData);
-
-            // verify initialize
             await viewModel.Object.Initialize();
-            Utilities.WaitForAsyncOperation(3000, () => viewModel.Object.EnvironmentVariables != null);
-
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.Object.AddEnvironmentVariableRowCommand);
-            viewModel.Object.FocusEnvironmentVariablesGridRow += new EventHandler((object s, EventArgs e) =>
-            {
-                Assert.Equal(viewModel.Object, s);
-            });
-
-            Assert.False(viewModel.Object.RemoveEnvironmentVariablesRow);
-            Assert.True(viewModel.Object.EnvironmentVariablesValid);
-            viewModel.Object.AddEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(1, viewModel.Object.EnvironmentVariables.Count);
-            var addedVariable = viewModel.Object.EnvironmentVariables[0];
-            Assert.Equal("Key", addedVariable.Name);
-            Assert.Equal("Value", addedVariable.Value);
-            var validationDummy = addedVariable["Name"];
-            Assert.Equal(0, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
-            Assert.True(viewModel.Object.RemoveEnvironmentVariablesRow);
-            Assert.True(viewModel.Object.EnvironmentVariablesValid);
-
-            viewModel.Object.AddEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(2, viewModel.Object.EnvironmentVariables.Count);
-            addedVariable = viewModel.Object.EnvironmentVariables[1];
-            Assert.Equal("Key", addedVariable.Name);
-            Assert.Equal("Value", addedVariable.Value);
-            validationDummy = addedVariable["Name"];
-            Assert.False(viewModel.Object.EnvironmentVariablesValid);
-            addedVariable.Name = "NewKey2";
-            validationDummy = addedVariable["Name"];
-            Assert.True(viewModel.Object.EnvironmentVariablesValid);
-            Assert.Equal(1, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
-
-            viewModel.Object.AddEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(3, viewModel.Object.EnvironmentVariables.Count);
-            addedVariable = viewModel.Object.EnvironmentVariables[2];
-            Assert.Equal("Key", addedVariable.Name);
-            Assert.Equal("Value", addedVariable.Value);
-            addedVariable.Name = "NewKey3";
-            Assert.Equal(2, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
-
-            viewModel.Object.AddEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(4, viewModel.Object.EnvironmentVariables.Count);
-            addedVariable = viewModel.Object.EnvironmentVariables[3];
-            Assert.Equal("Key", addedVariable.Name);
-            Assert.Equal("Value", addedVariable.Value);
-            addedVariable.Name = "NewKey4";
-            Assert.Equal(3, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
-
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.Object.RemoveEnvironmentVariableRowCommand);
-
-            viewModel.Object.RemoveEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(3, viewModel.Object.EnvironmentVariables.Count);
-            Assert.Equal(viewModel.Object.EnvironmentVariables.Count - 1, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
-
-            viewModel.Object.EnvironmentVariablesRowSelectedIndex = 0;
-            viewModel.Object.RemoveEnvironmentVariableRowCommand.Execute(null);
-            Assert.Equal(2, viewModel.Object.EnvironmentVariables.Count);
-            Assert.Equal(0, viewModel.Object.EnvironmentVariablesRowSelectedIndex);
+            Assert.False(viewModel.Object.HasProfiles);
+            Assert.False(viewModel.Object.IsProfileSelected);
+            Assert.False(viewModel.Object.IsExecutable);
+            Assert.False(viewModel.Object.HasLaunchOption);
+            Assert.Equal(string.Empty, viewModel.Object.WorkingDirectory);
+            Assert.Equal(string.Empty, viewModel.Object.LaunchPage);
+            Assert.Equal(string.Empty, viewModel.Object.ExecutablePath);
+            Assert.Equal(string.Empty, viewModel.Object.CommandLineArguments);
+            Assert.Equal(string.Empty, viewModel.Object.SelectedCommandName);
         }
-       [Fact]
-       public async Task DebugPageViewModel_Helpers()
-       {
-           TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
-           var profiles = new List<ILaunchProfile>();
-           profiles.Add(new LaunchProfile() { Name = "MyCommand" });
 
-           var viewModelData = new ViewModelData()
-           {
-               UnconfiguredProvider = unconfiguredProvider,
-               Profiles = profiles,
-          };
-
-           var viewModel = CreateViewModel(viewModelData);
-           await viewModel.Object.Initialize();
-           Utilities.WaitForAsyncOperation(3000, () => viewModel.Object.EnvironmentVariables != null);
-
-           Assert.False(viewModel.Object.IsNewProfileNameValid("MyCommand"));
-           Assert.True(viewModel.Object.IsNewProfileNameValid("MyOtherCommand"));
-           Assert.Equal("newProfile1", viewModel.Object.GetNewProfileName());
-       }
-
-      [Fact]
-       public async Task DebugPageViewModel_NoProfiles()
-       {
-           TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
-           var profiles = new List<ILaunchProfile>();
-
-           var viewModelData = new ViewModelData()
-           {
-               UnconfiguredProvider = unconfiguredProvider,
-               Profiles = profiles,
-           };
-
-           var viewModel = CreateViewModel(viewModelData);
-           await viewModel.Object.Initialize();
-           Utilities.WaitForAsyncOperation(3000, () => viewModel.Object.EnvironmentVariables != null);
-           Assert.False(viewModel.Object.HasProfiles);
-           Assert.False(viewModel.Object.IsProfileSelected);
-           Assert.False(viewModel.Object.IsBuiltInProfile);
-           Assert.False(viewModel.Object.IsCustomType);
-           Assert.False(viewModel.Object.IsIISExpress);
-           Assert.False(viewModel.Object.IsCommand);
-           Assert.False(viewModel.Object.IsExecutable);
-           Assert.False(viewModel.Object.HasLaunchOption);
-           Assert.Equal(string.Empty, viewModel.Object.WorkingDirectory);
-           Assert.Equal(string.Empty, viewModel.Object.LaunchPage);
-           Assert.Equal(string.Empty, viewModel.Object.ExecutablePath);
-           Assert.Equal(string.Empty, viewModel.Object.CommandLineArguments);
-           Assert.Equal(string.Empty, viewModel.Object.SelectedCommandName);
-       }
-        
     }
 }

@@ -82,8 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Guid emptyGuid = Guid.Empty;
             int result = 0;
-
-            ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0,
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
+            {
+                ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0,
                 ref emptyGuid,
                 title,
                 message,
@@ -94,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 icon,
                 0,
                 out result));
-
+            }
             return result;
         }
     }
