@@ -29,16 +29,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                projectGuid,
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
-            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+            await startupProjectRegistrar.Load();
 
-            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Once);
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""Something"" ]
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
+
+            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
+            mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Never);
+
+            projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectGuid"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""ProjectGuid"": ""GuidNotParsable""
+                }
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
+
+            mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Never);
         }
 
@@ -57,14 +88,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                projectGuid,
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
-            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+            await startupProjectRegistrar.Load();
+
+
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectGuid"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""ProjectGuid"": """ + projectGuid + @"""
+                }
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Once);
             mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
@@ -86,14 +134,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                projectGuid,
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
-            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+            await startupProjectRegistrar.Load();
+
+
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectGuid"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""ProjectGuid"": """ + projectGuid + @"""
+                }
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Once);
             mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
@@ -114,19 +179,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                projectGuid,
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
-            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+            await startupProjectRegistrar.Load();
+
+
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectGuid"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""ProjectGuid"": """ + projectGuid + @"""
+                }
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Once);
             mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Never);
 
-            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            debuggerLaunchProvider.Debuggers.Clear();
+            debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
+
+            projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""ConfigurationGeneral"": {
             ""Difference"": {
@@ -135,8 +220,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
     }
 }");
-            debuggerLaunchProvider.Debuggers.Clear();
-            debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
 
             await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
                 IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
@@ -159,19 +242,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                projectGuid,
                 serviceProvider,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
             startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
 
-            await startupProjectRegistrar.OnProjectFactoryCompletedAsync();
+            await startupProjectRegistrar.Load();
+
+
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectGuid"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""ProjectGuid"": """ + projectGuid + @"""
+                }
+            }
+        }
+    }
+}");
+            await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
+                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
 
             mockIVsStartupProjectsListService.Verify(s => s.AddProject(ref projectGuid), Times.Never);
             mockIVsStartupProjectsListService.Verify(s => s.RemoveProject(ref projectGuid), Times.Once);
 
-            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            debuggerLaunchProvider.Debuggers.Clear();
+            debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
+
+            projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""ConfigurationGeneral"": {
             ""Difference"": {
@@ -180,8 +283,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
     }
 }");
-            debuggerLaunchProvider.Debuggers.Clear();
-            debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
 
             await startupProjectRegistrar.ConfigurationGeneralRuleBlock_ChangedAsync(
                 IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(projectSubscriptionUpdate));
@@ -202,27 +303,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private StartupProjectRegistrar CreateInstance(
-            Guid guid,
-            SVsServiceProvider serviceProvider,
-            ActiveConfiguredProject<StartupProjectRegistrar.DebuggerLaunchProviders> launchProviders)
-        {
-            var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = "ConfigurationGeneral", PropertyName = "ProjectGuid", Value = guid.ToString() }
-                });
-
-            return CreateInstance(
-                IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: () => projectProperties),
-                serviceProvider,
-                launchProviders);
-        }
-
-        private StartupProjectRegistrar CreateInstance(
-            IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
             ActiveConfiguredProject<StartupProjectRegistrar.DebuggerLaunchProviders> launchProviders)
         {
             return new StartupProjectRegistrar(
-                projectVsServices,
                 serviceProvider,
                 IProjectThreadingServiceFactory.Create(),
                 IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance(),

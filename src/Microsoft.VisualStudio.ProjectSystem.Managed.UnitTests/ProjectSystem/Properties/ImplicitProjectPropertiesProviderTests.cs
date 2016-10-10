@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.Build.Execution;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -102,6 +104,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             // verify all the setups
             delegatePropertiesMock.VerifyAll();
+        }
+
+        [Fact]
+        public void Provider_ReturnsImplicitPropertyProvider()
+        {
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetItemTypeProperties();
+
+            var delegatePropertiesMock = IProjectPropertiesFactory
+                .MockWithPropertyAndValue("Something", "NotImportant");
+
+            var delegateProperties = delegatePropertiesMock.Object;
+            var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject);
+
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
+            var properties = provider.GetItemTypeProperties(null, "");
+
+            properties.SetPropertyValueAsync("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");
+
+            Assert.Equal("7259e9ef-87d1-45a5-95c6-3a8432d23776", properties.GetEvaluatedPropertyValueAsync("ProjectGuid").Result);
         }
     }
 }
