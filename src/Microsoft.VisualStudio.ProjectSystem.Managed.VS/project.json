@@ -4,6 +4,6 @@
   },
   "dependencies": {
     "Microsoft.VisualStudio.Shell.14.0": "14.1.24720",
-    "NuGet.SolutionRestoreManager.Interop": "3.6.0-xprivate-2114"
+    "NuGet.SolutionRestoreManager.Interop": "3.6.0-rc-1971"
   }
 }

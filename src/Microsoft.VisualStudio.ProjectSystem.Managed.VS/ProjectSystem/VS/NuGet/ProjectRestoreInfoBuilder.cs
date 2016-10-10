@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using NuGet.SolutionRestoreManager;
+using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFrameworkMoniker,
-                        ProjectReferences = GetReferences(projectReferencesChanges.After.Items),
+                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
                         PackageReferences = GetReferences(packageReferencesChanges.After.Items)
                     });
                 }
@@ -54,5 +55,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 })) 
             }));
         }
+
+        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
+        {
+            var referenceItems = GetReferences(items);
+            foreach (ReferenceItem item in referenceItems)
+            {
+                string fullPathFromDefining = Path.Combine(item.Properties.Item("DefiningProjectDirectory").Value, item.Name);
+                string projectFileFullPath = Path.GetFullPath(fullPathFromDefining);
+
+                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
+                {
+                    Name = "ProjectFileFullPath", Value = projectFileFullPath
+                });
+            }
+            return referenceItems;
+        }        
     }
 }

@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ActiveConfiguredProjectsIgnoringTargetFrameworkProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />

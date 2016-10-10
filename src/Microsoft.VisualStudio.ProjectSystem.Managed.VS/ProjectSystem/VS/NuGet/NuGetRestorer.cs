@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using NuGet.SolutionRestoreManager;
 using System;
 using System.Collections.Immutable;
@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
+        private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
         private IDisposable _evaluationSubscriptionLink;
 
         private static ImmutableHashSet<string> _watchedRules = Empty.OrdinalIgnoreCaseStringSet
@@ -28,11 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [ImportingConstructor]
         public NuGetRestorer(
             IUnconfiguredProjectVsServices projectVsServices,
-            IVsSolutionRestoreService solutionRestoreService) 
+            IVsSolutionRestoreService solutionRestoreService,
+            ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _solutionRestoreService = solutionRestoreService;
+            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -44,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            ResetSubscriptions();
+            await ResetSubscriptions().ConfigureAwait(false);
 
             await InitializeAsync().ConfigureAwait(false);
         }
@@ -55,11 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        private void ResetSubscriptions()
+        private async Task ResetSubscriptions()
         {
             _evaluationSubscriptionLink?.Dispose();
 
-            var currentProjects = _projectVsServices.Project.LoadedConfiguredProjects;
+            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
 
             if (currentProjects.Any())
             {
