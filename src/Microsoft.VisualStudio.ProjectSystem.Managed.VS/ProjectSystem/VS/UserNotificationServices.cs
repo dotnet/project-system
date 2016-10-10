@@ -25,12 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public bool Confirm(string message)
         {
             _threadingService.VerifyOnUIThread();
-
-            var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
-                         OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            if (result == (int)VSConstants.MessageBoxResult.IDNO)
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
             {
-                return false;
+                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
+                             OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                if (result == (int)VSConstants.MessageBoxResult.IDNO)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -38,9 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void NotifyFailure(string failureMessage)
         {
             _threadingService.VerifyOnUIThread();
-
-            var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
+            {
+                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
         }
 
         /// <summary>
