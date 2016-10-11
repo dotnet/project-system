@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             // We don't pass differences to Roslyn for options, we just pass them all
             IEnumerable<string> commandlineArguments = projectChange.After.Items.Keys;
-            var commandLine = string.Join(",", commandlineArguments);
+            var commandLine = string.Join(" ", commandlineArguments);
             context.SetOptions(commandLine);
         }
 

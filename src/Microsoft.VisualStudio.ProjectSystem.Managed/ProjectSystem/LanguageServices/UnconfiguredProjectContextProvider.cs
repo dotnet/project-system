@@ -168,12 +168,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
-                var projectHost = _projectHostProvider.GetProjectHostObject(_commonServices.Project);
-
+                
                 // Get the set of active configured projects ignoring target framework.
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 
+                // Get the unconfigured project host object (shared host object).
+                IUnconfiguredProjectHostObject unconfiguredProjectHostObject = _projectHostProvider.GetUnconfiguredProjectHostObject(_commonServices.Project);
+                var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
+                IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
                 foreach (var kvp in configuredProjectsMap)
                 {
                     var targetFramework = kvp.Key;
@@ -184,20 +188,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
                     targetPath = NormalizeTargetPath(targetPath, projectData);
-
-                    // For cross targeting projects, we need to ensure that the display name is unique per every target framework.
-                    // This is needed for couple of reasons:
-                    //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
-                    //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
-                    var displayName = configuredProject.ProjectConfiguration.IsCrossTargeting() ?
-                        $"{projectData.DisplayName}({targetFramework})" :
-                        projectData.DisplayName;
+                    var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
+                    IConfiguredProjectHostObject configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(unconfiguredProjectHostObject, displayName);
 
                     // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                     await _commonServices.ThreadingService.SwitchToUIThread();
-                    var workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, projectHost, targetPath);
+                    var workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
                     innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
+
+                    if (activeIntellisenseProjectHostObject == null && configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
+                    {
+                        activeIntellisenseProjectHostObject = configuredProjectHostObject;
+                    }
                 }
+
+                unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
                 return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable());
             });
@@ -206,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private static string NormalizeTargetPath(string targetPath, ProjectData projectData)
         {
             Requires.NotNullOrEmpty(targetPath, nameof(targetPath));
-            
+
             if (!Path.IsPathRooted(targetPath))
             {
                 var directory = Path.GetDirectoryName(projectData.FullPath);
@@ -215,6 +220,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             return targetPath;
         }
+
+        private static string GetDisplayName(ConfiguredProject configuredProject, ProjectData projectData, string targetFramework)
+        {
+            // For cross targeting projects, we need to ensure that the display name is unique per every target framework.
+            // This is needed for couple of reasons:
+            //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
+            //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
+            return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
+                $"{projectData.DisplayName}({targetFramework})" :
+                projectData.DisplayName;
+        }        
 
         private struct ProjectData
         {

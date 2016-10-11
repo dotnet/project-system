@@ -52,6 +52,8 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\ProjectConfigurationsInferredFromUsageCapabilitiesProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />

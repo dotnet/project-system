@@ -36,8 +36,10 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostProvider.HostObject.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ConfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\AbstractHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
