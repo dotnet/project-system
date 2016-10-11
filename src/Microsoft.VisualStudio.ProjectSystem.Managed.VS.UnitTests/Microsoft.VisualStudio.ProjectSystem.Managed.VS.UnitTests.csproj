@@ -49,9 +49,11 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="Mocks\DteFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
+    <Compile Include="Mocks\IDteServicesFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Mocks\IProjectValueDataSourceFactory.cs" />
     <Compile Include="Mocks\DataFlowExtensionMethodWrapperMock.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
+    <Compile Include="Mocks\IServiceProviderFactory.cs" />
     <Compile Include="Mocks\IServiceProviderMoq.cs" />
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeIdTests.cs" />
+    <Compile Include="ProjectSystem\VS\DteServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />

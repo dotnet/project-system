@@ -36,6 +36,8 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\DteServices.cs" />
+    <Compile Include="ProjectSystem\VS\IDteServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
