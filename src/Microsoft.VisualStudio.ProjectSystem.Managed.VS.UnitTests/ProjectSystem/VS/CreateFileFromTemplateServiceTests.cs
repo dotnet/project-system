@@ -14,46 +14,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class CreateFileFromTemplateServiceTests
     {
         [Fact]
-        public void Constructor_NullAsProjectVsSevices_ThrowsArgumentNull()
+        public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
         {
+            var dteServices = IDteServicesFactory.Create();
+            var properties = ProjectPropertiesFactory.CreateEmpty();
+
             Assert.Throws<ArgumentNullException>("projectVsServices", () => {
-                new CreateFileFromTemplateService(null);
+                new CreateFileFromTemplateService((IUnconfiguredProjectVsServices)null, dteServices, properties);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsDteServices_ThrowsArgumentNull()
+        {
+            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
+            var properties = ProjectPropertiesFactory.CreateEmpty();
+
+            Assert.Throws<ArgumentNullException>("dteServices", () => {
+                new CreateFileFromTemplateService(projectVsServices, (IDteServices)null, properties);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
+        {
+            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
+            var dteServices = IDteServicesFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("properties", () => {
+                new CreateFileFromTemplateService(projectVsServices, dteServices, (ProjectProperties)null);
             });
         }
 
         [Fact]
         public async Task CreateFile_NullTemplateFile_ThrowsArgumentNull()
         {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var service = new CreateFileFromTemplateService(projectVsServices);
+            var service = CreateInstance();
+            var parentNode = ProjectTreeParser.Parse("Properties");
 
-            await Assert.ThrowsAsync<ArgumentNullException>("templateFile", async () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("templateFile", () =>
             {
-                await service.CreateFileAsync(null, null, null);
+                return service.CreateFileAsync(null, parentNode, "FileName");
             });
         }
 
         [Fact]
         public async Task CreateFile_NullParentNode_ThrowsArgumentNull()
         {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var service = new CreateFileFromTemplateService(projectVsServices);
+            var service = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("parentNode", async () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("parentNode", () =>
             {
-                await service.CreateFileAsync("SomeFile", null, null);
+                return service.CreateFileAsync("SomeFile", null, "FileName");
             });
         }
 
         [Fact]
         public async Task CreateFile_NullFileName_ThrowsArgumentNull()
         {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var service = new CreateFileFromTemplateService(projectVsServices);
+            var service = CreateInstance();
+            var parentNode = ProjectTreeParser.Parse("Properties");
 
             await Assert.ThrowsAsync<ArgumentNullException>("fileName", async () =>
             {
-                await service.CreateFileAsync("SomeFile", ProjectTreeParser.Parse("Properties"), null);
+                await service.CreateFileAsync("SomeFile", parentNode, null);
             });
         }
 
@@ -76,12 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return templateFilePath;
             });
 
-            var project = ProjectFactory.CreateWithSolution(solution);
-            ProjectFactory.ImplementCodeModelLanguage(project, CodeModelLanguageConstants.vsCMLanguageCSharp);
-
-            hierarchy.ImplementGetProperty(Shell.VsHierarchyPropID.ExtObject, project);
-
-            var vsProject = (IVsProject4)hierarchy;
+            
+            var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
             vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, files, result) =>
             {
                 Assert.Equal((uint)inputTree.GetHierarchyId(), itemId);
@@ -94,11 +114,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return VSConstants.S_OK;
             });
 
+            var dteServices = IDteServicesFactory.ImplementSolution(() => solution);
+            
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => vsProject);
-            var service = new CreateFileFromTemplateService(projectVsServices);
+            var properties = CreateProperties();
+            var service = new CreateFileFromTemplateService(projectVsServices, dteServices, properties);
 
             bool returnValue = await service.CreateFileAsync(templateName, inputTree, fileName);
             Assert.Equal(returnValue, expectedResult);
+        }
+
+        
+
+        private CreateFileFromTemplateService CreateInstance()
+        {
+            return CreateInstance(null, null, null);
+        }
+
+        private CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
+        {
+            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
+            dteServices = dteServices ?? IDteServicesFactory.Create();
+            properties = properties ?? ProjectPropertiesFactory.CreateEmpty();
+
+            return new CreateFileFromTemplateService(projectVsServices, dteServices, properties);
+        }
+
+        private ProjectProperties CreateProperties()
+        {
+            var properties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(),
+                        new PropertyPageData()
+                        {
+                            Category = ConfigurationGeneral.SchemaName,
+                            PropertyName = ConfigurationGeneral.TemplateLanguageProperty,
+                            Value = "CSharp"
+                        });
+
+            return properties;
         }
     }
 }
