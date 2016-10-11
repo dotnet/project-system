@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using NuGet.SolutionRestoreManager;
 using System;
 using System.Collections.Immutable;
@@ -48,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await ResetSubscriptions().ConfigureAwait(false);
-
-            await InitializeAsync().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -66,12 +65,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             if (currentProjects.Any())
             {
+                var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+                {
+                    RuleNames = _watchedRules,
+                    PropagateCompletion = true
+                };
+
                 var sourceBlocks = currentProjects.Select(
-                    cp => cp.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
+                    cp => cp.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);
 
-                _evaluationSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, null);
+                var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+
+                _evaluationSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
             }
         }
 
