@@ -318,22 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             OnPropertyChanged(nameof(HasProfiles));
         }
-
-        public bool IsWebProfile 
-        {
-            get
-            {
-                return false; // TODO: implement once web interfaces are handled (https://github.com/dotnet/roslyn-project-system/issues/585)
-            }
-        }
-
-        public bool IsIISOrIISExpress
-        {
-            get
-            {
-                return false; // TODO: implement once web interfaces are handled (https://github.com/dotnet/roslyn-project-system/issues/585)
-            }
-        }
+        
         public bool HasProfiles
         {
             get
@@ -639,8 +624,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         
         public async override System.Threading.Tasks.Task Initialize()
         {
-            // Need to set whether this is a web project or not since other parts of the code will use the cached value
-            await IsWebProjectAsync().ConfigureAwait(false);
                         
             // Create the debug targets dropdown
             InitializeDebugTargets();
@@ -842,13 +825,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             return String.Empty;
         }
-
-        /// <summary>
-        /// Helper to determine if this is a web project or not. We cache it so we can get it in a non
-        /// async way from the UI.
-        /// </summary>
-        public bool IsWebProject { get; private set; }
-
+        
         private void SetLaunchType()
         {
             if (!IsProfileSelected)
@@ -880,15 +857,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 SelectedLaunchType = LaunchType.GetAllLaunchTypes().Where(lt => lt.CommandName == selCommandName).SingleOrDefault();
             }
         }
-        public virtual Task<bool> IsWebProjectAsync()
-        {
-            if (UnconfiguredProject.Capabilities != null && UnconfiguredProject.Capabilities.Contains("DotNetCoreWeb"))
-            {
-                IsWebProject = true;
-            }
-            return System.Threading.Tasks.Task.FromResult(IsWebProject);
-        }
-
         
         private void EnvironmentVariables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
