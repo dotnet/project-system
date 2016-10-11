@@ -52,6 +52,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             get { return _projectContext; }
         }
 
+        public IWorkspaceProjectContext ProjectContext
+        {
+            get { return _projectContext; }
+        }
+
         [ImportMany]
         public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
         {
