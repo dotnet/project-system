@@ -41,7 +41,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
