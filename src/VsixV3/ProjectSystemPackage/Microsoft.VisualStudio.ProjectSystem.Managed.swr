@@ -13,3 +13,7 @@ vs.localizedResources
 
 vs.payloads
   vs.payload source=$(OutputPath)\ProjectSystem.vsix
+
+# Needed so VSIXInstaller is around on uninstall
+vs.dependencies
+  vs.dependency id=Microsoft.VisualStudio.MinShell

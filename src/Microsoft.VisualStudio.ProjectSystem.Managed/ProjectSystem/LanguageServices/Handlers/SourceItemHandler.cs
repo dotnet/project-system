@@ -84,8 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
             {
                 // Make sure the tree matches the same version of the evaluation that we're handling
-                IProjectTreeServiceState treeState = await _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree:true)
-                                                                                   .ConfigureAwait(true); // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                IProjectTreeServiceState treeState = await PublishTreeAsync(e).ConfigureAwait(true); // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
 
                 foreach (string filePath in diff.AddedItems)
                 {
@@ -160,7 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // interface.
 
             IProjectTree tree = state.TreeProvider.FindByPath(state.Tree, fullPath);
-            Assumes.NotNull(tree);  // The tree should be up-to-date.
+            if (tree == null)
+                yield break;    // We got a tree that is out-of-date than what our evaluation is based on
 
             IProjectTree parent = tree;
 
@@ -173,6 +173,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 parent = parent.Parent;
 
             } while (!parent.IsRoot());
+        }
+
+        private Task<IProjectTreeServiceState> PublishTreeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        {
+            try
+            {
+                // Make sure the tree matches the same version of the evaluation that we're handling
+                return _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree: true);
+            }
+            catch (ActiveProjectConfigurationChangedException)
+            {
+                // Project configuration changed while we blocked waiting for the tree, instead of trying to match
+                // exactly the same version, just give up and publish the latest tree. Note, don't need to handle
+                // ActiveProjectConfigurationChangedException as it will retry if the configuration changed.
+                return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public virtual void BeginErrorReadLine()
         {
-            _process.BeginOutputReadLine();
+            _process.BeginErrorReadLine();
         }
     }
 }

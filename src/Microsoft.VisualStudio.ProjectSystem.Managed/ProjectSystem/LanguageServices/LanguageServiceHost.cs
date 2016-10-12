@@ -60,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             get { return _aggregateProjectContext?.HostSpecificErrorReporter; }
         }
 
+        public IWorkspaceProjectContext ActiveProjectContext
+        {
+            get { return _aggregateProjectContext.ActiveProjectContext; }
+        }
+
         [ImportMany]
         public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
         {
@@ -197,8 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    .Where(h => h.HandlerType == handlerType);
 
             // Get the inner workspace project context to update for this change.
-            // TODO: Figure out why are we recevi
-            var projectContextToUpdate = _aggregateProjectContext?.GetInnerWorkspaceProjectContext(update.Value.ProjectConfiguration);
+            var projectContextToUpdate = _aggregateProjectContext?.GetProjectContext(update.Value.ProjectConfiguration);
             if (projectContextToUpdate == null)
             {
                 return;

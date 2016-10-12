@@ -15,18 +15,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal sealed class AggregateWorkspaceProjectContext : IDisposable
     {
         private readonly ImmutableDictionary<string, IWorkspaceProjectContext> _configuredProjectContextsByTargetFrameworks;
+        private readonly string _activeTargetFramework;
 
-        public AggregateWorkspaceProjectContext(ImmutableDictionary<string, IWorkspaceProjectContext> configuredProjectContextsByTargetFrameworks)
+        public AggregateWorkspaceProjectContext(ImmutableDictionary<string, IWorkspaceProjectContext> configuredProjectContextsByTargetFrameworks, string activeTargetFramework)
         {
             Requires.NotNullOrEmpty(configuredProjectContextsByTargetFrameworks, nameof(configuredProjectContextsByTargetFrameworks));
+            Requires.NotNullOrEmpty(activeTargetFramework, nameof(activeTargetFramework));
+            Requires.Argument(configuredProjectContextsByTargetFrameworks.ContainsKey(activeTargetFramework), nameof(configuredProjectContextsByTargetFrameworks), "Missing IWorkspaceProjectContext for activeTargetFramework");
 
             _configuredProjectContextsByTargetFrameworks = configuredProjectContextsByTargetFrameworks;
+            _activeTargetFramework = activeTargetFramework;
         }
 
         // IWorkspaceProjectContext implements the VS-only interface IVsLanguageServiceBuildErrorReporter2
         public object HostSpecificErrorReporter => InnerProjectContexts.First();
 
         public IEnumerable<IWorkspaceProjectContext> InnerProjectContexts => _configuredProjectContextsByTargetFrameworks.Values;
+
+        public IWorkspaceProjectContext ActiveProjectContext => _configuredProjectContextsByTargetFrameworks[_activeTargetFramework];
 
         private bool IsCrossTargeting => _configuredProjectContextsByTargetFrameworks.Count > 1;
 
@@ -44,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public IWorkspaceProjectContext GetInnerWorkspaceProjectContext(ProjectConfiguration projectConfiguration)
+        public IWorkspaceProjectContext GetProjectContext(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.IsCrossTargeting())
             {

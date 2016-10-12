@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -158,6 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(targetPath))
+                return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
@@ -204,7 +207,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
-                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable());
+                var activeTargetFramework = activeProjectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
+                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), activeTargetFramework);
             });
         }
 

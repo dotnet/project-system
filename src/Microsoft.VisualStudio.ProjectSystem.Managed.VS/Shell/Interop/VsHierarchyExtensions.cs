@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property if the hierarchy supports it.
         /// </summary>
-        public static T GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue)
+        public static T GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue = default(T))
         {
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue);
         }
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property if the hierarchy supports it.
         /// </summary>
-        public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue)
+        public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue = default(T))
         {
             Requires.NotNull(hierarchy, nameof(hierarchy));
 

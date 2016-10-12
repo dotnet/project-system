@@ -40,6 +40,9 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\AbstractHostObject.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectHostProvider.cs" />
+    <Compile Include="ProjectSystem\VS\DteServices.cs" />
+    <Compile Include="ProjectSystem\VS\IDteServices.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
