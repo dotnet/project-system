@@ -44,27 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return data.Profiles == null ? null : data.Profiles.ToImmutableList();
             });
-
-            mockProfiles.Setup(m => m.ProfilesAreDifferent(It.IsAny<IList<ILaunchProfile>>())).Returns((IList<ILaunchProfile> profilesToCompare) =>
-            {
-                bool detectedChanges = data.Profiles == null || data.Profiles.Count != profilesToCompare.Count;
-                if (!detectedChanges)
-                {
-                    // Now compare each item
-                    foreach (var profile in profilesToCompare)
-                    {
-                        var existingProfile = data.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
-                        if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
-                        {
-                            detectedChanges = true;
-                            break;
-                        }
-                    }
-                }
-                return detectedChanges;
-            });
-
-
+            
             data.LaunchProfiles = mockProfiles.Object;
 
             var mockProfileProvider = new Mock<ILaunchSettingsProvider>();
