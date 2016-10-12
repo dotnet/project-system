@@ -12,8 +12,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
-
     /// <summary>
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
@@ -182,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 foreach (var project in activeConfiguredProjects)
                 {
-                    _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                    _designTimeBuildSubscriptionLinks.Add(project.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
                         ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
 

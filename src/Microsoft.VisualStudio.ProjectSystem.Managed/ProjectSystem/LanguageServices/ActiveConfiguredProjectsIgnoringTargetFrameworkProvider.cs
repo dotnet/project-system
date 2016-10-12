@@ -188,5 +188,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
             return projectMap.Values.ToImmutableArray();
         }
+
+        /// <summary>
+        /// Gets the active project configurations for the current value of "TargetFrameworks" for a cross-targeting project.
+        /// </summary>
+        /// <returns>Set of active project configurations.</returns>
+        public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
+        {
+            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
+            return projectMap.Values.Select(p => p.ProjectConfiguration).ToImmutableArray();
+        }
     }
 }
