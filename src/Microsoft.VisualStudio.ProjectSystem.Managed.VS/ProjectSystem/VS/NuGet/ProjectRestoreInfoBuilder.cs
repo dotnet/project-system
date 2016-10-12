@@ -1,17 +1,36 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Immutable;
-using System.Linq;
 using NuGet.SolutionRestoreManager;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static class ProjectRestoreInfoBuilder
     {
-        internal static IVsProjectRestoreInfo Build(ImmutableList<IProjectValueVersions> updates)
+        private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
+        private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
+
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates)
         {
+            Requires.NotNull(updates, nameof(updates));
+
+            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
+        }
+
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
+        {
+            Requires.NotNull(updates, nameof(updates));
+
+            // if none of the underlying subscriptions have any changes
+            if (!updates.Any(u => u.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges)))
+            {
+                return null;
+            }
+
             string baseIntermediatePath = null;
             var targetFrameworks = new TargetFrameworks();
             
@@ -61,12 +80,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var referenceItems = GetReferences(items);
             foreach (ReferenceItem item in referenceItems)
             {
-                string fullPathFromDefining = Path.Combine(item.Properties.Item("DefiningProjectDirectory").Value, item.Name);
+                var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
+                string fullPathFromDefining = definingProjectDirectory != null
+                    ? Path.Combine(definingProjectDirectory.Value, item.Name)
+                    : item.Name;
+
                 string projectFileFullPath = Path.GetFullPath(fullPathFromDefining);
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {
-                    Name = "ProjectFileFullPath", Value = projectFileFullPath
+                    Name = ProjectFileFullPathProperty, Value = projectFileFullPath
                 });
             }
             return referenceItems;

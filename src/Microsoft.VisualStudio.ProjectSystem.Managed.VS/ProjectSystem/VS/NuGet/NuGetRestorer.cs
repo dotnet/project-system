@@ -86,9 +86,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1);
 
-            await _solutionRestoreService
-                .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                .ConfigureAwait(false);
+            if (projectRestoreInfo != null)
+            {
+                await _solutionRestoreService
+                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                    .ConfigureAwait(false);
+            }
         }
     }
 }
