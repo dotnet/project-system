@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -9,7 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class LaunchSettings : ILaunchSettings
     {
-
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
@@ -22,10 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             GlobalSettings = globalSettings == null? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
-
             _activeProfileName = activeProfile;
         }
-        
+
         public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
@@ -57,25 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return o;
         }
 
-        public Boolean ProfilesAreDifferent(IList<ILaunchProfile> profilesToCompare)
-        {
-            bool detectedChanges = Profiles == null || Profiles.Count != profilesToCompare.Count;
-            if (!detectedChanges)
-            {
-                // Now compare each item
-                foreach (var profile in profilesToCompare)
-                {
-                    var existingProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
-                    if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
-                    {
-                        detectedChanges = true;
-                        break;
-                    }
-                }
-            }
-            return detectedChanges;
-        }
-                
         private ILaunchProfile _activeProfile;
         public ILaunchProfile ActiveProfile 
         { 
@@ -98,5 +76,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _activeProfile;
             }
          }
+    }
+    internal static class LaunchSettingsExtension
+    {
+        public static bool ProfilesAreDifferent(this ILaunchSettings launchSettings, IList<ILaunchProfile> profilesToCompare)
+        {
+            bool detectedChanges = launchSettings.Profiles == null || launchSettings.Profiles.Count != profilesToCompare.Count;
+            if (!detectedChanges)
+            {
+                // Now compare each item
+                foreach (var profile in profilesToCompare)
+                {
+                    var existingProfile = launchSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
+                    if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
+                    {
+                        detectedChanges = true;
+                        break;
+                    }
+                }
+            }
+            return detectedChanges;
+        }
     }
 }

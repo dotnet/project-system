@@ -82,12 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private T WaitForAsync<T>(Func<Task<T>> asyncFunc)
         {
-            if (!_useJoinableTaskFactory)
-            {
-                // internal test usage
-                Task<T> t = asyncFunc();
-                return t.Result;
-            }
             return _threadHandling.ExecuteSynchronously<T>(asyncFunc);
         }
 
@@ -96,14 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void WaitForAsync(Func<Task> asyncFunc)
         {
-            // Real VS execution
-            if (!_useJoinableTaskFactory)
-            {
-                // internal test usage
-                asyncFunc().Wait();
-                return;
-            }
-
             _threadHandling.ExecuteSynchronously(asyncFunc);
         }
 

@@ -621,13 +621,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
             }
         }
-        
+#pragma warning disable 1998
         public async override System.Threading.Tasks.Task Initialize()
         {
-                        
             // Create the debug targets dropdown
             InitializeDebugTargets();
         }
+#pragma warning restore 1998
 
         /// <summary>
         /// Called when then the user saves the form.

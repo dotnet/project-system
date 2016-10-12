@@ -113,6 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
                !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
                (debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser) ||
+               (debugProfile1.OtherSettings != debugProfile2.OtherSettings) ||
                (includeProfileKind && debugProfile1.CommandName != debugProfile2.CommandName))
             {
                 return false;
