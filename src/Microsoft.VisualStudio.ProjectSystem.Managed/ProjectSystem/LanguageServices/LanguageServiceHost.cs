@@ -177,12 +177,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             DisposeAndClearSubscriptions();
 
+            var activeConfiguredProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
             using (_tasksService.LoadedProject())
             {
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-                var activeConfiguredProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
-
+                
                 foreach (var project in activeConfiguredProjects)
                 {
                     _designTimeBuildSubscriptionLinks.Add(project.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(

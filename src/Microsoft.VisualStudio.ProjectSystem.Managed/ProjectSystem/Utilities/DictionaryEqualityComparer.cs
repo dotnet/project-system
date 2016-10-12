@@ -1,6 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+//-----------------------------------------------------------------------
+// NOTE that this was taken from CPS along with a couple of internal methods
+// from CommonProjectSystemTools.cs in cps
+//
+// <copyright file="DictionaryEqualityComparer.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation.  All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     using System.Collections.Generic;
     using System.Collections.Immutable;
@@ -8,7 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     /// Provides simple dictionary equality checks.
     /// </summary>
-    internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
+    /// <typeparam name="TKey">The type of key in the dictionaries to compare.</typeparam>
+    /// <typeparam name="TValue">The type of value in the dictionaries to compare.</typeparam>
+    public class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
     {
         /// <summary>
         /// Backing field for the <see cref="Instance"/> static property.
@@ -68,11 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 return true;
             }
-            
-            if (dictionary2 == null)
-            {
-                return false;
-            }
 
             var concreteDictionary1 = dictionary1 as ImmutableDictionary<TKey, TValue>;
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
@@ -85,6 +90,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue> dictionary1, IReadOnlyDictionary<TKey, TValue> dictionary2, IEqualityComparer<TValue> valueComparer)
         {
             Requires.NotNull(valueComparer, "valueComparer");
+
+            if (dictionary1 == dictionary2)
+            {
+                return true;
+            }
+
+            if ((dictionary1 == null) ^ (dictionary2 == null)) // XOR
+            {
+                return false;
+            }
 
             if (dictionary1.Count != dictionary2.Count)
             {
@@ -109,5 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return true;
         }
+
     }
 }

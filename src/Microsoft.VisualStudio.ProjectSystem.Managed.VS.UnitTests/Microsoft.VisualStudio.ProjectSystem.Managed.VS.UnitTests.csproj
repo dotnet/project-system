@@ -104,6 +104,10 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\TestPropertyProviders.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="ProjectSystem\VS\DteServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverterTests.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +133,13 @@
       <Link>App.config</Link>
     </None>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
