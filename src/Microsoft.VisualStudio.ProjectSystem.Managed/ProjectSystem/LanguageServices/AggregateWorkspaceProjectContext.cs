@@ -16,15 +16,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private readonly ImmutableDictionary<string, IWorkspaceProjectContext> _configuredProjectContextsByTargetFrameworks;
         private readonly string _activeTargetFramework;
+        private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
 
-        public AggregateWorkspaceProjectContext(ImmutableDictionary<string, IWorkspaceProjectContext> configuredProjectContextsByTargetFrameworks, string activeTargetFramework)
+        public AggregateWorkspaceProjectContext(
+            ImmutableDictionary<string, IWorkspaceProjectContext> configuredProjectContextsByTargetFrameworks,
+            string activeTargetFramework,
+            IUnconfiguredProjectHostObject unconfiguredProjectHostObject)
         {
             Requires.NotNullOrEmpty(configuredProjectContextsByTargetFrameworks, nameof(configuredProjectContextsByTargetFrameworks));
             Requires.NotNullOrEmpty(activeTargetFramework, nameof(activeTargetFramework));
             Requires.Argument(configuredProjectContextsByTargetFrameworks.ContainsKey(activeTargetFramework), nameof(configuredProjectContextsByTargetFrameworks), "Missing IWorkspaceProjectContext for activeTargetFramework");
+            Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
 
             _configuredProjectContextsByTargetFrameworks = configuredProjectContextsByTargetFrameworks;
             _activeTargetFramework = activeTargetFramework;
+            _unconfiguredProjectHostObject = unconfiguredProjectHostObject;
         }
 
         // IWorkspaceProjectContext implements the VS-only interface IVsLanguageServiceBuildErrorReporter2
@@ -70,6 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public void Dispose()
         {
+            // Dispose the host object.
+            _unconfiguredProjectHostObject.Dispose();
+
             // Dispose all the inner project contexts.
             foreach (var innerProjectContext in InnerProjectContexts)
             {

@@ -117,33 +117,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var isCrossTarging = knownConfigurations.All(c => c.IsCrossTargeting());
             if (isCrossTarging)
             {
+                // Get all the project configurations with all dimensions (ignoring the TargetFramework) matching the active configuration.
                 var activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
                 foreach (var configuration in knownConfigurations)
                 {
-                    var isActiveIgnoringTargetFramework = true;
-
-                    // Get all the project configurations with all dimensions (ignoring the TargetFramework) matching the active configuration.
-                    foreach (var dimensionKvp in configuration.Dimensions)
-                    {
-                        var dimensionName = dimensionKvp.Key;
-                        var dimensionValue = dimensionKvp.Value;
-
-                        // Ignore the TargetFramework.
-                        if (string.Equals(dimensionName, TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            continue;
-                        }
-
-                        string activeValue;
-                        if (!activeConfiguration.Dimensions.TryGetValue(dimensionName, out activeValue) ||
-                            !string.Equals(dimensionValue, activeValue, StringComparison.OrdinalIgnoreCase))
-                        {
-                            isActiveIgnoringTargetFramework = false;
-                            break;
-                        }
-                    }
-
-                    if (isActiveIgnoringTargetFramework)
+                    if (configuration.EqualIgnoringTargetFramework(activeConfiguration))
                     {
                         var configuredProject = await _commonServices.Project.LoadConfiguredProjectAsync(configuration).ConfigureAwait(true);
                         var targetFramework = configuration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];

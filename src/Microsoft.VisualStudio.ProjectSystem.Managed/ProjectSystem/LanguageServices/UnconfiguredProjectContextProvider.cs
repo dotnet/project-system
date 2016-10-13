@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
                 var activeTargetFramework = activeProjectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
-                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), activeTargetFramework);
+                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), activeTargetFramework, unconfiguredProjectHostObject);
             });
         }
 

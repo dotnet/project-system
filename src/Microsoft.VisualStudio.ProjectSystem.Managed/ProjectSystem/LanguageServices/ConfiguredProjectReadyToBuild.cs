@@ -12,59 +12,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild
     {
         private readonly ConfiguredProject _configuredProject;
-        private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
-
+        private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
+        
         private TaskCompletionSource<object> _activationTask;
-        private bool _refreshActivationTask;
 
         [ImportingConstructor]
         public ConfiguredProjectReadyToBuild(
             ConfiguredProject configuredProject,
-            IUnconfiguredProjectCommonServices commonServices,
-            ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider)
         {
             Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
             Requires.NotNull(activeConfiguredProjectProvider, nameof(activeConfiguredProjectProvider));
 
             _configuredProject = configuredProject;
-            _commonServices = commonServices;
-            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
-
-            activeConfiguredProjectProvider.Changed += ActiveConfiguredProjectProvider_Changed;
+            _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _activationTask = new TaskCompletionSource<object>();
-            _refreshActivationTask = true;
         }
 
-        private void ActiveConfiguredProjectProvider_Changed(object sender, ActiveConfigurationChangedEventArgs e)
-        {
-            _refreshActivationTask = true;
-            Task.Run(async () => await RefreshActivationTaskIfNeeded().ConfigureAwait(false));
-        }
+        public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
+        public async Task WaitReadyToBuildAsync() => await GetLatestActivationTask().ConfigureAwait(false);
 
-        public bool IsValidToBuild => _activationTask.Task.IsCompleted;
-
-        public async Task WaitReadyToBuildAsync()
+        private Task GetLatestActivationTask()
         {
-            await RefreshActivationTaskIfNeeded().ConfigureAwait(false);
-            await _activationTask.Task.ConfigureAwait(false);
-        }
-
-        private async Task RefreshActivationTaskIfNeeded()
-        {
-            if (_refreshActivationTask)
+            lock (_configuredProject)
             {
-                var previouslyActive = IsValidToBuild;
-                var activeConfigurations = await _activeConfiguredProjectsProvider.GetActiveProjectConfigurationsAsync().ConfigureAwait(false);
-                var nowActive = activeConfigurations.Contains(_configuredProject.ProjectConfiguration);
+                var previouslyActive = _activationTask.Task.IsCompleted;
+                var nowActive = _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(_activeConfiguredProjectProvider.ActiveProjectConfiguration);
                 if (previouslyActive)
                 {
                     if (!nowActive)
                     {
-                        Interlocked.Exchange(ref _activationTask, new TaskCompletionSource<object>());
+                        _activationTask = new TaskCompletionSource<object>();
                     }
                 }
                 else if (nowActive)
@@ -72,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _activationTask.TrySetResult(null);
                 }
 
-                _refreshActivationTask = false;
+                return _activationTask.Task;
             }
         }
     }

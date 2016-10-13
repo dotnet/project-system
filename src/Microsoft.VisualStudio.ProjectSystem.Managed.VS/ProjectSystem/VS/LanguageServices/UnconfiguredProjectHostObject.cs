@@ -14,13 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     internal sealed class UnconfiguredProjectHostObject : AbstractHostObject, IUnconfiguredProjectHostObject
     {
         private readonly IVsHierarchy _innerHierarchy;
-        private Dictionary<uint, IVsHierarchyEvents> _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
+        private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
 
         public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
             _innerHierarchy = unconfiguredProject.Services.HostObject as IVsHierarchy;
+            _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
         }
 
         protected override IVsHierarchy InnerHierarchy => _innerHierarchy;
@@ -79,29 +80,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public override int UnadviseHierarchyEvents(uint dwCookie)
         {
-            if (_hierEventSinks != null)
-            {
-                _hierEventSinks.Remove(dwCookie);
-            }
-
+            _hierEventSinks.Remove(dwCookie);
             return base.UnadviseHierarchyEvents(dwCookie);
         }
 
         private void OnPropertyChanged(uint itemid, int propid, uint flags = 0)
         {
-            if (_hierEventSinks != null)
+            foreach (var eventSinkKvp in _hierEventSinks)
             {
-                // Kick off a task to invoke OnPropertyChanged, so that the workspace, which is listening to the hierarchy events, gets updated.
-                // We need to do this on a background thread as we might have been invoked from the language service itself, and doing it on the same thread can cause a deadlock.
-                // See https://github.com/dotnet/roslyn/issues/14479.
-                Task.Run(() =>
-                {
-                    foreach (var eventSinkKvp in _hierEventSinks)
-                    {
-                        eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
-                    }
-                });
+                eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
             }
+        }
+
+        #endregion
+
+        #region IDisposable members
+
+        public void Dispose()
+        {
+            _hierEventSinks.Clear();
         }
 
         #endregion
