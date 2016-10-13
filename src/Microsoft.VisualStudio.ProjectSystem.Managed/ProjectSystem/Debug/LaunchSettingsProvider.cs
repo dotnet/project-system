@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // These are used internally to loop in debuggers to handle F5 when there are errors in 
         // the launch settings file or when there are no profiles specified (like class libraries)
         public  const string ErrorProfileCommandName = "ErrorProfile";
-
+       
         protected SimpleFileWatcher FileWatcher { get; set; }
 
         // When we are saveing the file we set this to minimize noise from the file change

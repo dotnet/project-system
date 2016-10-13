@@ -12,7 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectPropertiesFactory
     {
-        public static ProjectProperties CreateEmpty() => Mock.Of<ProjectProperties>();
+        public static ProjectProperties CreateEmpty()
+        {
+            return Create(IUnconfiguredProjectFactory.Create());
+        }
 
         public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)
         {

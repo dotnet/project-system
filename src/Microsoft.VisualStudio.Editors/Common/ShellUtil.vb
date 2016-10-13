@@ -762,45 +762,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
-        ''' <summary>
-        ''' Check if there's WCF import/generation error/warning. If there's one, force to display the error list page
-        ''' </summary>
-        ''' <param name="serviceProvider"></param>
-        ''' <param name="proxyGenerationErrors"></param>
-        ''' <returns>If serviceProvider, (Import)proxyGenerationErrors or no error, return S_OK,
-        '''  else, return the result from IVsErrorList.BringToFront() </returns>
-        ''' <remarks></remarks>
-        Public Shared Function CheckAndDisplayWcfErrorList(serviceProvider As IServiceProvider, _
-                                                           proxyGenerationErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError), _
-                                                           importErrors As IEnumerable(Of Microsoft.VSDesigner.WCFModel.ProxyGenerationError)) As Integer
-
-            If serviceProvider Is Nothing Then
-                Return VSConstants.S_OK
-            End If
-
-            Dim totalNumOfErrors As Integer = 0
-
-            If proxyGenerationErrors IsNot Nothing Then
-                totalNumOfErrors = totalNumOfErrors + proxyGenerationErrors.Count()
-            End If
-
-            If importErrors IsNot Nothing Then
-                totalNumOfErrors = totalNumOfErrors + importErrors.Count()
-            End If
-
-            Dim vsErrorList As Microsoft.VisualStudio.Shell.Interop.IVsErrorList
-            Dim result As Integer = VSConstants.S_OK
-            ' Get the service for Error List tab window
-            vsErrorList = CType(serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.SVsErrorList)), Microsoft.VisualStudio.Shell.Interop.IVsErrorList)
-
-            If vsErrorList IsNot Nothing AndAlso totalNumOfErrors > 0 Then
-                result = vsErrorList.BringToFront()
-            End If
-
-            Return result
-        End Function
-
         Public Shared Function GetServiceProvider(dte As DTE) As IServiceProvider
             Return New Microsoft.VisualStudio.Shell.ServiceProvider(DirectCast(dte, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
         End Function

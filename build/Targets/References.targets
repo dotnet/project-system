@@ -173,9 +173,6 @@
         <Reference Include="Microsoft.VSDesigner">
           <HintPath>$(DevEnvDir)\Microsoft.VSDesigner.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.VSDesigner.WCF">
-          <HintPath>$(DevEnvDir)\Microsoft.VSDesigner.WCF.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
         </Reference>

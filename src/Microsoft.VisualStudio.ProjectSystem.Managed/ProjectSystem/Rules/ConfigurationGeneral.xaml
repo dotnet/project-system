@@ -116,9 +116,8 @@
     </StringProperty>
     <StringProperty Name="OneAppCapabilities" Visible="False" />
     <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices."/>
-    <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />
-
-    <!-- Represents the "LanguageName" that is passed to Roslyn -->
-    <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" />
+    <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />  
+    <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Represents the LanguageName that is passed to Roslyn" />
+    <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Represent the language that is persisted in items and project templates" />
     <StringProperty Name="IntermediateOutputPath" Visible="False" />
 </Rule>
