@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
     <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
+    <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
