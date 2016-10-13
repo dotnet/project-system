@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _roslynServices = roslynServices;
         }
 
-        public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
+        public Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
             var files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
             if (files.Count == 1)
@@ -54,9 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!hint.ChangeAlreadyOccurred)
                 {
                     var kvp = hint.RenamedFiles.First();
-                    await ScheduleRenameAsync(kvp.Key, kvp.Value).ConfigureAwait(false);
+                    return ScheduleRenameAsync(kvp.Key, kvp.Value);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         public Task HintingAsync(IProjectChangeHint hint)
