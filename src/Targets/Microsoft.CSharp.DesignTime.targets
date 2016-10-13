@@ -15,6 +15,7 @@
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">CSharp</TemplateLanguage>
+    <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</AddItemTemplatesGuid>
   </PropertyGroup>
 
     <ItemGroup>
