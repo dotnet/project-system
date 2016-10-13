@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!hint.ChangeAlreadyOccurred)
                 {
                     var kvp = hint.RenamedFiles.First();
-                    return ScheduleRenameAsync(kvp.Key, kvp.Value);
+                    ScheduleRenameAsync(kvp.Key, kvp.Value);
                 }
             }
 
@@ -66,15 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.CompletedTask;
         }
 
-        private async Task ScheduleRenameAsync(string oldFilePath, string newFilePath)
+        private void ScheduleRenameAsync(string oldFilePath, string newFilePath)
         {
             string codeExtension = Path.GetExtension(newFilePath);
             if (codeExtension == null || !oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
-
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             var myProject = _visualStudioWorkspace
                  .CurrentSolution
