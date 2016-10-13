@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!hint.ChangeAlreadyOccurred)
                 {
                     var kvp = hint.RenamedFiles.First();
-                    ScheduleRenameAsync(kvp.Key, kvp.Value);
+                    ScheduleRename(kvp.Key, kvp.Value);
                 }
             }
 
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.CompletedTask;
         }
 
-        private void ScheduleRenameAsync(string oldFilePath, string newFilePath)
+        private void ScheduleRename(string oldFilePath, string newFilePath)
         {
             string codeExtension = Path.GetExtension(newFilePath);
             if (!oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
