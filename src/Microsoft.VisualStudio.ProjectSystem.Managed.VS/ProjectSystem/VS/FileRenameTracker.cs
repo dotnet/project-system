@@ -78,6 +78,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                  .CurrentSolution
                  .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                  .FirstOrDefault();
+
+            if (myProject == null)
+            {
+                return;
+            }
             
             var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices,  _optionsSettings, _roslynServices,  myProject, oldFilePath, newFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChangedAsync;
