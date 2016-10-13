@@ -47,9 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     continue;
                 }
 
+                // Dimension values must be compared in a case-sensitive manner.
                 string activeValue;
                 if (!projectConfiguration2.Dimensions.TryGetValue(dimensionName, out activeValue) ||
-                    !string.Equals(dimensionValue, activeValue, StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(dimensionValue, activeValue, StringComparison.Ordinal))
                 {
                     return false;
                 }
