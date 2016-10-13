@@ -57,6 +57,7 @@
     <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
+    <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ActiveConfiguredProjectsIgnoringTargetFrameworkProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceChecker.cs" />
     <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
