@@ -69,7 +69,6 @@
     <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ActiveConfiguredProjectsIgnoringTargetFrameworkProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />

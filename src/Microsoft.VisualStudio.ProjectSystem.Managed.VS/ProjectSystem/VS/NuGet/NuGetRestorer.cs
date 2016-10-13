@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
-        private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
+        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private IDisposable _evaluationSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-            ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider) 
+            ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
