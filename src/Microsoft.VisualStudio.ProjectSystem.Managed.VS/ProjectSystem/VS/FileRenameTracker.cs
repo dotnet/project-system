@@ -45,18 +45,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _roslynServices = roslynServices;
         }
 
-        public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
+        public Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
-            var files = hints.GetValueOrDefault(ProjectChangeFileSystemEntityRenameHint.RenamedFile) ?? ImmutableHashSet.Create<IProjectChangeHint>();
+            var files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
             if (files.Count == 1)
             {
-                var hint = files.First() as IProjectChangeFileRenameHint;
-                if (hint != null && !hint.ChangeAlreadyOccurred)
+                var hint = (IProjectChangeFileRenameHint)files.First();
+                if (!hint.ChangeAlreadyOccurred)
                 {
                     var kvp = hint.RenamedFiles.First();
-                    await ScheduleRenameAsync(kvp.Key, kvp.Value).ConfigureAwait(false);
+                    ScheduleRename(kvp.Key, kvp.Value);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         public Task HintingAsync(IProjectChangeHint hint)
@@ -64,20 +66,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.CompletedTask;
         }
 
-        private async Task ScheduleRenameAsync(string oldFilePath, string newFilePath)
+        private void ScheduleRename(string oldFilePath, string newFilePath)
         {
             string codeExtension = Path.GetExtension(newFilePath);
-            if (codeExtension == null || !oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
+            if (!oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
-
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             var myProject = _visualStudioWorkspace
                  .CurrentSolution
                  .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                  .FirstOrDefault();
+
+            if (myProject == null)
+            {
+                return;
+            }
             
             var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices,  _optionsSettings, _roslynServices,  myProject, oldFilePath, newFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChangedAsync;
