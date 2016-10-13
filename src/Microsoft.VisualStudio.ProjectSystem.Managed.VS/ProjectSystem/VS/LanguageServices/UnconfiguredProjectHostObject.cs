@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
-using System.Collections.Generic;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -63,8 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             switch (propid)
             {
                 case (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy:
-                    ActiveIntellisenseProjectHostObject = var as IConfiguredProjectHostObject;
-                    OnPropertyChanged(itemid, propid);
+                    var newActiveIntellisenseProjectHostObject = var as IConfiguredProjectHostObject;
+                    if (newActiveIntellisenseProjectHostObject != ActiveIntellisenseProjectHostObject)
+                    {
+                        ActiveIntellisenseProjectHostObject = newActiveIntellisenseProjectHostObject;
+                        OnPropertyChanged(itemid, propid);
+                    }
                     return VSConstants.S_OK;
 
                 default:
@@ -86,10 +91,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             if (_hierEventSinks != null)
             {
-                foreach (var eventSinkKvp in _hierEventSinks)
+                // Kick off a task to invoke OnPropertyChanged, so that the workspace, which is listening to the hierarchy events, gets updated.
+                // We need to do this on a background thread as we might have been invoked from the language service itself, and doing it on the same thread can cause a deadlock.
+                // See https://github.com/dotnet/roslyn/issues/14479.
+                Task.Run(() =>
                 {
-                    eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
-                }
+                    foreach (var eventSinkKvp in _hierEventSinks)
+                    {
+                        eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
+                    }
+                });
             }
         }
 
