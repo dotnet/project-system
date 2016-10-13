@@ -47,11 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
-            var files = hints.GetValueOrDefault(ProjectChangeFileSystemEntityRenameHint.RenamedFile) ?? ImmutableHashSet.Create<IProjectChangeHint>();
+            var files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
             if (files.Count == 1)
             {
-                var hint = files.First() as IProjectChangeFileRenameHint;
-                if (hint != null && !hint.ChangeAlreadyOccurred)
+                var hint = (IProjectChangeFileRenameHint)files.First();
+                if (!hint.ChangeAlreadyOccurred)
                 {
                     var kvp = hint.RenamedFiles.First();
                     await ScheduleRenameAsync(kvp.Key, kvp.Value).ConfigureAwait(false);
