@@ -20,9 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
         private readonly ActiveConfiguredProjectsIgnoringTargetFrameworkProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private IDisposable _evaluationSubscriptionLink;
+        private IDisposable _targetFrameworkSubscriptionLink;
 
-        private static ImmutableHashSet<string> _watchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+            .Add(ConfigurationGeneral.SchemaName);
+
+        private static ImmutableHashSet<string> _evaluationWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(ConfigurationGeneral.SchemaName)
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName);
@@ -31,29 +36,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         public NuGetRestorer(
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProjectsIgnoringTargetFrameworkProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _solutionRestoreService = solutionRestoreService;
+            _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        internal async Task OnProjectFactoryCompletedAsync()
+        internal Task OnProjectFactoryCompletedAsync()
         {
-            await InitializeCoreAsync(CancellationToken.None).ConfigureAwait(false);
+            // set up a subscription to listen for target framework changes
+            var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e));
+            _targetFrameworkSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                target: target,
+                ruleNames: _targetFrameworkWatchedRules,
+                initialDataAsNew: false, // only reset on subsequent changes
+                suppressVersionOnlyUpdates: true);
+
+            return Task.CompletedTask;
+        }
+
+        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
+        {
+            if (IsDisposing || IsDisposed)
+                return;
+
+            await InitializeAsync().ConfigureAwait(false);
+
+            // when TargetFrameworks or TargetFrameworkMoniker changes, reset subscriptions so that
+            // any new configured projects are picked up
+            if (HasTargetFrameworkChanged(update))
+            {
+                await ResetSubscriptions().ConfigureAwait(false);
+            }
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
+        {            
             await ResetSubscriptions().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
             _evaluationSubscriptionLink?.Dispose();
+            _targetFrameworkSubscriptionLink?.Dispose();
             return Task.CompletedTask;
         }
 
@@ -67,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
-                    RuleNames = _watchedRules,
+                    RuleNames = _evaluationWatchedRules,
                     PropagateCompletion = true
                 };
 
@@ -92,6 +123,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
                     .ConfigureAwait(false);
             }
+        }
+
+        private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
+        {
+            IProjectChangeDescription projectChange;
+            if (update.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out projectChange))
+            {
+                var changedProperties = projectChange.Difference.ChangedProperties;
+                return changedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty)
+                    || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            }
+            return false;
         }
     }
 }
