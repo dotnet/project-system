@@ -115,9 +115,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
             var knownConfigurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(true);
             var isCrossTarging = knownConfigurations.All(c => c.IsCrossTargeting());
-            if (isCrossTarging)
+            var activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+            bool resetCachedTargetFrameworks = false;
+
+            if (!activeConfiguration.Dimensions.Any())
             {
-                var activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+                // active configuration is empty (NoVariablesDefault), reset so that
+                // targetFramework is not bound to empty map
+                resetCachedTargetFrameworks = true;
+            }
+            else if (isCrossTarging)
+            {
                 foreach (var configuration in knownConfigurations)
                 {
                     var isActiveIgnoringTargetFramework = true;
@@ -161,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 if (!string.Equals(targetFrameworks, _cachedTargetFrameworks, StringComparison.OrdinalIgnoreCase))
                 {
                     _cachedConfiguredProjectsMap = builder.ToImmutable();
-                    _cachedTargetFrameworks = targetFrameworks;
+                    _cachedTargetFrameworks = resetCachedTargetFrameworks ? null : targetFrameworks;
                 }
 
                 return _cachedConfiguredProjectsMap;
