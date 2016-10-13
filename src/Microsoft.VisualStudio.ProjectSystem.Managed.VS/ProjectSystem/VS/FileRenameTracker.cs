@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private void ScheduleRenameAsync(string oldFilePath, string newFilePath)
         {
             string codeExtension = Path.GetExtension(newFilePath);
-            if (codeExtension == null || !oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
+            if (!oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
