@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
-            _innerHierarchy = unconfiguredProject.Services.HostObject as IVsHierarchy;
+            _innerHierarchy = (IVsHierarchy)unconfiguredProject.Services.HostObject;
             _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
         }
 

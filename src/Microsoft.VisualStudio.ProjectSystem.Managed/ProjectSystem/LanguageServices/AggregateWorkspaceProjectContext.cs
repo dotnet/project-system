@@ -54,33 +54,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
-            lock (_disposedConfiguredProjectContexts)
+            // Update the project file path and display name for all the inner project contexts.
+            foreach (var innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
             {
-                // Update the project file path and display name for all the inner project contexts.
-                foreach (var innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
-                {
-                    var targetFramework = innerProjectContextKvp.Key;
-                    var innerProjectContext = innerProjectContextKvp.Value;
-                    if (_disposedConfiguredProjectContexts.Contains(innerProjectContext))
-                    {
-                        continue;
-                    }
-
-                    // For cross targeting projects, we ensure that the display name is unique per every target framework.
-                    innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
-                    innerProjectContext.ProjectFilePath = projectFilePath;
-                }
+                var targetFramework = innerProjectContextKvp.Key;
+                var innerProjectContext = innerProjectContextKvp.Value;
+                
+                // For cross targeting projects, we ensure that the display name is unique per every target framework.
+                innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
+                innerProjectContext.ProjectFilePath = projectFilePath;
             }
         }
 
         public IWorkspaceProjectContext GetInnerProjectContext(ProjectConfiguration projectConfiguration, out bool isActiveConfiguration)
         {
-            IWorkspaceProjectContext projectContext;
             if (projectConfiguration.IsCrossTargeting())
             {
                 var targetFramework = projectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
                 isActiveConfiguration = string.Equals(targetFramework, _activeTargetFramework);
-                projectContext = _configuredProjectContextsByTargetFramework[targetFramework];
+
+                IWorkspaceProjectContext projectContext;
+                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out projectContext) ?
+                    projectContext :
+                    null;
             }
             else
             {
@@ -90,14 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return null;
                 }
 
-                projectContext = InnerProjectContexts.Single();
-            }
-
-            lock (_disposedConfiguredProjectContexts)
-            {
-                return !_disposedConfiguredProjectContexts.Contains(projectContext) ?
-                    projectContext :
-                    null;
+                return InnerProjectContexts.Single();
             }
         }
 
@@ -140,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // Dispose the host object.
             _unconfiguredProjectHostObject.Dispose();
 
-            // Dispose all the inner project contexts.
+            // Dispose the inner project contexts.
             var disposedContexts = new List<IWorkspaceProjectContext>();
             foreach (var innerProjectContext in InnerProjectContexts)
             {
