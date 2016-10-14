@@ -119,5 +119,4 @@
     <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />  
     <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Represents the LanguageName that is passed to Roslyn" />
     <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Represent the language that is persisted in items and project templates" />
-    <StringProperty Name="IntermediateOutputPath" Visible="False" />
 </Rule>

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public T Item(Object index)
         {
-            try 
+            try
             {
                 if (index is string)
                 {
@@ -37,14 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     return this[(int)index];
                 }
             }
-            catch (KeyNotFoundException ex)
-            {
-                TraceUtilities.TraceException($"{index} was not found", ex);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                TraceUtilities.TraceException($"{index} is out of range", ex);
-            }
+            catch (KeyNotFoundException) { }
+            catch (ArgumentOutOfRangeException) { }
 
             return default(T);
         }

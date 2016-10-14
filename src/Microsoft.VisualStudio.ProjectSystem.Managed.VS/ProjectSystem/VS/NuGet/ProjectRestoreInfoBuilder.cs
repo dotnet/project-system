@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     configurationChanges.After.Properties[ConfigurationGeneral.BaseIntermediateOutputPathProperty];
                 string targetFrameworkMoniker = 
                     configurationChanges.After.Properties[ConfigurationGeneral.TargetFrameworkMonikerProperty];
-
-                if (targetFrameworks.Item(targetFrameworkMoniker) == null)
+                
+                if (!targetFrameworks.Contains(targetFrameworkMoniker))
                 {
                     var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
