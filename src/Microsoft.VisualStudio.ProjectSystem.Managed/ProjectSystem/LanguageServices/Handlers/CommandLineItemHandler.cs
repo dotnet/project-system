@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
 
-            _context.LastDesignTimeBuildSucceeded = designTimeBuildFailed;
+            _context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
 
             return designTimeBuildFailed;
         }
