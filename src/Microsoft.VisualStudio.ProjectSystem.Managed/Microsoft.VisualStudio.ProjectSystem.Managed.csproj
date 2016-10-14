@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\SemaphoreSlimExtensions.cs" />
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
@@ -55,7 +56,6 @@
     <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
     <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Creates and handles releasing <see cref="IWorkspaceProjectContext"/> instances based on the 
+    ///     Creates and handles releasing <see cref="AggregateWorkspaceProjectContext"/> instances based on the 
     ///     current <see cref="UnconfiguredProject"/>.
     /// </summary>
     internal interface IProjectContextProvider

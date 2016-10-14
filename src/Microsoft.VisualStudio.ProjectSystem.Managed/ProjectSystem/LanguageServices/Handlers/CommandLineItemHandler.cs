@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Broken design time builds generates updates with no changes.
         public override bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!ProcessDesignTimeBuildFailure(projectChange, context))
             {
                 ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context);
+                ProcessItems(projectChange, context, isActiveContext);
             }
 
             return Task.CompletedTask;
@@ -77,14 +77,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.SetOptions(string.Join(" ", commandlineArguments));
         }
 
-        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             CommandLineArguments addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             CommandLineArguments removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {
-                handler.Value.Handle(addedItems, removedItems, context);
+                handler.Value.Handle(addedItems, removedItems, context, isActiveContext);
             }
         }
     }

@@ -25,6 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="context">
         ///     A <see cref="IWorkspaceProjectContext"/> to update.
         /// </param>
+        /// <param name="isActiveContext">
+        ///     Flag indicating if the given <paramref name="context"/> is the active project context.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="added"/> is <see langword="null"/>.
         ///     <para>
@@ -32,6 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="removed"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context);
+        void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext);
     }
 }

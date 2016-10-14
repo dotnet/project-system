@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context)
+        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
@@ -30,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
-                // TODO: IsInCurrentContext
-                context.AddAdditionalFile(additionalFile.Path);
+                context.AddAdditionalFile(additionalFile.Path, isInCurrentContext: isActiveContext);
             }
         }
     }
