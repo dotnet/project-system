@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
+        private const string TargetFrameworkProperty = "TargetFramework";
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates)
         {
@@ -36,11 +37,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
+                string targetFrameworkMoniker; 
+                if (!update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFrameworkMoniker))
+                {
+                    continue;
+                }
+
                 var configurationChanges = update.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
                 baseIntermediatePath = baseIntermediatePath ?? 
                     configurationChanges.After.Properties[ConfigurationGeneral.BaseIntermediateOutputPathProperty];
-                string targetFrameworkMoniker = 
-                    configurationChanges.After.Properties[ConfigurationGeneral.TargetFrameworkMonikerProperty];
                 
                 if (!targetFrameworks.Contains(targetFrameworkMoniker))
                 {
@@ -71,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 Properties = new ReferenceProperties(p.Value.Select(v => new ReferenceProperty
                 {
                     Name = v.Key, Value = v.Value
-                })) 
+                }))
             }));
         }
 
