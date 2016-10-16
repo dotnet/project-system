@@ -22,7 +22,7 @@ def branch = GithubBranchName
         }
 
         Utilities.addArchival(newJob, "bin/**/*" /* filesToArchive */, "bin/obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15')
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-preview5')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
