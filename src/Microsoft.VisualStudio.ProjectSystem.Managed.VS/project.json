@@ -3,6 +3,7 @@
     "net46": {}
   },
   "dependencies": {
-	"Microsoft.VisualStudio.Shell.14.0": "14.1.24720"
+    "Microsoft.VisualStudio.Shell.14.0": "14.1.24720",
+    "NuGet.SolutionRestoreManager.Interop": "3.6.0-rc-1971"
   }
 }

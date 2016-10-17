@@ -34,6 +34,9 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\VsItemList.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfo.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilder.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Generators\ClassRegistrationAttribute.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.Designer.cs">
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
@@ -169,6 +173,12 @@
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\WpfHelper.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceItem.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceItems.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceProperties.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceProperty.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\TargetFrameworkInfo.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\TargetFrameworks.cs" />
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />

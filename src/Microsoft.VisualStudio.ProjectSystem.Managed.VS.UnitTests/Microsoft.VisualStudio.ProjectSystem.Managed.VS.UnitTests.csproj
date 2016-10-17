@@ -64,6 +64,7 @@
     <Compile Include="Mocks\IJsonModel.cs" />
     <Compile Include="Mocks\IDependencyNodeFactory.cs" />
     <Compile Include="Mocks\IProjectCatalogSnapshotFactory.cs" />
+    <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDiffFactory.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
