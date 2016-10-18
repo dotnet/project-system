@@ -138,7 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             string filePath = _commonServices.Project.FullPath;
 
-            return new ProjectData() {
+            return new ProjectData()
+            {
                 FullPath = filePath,
                 DisplayName = Path.GetFileNameWithoutExtension(filePath)
             };
@@ -149,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string languageName = await GetLanguageServiceName().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
                 return null;
-            
+
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
@@ -159,14 +160,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
+            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
 
+                // LanguageServices requires a normalized absolute target path.
+                targetPath = NormalizeTargetPath(targetPath, projectData);
+
                 return _contextFactory.Value.CreateProjectContext(languageName, projectData.DisplayName, projectData.FullPath, projectGuid, _commonServices.Project.Services.HostObject, targetPath);
             });
+        }
+
+        private static string NormalizeTargetPath(string targetPath, ProjectData projectData)
+        {
+            if (string.IsNullOrEmpty(targetPath))
+            {
+                targetPath = projectData.DisplayName;
+            }
+
+            if (!Path.IsPathRooted(targetPath))
+            {
+                var directory = Path.GetDirectoryName(projectData.FullPath);
+                targetPath = Path.Combine(directory, targetPath);
+            }
+
+            return targetPath;
         }
 
         private struct ProjectData
