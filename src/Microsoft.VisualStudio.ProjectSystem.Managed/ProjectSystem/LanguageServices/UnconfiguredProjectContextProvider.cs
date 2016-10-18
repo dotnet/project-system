@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
 
@@ -51,6 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
+
+            _unconfiguredProjectHostObject = _projectHostProvider.GetUnconfiguredProjectHostObject(_commonServices.Project);
         }
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
@@ -135,6 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         protected override void Dispose(bool disposing)
         {
             _commonServices.Project.ProjectRenamed -= OnProjectRenamed;
+            _unconfiguredProjectHostObject.Dispose();
         }
 
         private Task OnProjectRenamed(object sender, ProjectRenamedEventArgs args)
@@ -242,7 +246,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 
                 // Get the unconfigured project host object (shared host object).
-                IUnconfiguredProjectHostObject unconfiguredProjectHostObject = _projectHostProvider.GetUnconfiguredProjectHostObject(_commonServices.Project);
                 var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
                 var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
@@ -265,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
                         targetPath = NormalizeTargetPath(targetPath, projectData);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(unconfiguredProjectHostObject, displayName);
+                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName);
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
@@ -283,9 +286,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     }
                 }
 
-                unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
+                _unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
-                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, unconfiguredProjectHostObject);
+                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
             });
         }
 

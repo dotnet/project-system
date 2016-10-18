@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            
+
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
@@ -54,20 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
         }
 
-        private AggregateWorkspaceProjectContext CurrentAggregateProjectContext
-        {
-            get
-            {
-                using (_gate.DisposableWait())
-                {
-                    return _currentAggregateProjectContext;
-                }
-            }
-        }
+        public object HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
 
-        public object HostSpecificErrorReporter => CurrentAggregateProjectContext?.HostSpecificErrorReporter;
-
-        public IWorkspaceProjectContext ActiveProjectContext => CurrentAggregateProjectContext?.ActiveProjectContext;
+        public IWorkspaceProjectContext ActiveProjectContext => _currentAggregateProjectContext?.ActiveProjectContext;
 
         [ImportMany]
         public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
@@ -134,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            var previousProjectContext = this.CurrentAggregateProjectContext;
+            var previousProjectContext = _currentAggregateProjectContext;
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
             {

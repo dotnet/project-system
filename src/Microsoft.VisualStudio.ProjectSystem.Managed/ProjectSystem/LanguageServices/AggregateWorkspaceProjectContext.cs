@@ -126,8 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public void Dispose(Func<IWorkspaceProjectContext, bool> shouldDisposeInnerContext)
         {
-            // Dispose the host object.
-            _unconfiguredProjectHostObject.Dispose();
+            // Workaround Roslyn deadlock https://github.com/dotnet/roslyn/issues/14479.
+            _unconfiguredProjectHostObject.DisposingConfiguredProjectHostObjects = true;
 
             // Dispose the inner project contexts.
             var disposedContexts = new List<IWorkspaceProjectContext>();
@@ -144,6 +144,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 _disposedConfiguredProjectContexts.AddRange(disposedContexts);
             }
+
+            _unconfiguredProjectHostObject.DisposingConfiguredProjectHostObjects = false;
+            _unconfiguredProjectHostObject.PushPendingIntellisenseProjectHostObjectUpdates();
         }
     }
 }

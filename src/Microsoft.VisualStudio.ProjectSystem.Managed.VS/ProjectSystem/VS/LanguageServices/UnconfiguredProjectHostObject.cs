@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -15,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IVsHierarchy _innerHierarchy;
         private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
+        private readonly HashSet<uint> _pendingItemIds;
 
         public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
         {
@@ -22,11 +22,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             _innerHierarchy = (IVsHierarchy)unconfiguredProject.Services.HostObject;
             _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
+            _pendingItemIds = new HashSet<uint>();
         }
 
         protected override IVsHierarchy InnerHierarchy => _innerHierarchy;
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
         public override String ActiveIntellisenseProjectDisplayName => ActiveIntellisenseProjectHostObject?.ProjectDisplayName;
+        public bool DisposingConfiguredProjectHostObjects { get; set; }
+
+        public void PushPendingIntellisenseProjectHostObjectUpdates()
+        {
+            Requires.Range(!DisposingConfiguredProjectHostObjects, nameof(DisposingConfiguredProjectHostObjects));
+
+            foreach (var itemId in _pendingItemIds)
+            {
+                OnPropertyChanged(itemId, (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy);
+            }
+
+            _pendingItemIds.Clear();
+        }
 
         #region IVsHierarchy overrides
 
@@ -65,12 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             switch (propid)
             {
                 case (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy:
-                    var newActiveIntellisenseProjectHostObject = var as IConfiguredProjectHostObject;
-                    if (newActiveIntellisenseProjectHostObject != ActiveIntellisenseProjectHostObject)
-                    {
-                        ActiveIntellisenseProjectHostObject = newActiveIntellisenseProjectHostObject;
-                        OnPropertyChanged(itemid, propid);
-                    }
+                    ActiveIntellisenseProjectHostObject = var as IConfiguredProjectHostObject;
+                    OnPropertyChanged(itemid, propid);
                     return VSConstants.S_OK;
 
                 default:
@@ -86,6 +96,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private void OnPropertyChanged(uint itemid, int propid, uint flags = 0)
         {
+            if (DisposingConfiguredProjectHostObjects)
+            {
+                _pendingItemIds.Add(itemid);
+                return;
+            }
+
             foreach (var eventSinkKvp in _hierEventSinks)
             {
                 eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
