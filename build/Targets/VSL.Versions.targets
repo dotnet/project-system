@@ -3,6 +3,10 @@
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.0.0</RoslynSemanticVersion>
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">00000000.01</BuildNumber>
+    <BuildNumberPart1>$(BuildNumber.Split('.')[0])</BuildNumberPart1>
+    <BuildNumberPart2 Condition="($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberPart2>
   </PropertyGroup>
 
   <Choose>
@@ -15,11 +19,11 @@
       </PropertyGroup>
     </When>
 
-    <When Condition="('$(BuildNumber)' != '') and ($(BuildNumber.Split('.').Length) == 2)">
+    <When Condition="('$(BuildNumber)' != '') and ('$(BuildNumberPart2)' != '')">
       <!-- The user specified a build number, so we should use that. -->
       <PropertyGroup>
         <AssemblyVersion>$(RoslynSemanticVersion).0</AssemblyVersion>
-        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumber.Split('.')[0])</BuildVersion>
+        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberPart1)$(BuildNumberPart2)</BuildVersion>
       </PropertyGroup>
     </When>
 
@@ -28,7 +32,7 @@
           This happens if the build template does not pass BuildNumber down to MSBuild. -->
       <PropertyGroup>
         <AssemblyVersion>$(RoslynSemanticVersion).0</AssemblyVersion>
-        <BuildVersion>$(RoslynSemanticVersion).0</BuildVersion>
+        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberPart1)$(BuildNumberPart2)</BuildVersion>
       </PropertyGroup>
     </When>
 
@@ -50,13 +54,6 @@
   <!-- NuGet version -->
   <PropertyGroup>
     <VSSemanticVersion>15.0.0</VSSemanticVersion>
-
-    <BuildNumberPart1 Condition="'$(BUILD_BUILDNUMBER)' != ''">
-      $(BUILD_BUILDNUMBER.Split('.')[0])
-    </BuildNumberPart1>
-    <BuildNumberPart2 Condition="'$(BUILD_BUILDNUMBER)' != ''">
-      $(BUILD_BUILDNUMBER.Split('.')[1].PadLeft(2,'0'))
-    </BuildNumberPart2>
 
     <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-beta1</RoslynNuGetPreReleaseVersion>
     <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
