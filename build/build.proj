@@ -54,14 +54,6 @@
   <Target Name="BuildModernVsixPackages">
 
     <MSBuild Projects="@(VsManProjectFile)"
-             Targets="Build"
-             Condition="'$(RunningInMicroBuild)' == 'true'"
-             />
-  </Target>
-
-  <Target Name="RebuildModernVsixPackages">
-
-    <MSBuild Projects="@(VsManProjectFile)"
              Targets="Rebuild"
              Condition="'$(RunningInMicroBuild)' == 'true'"
              />
@@ -88,7 +80,7 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildModernVsixPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildModernVsixPackages;Test" />
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;Test" />
 
 </Project>
