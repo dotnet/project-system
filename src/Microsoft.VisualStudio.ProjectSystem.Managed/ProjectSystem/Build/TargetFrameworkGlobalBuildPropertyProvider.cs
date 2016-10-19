@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
 
             // Check if this is a cross targeting project, i.e. project configuration has a "TargetFramework" dimension.
-            if (_configuredProject.ProjectConfiguration.Dimensions.ContainsKey(TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName))
+            if (_configuredProject.ProjectConfiguration.IsCrossTargeting())
             {
                 // For a cross targeting project, we want to build for all the targeted frameworks.
                 // Clear out the TargetFramework property from the configuration.

@@ -24,12 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Gets the workspace project context that provides access to the language service.
+        ///     Gets the active workspace project context that provides access to the language service for the active configured project.
         /// </summary>
         /// <value>
-        ///     An <see cref="IWorkspaceProjectContext"/> that providers access to the language service.
+        ///     An <see cref="IWorkspaceProjectContext"/> that provides access to the language service for the active configured project.
         /// </value>
-        IWorkspaceProjectContext ProjectContext
+        IWorkspaceProjectContext ActiveProjectContext
         {
             get;
         }

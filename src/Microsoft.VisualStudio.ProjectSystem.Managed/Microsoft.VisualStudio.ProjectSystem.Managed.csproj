@@ -32,6 +32,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\SemaphoreSlimExtensions.cs" />
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
@@ -52,9 +53,13 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
     <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AdditionalFilesItemHandler.cs" />
@@ -63,6 +68,8 @@
     <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceHost.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContext.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\IProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceRuleHandler.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceCommandLineHandler.cs" />

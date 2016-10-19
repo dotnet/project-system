@@ -13,18 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface ILanguageServiceRuleHandler
     {
         /// <summary>
-        ///     Sets the context that the handler manipulates.
-        /// </summary>
-        /// <param name="context">
-        ///     The <see cref="IWorkspaceProjectContext"/> that the <see cref="ILanguageServiceRuleHandler"/> 
-        ///     manipulates.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="context"/> is <see langword="null"/>.
-        /// </exception>
-        void SetContext(IWorkspaceProjectContext context);
-
-        /// <summary>
         ///     Gets the rule this handler handles.
         /// </summary>
         /// <value>
@@ -49,8 +37,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
+        ///     Gets a value indicating the handler should be invoked even for updates with no underlying project changes (e.g. broken design time builds).
+        /// </summary>
+        bool ReceiveUpdatesWithEmptyProjectChange
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
-        ///     to the <see cref="IWorkspaceProjectContext"/>.
+        ///     to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="e">
         ///     A <see cref="IProjectVersionedValue{IProjectSubscriptionService}"/> representing 
@@ -60,6 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     A <see cref="IProjectChangeDescription"/> representing the set of 
         ///     changes made to the project.
         /// </param>
+        /// <param name="context">
+        ///     A <see cref="IWorkspaceProjectContext"/> to update.
+        /// </param>
+        /// <param name="isActiveContext">
+        ///     Flag indicating if the given <paramref name="context"/> is the active project context.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="e"/> is <see langword="null"/>.
         ///     <para>
@@ -67,6 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="projectChange"/> is <see langword="null"/>.
         /// </exception>
-        Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange);
+        Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext);
+
+        /// <summary>
+        /// Handles clearing any state specific to the given context being released.
+        /// </summary>
+        /// <param name="context">
+        ///     A <see cref="IWorkspaceProjectContext"/> being released.
+        /// </param>
+        Task OnContextReleasedAsync(IWorkspaceProjectContext context);
     }
 }

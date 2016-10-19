@@ -39,6 +39,10 @@
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilder.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ConfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\AbstractHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\VS\Generators\ClassRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />

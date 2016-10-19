@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly IUnconfiguredProjectServices _services;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsynchronousTasksService _tasksService;
 
         [ImportingConstructor]
         public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, IUnconfiguredProjectCommonServices commonServices)
