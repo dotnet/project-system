@@ -22,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly Lazy<IProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-        
+        private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
 
@@ -37,17 +38,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
-                                   IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+                                   IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
+                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
+            Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
 
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
+            _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
 
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
             _evaluationSubscriptionLinks = new List<IDisposable>();
@@ -164,6 +168,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     previousContextToDispose = _currentAggregateProjectContext;
                 }
+
+                // Force refresh the CPS active project configuration (needs UI thread).
+                await _commonServices.ThreadingService.SwitchToUIThread();
+                await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync().ConfigureAwait(false);
 
                 // Create new project context.
                 _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync().ConfigureAwait(false);
