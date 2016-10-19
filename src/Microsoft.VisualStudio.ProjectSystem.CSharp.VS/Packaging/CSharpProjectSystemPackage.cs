@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
@@ -10,7 +11,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Tasks = System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 // We register ourselves as a new CPS "project type"
 [assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid)]
@@ -20,6 +21,8 @@ namespace Microsoft.VisualStudio.Packaging
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, null, null, null, null)]
+    [ProvideEditorFactory(typeof(LoadedProjectFileEditorFactory), 7, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_HasUntrustedLogicalViews)]
+    [ProvideEditorExtension(typeof(LoadedProjectFileEditorFactory), ".csproj", 32, NameResourceID = 7)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
         SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
@@ -44,12 +47,13 @@ namespace Microsoft.VisualStudio.Packaging
         {
         }
 
-        protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new FileSystem());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
-            return Tasks.Task.CompletedTask;
+            RegisterEditorFactory(new LoadedProjectFileEditorFactory(this));
+            return Task.CompletedTask;
         }
     }
 }

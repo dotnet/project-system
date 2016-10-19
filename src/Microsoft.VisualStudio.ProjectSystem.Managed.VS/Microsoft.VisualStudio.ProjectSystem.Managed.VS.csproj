@@ -37,9 +37,12 @@
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\LoadedProjectFileEditorFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\IVsTextBufferProviderProjectAggregator.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Input\Commands\EditCsprojCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
@@ -170,6 +173,7 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>

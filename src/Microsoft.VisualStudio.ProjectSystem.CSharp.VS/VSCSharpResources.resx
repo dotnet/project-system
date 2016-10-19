@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="1" xml:space="preserve">
-    <value>C#</value>
-  </data>
-  <data name="2" xml:space="preserve">
-    <value>C# Project Files (*.csproj);*.csproj</value>
-  </data>
-  <data name="3" xml:space="preserve">
-    <value>Console App (.NET Core)</value>
-  </data>
-  <data name="4" xml:space="preserve">
-    <value>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</value>
-  </data>
-  <data name="5" xml:space="preserve">
-    <value>Class Library (.NET Standard)</value>
-  </data>
-  <data name="6" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Standard.</value>
-  </data>
-  <data name="7" xml:space="preserve">
-    <value>Loaded Project File Editor</value>
+  <data name="EditCsprojCommand" xml:space="preserve">
+    <value>Edit {0}.csproj</value>
   </data>
 </root>

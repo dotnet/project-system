@@ -50,15 +50,16 @@
     </Groups>
 
     <Buttons>
-      <Button guid="guidDotnetProjectSystemCommandSet" id="cmdidEditCsproj" priority="0x200">
+      <Button guid="guidDotnetProjectSystemCommandSet" id="cmdidEditProjFile" priority="0x200">
         <Parent guid="guidDotnetProjectSystemCommandSet" id="cmdidEditProjFileGrp" />
+        <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
-          <ButtonText>Edit .csproj</ButtonText>
-          <ToolTipText>Edit .csproj</ToolTipText>
-          <CommandName>EditCsproj</CommandName>
+          <ButtonText>Edit Project File</ButtonText>
+          <ToolTipText>Edit Project File</ToolTipText>
+          <CommandName>EditProjectFile</CommandName>
         </Strings>
       </Button>
     </Buttons>
@@ -77,7 +78,7 @@
       <!-- Note that these need room to grow hence they need to be spaced out-->
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidEditProjFileGrp" value="0x1000"/>
-      <IDSymbol name="cmdidEditCsproj" value="0x1001" />
+      <IDSymbol name="cmdidEditProjFile" value="0x1001" />
     </GuidSymbol>
   </Symbols>
 
