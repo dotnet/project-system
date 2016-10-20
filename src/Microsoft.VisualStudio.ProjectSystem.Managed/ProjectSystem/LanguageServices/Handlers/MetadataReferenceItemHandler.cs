@@ -13,33 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class MetadataReferenceFilesLanguageServiceItemHandler : ILanguageServiceCommandLineHandler
     {
-        private IWorkspaceProjectContext _context;
-
         [ImportingConstructor]
         public MetadataReferenceFilesLanguageServiceItemHandler(UnconfiguredProject project)
         {
         }
 
-        public void SetContext(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _context = context;
-        }
-
-        public void Handle(CommandLineArguments added, CommandLineArguments removed)
+        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
-                _context.RemoveMetadataReference(reference.Reference);
+                context.RemoveMetadataReference(reference.Reference);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
-                _context.AddMetadataReference(reference.Reference, reference.Properties);
+                context.AddMetadataReference(reference.Reference, reference.Properties);
             }
         }
     }

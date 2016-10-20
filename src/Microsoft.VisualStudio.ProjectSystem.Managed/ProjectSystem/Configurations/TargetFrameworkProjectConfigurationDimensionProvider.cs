@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     {
         internal const string TargetFrameworkPropertyName = "TargetFramework";
         private readonly IProjectLockService _projectLockService;
-        
+
         [ImportingConstructor]
         public TargetFrameworkProjectConfigurationDimensionProvider(IProjectLockService projectLockService)
         {
@@ -84,21 +84,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                     return ImmutableArray<string>.Empty;
                 }
 
-                // TargetFrameworks contains semicolon delimited list of frameworks, for example "net45;netcoreapp1.0;netstandard1.4"
-                var targetFrameworksValue = targetFrameworksProperty.Split(';').Select(f => f.Trim());
-
-                // We need to ensure that we return the target frameworks in the specified order.
-                var targetFrameworksBuilder = ImmutableArray.CreateBuilder<string>();
-                foreach (var targetFramework in targetFrameworksValue)
-                {
-                    if (!string.IsNullOrEmpty(targetFramework))
-                    {
-                        targetFrameworksBuilder.Add(targetFramework);
-                    }
-                }
-
-                return targetFrameworksBuilder.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
+                return ParseTargetFrameworks(targetFrameworksProperty);
             }
+        }
+
+        internal static ImmutableArray<string> ParseTargetFrameworks(string targetFrameworksProperty)
+        {
+            // TargetFrameworks contains semicolon delimited list of frameworks, for example "net45;netcoreapp1.0;netstandard1.4"
+            var targetFrameworksValue = targetFrameworksProperty.Split(';').Select(f => f.Trim());
+
+            // We need to ensure that we return the target frameworks in the specified order.
+            var targetFrameworksBuilder = ImmutableArray.CreateBuilder<string>();
+            foreach (var targetFramework in targetFrameworksValue)
+            {
+                if (!string.IsNullOrEmpty(targetFramework))
+                {
+                    targetFrameworksBuilder.Add(targetFramework);
+                }
+            }
+
+            return targetFrameworksBuilder.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
         }
     }
 }

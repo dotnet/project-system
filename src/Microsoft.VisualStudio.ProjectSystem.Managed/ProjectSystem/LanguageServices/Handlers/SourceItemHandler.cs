@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [Export(typeof(ILanguageServiceCommandLineHandler))]
     [Export(typeof(ILanguageServiceRuleHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class SourceItemHandler : ILanguageServiceCommandLineHandler, ILanguageServiceRuleHandler
+    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
         // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
@@ -27,9 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
         // IntelliSense.
         private readonly UnconfiguredProject _project;
-        private readonly HashSet<string> _sourceFiles = new HashSet<string>(StringComparers.Paths);
+        private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
         private readonly IPhysicalProjectTree _projectTree;
-        private IWorkspaceProjectContext _context;
 
         [ImportingConstructor]
         public SourceItemHandler(UnconfiguredProject project, IPhysicalProjectTree projectTree)
@@ -41,40 +40,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _projectTree = projectTree;
         }
 
-        public string RuleName
+        public override string RuleName
         {
             get { return CSharp.SchemaName; }
         }
 
-        public RuleHandlerType HandlerType
+        public override RuleHandlerType HandlerType
         {
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public void SetContext(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _context = context;
-        }
-
-        public void Handle(CommandLineArguments added, CommandLineArguments removed)
+        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
             foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
             {
-                RemoveSourceFile(sourceFile.Path);
+                RemoveSourceFile(sourceFile.Path, context);
             }
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path);
+                AddSourceFile(sourceFile.Path, context, isActiveContext);
             }
         }
 
-        public async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange)
+        public override async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -86,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // Item includes are always relative to csproj/vbproj
                 string fullPath = _project.MakeRooted(filePath);
 
-                RemoveSourceFile(fullPath);
+                RemoveSourceFile(fullPath, context);
             }
 
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
@@ -98,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 {
                     string fullPath = _project.MakeRooted(filePath);
 
-                    AddSourceFile(fullPath, treeState);
+                    AddSourceFile(fullPath, context, isActiveContext, treeState);
                 }
 
                 foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
@@ -106,8 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     string beforeFullPath = _project.MakeRooted(filePaths.Key);
                     string afterFullPath = _project.MakeRooted(filePaths.Value);
 
-                    RemoveSourceFile(beforeFullPath);
-                    AddSourceFile(afterFullPath, treeState);
+                    RemoveSourceFile(beforeFullPath, context);
+                    AddSourceFile(afterFullPath, context, isActiveContext, treeState);
                 }
 
                 foreach (string filePath in diff.ChangedItems)
@@ -115,33 +107,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                     string fullPath = _project.MakeRooted(filePath);
 
-                    RemoveSourceFile(fullPath);
-                    AddSourceFile(fullPath);
+                    RemoveSourceFile(fullPath, context);
+                    AddSourceFile(fullPath, context, isActiveContext);
                 }
             }
         }
 
-        private void RemoveSourceFile(string fullPath)
+        public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
-            if (_sourceFiles.Remove(fullPath))
+            _sourceFilesByContext.Remove(context);
+            return Task.CompletedTask;
+        }
+
+        private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
+        {
+            HashSet<string> sourceFiles;
+            if (_sourceFilesByContext.TryGetValue(context, out sourceFiles) && sourceFiles.Remove(fullPath))
             {
-                _context.RemoveSourceFile(fullPath);
+                context.RemoveSourceFile(fullPath);
             }
         }
 
-        private void AddSourceFile(string fullPath, IProjectTreeServiceState state = null)
+        private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
         {
-            if (!_sourceFiles.Contains(fullPath))
+            HashSet<string> sourceFiles;
+            if (!_sourceFilesByContext.TryGetValue(context, out sourceFiles))
             {
-                string[] folderNames = Array.Empty<string>();
-                if (state != null)  // We're looking at a generated file, which doesn't appear in a tree.
-                {
-                    folderNames = GetFolders(fullPath, state).ToArray();
-                }
-
-                _sourceFiles.Add(fullPath);
-                _context.AddSourceFile(fullPath, folderNames:folderNames); // TODO: IsInCurrentContext
+                sourceFiles = new HashSet<string>(StringComparers.Paths);
+                _sourceFilesByContext.Add(context, sourceFiles);
             }
+            else if (sourceFiles.Contains(fullPath))
+            {
+                return;
+            }
+
+            string[] folderNames = Array.Empty<string>();
+            if (state != null)  // We're looking at a generated file, which doesn't appear in a tree.
+            {
+                folderNames = GetFolders(fullPath, state).ToArray();
+            }
+
+            sourceFiles.Add(fullPath);
+            context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
         }
 
         private IEnumerable<string> GetFolders(string fullPath, IProjectTreeServiceState state)

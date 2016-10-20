@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(project, nameof(project));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ProjectContext;
+            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(fileItem, nameof(fileItem));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ProjectContext;
+            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 

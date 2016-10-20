@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             GlobalSettings = globalSettings == null? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
-
             _activeProfileName = activeProfile;
         }
 
@@ -77,5 +76,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _activeProfile;
             }
          }
+    }
+    internal static class LaunchSettingsExtension
+    {
+        public static bool ProfilesAreDifferent(this ILaunchSettings launchSettings, IList<ILaunchProfile> profilesToCompare)
+        {
+            bool detectedChanges = launchSettings.Profiles == null || launchSettings.Profiles.Count != profilesToCompare.Count;
+            if (!detectedChanges)
+            {
+                // Now compare each item
+                foreach (var profile in profilesToCompare)
+                {
+                    var existingProfile = launchSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
+                    if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
+                    {
+                        detectedChanges = true;
+                        break;
+                    }
+                }
+            }
+            return detectedChanges;
+        }
     }
 }

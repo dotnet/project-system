@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _otherSettings = value;
             }
         }
-
+               
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>
@@ -92,5 +93,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             return string.Equals(name1, name2, StringComparison.Ordinal);
         }
+
+        /// <summary>
+        /// Compares two IDebugProfiles to see if they contain the same values. Note that it doesn't compare
+        /// the kind field unless includeProfileKind is true
+        /// </summary>
+        public static bool ProfilesAreEqual(ILaunchProfile debugProfile1, ILaunchProfile debugProfile2, bool includeProfileKind)
+        {
+            // Same instance better return they are equal
+            if (debugProfile1 == debugProfile2)
+            {
+                return true;
+            }
+
+            if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
+               !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
+               (debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser) ||
+               !DictionaryEqualityComparer<string, object>.Instance.Equals(debugProfile1.OtherSettings.ToImmutableDictionary(), debugProfile2.OtherSettings) ||
+               (includeProfileKind && debugProfile1.CommandName != debugProfile2.CommandName))
+            {
+                return false;
+            }
+
+            // Same collection or both null
+            if (debugProfile1.EnvironmentVariables == debugProfile2.EnvironmentVariables)
+            {
+                return true;
+            }
+
+            // XOR. One null the other non-null. Consider. Should empty dictionary be treated the same as null??
+            if ((debugProfile1.EnvironmentVariables == null) ^ (debugProfile2.EnvironmentVariables == null))
+            {
+                return false;
+            }
+            return DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables, debugProfile2.EnvironmentVariables);
+        }
+        
+        internal IDictionary<string, string> MutableEnvironmentVariables
+        {
+            get
+            {
+                return _environmentVariables;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _environmentVariables = null;
+                }
+                else
+                {
+                    _environmentVariables = new Dictionary<string, string>(value);
+                }
+            }
+        }
+        
     }
 }

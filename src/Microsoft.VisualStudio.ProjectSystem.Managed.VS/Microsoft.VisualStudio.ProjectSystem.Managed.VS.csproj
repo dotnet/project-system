@@ -34,11 +34,20 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.Delegation.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.IOleCommandTarget.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\VsItemList.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfo.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilder.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugTargetsProvider.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ErrorProfileDebugTargetsProvider.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ConfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\UnconfiguredProjectHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\AbstractHostObject.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\ProjectHostProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\ClassRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
     <Compile Include="ProjectSystem\VS\Editor\LoadedProjectFileEditorFactory.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IVsTextBufferProviderProjectAggregator.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
@@ -59,6 +68,38 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommand.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
+      <DependentUpon>DebugPageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModel.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\DebugPropertyPage.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\EnvironmentGridTemplateColumn.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml.cs">
+      <DependentUpon>GetProfileNameDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\IPageMetadata.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPage.Designer.cs">
+      <DependentUpon>PropertyPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControl.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageElementHost.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PropertyPageResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageViewModel.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\WatermarkTextBox.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.Designer.cs">
+      <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
@@ -131,8 +172,22 @@
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateService.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServices.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerService.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\Converters.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\DelegateCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\FocusAttacher.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\WpfHelper.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceItem.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceItems.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceProperties.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ReferenceProperty.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\TargetFrameworkInfo.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\TargetFrameworks.cs" />
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
@@ -157,6 +212,10 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
@@ -165,6 +224,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProjectSystem\VS\PropertyPages\WatermarkStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -173,8 +244,10 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="warning.ico" />

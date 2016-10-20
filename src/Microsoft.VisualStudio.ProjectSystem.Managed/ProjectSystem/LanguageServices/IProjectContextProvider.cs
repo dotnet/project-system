@@ -7,29 +7,29 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Creates and handles releasing <see cref="IWorkspaceProjectContext"/> instances based on the 
+    ///     Creates and handles releasing <see cref="AggregateWorkspaceProjectContext"/> instances based on the 
     ///     current <see cref="UnconfiguredProject"/>.
     /// </summary>
     internal interface IProjectContextProvider
     {
         /// <summary>
-        ///     Creates a <see cref="IWorkspaceProjectContext"/>.
+        ///     Creates a <see cref="AggregateWorkspaceProjectContext"/>.
         /// </summary>
         /// <returns>
-        ///     The created <see cref="IWorkspaceProjectContext"/> or <see langword="null"/> if it could
+        ///     The created <see cref="AggregateWorkspaceProjectContext"/> or <see langword="null"/> if it could
         ///     not be created due to the project targeting an unrecognized language.
         /// </returns>
         /// <remarks>
-        ///     When finished with the return <see cref="IWorkspaceProjectContext"/>, callers must call 
-        ///     <see cref="ReleaseProjectContextAsync(IWorkspaceProjectContext)"/>.
+        ///     When finished with the return <see cref="AggregateWorkspaceProjectContext"/>, callers must call 
+        ///     <see cref="ReleaseProjectContextAsync(AggregateWorkspaceProjectContext)"/>.
         /// </remarks>
-        Task<IWorkspaceProjectContext> CreateProjectContextAsync();
+        Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync();
 
         /// <summary>
-        ///     Releases a previously created <see cref="IWorkspaceProjectContext"/>.
+        ///     Releases a previously created <see cref="AggregateWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="context">
-        ///     The <see cref="IWorkspaceProjectContext"/> to release.
+        ///     The <see cref="AggregateWorkspaceProjectContext"/> to release.
         /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="context"/> is <see langword="null"/>.
@@ -38,6 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     <paramref name="context"/> was not created via <see cref="CreateProjectContextAsync"/> or 
         ///     has already been unregistered.
         /// </exception>
-        Task ReleaseProjectContextAsync(IWorkspaceProjectContext context);
+        Task ReleaseProjectContextAsync(AggregateWorkspaceProjectContext context);
     }
 }

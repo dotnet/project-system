@@ -74,7 +74,7 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project</Context>
+      <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
@@ -125,7 +125,7 @@
 
     <!-- Package references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PackageReference.xaml">
-      <Context>BrowseObject</Context>
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedPackageReference.xaml">
