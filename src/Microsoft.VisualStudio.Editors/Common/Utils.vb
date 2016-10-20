@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"
 
             TelemetryService.DefaultSession.PostFault(
-                eventName:="vs/ml/cps/editors/" & throwingComponentName.ToLower,
+                eventName:="vs/ml/proppages/editors/" & throwingComponentName.ToLower,
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 

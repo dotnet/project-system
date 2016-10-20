@@ -7,6 +7,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
 Imports VB = Microsoft.VisualBasic
 
@@ -239,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"
 
             TelemetryService.DefaultSession.PostFault(
-                eventName:="vs/ml/cps/appdesigner/" & throwingComponentName.ToLower,
+                eventName:="vs/ml/proppages/appdesigner/" & throwingComponentName.ToLower,
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 
