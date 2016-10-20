@@ -7,6 +7,7 @@ Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Runtime.Versioning
 Imports System.Text
+Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
@@ -335,8 +336,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
 
+            ' Follow naming convention for entity name: A string to identify the entity in the feature. E.g. open-project, build-project, fix-error.
+            throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"
+
             TelemetryService.DefaultSession.PostFault(
-                eventName:="vs/projectsystem/editors/" & throwingComponentName.ToLower,
+                eventName:="vs/ml/cps/editors/" & throwingComponentName.ToLower,
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 

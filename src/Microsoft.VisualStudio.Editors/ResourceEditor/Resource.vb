@@ -1453,10 +1453,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ExceptionToRethrow">The exception to rethrow, if any.  May be the same exeption as ExceptionFromGetValue or different.</param>
         ''' <remarks></remarks>
         Friend Sub SetTaskFromGetValueException(ExceptionFromGetValue As Exception, ByRef ExceptionToRethrow As Exception)
-            If Not Common.Utils.ReportWithoutCrash(ExceptionFromGetValue, NameOf(SetTaskFromGetValueException), NameOf(Resource)) Then
-                Throw ExceptionToRethrow
-            End If
-
             'We hit an exception.  Add a task list item for resource instantiation (if it doesn't already exist)
 
             If TypeOf ExceptionFromGetValue Is TargetInvocationException Then
@@ -2052,7 +2048,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     'No exceptions were thrown, so no task list entries should be associated with this.
                     ClearTask(ResourceFile.ResourceTaskType.CantInstantiateResource)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(CheckValueForErrors), NameOf(Resource)) 'We want task list entries for out of memory loading a resource
+                Catch ex As Exception
 
                     'Create task list entry
                     SetTaskFromGetValueException(ex, ex)
