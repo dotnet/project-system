@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TextManager.Interop;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using IServiceProvider = System.IServiceProvider;
 using System.ComponentModel.Composition;
@@ -25,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly RunningDocumentTable _rdt;
         private readonly IFileSystem _fileSystem;
         private readonly IUnconfiguredProjectVsServices _vsServices;
-        private readonly IOleServiceProvider _oleProvider;
         private IVsTextLines _textBufferAdapter;
         private IVsEditorAdaptersFactoryService _editorAdaptersFactoryService;
         private IContentTypeRegistryService _contentTypeRegistryService;
@@ -40,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _rdt = new RunningDocumentTable(_serviceProvider);
             _fileSystem = fileSystem;
             _vsServices = vsServices;
-            _oleProvider = new ServiceProviderToOleServiceProviderAdapter(_serviceProvider);
         }
 
         protected override void Initialize()
