@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly RunningDocumentTable _rdt;
         private readonly IFileSystem _fileSystem;
         private readonly IUnconfiguredProjectVsServices _vsServices;
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectLockService _projectLockService;
         private IVsTextLines _textBufferAdapter;
         private IVsEditorAdaptersFactoryService _editorAdaptersFactoryService;
         private IContentTypeRegistryService _contentTypeRegistryService;
@@ -35,18 +37,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [ImportingConstructor]
         public IVsTextBufferProviderProjectAggregator([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IUnconfiguredProjectVsServices vsServices,
-            IFileSystem fileSystem)
+            IFileSystem fileSystem,
+            IProjectThreadingService threadingService,
+            IProjectLockService projectLockService)
         {
             _serviceProvider = serviceProvider;
             _rdt = new RunningDocumentTable(_serviceProvider);
             _fileSystem = fileSystem;
             _vsServices = vsServices;
+            _threadingService = threadingService;
+            _projectLockService = projectLockService;
         }
 
         protected override void Initialize()
         {
             UIThreadHelper.VerifyOnUIThread();
-            var text = _fileSystem.ReadAllText(_vsServices.Project.FullPath);
+            string projectXml = _threadingService.ExecuteSynchronously(GetProjectXml);
+
             var oleServiceProvder = _serviceProvider.GetService<IOleServiceProvider>();
 
             _componentModel = _serviceProvider.GetService<IComponentModel, SComponentModel>();
@@ -54,7 +61,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _contentTypeRegistryService = _componentModel.GetService<IContentTypeRegistryService>();
             var contentType = _contentTypeRegistryService.GetContentType("XML");
             _textBufferAdapter = _editorAdaptersFactoryService.CreateVsTextBufferAdapter(oleServiceProvder, contentType) as IVsTextLines;
-            _textBufferAdapter.InitializeContent(text, text.Length);
+            _textBufferAdapter.InitializeContent(projectXml, projectXml.Length);
+        }
+
+        protected async Task<string> GetProjectXml()
+        {
+            using (var access = await _projectLockService.ReadLockAsync())
+            {
+                // Need to return on the same thread as the lock was aquired on.
+                var xmlProject = await access.GetProjectAsync(_vsServices.ActiveConfiguredProject).ConfigureAwait(true);
+                return xmlProject.Xml.RawXml;
+            }
         }
 
         protected override void Dispose(Boolean initialized)
@@ -77,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public Int32 LockTextBuffer(Int32 fLock)
         {
-            return VSConstants.E_NOTIMPL;
+            return VSConstants.S_OK;
         }
     }
 }
