@@ -161,6 +161,9 @@
     <Compile Include="ProjectSystem\Rules\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\DotNetCliToolReference.cs">
+      <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\SubProject.cs">
       <DependentUpon>SubProject.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

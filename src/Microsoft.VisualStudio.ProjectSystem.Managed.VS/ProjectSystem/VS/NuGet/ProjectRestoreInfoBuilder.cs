@@ -34,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             string baseIntermediatePath = null;
             var targetFrameworks = new TargetFrameworks();
-            
+            var toolReferences = new ReferenceItems();
+
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
                 string targetFrameworkMoniker; 
@@ -59,25 +60,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         PackageReferences = GetReferences(packageReferencesChanges.After.Items)
                     });
                 }
+
+                var toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
+                foreach (var item in toolReferencesChanges.After.Items)
+                {
+                    if (!toolReferences.Contains(item.Key))
+                    {
+                        toolReferences.Add(GetReferenceItem(item));
+                    }
+                }
             }
 
             return new ProjectRestoreInfo
             {
                 BaseIntermediatePath = baseIntermediatePath,
-                TargetFrameworks = targetFrameworks
+                TargetFrameworks = targetFrameworks,
+                ToolReferences = toolReferences
+            };
+        }
+
+        private static IVsReferenceItem GetReferenceItem(KeyValuePair<String, IImmutableDictionary<String, String>> item)
+        {
+            return new ReferenceItem
+            {
+                Name = item.Key,
+                Properties = new ReferenceProperties(item.Value.Select(v => new ReferenceProperty
+                {
+                    Name = v.Key,
+                    Value = v.Value
+                }))
             };
         }
 
         private static IVsReferenceItems GetReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
         {
-            return new ReferenceItems(items.Select(p => new ReferenceItem
-            {
-                Name = p.Key,
-                Properties = new ReferenceProperties(p.Value.Select(v => new ReferenceProperty
-                {
-                    Name = v.Key, Value = v.Value
-                }))
-            }));
+            return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
         private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)

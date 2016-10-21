@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private static ImmutableHashSet<string> _evaluationWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(ConfigurationGeneral.SchemaName)
             .Add(ProjectReference.SchemaName)
-            .Add(PackageReference.SchemaName);
+            .Add(PackageReference.SchemaName)
+            .Add(DotNetCliToolReference.SchemaName);
 
         [ImportingConstructor]
         public NuGetRestorer(
