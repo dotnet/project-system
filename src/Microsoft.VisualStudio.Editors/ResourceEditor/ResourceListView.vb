@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 Try
                     ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, Me.BackColor)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetThumbnailIndex), NameOf(ResourceListView))
+                Catch ex As Exception
                     'For some reason, we could not get a value for this resource.  So, we use an error glyph for the
                     '  source of the thumbnail image instead.  Note that an alternative would be to have a single
                     '  thumbnail in the thumbnail cache representing an error be used for all error cases.  However,
@@ -1170,7 +1170,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'NOTE: This is a slow operation, we should prevent to do so if it is possible...
                 Thumbnail = CreateThumbnail(ThumbnailSourceImage, ThumbnailSize, DrawBorder, _borderWidth, _selectionBorderWidth, _thumbnailImageList.TransparentColor)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed creating thumbnail", NameOf(ResourceListView))
+            Catch ex As Exception
                 Thumbnail = Nothing
             End Try
             Using Thumbnail
