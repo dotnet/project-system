@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public LoadedProjectFileEditorFactory(IServiceProvider serviceProvider)
         {
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
             _serviceProvider = serviceProvider;
         }
 
@@ -40,7 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 var viewWindow = punkView as WindowPane;
                 if (viewWindow != null)
                 {
-                    var wrapper = new XmlEditorWrapper(viewWindow);
+                    var unknownData = Marshal.GetObjectForIUnknown(punkDocDataExisting);
+                    var project = (IVsProject)unknownData;
+                    var wrapper = new XmlEditorWrapper(viewWindow, _serviceProvider, project);
+
                     ppunkDocView = Marshal.GetIUnknownForObject(wrapper);
                 }
             }

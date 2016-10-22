@@ -29,11 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             return ((IVsUIElementPane)_delegatePane).CreateUIElementPane(out punkUIElement);
         }
 
-        public void Dispose()
-        {
-            _delegatePane.Dispose();
-        }
-
         public int GetDefaultSize(SIZE[] pSize)
         {
             return ((IVsWindowPane)_delegatePane).GetDefaultSize(pSize);
