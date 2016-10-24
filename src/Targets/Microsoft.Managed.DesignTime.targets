@@ -132,6 +132,11 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <!-- Tool references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DotNetCliToolReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
     <!-- Analyzer references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AnalyzerReference.xaml">
       <Context>Project;ProjectSubscriptionService;BrowseObject</Context>

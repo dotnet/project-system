@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private static ImmutableHashSet<string> _evaluationWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(ConfigurationGeneral.SchemaName)
             .Add(ProjectReference.SchemaName)
-            .Add(PackageReference.SchemaName);
+            .Add(PackageReference.SchemaName)
+            .Add(DotNetCliToolReference.SchemaName);
 
         [ImportingConstructor]
         public NuGetRestorer(
@@ -132,6 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
                 return changedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty)
+                    || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty)
                     || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkMonikerProperty);
             }
             return false;

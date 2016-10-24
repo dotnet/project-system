@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 ""AnyChanges"": ""false""
             }
         },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            }
+        },
         ""ProjectReference"": {
             ""Difference"": {
                 ""AnyChanges"": ""false""
@@ -84,6 +89,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal("1.0.1", packageRef.Properties.Item("Version").Value);
             Assert.Equal(definingProjectDirectory, packageRef.Properties.Item("DefiningProjectDirectory").Value);
             Assert.Equal(definingProjectFullPath, packageRef.Properties.Item("DefiningProjectFullPath").Value);
+
+            // tool references
+            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            var toolRef = restoreInfo.ToolReferences.Item(0);
+            Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
+            Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
+            Assert.Equal("1.0.0", toolRef.Properties.Item("Version").Value);
+        }
+
+        [Fact]
+        public void ProjectRestoreInfoBuilder_WithNoTargetFrameworkDimension_UsesPropertiesInstead()
+        {
+            var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",            
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
+                   ""TargetFramework"": ""netcoreapp1.0""
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        }
+    }
+}");
+            var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates);
+
+            Assert.NotNull(restoreInfo);
+            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
         }
 
         [Fact]
@@ -132,6 +201,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 ""Items"": { }
             }
         },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
         ""ProjectReference"": {
             ""Difference"": {
                 ""AnyChanges"": ""false""
@@ -170,6 +247,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 ""Items"": { }
             }
         },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
         ""ProjectReference"": {
             ""Difference"": {
                 ""AnyChanges"": ""false""
@@ -186,6 +271,125 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netstandard1.4"));
+        }
+
+        [Fact]
+        public void ProjectRestoreInfoBuilder_WithRepeatedToolReference_ReturnsJustOne()
+        {
+            var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",
+            ""TargetFramework"": ""netcoreapp1.0"",
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Microsoft.AspNet.EF.Tools"": {
+                        ""DefiningProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
+                        ""DefiningProjectFullPath"": ""C:\\Test\\Projects\\TestProj\\TestProj.csproj"",
+                        ""Version"": ""1.0.0""
+                    }
+                }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        }
+    }
+}", @"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netstandard1.4"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",
+            ""TargetFramework"": ""netstandard1.4"",
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworkMoniker"": "".NETStandard,Version=v1.4""
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Microsoft.AspNet.EF.Tools"": {
+                        ""DefiningProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
+                        ""DefiningProjectFullPath"": ""C:\\Test\\Projects\\TestProj\\TestProj.csproj"",
+                        ""Version"": ""1.0.0""
+                    }
+                }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        }
+    }
+}");
+            var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates);
+
+            Assert.NotNull(restoreInfo);
+            Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
+            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            var toolRef = restoreInfo.ToolReferences.Item(0);
+            Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
+            Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
+            Assert.Equal("1.0.0", toolRef.Properties.Item("Version").Value);
         }
 
         private const string _sampleSubscriptionUpdate = @"{
@@ -251,6 +455,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     ""..\\TestLib\\TestLib.csproj"": {
                         ""DefiningProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
                         ""DefiningProjectFullPath"": ""C:\\Test\\Projects\\TestProj\\TestProj.csproj""
+                    }
+                }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Microsoft.AspNet.EF.Tools"": {
+                        ""DefiningProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
+                        ""DefiningProjectFullPath"": ""C:\\Test\\Projects\\TestProj\\TestProj.csproj"",
+                        ""Version"": ""1.0.0""
                     }
                 }
             }
