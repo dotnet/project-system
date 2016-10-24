@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     internal class LoadedProjectFileEditorFactory : IVsEditorFactory
     {
         public const string EditorFactoryGuid = "da07c581-c7b4-482a-86fe-39aacfe5ca5c";
-        public static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
+        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly IServiceProvider _serviceProvider;
         private IVsEditorFactory _xmlEditorFactory;
 

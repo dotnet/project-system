@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\EditVbprojCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="ProjectSystem\VS\VisualBasicProjectCompatibilityProvider.cs" />
     <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProvider.cs" />
@@ -55,12 +56,21 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
     <Compile Include="Packaging\VisualBasicProjectSystemPackage.cs" />
+    <Compile Include="VSVisualBasicResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VSVisualBasicResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />
+    <EmbeddedResource Include="VSVisualBasicResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VSVisualBasicResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

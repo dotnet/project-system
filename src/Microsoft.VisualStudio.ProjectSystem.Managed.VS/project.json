@@ -4,7 +4,6 @@
   },
   "dependencies": {
     "Microsoft.VisualStudio.Shell.14.0": "14.1.24720",
-    "System.Windows.Forms": "4.0.0.0",
     "NuGet.SolutionRestoreManager.Interop": "3.6.0-rc-1971"
   }
 }

@@ -51,10 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             var csprojPath = _projectVsServices.Project.FullPath;
             // This should never be able to throw, as this is getting the itemid of the solution. If this fails, we want to know about it.
             uint parentId = checked((uint)_projectVsServices.VsHierarchy.GetProperty<int>(Shell.VsHierarchyPropID.ParentHierarchyItemid));
+            var editorGuid = Guid.Parse(LoadedProjectFileEditorFactory.EditorFactoryGuid);
 
             Verify.HResult(uiShellOpenDocument.OpenSpecificEditor(0,
                 csprojPath,
-                LoadedProjectFileEditorFactory.XmlEditorFactoryGuid,
+                ref editorGuid,
                 null,
                 unusedGuid,
                 "",
