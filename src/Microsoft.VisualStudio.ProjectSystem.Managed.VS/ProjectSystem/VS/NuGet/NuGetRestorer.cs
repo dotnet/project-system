@@ -133,6 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
                 return changedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty)
+                    || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty)
                     || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkMonikerProperty);
             }
             return false;
