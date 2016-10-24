@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.SolutionRestoreManager;
 using System;
 using System.Collections.Generic;
@@ -38,24 +39,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
-                string targetFrameworkMoniker; 
-                if (!update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFrameworkMoniker))
+                var configurationChanges = update.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
+                baseIntermediatePath = baseIntermediatePath ??
+                    configurationChanges.After.Properties[ConfigurationGeneral.BaseIntermediateOutputPathProperty];
+
+                string targetFramework; 
+                if (!update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
+                    !configurationChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework))
                 {
+                    TraceUtilities.TraceWarning("Unable to find TargetFramework Property");
                     continue;
                 }
 
-                var configurationChanges = update.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
-                baseIntermediatePath = baseIntermediatePath ?? 
-                    configurationChanges.After.Properties[ConfigurationGeneral.BaseIntermediateOutputPathProperty];
-                
-                if (!targetFrameworks.Contains(targetFrameworkMoniker))
+                if (!targetFrameworks.Contains(targetFramework))
                 {
                     var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
-                        TargetFrameworkMoniker = targetFrameworkMoniker,
+                        TargetFrameworkMoniker = targetFramework,
                         ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
                         PackageReferences = GetReferences(packageReferencesChanges.After.Items)
                     });

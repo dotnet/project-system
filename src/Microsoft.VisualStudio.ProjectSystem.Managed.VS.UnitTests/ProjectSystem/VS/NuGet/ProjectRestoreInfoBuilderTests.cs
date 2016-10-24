@@ -99,6 +99,63 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
+        public void ProjectRestoreInfoBuilder_WithNoTargetFrameworkDimension_UsesPropertiesInstead()
+        {
+            var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",            
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
+                   ""TargetFramework"": ""netcoreapp1.0""
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        }
+    }
+}");
+            var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates);
+
+            Assert.NotNull(restoreInfo);
+            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
+        }
+
+        [Fact]
         public void ProjectRestoreInfoBuilder_WithTwoIdenticalUpdates_ReturnsSingleTFM()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(
