@@ -42,6 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 if (viewWindow != null)
                 {
                     var unknownData = Marshal.GetObjectForIUnknown(punkDocDataExisting);
+
+                    // Reset the contents of the docdata buffer. This is necessary every time we open a new editor to make sure the data in the buffer is up to date.
+                    ((IResettableBuffer)unknownData).Reset();
+
                     var project = (IVsProject)unknownData;
                     var wrapper = new XmlEditorWrapper(viewWindow, _serviceProvider, project);
 

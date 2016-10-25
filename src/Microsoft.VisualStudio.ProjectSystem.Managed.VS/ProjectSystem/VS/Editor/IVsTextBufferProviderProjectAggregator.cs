@@ -13,13 +13,16 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.ComponentModelHost;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [ComServiceIid(typeof(IVsTextBufferProvider))]
-    internal class IVsTextBufferProviderProjectAggregator : OnceInitializedOnceDisposed, IVsTextBufferProvider
+    [ComServiceIid(typeof(IResettableBuffer))]
+    internal class IVsTextBufferProviderProjectAggregator : OnceInitializedOnceDisposed, IVsTextBufferProvider, IResettableBuffer
     {
         private static readonly Guid XmlEditorFactory = Guid.Parse("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
@@ -30,9 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectLockService _projectLockService;
         private IVsTextLines _textBufferAdapter;
+        private ITextBuffer _textBuffer;
         private IVsEditorAdaptersFactoryService _editorAdaptersFactoryService;
         private IContentTypeRegistryService _contentTypeRegistryService;
         private IComponentModel _componentModel;
+        private bool _initialized = false;
 
         [ImportingConstructor]
         public IVsTextBufferProviderProjectAggregator([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
@@ -52,16 +57,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         protected override void Initialize()
         {
             UIThreadHelper.VerifyOnUIThread();
-            string projectXml = _threadingService.ExecuteSynchronously(GetProjectXml);
-
             var oleServiceProvder = _serviceProvider.GetService<IOleServiceProvider>();
-
             _componentModel = _serviceProvider.GetService<IComponentModel, SComponentModel>();
             _editorAdaptersFactoryService = _componentModel.GetService<IVsEditorAdaptersFactoryService>();
             _contentTypeRegistryService = _componentModel.GetService<IContentTypeRegistryService>();
             var contentType = _contentTypeRegistryService.GetContentType("XML");
             _textBufferAdapter = _editorAdaptersFactoryService.CreateVsTextBufferAdapter(oleServiceProvder, contentType) as IVsTextLines;
+            string projectXml = _threadingService.ExecuteSynchronously(GetProjectXml);
             _textBufferAdapter.InitializeContent(projectXml, projectXml.Length);
+            _textBuffer = _editorAdaptersFactoryService.GetDocumentBuffer(_textBufferAdapter);
         }
 
         protected async Task<string> GetProjectXml()
@@ -69,7 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 // Need to return on the same thread as the lock was aquired on.
-                var xmlProject = await access.GetProjectAsync(_vsServices.ActiveConfiguredProject).ConfigureAwait(true);
+                var project = await _vsServices.Project.GetSuggestedConfiguredProjectAsync().ConfigureAwait(true);
+                var xmlProject = await access.GetProjectAsync(project).ConfigureAwait(true);
                 return xmlProject.Xml.RawXml;
             }
         }
@@ -96,5 +101,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             return VSConstants.S_OK;
         }
+
+        public void Reset()
+        {
+            EnsureInitialized(false);
+            string projectXml = _threadingService.ExecuteSynchronously(GetProjectXml);
+            var textSpan = new Span(0, _textBuffer.CurrentSnapshot.Length);
+            _textBuffer.Replace(textSpan, projectXml);
+        }
+    }
+
+    /// <summary>
+    /// Com-Visible interface for reseting the text in the buffer. This is used by the LoadedProjectFileEditorFactory in order to 
+    /// reset the contents of the buffer to the current msbuild xml every time the buffer is reopened.
+    /// </summary>
+    [Guid("5372EF46-CA1A-4DAE-B9C7-9140839381AE")]
+    [InterfaceType(1)]
+    public interface IResettableBuffer
+    {
+        void Reset();
     }
 }

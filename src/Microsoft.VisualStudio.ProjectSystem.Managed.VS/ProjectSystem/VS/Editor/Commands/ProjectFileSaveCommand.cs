@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Commands
 {
@@ -16,17 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Commands
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectThreadingService _projectThreadingService;
         private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
 
         [ImportingConstructor]
         public ProjectFileSaveCommand(IFileSystem fileSystem,
             IProjectLockService projectLockService,
             IProjectThreadingService projectThreadingService,
-            UnconfiguredProject unconfiguredProject)
+            UnconfiguredProject unconfiguredProject,
+            IVsEditorAdaptersFactoryService editorFactoryService)
         {
             _fileSystem = fileSystem;
             _projectLockService = projectLockService;
             _projectThreadingService = projectThreadingService;
             _unconfiguredProject = unconfiguredProject;
+            _editorFactoryService = editorFactoryService;
         }
 
         public long CommandId { get; } = VisualStudioStandard97CommandId.SaveProjectItem;
@@ -53,15 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Commands
             await _projectThreadingService.SwitchToUIThread();
             IVsTextLines buffer;
             Verify.HResult(((IVsTextBufferProvider)project).GetTextBuffer(out buffer));
-            int numLines;
-            Verify.HResult(buffer.GetLineCount(out numLines));
-            var lastLineIndex = numLines - 1;
-            int lastLineLength;
-            Verify.HResult(buffer.GetLengthOfLine(lastLineIndex, out lastLineLength));
-            string text;
-            // Note: Gets up to and not including the length, so we don't have an off by 1 error here.
-            Verify.HResult(buffer.GetLineText(0, 0, lastLineIndex, lastLineLength, out text));
-            return text;
+            ITextBuffer textBuffer = _editorFactoryService.GetDocumentBuffer(buffer);
+            return textBuffer.CurrentSnapshot.GetText();
         }
     }
 }

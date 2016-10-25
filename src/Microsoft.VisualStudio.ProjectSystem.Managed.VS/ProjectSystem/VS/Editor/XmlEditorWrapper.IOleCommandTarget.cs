@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly WindowPane _delegatePane;
         private readonly IServiceProvider _serviceProvider;
         private readonly IVsProject _project;
+        private readonly string _projectFileName;
         private IProjectThreadingService _threadingService;
         private ICollection<IProjectFileEditorCommandAsync> _commands;
 
@@ -63,14 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             return ((IOleCommandTarget)_delegatePane).Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 
-        public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
-        {
-            return ((IOleCommandTarget)_delegatePane).QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
-        }
+        public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText) =>
+            ((IOleCommandTarget)_delegatePane).QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 
         protected override void Dispose(bool disposing)
         {
-            _delegatePane.Dispose();
+            if (disposing) _delegatePane.Dispose();
         }
     }
 }
