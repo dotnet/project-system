@@ -189,6 +189,9 @@
     <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\NuGetRestore.cs">
+      <DependentUpon>NuGetRestore.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\VisualBasic.cs">
       <DependentUpon>VisualBasic.xaml</DependentUpon>
     </Compile>
@@ -248,6 +251,10 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>

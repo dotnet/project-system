@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _targetFrameworkSubscriptionLink;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
-            .Add(ConfigurationGeneral.SchemaName);
+            .Add(NuGetRestore.SchemaName);
 
         private static ImmutableHashSet<string> _evaluationWatchedRules = Empty.OrdinalIgnoreCaseStringSet
-            .Add(ConfigurationGeneral.SchemaName)
+            .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
             .Add(DotNetCliToolReference.SchemaName);
@@ -36,13 +36,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [ImportingConstructor]
         public NuGetRestorer(
             IUnconfiguredProjectVsServices projectVsServices,
-            IVsSolutionRestoreService solutionRestoreService,
+            //IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
-            _solutionRestoreService = solutionRestoreService;
+            //_solutionRestoreService = solutionRestoreService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
@@ -120,21 +120,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             if (projectRestoreInfo != null)
             {
-                await _solutionRestoreService
-                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                    .ConfigureAwait(false);
+                //await _solutionRestoreService
+                //    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                //    .ConfigureAwait(false);
             }
         }
 
         private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
             IProjectChangeDescription projectChange;
-            if (update.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out projectChange))
+            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out projectChange))
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
-                return changedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty)
-                    || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty)
-                    || changedProperties.Contains(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+                return changedProperties.Contains(NuGetRestore.TargetFrameworksProperty)
+                    || changedProperties.Contains(NuGetRestore.TargetFrameworkProperty)
+                    || changedProperties.Contains(NuGetRestore.TargetFrameworkMonikerProperty);
             }
             return false;
         }

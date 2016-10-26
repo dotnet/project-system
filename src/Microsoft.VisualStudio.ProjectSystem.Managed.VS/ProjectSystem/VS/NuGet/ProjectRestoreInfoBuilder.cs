@@ -34,18 +34,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             string baseIntermediatePath = null;
+            string originalTargetFrameworks = null;
             var targetFrameworks = new TargetFrameworks();
             var toolReferences = new ReferenceItems();
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
-                var configurationChanges = update.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
+                var nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
                 baseIntermediatePath = baseIntermediatePath ??
-                    configurationChanges.After.Properties[ConfigurationGeneral.BaseIntermediateOutputPathProperty];
+                    nugetRestoreChanges.After.Properties[NuGetRestore.BaseIntermediateOutputPathProperty];
+                originalTargetFrameworks = originalTargetFrameworks ??
+                    nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
 
                 string targetFramework; 
                 if (!update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
-                    !configurationChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework))
+                    !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework))
                 {
                     TraceUtilities.TraceWarning("Unable to find TargetFramework Property");
                     continue;
@@ -60,7 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     {
                         TargetFrameworkMoniker = targetFramework,
                         ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
-                        PackageReferences = GetReferences(packageReferencesChanges.After.Items)
+                        PackageReferences = GetReferences(packageReferencesChanges.After.Items),
+                        Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
                 }
 
@@ -77,9 +81,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return new ProjectRestoreInfo
             {
                 BaseIntermediatePath = baseIntermediatePath,
+                OriginalTargetFrameworks = originalTargetFrameworks,
                 TargetFrameworks = targetFrameworks,
                 ToolReferences = toolReferences
             };
+        }
+
+        private static IVsProjectProperties GetProperties(IImmutableDictionary<String, String> items)
+        {
+            return new ProjectProperties(items.Select(v => new ProjectProperty
+            {
+                Name = v.Key,
+                Value = v.Value
+            }));
         }
 
         private static IVsReferenceItem GetReferenceItem(KeyValuePair<String, IImmutableDictionary<String, String>> item)
