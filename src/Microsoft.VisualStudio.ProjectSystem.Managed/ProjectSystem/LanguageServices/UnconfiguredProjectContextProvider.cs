@@ -274,6 +274,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         await _commonServices.ThreadingService.SwitchToUIThread();
                         workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
 
+                        // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
+                        workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
+
                         AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);                        
                     }
 
