@@ -153,6 +153,11 @@
 
   <!-- Targets -->
 
+  <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
+       target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
+       once the actual targets are available after package restore-->
+  <Target Name="ResolvePackageDependenciesDesignTime" />
+  
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
