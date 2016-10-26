@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
             Assert.Equal(1, tfm.ProjectReferences.Count);
             Assert.Equal(2, tfm.PackageReferences.Count);
-            Assert.Equal(8, tfm.Properties.Count);
+            Assert.Equal(9, tfm.Properties.Count);
 
             var definingProjectDirectory = "C:\\Test\\Projects\\TestProj";
             var definingProjectFullPath = "C:\\Test\\Projects\\TestProj\\TestProj.csproj";
@@ -77,6 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal("netcoreapp1.0", tfm.Properties.Item("TargetFrameworks").Value);
             Assert.Equal("netcoreapp1.0;netstandard16", tfm.Properties.Item("PackageTargetFallback").Value);
             Assert.Equal("win7-x64", tfm.Properties.Item("RuntimeIdentifier").Value);
+            Assert.Equal("win7-x64", tfm.Properties.Item("RuntimeIdentifiers").Value);
 
             // project references
             var projectRef = tfm.ProjectReferences.Item(0);
@@ -429,6 +430,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                    ""TargetFrameworks"": ""netcoreapp1.0"",
                    ""PackageTargetFallback"": ""netcoreapp1.0;netstandard16"",
                    ""RuntimeIdentifier"": ""win7-x64"",
+                   ""RuntimeIdentifiers"": ""win7-x64"",
                    ""MSBuildProjectDirectory"": ""C:\\Test\\Projects\\TestProj""
                 }
             }
