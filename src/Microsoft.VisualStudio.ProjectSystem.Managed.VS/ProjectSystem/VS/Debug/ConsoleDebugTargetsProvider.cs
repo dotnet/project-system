@@ -164,6 +164,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string executable, arguments;
             string commandLineArguments = resolvedProfile.CommandLineArgs;
 
+            // If no working directory specified in the profile, we default to the one returned from GetRunnableProjectInformationAsync (if running
+            // the project), or the project folder.
+            string defaultWorkingDir = projectFolder;
+
             // Is this profile just running the project? If so we ignore the exe
             if(string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
             {
@@ -173,11 +177,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
                 
-                // The executable will be based on the output path. If the output is an exe we
-                // just run that, otherwise, we need to launch dotnet.exe with the dll as its arguments
+                // Get the executable to run, the arguments and the default working directory
                 var runData = await GetRunnableProjectInformationAsync().ConfigureAwait(false);
                 executable = runData.Item1;
                 arguments = runData.Item2;
+                if(!string.IsNullOrWhiteSpace(runData.Item3))
+                {
+                    defaultWorkingDir = runData.Item3;
+                }
 
                 if(!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
                 {                 
@@ -193,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string workingDir;
             if(string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
-                workingDir = projectFolder;
+                workingDir = defaultWorkingDir;
             }
             else
             {
@@ -249,31 +256,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return settings;
         }
 
-        private async Task<Tuple<string, string>> GetRunnableProjectInformationAsync()
+        /// <summary>
+        /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
+        /// exeToRun, arguments, workingDir
+        /// </summary>
+        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync()
         {
             var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-            // Assumes dotnet.exe is on the the path. This will be replaced by accessing a property from the project file
-            // TODO: tracked by issue https://github.com/dotnet/roslyn-project-system/issues/423
-            string executable, arguments;
-            var targetPath = await properties.GetEvaluatedPropertyValueAsync("TargetPath").ConfigureAwait(false);
-            if (targetPath.EndsWith(".exe"))
+            var runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand").ConfigureAwait(false);
+            var runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
+            var runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
+
+            if(string.IsNullOrWhiteSpace(runCommand))
             {
-                executable = targetPath;
-                arguments = "";
+                throw new Exception(VSResources.NoRunCommandSpecifiedInProject);
             }
-            else
+            
+            // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe 
+            // extension.
+            if(!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
             {
-                executable = GetFullPathOfExeFromEnvironmentPath("dotnet.exe");  // await properties.GetEvaluatedPropertyValueAsync("ExeToLaunch").ConfigureAwait(false);
-                if (executable == null)
+                runCommand += ".exe";
+            }
+
+            // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
+            if(runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
+            {
+                var executable = GetFullPathOfExeFromEnvironmentPath(runCommand);  
+                if (executable != null)
                 {
-                    executable = "dotnet.exe";
+                    runCommand = executable;
                 }
-
-                arguments = targetPath.QuoteString();
             }
 
-            return new Tuple<string, string>(executable, arguments);
+            // If the working directory is relative, it will be relative to the project root so make it a full path
+            if(!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
+            {
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath), runWorkingDirectory);
+            }
+            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
         private async Task<Guid> GetDebuggingEngineAsync()

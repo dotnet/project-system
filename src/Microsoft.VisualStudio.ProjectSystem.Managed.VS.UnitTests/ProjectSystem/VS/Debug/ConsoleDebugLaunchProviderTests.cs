@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");
+            _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
             LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
@@ -48,7 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             if (properties == null)
             {
                 properties = new Dictionary<string, string>() {
-                    { "TargetPath", @"c:\test\project\bin\project.dll" },
+                    {"RunCommand", @"dotnet"},
+                    {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
+                    {"RunWorkingDirectory",  @"bin\"},
                     { "TargetFrameworkIdentifier", @".NetCoreApp" }
                 }; 
             }
@@ -157,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
-            Assert.Equal("\"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
+            Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
         }
 
         [Fact]
@@ -176,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.True(targets[0].Environment.ContainsKey("var1"));
-            Assert.Equal("/c \"\"c:\\program files\\dotnet\\dotnet.exe\" \"c:\\test\\project\\bin\\project.dll\" --someArgs & pause\"", targets[0].Arguments);
+            Assert.Equal("/c \"\"c:\\program files\\dotnet\\dotnet.exe\" exec \"c:\\test\\project\\bin\\project.dll\" --someArgs & pause\"", targets[0].Arguments);
         }
 
         [Fact]

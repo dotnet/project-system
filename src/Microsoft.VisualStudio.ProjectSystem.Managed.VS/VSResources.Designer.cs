@@ -301,6 +301,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to run your project. The &quot;RunCommand&quot; property is not defined..
+        /// </summary>
+        internal static string NoRunCommandSpecifiedInProject {
+            get {
+                return ResourceManager.GetString("NoRunCommandSpecifiedInProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; has requested a web browser be launched, but a URL was not specified..
         /// </summary>
         internal static string NoUrlSpecified {
