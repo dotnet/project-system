@@ -58,4 +58,8 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="RuntimeIdentifiers" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
 </Rule>

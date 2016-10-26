@@ -36,13 +36,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [ImportingConstructor]
         public NuGetRestorer(
             IUnconfiguredProjectVsServices projectVsServices,
-            //IVsSolutionRestoreService solutionRestoreService,
+            IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
-            //_solutionRestoreService = solutionRestoreService;
+            _solutionRestoreService = solutionRestoreService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
@@ -120,9 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             if (projectRestoreInfo != null)
             {
-                //await _solutionRestoreService
-                //    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                //    .ConfigureAwait(false);
+                await _solutionRestoreService
+                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                    .ConfigureAwait(false);
             }
         }
 
