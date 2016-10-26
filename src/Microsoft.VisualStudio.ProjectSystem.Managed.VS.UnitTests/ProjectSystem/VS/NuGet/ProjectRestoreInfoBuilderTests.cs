@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""false""
             }
@@ -55,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             
             Assert.NotNull(restoreInfo);
             Assert.Equal(@"obj\", restoreInfo.BaseIntermediatePath);
+            Assert.Equal("netcoreapp1.0", restoreInfo.OriginalTargetFrameworks);
 
             Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
@@ -65,9 +66,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
             Assert.Equal(1, tfm.ProjectReferences.Count);
             Assert.Equal(2, tfm.PackageReferences.Count);
+            Assert.Equal(9, tfm.Properties.Count);
 
             var definingProjectDirectory = "C:\\Test\\Projects\\TestProj";
             var definingProjectFullPath = "C:\\Test\\Projects\\TestProj\\TestProj.csproj";
+
+            // properties
+            Assert.Equal("obj\\", tfm.Properties.Item("BaseIntermediateOutputPath").Value);
+            Assert.Equal(".NETCoreApp,Version=v1.0", tfm.Properties.Item("TargetFrameworkMoniker").Value);
+            Assert.Equal("netcoreapp1.0", tfm.Properties.Item("TargetFrameworks").Value);
+            Assert.Equal("netcoreapp1.0;netstandard16", tfm.Properties.Item("PackageTargetFallback").Value);
+            Assert.Equal("win7-x64", tfm.Properties.Item("RuntimeIdentifier").Value);
+            Assert.Equal("win7-x64", tfm.Properties.Item("RuntimeIdentifiers").Value);
 
             // project references
             var projectRef = tfm.ProjectReferences.Item(0);
@@ -110,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""true""
             },
@@ -118,6 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 ""Properties"": {
                    ""BaseIntermediateOutputPath"": ""obj\\"",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
+                   ""TargetFrameworks"": ""netcoreapp1.0"",
                    ""TargetFramework"": ""netcoreapp1.0""
                 }
             }
@@ -182,13 +193,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""true""
             },
             ""After"": {
                 ""Properties"": {
                    ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
                 }
             }
@@ -228,13 +240,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""true""
             },
             ""After"": {
                 ""Properties"": {
                    ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETStandard,Version=v1.4""
                 }
             }
@@ -286,13 +299,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""true""
             },
             ""After"": {
                 ""Properties"": {
                    ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
                 }
             }
@@ -333,12 +347,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         ""Name"": ""Debug|AnyCPU|netstandard1.4"",
         ""Dimensions"": {
             ""Configuration"": ""Debug"",
+            ""TargetFrameworks"": """",
             ""TargetFramework"": ""netstandard1.4"",
             ""Platform"": ""AnyCPU""
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""true""
             },
@@ -402,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
     },
     ""ProjectChanges"": {
-        ""ConfigurationGeneral"": {
+        ""NuGetRestore"": {
             ""Difference"": {
                 ""AnyChanges"": ""false""
             },
@@ -413,12 +428,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                    ""TargetFrameworkIdentifier"": "".NETCoreApp"",
                    ""TargetFrameworkVersion"": ""v1.0"",
                    ""TargetFrameworks"": ""netcoreapp1.0"",
-                   ""Configuration"": ""Debug"",
-                   ""Platform"": ""AnyCPU"",
-                   ""OutputPath"": ""bin\\Debug\\netcoreapp1.0\\"",
-                   ""OutputType"": ""Exe"",
-                   ""MSBuildProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
-                   ""IntermediateOutputPath"": ""obj\\Debug\\netcoreapp1.0\\""
+                   ""PackageTargetFallback"": ""netcoreapp1.0;netstandard16"",
+                   ""RuntimeIdentifier"": ""win7-x64"",
+                   ""RuntimeIdentifiers"": ""win7-x64"",
+                   ""MSBuildProjectDirectory"": ""C:\\Test\\Projects\\TestProj""
                 }
             }
         },

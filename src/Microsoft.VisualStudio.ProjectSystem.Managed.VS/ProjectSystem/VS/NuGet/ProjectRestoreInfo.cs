@@ -9,6 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public String BaseIntermediatePath { get; set; }
 
+        public String OriginalTargetFrameworks { get; set; }
+
         public IVsTargetFrameworks TargetFrameworks { get; set; }
 
         public IVsReferenceItems ToolReferences { get; set; }
