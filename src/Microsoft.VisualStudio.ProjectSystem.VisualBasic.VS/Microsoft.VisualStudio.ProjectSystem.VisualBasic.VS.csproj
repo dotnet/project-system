@@ -56,21 +56,12 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
     <Compile Include="Packaging\VisualBasicProjectSystemPackage.cs" />
-    <Compile Include="VSVisualBasicResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>VSVisualBasicResources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />
-    <EmbeddedResource Include="VSVisualBasicResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>VSVisualBasicResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

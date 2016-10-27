@@ -255,4 +255,7 @@ In order to debug this project, add an executable project to this solution which
   <data name="XprojMigrationFailedProjectJsonFileNotFound" xml:space="preserve">
     <value>Failed to migrate XProj project {0}. Could not find project.json at {1}.</value>
   </data>
+  <data name="EditProjectFileCommand" xml:space="preserve">
+    <value>Edit {0}.{1}</value>
+  </data>
 </root>

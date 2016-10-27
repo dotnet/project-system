@@ -34,10 +34,6 @@
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\Commands\IProjectFileEditorCommand.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\Commands\ProjectFileSaveCommand.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.Delegation.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.IOleCommandTarget.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\VsItemList.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfo.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilder.cs" />
@@ -49,9 +45,7 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectHostProvider.cs" />
     <Compile Include="ProjectSystem\VS\Generators\ClassRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\LoadedProjectFileEditorFactory.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\IVsTextBufferProviderProjectAggregator.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />

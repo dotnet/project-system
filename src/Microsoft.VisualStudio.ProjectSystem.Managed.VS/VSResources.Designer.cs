@@ -193,6 +193,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit {0}.{1}.
+        /// </summary>
+        internal static string EditProjectFileCommand {
+            get {
+                return ResourceManager.GetString("EditProjectFileCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error in the launch settings file needs to be corrected before you can run the &apos;{0}&apos; project . Please see the error list for details..
         /// </summary>
         internal static string ErrorInProfilesFile {

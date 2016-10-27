@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
@@ -21,8 +20,6 @@ namespace Microsoft.VisualStudio.Packaging
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, null, null, null, null)]
-    [ProvideEditorFactory(typeof(LoadedProjectFileEditorFactory), 7, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_HasUntrustedLogicalViews)]
-    [ProvideEditorExtension(typeof(LoadedProjectFileEditorFactory), ".csproj", 32, NameResourceID = 7)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
         SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
@@ -56,7 +53,6 @@ namespace Microsoft.VisualStudio.Packaging
             _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new FileSystem());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
-            RegisterEditorFactory(new LoadedProjectFileEditorFactory(this));
             return Task.CompletedTask;
         }
     }

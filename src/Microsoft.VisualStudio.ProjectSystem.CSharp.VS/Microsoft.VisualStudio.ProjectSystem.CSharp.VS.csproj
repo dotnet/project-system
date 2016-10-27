@@ -56,20 +56,11 @@
     <Compile Include="ProjectSystem\VS\CSharpProjectGuidProvider.cs" />
     <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactory.cs" />
     <Compile Include="ProjectSystem\VS\Xproj\ProcessRunner.cs" />
-    <Compile Include="VSCSharpResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>VSCSharpResources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="VSCSharpResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>VSCSharpResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
