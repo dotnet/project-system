@@ -49,7 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.IsNullOrWhiteSpace(profile.CommandName) || profile.CommandName.Equals(LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.IsNullOrWhiteSpace(profile.CommandName) ||
+                profile.CommandName.Equals(LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase) ||
+                profile.CommandName.Equals(LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
