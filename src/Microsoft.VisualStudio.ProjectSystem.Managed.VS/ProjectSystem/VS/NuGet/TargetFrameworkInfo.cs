@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public IVsReferenceItems ProjectReferences { get; set; }
 
+        public IVsProjectProperties Properties { get; set; }
+
         public String TargetFrameworkMoniker { get; set; }
     }
 }

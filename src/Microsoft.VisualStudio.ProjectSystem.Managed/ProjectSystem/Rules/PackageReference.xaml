@@ -23,6 +23,21 @@
                     Description="Version of dependency.">
     </StringProperty>
 
+    <StringProperty Name="IncludeAssets" 
+                    Visible="True"
+                    DisplayName="IncludeAssets"
+                    Description="Assets to include from this reference" />
+
+    <StringProperty Name="ExcludeAssets" 
+                    Visible="True"
+                    DisplayName="ExcludeAssets"
+                    Description="Assets to exclude from this reference" />
+
+    <StringProperty Name="PrivateAssets" 
+                    Visible="True"
+                    DisplayName="PrivateAssets"
+                    Description="Assets that are private in this reference" />
+
     <StringProperty Name="Name" 
                     Visible="True" 
                     ReadOnly="True" />

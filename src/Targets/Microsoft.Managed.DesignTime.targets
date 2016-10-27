@@ -137,6 +137,11 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <!-- NuGet Restore Properties -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)NuGetRestore.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
     <!-- Analyzer references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AnalyzerReference.xaml">
       <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
