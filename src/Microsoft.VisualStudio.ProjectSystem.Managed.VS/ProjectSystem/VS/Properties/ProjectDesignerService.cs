@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _projectVsServices = projectVsServices;
-            _lazySupportsProjectDesigner = new Lazy<bool>(() => _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false));
+            _lazySupportsProjectDesigner = new Lazy<bool>(() => _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false), mode: System.Threading.LazyThreadSafetyMode.PublicationOnly);
         }
 
         public bool SupportsProjectDesigner => _lazySupportsProjectDesigner.Value;
