@@ -28,9 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(hr: VSConstants.E_FAIL);
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
 
+            var designerService = CreateInstance(projectVsServices);
+
             Assert.Throws<COMException>(() => {
 
-                var designerService = CreateInstance(projectVsServices);
+                var result = designerService.SupportsProjectDesigner;
             });
         }
 
