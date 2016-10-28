@@ -62,6 +62,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public string UniqueToken { get; private set; }
 
+        public DependencyNodeId ToNormalizedId()
+        {
+            return new DependencyNodeId(ProviderType,
+                                        ItemSpec?.Replace('\\', '/'),
+                                        ItemType,
+                                        UniqueToken);
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();

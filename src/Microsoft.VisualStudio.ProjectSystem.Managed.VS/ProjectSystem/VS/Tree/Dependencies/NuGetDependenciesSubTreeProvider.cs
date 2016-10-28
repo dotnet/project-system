@@ -40,8 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // For now we don't need unresolved package rules, since we can get all 
             // info from resolved items
-            //UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
-            //    .Add(PackageReference.SchemaName);
+            UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
+                .Add(PackageReference.SchemaName);
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ResolvedPackageReference.SchemaName);
         }
@@ -85,7 +85,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private object _snapshotLock = new object();
+
+        /// <summary>
+        /// Contains a snapshot of package dependencies obtained from nuget assets file. Data here is the
+        /// actual resolved packages that should replace package nodes from unresolved TopLevelDependencies.
+        /// </summary>
         protected DependenciesSnapshot CurrentSnapshot { get; } = new DependenciesSnapshot();
+
+        /// <summary>
+        /// Contains direct top level package dependencies obtained from project evaluation.
+        /// </summary>
+        protected Dictionary<string, DependencyMetadata> TopLevelDependencies { get; }
+            = new Dictionary<string, DependencyMetadata>(StringComparer.OrdinalIgnoreCase);
 
         protected override IDependencyNode CreateRootNode()
         {
@@ -216,91 +227,255 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         protected override DependenciesChange ProcessDependenciesChanges(
-                                                    IProjectSubscriptionUpdate projectSubscriptionUpdate,
-                                                    IProjectCatalogSnapshot catalogs)
+                                                     IProjectSubscriptionUpdate projectSubscriptionUpdate,
+                                                     IProjectCatalogSnapshot catalogs)
         {
-            var changes = projectSubscriptionUpdate.ProjectChanges;
-            var dependenciesChange = new DependenciesChange();
+            var dependenciesChange = new DependenciesChange();            
+            // take a snapshot for current top level tree nodes
+            var rootNodes = new HashSet<IDependencyNode>(RootNode.Children);
 
             lock (_snapshotLock)
             {
-                var newDependencies = new HashSet<DependencyMetadata>();
-                foreach (var change in changes.Values)
+                var unresolvedChanges = ProcessUnresolvedChanges(projectSubscriptionUpdate);
+                var resolvedChanges = ProcessResolvedChanges(projectSubscriptionUpdate, rootNodes);
+
+                // merge changes
+                // remove
+                foreach (var metadata in unresolvedChanges.RemovedNodes)
                 {
-                    if (!change.Difference.AnyChanges)
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(metadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.RemovedNodes.Add(itemNode);
+                    }
+                }
+
+                foreach (var metadata in resolvedChanges.RemovedNodes)
+                {
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(metadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.RemovedNodes.Add(itemNode);
+                    }
+                }
+
+                // update
+                foreach (var resolvedMetadata in resolvedChanges.UpdatedNodes)
+                {
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(resolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        itemNode = CreateDependencyNode(resolvedMetadata, topLevel: true);
+                        dependenciesChange.UpdatedNodes.Add(itemNode);
+                    }
+
+                    var unresolvedMatch = unresolvedChanges.UpdatedNodes.FirstOrDefault(x => x.ItemSpec.Equals(resolvedMetadata.Name));
+                    if (unresolvedMatch != null)
+                    {
+                        unresolvedChanges.UpdatedNodes.Remove(unresolvedMatch);
+                    }
+                }
+
+                foreach (var unresolvedMetadata in unresolvedChanges.UpdatedNodes)
+                {
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(unresolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.UpdatedNodes.Add(itemNode);
+                    }
+                }
+
+                // add
+                foreach (var resolvedMetadata in resolvedChanges.AddedNodes)
+                {
+                    // see if there is already node created for unresolved package - if yes, delete it
+                    // Note: unresolved packages ItemSpec contain only package name, when resolved package ItemSpec
+                    // contains TFM/PackageName/version, so we need to check for name if we want to find unresolved
+                    // packages.
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(resolvedMetadata.Name, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.RemovedNodes.Add(itemNode);
+                    }
+
+                    // see if there no node with the same resolved metadata - if no, create it
+                    itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(resolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode == null)
+                    {
+                        itemNode = CreateDependencyNode(resolvedMetadata, topLevel: true);
+                        dependenciesChange.AddedNodes.Add(itemNode);
+                    }
+
+                    // avoid adding matching unresolved packages
+                    var unresolvedMatch = unresolvedChanges.AddedNodes.FirstOrDefault(x => x.ItemSpec.Equals(resolvedMetadata.Name));
+                    if (unresolvedMatch != null)
+                    {
+                        unresolvedChanges.AddedNodes.Remove(unresolvedMatch);
+                    }
+                }
+
+                foreach (var unresolvedMetadata in unresolvedChanges.AddedNodes)
+                {
+                    var itemNode = rootNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(unresolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode == null)
+                    {
+                        itemNode = CreateDependencyNode(unresolvedMetadata, topLevel: true);
+                        dependenciesChange.AddedNodes.Add(itemNode);
+                    }
+                }                
+            }
+
+            return dependenciesChange;
+        }
+
+        private NugetDependenciesChange ProcessUnresolvedChanges(IProjectSubscriptionUpdate projectSubscriptionUpdate)
+        {
+            var unresolvedChanges = projectSubscriptionUpdate.ProjectChanges.Values
+                .Where(cd => !ResolvedReferenceRuleNames.Any(ruleName =>
+                                string.Equals(ruleName,
+                                              cd.After.RuleName,
+                                              StringComparison.OrdinalIgnoreCase)))
+                .ToDictionary(d => d.After.RuleName, d => d, StringComparer.OrdinalIgnoreCase);
+
+            var dependenciesChange = new NugetDependenciesChange();
+            foreach (var change in unresolvedChanges.Values)
+            {
+                if (!change.Difference.AnyChanges)
+                {
+                    continue;
+                }
+
+                foreach (string removedItemSpec in change.Difference.RemovedItems)
+                {
+                    DependencyMetadata metadata = null;
+                    if (TopLevelDependencies.TryGetValue(removedItemSpec, out metadata))
+                    {
+                        TopLevelDependencies.Remove(removedItemSpec);
+                        dependenciesChange.RemovedNodes.Add(metadata);
+                    }
+                }
+
+                foreach (string changedItemSpec in change.Difference.ChangedItems)
+                {
+                    var properties = GetProjectItemProperties(change.After, changedItemSpec);
+                    if (properties == null)
                     {
                         continue;
                     }
 
-                    foreach (string removedItemSpec in change.Difference.RemovedItems)
+                    DependencyMetadata metadata = null;
+                    if (TopLevelDependencies.TryGetValue(changedItemSpec, out metadata))
                     {
-                        CurrentSnapshot.RemoveDependency(removedItemSpec);
+                        metadata = CreateUnresolvedMetadata(changedItemSpec, properties);
+                        TopLevelDependencies[changedItemSpec] = metadata;
 
-                        var itemNode = RootNode.Children.FirstOrDefault(
-                                        x => x.Id.ItemSpec.Equals(removedItemSpec, StringComparison.OrdinalIgnoreCase));
-                        if (itemNode != null)
-                        {
-                            dependenciesChange.RemovedNodes.Add(itemNode);
-                        }
-                    }
-                    
-                    foreach (string changedItemSpec in change.Difference.ChangedItems)
-                    {
-                        var properties = GetProjectItemProperties(change.After, changedItemSpec);
-                        if (properties == null)
-                        {
-                            continue;
-                        }
-
-                        CurrentSnapshot.UpdateDependency(changedItemSpec, properties);
-
-                        var itemNode = RootNode.Children.FirstOrDefault(
-                                        x => x.Id.ItemSpec.Equals(changedItemSpec, StringComparison.OrdinalIgnoreCase));
-                        if (itemNode != null)
-                        {
-                            dependenciesChange.UpdatedNodes.Add(itemNode);
-                        }
-                    }
-
-                    foreach (string addedItemSpec in change.Difference.AddedItems)
-                    {
-                        var properties = GetProjectItemProperties(change.After, addedItemSpec);
-                        if (properties == null)
-                        {
-                            continue;
-                        }
-
-                        var newDependency = CurrentSnapshot.AddDependency(addedItemSpec, properties);
-
-                        newDependencies.Add(newDependency);
+                        dependenciesChange.UpdatedNodes.Add(metadata);
                     }
                 }
 
-                // since we have limited implementation for multi targeted projects,
-                // we assume that there is only one target - take first target and add 
-                // top level nodes for it
-
-                var currentTarget = CurrentSnapshot.Targets.Keys.FirstOrDefault();
-                if (currentTarget == null)
+                foreach (string addedItemSpec in change.Difference.AddedItems)
                 {
-                    return dependenciesChange;
-                }
-
-                var currentTargetDependency = CurrentSnapshot.DependenciesWorld[currentTarget];
-                var currentTargetTopLevelDependencies = currentTargetDependency.DependenciesItemSpecs;
-                var addedTopLevelDependencies = newDependencies.Where(
-                                                    x => currentTargetTopLevelDependencies.Contains(x.ItemSpec));
-                foreach (var addedDependency in addedTopLevelDependencies)
-                {
-                    var itemNode = RootNode.Children.FirstOrDefault(
-                                    x => x.Id.ItemSpec.Equals(addedDependency.ItemSpec, 
-                                                              StringComparison.OrdinalIgnoreCase));
-                    if (itemNode == null)
+                    var properties = GetProjectItemProperties(change.After, addedItemSpec);
+                    if (properties == null)
                     {
-                        itemNode = CreateDependencyNode(addedDependency, topLevel: true);
-                        dependenciesChange.AddedNodes.Add(itemNode);
+                        continue;
+                    }
+
+                    DependencyMetadata metadata = null;
+                    if (!TopLevelDependencies.TryGetValue(addedItemSpec, out metadata))
+                    {
+                        metadata = CreateUnresolvedMetadata(addedItemSpec, properties);
+                        TopLevelDependencies.Add(addedItemSpec, metadata);
+
+                        dependenciesChange.AddedNodes.Add(metadata);
                     }
                 }
+            }
+
+            return dependenciesChange;
+        }
+
+        private NugetDependenciesChange ProcessResolvedChanges(IProjectSubscriptionUpdate projectSubscriptionUpdate,
+                                                               HashSet<IDependencyNode> rootTreeNodes)
+        {
+            var changes = projectSubscriptionUpdate.ProjectChanges;
+            var resolvedChanges = ResolvedReferenceRuleNames.Where(x => changes.Keys.Contains(x))
+                                                            .Select(ruleName => changes[ruleName])
+                                                            .ToImmutableHashSet();
+            var dependenciesChange = new NugetDependenciesChange();
+            var newDependencies = new HashSet<DependencyMetadata>();
+            foreach (var change in resolvedChanges)
+            {
+                if (!change.Difference.AnyChanges)
+                {
+                    continue;
+                }
+
+                foreach (string removedItemSpec in change.Difference.RemovedItems)
+                {
+                    var metadata = CurrentSnapshot.RemoveDependency(removedItemSpec);
+                    var itemNode = rootTreeNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(removedItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.RemovedNodes.Add(metadata);
+                    }
+                }
+
+                foreach (string changedItemSpec in change.Difference.ChangedItems)
+                {
+                    var properties = GetProjectItemProperties(change.After, changedItemSpec);
+                    if (properties == null)
+                    {
+                        continue;
+                    }
+
+                    var metadata = CurrentSnapshot.UpdateDependency(changedItemSpec, properties);
+                    var itemNode = rootTreeNodes.FirstOrDefault(
+                                    x => x.Id.ItemSpec.Equals(changedItemSpec, StringComparison.OrdinalIgnoreCase));
+                    if (itemNode != null)
+                    {
+                        dependenciesChange.UpdatedNodes.Add(metadata);
+                    }
+                }
+
+                foreach (string addedItemSpec in change.Difference.AddedItems)
+                {
+                    var properties = GetProjectItemProperties(change.After, addedItemSpec);
+                    if (properties == null)
+                    {
+                        continue;
+                    }
+
+                    var newDependency = CurrentSnapshot.AddDependency(addedItemSpec, properties);
+                    newDependencies.Add(newDependency);
+                }
+            }
+
+            // since we have limited implementation for multi targeted projects,
+            // we assume that there is only one target - take first target and add 
+            // top level nodes for it
+
+            var currentTarget = CurrentSnapshot.Targets.Keys.FirstOrDefault();
+            if (string.IsNullOrEmpty(currentTarget) || !CurrentSnapshot.DependenciesWorld.ContainsKey(currentTarget))
+            {
+                return dependenciesChange;
+            }
+
+            var currentTargetDependency = CurrentSnapshot.DependenciesWorld[currentTarget];
+            var currentTargetTopLevelDependencies = currentTargetDependency.DependenciesItemSpecs;
+            var addedTopLevelDependencies = newDependencies.Where(
+                                                x => currentTargetTopLevelDependencies.Contains(x.ItemSpec));
+            foreach (var addedDependency in addedTopLevelDependencies)
+            {
+                dependenciesChange.AddedNodes.Add(addedDependency);
             }
 
             return dependenciesChange;
@@ -369,6 +544,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return matchingNodes;
         }
 
+        private static DependencyMetadata CreateUnresolvedMetadata(string itemSpec,
+                                                            IImmutableDictionary<string, string> properties)
+        {
+            // add this properties here since unresolved PackageReferences don't have it
+            properties = properties.SetItem(MetadataKeys.Resolved, "false");
+            properties = properties.SetItem(MetadataKeys.Type, DependencyType.Package.ToString());
+
+            return new DependencyMetadata(itemSpec, properties);
+        }
+
         protected class TargetMetadata
         {
             public TargetMetadata(IImmutableDictionary<string, string> properties)
@@ -432,7 +617,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Requires.NotNull(properties, nameof(properties));
 
-                Name = properties.ContainsKey(MetadataKeys.Name) ? properties[MetadataKeys.Name] : string.Empty;
+                Name = properties.ContainsKey(MetadataKeys.Name) && !string.IsNullOrEmpty(properties[MetadataKeys.Name]) 
+                            ? properties[MetadataKeys.Name] 
+                            : ItemSpec;
                 Version = properties.ContainsKey(MetadataKeys.Version) 
                                     ? properties[MetadataKeys.Version] : string.Empty;
                 var dependencyTypeString = properties.ContainsKey(MetadataKeys.Type) 
@@ -549,6 +736,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 RemoveNodeFromCache(itemSpec);
 
+                if (!itemSpec.Contains("/") && Targets.ContainsKey(itemSpec))
+                {
+                    Targets.Remove(itemSpec);
+                }
+
                 return removedMetadata;
             }
 
@@ -636,6 +828,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public const string TargetFrameworkMoniker = "TargetFrameworkMoniker";
             public const string FrameworkName = "FrameworkName";
             public const string FrameworkVersion = "FrameworkVersion";
+        }
+
+        protected class NugetDependenciesChange
+        {
+            public NugetDependenciesChange()
+            {
+                AddedNodes = new List<DependencyMetadata>();
+                UpdatedNodes = new List<DependencyMetadata>();
+                RemovedNodes = new List<DependencyMetadata>();
+            }
+
+            public List<DependencyMetadata> AddedNodes { get; protected set; }
+            public List<DependencyMetadata> UpdatedNodes { get; protected set; }
+            public List<DependencyMetadata> RemovedNodes { get; protected set; }
         }
     }
 }
