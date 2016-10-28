@@ -10,7 +10,7 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectCommand(ManagedProjectSystemPackage.DotnetProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
+    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
     [AppliesTo(ProjectCapability.CSharp)]
     internal class EditCsprojCommand : AbstractEditProjectFileCommand
     {

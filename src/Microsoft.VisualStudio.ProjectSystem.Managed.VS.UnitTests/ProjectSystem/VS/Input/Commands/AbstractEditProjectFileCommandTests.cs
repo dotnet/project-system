@@ -269,7 +269,7 @@ Root (flags: {ProjectRoot})
         }
     }
 
-    [ProjectCommand(ManagedProjectSystemPackage.DotnetProjectSystemCommandSet, VisualStudioStandard97CommandId.SaveProjectItem)]
+    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, VisualStudioStandard97CommandId.SaveProjectItem)]
     internal class EditProjectFileCommand : AbstractEditProjectFileCommand
     {
         public const string Extension = "proj";
