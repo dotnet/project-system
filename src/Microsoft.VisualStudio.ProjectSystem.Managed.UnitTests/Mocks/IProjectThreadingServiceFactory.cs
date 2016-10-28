@@ -2,6 +2,7 @@
 
 using System;
 using Moq;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -10,6 +11,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectThreadingService Create()
         {
             return new IProjectThreadingServiceMock();
+        }
+
+        public static IProjectThreadingService ImplementExecuteSynchronously()
+        {
+            var mock = new Mock<IProjectThreadingService>();
+
+            mock.Setup(s => s.ExecuteSynchronously(It.IsAny<Func<Task>>())).Callback<Func<Task>>(task => task().RunSynchronously());
+
+            return mock.Object;
         }
 
         public static IProjectThreadingService ImplementVerifyOnUIThread(Action action)

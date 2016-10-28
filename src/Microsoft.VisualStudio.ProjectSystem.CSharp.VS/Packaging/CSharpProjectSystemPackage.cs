@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Tasks = System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 // We register ourselves as a new CPS "project type"
 [assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid)]
@@ -49,12 +49,12 @@ namespace Microsoft.VisualStudio.Packaging
         {
         }
 
-        protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new FileSystem());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
-            return Tasks.Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

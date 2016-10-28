@@ -135,4 +135,7 @@
   <data name="6" xml:space="preserve">
     <value>A project for creating a class library that targets .NET Standard.</value>
   </data>
+  <data name="7" xml:space="preserve">
+    <value>Loaded Project File Editor</value>
+  </data>
 </root>
