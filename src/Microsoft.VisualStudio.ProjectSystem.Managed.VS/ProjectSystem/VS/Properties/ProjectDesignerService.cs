@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     internal class ProjectDesignerService : IProjectDesignerService
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly Lazy<bool> _lazySupportsProjectDesigner;
 
         [ImportingConstructor]
         public ProjectDesignerService(IUnconfiguredProjectVsServices projectVsServices)
@@ -23,12 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _projectVsServices = projectVsServices;
+            _lazySupportsProjectDesigner = new Lazy<bool>(() => _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false), mode: System.Threading.LazyThreadSafetyMode.PublicationOnly);
         }
 
-        public bool SupportsProjectDesigner
-        {
-            get { return _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false); }
-        }
+        public bool SupportsProjectDesigner => _lazySupportsProjectDesigner.Value;
 
         public Task ShowProjectDesignerAsync()
         {

@@ -69,6 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // Command that means run this project
         public  const string RunProjectCommandName = "Project";
 
+        //  Command that means run an executable
+        public const string RunExecutableCommandName = "Executable";
+
         // These are used internally to loop in debuggers to handle F5 when there are errors in 
         // the launch settings file or when there are no profiles specified (like class libraries)
         public  const string ErrorProfileCommandName = "ErrorProfile";
