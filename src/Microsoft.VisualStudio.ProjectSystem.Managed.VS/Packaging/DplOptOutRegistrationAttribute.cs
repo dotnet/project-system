@@ -8,28 +8,20 @@ namespace Microsoft.VisualStudio.Packaging
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     internal sealed class DplOptOutRegistrationAttribute : RegistrationAttribute
     {
+        private Guid _projectTypeGuid;
+        private bool _optOutDeferredProjectLoad;
+
         public DplOptOutRegistrationAttribute(string projectTypeGuid, bool optOutDeferredProjectLoad)
         {
-            this.ProjectTypeGuid = new Guid(projectTypeGuid);
-            this.OptOutDeferredProjectLoad = optOutDeferredProjectLoad;
+            _projectTypeGuid = new Guid(projectTypeGuid);
+            _optOutDeferredProjectLoad = optOutDeferredProjectLoad;
         }
-
-
-        /// <summary>
-        /// Gets a unique value specific to this project file extension.
-        /// </summary>
-        public Guid ProjectTypeGuid { get; private set; }
-
-        /// <summary>
-        /// Value to say if the project type wants to Opt out of Deferred Project Load.
-        /// </summary>
-        public bool OptOutDeferredProjectLoad { get; private set; }
 
         public override void Register(RegistrationContext context)
         {
             using (Key key = context.CreateKey(GetRegKeyName()))
             {
-                if (OptOutDeferredProjectLoad)
+                if (_optOutDeferredProjectLoad)
                 {
                     key.SetValue("AllowDeferredProjectLoad", "0");
                 }
@@ -43,7 +35,7 @@ namespace Microsoft.VisualStudio.Packaging
 
         private string GetRegKeyName()
         {
-            return string.Format(CultureInfo.InvariantCulture, "Projects\\{0}", this.ProjectTypeGuid.ToString("B"));
+            return string.Format(CultureInfo.InvariantCulture, "Projects\\{0}", _projectTypeGuid.ToString("B"));
         }
     }
 }
