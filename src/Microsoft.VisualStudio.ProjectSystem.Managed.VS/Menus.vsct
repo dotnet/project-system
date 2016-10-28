@@ -76,7 +76,7 @@
 
     <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
       <!-- Note that these need room to grow hence they need to be spaced out-->
-      <IDSymbol name="cmdidManagedDebugger" value="0x0100" />
+      <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidEditProjFileGrp" value="0x1000"/>
       <IDSymbol name="cmdidEditProjFile" value="0x1001" />
     </GuidSymbol>
