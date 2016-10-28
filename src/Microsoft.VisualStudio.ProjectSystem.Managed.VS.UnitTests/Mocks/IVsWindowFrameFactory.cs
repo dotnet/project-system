@@ -18,12 +18,11 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return mock.Object;
         }
 
-        public static IVsWindowFrame ImplementShowAndConstant(int showRetVal, int propid, object var, int setRetVal)
+        public static IVsWindowFrame ImplementShowAndSetProperty(int showRetVal, Func<int, object, int> setPropertyAction)
         {
             var mock = new Mock<IVsWindowFrame>();
-            mock.Setup(h => h.Show()).Returns(showRetVal);
-            mock.Setup(h => h.SetProperty(propid, var)).Returns(setRetVal);
-
+            mock.Setup(w => w.Show()).Returns(showRetVal);
+            mock.Setup(w => w.SetProperty(It.IsAny<int>(), It.IsAny<object>())).Returns(setPropertyAction);
             return mock.Object;
         }
     }

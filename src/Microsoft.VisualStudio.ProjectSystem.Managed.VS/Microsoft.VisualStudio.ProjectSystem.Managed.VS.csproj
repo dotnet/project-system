@@ -35,6 +35,7 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileCleanupFrameNotifyListener.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperties.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperty.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\VsItemList.cs" />

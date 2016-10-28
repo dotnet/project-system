@@ -96,10 +96,35 @@ Root (flags: {ProjectRoot})
             var tempProjFile = $"{tempFile}.{EditProjectFileCommand.Extension}";
             var expectedCaption = $"Project1.{EditProjectFileCommand.Extension}";
             var projectXml = @"<Project></Project>";
+            var captionSet = false;
+            var autoOpenSet = false;
+            var listenerSet = false;
+            IVsWindowFrameNotify2 notifier = null;
 
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
-            var frame = CreateWindowFrame(expectedCaption);
+            var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (property, obj) =>
+            {
+                switch (property)
+                {
+                    case (int)__VSFPROPID5.VSFPROPID_OverrideCaption:
+                        captionSet = true;
+                        break;
+                    case (int)__VSFPROPID5.VSFPROPID_DontAutoOpen:
+                        autoOpenSet = true;
+                        break;
+                    case (int)__VSFPROPID.VSFPROPID_ViewHelper:
+                        listenerSet = true;
+                        Assert.IsAssignableFrom<IVsWindowFrameNotify2>(obj);
+                        notifier = obj as IVsWindowFrameNotify2;
+                        break;
+                    default:
+                        Assert.False(true, $"Unexpected property ID {property}");
+                        break;
+                }
+
+                return VSConstants.S_OK;
+            });
 
             var command = SetupScenario(projectXml, tempFile, tempProjFile, projectPath, expectedCaption, fileSystem, textDoc, frame);
             var tree = ProjectTreeParser.Parse(@"
@@ -112,11 +137,20 @@ Root (flags: {ProjectRoot})
             Assert.Equal(projectXml, fileSystem.ReadAllText(tempProjFile));
             Mock.Get(frame).Verify(f => f.SetProperty((int)__VSFPROPID5.VSFPROPID_OverrideCaption, expectedCaption));
             Mock.Get(frame).Verify(f => f.Show());
+            Assert.True(captionSet);
+            Assert.True(autoOpenSet);
+            Assert.True(listenerSet);
+            Assert.NotNull(notifier);
 
             // Now see if the event correctly saved the text from the buffer into the project file
             var args = new TextDocumentFileActionEventArgs(tempProjFile, DateTime.Now, FileActionTypes.ContentSavedToDisk);
             Mock.Get(textDoc).Raise(t => t.FileActionOccurred += null, args);
             Assert.Equal(projectXml, fileSystem.ReadAllText(projectPath));
+
+            // Finally, ensure the cleanup works as expected. We don't do anything with the passed option. The notifier
+            // should remove the file temp file from the filesystem.
+            Assert.Equal(VSConstants.S_OK, notifier.OnClose(0));
+            Assert.False(fileSystem.FileExists(tempProjFile));
         }
 
         [Theory]
@@ -132,7 +166,7 @@ Root (flags: {ProjectRoot})
 
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
-            var frame = CreateWindowFrame(expectedCaption);
+            var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (prop, obj) => VSConstants.S_OK);
 
             var command = SetupScenario(projectXml, tempFile, tempProjFile, projectPath, expectedCaption, fileSystem, textDoc, frame);
             var tree = ProjectTreeParser.Parse(@"
@@ -251,11 +285,6 @@ Root (flags: {ProjectRoot})
                 (sp, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
                 (sp, path, edType, logView) => IVsWindowFrameFactory.Create());
             return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt);
-        }
-
-        private IVsWindowFrame CreateWindowFrame(string expectedCaption, int showRetVal = VSConstants.S_OK, int propRetVal = VSConstants.S_OK)
-        {
-            return IVsWindowFrameFactory.ImplementShowAndConstant(showRetVal, (int)__VSFPROPID5.VSFPROPID_OverrideCaption, expectedCaption, propRetVal);
         }
 
         private Func<string, bool> CapabilityChecker(bool result)

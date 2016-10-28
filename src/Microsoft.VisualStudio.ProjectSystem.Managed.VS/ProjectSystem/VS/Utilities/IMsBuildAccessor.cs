@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// Runs a given task inside either a read lock or a write lock.
         /// </summary>
-        Task RunLocked(bool writeLock, Func<Task> task);
+        Task RunLockedAsync(bool writeLock, Func<Task> task);
     }
 
     [Export(typeof(IMsBuildAccessor))]
@@ -40,11 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                // If we don't save here, then there will be a file-changed popup if the msbuild model differed from the file
+                // on disc before we grabbed it here.
+                xmlProject.Save();
                 return xmlProject.Xml.RawXml;
             }
         }
 
-        public async Task RunLocked(bool writeLock, Func<Task> task)
+        public async Task RunLockedAsync(bool writeLock, Func<Task> task)
         {
             if (writeLock)
             {

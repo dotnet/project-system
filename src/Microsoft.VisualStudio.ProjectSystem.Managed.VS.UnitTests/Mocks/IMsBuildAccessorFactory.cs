@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             var mock = new Mock<IMsBuildAccessor>();
             mock.Setup(m => m.GetProjectXml(It.IsAny<UnconfiguredProject>())).Returns(Task.FromResult(xml));
-            mock.Setup(m => m.RunLocked(It.IsAny<bool>(), It.IsAny<Func<Task>>())).Returns(callback);
+            mock.Setup(m => m.RunLockedAsync(It.IsAny<bool>(), It.IsAny<Func<Task>>())).Returns(callback);
             return mock.Object;
         }
     }

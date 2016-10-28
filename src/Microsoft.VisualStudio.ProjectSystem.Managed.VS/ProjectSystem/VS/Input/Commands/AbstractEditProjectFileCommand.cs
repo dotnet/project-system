@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -67,6 +68,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             // Clean up the caption of the window
             Verify.HResult(frame.SetProperty((int)__VSFPROPID5.VSFPROPID_OverrideCaption, caption));
 
+            // When the document is closed, clean up the file on disk
+            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem);
+            Verify.HResult(frame.SetProperty((int)__VSFPROPID.VSFPROPID_ViewHelper, fileCleanupListener));
+
+            // Ensure that the window is not reopened when the solution is closed
+            Verify.HResult(frame.SetProperty((int)__VSFPROPID5.VSFPROPID_DontAutoOpen, true));
+
             // Set up a save listener, that will overwrite the project file on save.
             IVsHierarchy unusedHier;
             uint unusedId;
@@ -97,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             UIThreadHelper.VerifyOnUIThread();
             var textDocument = (ITextDocument)sender;
             var savedText = textDocument.TextBuffer.CurrentSnapshot.GetText();
-            _threadingService.ExecuteSynchronously(() => _msbuildAccessor.RunLocked(true, () =>
+            _threadingService.ExecuteSynchronously(() => _msbuildAccessor.RunLockedAsync(true, () =>
             {
                 _fileSystem.WriteAllText(_unconfiguredProject.FullPath, savedText);
                 return Task.CompletedTask;
