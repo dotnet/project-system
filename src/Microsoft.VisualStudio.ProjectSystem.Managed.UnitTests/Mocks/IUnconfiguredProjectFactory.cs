@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectFactory
     {
-        public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null, IProjectConfigurationsService projectConfigurationsService = null)
+        public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
+            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null)
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
@@ -31,6 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProject.SetupGet(u => u.FullPath)
                                 .Returns(filePath);
+
+            unconfiguredProject.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
 
             return unconfiguredProject.Object;
         }

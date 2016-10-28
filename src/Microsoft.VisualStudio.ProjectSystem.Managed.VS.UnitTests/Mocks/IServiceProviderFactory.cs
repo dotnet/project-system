@@ -7,6 +7,8 @@ namespace Microsoft.VisualStudio
 {
     internal static class IServiceProviderFactory
     {
+        public static IServiceProvider Create() => Mock.Of<IServiceProvider>();
+
         public static IServiceProvider Create(Type type, object instance)
         {
             return ImplementGetService(t => {

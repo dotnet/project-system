@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using System;
@@ -16,14 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class EditVbprojCommand : AbstractEditProjectFileCommand
     {
         [ImportingConstructor]
-        public EditVbprojCommand(IUnconfiguredProjectVsServices projectVsServices,
+        public EditVbprojCommand(UnconfiguredProject unconfiguredProject,
             IProjectCapabilitiesService projectCapabilitiesService,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-            IProjectLockService lockService,
+            IMsBuildAccessor msbuildAccessor,
             IFileSystem fileSystem,
             ITextDocumentFactoryService textDocumentService,
-            IVsEditorAdaptersFactoryService editorFactoryService) :
-            base(projectVsServices, projectCapabilitiesService, serviceProvider, lockService, fileSystem, textDocumentService, editorFactoryService)
+            IVsEditorAdaptersFactoryService editorFactoryService,
+            IProjectThreadingService threadingService,
+            IVsShellUtilitiesHelper shellUtilities) :
+            base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor, fileSystem,
+                textDocumentService, editorFactoryService, threadingService, shellUtilities)
         {
         }
 
