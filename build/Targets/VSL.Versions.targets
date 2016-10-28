@@ -4,9 +4,8 @@
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
-    <BuildNumber Condition="'$(BuildNumber)' == ''">00000000.01</BuildNumber>
-    <BuildNumberPart1>$(BuildNumber.Split('.')[0])</BuildNumberPart1>
-    <BuildNumberPart2 Condition="($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberPart2>
+    <BuildNumberPart1 Condition="'$(BuildNumber)' != ''">$(BuildNumber.Split('.')[0])</BuildNumberPart1>
+    <BuildNumberPart2 Condition="('$(BuildNumber)' != '') AND ($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberPart2>
   </PropertyGroup>
 
   <Choose>
@@ -19,7 +18,7 @@
       </PropertyGroup>
     </When>
 
-    <When Condition="('$(BuildNumber)' != '') and ('$(BuildNumberPart2)' != '')">
+    <When Condition="('$(BuildNumber)' != '') AND ('$(BuildNumberPart1)' != '') AND ('$(BuildNumberPart2)' != '')">
       <!-- The user specified a build number, so we should use that. -->
       <PropertyGroup>
         <AssemblyVersion>$(RoslynSemanticVersion).0</AssemblyVersion>
