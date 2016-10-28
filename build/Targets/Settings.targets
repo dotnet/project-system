@@ -106,7 +106,6 @@
 
   <PropertyGroup>
     <IsDev15RC Condition="Exists('$(MSBuildBinPath)\..\..\..\..\Microsoft.VisualStudio.ExtensionEngine.dll')">true</IsDev15RC>   
-    <VisualStudioBuildToolsNuGetPackagePath>$(NuGetPackageRoot)\Microsoft.VSSDK.BuildTools\15.0.25825-RC</VisualStudioBuildToolsNuGetPackagePath> 
   </PropertyGroup> 
   <Choose>
     <When Condition="'$(IsDev15RC)' == 'true'">
