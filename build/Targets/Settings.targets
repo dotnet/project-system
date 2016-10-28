@@ -119,7 +119,8 @@
       </PropertyGroup> 
     </Otherwise>
   </Choose>
-  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props" Condition="'$(OS)' == 'Windows_NT'" /> 
+  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props" 
+          Condition="'$(OS)' == 'Windows_NT' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props')" /> 
 
   <!-- Build reliability -->
   <PropertyGroup>
