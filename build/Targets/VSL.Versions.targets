@@ -4,7 +4,6 @@
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
-    <BuildNumber Condition="'$(BuildNumber)' == ''">00000000.01</BuildNumber>
     <BuildNumberPart1>$(BuildNumber.Split('.')[0])</BuildNumberPart1>
     <BuildNumberPart2 Condition="($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberPart2>
   </PropertyGroup>
