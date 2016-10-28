@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using System.Threading.Tasks;
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
