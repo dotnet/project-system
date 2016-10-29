@@ -17,38 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         [Theory]
         /* 
-            Tests following scenarios:
-               - added new resolved items 
-               - removed resolved items
-               - changed resolved items and verifies that properties were updated in CurrentSnapshot
-               - adding same package as unresolved and resolved - resolved should win
-               - add new unresolved package
-               - for existing unresolved package, add a resolved package - existing one should be gone from teh tree
-               - top level packages from all TFMs are added
+            Tests 
+               - added items 
+               - removed items
+               - changed items and verifies that properties were updated in CurrentSnapshot
          */
         [InlineData(
 @"{
     ""ProjectChanges"": {
-        ""PackageReference"": {
-            ""After"": {
-                ""Items"": {
-                    ""unresolvedpackage1"": {
-                        ""Version"": ""1.0.0""
-                    },
-                    ""ToBeOverridenByResolvedPackage"": {
-                        ""Version"": ""1.0.0""
-                    }
-                },
-                ""RuleName"": ""PackageReference""
-            },
-            ""Difference"": {
-                ""AddedItems"": [ ""unresolvedpackage1"", ""ToBeOverridenByResolvedPackage"" ],
-                ""ChangedItems"": [ ],
-                ""RemovedItems"": [ ],
-                ""AnyChanges"": ""true""
-            },
-        },
-        ""ResolvedPackageReference"": {
+        ""itemtype1"": {
             ""After"": {
                 ""Items"": {
                     ""tfm1"": {
@@ -56,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
                         ""FrameworkName"": ""net45"",
                         ""FrameworkVersion"": ""4.5"",
-                        ""Dependencies"":""package1/1.0.2.0;ToBeOverridenByResolvedPackage/1.0.0""
+                        ""Dependencies"":""package1/1.0.2.0""
                     },
                     ""tfm1/package1/1.0.2.0"": {
                         ""Name"": ""package"",
@@ -81,13 +58,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Path"":""SomePath"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
-                    },
+                    }
+                }
+            },
+            ""Difference"": {
+                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.2.0"" ],
+                ""ChangedItems"": [ ""tfm1/PackageToChange/2.0.0"", ""tfm1/PackageToChange2/2.0.0"" ],
+                ""RemovedItems"": [ ""tfm1/PackageToRemove/1.0.0"" ],
+                ""AnyChanges"": ""true""
+            },
+        },
+        ""itemtype2"": {
+            ""After"": {
+                ""Items"": {
                     ""tfm2"": {
                         ""RuntimeIdentifier"": ""net45"",
                         ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
                         ""FrameworkName"": ""net45"",
                         ""FrameworkVersion"": ""4.5"",
-                        ""Dependencies"":""package1/1.0.2.0;ExistingUnresolvedPackage/2.0.0""
+                        ""Dependencies"":""package1/1.0.2.0""
                     },
                     ""tfm1/package2/1.0.2.0"": {
                         ""Name"": ""package2"",
@@ -96,32 +85,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Path"":""SomePath2"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
-                    },
-                    ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"": {
-                        ""Name"": ""ToBeOverridenByResolvedPackage"",
-                        ""Version"": ""1.0.0"",
-                        ""Type"":""Package"",
-                        ""Path"":""SomePath2"",
-                        ""Resolved"":""true"",
-                        ""Dependencies"":""""
-                    },
-                    ""tfm2/ExistingUnresolvedPackage/2.0.0"": {
-                        ""Name"": ""ExistingUnresolvedPackage"",
-                        ""Version"": ""2.0.0"",
-                        ""Type"":""Package"",
-                        ""Path"":""SomePath3"",
-                        ""Resolved"":""true"",
-                        ""Dependencies"":""""
                     }
-                },
-                ""RuleName"": ""ResolvedPackageReference""
+                }
             },
             ""Difference"": {
-                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.2.0"", ""tfm2"", ""tfm1/package2/1.0.2.0"", 
-                                  ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"", ""tfm2/ExistingUnresolvedPackage/2.0.0"" ],
-                ""ChangedItems"": [ ""tfm1/PackageToChange/2.0.0"", ""tfm1/PackageToChange2/2.0.0"" ],
-                ""RemovedItems"": [ ""tfm1/PackageToRemove/1.0.0"" ],
-                ""AnyChanges"": ""true""
+                ""AddedItems"": [ ""tfm2"", ""tfm1/package2/1.0.2.0"" ],
+                ""ChangedItems"": [ ],
+                ""RemovedItems"": [  ],
+                ""AnyChanges"": ""false""
             },
         }
     }
@@ -142,13 +113,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""ItemSpec"": ""tfm1/PackageToChange/2.0.0"",
                 ""ItemType"": ""PackageReference""
             }
-        },
-        {
-            ""Id"": {
-                ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""ExistingUnresolvedPackage"",
-                ""ItemType"": ""PackageReference""
-            }
         }
     ]  
 }",
@@ -161,27 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Id"": {
                 ""ProviderType"": ""NuGetDependency"",
                 ""ItemSpec"": ""tfm1/package1/1.0.2.0"",
-                ""ItemType"": ""PackageReference""
-            }
-        },
-        {
-            ""Id"": {
-                ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""unresolvedpackage1"",
-                ""ItemType"": ""PackageReference""
-            }
-        },
-        {
-            ""Id"": {
-                ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"",
-                ""ItemType"": ""PackageReference""
-            }
-        },
-        {
-            ""Id"": {
-                ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""tfm2/ExistingUnresolvedPackage/2.0.0"",
                 ""ItemType"": ""PackageReference""
             }
         }
@@ -200,13 +143,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ""Id"": {
                 ""ProviderType"": ""NuGetDependency"",
                 ""ItemSpec"": ""tfm1/PackageToRemove/1.0.0"",
-                ""ItemType"": ""PackageReference""
-            }
-        },
-        {
-            ""Id"": {
-                ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""ExistingUnresolvedPackage"",
                 ""ItemType"": ""PackageReference""
             }
         }
@@ -232,10 +168,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Check that for updated/changed nodes, properties were updated  
             var propertyToCheck = "Version";
             var itemsProperties = projectSubscriptionUpdate.ProjectChanges.Values
-                                    .Where(y => y.Difference.AnyChanges 
-                                                && y.Difference.ChangedItems.Any(x=> x.Equals(packageToTestVersionUpdate)))
-                                    .Select(x => x.After.Items)
-                                    .FirstOrDefault();
+                                                            .Where(y => y.Difference.AnyChanges)
+                                                            .Select(x => x.After.Items)
+                                                            .FirstOrDefault();
             var expectedPropertyValue = itemsProperties[packageToTestVersionUpdate][propertyToCheck];
 
             var properties = provider.GetDependencyProperties(packageToTestVersionUpdate);
@@ -249,11 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var currentSnapshot = provider.GetCurrentSnapshotDependenciesWorld();
             foreach(var addedNode in expectedResult.AddedNodes)
             {
-                if (addedNode.Id.ItemSpec.Contains("/"))
-                {
-                    // if it is a resolved package 
-                    Assert.True(currentSnapshot.Any(x => x.Equals(addedNode.Id.ItemSpec, StringComparison.OrdinalIgnoreCase)));
-                }
+                Assert.True(currentSnapshot.Any(x => x.Equals(addedNode.Id.ItemSpec, StringComparison.OrdinalIgnoreCase)));
             }
         }
 
@@ -660,87 +591,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void NuGetDependenciesSubTreeProvider_DependenciesSnapshot_GetUniqueTopLevelDependencies()
-        {
-            var provider = new TestableNuGetDependenciesSubTreeProvider();
-
-            var snapshotJson = @"
-{
-    ""NodesCache"": [ ],
-    ""DependenciesWorld"": [
-        {
-            ""ItemSpec"": ""tfm1"",
-            ""Properties"": {
-                ""Name"": ""tfm1"",
-                ""Type"": ""Target"",
-                ""Dependencies"": ""Package3/2.0.0;Package2/1.0.0""
-            }
-        },
-        {
-            ""ItemSpec"": ""tfm1/Package3/2.0.0"",
-            ""Properties"": {
-                ""Name"": ""Package3"",
-                ""Version"": ""2.0.0"",
-                ""Type"": ""Package"",
-                ""Path"": ""SomePath"",
-                ""Resolved"": ""true"",
-                ""Dependencies"": """"
-            }
-        },
-        {
-            ""ItemSpec"": ""tfm1/Package2/1.0.0"",
-            ""Properties"": {
-                ""Name"": ""Package2"",
-                ""Version"": ""1.0.0"",
-                ""Type"": ""Package"",
-                ""Path"": ""SomePath"",
-                ""Resolved"": ""true"",
-                ""Dependencies"": """"
-            }
-        },
-        {
-            ""ItemSpec"": ""tfm2"",
-            ""Properties"": {
-                ""Name"": ""tfm2"",
-                ""Type"": ""Target"",
-                ""Dependencies"": ""Package1/1.0.0""
-            }
-        },
-        {
-            ""ItemSpec"": ""tfm2/Package1/1.0.0"",
-            ""Properties"": {
-                ""Name"": ""Package1"",
-                ""Version"": ""1.0.0"",
-                ""Type"": ""Package"",
-                ""Path"": ""SomePath"",
-                ""Resolved"": ""true"",
-                ""Dependencies"": """"
-            }
-        },
-        {
-            ""ItemSpec"": ""tfm2/Package2/1.0.0"",
-            ""Properties"": {
-                ""Name"": ""Package2"",
-                ""Version"": ""1.0.0"",
-                ""Type"": ""Package"",
-                ""Path"": ""SomePath"",
-                ""Resolved"": ""true"",
-                ""Dependencies"": """"
-            }
-        }
-    ]
-}";
-            provider.LoadSnapshotFromJson(snapshotJson);
-
-            var topLevelDependencies = provider.GetUniqueTopLevelDependencies();
-
-            Assert.Equal(3, topLevelDependencies.Count);
-            Assert.True(topLevelDependencies.Contains("tfm1/Package3/2.0.0"));
-            Assert.True(topLevelDependencies.Contains("tfm1/Package2/1.0.0"));
-            Assert.True(topLevelDependencies.Contains("tfm2/Package1/1.0.0"));
-        }
-
-        [Fact]
         public void NuGetDependenciesSubTreeProvider_DependenciesSnapshot_UpdateDependency()
         {
             var provider = new TestableNuGetDependenciesSubTreeProvider();
@@ -885,7 +735,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var provider = new TestableNuGetDependenciesSubTreeProvider();
 
-            Assert.Equal(1, provider.GetUnresolvedReferenceRuleNames().Count());
+            Assert.Equal(0, provider.GetUnresolvedReferenceRuleNames().Count());
         }
 
         [Fact]
@@ -1031,7 +881,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     foreach(var dependency in data.DependenciesWorld)
                     {
-                        CurrentSnapshot.AddDependency(dependency.ItemSpec, dependency.Properties);
+                        CurrentSnapshot.DependenciesWorld.Add(dependency.ItemSpec,
+                                                              new DependencyMetadata(dependency.ItemSpec, 
+                                                                                     dependency.Properties));
                     }
                 }
             }
@@ -1049,11 +901,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public void RemoveDependencyFromSnapshot(string itemSpec)
             {
                 CurrentSnapshot.RemoveDependency(itemSpec);
-            }
-
-            public HashSet<string> GetUniqueTopLevelDependencies()
-            {
-                return CurrentSnapshot.GetUniqueTopLevelDependencies();
             }
 
             public void AddChildToNodeInCache(string itemSpec, IDependencyNode childNode)
