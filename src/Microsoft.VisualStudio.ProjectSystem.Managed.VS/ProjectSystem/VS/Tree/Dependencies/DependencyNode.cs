@@ -18,6 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// The set of flags to assign to unresolvable Reference nodes.
+        /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
+        /// called for that node.
         /// </summary>
         private static readonly ProjectTreeFlags UnresolvedReferenceFlags
                 = BaseReferenceFlags.Add(ProjectTreeFlags.Common.BrokenReference);
