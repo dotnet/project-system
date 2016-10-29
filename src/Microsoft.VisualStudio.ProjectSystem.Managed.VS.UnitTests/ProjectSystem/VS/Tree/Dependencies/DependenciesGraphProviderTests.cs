@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(inputNode.GetValue(DependenciesGraphSchema.ProviderProperty) is IProjectDependenciesSubTreeProviderMock);
         }
 
-        [Fact]
+        [Fact(Skip="https://github.com/dotnet/roslyn-project-system/issues/431")]
         public async Task DependenciesGraphProvider_GetChildrenAsync()
         {
             var projectPath = @"c:\myproject\project.csproj";
@@ -192,6 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(childGraphNode.GetValue<bool>(DgmlNodeProperties.ContainsChildren));
             Assert.True(childGraphNode.GetValue(DependenciesGraphSchema.ProviderProperty) is IProjectDependenciesSubTreeProviderMock);
             Assert.Equal(1, childGraphNode.IncomingLinkCount);
+            Assert.Equal(1, provider.GetExpandedGraphContexts().Count());
             Assert.Equal(1, provider.GetRegisteredSubTreeProviders().Count());
         }
 
