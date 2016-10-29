@@ -459,18 +459,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             }
 
-            // since we have limited implementation for multi targeted projects,
-            // we assume that there is only one target - take first target and add 
-            // top level nodes for it
-
-            var currentTarget = CurrentSnapshot.Targets.Keys.FirstOrDefault();
-            if (string.IsNullOrEmpty(currentTarget) || !CurrentSnapshot.DependenciesWorld.ContainsKey(currentTarget))
+            // Note: currently deisgn time build is limited and is not aware of conditional on TFM 
+            // PackageReference items: Unresolved PackageReference items for conditional TFMs are not sent.
+            // Thus we will display conditional PackageReferences if they were resolved and are in assets.json.
+            // This limitation should go away, when we have final design for cross target dependencies and 
+            // DesignTime build.
+            var currentTargetTopLevelDependencies = CurrentSnapshot.GetUniqueTopLevelDependencies();
+            if (currentTargetTopLevelDependencies.Count == 0)
             {
                 return dependenciesChange;
             }
 
-            var currentTargetDependency = CurrentSnapshot.DependenciesWorld[currentTarget];
-            var currentTargetTopLevelDependencies = currentTargetDependency.DependenciesItemSpecs;
             var addedTopLevelDependencies = newDependencies.Where(
                                                 x => currentTargetTopLevelDependencies.Contains(x.ItemSpec));
             foreach (var addedDependency in addedTopLevelDependencies)
@@ -798,6 +797,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     RemoveNodeFromCacheRecursive(childNode);
                 }
+            }
+
+            /// <summary>
+            /// Until we have a proper design for displaying cross-target dependencies, we show all
+            /// in one list. 
+            /// </summary>
+            /// <returns></returns>
+            public HashSet<string> GetUniqueTopLevelDependencies()
+            {
+                HashSet<string> topLevelDependenciesNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                HashSet<string> topLevelDependenciesItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach(var target in Targets)
+                {
+                    DependencyMetadata targetMetadata = null;
+                    if (!DependenciesWorld.TryGetValue(target.Key, out targetMetadata))
+                    {
+                        continue;
+                    }
+
+                    foreach (var dependencyItemSpec in targetMetadata.DependenciesItemSpecs)
+                    {
+                        DependencyMetadata dependencyMetadata = null;
+                        if (!DependenciesWorld.TryGetValue(dependencyItemSpec, out dependencyMetadata))
+                        {
+                            continue;
+                        }
+
+                        if (topLevelDependenciesNames.Contains(dependencyMetadata.Name))
+                        {
+                            // we already have this dependency form other target
+                            continue;
+                        }
+
+                        topLevelDependenciesNames.Add(dependencyMetadata.Name);
+                        topLevelDependenciesItemSpecs.Add(dependencyItemSpec);
+                    }
+                }
+
+                return topLevelDependenciesItemSpecs;
             }
         }
 

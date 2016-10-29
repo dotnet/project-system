@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                - adding same package as unresolved and resolved - resolved should win
                - add new unresolved package
                - for existing unresolved package, add a resolved package - existing one should be gone from teh tree
+               - top level packages from all TFMs are added
          */
         [InlineData(
 @"{
@@ -55,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
                         ""FrameworkName"": ""net45"",
                         ""FrameworkVersion"": ""4.5"",
-                        ""Dependencies"":""package1/1.0.2.0;ToBeOverridenByResolvedPackage/1.0.0;ExistingUnresolvedPackage/2.0.0""
+                        ""Dependencies"":""package1/1.0.2.0;ToBeOverridenByResolvedPackage/1.0.0""
                     },
                     ""tfm1/package1/1.0.2.0"": {
                         ""Name"": ""package"",
@@ -86,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
                         ""FrameworkName"": ""net45"",
                         ""FrameworkVersion"": ""4.5"",
-                        ""Dependencies"":""package1/1.0.2.0""
+                        ""Dependencies"":""package1/1.0.2.0;ExistingUnresolvedPackage/2.0.0""
                     },
                     ""tfm1/package2/1.0.2.0"": {
                         ""Name"": ""package2"",
@@ -104,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
                     },
-                    ""tfm1/ExistingUnresolvedPackage/2.0.0"": {
+                    ""tfm2/ExistingUnresolvedPackage/2.0.0"": {
                         ""Name"": ""ExistingUnresolvedPackage"",
                         ""Version"": ""2.0.0"",
                         ""Type"":""Package"",
@@ -117,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             },
             ""Difference"": {
                 ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.2.0"", ""tfm2"", ""tfm1/package2/1.0.2.0"", 
-                                  ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"", ""tfm1/ExistingUnresolvedPackage/2.0.0"" ],
+                                  ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"", ""tfm2/ExistingUnresolvedPackage/2.0.0"" ],
                 ""ChangedItems"": [ ""tfm1/PackageToChange/2.0.0"", ""tfm1/PackageToChange2/2.0.0"" ],
                 ""RemovedItems"": [ ""tfm1/PackageToRemove/1.0.0"" ],
                 ""AnyChanges"": ""true""
@@ -180,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             ""Id"": {
                 ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""tfm1/ExistingUnresolvedPackage/2.0.0"",
+                ""ItemSpec"": ""tfm2/ExistingUnresolvedPackage/2.0.0"",
                 ""ItemType"": ""PackageReference""
             }
         }
@@ -659,6 +660,87 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
+        public void NuGetDependenciesSubTreeProvider_DependenciesSnapshot_GetUniqueTopLevelDependencies()
+        {
+            var provider = new TestableNuGetDependenciesSubTreeProvider();
+
+            var snapshotJson = @"
+{
+    ""NodesCache"": [ ],
+    ""DependenciesWorld"": [
+        {
+            ""ItemSpec"": ""tfm1"",
+            ""Properties"": {
+                ""Name"": ""tfm1"",
+                ""Type"": ""Target"",
+                ""Dependencies"": ""Package3/2.0.0;Package2/1.0.0""
+            }
+        },
+        {
+            ""ItemSpec"": ""tfm1/Package3/2.0.0"",
+            ""Properties"": {
+                ""Name"": ""Package3"",
+                ""Version"": ""2.0.0"",
+                ""Type"": ""Package"",
+                ""Path"": ""SomePath"",
+                ""Resolved"": ""true"",
+                ""Dependencies"": """"
+            }
+        },
+        {
+            ""ItemSpec"": ""tfm1/Package2/1.0.0"",
+            ""Properties"": {
+                ""Name"": ""Package2"",
+                ""Version"": ""1.0.0"",
+                ""Type"": ""Package"",
+                ""Path"": ""SomePath"",
+                ""Resolved"": ""true"",
+                ""Dependencies"": """"
+            }
+        },
+        {
+            ""ItemSpec"": ""tfm2"",
+            ""Properties"": {
+                ""Name"": ""tfm2"",
+                ""Type"": ""Target"",
+                ""Dependencies"": ""Package1/1.0.0""
+            }
+        },
+        {
+            ""ItemSpec"": ""tfm2/Package1/1.0.0"",
+            ""Properties"": {
+                ""Name"": ""Package1"",
+                ""Version"": ""1.0.0"",
+                ""Type"": ""Package"",
+                ""Path"": ""SomePath"",
+                ""Resolved"": ""true"",
+                ""Dependencies"": """"
+            }
+        },
+        {
+            ""ItemSpec"": ""tfm2/Package2/1.0.0"",
+            ""Properties"": {
+                ""Name"": ""Package2"",
+                ""Version"": ""1.0.0"",
+                ""Type"": ""Package"",
+                ""Path"": ""SomePath"",
+                ""Resolved"": ""true"",
+                ""Dependencies"": """"
+            }
+        }
+    ]
+}";
+            provider.LoadSnapshotFromJson(snapshotJson);
+
+            var topLevelDependencies = provider.GetUniqueTopLevelDependencies();
+
+            Assert.Equal(3, topLevelDependencies.Count);
+            Assert.True(topLevelDependencies.Contains("tfm1/Package3/2.0.0"));
+            Assert.True(topLevelDependencies.Contains("tfm1/Package2/1.0.0"));
+            Assert.True(topLevelDependencies.Contains("tfm2/Package1/1.0.0"));
+        }
+
+        [Fact]
         public void NuGetDependenciesSubTreeProvider_DependenciesSnapshot_UpdateDependency()
         {
             var provider = new TestableNuGetDependenciesSubTreeProvider();
@@ -949,9 +1031,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     foreach(var dependency in data.DependenciesWorld)
                     {
-                        CurrentSnapshot.DependenciesWorld.Add(dependency.ItemSpec,
-                                                              new DependencyMetadata(dependency.ItemSpec, 
-                                                                                     dependency.Properties));
+                        CurrentSnapshot.AddDependency(dependency.ItemSpec, dependency.Properties);
                     }
                 }
             }
@@ -969,6 +1049,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public void RemoveDependencyFromSnapshot(string itemSpec)
             {
                 CurrentSnapshot.RemoveDependency(itemSpec);
+            }
+
+            public HashSet<string> GetUniqueTopLevelDependencies()
+            {
+                return CurrentSnapshot.GetUniqueTopLevelDependencies();
             }
 
             public void AddChildToNodeInCache(string itemSpec, IDependencyNode childNode)
