@@ -90,22 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              resolved: resolved);
         }
 
-        public override IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
-        {
-            if (nodeId == null)
-            {
-                return null;
-            }
-
-            var projectNode = RootNode.Children.FirstOrDefault(x => x.Id.ToNormalizedId().Equals(nodeId));
-            if (projectNode != null)
-            {
-                projectNode.AddChild(projectNode);
-            }
-
-            return projectNode;
-        }
-
         /// <summary>
         /// Updates the shared project import nodes that are shown under the 'Dependencies/Projects' node.
         /// </summary>
