@@ -21,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
+    /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
+    /// called for that node.
     /// </summary>
     [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider",
                    ProjectCapability = "DependenciesTree")]
@@ -352,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            var searchTerm = searchParameters.SearchQuery.SearchString;
+            var searchTerm = searchParameters.SearchQuery.SearchString?.ToLowerInvariant();
             if (searchTerm == null)
             {
                 return;

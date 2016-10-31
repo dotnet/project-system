@@ -29,6 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             ExpandedIcon = Icon;
+
+            Flags = (resolved ? ResolvedDependencyFlags : GenericUnresolvedDependencyFlags)
+                        .Union(flags);
         }
     }
 }
