@@ -120,9 +120,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             if (projectRestoreInfo != null)
             {
-                await _solutionRestoreService
-                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                    .ConfigureAwait(false);
+                try
+                {
+                    await _solutionRestoreService
+                        .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                        .ConfigureAwait(true);
+
+                    _projectVsServices.Project.Services.ProjectAsynchronousTasks
+                        .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(() =>_solutionRestoreService.CurrentRestoreOperation));
+                }
+                catch (OperationCanceledException) { }
             }
         }
 
