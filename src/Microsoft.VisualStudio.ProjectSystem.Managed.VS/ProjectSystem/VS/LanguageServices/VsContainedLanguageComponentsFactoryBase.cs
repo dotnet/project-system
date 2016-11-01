@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     return;
                 }
              
-                myHierarchy = (ConfiguredProjectHostObject)ProjectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+                myHierarchy = (IVsHierarchy)ProjectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
 
                 var oleServiceProvider = ServiceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
                 if (oleServiceProvider == null)
