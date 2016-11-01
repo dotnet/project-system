@@ -12,20 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// </summary>
     internal sealed class UnconfiguredProjectHostObject : AbstractHostObject, IUnconfiguredProjectHostObject
     {
-        private readonly IVsHierarchy _innerHierarchy;
         private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
         private readonly HashSet<uint> _pendingItemIds;
 
         public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
+            : base (unconfiguredProject.Services.HostObject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
-            _innerHierarchy = (IVsHierarchy)unconfiguredProject.Services.HostObject;
             _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
             _pendingItemIds = new HashSet<uint>();
         }
 
-        protected override IVsHierarchy InnerHierarchy => _innerHierarchy;
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
         public override String ActiveIntellisenseProjectDisplayName => ActiveIntellisenseProjectHostObject?.ProjectDisplayName;
         public bool DisposingConfiguredProjectHostObjects { get; set; }

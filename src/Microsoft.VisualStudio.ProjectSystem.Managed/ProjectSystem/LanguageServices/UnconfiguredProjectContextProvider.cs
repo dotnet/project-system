@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
 
-            _unconfiguredProjectHostObject = _projectHostProvider.GetUnconfiguredProjectHostObject(_commonServices.Project);
+            _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
         }
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()

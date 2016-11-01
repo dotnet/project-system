@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -14,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         [ImportingConstructor]
         public VisualBasicVsContainedLanguageComponentsFactory(SVsServiceProvider serviceProvider,
-                                                        IUnconfiguredProjectVsServices projectServices)
-            : base(serviceProvider, projectServices, VisualBasicLanguageServiceGuid)
-                                                        
+                                                        IUnconfiguredProjectVsServices projectServices,
+                                                        IProjectHostProvider projectHostProvider)
+            : base(serviceProvider, projectServices, projectHostProvider, VisualBasicLanguageServiceGuid)
         {
         }
     }

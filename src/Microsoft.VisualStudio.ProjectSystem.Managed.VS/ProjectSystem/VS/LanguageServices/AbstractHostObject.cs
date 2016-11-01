@@ -7,12 +7,22 @@ using IOLEServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
+
     /// <summary>
     /// Base type for language service host object for cross targeting projects.
     /// </summary>
-    internal abstract class AbstractHostObject : IVsHierarchy, IVsContainedLanguageProjectNameProvider
+    internal abstract class AbstractHostObject : IVsHierarchy, IVsContainedLanguageProjectNameProvider, IVsProject
     {
-        protected abstract IVsHierarchy InnerHierarchy { get; }
+        protected AbstractHostObject(object innerHostObject)
+        {
+            Requires.NotNull(innerHostObject, nameof(innerHostObject));
+
+            InnerHierarchy = (IVsHierarchy)innerHostObject;
+            InnerVsProject = (IVsProject)innerHostObject;
+        }
+
+        protected IVsHierarchy InnerHierarchy { get; }
+        protected IVsProject InnerVsProject { get; }
         public abstract string ActiveIntellisenseProjectDisplayName { get; }
 
         #region IVsHierarchy members
@@ -109,12 +119,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         #endregion
 
-        #region IVsContainedLanguageProjectNameProvider name
+        #region IVsContainedLanguageProjectNameProvider members
 
         public int GetProjectName(uint itemid, out String pbstrProjectName)
         {
             pbstrProjectName = ActiveIntellisenseProjectDisplayName;
             return VSConstants.S_OK;
+        }
+
+        #endregion
+
+        #region IVsProject members
+        public int AddItem(uint itemidLoc, VSADDITEMOPERATION dwAddItemOperation, string pszItemName, uint cFilesToOpen, string[] rgpszFilesToOpen, IntPtr hwndDlgOwner, VSADDRESULT[] pResult)
+        {
+            return InnerVsProject.AddItem(itemidLoc, dwAddItemOperation, pszItemName, cFilesToOpen, rgpszFilesToOpen, hwndDlgOwner, pResult);
+        }
+
+        public int GenerateUniqueItemName(uint itemidLoc, string pszExt, string pszSuggestedRoot, out string pbstrItemName)
+        {
+            return InnerVsProject.GenerateUniqueItemName(itemidLoc, pszExt, pszSuggestedRoot, out pbstrItemName);
+        }
+
+        public int GetItemContext(uint itemid, out IOLEServiceProvider ppSP)
+        {
+            return InnerVsProject.GetItemContext(itemid, out ppSP);
+        }
+
+        public int GetMkDocument(uint itemid, out string pbstrMkDocument)
+        {
+            return InnerVsProject.GetMkDocument(itemid, out pbstrMkDocument);
+        }
+
+        public int IsDocumentInProject(string pszMkDocument, out int pfFound, VSDOCUMENTPRIORITY[] pdwPriority, out uint pitemid)
+        {
+            return InnerVsProject.IsDocumentInProject(pszMkDocument, out pfFound, pdwPriority, out pitemid);
+        }
+
+        public int OpenItem(uint itemid, ref Guid rguidLogicalView, IntPtr punkDocDataExisting, out IVsWindowFrame ppWindowFrame)
+        {
+            return InnerVsProject.OpenItem(itemid, ref rguidLogicalView, punkDocDataExisting, out ppWindowFrame);
         }
 
         #endregion

@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly string _projectDisplayName;
 
         public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName)
+            : base (unconfiguredProjectHostObject)
         {
             Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
             Requires.NotNullOrEmpty(projectDisplayName, nameof(projectDisplayName));
@@ -24,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         public String ProjectDisplayName => _projectDisplayName;
-        protected override IVsHierarchy InnerHierarchy => _unconfiguredProjectHostObject;
         public override String ActiveIntellisenseProjectDisplayName => _unconfiguredProjectHostObject.ActiveIntellisenseProjectDisplayName;
 
         #region IVsHierarchy overrides

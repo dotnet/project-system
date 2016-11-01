@@ -10,14 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     internal sealed partial class ProjectHostProvider : IProjectHostProvider
     {
         [ImportingConstructor]
-        public ProjectHostProvider()
+        public ProjectHostProvider(UnconfiguredProject unconfiguredProject)
         {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+
+            UnconfiguredProjectHostObject = new UnconfiguredProjectHostObject(unconfiguredProject);
         }
 
-        public IUnconfiguredProjectHostObject GetUnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
-        {
-            return new UnconfiguredProjectHostObject(unconfiguredProject);
-        }
+        public IUnconfiguredProjectHostObject UnconfiguredProjectHostObject { get; }
 
         public IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, String projectDisplayName)
         {
