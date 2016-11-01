@@ -120,6 +120,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Catch ex As ArgumentException
                         ' Can happen if there is no supported TargetFrameworkMoniker
                         mtSvr = Nothing
+                    Catch ex As InvalidOperationException
+                        ' Can also happen if there is no supported TargetFrameworkMoniker, in a .NETCore project
+                        ' TODO: fix MultiTargetService to work for .NET Core apps. Tracked by https://github.com/dotnet/roslyn-project-system/issues/686
+                        mtSvr = Nothing
                     End Try
 
                     Dim ResourceFile As New ResourceFile(mtSvr, NewResourceEditorRoot, LoaderHost, BasePath)
