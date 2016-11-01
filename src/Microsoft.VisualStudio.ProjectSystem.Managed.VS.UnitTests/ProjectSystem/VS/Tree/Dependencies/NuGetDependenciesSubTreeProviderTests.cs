@@ -257,6 +257,115 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        [Theory]
+        /* 
+            Tests following scenarios:
+                - when project is loading and there no root nodes yet, if we receive both snapshots:
+                  resolved and unresolved in one event, we need to check also pending added nodes to avoid
+                  duplication.
+         */
+        [InlineData(
+@"{
+    ""ProjectChanges"": {
+        ""PackageReference"": {
+            ""After"": {
+                ""Items"": {
+                    ""package1"": {
+                        ""Version"": ""1.0.0""
+                    }
+                },
+                ""RuleName"": ""PackageReference""
+            },
+            ""Difference"": {
+                ""AddedItems"": [ ""package1"" ],
+                ""ChangedItems"": [ ],
+                ""RemovedItems"": [ ],
+                ""AnyChanges"": ""true""
+            },
+        },
+        ""ResolvedPackageReference"": {
+            ""After"": {
+                ""Items"": {
+                    ""tfm1"": {
+                        ""RuntimeIdentifier"": ""net45"",
+                        ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
+                        ""FrameworkName"": ""net45"",
+                        ""FrameworkVersion"": ""4.5"",
+                        ""Dependencies"":""package1/1.0.0""
+                    },
+                    ""tfm1/package1/1.0.0"": {
+                        ""Name"": ""package1"",
+                        ""Version"": ""1.0.0"",
+                        ""Type"":""Package"",
+                        ""Path"":""SomePath"",
+                        ""Resolved"":""true"",
+                        ""Dependencies"":""""
+                    }
+                },
+                ""RuleName"": ""ResolvedPackageReference""
+            },
+            ""Difference"": {
+                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.0"" ],
+                ""ChangedItems"": [ ],
+                ""RemovedItems"": [ ],
+                ""AnyChanges"": ""true""
+            },
+        }
+    }
+}",
+@"
+{
+    ""Nodes"": [        
+    ]  
+}",
+@"
+{
+    ""AddedNodes"": [
+        {
+            ""Id"": {
+                ""ProviderType"": ""NuGetDependency"",
+                ""ItemSpec"": ""tfm1/package1/1.0.2.0"",
+                ""ItemType"": ""PackageReference""
+            }
+        }
+    ],    
+    ""UpdatedNodes"": [
+    ],
+    ""RemovedNodes"": [
+    ]
+}")]
+        public void NuGetDependenciesSubTreeProvider_ProcessDependenciesChanges_EmptyTreeAndBothReolvedAndUnresolvedAreProvided(
+                        string projectSubscriptionUpdateJson,
+                        string existingTopLevelNodesJson,
+                        string existingDependenciesChanges)
+        {
+            // Arrange
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(projectSubscriptionUpdateJson);
+            var mockRootNode = IDependencyNodeFactory.Implement(existingTopLevelNodesJson);
+
+            var provider = new TestableNuGetDependenciesSubTreeProvider();
+            provider.SetRootNode(mockRootNode);
+
+            // Act
+            var resultDependenciesChange = provider.TestDependenciesChanged(projectSubscriptionUpdate, catalogs: null);
+
+            // Assert
+            // check that DependenciesChange returned is as expected
+            var expectedResult = DependenciesChangeFactory.FromJson(existingDependenciesChanges);
+            Assert.True(DependenciesChangeFactory.AreEqual(expectedResult, resultDependenciesChange));
+
+            // Check if all added items were added to Snapshot
+            var currentSnapshot = provider.GetCurrentSnapshotDependenciesWorld();
+            foreach (var addedNode in expectedResult.AddedNodes)
+            {
+                if (addedNode.Id.ItemSpec.Contains("/"))
+                {
+                    // if it is a resolved package 
+                    Assert.True(currentSnapshot.Any(x => x.Equals(addedNode.Id.ItemSpec, StringComparison.OrdinalIgnoreCase)));
+                }
+            }
+        }
+
         [Fact]
         public void NuGetDependenciesSubTreeProvider_CreateRootNode()
         {

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -24,14 +25,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public readonly ProjectTreeFlags ProjectSubTreeNodeFlags
                     = ProjectTreeFlags.Create("ProjectSubTreeNode");
 
-        public ProjectDependenciesSubTreeProvider()
+        [ImportingConstructor]
+        public ProjectDependenciesSubTreeProvider(UnconfiguredProject unconfiguredProject,
+                                                  IDependenciesGraphProjectContextProvider projectContextProvider)
         {
+            UnconfiguredProject = unconfiguredProject;
+            ProjectContextProvider = projectContextProvider;
+
             // subscribe to design time build to get corresponding items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ProjectReference.SchemaName);
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ResolvedProjectReference.SchemaName);
         }
+
+        private UnconfiguredProject UnconfiguredProject { get; }
+        private IDependenciesGraphProjectContextProvider ProjectContextProvider { get; set; }
 
         public override string ProviderType
         {
@@ -80,14 +89,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 IImmutableDictionary<string, string> properties = null,
                                                                 bool resolved = true)
         {
+
+            var projectPath = itemSpec;
+            if (!Path.IsPathRooted(projectPath))
+            {
+                var currentProjectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
+                projectPath = Path.GetFullPath(Path.Combine(currentProjectFolder, projectPath));
+            }
+
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,
-                                          itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType);
+                                          itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType,
+                                          uniqueToken: projectPath);
             return new ProjectDependencyNode(id,
                                              flags: ProjectSubTreeNodeFlags,
                                              priority:priority,
                                              properties: properties,
                                              resolved: resolved);
+        }
+
+        public override IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
+        {
+            if (nodeId == null)
+            {
+                return null;
+            }
+
+            // normalize id to have regular paths (graph provider replaces \ with /.
+            nodeId = nodeId.ToNormalizedId();
+            var node = RootNode.FindNode(nodeId, recursive: true);
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(nodeId.UniqueToken))
+            {
+                return node;
+            }
+
+            var projectPath = nodeId.UniqueToken;
+            var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
+            if (projectContext == null)
+            {
+                return node;
+            }
+
+            foreach (var subTreeProvider in projectContext.GetProviders())
+            {
+                if (subTreeProvider.RootNode == null || !subTreeProvider.RootNode.HasChildren)
+                {
+                    continue;
+                }
+
+                foreach(var child in subTreeProvider.RootNode.Children)
+                {
+                    node.AddChild(child);
+                }
+            }
+
+            return node;        
         }
 
         /// <summary>

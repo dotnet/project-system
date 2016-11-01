@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
@@ -527,7 +528,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 var itemContext = ProjectPropertiesContext.GetContext(UnconfiguredProject,
                                                                                       addedItem.Id.ItemType,
                                                                                       itemSpec);
-
                                 if (addedItem.Resolved)
                                 {
                                     rule = GetRuleForResolvableReference(
@@ -558,12 +558,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             ApplyProjectTreePropertiesCustomization(customTreePropertyContext, customTreePropertyValues);
 
                             treeNode = NewTree(caption: addedItem.Caption,
-                                               visible: true,
-                                               filePath: addedItem.Id.ToString(),
-                                               browseObjectProperties: rule,
-                                               flags: addedItem.Flags,
-                                               icon: addedItem.Icon.ToProjectSystemType(),
-                                               expandedIcon: addedItem.ExpandedIcon.ToProjectSystemType());
+                                                visible: true,
+                                                filePath: addedItem.Id.ToString(),
+                                                browseObjectProperties: rule,
+                                                flags: addedItem.Flags,
+                                                icon: addedItem.Icon.ToProjectSystemType(),
+                                                expandedIcon: addedItem.ExpandedIcon.ToProjectSystemType());
 
                             providerRootTreeNode = providerRootTreeNode.Add(treeNode).Parent;
                         }

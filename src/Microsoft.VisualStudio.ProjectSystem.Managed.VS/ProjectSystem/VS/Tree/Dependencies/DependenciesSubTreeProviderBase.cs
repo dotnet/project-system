@@ -244,13 +244,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                   IProjectCatalogSnapshot,
                                                                   IProjectSharedFoldersSnapshot>> e)
         {
-            var dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
-
-            // process separatelly shared projects changes
-            ProcessSharedProjectImportNodes(e.Value.Item3, dependenciesChange);
+            DependenciesChange dependenciesChange;
 
             lock (_rootNodeSync)
             {
+                dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
+
+                // process separatelly shared projects changes
+                ProcessSharedProjectImportNodes(e.Value.Item3, dependenciesChange);
+
                 // Apply dependencies changes to actual RootNode children collection
                 // remove first nodes from actual RootNode
                 dependenciesChange.RemovedNodes.ForEach(RootNode.RemoveChild);

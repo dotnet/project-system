@@ -15,10 +15,6 @@
                   DisplayName="Reference Output Assembly"
 				  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
 
-    <BoolProperty Name="Private"
-                  DisplayName="Copy Local"
-				  Description="Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference." />
-
     <BoolProperty Name="CopyLocalSatelliteAssemblies"
                   DisplayName="Copy Local Satellite Assemblies"
 				  Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />

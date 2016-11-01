@@ -393,6 +393,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
             mockProvider.RootNode = rootNode;
+            mockProvider.AddTestDependencyNodes(new[] { topNode1, topNode2, topNode3 });
             mockProvider.AddSearchResults(new[] { topNode1, topNode2, topNode3 });
 
             var mockProjectContextProvider =

@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Icon = KnownMonikers.ReferenceWarning;
             }
 
+            Priority = SdkNodePriority;
             ExpandedIcon = Icon;
         }
     }

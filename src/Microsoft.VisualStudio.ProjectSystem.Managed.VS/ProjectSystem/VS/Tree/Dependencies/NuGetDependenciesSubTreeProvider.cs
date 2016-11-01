@@ -19,12 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase
     {
-        public const int DiagnosticsNodePriority = 0; // for any custom nodes like errors or warnings
-        public const int UnresolvedReferenceNodePriority = 1;
-        public const int PackageNodePriority = 2;
-        public const int FrameworkAssemblyNodePriority = 3;
-        public const int PackageAssemblyNodePriority = 4;
-
         public const string ProviderTypeString = "NuGetDependency";
 
         public static readonly ProjectTreeFlags NuGetSubTreeRootNodeFlags
@@ -37,9 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public NuGetDependenciesSubTreeProvider()
         {
             // subscribe to design time build to get corresponding items
-
-            // For now we don't need unresolved package rules, since we can get all 
-            // info from resolved items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(PackageReference.SchemaName);
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
@@ -264,6 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // update
                 foreach (var resolvedMetadata in resolvedChanges.UpdatedNodes)
                 {
+                    // since it is an update root node must have those item specs, so we can check them
                     var itemNode = rootNodes.FirstOrDefault(
                                     x => x.Id.ItemSpec.Equals(resolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
                     if (itemNode != null)
@@ -281,6 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (var unresolvedMetadata in unresolvedChanges.UpdatedNodes)
                 {
+                    // since it is an update root node must have those item specs, so we can check them
                     var itemNode = rootNodes.FirstOrDefault(
                                     x => x.Id.ItemSpec.Equals(unresolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
                     if (itemNode != null)
@@ -322,8 +315,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (var unresolvedMetadata in unresolvedChanges.AddedNodes)
                 {
-                    var itemNode = rootNodes.FirstOrDefault(
-                                    x => x.Id.ItemSpec.Equals(unresolvedMetadata.ItemSpec, StringComparison.OrdinalIgnoreCase));
+                    var itemNode = rootNodes.FirstOrDefault(x => DoesNodeMatchByNameOrItemSpec(x, unresolvedMetadata.ItemSpec));
+                    if (itemNode == null)
+                    {
+                        // in case when unresolved come together with resolved data, root nodes might not yet have 
+                        // an unresolved node and we need to check if we did add resolved one above to avoid collision.
+                        itemNode = dependenciesChange.AddedNodes.FirstOrDefault(
+                                        x => DoesNodeMatchByNameOrItemSpec(x, unresolvedMetadata.ItemSpec));
+                    }
+
                     if (itemNode == null)
                     {
                         itemNode = CreateDependencyNode(unresolvedMetadata, topLevel: true);
@@ -333,6 +333,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return dependenciesChange;
+        }
+
+        private bool DoesNodeMatchByNameOrItemSpec(IDependencyNode node, string itemSpecToCheck)
+        {
+            bool? result = false;
+            DependencyMetadata metadata = null;
+            if (CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out metadata))
+            {
+                result = metadata?.Name?.Equals(itemSpecToCheck, StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (!result.HasValue || !result.Value)
+            {
+                result = node.Id.ItemSpec.Equals(itemSpecToCheck, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return result.Value;
         }
 
         private NugetDependenciesChange ProcessUnresolvedChanges(IProjectSubscriptionUpdate projectSubscriptionUpdate)
@@ -464,14 +481,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Thus we will display conditional PackageReferences if they were resolved and are in assets.json.
             // This limitation should go away, when we have final design for cross target dependencies and 
             // DesignTime build.
-            var currentTargetTopLevelDependencies = CurrentSnapshot.GetUniqueTopLevelDependencies();
-            if (currentTargetTopLevelDependencies.Count == 0)
+            var allTargetsDependencies = CurrentSnapshot.GetUniqueTopLevelDependencies();
+            if (allTargetsDependencies.Count == 0)
             {
                 return dependenciesChange;
             }
 
             var addedTopLevelDependencies = newDependencies.Where(
-                                                x => currentTargetTopLevelDependencies.Contains(x.ItemSpec));
+                                                x => allTargetsDependencies.Contains(x.ItemSpec));
             foreach (var addedDependency in addedTopLevelDependencies)
             {
                 dependenciesChange.AddedNodes.Add(addedDependency);
