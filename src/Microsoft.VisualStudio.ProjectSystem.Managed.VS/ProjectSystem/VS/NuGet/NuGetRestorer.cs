@@ -114,23 +114,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        private async Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
+        private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
         {
             IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1);
 
             if (projectRestoreInfo != null)
             {
-                try
-                {
-                    await _solutionRestoreService
-                        .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                        .ConfigureAwait(true);
-
-                    _projectVsServices.Project.Services.ProjectAsynchronousTasks
-                        .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(() =>_solutionRestoreService.CurrentRestoreOperation));
-                }
-                catch (OperationCanceledException) { }
+                _projectVsServices.Project.Services.ProjectAsynchronousTasks
+                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(() => _solutionRestoreService
+                            .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)),
+                            registerFaultHandler: true);
             }
+
+            return Task.CompletedTask;
         }
 
         private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
