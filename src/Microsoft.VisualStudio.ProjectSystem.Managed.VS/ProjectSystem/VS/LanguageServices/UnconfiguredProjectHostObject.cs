@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly HashSet<uint> _pendingItemIds;
 
         public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
-            : base (unconfiguredProject.Services.HostObject)
+            : base (innerHierarchy: (IVsHierarchy)unconfiguredProject.Services.HostObject, innerVsProject: (IVsProject)unconfiguredProject.Services.HostObject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 

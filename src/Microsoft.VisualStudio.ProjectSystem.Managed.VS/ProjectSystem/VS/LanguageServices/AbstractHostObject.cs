@@ -13,12 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// </summary>
     internal abstract class AbstractHostObject : IVsHierarchy, IVsContainedLanguageProjectNameProvider, IVsProject
     {
-        protected AbstractHostObject(object innerHostObject)
+        protected AbstractHostObject(IVsHierarchy innerHierarchy, IVsProject innerVsProject)
         {
-            Requires.NotNull(innerHostObject, nameof(innerHostObject));
+            Requires.NotNull(innerHierarchy, nameof(innerHierarchy));
+            Requires.NotNull(innerVsProject, nameof(innerVsProject));
 
-            InnerHierarchy = (IVsHierarchy)innerHostObject;
-            InnerVsProject = (IVsProject)innerHostObject;
+            InnerHierarchy = innerHierarchy;
+            InnerVsProject = innerVsProject;
         }
 
         protected IVsHierarchy InnerHierarchy { get; }

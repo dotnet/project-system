@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly string _projectDisplayName;
 
         public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName)
-            : base (unconfiguredProjectHostObject)
+            : base (innerHierarchy: unconfiguredProjectHostObject, innerVsProject: unconfiguredProjectHostObject)
         {
             Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
             Requires.NotNullOrEmpty(projectDisplayName, nameof(projectDisplayName));
