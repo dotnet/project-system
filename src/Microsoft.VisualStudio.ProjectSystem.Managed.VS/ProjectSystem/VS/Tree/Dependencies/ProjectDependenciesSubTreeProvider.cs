@@ -89,7 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 IImmutableDictionary<string, string> properties = null,
                                                                 bool resolved = true)
         {
-
             var projectPath = itemSpec;
             if (!Path.IsPathRooted(projectPath))
             {
@@ -101,9 +100,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                           itemSpec,
                                           itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType,
                                           uniqueToken: projectPath);
+
+            return CreateDependencyNode(id, priority, properties, resolved);
+        }
+
+        /// <summary>
+        /// Create a project dependency node given ID
+        /// </summary>
+        private IDependencyNode CreateDependencyNode(DependencyNodeId id,
+                                                     int priority,
+                                                     IImmutableDictionary<string, string> properties,
+                                                     bool resolved)
+        {
             return new ProjectDependencyNode(id,
                                              flags: ProjectSubTreeNodeFlags,
-                                             priority:priority,
+                                             priority: priority,
                                              properties: properties,
                                              resolved: resolved);
         }
@@ -135,6 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return node;
             }
 
+            node.Children.Clear();
             foreach (var subTreeProvider in projectContext.GetProviders())
             {
                 if (subTreeProvider.RootNode == null || !subTreeProvider.RootNode.HasChildren)
@@ -142,13 +154,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                foreach(var child in subTreeProvider.RootNode.Children)
+                foreach (var child in subTreeProvider.RootNode.Children)
                 {
                     node.AddChild(child);
                 }
             }
 
-            return node;        
+            // create a new instance of the node to allow graph provider to compare changes
+            var newNode = CreateDependencyNode(node.Id, node.Priority, node.Properties, node.Resolved);
+            newNode.Children.AddRange(node.Children);
+            return newNode;
         }
 
         /// <summary>

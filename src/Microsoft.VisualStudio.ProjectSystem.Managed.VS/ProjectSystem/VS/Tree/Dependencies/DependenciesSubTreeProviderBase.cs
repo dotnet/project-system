@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// The value to dispose to terminate the link providing evaluation snapshots.
         /// </summary>
-        private List<IDisposable> _evaluationSubscriptionLinks;
+        private List<IDisposable> _subscriptionLinks;
 
         /// <summary>
         /// The value to dispose to terminate the SyncLinkTo subscriptions.
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         protected override void Initialize()
         {
-            _evaluationSubscriptionLinks = new List<IDisposable>();
+            _subscriptionLinks = new List<IDisposable>();
             _projectSyncLinks = new List<IDisposable>();
 
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                             IProjectVersionedValue<
                                                                 IProjectSubscriptionUpdate>>();
 
-                            _evaluationSubscriptionLinks.Add(ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                            _subscriptionLinks.Add(ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                                 intermediateBlockDesignTime,
                                 ruleNames: UnresolvedReferenceRuleNames.Union(ResolvedReferenceRuleNames),
                                 suppressVersionOnlyUpdates: true));
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             var intermediateBlockEvaluation = new BufferBlock<
                                 IProjectVersionedValue<
                                     IProjectSubscriptionUpdate>>();
-                            _evaluationSubscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                                 intermediateBlockEvaluation,
                                 ruleNames: UnresolvedReferenceRuleNames,
                                 suppressVersionOnlyUpdates: true));
@@ -227,8 +227,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (disposing)
             {
-                _evaluationSubscriptionLinks.ForEach(x => x?.Dispose());
-                _evaluationSubscriptionLinks.Clear();
+                _subscriptionLinks.ForEach(x => x?.Dispose());
+                _subscriptionLinks.Clear();
 
                 _projectSyncLinks.ForEach(x => x?.Dispose());
                 _projectSyncLinks.Clear();

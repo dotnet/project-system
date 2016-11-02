@@ -467,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         internal async Task TrackChangesAsync(IDependenciesGraphProjectContext updatedProjectContext)
         {
-            foreach (var graphContext in ExpandedGraphContexts)
+            foreach (var graphContext in ExpandedGraphContexts.ToList())
             {
                 try
                 {
@@ -484,18 +484,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task TrackChangesOnGraphContextAsync(IGraphContext graphContext, 
                                                            IDependenciesGraphProjectContext updatedProjectContext)
         {
-            foreach (var inputGraphNode in graphContext.InputNodes)
+            foreach (var inputGraphNode in graphContext.InputNodes.ToList())
             {
-                var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
-                if (string.IsNullOrEmpty(projectPath) ||
-                    !projectPath.Equals(updatedProjectContext.ProjectFilePath, StringComparison.OrdinalIgnoreCase))
+                var existingNodeInfo = inputGraphNode.GetValue<IDependencyNode>(
+                                            DependenciesGraphSchema.DependencyNodeProperty);
+                if (existingNodeInfo == null)
                 {
                     continue;
                 }
 
-                var existingNodeInfo = inputGraphNode.GetValue<IDependencyNode>(
-                                            DependenciesGraphSchema.DependencyNodeProperty);
-                if (existingNodeInfo == null)
+                var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
+                bool shouldProcess = !string.IsNullOrEmpty(projectPath) &&
+                                     projectPath.Equals(updatedProjectContext.ProjectFilePath, StringComparison.OrdinalIgnoreCase);
+                if (!shouldProcess)
+                {
+                    shouldProcess = !string.IsNullOrEmpty(existingNodeInfo.Id.UniqueToken) &&
+                                     existingNodeInfo.Id.UniqueToken.Equals(updatedProjectContext.ProjectFilePath, 
+                                                                    StringComparison.OrdinalIgnoreCase);
+                }
+
+                if (!shouldProcess)
                 {
                     continue;
                 }
@@ -509,6 +517,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
+                // store existing children, since existingNodeInfo instance might be updated 
+                // (this is a side effect for top level nodes)
+                var existingChildren = new HashSet<IDependencyNode>(existingNodeInfo.Children);
+
                 // Get updated reference from the new snapshot
                 var updatedNodeInfo = subTreeProvider.GetDependencyNode(existingNodeInfo.Id);
                 if (updatedNodeInfo == null)
@@ -518,18 +530,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 using (var scope = new GraphTransactionScope())
                 {
+                    var comparer = new DependencyNodeResolvedStateComparer();
                     // Diff existing node children and updated node children to get whats removed
-                    var nodesToRemove = existingNodeInfo.Children.Except(updatedNodeInfo.Children);
+                    var nodesToRemove = existingChildren.Except(updatedNodeInfo.Children, comparer).ToList();
+                    // Diff updated node children and existing node children to get whats added
+                    var nodesToAdd = updatedNodeInfo.Children.Except(existingChildren, comparer).ToList();
+
                     foreach (var nodeToRemove in nodesToRemove)
                     {
                         RemoveGraphNode(graphContext, projectPath, nodeToRemove);
+                        existingNodeInfo.RemoveChild(nodeToRemove);
                     }
 
-                    // Diff updated node children and existing node children to get whats added
-                    var nodesToAdd = updatedNodeInfo.Children.Except(existingNodeInfo.Children);
                     foreach (var nodeToAdd in nodesToAdd)
                     {
                         AddGraphNode(graphContext, projectPath, subTreeProvider, inputGraphNode, nodeToAdd);
+                        existingNodeInfo.AddChild(nodeToAdd);
                     }
 
                     // Update the node info saved on the 'inputNode'

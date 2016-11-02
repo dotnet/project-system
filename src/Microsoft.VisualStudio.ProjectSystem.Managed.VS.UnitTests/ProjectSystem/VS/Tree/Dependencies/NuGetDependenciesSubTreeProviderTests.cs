@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             ""Id"": {
                 ""ProviderType"": ""NuGetDependency"",
-                ""ItemSpec"": ""tfm1/package1/1.0.2.0"",
+                ""ItemSpec"": ""tfm1/package1/1.0.0"",
                 ""ItemType"": ""PackageReference""
             }
         }
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""RemovedNodes"": [
     ]
 }")]
-        public void NuGetDependenciesSubTreeProvider_ProcessDependenciesChanges_EmptyTreeAndBothReolvedAndUnresolvedAreProvided(
+        public void NuGetDependenciesSubTreeProvider_ProcessDependenciesChanges_EmptyTreeAndBothResolvedAndUnresolvedAreProvided(
                         string projectSubscriptionUpdateJson,
                         string existingTopLevelNodesJson,
                         string existingDependenciesChanges)

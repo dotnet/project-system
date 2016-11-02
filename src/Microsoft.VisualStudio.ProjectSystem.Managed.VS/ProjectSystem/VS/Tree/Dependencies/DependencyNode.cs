@@ -10,6 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal class DependencyNode : IDependencyNode
     {
+        // These priorities are for graph nodes only and are used to group graph nodes 
+        // appropriatelly in order groups predefined order instead of alphabetically.
+        // Order is not changed for top dependency nodes only for grpah hierarchies.
         public const int DiagnosticsNodePriority = 100; // for any custom nodes like errors or warnings
         public const int UnresolvedReferenceNodePriority = 110;
         public const int ProjectNodePriority = 120;

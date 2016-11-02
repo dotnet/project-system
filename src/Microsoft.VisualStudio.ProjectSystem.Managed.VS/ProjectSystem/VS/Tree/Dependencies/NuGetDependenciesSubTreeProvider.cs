@@ -230,7 +230,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var unresolvedChanges = ProcessUnresolvedChanges(projectSubscriptionUpdate);
                 var resolvedChanges = ProcessResolvedChanges(projectSubscriptionUpdate, rootNodes);
 
-                // merge changes
+                // Logic below merges unresolved and resolved pending changes. Resolved should win if there
+                // is similar unresolved dependency. Thus 
+                //  - for pending removals, we don't care about the order and just remove whatever valid 
+                //    pending changes are there (valid=existing in the RootNode top level children)
+                //  - for pending updates, since ItemSpecs must exist (otherwise it would not be an Update pending 
+                //    change, but an Add or Remove), we first try to merge resolved pending changes, where for 
+                //    each change we try to remove similar unresolved pending Update request.
+                //  - for pending additions we need to match itemSpecs of the resolved dependencies to names of the 
+                //    unresolved, since resolved ItemSpec is "tfm/packagename/version", but unresolved is just 
+                //    "packagename". Thus to avoid same tree node name collision we need to be smart when detecting
+                //    similar resolved vs unresolved pending changes.
+                //    The algorithm is, first merge resolved changes and if there is a 
+                //          - matching unresolved item in the RootNode already, submit a removal 
+                //          - matching unresolved item in pending unresolved additions - remove it form there too
+                //    Then, process remaining unresolved changes and before mergin each of them, check if matching
+                //    name already exists in RootNode or already merged additions.
+                //  Note: if it would became too complicated with time, create a separate PackageDependencyChangesResolver
+                //  class that would hide it and make logic here simpler.
+
                 // remove
                 foreach (var metadata in unresolvedChanges.RemovedNodes)
                 {
