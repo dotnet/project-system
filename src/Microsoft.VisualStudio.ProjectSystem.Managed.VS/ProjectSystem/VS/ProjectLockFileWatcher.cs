@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
+        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
         private IVsFileChangeEx _fileChangeService;
@@ -26,16 +27,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public ProjectLockFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                                       [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
+                                      ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
                                       IProjectLockService projectLockService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
+            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
             Requires.NotNull(projectLockService, nameof(projectLockService));
 
             _serviceProvider = serviceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
+            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _projectLockService = projectLockService;
         }
 
@@ -155,17 +159,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
-            // Kick off the operation to notify the project change in a different thread irregardless of
-            // the kind of change since we are interested in all changes.
-            _projectServices.ThreadingService.Fork(async () => { 
-                using (var access = await _projectLockService.WriteLockAsync())
+            _projectServices.ThreadingService.ExecuteSynchronously(async () =>
+            {
+                // Get the configured projects for each TFM matching the current active configuration
+                var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(true);
+                foreach (var configuredProject in currentProjects)
                 {
-                    // Inside a write lock, we should get back to the same thread.
-                    var project = await access.GetProjectAsync(_projectServices.ActiveConfiguredProject).ConfigureAwait(true);
-                    project.MarkDirty();
-                    _projectServices.ActiveConfiguredProject.NotifyProjectChange();
+                    // Kick off the operation to notify the project change in a different thread irregardless of
+                    // the kind of change since we are interested in all changes.
+                    _projectServices.ThreadingService.Fork(async () =>
+                    {
+                        using (var access = await _projectLockService.WriteLockAsync())
+                        {
+                            // Inside a write lock, we should get back to the same thread.
+                            var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                            project.MarkDirty();
+                            configuredProject.NotifyProjectChange();
+                        }
+                    }, configuredProject: configuredProject);
                 }
-            }, configuredProject: _projectServices.ActiveConfiguredProject);
+            });
 
             return VSConstants.S_OK;
         }
