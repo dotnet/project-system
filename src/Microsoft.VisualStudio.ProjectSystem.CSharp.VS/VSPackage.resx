@@ -139,6 +139,6 @@
     <value>Loaded Project File Editor</value>
   </data>
   <data name="8" xml:space="preserve">
-    <value>Unmigrated .NET Core Project Files (*.xproj);*.xproj</value>
+    <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
   </data>
 </root>
