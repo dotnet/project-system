@@ -15,9 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName);
 
         /// <summary>
-        /// Creates an <see cref="IUnconfiguredProjectHostObject"/> for the given unconfigured project.
+        /// Gets an <see cref="IUnconfiguredProjectHostObject"/> for the current unconfigured project.
         /// </summary>
-        /// <param name="project">Unconfigured project.</param>
-        IUnconfiguredProjectHostObject GetUnconfiguredProjectHostObject(UnconfiguredProject project);
+        IUnconfiguredProjectHostObject UnconfiguredProjectHostObject { get; }
     }
 }
