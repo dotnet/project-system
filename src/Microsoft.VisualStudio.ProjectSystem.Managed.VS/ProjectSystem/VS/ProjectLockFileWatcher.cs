@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
-        private readonly IVsFileChangeEx _fileChangeService;
+        private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
@@ -37,13 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
             _projectLockService = projectLockService;
-            _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
         }
 
         /// <summary>
         /// Called on project load.
         /// </summary>
-        [ConfiguredProjectAutoLoad]
+        [ConfiguredProjectAutoLoad(RequiresUIThread = true)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal void Load()
         {
@@ -55,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         protected override void Initialize()
         {
+            _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
             _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(this.ProjectTree_ChangedAsync)));
         }
 
