@@ -86,10 +86,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-  </ItemGroup>
 
-  <!-- CPS Project Properties -->
-  <ItemGroup>
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
