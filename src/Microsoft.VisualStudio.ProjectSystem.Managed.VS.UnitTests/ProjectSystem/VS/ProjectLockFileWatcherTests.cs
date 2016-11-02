@@ -39,6 +39,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectLockServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(inputTree);
+            watcher.Load();
             watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(tree)));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
@@ -96,6 +97,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
                                                      IProjectLockServiceFactory.Create());
+            watcher.Load();
 
             var firstTree = ProjectTreeParser.Parse(inputTree);
             watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(firstTree)));
