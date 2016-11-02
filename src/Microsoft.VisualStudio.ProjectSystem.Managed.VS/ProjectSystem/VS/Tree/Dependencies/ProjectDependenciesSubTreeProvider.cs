@@ -119,6 +119,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              resolved: resolved);
         }
 
+        /// <summary>
+        /// Returns refreshed dependnecy node. There is a non trivial logic which is important:
+        /// in order to find node at anypoint of time, we always fill live node instance children collection,
+        /// which then could be found by recusrive search from RootNode. However we return always a new 
+        /// instance for requested node, to allow graph provider to compare old node instances to new ones
+        /// when some thing changes in the dependent project and track changes. So in 
+        /// DependenciesGrpahProvider.TrackChangesOnGraphContextAsync we always remember old children
+        /// collection for existing node, since for top level nodes (sent by CPS IProjectTree(s) we do update
+        /// them here, which would make no difference between old and new nodes. For lower hierarchies below top 
+        /// nodes, new instances solve this problem.
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
         public override IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
         {
             if (nodeId == null)
