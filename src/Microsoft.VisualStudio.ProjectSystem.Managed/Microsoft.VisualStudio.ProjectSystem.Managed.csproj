@@ -161,9 +161,30 @@
     <Compile Include="ProjectSystem\Rules\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\ConfigurationGeneralFile.cs">
+      <DependentUpon>ConfigurationGeneralFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\Content.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\DebuggerGeneral.cs">
+      <DependentUpon>DebuggerGeneral.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\DotNetCliToolReference.cs">
       <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\EmbeddedResource.cs">
+      <DependentUpon>EmbeddedResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\Folder.cs">
+      <DependentUpon>Folder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SourceControl.cs">
+      <DependentUpon>SourceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSystem\Rules\SpecialFolder.cs">
+      <DependentUpon>SpecialFolder.xaml</DependentUpon>
+    </Compile>    
     <Compile Include="ProjectSystem\Rules\SubProject.cs">
       <DependentUpon>SubProject.xaml</DependentUpon>
     </Compile>
@@ -232,11 +253,39 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Content.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Folder.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SpecialFolder.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\SubProject.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneralFile.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DebuggerGeneral.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

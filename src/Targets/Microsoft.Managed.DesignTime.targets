@@ -9,7 +9,8 @@
   <PropertyGroup>
   <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
        currently matches what is in common targets, but removes BuildWindowsDesktopTarget -->
-    <DefineCommonCapabilities>false</DefineCommonCapabilities>    
+    <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
     <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
 
     <DefineCommonManagedCapabilities Condition=" '$(DefineCommonManagedCapabilities)' == '' ">true</DefineCommonManagedCapabilities>
@@ -54,7 +55,38 @@
     <ProjectCapability Include="LanguageService" />
     <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
  </ItemGroup>
-  
+
+  <!-- Common Project System rules that override rules defined in CPS. These are exact copy of the rules defined in CPS. -->
+  <ItemGroup>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneralFile.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
+      <Context>Invisible</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Folder.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
+      <Context>File;ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
   <!-- CPS Project Properties -->
   <ItemGroup>
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
