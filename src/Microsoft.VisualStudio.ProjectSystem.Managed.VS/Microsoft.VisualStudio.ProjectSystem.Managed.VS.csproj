@@ -130,6 +130,8 @@
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeResolvedStateComparer.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependencyNodeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzerAssemblyDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\UI\DialogServices.cs" />
     <Compile Include="ProjectSystem\VS\UI\IDialogServices.cs" />

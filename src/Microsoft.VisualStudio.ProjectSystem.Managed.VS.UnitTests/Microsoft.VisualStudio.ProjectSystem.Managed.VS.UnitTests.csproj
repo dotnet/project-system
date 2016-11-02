@@ -124,6 +124,7 @@
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBaseTests.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\NuGetDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeTests.cs" />

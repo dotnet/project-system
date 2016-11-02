@@ -32,6 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Caption = id.ItemSpec;
             }
 
+            Priority = AnalyzerNodePriority;
+
             ExpandedIcon = Icon;
         }
     }

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -24,14 +25,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public readonly ProjectTreeFlags ProjectSubTreeNodeFlags
                     = ProjectTreeFlags.Create("ProjectSubTreeNode");
 
-        public ProjectDependenciesSubTreeProvider()
+        [ImportingConstructor]
+        public ProjectDependenciesSubTreeProvider(UnconfiguredProject unconfiguredProject,
+                                                  IDependenciesGraphProjectContextProvider projectContextProvider)
         {
+            UnconfiguredProject = unconfiguredProject;
+            ProjectContextProvider = projectContextProvider;
+
             // subscribe to design time build to get corresponding items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ProjectReference.SchemaName);
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ResolvedProjectReference.SchemaName);
         }
+
+        private UnconfiguredProject UnconfiguredProject { get; }
+        private IDependenciesGraphProjectContextProvider ProjectContextProvider { get; set; }
 
         public override string ProviderType
         {
@@ -80,14 +89,94 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 IImmutableDictionary<string, string> properties = null,
                                                                 bool resolved = true)
         {
+            var projectPath = itemSpec;
+            if (!Path.IsPathRooted(projectPath))
+            {
+                var currentProjectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
+                projectPath = Path.GetFullPath(Path.Combine(currentProjectFolder, projectPath));
+            }
+
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,
-                                          itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType);
+                                          itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType,
+                                          uniqueToken: projectPath);
+
+            return CreateDependencyNode(id, priority, properties, resolved);
+        }
+
+        /// <summary>
+        /// Create a project dependency node given ID
+        /// </summary>
+        private IDependencyNode CreateDependencyNode(DependencyNodeId id,
+                                                     int priority,
+                                                     IImmutableDictionary<string, string> properties,
+                                                     bool resolved)
+        {
             return new ProjectDependencyNode(id,
                                              flags: ProjectSubTreeNodeFlags,
-                                             priority:priority,
+                                             priority: priority,
                                              properties: properties,
                                              resolved: resolved);
+        }
+
+        /// <summary>
+        /// Returns refreshed dependnecy node. There is a non trivial logic which is important:
+        /// in order to find node at anypoint of time, we always fill live node instance children collection,
+        /// which then could be found by recusrive search from RootNode. However we return always a new 
+        /// instance for requested node, to allow graph provider to compare old node instances to new ones
+        /// when some thing changes in the dependent project and track changes. So in 
+        /// DependenciesGrpahProvider.TrackChangesOnGraphContextAsync we always remember old children
+        /// collection for existing node, since for top level nodes (sent by CPS IProjectTree(s) we do update
+        /// them here, which would make no difference between old and new nodes. For lower hierarchies below top 
+        /// nodes, new instances solve this problem.
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
+        public override IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
+        {
+            if (nodeId == null)
+            {
+                return null;
+            }
+
+            // normalize id to have regular paths (graph provider replaces \ with /.
+            nodeId = nodeId.ToNormalizedId();
+            var node = RootNode.FindNode(nodeId, recursive: true);
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(nodeId.UniqueToken))
+            {
+                return node;
+            }
+
+            var projectPath = nodeId.UniqueToken;
+            var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
+            if (projectContext == null)
+            {
+                return node;
+            }
+
+            node.Children.Clear();
+            foreach (var subTreeProvider in projectContext.GetProviders())
+            {
+                if (subTreeProvider.RootNode == null || !subTreeProvider.RootNode.HasChildren)
+                {
+                    continue;
+                }
+
+                foreach (var child in subTreeProvider.RootNode.Children)
+                {
+                    node.AddChild(child);
+                }
+            }
+
+            // create a new instance of the node to allow graph provider to compare changes
+            var newNode = CreateDependencyNode(node.Id, node.Priority, node.Properties, node.Resolved);
+            newNode.Children.AddRange(node.Children);
+            return newNode;
         }
 
         /// <summary>

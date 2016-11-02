@@ -45,6 +45,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
+        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", "c:/otherfolder/otherpath",
+                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;c:\otherfolder\otherpath]")]
+        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", null,
+                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;]")]
+        [InlineData("MyProviderType", null, null, null,
+                    "file:///[MyProviderType;;;]")]
+        public void DependencyNodeId_ToNormalizedId(string providerType,
+                                                   string itemSpec,
+                                                   string itemType,
+                                                   string uniqueToken,
+                                                   string expectedResult)
+        {
+            var id = new DependencyNodeId(providerType, itemSpec, itemType, uniqueToken);
+
+            Assert.Equal(expectedResult, id.ToNormalizedId().ToString());
+        }
+
+        [Theory]
         [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]",
                     "MyProviderType", "MyItemSpec", "MyItemType", "MyUniqueToken")]
         [InlineData("",

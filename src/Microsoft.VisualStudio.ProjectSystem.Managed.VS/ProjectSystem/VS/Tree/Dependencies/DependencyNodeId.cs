@@ -62,6 +62,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public string UniqueToken { get; private set; }
 
+        /// <summary>
+        /// Creates a copy if the ID that has all paths in normal form with '\' slashes instead of '/'.
+        /// Note: this is needed to switch back to normal IDs for graph nodes, since graph provider nodes
+        /// switch paths in their IDs to uri style with '/'.
+        /// </summary>
+        /// <returns></returns>
+        public DependencyNodeId ToNormalizedId()
+        {
+            return new DependencyNodeId(ProviderType,
+                                        ItemSpec?.Replace('/', '\\'),
+                                        ItemType,
+                                        UniqueToken?.Replace('/', '\\'));
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();

@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Caption = Path.GetFileName(id.ItemSpec);
             }
 
+            Priority = ComNodePriority;
             ExpandedIcon = Icon;
         }
     }
