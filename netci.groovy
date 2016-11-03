@@ -8,7 +8,7 @@ def branch = GithubBranchName
 // Generate the builds for debug and release, commit and PRJob
 [true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
     ['Debug', 'Release'].each { configuration ->
-        
+
         def newJobName = Utilities.getFullJobName(project, "windows_${configuration.toLowerCase()}", isPR)
 
         def newJob = job(newJobName) {
@@ -25,7 +25,12 @@ build.cmd /${configuration.toLowerCase()}""")
             }
         }
 
-        Utilities.addArchival(newJob, "bin/**/*" /* filesToArchive */, "bin/obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
+        def archiveSettings = new ArchivalSettings()
+        archiveSettings.addFiles("bin/**/*")
+        archiveSettings.excludeFiles("bin/obj/*")
+        archiveSettings.setFailIfNothingArchived()
+        archiveSettings.setArchiveOnFailure()
+        Utilities.addArchival(newJob, archiveSettings)
         Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-preview5')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
