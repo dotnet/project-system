@@ -138,4 +138,7 @@
   <data name="7" xml:space="preserve">
     <value>Loaded Project File Editor</value>
   </data>
+  <data name="8" xml:space="preserve">
+    <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
+  </data>
 </root>
