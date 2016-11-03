@@ -451,7 +451,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate -s -p &quot;{1}&quot; -x &quot;{2}&quot;&apos; exited with error code {3}..
+        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate --skip-backup -s -p &quot;{1}&quot; -x &quot;{2}&quot;&apos; exited with error code {3}..
         /// </summary>
         internal static string XprojMigrationFailed {
             get {

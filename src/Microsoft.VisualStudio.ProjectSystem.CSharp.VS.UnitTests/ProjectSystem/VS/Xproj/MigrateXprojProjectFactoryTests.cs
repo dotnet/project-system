@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
                 Project = "XprojMigrationTests",
                 File = XprojLocation,
-                Message = $"Failed to migrate XProj project XprojMigrationTests. 'dotnet migrate -s -p \"{RootLocation}\" -x \"{XprojLocation}\"' exited with error code {VSConstants.E_FAIL}."
+                Message = $"Failed to migrate XProj project XprojMigrationTests. 'dotnet migrate --skip-backup -s -p \"{RootLocation}\" -x \"{XprojLocation}\"' exited with error code {VSConstants.E_FAIL}."
             }, loggedMessages[0]);
         }
 
@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private void ProcessVerifier(ProcessStartInfo info)
         {
             Assert.Equal("dotnet.exe", info.FileName);
-            Assert.Equal($"migrate -s -x \"{XprojLocation}\" \"{RootLocation}\"", info.Arguments);
+            Assert.Equal($"migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\"", info.Arguments);
             Assert.True(info.EnvironmentVariables.ContainsKey("DOTNET_SKIP_FIRST_TIME_EXPERIENCE"));
             Assert.Equal("true", info.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"]);
         }
