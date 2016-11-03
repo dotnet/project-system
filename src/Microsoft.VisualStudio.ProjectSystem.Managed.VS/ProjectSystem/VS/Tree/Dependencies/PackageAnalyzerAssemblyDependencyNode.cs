@@ -19,9 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Caption = caption;
             Icon = resolved ? KnownMonikers.CodeInformation : KnownMonikers.ReferenceWarning;
             ExpandedIcon = Icon;
+            // we explicitly want analyzers have same priority as assemblies
             Priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
-                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+                            ? PackageAssemblyNodePriority
+                            : UnresolvedReferenceNodePriority;
 
             Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)
                         .Add(ProjectTreeFlags.Common.ResolvedReference)

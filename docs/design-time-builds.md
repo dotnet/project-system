@@ -52,6 +52,8 @@ Use the `DesignTimeBuild` property to differentiate between when a target is run
      ...
   </Target>
 ```
+
+__NOTE:__ The DesignTimeBuild property is typically empty ('') inside of a normal build, so avoid comparisons to `false`.
  
 ### Specifying explicit dependencies
 
@@ -80,9 +82,10 @@ You can force Visual Studio to show the results of a design-time build using the
 
 1. Delete the `.vs` directory that sits alongside the solution that is experiencing the problem
 2. Start a Developer Command Prompt for VS2015
-3. At the prompt, run `SET TRACEDESIGNTIME=true && devenv`
-4. Open the solution
-5. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
+3. At the prompt, run `SET TRACEDESIGNTIME=true`
+4. At the prompt, run 'devenv'
+5. Open the solution
+6. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
 
 #### Visual Studio "15"
 

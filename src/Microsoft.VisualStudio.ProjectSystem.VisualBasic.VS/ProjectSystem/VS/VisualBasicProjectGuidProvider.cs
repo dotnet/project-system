@@ -7,12 +7,11 @@ using Microsoft.VisualStudio.Packaging;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/> and <see cref="IAddItemTemplatesGuidProvider"/>.
+    ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/>.
     /// </summary>
     [Export(typeof(IItemTypeGuidProvider))]
-    [Export(typeof(IAddItemTemplatesGuidProvider))]
     [AppliesTo(ProjectCapabilities.VB)]
-    internal class VisualBasicProjectGuidProvider : IItemTypeGuidProvider, IAddItemTemplatesGuidProvider
+    internal class VisualBasicProjectGuidProvider : IItemTypeGuidProvider
     {
         private static readonly Guid s_visualBasicProjectType = new Guid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid);
 
@@ -23,11 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public Guid ProjectTypeGuid
-        {
-            get { return s_visualBasicProjectType; }
-        }
-
-        public Guid AddItemTemplatesGuid
         {
             get { return s_visualBasicProjectType; }
         }

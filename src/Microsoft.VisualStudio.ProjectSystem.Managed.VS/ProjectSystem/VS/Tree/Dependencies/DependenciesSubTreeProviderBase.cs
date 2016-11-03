@@ -42,12 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// The value to dispose to terminate the link providing evaluation snapshots.
         /// </summary>
-        private IDisposable _projectSubscriptionLink;
+        private List<IDisposable> _subscriptionLinks;
 
         /// <summary>
-        /// The value to dispose to terminate the SyncLinkTo subscription.
+        /// The value to dispose to terminate the SyncLinkTo subscriptions.
         /// </summary>
-        private IDisposable _projectSyncLink;
+        private List<IDisposable> _projectSyncLinks;
+
+        private object _rootNodeSync = new object();
 
         /// <summary>
         /// Gets the project asynchronous tasks service.
@@ -148,6 +150,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         protected override void Initialize()
         {
+            _subscriptionLinks = new List<IDisposable>();
+            _projectSyncLinks = new List<IDisposable>();
+
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
             {
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
@@ -164,14 +169,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             Verify.NotDisposed(this);
 
-                            var intermediateBlock = new BufferBlock<
+                            var intermediateBlockDesignTime = new BufferBlock<
                                                             IProjectVersionedValue<
                                                                 IProjectSubscriptionUpdate>>();
 
-                            _projectSubscriptionLink = ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                                intermediateBlock,
+                            _subscriptionLinks.Add(ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                                intermediateBlockDesignTime,
                                 ruleNames: UnresolvedReferenceRuleNames.Union(ResolvedReferenceRuleNames),
-                                suppressVersionOnlyUpdates: false);
+                                suppressVersionOnlyUpdates: true));
 
                             var actionBlock = new ActionBlock<
                                                     IProjectVersionedValue<
@@ -189,17 +194,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                        NameFormat = "ReferencesSubtree Input: {1}"
                                                    });
 
-                            _projectSyncLink = ProjectDataSources.SyncLinkTo(
-                                intermediateBlock.SyncLinkOptions(),
+                            _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
+                                intermediateBlockDesignTime.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock);
+                                actionBlock));
+
+                            var intermediateBlockEvaluation = new BufferBlock<
+                                IProjectVersionedValue<
+                                    IProjectSubscriptionUpdate>>();
+                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                                intermediateBlockEvaluation,
+                                ruleNames: UnresolvedReferenceRuleNames,
+                                suppressVersionOnlyUpdates: true));
+
+                            _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
+                                intermediateBlockEvaluation.SyncLinkOptions(),
+                                ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                                ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
+                                actionBlock));
+
                         }
                     },
                     registerFaultHandler: true);
             }
         }
-
 
         /// <summary>
         /// Disposes this instance.
@@ -208,8 +227,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (disposing)
             {
-                _projectSubscriptionLink?.Dispose();
-                _projectSyncLink?.Dispose();
+                _subscriptionLinks.ForEach(x => x?.Dispose());
+                _subscriptionLinks.Clear();
+
+                _projectSyncLinks.ForEach(x => x?.Dispose());
+                _projectSyncLinks.Clear();
             }
         }
 
@@ -222,18 +244,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                   IProjectCatalogSnapshot,
                                                                   IProjectSharedFoldersSnapshot>> e)
         {
-            var dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
+            DependenciesChange dependenciesChange;
 
-            // process separatelly shared projects changes
-            ProcessSharedProjectImportNodes(e.Value.Item3, dependenciesChange);
+            lock (_rootNodeSync)
+            {
+                dependenciesChange = ProcessDependenciesChanges(e.Value.Item1, e.Value.Item2);
 
-            // Apply dependencies changes to actual RootNode children collection
-            // remove first nodes from actual RootNode
-            dependenciesChange.RemovedNodes.ForEach(RootNode.RemoveChild);
+                // process separatelly shared projects changes
+                ProcessSharedProjectImportNodes(e.Value.Item3, dependenciesChange);
 
-            ProcessDuplicatedNodes(dependenciesChange);
+                // Apply dependencies changes to actual RootNode children collection
+                // remove first nodes from actual RootNode
+                dependenciesChange.RemovedNodes.ForEach(RootNode.RemoveChild);
 
-            dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
+                ProcessDuplicatedNodes(dependenciesChange);
+
+                dependenciesChange.UpdatedNodes.ForEach((topLevelNode) =>
+                {
+                    var oldNode = RootNode.Children.FirstOrDefault(x => x.Id.Equals(topLevelNode.Id));
+                    if (oldNode != null)
+                    {
+                        RootNode.RemoveChild(oldNode);
+                        RootNode.AddChild(topLevelNode);
+                    }
+                });
+
+                dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
+            }
 
             OnDependenciesChanged(dependenciesChange.GetDiff(), e);
         }
@@ -255,11 +292,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                     IProjectCatalogSnapshot catalogs)
         {
             var changes = projectSubscriptionUpdate.ProjectChanges;
-            var resolvedReferenceChanges = ResolvedReferenceRuleNames.Select(ruleName => changes[ruleName])
-                                                                     .ToImmutableHashSet();
-            IProjectRuleSnapshot[] resolvedReferences = resolvedReferenceChanges.Select(c => c.After)
-                                                                                .ToArray();
-
+            var resolvedReferenceChanges =
+                ResolvedReferenceRuleNames.Where(x => changes.Keys.Contains(x))
+                                          .Select(ruleName => changes[ruleName]).ToImmutableHashSet();
+                
             var unresolvedReferenceSnapshots = changes.Values
                 .Where(cd => !ResolvedReferenceRuleNames.Any(ruleName =>
                                 string.Equals(ruleName,
@@ -267,6 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                               StringComparison.OrdinalIgnoreCase)))
                 .ToDictionary(d => d.After.RuleName, d => d, StringComparer.OrdinalIgnoreCase);
 
+            var rootTreeNodes = new HashSet<IDependencyNode>(RootNode.Children);
             var dependenciesChange = new DependenciesChange();
             foreach (var unresolvedChange in unresolvedReferenceSnapshots.Values)
             {
@@ -286,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (string removedItemSpec in unresolvedChange.Difference.RemovedItems)
                 {
-                    var node = RootNode.Children.FindNode(removedItemSpec, itemType);
+                    var node = rootTreeNodes.FindNode(removedItemSpec, itemType);
                     if (node != null)
                     {
                         dependenciesChange.RemovedNodes.Add(node);
@@ -295,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (string addedItemSpec in unresolvedChange.Difference.AddedItems)
                 {
-                    var node = RootNode.Children.FindNode(addedItemSpec, itemType);
+                    var node = rootTreeNodes.FindNode(addedItemSpec, itemType);
                     if (node == null)
                     {
                         var properties = GetProjectItemProperties(unresolvedChange.After, addedItemSpec);
@@ -332,7 +369,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                             updatedUnresolvedSnapshots,
                                                                             catalogs,
                                                                             out unresolvedReferenceSnapshot);
-                    var node = RootNode.Children.FindNode(removedItemSpec, unresolvedItemType);
+                    var node = rootTreeNodes.FindNode(removedItemSpec, unresolvedItemType);
                     if (node != null)
                     {
                         dependenciesChange.RemovedNodes.Add(node);
@@ -375,17 +412,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
+                    // avoid adding unresolved dependency along with resolved one 
                     var existingUnresolvedNode = dependenciesChange.AddedNodes.FindNode(originalItemSpec, itemType);
                     if (existingUnresolvedNode != null)
                     {
-                        // delete existing unresolved item node
                         dependenciesChange.AddedNodes.Remove(existingUnresolvedNode);
                     }
 
-                    var node = CreateDependencyNode(originalItemSpec,
+                    // if unresolved dependency was added earlier, remove it, since it will be substituted by resolved one
+                    existingUnresolvedNode = rootTreeNodes.FindNode(originalItemSpec, itemType);
+                    if (existingUnresolvedNode != null)
+                    {
+                        dependenciesChange.RemovedNodes.Add(existingUnresolvedNode);
+                    }
+
+                    var newNode = CreateDependencyNode(originalItemSpec,
                                                     itemType: itemType,
                                                     properties: properties);
-                    dependenciesChange.AddedNodes.Add(node);
+                    dependenciesChange.AddedNodes.Add(newNode);
                 }
             }
 
@@ -496,18 +540,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return null;
         }
 
-        protected void OnDependenciesChanged(IDependenciesChangeDiff changes, 
+        protected void OnDependenciesChanged(IDependenciesChangeDiff changes,
                                              IProjectVersionedValue<
                                                 Tuple<IProjectSubscriptionUpdate,
                                                         IProjectCatalogSnapshot,
                                                         IProjectSharedFoldersSnapshot>> e)
         {
-            DependenciesChanged(this, 
+            DependenciesChanged(this,
                                 new DependenciesChangedEventArgs(
-                                        this, 
-                                        changes, 
-                                        e.Value.Item2, 
-                                        e.DataSourceVersions));
+                                        this,
+                                        changes,
+                                        e?.Value?.Item2,
+                                        e?.DataSourceVersions));
         }
 
         /// <summary>

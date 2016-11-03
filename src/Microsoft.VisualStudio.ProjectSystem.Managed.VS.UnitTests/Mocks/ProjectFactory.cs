@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using EnvDTE;
+using EnvDTE80;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace EnvDTE
 {
     internal static class ProjectFactory
     {
@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.Mocks
             return Mock.Of<Project>();
         }
 
-        public static Project CreateWithSolution(Solution solution)
+        public static Project CreateWithSolution(Solution2 solution)
         {
             var mock = new Mock<Project>();
 
-            mock.SetupGet(p => p.DTE.Solution).Returns(solution);
+            mock.SetupGet(p => p.DTE.Solution).Returns((Solution)solution);
 
             return mock.Object;
         }

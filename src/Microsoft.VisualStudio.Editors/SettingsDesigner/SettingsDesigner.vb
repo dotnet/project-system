@@ -360,11 +360,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             For Each BuildConfiguration As EnvDTE.Configuration In project.ConfigurationManager
                 Try
                     '
-                    ' Add all combinations of under VSHost/not under VSHost/Roaming/Local User paths...
+                    ' Add all combinations of Roaming/Local User paths...
                     '
 
                     Dim path As String
-                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoaming, True, BuildConfiguration)
+                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoaming, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
                         path = System.IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...
@@ -373,25 +373,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                     End If
 
-                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoaming, False, BuildConfiguration)
-                    If path IsNot Nothing Then
-                        path = System.IO.Path.GetDirectoryName(path)
-                        ' Make sure we only add the path once...
-                        If Not result.Contains(path) Then
-                            result.Add(path)
-                        End If
-                    End If
-
-                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal, True, BuildConfiguration)
-                    If path IsNot Nothing Then
-                        path = System.IO.Path.GetDirectoryName(path)
-                        ' Make sure we only add the path once...
-                        If Not result.Contains(path) Then
-                            result.Add(path)
-                        End If
-                    End If
-
-                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal, False, BuildConfiguration)
+                    path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
                         path = System.IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...

@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Moq;
+using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -11,6 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null)
         {
             var mock = new Mock<IProjectTreeProvider>();
+
+            var mockTree = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>>>();
+            mock.SetupGet(t => t.Tree)
+                .Returns(mockTree);
 
             mock.Setup(t => t.GetPath(It.IsAny<IProjectTree>()))
                 .Returns<IProjectTree>(tree => tree.FilePath);

@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Icon = resolved ? KnownMonikers.PackageReference : KnownMonikers.ReferenceWarning;
             ExpandedIcon = Icon;
             Priority = resolved 
-                            ? NuGetDependenciesSubTreeProvider.PackageNodePriority 
-                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+                            ? PackageNodePriority 
+                            : UnresolvedReferenceNodePriority;
 
             Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)
                         .Add(ProjectTreeFlags.Common.ResolvedReference)

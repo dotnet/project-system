@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      ProjectTreeFlags flags,
                                      IImmutableDictionary<string, string> properties = null,
                                      bool resolved = true)
-            : base(id, flags, NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority, 
+            : base(id, flags, UnresolvedReferenceNodePriority, 
                    properties, resolved)
         {
             Requires.NotNullOrEmpty(caption, nameof(caption));

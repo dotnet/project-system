@@ -75,8 +75,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public async Task RenameAsync(Project project) =>
-            await (GetStrategy()?.RenameAsync(project, _oldFilePath, _newFilePath) ?? Task.CompletedTask).ConfigureAwait(false);
+        public Task RenameAsync(Project project)
+        {
+            return GetStrategy()?.RenameAsync(project, _oldFilePath, _newFilePath) ?? Task.CompletedTask;
+        }
 
         private IRenameStrategy GetStrategy()
         {

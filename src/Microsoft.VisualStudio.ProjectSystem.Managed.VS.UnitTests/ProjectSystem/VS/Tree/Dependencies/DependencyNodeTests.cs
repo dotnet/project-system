@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             string expectedCaption)
         {
             // Arrange
-            var priority = 3;
+            var priority = DependencyNode.FrameworkAssemblyNodePriority;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             string fusionName)
         {
             // Arrange
-            var priority = 3;
+            var priority = DependencyNode.FrameworkAssemblyNodePriority;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     string expectedCaption)
         {
             // Arrange
-            var priority = 3;
+            var priority = DependencyNode.AnalyzerNodePriority;
             var id = DependencyNodeId.FromString(
                         $"file:///[AnalyzerDependency;{itemSpec};Analyzer;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var expectedIcon = resolved
                 ? KnownMonikers.Component
                 : KnownMonikers.ReferenceWarning;
-            var priority = 3;
+            var priority = DependencyNode.ComNodePriority;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var expectedIcon = resolved
                 ? KnownMonikers.BrowserSDK
                 : KnownMonikers.ReferenceWarning;
-            var priority = 3;
+            var priority = DependencyNode.SdkNodePriority;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -455,8 +455,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 .Add(ProjectTreeFlags.Common.ResolvedReference);
 
             var priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
-                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+                            ? DependencyNode.PackageAssemblyNodePriority
+                            : DependencyNode.UnresolvedReferenceNodePriority;
 
             var caption = "MyCaption";
             var id = DependencyNodeId.FromString(
@@ -508,8 +508,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 .Add(ProjectTreeFlags.Common.ResolvedReference);
 
             var priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.PackageAssemblyNodePriority
-                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+                            ? DependencyNode.PackageAssemblyNodePriority
+                            : DependencyNode.UnresolvedReferenceNodePriority;
 
             var caption = "MyCaption";
             var id = DependencyNodeId.FromString(
@@ -561,8 +561,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 .Add(ProjectTreeFlags.Common.ResolvedReference);
 
             var priority = resolved
-                            ? NuGetDependenciesSubTreeProvider.PackageNodePriority
-                            : NuGetDependenciesSubTreeProvider.UnresolvedReferenceNodePriority;
+                            ? DependencyNode.PackageNodePriority
+                            : DependencyNode.UnresolvedReferenceNodePriority;
 
             var caption = "MyCaption";
             var id = DependencyNodeId.FromString(

@@ -8,7 +8,7 @@ def branch = GithubBranchName
 // Generate the builds for debug and release, commit and PRJob
 [true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
     ['Debug', 'Release'].each { configuration ->
-          
+                               
         def newJobName = Utilities.getFullJobName(project, "windows_${configuration.toLowerCase()}", isPR)
 
         def newJob = job(newJobName) {
@@ -17,12 +17,21 @@ def branch = GithubBranchName
                 // Indicates that a batch script should be run with the build string (see above)
                 // Also available is:
                 // shell (for unix scripting)
-                batchFile("build.cmd /${configuration.toLowerCase()}")
+                batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+
+build.cmd /${configuration.toLowerCase()}""")
             }
         }
 
-        Utilities.addArchival(newJob, "bin/**/*" /* filesToArchive */, "bin/obj/**" /* filesToExclude */, true /* doNotFailIfNothingArchived */ , false /* archiveOnlyIfSuccessful */)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15')
+        def archiveSettings = new ArchivalSettings()
+        archiveSettings.addFiles("bin/**/*")
+        archiveSettings.excludeFiles("bin/obj/*")
+        archiveSettings.setFailIfNothingArchived()
+        archiveSettings.setArchiveOnFailure()
+        Utilities.addArchival(newJob, archiveSettings)
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-preview5')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
@@ -44,12 +53,19 @@ def newVsiJob = job(newVsiJobName) {
 
     // This opens the set of build steps that will be run.
     steps {
-        // Build roslyn-project-system repo.
-        batchFile("build.cmd /release")
+        // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
 
-        // git clone roslyn-internal to build and run VSI tao tests.
-        batchFile("""git clone https://github.com/dotnet/roslyn-internal.git
-pushd roslyn-internal
+build.cmd /release""")
+
+        // Build roslyn-internal and run netcore VSI tao tests.
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+
+pushd %WORKSPACE%\\roslyn-internal
 git submodule init
 git submodule sync
 git submodule update --init --recursive
@@ -58,7 +74,7 @@ set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-BuildAndTest.cmd -build:true -clean:false -deployExtensions:false -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -dependencies:true -samples:false -devDivInsertionFiles:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
+BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -dependencies:true -samples:false -devDivInsertionFiles:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
 popd""")
     }
 }
@@ -75,13 +91,44 @@ static void addVsiArchive(def myJob) {
   archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Obj/**')
   archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Bootstrap/**')
 
+  archiveSettings.setArchiveOnFailure()
+  archiveSettings.setFailIfNothingArchived()
   Utilities.addArchival(myJob, archiveSettings)
 }
 
-addVsiArchive(newVsiJob)
+// ISSUE: Temporary until a full builder for multi-scm source control is available.
+// Replace the scm settings with a multiScm setup.  Note that this will not work for PR jobs
+static void addVsiMultiScm(def myJob, def project) {
+    myJob.with {
+        multiscm {
+            git {
+                remote {
+                    // Use the input project
+                    github(project)
+                }
+                // Pull from the desired branch input branch passed as a parameter (set up by standardJobSetup)
+                branch('${GitBranchOrCommit}')
+            }
+            git {
+                remote {
+                    url('https://github.com/dotnet/roslyn-internal')
+                    credentials('efd43e00-50a0-4247-8664-15f7fac9713d')
+                }
+                relativeTargetDir('roslyn-internal')
+                // roslyn-internal - pull in a specific LKG commit from master.
+                // In future, '*/master' can be placed here to pull latest sources.
+                branch('8b317590243b3d567687a4204833fe3631970a9d')
+            }
+        }
+    }
+}
+// END ISSUE
 
+addVsiArchive(newVsiJob)
 // For now, trigger VSI jobs only on explicit request.
 Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
+// ISSUE: Temporary until a full builder for source control is available.
+addVsiMultiScm(newVsiJob, project)
 Utilities.addGithubPushTrigger(newVsiJob)
 Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
 

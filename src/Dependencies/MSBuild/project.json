@@ -1,7 +1,11 @@
 {
   "supports": { },
   "dependencies": {
-     "RoslynDependencies.Microsoft.Build.Desktop": "15.0.25302", 
+     "Microsoft.Build": "15.1.262-preview5",
+	 "Microsoft.Build.Framework": "15.1.262-preview5",
+	 "Microsoft.Build.Utilities.Core": "15.1.262-preview5",
+	 "Microsoft.Build.Tasks.Core": "15.1.262-preview5",
+	 "Microsoft.Build.Engine": "15.1.262-preview5",
   },
   "frameworks": {
     ".NETFramework,Version=v4.6": { }

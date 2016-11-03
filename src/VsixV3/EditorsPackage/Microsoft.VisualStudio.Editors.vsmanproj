@@ -10,6 +10,8 @@
     <OutputPath>$(OutDir)\VsixV3</OutputPath>
     <IsPackage>true</IsPackage>
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
+    <FinalizeValidate>false</FinalizeValidate>
+    <ValidateManifest>false</ValidateManifest>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
@@ -22,4 +24,6 @@
   <ItemGroup>
     <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.Editors.json" />
   </ItemGroup>
+
+  <Target Name="ValidateManifest" />
 </Project>

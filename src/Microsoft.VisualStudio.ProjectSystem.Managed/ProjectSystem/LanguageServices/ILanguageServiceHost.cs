@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -20,6 +19,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Within a Visual Studio host, this is typically an object implementing IVsLanguageServiceBuildErrorReporter2.
         /// </remarks>
         object HostSpecificErrorReporter
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the active workspace project context that provides access to the language service for the active configured project.
+        /// </summary>
+        /// <value>
+        ///     An <see cref="IWorkspaceProjectContext"/> that provides access to the language service for the active configured project.
+        /// </value>
+        IWorkspaceProjectContext ActiveProjectContext
         {
             get;
         }

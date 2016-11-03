@@ -44,6 +44,8 @@
     <Compile Include="Packaging\CSharpProjectSystemPackage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\EditCsprojCommand.cs" />
+    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPage.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProvider.cs" />
     <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProvider.cs" />
@@ -52,7 +54,8 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProvider.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectGuidProvider.cs" />
-    <Compile Include="ProjectSystem\VS\XprojProjectFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\ProcessRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

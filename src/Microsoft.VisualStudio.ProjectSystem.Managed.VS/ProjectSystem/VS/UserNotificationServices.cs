@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -25,12 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public bool Confirm(string message)
         {
             _threadingService.VerifyOnUIThread();
-
-            var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
-                         OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            if (result == (int)VSConstants.MessageBoxResult.IDNO)
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
             {
-                return false;
+                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
+                             OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                if (result == (int)VSConstants.MessageBoxResult.IDNO)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -38,9 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void NotifyFailure(string failureMessage)
         {
             _threadingService.VerifyOnUIThread();
-
-            var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
+            {
+                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
         }
 
         /// <summary>
@@ -54,6 +59,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
 
             var result = vsUIShell.ReportErrorInfo(hr);
+        }
+
+        /// <summary>
+        /// It is the responsibility of caller to call this method on UI Thread.
+        /// The method will throw if not called on UI Thread.
+        /// </summary>
+        public int ShowMessageBox(string message, string title, OLEMSGICON icon, OLEMSGBUTTON msgButton, OLEMSGDEFBUTTON defaultButton)
+        {
+            _threadingService.VerifyOnUIThread();
+
+            if (_serviceProvider == null)
+            {
+                throw new ArgumentException("serviceProvider");
+            }
+
+            IVsUIShell uiShell = _serviceProvider.GetService(typeof(IVsUIShell)) as IVsUIShell;
+            if (uiShell == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Guid emptyGuid = Guid.Empty;
+            int result = 0;
+            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
+            {
+                ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0,
+                ref emptyGuid,
+                title,
+                message,
+                null,
+                0,
+                msgButton,
+                defaultButton,
+                icon,
+                0,
+                out result));
+            }
+            return result;
         }
     }
 }

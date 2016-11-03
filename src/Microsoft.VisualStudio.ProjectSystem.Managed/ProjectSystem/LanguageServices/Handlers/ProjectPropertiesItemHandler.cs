@@ -12,37 +12,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(ILanguageServiceRuleHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class ProjectPropertiesItemHandler : ILanguageServiceRuleHandler
+    internal class ProjectPropertiesItemHandler : AbstractLanguageServiceRuleHandler
     {
-        private readonly UnconfiguredProject _project;
-        private IWorkspaceProjectContext _context;
-
         [ImportingConstructor]
-        public ProjectPropertiesItemHandler(UnconfiguredProject project)
+        public ProjectPropertiesItemHandler()
         {
-            Requires.NotNull(project, nameof(project));
-
-            _project = project;            
         }
 
-        public RuleHandlerType HandlerType
+        public override RuleHandlerType HandlerType
         {
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public string RuleName
+        public override string RuleName
         {
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public void SetContext(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _context = context;
-        }
-
-        public Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange)
+        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -52,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 Guid result;
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out result))
                 {
-                    _context.Guid = result;
+                    context.Guid = result;
                 }
             }
 
@@ -60,12 +47,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // so that it can automatically hook up project-to-project references. It does this by matching the 
             // bin output path with the another project's /reference argument, if they match, then it automatically 
             // introduces a project reference between the two. We pass the intermediate path via the /out 
-            // command-line argument and set via one of the other handlers, where as the latter is calculate via 
+            // command-line argument and set via one of the other handlers, where as the latter is calculated via 
             // the TargetPath property and explictly set on the context.
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetPathProperty))
             {
-                _context.BinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
+                var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
+                if (!string.IsNullOrEmpty(newBinOutputPath))
+                {
+                    context.BinOutputPath = newBinOutputPath;
+                }
             }
 
             return Task.CompletedTask;

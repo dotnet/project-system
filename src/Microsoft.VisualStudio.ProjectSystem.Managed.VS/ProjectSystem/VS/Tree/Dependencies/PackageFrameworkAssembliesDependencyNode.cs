@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Caption = VSResources.FrameworkAssembliesNodeName;
             Icon = KnownMonikers.Library;
             ExpandedIcon = Icon;
-            Priority = NuGetDependenciesSubTreeProvider.FrameworkAssemblyNodePriority;
+            Priority = FrameworkAssemblyNodePriority;
 
             // Note: PreFilledFolderNode flag suggests graph provider to assume that this node already 
             // has children added to it, so it can create graph nodes right away and not query them.

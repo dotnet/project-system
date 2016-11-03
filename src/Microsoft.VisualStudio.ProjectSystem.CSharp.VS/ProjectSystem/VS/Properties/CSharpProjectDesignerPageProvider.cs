@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                     CSharpProjectDesignerPage.Application,
                     CSharpProjectDesignerPage.Build,
                     CSharpProjectDesignerPage.BuildEvents,
+                    CSharpProjectDesignerPage.Debug,
                     CSharpProjectDesignerPage.ReferencePaths,
                     CSharpProjectDesignerPage.Signing,
             });

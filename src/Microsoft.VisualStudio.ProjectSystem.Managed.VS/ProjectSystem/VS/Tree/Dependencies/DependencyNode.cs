@@ -10,6 +10,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal class DependencyNode : IDependencyNode
     {
+        // These priorities are for graph nodes only and are used to group graph nodes 
+        // appropriatelly in order groups predefined order instead of alphabetically.
+        // Order is not changed for top dependency nodes only for grpah hierarchies.
+        public const int DiagnosticsNodePriority = 100; // for any custom nodes like errors or warnings
+        public const int UnresolvedReferenceNodePriority = 110;
+        public const int ProjectNodePriority = 120;
+        public const int PackageNodePriority = 130;
+        public const int FrameworkAssemblyNodePriority = 140;
+        public const int PackageAssemblyNodePriority = 150;
+        public const int AnalyzerNodePriority = 160;
+        public const int ComNodePriority = 170;
+        public const int SdkNodePriority = 180;
+        
         /// <summary>
         /// The set of flags common to all Reference nodes.
         /// </summary>
@@ -18,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// The set of flags to assign to unresolvable Reference nodes.
+        /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
+        /// called for that node.
         /// </summary>
         private static readonly ProjectTreeFlags UnresolvedReferenceFlags
                 = BaseReferenceFlags.Add(ProjectTreeFlags.Common.BrokenReference);

@@ -15,6 +15,8 @@ if /I "%1" == "/?" call :Usage && exit /b 1
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
 if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
+if /I "%1" == "/restore" set MSBuildTarget=RestorePackages&&shift&& goto :ParseArguments
+if /I "%1" == "/modernvsixonly" set MSBuildTarget=BuildModernVsixPackages&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
@@ -57,8 +59,10 @@ echo.
 echo   /debug             Perform debug build (default)
 echo   /release           Perform release build
 echo   /rebuild           Perform a clean, then build
+echo   /restore           Only restore nuget packages
 echo   /no-node-reuse     Run msbuild with /nodeReuse=false, which affects performance
 echo   /no-multi-proc     No multi-proc build, useful for diagnosing build logs
+echo   /modernvsixonly    Only build modern vsman vsixes.
 goto :eof
 
 :BuildFailed

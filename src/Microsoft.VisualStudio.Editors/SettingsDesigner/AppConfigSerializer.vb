@@ -365,8 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, Settings As DesignTimeSettings, AppConfigDocData As DocData)
             ' We list all the USER scoped settings that we know about and set the value to true or false depending
-            ' on if the setting is roaming... The set of known settings is used both when scrubbing the file used
-            ' in VSHost:ed and stand-alone sessions, so we only need to do it once...
+            ' on if the setting is roaming...
             Dim SettingsTheDesignerKnownsAbout As New Generic.Dictionary(Of String, Boolean)
 
             For Each dsi As DesignTimeSettingInstance In Settings
@@ -375,10 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Next
 
-            ' We need to synchronize the user config in two locations, since they are different depending on if the 
-            ' application runs under VSHost or not...
-            SynchronizeUserConfig(True, SectionName, Hierarchy, ConfigHelperService, SettingsTheDesignerKnownsAbout, AppConfigDocData)
-            SynchronizeUserConfig(False, SectionName, Hierarchy, ConfigHelperService, SettingsTheDesignerKnownsAbout, AppConfigDocData)
+            SynchronizeUserConfig(SectionName, Hierarchy, ConfigHelperService, SettingsTheDesignerKnownsAbout, AppConfigDocData)
         End Sub
 
         ''' <summary>
@@ -386,14 +382,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' settings class's user scoped settings collection. Checks either the set of files used when running under VSHost or
         ''' when running "stand-alone"
         ''' </summary>
-        ''' <param name="UnderVsHost"></param>
         ''' <param name="SectionName"></param>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ConfigHelperService"></param>
         ''' <param name="SettingsTheDesignerKnownsAbout"></param>
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
-        Private Shared Sub SynchronizeUserConfig(UnderVsHost As Boolean, SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), AppConfigDocData As DocData)
+        Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), AppConfigDocData As DocData)
             Dim hierSp As IServiceProvider = Common.Utils.ServiceProviderFromHierarchy(Hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
 
@@ -402,8 +397,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim map As New ExeConfigurationFileMap
                 Try
                     map.ExeConfigFilename = AppConfigDocData.Name
-                    map.LocalUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoamingAndLocal, UnderVsHost, BuildConfig)
-                    map.RoamingUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoaming, UnderVsHost, BuildConfig)
+                    map.LocalUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoamingAndLocal, underHostingProcess:=False, buildConfiguration:=BuildConfig)
+                    map.RoamingUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoaming, underHostingProcess:=False, buildConfiguration:=BuildConfig)
                 Catch ex As Exception When Not Common.Utils.ReportWithoutCrash(ex, NameOf(SynchronizeUserConfig), NameOf(AppConfigSerializer))
                     ' Can't really do anything - synchronize will fail...
                     Return

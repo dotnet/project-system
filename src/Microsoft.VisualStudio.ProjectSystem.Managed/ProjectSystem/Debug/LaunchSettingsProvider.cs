@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -68,10 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // Command that means run this project
         public  const string RunProjectCommandName = "Project";
 
+        //  Command that means run an executable
+        public const string RunExecutableCommandName = "Executable";
+
         // These are used internally to loop in debuggers to handle F5 when there are errors in 
         // the launch settings file or when there are no profiles specified (like class libraries)
         public  const string ErrorProfileCommandName = "ErrorProfile";
-
+       
         protected SimpleFileWatcher FileWatcher { get; set; }
 
         // When we are saveing the file we set this to minimize noise from the file change
@@ -83,6 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
         protected DateTime LastSettingsFileSyncTime { get; set; }
+
+        protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
 
         private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
@@ -279,7 +285,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             catch (Exception ex)
             {
-
                 // Errors are added as error list entries. We don't want to throw out of here
                 // However, if we have never created a snapshot it means there is some error in the file and we want
                 // to have the user see that, so we add a dummy profile which will bind to an existing debugger which will
@@ -585,9 +590,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected void EnsureSettingsFolder()
         {
-            if(!FileManager.DirectoryExists(LaunchSettingsFileFolder))
+            var launchSettingsFileFolderPath = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), LaunchSettingsFileFolder);
+            if (!FileManager.DirectoryExists(launchSettingsFileFolderPath))
             {
-                FileManager.CreateDirectory(LaunchSettingsFileFolder);
+                FileManager.CreateDirectory(launchSettingsFileFolderPath);
             }
         }
 
@@ -682,6 +688,130 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout).ConfigureAwait(false);
             return CurrentSnapshot;
+        }
+
+        /// <summary>
+        /// Adds the given profile to the list and saves to disk. If a profile with the same 
+        /// name exists (case sensitive), it will be replaced with the new profile. If addToFront is
+        /// true the profile will be the first one in the list. This is useful since quite often callers want
+        /// their just added profile to be listed first in the start menu. If addToFront is false but there is
+        /// an existing profile, the new one will be inserted at the same location rather than at the end.
+        /// </summary>
+        public async Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
+        {
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+            ILaunchProfile existingProfile = null;
+            int insertionIndex = 0;
+            foreach (var p in currentSettings.Profiles)
+            {
+                if (LaunchProfile.IsSameProfileName(p.Name, profile.Name))
+                {
+                    existingProfile = p;
+                    break;
+                }
+                insertionIndex++;
+            }
+
+            ImmutableList<ILaunchProfile> profiles;
+            if (existingProfile != null)
+            {
+                profiles = currentSettings.Profiles.Remove(existingProfile);
+            }
+            else
+            {
+                profiles = currentSettings.Profiles;
+            }
+
+            if (addToFront)
+            {
+                profiles = profiles.Insert(0, new LaunchProfile(profile));
+            }
+            else
+            {
+                // Insertion index will be set to the current count (end of list) if an existing item was not found otherwise
+                // it will point to where the previous one was found
+                profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
+            }
+
+            var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+            await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Removes the specified profile from the list and saves to disk.
+        /// </summary>
+        public async Task RemoveProfileAsync(string profileName)
+        {
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+            var existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
+            if (existingProfile != null)
+            {
+                var profiles = currentSettings.Profiles.Remove(existingProfile);
+                var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Adds or updates the global settings represented by settingName. Saves the 
+        /// updated settings to disk. Note that the settings object must be serializable.
+        /// </summary>
+        public async Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
+        {
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+            ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
+            object currentValue;
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            {
+                globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+            }
+            else
+            {
+                globalSettings = currentSettings.GlobalSettings;
+            }
+
+            var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
+            await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Removes the specified global setting and saves the settings to disk
+        /// </summary>
+        public async Task RemoveGlobalSettingAsync(string settingName)
+        {
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+            object currentValue;
+            if(currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            {
+                var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Helper retrieves the current snapshot (waiting up to 5s) and if there were errors in the launchsettings.json file
+        /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned
+        /// </summary>
+        public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
+        {
+            var currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
+            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, LaunchSettingsProvider.ErrorProfileCommandName, StringComparison.Ordinal)))
+            {
+                throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, LaunchSettingsFile));
+            }
+
+            return currentSettings;
+        }
+
+        /// <summary>
+        /// Sets the active profile. This just sets the property it does not validate that the setting matches an
+        /// existing profile
+        /// </summary>
+        public async Task SetActiveProfileAsync(string profileName)
+        {
+            var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
         }
     }
 }

@@ -27,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents startOptionsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents enableDebuggersTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents StartOptionsLabelLine As System.Windows.Forms.Label
-        Friend WithEvents UseVSHostingProcess As Windows.Forms.CheckBox
         Friend WithEvents EnableSQLServerDebugging As Windows.Forms.CheckBox
         Private _components As System.ComponentModel.IContainer
 
@@ -67,7 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.startOptionsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.enableDebuggersTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.EnableSQLServerDebugging = New System.Windows.Forms.CheckBox()
-            Me.UseVSHostingProcess = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.startActionTableLayoutPanel.SuspendLayout()
             Me.startOptionsTableLayoutPanel.SuspendLayout()
@@ -206,7 +204,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.enableDebuggersTableLayoutPanel, 0, 9)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableUnmanagedDebugging, 0, 10)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 11)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.UseVSHostingProcess, 0, 8)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartURL, 1, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.RemoteDebugMachine, 1, 7)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
@@ -240,12 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.EnableSQLServerDebugging, "EnableSQLServerDebugging")
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.EnableSQLServerDebugging, 2)
             Me.EnableSQLServerDebugging.Name = "EnableSQLServerDebugging"
-            '
-            'UseVSHostingProcess
-            '
-            resources.ApplyResources(Me.UseVSHostingProcess, "UseVSHostingProcess")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.UseVSHostingProcess, 2)
-            Me.UseVSHostingProcess.Name = "UseVSHostingProcess"
             '
             'DebugPropPage
             '

@@ -18,6 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
+        /// Returns the specified service type from the service.
+        /// </summary>
+        public static ServiceType GetService<ServiceType>(this IServiceProvider sp) where ServiceType : class
+        {
+            return sp.GetService<ServiceType, ServiceType>();
+        }
+
+        /// <summary>
         /// Returns IProjectService a global scope component that provdes data accross all CPS projects
         /// </summary>
         /// <param name="sp"></param>

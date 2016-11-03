@@ -49,7 +49,12 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\DteFactory.cs" />
+    <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
+    <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
+    <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
+    <Compile Include="Mocks\IDteServicesFactory.cs" />
+    <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />
@@ -60,14 +65,24 @@
     <Compile Include="Mocks\IJsonModel.cs" />
     <Compile Include="Mocks\IDependencyNodeFactory.cs" />
     <Compile Include="Mocks\IProjectCatalogSnapshotFactory.cs" />
+    <Compile Include="Mocks\ITextBufferFactory.cs" />
+    <Compile Include="Mocks\ITextDocumentFactory.cs" />
+    <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
+    <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
+    <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
+    <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDiffFactory.cs" />
     <Compile Include="Mocks\IProjectChangeDescriptionFactory.cs" />
+    <Compile Include="Mocks\IProjectValueDataSourceFactory.cs" />
+    <Compile Include="Mocks\DataFlowExtensionMethodWrapperMock.cs" />
     <Compile Include="Mocks\IRoslynServicesFactory.cs" />
+    <Compile Include="Mocks\IServiceProviderFactory.cs" />
     <Compile Include="Mocks\IServiceProviderMoq.cs" />
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
+    <Compile Include="Mocks\IVsStartupProjectsListServiceFactory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
@@ -86,15 +101,22 @@
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugLaunchProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectCSharpCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\TestPropertyProviders.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />
@@ -102,12 +124,16 @@
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBaseTests.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\NuGetDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeIdTests.cs" />
+    <Compile Include="ProjectSystem\VS\DteServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverterTests.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\TestShellUtilitiesHelper.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +144,13 @@
       <Link>App.config</Link>
     </None>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />

@@ -25,6 +25,16 @@
             <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
+    <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="TargetFramework" DisplayName="Target Framework">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+    </StringProperty>
     <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
@@ -52,6 +62,7 @@
     </StringProperty>
     <StringProperty Name="OutputName" />
     <StringProperty Name="OutputPath" />
+    <StringProperty Name="BaseIntermediateOutputPath" />
     <EnumProperty Name="OutputType">
         <EnumValue Name="Library" DisplayName="Class Library" />
         <EnumValue Name="exe" DisplayName="Console Application" />
@@ -110,8 +121,7 @@
     </StringProperty>
     <StringProperty Name="OneAppCapabilities" Visible="False" />
     <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices."/>
-    <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />
-
-  <!-- Represents the "LanguageName" that is passed to Roslyn -->
-  <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" />
+    <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />  
+    <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Represents the LanguageName that is passed to Roslyn" />
+    <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Represent the language that is persisted in items and project templates" />
 </Rule>

@@ -3,8 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using EnvDTE;
-using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -16,29 +15,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IDteServices _dteServices;
+        private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices)
+        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(dteServices, nameof(dteServices));
+            Requires.NotNull(properties, nameof(properties));
 
             _projectVsServices = projectVsServices;
-        }
-
-        /// <summary>
-        /// Get the language string to pass to the VS APIs for getting a template.
-        /// </summary>
-        private string GetTemplateLanguage(Project project)
-        {
-            switch (project.CodeModel.Language)
-            {
-                case CodeModelLanguageConstants.vsCMLanguageCSharp:
-                    return "CSharp";
-                case CodeModelLanguageConstants.vsCMLanguageVB:
-                    return "VisualBasic";
-                default:
-                    throw new NotSupportedException("Unrecognized language");
-            }
+            _dteServices = dteServices;
+            _properties = properties;
         }
 
         /// <summary>
@@ -54,12 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(parentNode, nameof(parentNode));
             Requires.NotNull(fileName, nameof(fileName));
 
+            string templateLanguage = await GetTemplateLanguageAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(templateLanguage))
+                return false;
+
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            Project project = _projectVsServices.VsHierarchy.GetProperty<Project>(Shell.VsHierarchyPropID.ExtObject, null);
-            var solution = project.DTE.Solution as Solution2;
-
-            string templateFilePath = solution.GetProjectItemTemplate(templateFile, GetTemplateLanguage(project));
+            string templateFilePath = _dteServices.Solution.GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {
@@ -74,6 +64,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return false;
+        }
+
+        private async Task<string> GetTemplateLanguageAsync()
+        {
+            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync()
+                                                            .ConfigureAwait(false);
+
+            return (string)await general.TemplateLanguage.GetValueAsync()
+                                                         .ConfigureAwait(false);
         }
     }
 }

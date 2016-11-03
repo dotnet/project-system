@@ -9,10 +9,12 @@
   <PropertyGroup>
   <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
        currently matches what is in common targets, but removes BuildWindowsDesktopTarget -->
-    <DefineCommonCapabilities>false</DefineCommonCapabilities>    
+    <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
     <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
 
     <DefineCommonManagedCapabilities Condition=" '$(DefineCommonManagedCapabilities)' == '' ">true</DefineCommonManagedCapabilities>
+    <DefineCommonManagedItemSchemas Condition=" '$(DefineCommonManagedItemSchemas)' == '' ">true</DefineCommonManagedItemSchemas>
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
     
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -27,6 +29,7 @@
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
+    <ProjectCapability Include="OpenProjectFile"/>
     
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
@@ -41,6 +44,7 @@
                           AssemblyReferences;
                           COMReferences;
                           ProjectReferences;
+                          PackageReferences;
                           SharedProjectReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
@@ -52,9 +56,37 @@
     <ProjectCapability Include="LanguageService" />
     <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
  </ItemGroup>
-  
-  <!-- CPS Project Properties -->
-  <ItemGroup>
+
+  <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
+  <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneralFile.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
+      <Context>Invisible</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Folder.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
+      <Context>File;ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -72,7 +104,7 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project</Context>
+      <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
@@ -123,11 +155,21 @@
 
     <!-- Package references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PackageReference.xaml">
-      <Context>BrowseObject</Context>
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedPackageReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <!-- Tool references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DotNetCliToolReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <!-- NuGet Restore Properties -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)NuGetRestore.xaml">
+      <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <!-- Analyzer references -->
@@ -142,6 +184,11 @@
 
   <!-- Targets -->
 
+  <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
+       target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
+       once the actual targets are available after package restore-->
+  <Target Name="ResolvePackageDependenciesDesignTime" />
+  
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 

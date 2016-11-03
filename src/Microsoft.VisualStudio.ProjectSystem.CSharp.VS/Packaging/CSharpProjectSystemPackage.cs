@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
+using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Tasks = System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 // We register ourselves as a new CPS "project type"
 [assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid)]
@@ -16,7 +19,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(XprojProjectFactory), null, null, null, null, null)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#8", "xproj", "xproj", null)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.ResXGuid, SingleFileGenerators.ResXGeneratorName,
         SingleFileGenerators.ResXDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [RemoteCodeGeneratorRegistration(SingleFileGenerators.PublicResXGuid, SingleFileGenerators.PublicResXGeneratorName,
@@ -27,6 +30,8 @@ namespace Microsoft.VisualStudio.Packaging
         SingleFileGenerators.TextTemplatingFilePreprocessorDescription, ProjectTypeGuidFormatted, GeneratesDesignTimeSource = true)]
     [GeneratorExtensionRegistration(SingleFileGenerators.TextTemplatingFileGeneratorExtension,
         SingleFileGenerators.TextTemplatingFileGenerator, ProjectTypeGuidFormatted)]
+    [ClassRegistration(DebugPropertyClassId, DebugPropertyClassInfo)]
+    [DplOptOutRegistration(CSharpProjectSystemPackage.ProjectTypeGuid, true)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
@@ -35,17 +40,21 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
         private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
 
-        private XprojProjectFactory _factory;
+        private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
+        private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
+      
+        private IVsProjectFactory _factory;
 
         public CSharpProjectSystemPackage()
         {
         }
 
-        protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            _factory = new XprojProjectFactory(this);
+            _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new FileSystem());
+            _factory.SetSite(this);
             RegisterProjectFactory(_factory);
-            return Tasks.Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

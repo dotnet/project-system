@@ -675,7 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim LostFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     LostFocusProjectItem = LostFocus.ProjectItem
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
+                Catch ex As Exception
                 End Try
 
                 If LostFocusProjectItem Is ThisProjectItem Then

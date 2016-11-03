@@ -343,6 +343,7 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
+           or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
               ">
         <EmbedInteropTypes>true</EmbedInteropTypes>
       </ReferencePath>

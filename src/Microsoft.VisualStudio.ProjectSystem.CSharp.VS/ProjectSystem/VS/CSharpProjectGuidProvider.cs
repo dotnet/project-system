@@ -7,12 +7,11 @@ using Microsoft.VisualStudio.Packaging;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides the C# implementation of <see cref="IItemTypeGuidProvider"/> and <see cref="IAddItemTemplatesGuidProvider"/>.
+    ///     Provides the C# implementation of <see cref="IItemTypeGuidProvider"/>.
     /// </summary>
     [Export(typeof(IItemTypeGuidProvider))]
-    [Export(typeof(IAddItemTemplatesGuidProvider))]
     [AppliesTo(ProjectCapabilities.CSharp)]
-    internal class CSharpProjectGuidProvider : IItemTypeGuidProvider, IAddItemTemplatesGuidProvider
+    internal class CSharpProjectGuidProvider : IItemTypeGuidProvider
     {
         private static readonly Guid s_csharpProjectType = new Guid(CSharpProjectSystemPackage.LegacyProjectTypeGuid);
 
@@ -23,11 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public Guid ProjectTypeGuid
-        {
-            get { return s_csharpProjectType; }
-        }
-
-        public Guid AddItemTemplatesGuid
         {
             get { return s_csharpProjectType; }
         }
