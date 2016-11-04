@@ -181,11 +181,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 
                 // Get the executable to run, the arguments and the default working directory
                 var runData = await GetRunnableProjectInformationAsync().ConfigureAwait(false);
-                executable = runData.Item1;
-                arguments = runData.Item2;
-                if(!string.IsNullOrWhiteSpace(runData.Item3))
+                executable = runData.exeToRun;
+                arguments = runData.arguments;
+                if(!string.IsNullOrWhiteSpace(runData.workingDir))
                 {
-                    defaultWorkingDir = runData.Item3;
+                    defaultWorkingDir = runData.workingDir;
                 }
 
                 if(!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync()
+        private async Task<(string exeToRun, string arguments, string workingDir)> GetRunnableProjectInformationAsync()
         {
             var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 runWorkingDirectory = Path.Combine(Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath), runWorkingDirectory);
             }
-            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
+            return (runCommand, runArguments, runWorkingDirectory);
         }
 
         private async Task<Guid> GetDebuggingEngineAsync()
