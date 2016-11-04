@@ -7,7 +7,7 @@
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
     <TestsDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\Tests\</TestsDirectory>
 
-    <!-- Make note NUGET_PACKAGES is environment variable respected 
+    <!-- Make note NUGET_PACKAGES is environment variable respected
          by NuGet.exe, so don't be tempted to change the name.-->
     <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
 
@@ -22,17 +22,22 @@
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- NuGet will not automatically find the correct version of MSBuild. We need to specify the path. -->
+    <NugetArguments>-verbosity quiet -msbuildpath &quot;$(DevenvDir)\..\..\MSBuild\15.0\bin&quot;</NugetArguments>
+  </PropertyGroup>
+
   <Target Name="RestorePackages">
 
     <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
-    
-    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore -verbosity quiet &quot;@(SolutionFile)&quot;" />
+
+    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore $(NugetArguments) &quot;@(SolutionFile)&quot;" />
   </Target>
 
   <Target Name="BuildSolution">
 
     <Message Text="Building %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
-    
+
     <MSBuild BuildInParallel="true"
              Projects="@(SolutionFile)"
              Targets="Build"
@@ -66,7 +71,7 @@
       <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
       <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
-    
+
     <Message Text="Running tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
     <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
