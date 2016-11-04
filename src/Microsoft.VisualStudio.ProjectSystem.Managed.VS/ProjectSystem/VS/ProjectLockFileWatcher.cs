@@ -157,15 +157,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Kick off the operation to notify the project change in a different thread irregardless of
             // the kind of change since we are interested in all changes.
-            _projectServices.ThreadingService.Fork(async () => { 
+            _projectServices.ThreadingService.Fork(async () =>
+            {
                 using (var access = await _projectLockService.WriteLockAsync())
                 {
-                    // Inside a write lock, we should get back to the same thread.
-                    var project = await access.GetProjectAsync(_projectServices.ActiveConfiguredProject).ConfigureAwait(true);
-                    project.MarkDirty();
-                    _projectServices.ActiveConfiguredProject.NotifyProjectChange();
+                    // notify all the loaded configured projects
+                    var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                    foreach (var configuredProject in currentProjects)
+                    {
+                        // Inside a write lock, we should get back to the same thread.
+                        var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                        project.MarkDirty();
+                        configuredProject.NotifyProjectChange();
+                    }
                 }
-            }, configuredProject: _projectServices.ActiveConfiguredProject);
+            }, unconfiguredProject: _projectServices.Project);
 
             return VSConstants.S_OK;
         }
