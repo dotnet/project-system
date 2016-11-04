@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <UseVisualStudioVersion>true</UseVisualStudioVersion>
+  </PropertyGroup>
+
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <Import Project="..\..\..\build\Targets\VSL.Versions.targets" />
 
@@ -9,7 +14,6 @@
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <OutputPath>$(OutDir)\VsixV3</OutputPath>
     <IsPackage>true</IsPackage>
-    <UseVisualStudioVersion>true</UseVisualStudioVersion>
     <FinalizeValidate>false</FinalizeValidate>
     <ValidateManifest>false</ValidateManifest>
   </PropertyGroup>
