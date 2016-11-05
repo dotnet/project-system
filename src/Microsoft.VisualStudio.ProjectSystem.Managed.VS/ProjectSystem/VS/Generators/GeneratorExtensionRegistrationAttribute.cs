@@ -14,16 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public GeneratorExtensionRegistrationAttribute(string extension, string generator, string contextGuid)
         {
-            if (extension == null)
-                throw new ArgumentNullException(nameof(extension));
-            if (generator == null)
-                throw new ArgumentNullException(nameof(generator));
-            if (contextGuid == null)
-                throw new ArgumentNullException(nameof(contextGuid));
-
-            _extension = extension;
-            _generator = generator;
-            _contextGuid = contextGuid;
+            _extension = extension ?? throw new ArgumentNullException(nameof(extension));
+            _generator = generator ?? throw new ArgumentNullException(nameof(generator));
+            _contextGuid = contextGuid ?? throw new ArgumentNullException(nameof(contextGuid));
         }
 
         public override void Register(RegistrationContext context)

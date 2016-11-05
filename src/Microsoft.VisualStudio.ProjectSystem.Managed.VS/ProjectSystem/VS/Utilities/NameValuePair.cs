@@ -55,11 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region IDataErrorInfo

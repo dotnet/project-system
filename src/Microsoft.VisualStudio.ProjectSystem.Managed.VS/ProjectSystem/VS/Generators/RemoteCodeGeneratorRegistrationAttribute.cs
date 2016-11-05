@@ -31,16 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             if (generatorGuid == null)
                 throw new ArgumentNullException("generatorGuid");
-            if (generatorClassName == null)
-                throw new ArgumentNullException("generatorClassName");
-            if (generatorName == null)
-                throw new ArgumentNullException("generatorName");
-            if (contextGuid == null)
-                throw new ArgumentNullException("contextGuid");
-
-            _contextGuid = contextGuid;
-            _generatorName = generatorName;
-            _generatorRegKeyName = generatorClassName;
+            _contextGuid = contextGuid ?? throw new ArgumentNullException("contextGuid");
+            _generatorName = generatorName ?? throw new ArgumentNullException("generatorName");
+            _generatorRegKeyName = generatorClassName ?? throw new ArgumentNullException("generatorClassName");
             if (!Guid.TryParse(generatorGuid, out _generatorGuid))
                 throw new ArgumentException($"{generatorGuid} is not a valid GUID!", generatorGuid);
         }

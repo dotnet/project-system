@@ -70,7 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             if (parent == null)
+#pragma warning disable IDE0016 // Use 'throw' expression
                 throw _tokenizer.FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
+#pragma warning restore IDE0016 // Use 'throw' expression
 
             var tree = ReadProjectItem();
             tree.Parent = parent;
