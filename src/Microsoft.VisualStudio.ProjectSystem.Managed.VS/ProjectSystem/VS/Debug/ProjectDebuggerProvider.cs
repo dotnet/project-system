@@ -114,8 +114,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Now find the DebugTargets provider for this profile
             var launchProvider = GetLaunchTargetsProvider(activeProfile);
+            if(launchProvider == null)
+            {
+                throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
+            }
+
             var launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile).ConfigureAwait(true);
-            LastLaunchProvider = launchProvider ?? throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
+            LastLaunchProvider = launchProvider;
             return launchSettings;
         }
 
