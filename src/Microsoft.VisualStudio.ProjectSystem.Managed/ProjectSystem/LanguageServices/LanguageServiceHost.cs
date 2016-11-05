@@ -131,6 +131,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
             {
+                // Dispose existing subscriptions.
+                DisposeAndClearSubscriptions();
+
                 // Add subscriptions for the configured projects in the new project context.
                 AddSubscriptions(newProjectContext);
             }
