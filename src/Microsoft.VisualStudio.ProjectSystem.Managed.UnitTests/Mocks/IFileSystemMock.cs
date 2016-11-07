@@ -188,16 +188,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return _files[filepath].LastWriteTime;
         }
 
-      
-        /// <summary>
-        /// Mock currently ignores recursive flag
-        /// </summary>
         public void RemoveDirectory(string directoryPath, bool recursive)
         {
             bool found = _folders.Remove(directoryPath);
             if(!found)
             {
                 throw new DirectoryNotFoundException();
+            }
+
+            if (recursive)
+            {
+                foreach (var item in _files.Where(file => file.Key.StartsWith(directoryPath)).ToList())
+                {
+                    _files.Remove(item.Key);
+                }
             }
         }
 

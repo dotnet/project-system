@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
+using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
@@ -16,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public int OnClose(ref uint pgrfSaveOptions)
         {
-            _fileSystem.RemoveFile(_tempFile);
+            _fileSystem.RemoveDirectory(Path.GetDirectoryName(_tempFile), true);
             return VSConstants.S_OK;
         }
     }

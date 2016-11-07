@@ -57,16 +57,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!ShouldHandle(node)) return false;
 
-            var caption = Path.GetFileName(_unconfiguredProject.FullPath);
+            var projectFileName = Path.GetFileName(_unconfiguredProject.FullPath);
 
-            var projPath = await GetFile().ConfigureAwait(false);
+            var projPath = await GetFileAsync(projectFileName).ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
             IVsWindowFrame frame;
 
             frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, projPath, XmlEditorFactoryGuid, Guid.Empty);
-
-            // Clean up the caption of the window
-            Verify.HResult(frame.SetProperty((int)__VSFPROPID5.VSFPROPID_OverrideCaption, caption));
 
             // When the document is closed, clean up the file on disk
             var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem);
@@ -112,10 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }));
         }
 
-        private async Task<string> GetFile()
+        private async Task<string> GetFileAsync(string projectFileName)
         {
-            var projectXml = await _msbuildAccessor.GetProjectXml(_unconfiguredProject).ConfigureAwait(false);
-            var tempFileName = $"{_fileSystem.GetTempFileName()}.{FileExtension}";
+            string projectXml = await _msbuildAccessor.GetProjectXml(_unconfiguredProject).ConfigureAwait(false);
+            string tempDirectory = _fileSystem.GetTempFileName();
+            _fileSystem.CreateDirectory(tempDirectory);
+            var tempFileName = $"{tempDirectory}\\{projectFileName}";
             _fileSystem.WriteAllText(tempFileName, projectXml);
             return tempFileName;
         }
