@@ -25,9 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// </summary>
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
+            Requires.NotNull(execute, nameof(execute));
             _execute = execute;
             _canExecute = canExecute;
         }

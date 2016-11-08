@@ -9,14 +9,14 @@
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == '' and
                                  '$(OS)' != 'Windows_NT'">$(HOME)\.nuget\packages\</NuGetPackageRoot>
 
-    <!-- 
+    <!--
         $(OS) is only specific enough for windows builds.  For non-windows builds the identifier
         is specified on the command line of MSBuild
     -->
     <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
   </PropertyGroup>
 
-  <Import Project="$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props" Condition="Exists('$(NuGetPackageRoot)\Microsoft.Net.Compilers\1.2.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(NuGetPackageRoot)\Microsoft.Net.Compilers\2.0.0-rc2-61102-09\build\Microsoft.Net.Compilers.props" Condition="Exists('$(NuGetPackageRoot)\Microsoft.Net.Compilers\2.0.0-rc2-61102-09\build\Microsoft.Net.Compilers.props')" />
 
   <!-- Import the global NuGet packages -->
   <PropertyGroup>
@@ -84,12 +84,12 @@
   <PropertyGroup Condition="'$(VSCOMNTOOLS)' == ''">
     <VSCOMNTOOLS>$([System.Environment]::ExpandEnvironmentVariables("%VS$(VisualStudioReferenceMajorVersion)0COMNTOOLS%"))</VSCOMNTOOLS>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(DevEnvDir)' == ''">
     <DevEnvDir>$(VSCOMNTOOLS)\..\IDE</DevEnvDir>
     <DevEnvDir>$([System.IO.Path]::GetFullPath('$(DevEnvDir)'))</DevEnvDir>
   </PropertyGroup>
-  
+
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '12.0'">
       <PropertyGroup>
@@ -237,8 +237,8 @@
     <AuthenticodeCertificateName>Microsoft402</AuthenticodeCertificateName>
   </PropertyGroup>
 
-  <!-- 
-    When running our determinism tests we need to copy the diagnostic file from the intermediate directory 
+  <!--
+    When running our determinism tests we need to copy the diagnostic file from the intermediate directory
     to the location of the binary.  This ensures .dll and .dll.key are next to each other to be picked up
     by our test scripts
   -->
