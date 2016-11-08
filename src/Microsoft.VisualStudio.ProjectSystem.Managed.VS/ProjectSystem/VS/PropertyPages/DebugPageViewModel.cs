@@ -51,19 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _useTaskFactory = useTaskFactory;
             UnconfiguredProject = unconfiguredProject;
         }
-        private bool _useSpecificRuntime;
-        public bool UseSpecificRuntime
-        {
-            get
-            {
-                return _useSpecificRuntime;
-            }
-            set
-            {
-                OnPropertyChanged(ref _useSpecificRuntime, value);
-            }
-        }
-
+        
         public string SelectedCommandName
         {
             get
@@ -441,8 +429,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(IsProject));
                 OnPropertyChanged(nameof(IsProfileSelected));
                 OnPropertyChanged(nameof(DeleteProfileEnabled));
-                
-                UseSpecificRuntime = true;
                 
                 SetEnvironmentGrid(oldProfile);
 
