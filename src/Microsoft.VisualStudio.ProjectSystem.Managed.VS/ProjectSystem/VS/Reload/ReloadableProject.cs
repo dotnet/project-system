@@ -106,10 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         ProjectCollection thisCollection = new ProjectCollection();
                         var newProject = ProjectRootElement.Open(_projectVsServices.Project.FullPath, thisCollection);
-                        var tempProject = ProjectRootElement.Create();
 
                         // First copy to a temp project, so that any failures will not corrupt the users project.
-                        tempProject.DeepCopyFrom(newProject);
+                        ProjectRootElement.Create().DeepCopyFrom(newProject);
 
                         msbuildProject.RemoveAllChildren();
                         msbuildProject.DeepCopyFrom(newProject);
