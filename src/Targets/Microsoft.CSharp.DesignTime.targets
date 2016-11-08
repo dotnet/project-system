@@ -15,8 +15,6 @@
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">CSharp</TemplateLanguage>
-    <!-- Shared Projects need to use the shared project item template guid. We determine shared projects by the shproj extension of the project file. -->
-    <AddItemTemplatesGuid Condition="('$(AddItemTemplatesGuid)' == '') AND ('$(ProjectExt)' == '.shproj'">{DDDDC6BE-451D-46DD-A712-A5D07027E072}</AddItemTemplatesGuid>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</AddItemTemplatesGuid>
   </PropertyGroup>
 
