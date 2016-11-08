@@ -92,11 +92,9 @@ Root (flags: {ProjectRoot})
         public async Task AbstractEditProjectFileCommand_CorrectNode_CreatesWindowCorrectly()
         {
             var projectPath = $"C:\\Project1\\Project1.{EditProjectFileCommand.Extension}";
-            var tempFile = "C:\\Temp\\asdf.xyz";
-            var tempProjFile = $"{tempFile}.{EditProjectFileCommand.Extension}";
-            var expectedCaption = $"Project1.{EditProjectFileCommand.Extension}";
+            var tempDirectory = "C:\\Temp\\asdf.xyz";
+            var tempProjFile = $"{tempDirectory}\\Project1.{EditProjectFileCommand.Extension}";
             var projectXml = @"<Project></Project>";
-            var captionSet = false;
             var autoOpenSet = false;
             var listenerSet = false;
             IVsWindowFrameNotify2 notifier = null;
@@ -107,9 +105,6 @@ Root (flags: {ProjectRoot})
             {
                 switch (property)
                 {
-                    case (int)__VSFPROPID5.VSFPROPID_OverrideCaption:
-                        captionSet = true;
-                        break;
                     case (int)__VSFPROPID5.VSFPROPID_DontAutoOpen:
                         autoOpenSet = true;
                         break;
@@ -126,7 +121,7 @@ Root (flags: {ProjectRoot})
                 return VSConstants.S_OK;
             });
 
-            var command = SetupScenario(projectXml, tempFile, tempProjFile, projectPath, expectedCaption, fileSystem, textDoc, frame);
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -134,10 +129,9 @@ Root (flags: {ProjectRoot})
 
             // Verify the frame was setup correctly
             Assert.True(await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero));
+            Assert.True(fileSystem.DirectoryExists(tempDirectory));
             Assert.Equal(projectXml, fileSystem.ReadAllText(tempProjFile));
-            Mock.Get(frame).Verify(f => f.SetProperty((int)__VSFPROPID5.VSFPROPID_OverrideCaption, expectedCaption));
             Mock.Get(frame).Verify(f => f.Show());
-            Assert.True(captionSet);
             Assert.True(autoOpenSet);
             Assert.True(listenerSet);
             Assert.NotNull(notifier);
@@ -150,6 +144,7 @@ Root (flags: {ProjectRoot})
             // Finally, ensure the cleanup works as expected. We don't do anything with the passed option. The notifier
             // should remove the file temp file from the filesystem.
             Assert.Equal(VSConstants.S_OK, notifier.OnClose(0));
+            Assert.False(fileSystem.DirectoryExists(tempDirectory));
             Assert.False(fileSystem.FileExists(tempProjFile));
         }
 
@@ -159,16 +154,15 @@ Root (flags: {ProjectRoot})
         public async Task AbstractEditProjectFileCommand_NonSaveAction_DoesNotOverwriteProjectFile(FileActionTypes actionType)
         {
             var projectPath = $"C:\\Project1\\Project1.{EditProjectFileCommand.Extension}";
-            var tempFile = "C:\\Temp\\asdf.xyz";
-            var tempProjFile = $"{tempFile}.{EditProjectFileCommand.Extension}";
-            var expectedCaption = $"Project1.{EditProjectFileCommand.Extension}";
+            var tempDirectory = "C:\\Temp\\asdf.xyz";
+            var tempProjFile = $"{tempDirectory}\\Project1.{EditProjectFileCommand.Extension}";
             var projectXml = @"<Project></Project>";
 
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
             var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (prop, obj) => VSConstants.S_OK);
 
-            var command = SetupScenario(projectXml, tempFile, tempProjFile, projectPath, expectedCaption, fileSystem, textDoc, frame);
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -227,7 +221,7 @@ Root (flags: {ProjectRoot})
             Assert.False(await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero));
         }
 
-        private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile, string caption,
+        private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile,
             IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame)
         {
             fileSystem.SetTempFile(tempPath);
