@@ -22,7 +22,7 @@
                     DisplayName="Version"
                     Description="Version of dependency.">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistenceStyle="Attribute" />
+            <DataSource PersistenceStyle="Attribute" />
         </StringProperty.DataSource>
     </StringProperty>
 
