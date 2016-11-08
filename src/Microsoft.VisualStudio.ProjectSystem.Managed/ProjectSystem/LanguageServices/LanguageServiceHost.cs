@@ -113,10 +113,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             await _commonServices.ThreadingService.SwitchToUIThread();
 
-            using (_tasksService.LoadedProject())
+            await _tasksService.LoadedProjectAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
-            }
+            });
 
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
