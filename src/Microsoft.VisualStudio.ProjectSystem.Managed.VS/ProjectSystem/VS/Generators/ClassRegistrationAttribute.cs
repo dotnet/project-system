@@ -13,8 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public ClassRegistrationAttribute(string clsId, string classInfo)
         {
-            _clsId = clsId ?? throw new ArgumentNullException(nameof(clsId));
-            _classInfo = classInfo ?? throw new ArgumentNullException(nameof(classInfo));
+            Requires.NotNull(clsId, nameof(clsId));
+            Requires.NotNull(classInfo, nameof(classInfo));
+
+            _clsId = clsId;
+            _classInfo = classInfo;
         }
 
         public override void Register(RegistrationContext context)
