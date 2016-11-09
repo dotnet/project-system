@@ -86,8 +86,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.net", "Dependencies\Js
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSBuild", "Dependencies\MSBuild\MSBuild.csproj", "{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolset.Previous", "Dependencies\Toolset.Previous\Toolset.Previous.csproj", "{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,10 +217,6 @@ Global
 		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,6 +233,5 @@ Global
 		{03AB838C-1B9D-4ECA-856F-476616C35F0C} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{CA374AF1-C983-4019-8FD0-01FA510C6E56} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 		{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
-		{244BA98B-F80C-4BE4-BAE4-D48FFD7BCE95} = {FD7E1AB8-9A44-4C31-A126-D6AF289C2C95}
 	EndGlobalSection
 EndGlobal
