@@ -34,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             LaunchSettingsProvider = launchSettingsProvider;
 
             // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
-            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, 
+            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
                                                                                                                     configuredProject.UnconfiguredProject);
         }
 
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, 
+        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
                                        OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers)
             : base(configuredProject)
         {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // The engine depends on the framework
             if (IsDotNetCoreFramework(targetFramework))
             {
-                return  DebuggerEngines.ManagedCoreEngine;
+                return DebuggerEngines.ManagedCoreEngine;
             }
             else
             {
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// TODO: This is a placeholder until issue https://github.com/dotnet/roslyn-project-system/issues/423 is addressed. 
         /// This information should come from the targets file.
         /// </summary>
-        public static bool IsDotNetCoreFramework( string targetFramework)
+        public static bool IsDotNetCoreFramework(string targetFramework)
         {
             const string NetStandardAppPrefix = ".NetStandardApp";
             const string NetStandardPrefix = ".NetStandard";
@@ -107,17 +107,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
             // Should have a profile
-            if(activeProfile == null)
+            if (activeProfile == null)
             {
                 throw new Exception(VSResources.ActiveLaunchProfileNotFound);
             }
 
             // Now find the DebugTargets provider for this profile
-            var launchProvider = GetLaunchTargetsProvider(activeProfile);
-            if(launchProvider == null)
-            {
+            var launchProvider = GetLaunchTargetsProvider(activeProfile) ??
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
-            }
 
             var launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile).ConfigureAwait(true);
             LastLaunchProvider = launchProvider;
@@ -130,9 +127,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public IDebugProfileLaunchTargetsProvider GetLaunchTargetsProvider(ILaunchProfile profile)
         {
             // We search through the imports in order to find the one which supports the profile
-            foreach(var provider in ProfileLaunchTargetsProviders)
+            foreach (var provider in ProfileLaunchTargetsProviders)
             {
-                if(provider.Value.SupportsProfile(profile))
+                if (provider.Value.SupportsProfile(profile))
                 {
                     return provider.Value;
                 }
@@ -152,17 +149,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
             var targetProfile = GetLaunchTargetsProvider(activeProfile);
-            if(targetProfile != null)
+            if (targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(true);
-            } 
-                                                                                   
+            }
+
             await DoLaunchAsync(targets.ToArray()).ConfigureAwait(true);
 
-            if(targetProfile != null)
+            if (targetProfile != null)
             {
                 await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile).ConfigureAwait(true);
-            }                                                                        
+            }
         }
 
         /// <summary>
@@ -192,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
         }
-        
+
         /// <summary>
         /// Copy information over from the contract struct to the native one.
         /// </summary>
@@ -329,7 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Just delegate to the last provider. It needs to figure out how best to map the items
             localPath = null;
             var deployedItemMapper = LastLaunchProvider as IDeployedProjectItemMappingProvider;
-            if(deployedItemMapper != null)
+            if (deployedItemMapper != null)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }

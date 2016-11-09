@@ -29,14 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         /// <param name="contextGuid">The context GUID this code generator would appear under.</param>
         public RemoteCodeGeneratorRegistrationAttribute(string generatorGuid, string generatorClassName, string generatorName, string contextGuid)
         {
-            if (generatorGuid == null)
-                throw new ArgumentNullException("generatorGuid");
-            if (generatorClassName == null)
-                throw new ArgumentNullException("generatorClassName");
-            if (generatorName == null)
-                throw new ArgumentNullException("generatorName");
-            if (contextGuid == null)
-                throw new ArgumentNullException("contextGuid");
+            Requires.NotNull(generatorGuid, nameof(generatorGuid));
+            Requires.NotNull(contextGuid, nameof(contextGuid));
+            Requires.NotNull(generatorName, nameof(generatorName));
+            Requires.NotNull(generatorClassName, nameof(generatorClassName));
 
             _contextGuid = contextGuid;
             _generatorName = generatorName;

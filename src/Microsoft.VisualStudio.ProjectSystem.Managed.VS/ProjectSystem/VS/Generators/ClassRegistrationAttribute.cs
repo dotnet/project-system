@@ -13,10 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public ClassRegistrationAttribute(string clsId, string classInfo)
         {
-            if (clsId == null)
-                throw new ArgumentNullException(nameof(clsId));
-            if (classInfo == null)
-                throw new ArgumentNullException(nameof(classInfo));
+            Requires.NotNull(clsId, nameof(clsId));
+            Requires.NotNull(classInfo, nameof(classInfo));
 
             _clsId = clsId;
             _classInfo = classInfo;
