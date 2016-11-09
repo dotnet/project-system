@@ -264,18 +264,7 @@
                     </MultiBinding>
                 </local:WatermarkTextBox.IsEnabled>
             </local:WatermarkTextBox>
-            <CheckBox 
-                Grid.Row="7"
-                Margin="9,10,3,8"
-                VerticalAlignment="Top"
-                VerticalContentAlignment="Center"
-                x:Name="chkSpecificRuntime"
-                x:Uid="chkSpecificRuntime"
-                IsChecked="{Binding Path=UseSpecificRuntime, Mode=TwoWay}"
-                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=ShowVersionSelector, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                Content="Use Specific _Runtime:"/>
-             <Label 
+            <Label 
                 Grid.Row="8"
                 x:Uid="envVarsLabel"
                 Margin="4,4,3,0"
