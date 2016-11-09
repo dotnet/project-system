@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory
 {
-    internal static class IExportFactoryMock
+    internal static class IExportFactoryFactory
     {
         public static IExportFactory<T> CreateInstance<T>() => Mock.Of<IExportFactory<T>>();    
 

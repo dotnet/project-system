@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     {
         private readonly string _tempFile;
         private readonly IFileSystem _fileSystem;
-        private readonly MsBuildModelWatcher _watcher;
+        private readonly IMsBuildModelWatcher _watcher;
 
-        public EditProjectFileCleanupFrameNotifyListener(string tempFile, IFileSystem fileSystem, MsBuildModelWatcher watcher)
+        public EditProjectFileCleanupFrameNotifyListener(string tempFile, IFileSystem fileSystem, IMsBuildModelWatcher watcher)
         {
             _tempFile = tempFile;
             _fileSystem = fileSystem;

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellHelper,
-            IExportFactory<MsBuildModelWatcher> watcherFactory) :
+            IExportFactory<IMsBuildModelWatcher> watcherFactory) :
             base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor, fileSystem,
                 textDocumentService, editorFactoryService, threadingService, shellHelper, watcherFactory)
         {

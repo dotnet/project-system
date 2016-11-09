@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
-        private readonly IExportFactory<MsBuildModelWatcher> _watcherFactory;
+        private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
 
         public AbstractEditProjectFileCommand(UnconfiguredProject unconfiguredProject,
             IProjectCapabilitiesService projectCapabilitiesService,
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
-            IExportFactory<MsBuildModelWatcher> watcherFactory)
+            IExportFactory<IMsBuildModelWatcher> watcherFactory)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectCapabiltiesService = projectCapabilitiesService;
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, projPath, XmlEditorFactoryGuid, Guid.Empty);
 
-            MsBuildModelWatcher watcher = _watcherFactory.CreateExport();
+            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
             watcher.Initialize(projPath);
 
             // When the document is closed, clean up the file on disk

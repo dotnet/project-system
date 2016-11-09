@@ -18,14 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal class IFileSystemMock : IFileSystem
     {
-        class FileData
+        internal class FileData
         {
             public string FileContents;
             public DateTime LastWriteTime = DateTime.MaxValue;
         };
-        
+
         Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
         HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        public Dictionary<string, FileData> Files { get => _files; }
 
         public FileStream Create(string filePath)
         {
@@ -49,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                data. LastWriteTime = data.LastWriteTime.AddMilliseconds(new Random().NextDouble() * 10000);
+                data.LastWriteTime = data.LastWriteTime.AddMilliseconds(new Random().NextDouble() * 10000);
             }
         }
 
@@ -107,9 +109,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         // Convert the wildcard to a regex
         public static string WildcardToRegex(string pattern)
         {
-          return "^" + Regex.Escape(pattern).
-          Replace("\\*", ".*").
-          Replace("\\?", ".") + "$";
+            return "^" + Regex.Escape(pattern).
+            Replace("\\*", ".*").
+            Replace("\\?", ".") + "$";
         }
 
         public bool FileExists(string path)
@@ -191,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void RemoveDirectory(string directoryPath, bool recursive)
         {
             bool found = _folders.Remove(directoryPath);
-            if(!found)
+            if (!found)
             {
                 throw new DirectoryNotFoundException();
             }

@@ -7,8 +7,8 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
-    [Export(typeof(MsBuildModelWatcher))]
-    internal class MsBuildModelWatcher : OnceInitializedOnceDisposedAsync
+    [Export(typeof(IMsBuildModelWatcher))]
+    internal class MsBuildModelWatcher : OnceInitializedOnceDisposedAsync, IMsBuildModelWatcher
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IFileSystem _fileSystem;
@@ -37,7 +37,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public void ProjectXmlHandler(object sender, ProjectXmlChangedEventArgs args)
         {
-            var xml = args.ProjectXml.RawXml;
+            XmlHandler(args.ProjectXml.RawXml);
+        }
+
+        /// <summary>
+        /// Because we can't construct an instance of ProjectxmlChangedEventArgs for testing purposes, I've extracted this functionality, and set up ProjectXmlHandler
+        /// as a forwarder for the actual project xml.
+        /// </summary>
+        internal void XmlHandler(string xml)
+        {
             _fileSystem.WriteAllText(_tempFile, xml);
         }
 
