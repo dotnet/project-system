@@ -104,6 +104,25 @@
     </Otherwise>
   </Choose>
 
+  <PropertyGroup>
+    <IsDev15RC Condition="Exists('$(MSBuildBinPath)\..\..\..\Common7\IDE\Microsoft.VisualStudio.ExtensionEngine.dll')">true</IsDev15RC>
+    <IsDev15RC Condition="Exists('$(MSBuildBinPath)\..\..\..\..\Common7\IDE\Microsoft.VisualStudio.ExtensionEngine.dll')">true</IsDev15RC>
+  </PropertyGroup> 
+  <Choose>
+    <When Condition="'$(IsDev15RC)' == 'true'">
+      <PropertyGroup>
+        <VisualStudioBuildToolsNuGetPackagePath>$(NuGetPackageRoot)\Microsoft.VSSDK.BuildTools\15.0.25907-RC2</VisualStudioBuildToolsNuGetPackagePath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <VisualStudioBuildToolsNuGetPackagePath>$(NuGetPackageRoot)\Microsoft.VSSDK.BuildTools\15.0.25728-Preview5</VisualStudioBuildToolsNuGetPackagePath>
+      </PropertyGroup> 
+    </Otherwise>
+  </Choose>
+  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props"
+          Condition="'$(OS)' == 'Windows_NT' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props')" />
+
   <!-- Build reliability -->
   <PropertyGroup>
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)' == ''">true</OverwriteReadOnlyFiles>
