@@ -18,16 +18,12 @@
     <ValidateManifest>false</ValidateManifest>
   </PropertyGroup>
 
-  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
-  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
-
-  <Target Name="BeforeBuild">
-    <MSBuild Projects="Microsoft.VisualStudio.Editors.swixproj" Targets="Build" />
-  </Target>
-
   <ItemGroup>
     <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.Editors.json" />
   </ItemGroup>
 
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
+  
   <Target Name="ValidateManifest" />
 </Project>

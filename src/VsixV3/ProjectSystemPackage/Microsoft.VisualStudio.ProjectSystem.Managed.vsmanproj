@@ -17,7 +17,6 @@
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
 
   <Target Name="BeforeBuild">
-    <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.swixproj" Targets="Build" />
     <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Targets="Build" />
   </Target>
 
