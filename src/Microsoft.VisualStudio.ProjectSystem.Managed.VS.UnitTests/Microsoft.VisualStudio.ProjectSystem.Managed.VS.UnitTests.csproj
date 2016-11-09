@@ -54,6 +54,7 @@
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
+    <Compile Include="Mocks\IExportFactoryMock.cs" />
     <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />

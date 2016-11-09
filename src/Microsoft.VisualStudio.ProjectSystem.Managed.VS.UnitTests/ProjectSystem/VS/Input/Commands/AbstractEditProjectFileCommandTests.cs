@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -264,7 +266,8 @@ Root (flags: {ProjectRoot})
             ITextDocumentFactoryService textDocumentService = null,
             IVsEditorAdaptersFactoryService editorAdapterService = null,
             IProjectThreadingService threadingService = null,
-            IVsShellUtilitiesHelper shellUtilities = null
+            IVsShellUtilitiesHelper shellUtilities = null,
+            IExportFactory<MsBuildModelWatcher> watcherFactory = null
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
@@ -278,7 +281,8 @@ Root (flags: {ProjectRoot})
             var shellUt = shellUtilities ?? new TestShellUtilitiesHelper(
                 (sp, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
                 (sp, path, edType, logView) => IVsWindowFrameFactory.Create());
-            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt);
+            var wFact = watcherFactory ?? IExportFactoryMock.CreateInstance<MsBuildModelWatcher>();
+            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt, wFact);
         }
 
         private Func<string, bool> CapabilityChecker(bool result)
@@ -305,9 +309,10 @@ Root (flags: {ProjectRoot})
             ITextDocumentFactoryService textDocumentService,
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
-            IVsShellUtilitiesHelper shellUtilities) :
+            IVsShellUtilitiesHelper shellUtilities,
+            IExportFactory<MsBuildModelWatcher> watcherFactory) :
             base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor,
-                fileSystem, textDocumentService, editorFactoryService, threadingService, shellUtilities)
+                fileSystem, textDocumentService, editorFactoryService, threadingService, shellUtilities, watcherFactory)
         {
         }
 

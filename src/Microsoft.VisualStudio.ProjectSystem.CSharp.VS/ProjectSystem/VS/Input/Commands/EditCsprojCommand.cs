@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -23,9 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ITextDocumentFactoryService textDocumentService,
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
-            IVsShellUtilitiesHelper shellHelper) :
+            IVsShellUtilitiesHelper shellHelper,
+            IExportFactory<MsBuildModelWatcher> watcherFactory) :
             base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor, fileSystem,
-                textDocumentService, editorFactoryService, threadingService, shellHelper)
+                textDocumentService, editorFactoryService, threadingService, shellHelper, watcherFactory)
         {
         }
 
