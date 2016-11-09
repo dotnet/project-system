@@ -381,8 +381,8 @@
 
        ==================================================================================== -->
 
-  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)')" />  
-  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VSToolsPath)')" /> 
+  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets')" />  
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" /> 
 
   <!-- ====================================================================================
 
