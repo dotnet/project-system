@@ -118,12 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         SelectedDebugProfile.CommandName = _selectedLaunchType.CommandName;
                         if (_selectedLaunchType.CommandName == ProfileCommandNames.Executable)
                         {
-                            ExecutablePath = String.Empty;
-                        }
-                        else if (_selectedLaunchType.CommandName == ProfileCommandNames.IISExpress)
-                        {
-                            ExecutablePath = String.Empty;
-                            HasLaunchOption = true;
+                            if (ExecutablePath == null)
+                            {
+                                ExecutablePath = String.Empty;
+                            }
                         }
                         else
                         {
