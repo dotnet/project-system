@@ -18,12 +18,12 @@
     <ValidateManifest>false</ValidateManifest>
   </PropertyGroup>
 
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
+
   <ItemGroup>
     <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.Editors.json" />
   </ItemGroup>
-
-  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
-  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
   
   <Target Name="ValidateManifest" />
 </Project>
