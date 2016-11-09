@@ -44,11 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 PushIgnoreEvents();
             }
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             if (suppressInvalidation)
             {
                 PopIgnoreEvents();

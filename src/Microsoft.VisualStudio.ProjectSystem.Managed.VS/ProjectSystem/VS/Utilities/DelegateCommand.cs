@@ -40,10 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public void RaiseCanExecuteChanged()
         {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
