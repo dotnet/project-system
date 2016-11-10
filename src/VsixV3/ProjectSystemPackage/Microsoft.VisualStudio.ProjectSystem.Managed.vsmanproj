@@ -20,7 +20,7 @@
     <ItemGroup>
       <ProjectSystemVsixFilesToCopy Include="$(OutDir)\EDDCB5BE-3C18-444E-8E50-AE06CD345872.json;$(OutDir)\ProjectSystem.vsix" />
     </ItemGroup>
-    <Copy SourceFiles="@ProjectSystemVsixFilesToCopy" DestinationFolder="$(OutputPath)" />
+    <Copy SourceFiles="@(ProjectSystemVsixFilesToCopy)" DestinationFolder="$(OutputPath)" />
 
     <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Targets="Build" />
   </Target>
