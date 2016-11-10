@@ -22,11 +22,14 @@
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
 
   <Target Name="BeforeBuild">
-    <MSBuild Projects="Microsoft.VisualStudio.Editors.swixproj" Targets="Build" />
+    <ItemGroup>
+      <VisualStudioEditorsSetupVsixFilesToCopy Include="$(OutDir)\F6B5EACA-7FA1-4591-8D40-A38234763621.json;$(OutDir)\VisualStudioEditorsSetup.vsix" />
+    </ItemGroup>
+    <Copy SourceFiles="@(VisualStudioEditorsSetupVsixFilesToCopy)" DestinationFolder="$(OutputPath)" />
   </Target>
 
   <ItemGroup>
-    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.Editors.json" />
+    <MergeManifest Include="$(OutputPath)\F6B5EACA-7FA1-4591-8D40-A38234763621.json" />
   </ItemGroup>
 
   <Target Name="ValidateManifest" />

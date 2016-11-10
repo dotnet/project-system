@@ -25,6 +25,7 @@
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProducingSignedVsix>true</ProducingSignedVsix>
+    <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>

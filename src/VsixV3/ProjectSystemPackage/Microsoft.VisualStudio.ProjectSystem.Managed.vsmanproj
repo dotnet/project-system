@@ -17,12 +17,16 @@
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
 
   <Target Name="BeforeBuild">
-    <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.swixproj" Targets="Build" />
+    <ItemGroup>
+      <ProjectSystemVsixFilesToCopy Include="$(OutDir)\EDDCB5BE-3C18-444E-8E50-AE06CD345872.json;$(OutDir)\ProjectSystem.vsix" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ProjectSystemVsixFilesToCopy)" DestinationFolder="$(OutputPath)" />
+
     <MSBuild Projects="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Targets="Build" />
   </Target>
 
   <ItemGroup>
-    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.ProjectSystem.Managed.json" />
+    <MergeManifest Include="$(OutputPath)\EDDCB5BE-3C18-444E-8E50-AE06CD345872.json" />
     <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.json" />
   </ItemGroup>
 
