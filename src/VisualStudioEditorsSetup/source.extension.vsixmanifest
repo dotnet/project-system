@@ -18,6 +18,9 @@
       <Action Type="Ngen" Path="Microsoft.VisualStudio.AppDesigner.dll" />
     </Actions>
   </Installer>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />   
+  </Prerequisites>  
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
   </Dependencies>

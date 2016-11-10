@@ -17,9 +17,9 @@ def branch = GithubBranchName
                 // Indicates that a batch script should be run with the build string (see above)
                 // Also available is:
                 // shell (for unix scripting)
-                batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+                batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
 build.cmd /${configuration.toLowerCase()}""")
             }
@@ -31,7 +31,7 @@ build.cmd /${configuration.toLowerCase()}""")
         archiveSettings.setFailIfNothingArchived()
         archiveSettings.setArchiveOnFailure()
         Utilities.addArchival(newJob, archiveSettings)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-preview5')
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-rc')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
@@ -54,16 +54,16 @@ def newVsiJob = job(newVsiJobName) {
     // This opens the set of build steps that will be run.
     steps {
         // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
-        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
 build.cmd /release""")
 
         // Build roslyn-internal and run netcore VSI tao tests.
-        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\VS15Preview\\VSSDK\\
+        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
 pushd %WORKSPACE%\\roslyn-internal
 git submodule init

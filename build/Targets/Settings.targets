@@ -104,6 +104,12 @@
     </Otherwise>
   </Choose>
 
+  <PropertyGroup>
+    <VisualStudioBuildToolsNuGetPackagePath>$(NuGetPackageRoot)\Microsoft.VSSDK.BuildTools\15.0.25907-RC2</VisualStudioBuildToolsNuGetPackagePath>
+  </PropertyGroup>
+  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props"
+          Condition="'$(OS)' == 'Windows_NT' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.props')" />
+
   <!-- Build reliability -->
   <PropertyGroup>
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)' == ''">true</OverwriteReadOnlyFiles>
