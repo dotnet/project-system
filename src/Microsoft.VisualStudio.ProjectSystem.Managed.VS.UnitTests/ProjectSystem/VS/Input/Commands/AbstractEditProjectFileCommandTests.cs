@@ -142,7 +142,7 @@ Root (flags: {ProjectRoot})
             Assert.NotNull(notifier);
 
             // Verify that the model watcher was correctly initialized
-            Mock.Get(modelWatcher).Verify(m => m.Initialize(tempProjFile));
+            Mock.Get(modelWatcher).Verify(m => m.InitializeAsync(tempProjFile), Times.Once);
             Mock.Get(modelWatcher).Verify(m => m.Dispose(), Times.Never);
 
             // Now see if the event correctly saved the text from the buffer into the project file
