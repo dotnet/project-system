@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     [Export(typeof(IMsBuildModelWatcher))]
     internal class MsBuildModelWatcher : OnceInitializedOnceDisposedAsync, IMsBuildModelWatcher
     {
-        private readonly IProjectThreadingService _threadingService;
         private readonly IFileSystem _fileSystem;
         private readonly IMsBuildAccessor _accessor;
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -23,16 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             UnconfiguredProject unconfiguredProject) :
             base(threadingService.JoinableTaskContext)
         {
-            _threadingService = threadingService;
             _fileSystem = fileSystem;
             _accessor = accessor;
             _unconfiguredProject = unconfiguredProject;
         }
 
-        public void Initialize(string tempFile)
+        public async Task InitializeAsync(string tempFile)
         {
             _tempFile = tempFile;
-            _threadingService.ExecuteSynchronously(() => InitializeAsync());
+            await InitializeAsync().ConfigureAwait(false);
         }
 
         public void ProjectXmlHandler(object sender, ProjectXmlChangedEventArgs args)

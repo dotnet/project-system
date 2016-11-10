@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 using HandlerCallback = System.EventHandler<Microsoft.Build.Evaluation.ProjectXmlChangedEventArgs>;
 
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     public class MsBuildModelWatcherTests
     {
         [Fact]
-        public void MsBuildModelWatcher_InitializeAsync_SetsUpSubscription()
+        public async Task MsBuildModelWatcher_InitializeAsync_SetsUpSubscription()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var fileSystem = new IFileSystemMock();
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
 
-            watcher.Initialize(@"C:\Test\Test.proj");
+            await watcher.InitializeAsync(@"C:\Test\Test.proj");
 
             Assert.NotNull(subscription);
             Assert.Equal(watcher.ProjectXmlHandler, subscription);
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void MsBuildModelWatcher_HandlerCalled_WritesNewXmlToDisk()
+        public async Task MsBuildModelWatcher_HandlerCalled_WritesNewXmlToDisk()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var fileSystem = new IFileSystemMock();
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var project = IUnconfiguredProjectFactory.Create();
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
-            watcher.Initialize(file);
+            await watcher.InitializeAsync(file);
 
             Assert.NotNull(subscription);
             watcher.XmlHandler(xml);
@@ -50,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void MsBuildModelWatcher_Dispose_CallsUnsubscribe()
+        public async Task MsBuildModelWatcher_Dispose_CallsUnsubscribe()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var fileSystem = new IFileSystemMock();
@@ -63,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var project = IUnconfiguredProjectFactory.Create();
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
-            watcher.Initialize(file);
+            await watcher.InitializeAsync(file);
 
             Assert.NotNull(subscription);
             watcher.XmlHandler(xml);

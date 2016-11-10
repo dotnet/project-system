@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, projPath, XmlEditorFactoryGuid, Guid.Empty);
 
             IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
-            watcher.Initialize(projPath);
+            await watcher.InitializeAsync(projPath).ConfigureAwait(true);
 
             // When the document is closed, clean up the file on disk
             var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem, watcher);
