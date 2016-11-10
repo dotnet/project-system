@@ -51,6 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            // TODO: We should instead subscribe to the CPS ReleasingWriteLock events.
+            // https://github.com/dotnet/roslyn-project-system/issues/738
             await _accessor.SubscribeProjectXmlChangedEventAsync(_unconfiguredProject, ProjectXmlHandler).ConfigureAwait(false);
         }
 
