@@ -118,12 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         SelectedDebugProfile.CommandName = _selectedLaunchType.CommandName;
                         if (_selectedLaunchType.CommandName == ProfileCommandNames.Executable)
                         {
-                            ExecutablePath = String.Empty;
-                        }
-                        else if (_selectedLaunchType.CommandName == ProfileCommandNames.IISExpress)
-                        {
-                            ExecutablePath = String.Empty;
-                            HasLaunchOption = true;
+                            if (ExecutablePath == null)
+                            {
+                                ExecutablePath = String.Empty;
+                            }
                         }
                         else
                         {
@@ -697,7 +695,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         using (var dialog = new System.Windows.Forms.OpenFileDialog())
                         {
                             var file = ExecutablePath;
-                            if (Path.IsPathRooted(file))
+                            if ((file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
                             {
                                 dialog.InitialDirectory = Path.GetDirectoryName(file);
                                 dialog.FileName = file;
