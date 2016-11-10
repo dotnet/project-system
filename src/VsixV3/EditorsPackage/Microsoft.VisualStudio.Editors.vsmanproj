@@ -31,6 +31,6 @@
   <ItemGroup>
     <MergeManifest Include="$(OutputPath)\F6B5EACA-7FA1-4591-8D40-A38234763621.json" />
   </ItemGroup>
-  
+
   <Target Name="ValidateManifest" />
 </Project>

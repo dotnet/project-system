@@ -26,7 +26,6 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <UseCodebase>true</UseCodebase>
     <Nonshipping>true</Nonshipping>
-    <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
