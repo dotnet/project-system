@@ -21,6 +21,9 @@
                     ReadOnly="True"
                     DisplayName="Version"
                     Description="Version of dependency.">
+        <StringProperty.DataSource>
+            <DataSource PersistenceStyle="Attribute" />
+        </StringProperty.DataSource>
     </StringProperty>
 
     <StringProperty Name="IncludeAssets" 
