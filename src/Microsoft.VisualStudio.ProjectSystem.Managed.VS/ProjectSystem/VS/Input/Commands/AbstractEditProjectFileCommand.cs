@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
+        private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
 
         public AbstractEditProjectFileCommand(UnconfiguredProject unconfiguredProject,
             IProjectCapabilitiesService projectCapabilitiesService,
@@ -35,7 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ITextDocumentFactoryService textDocumentService,
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
-            IVsShellUtilitiesHelper shellUtilities)
+            IVsShellUtilitiesHelper shellUtilities,
+            IExportFactory<IMsBuildModelWatcher> watcherFactory)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectCapabiltiesService = projectCapabilitiesService;
@@ -46,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _editorFactoryService = editorFactoryService;
             _threadingService = threadingService;
             _shellUtilities = shellUtilities;
+            _watcherFactory = watcherFactory;
         }
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus) =>
@@ -65,8 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, projPath, XmlEditorFactoryGuid, Guid.Empty);
 
+            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
+            await watcher.InitializeAsync(projPath).ConfigureAwait(true);
+
             // When the document is closed, clean up the file on disk
-            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem);
+            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem, watcher);
             Verify.HResult(frame.SetProperty((int)__VSFPROPID.VSFPROPID_ViewHelper, fileCleanupListener));
 
             // Ensure that the window is not reopened when the solution is closed
@@ -111,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private async Task<string> GetFileAsync(string projectFileName)
         {
-            string projectXml = await _msbuildAccessor.GetProjectXml(_unconfiguredProject).ConfigureAwait(false);
+            string projectXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
             string tempDirectory = _fileSystem.GetTempFileName();
             _fileSystem.CreateDirectory(tempDirectory);
             var tempFileName = $"{tempDirectory}\\{projectFileName}";

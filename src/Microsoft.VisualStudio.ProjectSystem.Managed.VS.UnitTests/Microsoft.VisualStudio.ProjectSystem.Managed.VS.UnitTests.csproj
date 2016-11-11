@@ -49,11 +49,13 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Mocks\DteFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
+    <Compile Include="Mocks\IExportFactoryMock.cs" />
     <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
+    <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />

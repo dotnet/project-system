@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -121,7 +123,10 @@ Root (flags: {ProjectRoot})
                 return VSConstants.S_OK;
             });
 
-            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame);
+            var modelWatcher = IMsBuildModelWatcherFactory.CreateInstance();
+            var modelWatcherFactory = IExportFactoryFactory.ImplementCreateValue(() => modelWatcher);
+
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, modelWatcherFactory);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -136,16 +141,24 @@ Root (flags: {ProjectRoot})
             Assert.True(listenerSet);
             Assert.NotNull(notifier);
 
+            // Verify that the model watcher was correctly initialized
+            Mock.Get(modelWatcher).Verify(m => m.InitializeAsync(tempProjFile), Times.Once);
+            Mock.Get(modelWatcher).Verify(m => m.Dispose(), Times.Never);
+
             // Now see if the event correctly saved the text from the buffer into the project file
             var args = new TextDocumentFileActionEventArgs(tempProjFile, DateTime.Now, FileActionTypes.ContentSavedToDisk);
             Mock.Get(textDoc).Raise(t => t.FileActionOccurred += null, args);
             Assert.Equal(projectXml, fileSystem.ReadAllText(projectPath));
+            Mock.Get(modelWatcher).Verify(m => m.Dispose(), Times.Never);
 
             // Finally, ensure the cleanup works as expected. We don't do anything with the passed option. The notifier
             // should remove the file temp file from the filesystem.
             Assert.Equal(VSConstants.S_OK, notifier.OnClose(0));
             Assert.False(fileSystem.DirectoryExists(tempDirectory));
             Assert.False(fileSystem.FileExists(tempProjFile));
+
+            // Verify that dispose was called on the model watcher when the window was closed
+            Mock.Get(modelWatcher).Verify(m => m.Dispose(), Times.Once);
         }
 
         [Theory]
@@ -161,8 +174,9 @@ Root (flags: {ProjectRoot})
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
             var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (prop, obj) => VSConstants.S_OK);
+            var exportFactory = IExportFactoryFactory.ImplementCreateValue(() => IMsBuildModelWatcherFactory.CreateInstance());
 
-            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame);
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, exportFactory);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -222,7 +236,7 @@ Root (flags: {ProjectRoot})
         }
 
         private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile,
-            IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame)
+            IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame, IExportFactory<IMsBuildModelWatcher> watcherFactory = null)
         {
             fileSystem.SetTempFile(tempPath);
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -245,7 +259,7 @@ Root (flags: {ProjectRoot})
             Mock.Get(textDoc).SetupGet(t => t.TextBuffer).Returns(textBuffer);
             var textDocFactory = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDoc, true);
 
-            var msbuildAccessor = IMsBuildAccessorFactory.Implement(projectXml, async (writeLock, callback) =>
+            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlRunLocked(projectXml, async (writeLock, callback) =>
             {
                 await callback();
                 Assert.True(writeLock);
@@ -253,7 +267,8 @@ Root (flags: {ProjectRoot})
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            return CreateInstance(unconfiguredProject, true, msbuildAccessor, fileSystem, textDocFactory, editorFactoryService, threadingService, shellUtilities);
+            return CreateInstance(unconfiguredProject, true, msbuildAccessor, fileSystem, textDocFactory,
+                editorFactoryService, threadingService, shellUtilities, watcherFactory);
         }
 
         private EditProjectFileCommand CreateInstance(
@@ -264,7 +279,8 @@ Root (flags: {ProjectRoot})
             ITextDocumentFactoryService textDocumentService = null,
             IVsEditorAdaptersFactoryService editorAdapterService = null,
             IProjectThreadingService threadingService = null,
-            IVsShellUtilitiesHelper shellUtilities = null
+            IVsShellUtilitiesHelper shellUtilities = null,
+            IExportFactory<IMsBuildModelWatcher> watcherFactory = null
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
@@ -278,7 +294,8 @@ Root (flags: {ProjectRoot})
             var shellUt = shellUtilities ?? new TestShellUtilitiesHelper(
                 (sp, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
                 (sp, path, edType, logView) => IVsWindowFrameFactory.Create());
-            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt);
+            var wFact = watcherFactory ?? IExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
+            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt, wFact);
         }
 
         private Func<string, bool> CapabilityChecker(bool result)
@@ -305,9 +322,10 @@ Root (flags: {ProjectRoot})
             ITextDocumentFactoryService textDocumentService,
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
-            IVsShellUtilitiesHelper shellUtilities) :
+            IVsShellUtilitiesHelper shellUtilities,
+            IExportFactory<IMsBuildModelWatcher> watcherFactory) :
             base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor,
-                fileSystem, textDocumentService, editorFactoryService, threadingService, shellUtilities)
+                fileSystem, textDocumentService, editorFactoryService, threadingService, shellUtilities, watcherFactory)
         {
         }
 
