@@ -112,9 +112,11 @@ static void addVsiMultiScm(def myJob, def project) {
             git {
                 remote {
                     url('https://github.com/dotnet/roslyn-internal')
-                    credentials('efd43e00-50a0-4247-8664-15f7fac9713d')
+                    credentials('dotnet-bot-private-repo-token')
                 }
-                relativeTargetDir('roslyn-internal')
+                extensions {
+                    relativeTargetDirectory('roslyn-internal')
+                }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
                 branch('8b317590243b3d567687a4204833fe3631970a9d')
