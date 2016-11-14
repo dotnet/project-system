@@ -18,6 +18,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_languageVersion_DisplayNameFor5 As String = "C# 5.0"
         Private Const s_languageVersion_6 As String = "6"
         Private Const s_languageVersion_DisplayNameFor6 As String = "C# 6.0"
+        Private Const s_languageVersion_7 As String = "7"
+        Private Const s_languageVersion_DisplayNameFor7 As String = "C# 7.0"
 
         ''' <summary>
         ''' Stores the property value corresponding to the language version
@@ -125,6 +127,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
+        ''' <summary>
+        ''' Return the C# 7.0 language version object
+        ''' </summary>
+        Public Shared ReadOnly Property Version7() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(s_languageVersion_7, s_languageVersion_DisplayNameFor7)
+                Return value
+            End Get
+        End Property
     End Class
 
 End Namespace
