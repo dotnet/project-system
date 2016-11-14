@@ -161,10 +161,10 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
     <value>Reload A_ll</value>
   </data>
   <data name="RenameSymbolFailed" xml:space="preserve">
-    <value>Renaming the code element {0} failed.</value>
+    <value>Renaming the code element '{0}' failed.</value>
   </data>
   <data name="RenameSymbolPrompt" xml:space="preserve">
-    <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element {0}?</value>
+    <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</value>
   </data>
   <data name="SaveAs" xml:space="preserve">
     <value>_Save As</value>

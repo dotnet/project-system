@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName)
         {
-            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldFileName, newFileName).ConfigureAwait(false);
+            string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
+            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName).ConfigureAwait(false);
             if (renamedSolution == null)
                 return;
 
@@ -37,18 +38,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             if (!renamedSolutionApplied)
             {
-                string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldFileName);
+                string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldNameBase);
                 await _threadingService.SwitchToUIThread();
                 _userNotificationServices.NotifyFailure(failureMessage);
             }
         }
 
-        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldFileName, string newFileName)
+        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName)
         {
             var project = myNewProject;
             Solution renamedSolution = null;
-            string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
-
+            
             while (project != null)
             {
                 var newDocument = GetDocument(project, newFileName);
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (symbol == null)
                     return renamedSolution;
 
-                bool userConfirmed = await CheckUserConfirmation(oldFileName).ConfigureAwait(false);
+                bool userConfirmed = await CheckUserConfirmation(oldNameBase).ConfigureAwait(false);
                 if (!userConfirmed)
                     return renamedSolution;
 

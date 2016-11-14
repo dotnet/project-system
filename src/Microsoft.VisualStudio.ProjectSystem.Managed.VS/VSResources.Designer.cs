@@ -406,7 +406,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Renaming the code element {0} failed..
+        ///   Looks up a localized string similar to Renaming the code element &apos;{0}&apos; failed..
         /// </summary>
         internal static string RenameSymbolFailed {
             get {
@@ -415,7 +415,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are renaming a file. Would you also like to perform a rename in this project of all references to the code element {0}?.
+        ///   Looks up a localized string similar to You are renaming a file. Would you also like to perform a rename in this project of all references to the code element &apos;{0}&apos;?.
         /// </summary>
         internal static string RenameSymbolPrompt {
             get {
