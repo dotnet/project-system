@@ -11,7 +11,7 @@
       "exclude": "build"
     }, 
     "Microsoft.VSSDK.BuildTools": { 
-      "version": "15.0.25907-RC2", 
+      "version": "15.0.25914-RC2", 
       "exclude": "build" 
      }
   },
