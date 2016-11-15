@@ -5,6 +5,7 @@
     <DisplayName>VisualStudio Editors </DisplayName>
     <Description>Microsoft VisualStudio Editors</Description>
     <ShortcutPath>..\CommonExtensions\Microsoft\VisualStudio\Editors</ShortcutPath>
+    <PackageId>Microsoft.VisualStudio.Editors</PackageId>
   </Metadata>
   <Installation SystemComponent="true" >
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.Pro" />
