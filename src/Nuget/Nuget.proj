@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ImportGroup>
+     <Import Project="..\..\build\Targets\Settings.targets" />
+     <Import Project="..\..\build\Targets\VSL.Versions.targets" />
+   </ImportGroup>
+
+   <PropertyGroup>
+     <NuGetOutDir>$(OutDir)NugetPackages\</NuGetOutDir>
+   </PropertyGroup>
+
+   <ItemGroup>
+     <NuSpec Include="Editors\Microsoft.VisualStudio.Editors.nuspec">
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+     </NuSpec>
+     <!--
+     <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.ProjectSystem.nuspec">
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(RoslynNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+     </NuSpec>
+
+     -->
+
+     <!-- Make note, without actually knowing what's included in the NuSpec, 
+          we just assume that everything in the output dir is, and treat them
+          as inputs so that we rerun packaging if they change. 
+          Long term we'll want to use a packaging project, such as NuProj where 
+          the NuSpec is auto-generated based on the inputs. -->
+     <PackageAssets Include="$(OutDir)\*.*" Exclude="*.log" />
+   </ItemGroup>
+
+   <Target Name="Build" Inputs="@(NuSpec);@(PackageAssets)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
+
+     <MakeDir Directories="$(NuGetOutDir)" />
+
+     <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; %(NuSpec.NuGetArguments)" />
+   </Target>
+
+   <Target Name="Clean">
+     <Delete Files="%(NuSpec.NuPkgOutput)" />
+   </Target>
+
+   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+   <Target Name="LogOutput">
+     <Message Importance="High" Text="%(NuSpec.Identity) -> %(NuSpec.NuPkgOutput)'" />
+   </Target>
+
+ </Project>

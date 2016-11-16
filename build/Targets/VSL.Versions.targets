@@ -56,10 +56,10 @@
 
     <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-beta1</RoslynNuGetPreReleaseVersion>
     <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
-    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(RoslynNuGetPerBuildPreReleaseVersion)' == ''">1.0.0.0</RoslynNuGetPerBuildPreReleaseVersion>
+    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(RoslynNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-beta1</RoslynNuGetPerBuildPreReleaseVersion>
     <VSNuGetPreReleaseVersion>$(VSSemanticVersion)-beta1</VSNuGetPreReleaseVersion>
     <VSNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(VSNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</VSNuGetPerBuildPreReleaseVersion>
-    <VSNuGetPerBuildPreReleaseVersion Condition="'$(VSNuGetPerBuildPreReleaseVersion)' == ''">1.0.0.0</VSNuGetPerBuildPreReleaseVersion>
+    <VSNuGetPerBuildPreReleaseVersion Condition="'$(VSNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-beta1</VSNuGetPerBuildPreReleaseVersion>
   </PropertyGroup>
   
 </Project>
