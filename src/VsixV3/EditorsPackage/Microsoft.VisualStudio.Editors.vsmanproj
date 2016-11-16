@@ -23,13 +23,13 @@
 
   <Target Name="BeforeBuild">
     <ItemGroup>
-      <VisualStudioEditorsSetupVsixFilesToCopy Include="$(OutDir)\F6B5EACA-7FA1-4591-8D40-A38234763621.json;$(OutDir)\VisualStudioEditorsSetup.vsix" />
+      <VisualStudioEditorsSetupVsixFilesToCopy Include="$(OutDir)\Microsoft.VisualStudio.Editors.json;$(OutDir)\VisualStudioEditorsSetup.vsix" />
     </ItemGroup>
     <Copy SourceFiles="@(VisualStudioEditorsSetupVsixFilesToCopy)" DestinationFolder="$(OutputPath)" />
   </Target>
 
   <ItemGroup>
-    <MergeManifest Include="$(OutputPath)\F6B5EACA-7FA1-4591-8D40-A38234763621.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.Editors.json" />
   </ItemGroup>
 
   <Target Name="ValidateManifest" />
