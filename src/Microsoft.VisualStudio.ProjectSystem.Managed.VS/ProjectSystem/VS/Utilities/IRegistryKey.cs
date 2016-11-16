@@ -8,8 +8,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         IRegistryKey OpenSubKey(string key, bool writable);
         string[] GetSubKeyNames();
         string[] GetValueNames();
-        T GetValue<T>(string key) where T : class;
-        T GetValue<T>(string key, T defaultValue);
+        object GetValue(string key);
+        object GetValue(string key, object defaultValue);
+    }
+
+    internal static class IRegistryKeyExtensions
+    {
+        public static T GetValue<T>(this IRegistryKey reg, string key)
+        {
+            return (T)reg.GetValue(key);
+        }
+
+        public static T GetValue<T>(this IRegistryKey reg, string key, T defaultValue)
+        {
+            return (T)reg.GetValue(key, defaultValue);
+        }
     }
 
     internal class RegistryKeyWrapper : IRegistryKey
@@ -36,14 +49,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return _wrappedKey.GetValueNames();
         }
 
-        public T GetValue<T>(string key) where T : class
+        public object GetValue(string key)
         {
-            return (T)_wrappedKey.GetValue(key);
+            return _wrappedKey.GetValue(key);
         }
 
-        public T GetValue<T>(string key, T defaultValue)
+        public object GetValue(string key, object defaultValue)
         {
-            return (T)_wrappedKey.GetValue(key, defaultValue);
+            return _wrappedKey.GetValue(key, defaultValue);
         }
 
         public void Dispose()
