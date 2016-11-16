@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\VisualBasicIVsSingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\EditVbprojCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="ProjectSystem\VS\VisualBasicProjectCompatibilityProvider.cs" />
