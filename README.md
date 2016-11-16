@@ -2,7 +2,7 @@
 
 |Debug|Release|
 |:--:|:--:|
-|[![Build Status](http://dotnet-ci.cloudapp.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/badge/icon)](http://dotnet-ci.cloudapp.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/)|[![Build Status](http://dotnet-ci.cloudapp.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/badge/icon)](http://dotnet-ci.cloudapp.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/)|
+|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/)|
 
 In the Visual Studio "15" timeframe, the C# and Visual Basic project systems will be rewritten on top of the new [Visual Studio Common Project System (CPS)](https://blogs.msdn.microsoft.com/visualstudio/2015/06/02/introducing-the-project-system-extensibility-preview/).
 
