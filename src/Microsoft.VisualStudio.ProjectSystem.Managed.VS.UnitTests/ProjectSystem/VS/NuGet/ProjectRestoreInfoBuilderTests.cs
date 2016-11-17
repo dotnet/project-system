@@ -167,6 +167,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
+        public void ProjectRestoreInfoBuilder_WithEmptyTargetFramework_ReturnsNull()
+        {
+            var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",            
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""NuGetRestore"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
+                   ""TargetFrameworks"": ""netcoreapp1.0"",
+                   ""TargetFramework"": """"
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        }
+    }
+}");
+            var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates);
+            Assert.Null(restoreInfo);
+        }
+
+        [Fact]
         public void ProjectRestoreInfoBuilder_WithTwoIdenticalUpdates_ReturnsSingleTFM()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(
