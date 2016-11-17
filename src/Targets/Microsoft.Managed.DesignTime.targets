@@ -41,11 +41,6 @@
       References capability, but everything else we want back.
     -->
     <ProjectCapability Include="
-                          AssemblyReferences;
-                          COMReferences;
-                          ProjectReferences;
-                          PackageReferences;
-                          SharedProjectReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
                           VisualStudioWellKnownOutputGroups;
