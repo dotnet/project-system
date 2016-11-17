@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class IRegistryKeyBuilder : IBuildableRegistry
     {
         private readonly IBuildableRegistry _parent;
-        private readonly IDictionary<string, Func<string, object>> _values = new Dictionary<string, Func<string, object>>();
+        private readonly IDictionary<string, Func<string, object, object>> _values = new Dictionary<string, Func<string, object, object>>();
         private readonly IDictionary<string, (IRegistryKeyBuilder key, bool writable)> _subKeys = new Dictionary<string, (IRegistryKeyBuilder, bool)>();
 
         internal IRegistryKeyBuilder(IBuildableRegistry parent)
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             _parent = parent;
         }
 
-        public IRegistryKeyBuilder SetValue(string key, Func<string, object> value)
+        public IRegistryKeyBuilder SetValue(string key, Func<string, object, object> value)
         {
             if (_values.ContainsKey(key)) throw new InvalidOperationException($"Key {key} already exists!");
             _values[key] = value;
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public IRegistryKeyBuilder SetValue(string key, object value)
         {
-            return SetValue(key, ignored => value);
+            return SetValue(key, (ignored1, ignored2) => value);
         }
 
         public IRegistryKeyBuilder CreateSubkey(string key, bool writable)
@@ -72,18 +72,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return subKey;
         }
 
-        public IVSRegistryHelper Build()
-        {
-            return _parent.Build();
-        }
+        public IVSRegistryHelper Build() => _parent.Build();
 
+        /// <summary>
+        /// Not intended for use outside of <see cref="IVSRegistryHelperBuilder"/>
+        /// </summary>
         internal IRegistryKey BuildInternal()
         {
             var mock = new Mock<IRegistryKey>();
             foreach (var value in _values)
             {
-                mock.Setup(r => r.GetValue(value.Key)).Returns(value.Value);
+                mock.Setup(r => r.GetValue(value.Key)).Returns<string>(arg => value.Value(arg, null));
+                mock.Setup(r => r.GetValue(value.Key, It.IsAny<object>())).Returns(value.Value);
             }
+
+            // If we're not mocking it, GetValue with default should return the default
+            mock.Setup(r => r.GetValue(It.IsNotIn<string>(_values.Keys), It.IsAny<object>())).Returns<string, object>((arg, def) => def);
 
             mock.Setup(r => r.GetValueNames()).Returns(_values.Keys.ToArray());
 

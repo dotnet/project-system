@@ -19,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public IVsSingleFileGeneratorFactoryAggregator(IServiceProvider serviceProvider, IVSRegistryHelper registryHelper)
         {
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(registryHelper, nameof(registryHelper));
             _serviceProvider = serviceProvider;
             _registryHelper = registryHelper;
         }
@@ -46,6 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pguidGenerator = Guid.Empty;
 
             var generatorKey = GetGeneratorKey(PackageGuid);
+            if (generatorKey == null)
+            {
+                return VSConstants.E_FAIL;
+            }
 
             if (!generatorKey.GetSubKeyNames().Contains(wszProgId))
             {
@@ -63,9 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pguidGenerator = Guid.Parse(progKey.GetValue<string>(CLSIDKey));
 
             // Explicitly convert anything that's not 1 to 0
-            pbGeneratesDesignTimeSource = progKey.GetValue(DesignTimeSourceKey, 0) == 1 ? 1 : 0;
-            pbGeneratesSharedDesignTimeSource = progKey.GetValue(SharedDesignTimeSourceKey, 0) == 1 ? 1 : 0;
-            pbUseTempPEFlag = progKey.GetValue(DesignTimeCompilationFlagKey, 0) == 1 ? 1 : 0;
+            pbGeneratesDesignTimeSource = progKey.GetValue<int>(DesignTimeSourceKey, 0) == 1 ? 1 : 0;
+            pbGeneratesSharedDesignTimeSource = progKey.GetValue<int>(SharedDesignTimeSourceKey, 0) == 1 ? 1 : 0;
+            pbUseTempPEFlag = progKey.GetValue<int>(DesignTimeCompilationFlagKey, 0) == 1 ? 1 : 0;
 
             return VSConstants.S_OK;
         }
@@ -86,8 +92,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         private IRegistryKey GetGeneratorKey(Guid package)
         {
+            if (!_settingsRoot.GetSubKeyNames().Contains("Generators")) return null;
             var generatorKey = _settingsRoot.OpenSubKey("Generators", false);
-            return generatorKey.OpenSubKey(package.ToString("B").ToUpper(), false);
+            var packageString = package.ToString("B").ToUpper();
+            if (!generatorKey.GetSubKeyNames().Contains(packageString)) return null;
+            return generatorKey.OpenSubKey(packageString, false);
         }
 
         protected abstract Guid PackageGuid { get; }

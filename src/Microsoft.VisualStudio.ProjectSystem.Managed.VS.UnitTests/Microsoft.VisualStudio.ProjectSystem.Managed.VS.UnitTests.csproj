@@ -107,6 +107,7 @@
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\IVsSingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
