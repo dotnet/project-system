@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IVsSolutionRestoreService _solutionRestoreService;
         private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+        private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _evaluationSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
 
@@ -38,12 +39,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
+            IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _solutionRestoreService = solutionRestoreService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
+            _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
@@ -91,6 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private async Task ResetSubscriptions()
         {
+            // active configuration should be updated before resetting subscriptions
+            await RefreshActiveConfigurationAsync().ConfigureAwait(false);
+
             _evaluationSubscriptionLink?.Dispose();
 
             var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
@@ -112,6 +118,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 _evaluationSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
             }
+        }
+
+        private async Task RefreshActiveConfigurationAsync()
+        {
+            // Force refresh the CPS active project configuration (needs UI thread).
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+            await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync().ConfigureAwait(false);
         }
 
         private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
