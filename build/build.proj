@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
-    <NuGetProjectFile Include="$(RepositoryRootDirectory)src\Nugets\Nuget.proj" />
+    <NuGetProjectFile Include="$(RepositoryRootDirectory)src\Nuget\Nuget.proj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>

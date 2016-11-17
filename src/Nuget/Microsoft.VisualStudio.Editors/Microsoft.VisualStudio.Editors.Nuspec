@@ -12,15 +12,9 @@
     <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
     <dependencies>
       <dependency id="Microsoft.VisualStudio.AppDesigner" version="$version$" />
-      <dependency id="Microsoft.Composition" version="1.0.27" />
       <dependency id="System.Collections.Immutable" version="1.1.36" />
-      <dependency id="Newtonsoft.Json" version="8.0.3" />
       <dependency id="System.Reflection.Metadata" version="1.2.0" />
-      <dependency id="Microsoft.Build" version="15.1.262-preview5" />
-      <dependency id="Microsoft.Build.Framework" version="15.1.262-preview5" />
-      <dependency id="Microsoft.Build.Utilities.Core" version="15.1.262-preview5" />
       <dependency id="Microsoft.Build.Tasks.Core" version="15.1.262-preview5" />
-      <dependency id="Microsoft.Build.Engine" version="15.1.262-preview5" />
       <dependency id="Microsoft.VisualStudio.LanguageServices" version="2.0.0-beta5-60909-09" />
       <dependency id="Microsoft.VisualStudio.Designer.Interfaces" version="1.1.4322" />
       <dependency id="Microsoft.VisualStudio.ManagedInterfaces" version="8.0.50727" />
@@ -39,7 +33,6 @@
       <dependency id="Microsoft.VisualStudio.ImageCatalog" version="15.0.25123-Dev15Preview" />
       <dependency id="Microsoft.VisualStudio.Shell.Design" version="15.0.25123-Dev15Preview" />
       <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.25123-Dev15Preview" />
-      <dependency id="RoslynDependencies.Microsoft.VisualStudio.GraphModel"  version="15.0.25807" />
       <dependency id="Microsoft.VisualStudio.Telemetry" version="15.0.691-master31907920" exclude="build"/>
     </dependencies>
   </metadata>

@@ -10,17 +10,18 @@
    </PropertyGroup>
 
    <ItemGroup>
-     <NuSpec Include="Editors\Microsoft.VisualStudio.Editors.nuspec">
+     <NuSpec Include="Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.nuspec">
        <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
        <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
      </NuSpec>
-     <!--
-     <NuSpec Include="VS.ExternalAPIs.Microsoft.VisualStudio.ProjectSystem.nuspec">
+     <NuSpec Include="Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.nuspec">
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+     </NuSpec>
+     <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.nuspec">
        <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
        <NuGetArguments>-Version "$(RoslynNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
      </NuSpec>
-
-     -->
 
      <!-- Make note, without actually knowing what's included in the NuSpec, 
           we just assume that everything in the output dir is, and treat them
