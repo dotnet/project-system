@@ -55,7 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var parentId = parentNode.GetHierarchyId();
                 var result = new VSADDRESULT[1];
-                _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, 0, new string[] { templateFilePath }, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
+                var files = new string[] { templateFilePath };
+                _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, (uint)files.Length, files, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)
                 {

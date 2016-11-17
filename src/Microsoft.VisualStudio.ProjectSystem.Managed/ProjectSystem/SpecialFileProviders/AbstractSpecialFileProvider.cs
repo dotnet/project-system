@@ -50,6 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         protected virtual bool CreatedByDefaultUnderAppDesignerFolder => true;
 
         /// <summary>
+        /// If true, and <see cref="CreatedByDefaultUnderAppDesignerFolder"/> is true,
+        /// then the file will be created in the root folder if the App Designer folder
+        /// doesn't exist.
+        /// </summary>
+        protected virtual bool FallBackIfNoAppDesignerFolder => true;
+
+        /// <summary>
         /// Gets the name of a special file.
         /// </summary>
         protected abstract string GetFileNameOfSpecialFile(SpecialFiles fileId);
@@ -199,12 +206,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
             IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
 
-            if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder)
+            if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder && !FallBackIfNoAppDesignerFolder)
             {
                 return null;
             }
 
-            var parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder : rootNode;
+            var parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder ?? rootNode : rootNode;
 
             bool fileCreated = false;
 
