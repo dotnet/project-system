@@ -1,11 +1,16 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    internal abstract class IVsSingleFileGeneratorFactoryAggregator : OnceInitializedOnceDisposed, IVsSingleFileGeneratorFactory
+    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [ComServiceIid(typeof(IVsSingleFileGeneratorFactory))]
+    internal class SingleFileGeneratorFactoryAggregator : OnceInitializedOnceDisposed, IVsSingleFileGeneratorFactory
     {
         // Constants for the generator information registry keys
         private const string CLSIDKey = "CLSID";
@@ -15,26 +20,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         private readonly IServiceProvider _serviceProvider;
         private readonly IVSRegistryHelper _registryHelper;
+        private readonly IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
         private IRegistryKey _settingsRoot;
 
-        public IVsSingleFileGeneratorFactoryAggregator(IServiceProvider serviceProvider, IVSRegistryHelper registryHelper)
+        [ImportingConstructor]
+        public SingleFileGeneratorFactoryAggregator([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+            IVsUnconfiguredProjectIntegrationService projectIntegrationService,
+            IVSRegistryHelper registryHelper)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(projectIntegrationService, nameof(projectIntegrationService));
             Requires.NotNull(registryHelper, nameof(registryHelper));
             _serviceProvider = serviceProvider;
+            _projectIntegrationService = projectIntegrationService;
             _registryHelper = registryHelper;
         }
 
         public int CreateGeneratorInstance(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out IVsSingleFileGenerator ppGenerate)
         {
             // The only user in the project system does not call this method.
-            throw new NotImplementedException();
+            pbGeneratesDesignTimeSource = 0;
+            pbGeneratesSharedDesignTimeSource = 0;
+            pbUseTempPEFlag = 0;
+            ppGenerate = null;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int GetDefaultGenerator(string wszFilename, out string pbstrGenProgID)
         {
             // The only user in the project system does not call this method.
-            throw new NotImplementedException();
+            pbstrGenProgID = null;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int GetGeneratorInformation(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out Guid pguidGenerator)
@@ -47,7 +63,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pbUseTempPEFlag = 0;
             pguidGenerator = Guid.Empty;
 
-            var generatorKey = GetGeneratorKey(PackageGuid);
+            // Get the guid of the project
+            UIThreadHelper.VerifyOnUIThread();
+            var projectGuid = _projectIntegrationService.ProjectTypeGuid;
+
+            if (projectGuid.Equals(Guid.Empty))
+            {
+                return VSConstants.E_FAIL;
+            }
+
+            var generatorKey = GetGeneratorKey(projectGuid);
             if (generatorKey == null)
             {
                 return VSConstants.E_FAIL;
@@ -94,11 +119,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             if (!_settingsRoot.GetSubKeyNames().Contains("Generators")) return null;
             var generatorKey = _settingsRoot.OpenSubKey("Generators", false);
-            var packageString = package.ToString("B").ToUpper();
-            if (!generatorKey.GetSubKeyNames().Contains(packageString)) return null;
-            return generatorKey.OpenSubKey(packageString, false);
+            var packageString = package.ToString("B");
+            var key = generatorKey.GetSubKeyNames().FirstOrDefault(genKey => genKey.Equals(packageString, StringComparison.OrdinalIgnoreCase));
+            return key != null ? generatorKey.OpenSubKey(key, false) : null;
         }
-
-        protected abstract Guid PackageGuid { get; }
     }
 }

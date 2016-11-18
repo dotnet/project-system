@@ -73,6 +73,7 @@
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
     <Compile Include="Mocks\IVSRegistryHelperBuilder.cs" />
+    <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
     <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
-    <Compile Include="ProjectSystem\VS\Generators\IVsSingleFileGeneratorFactoryAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
