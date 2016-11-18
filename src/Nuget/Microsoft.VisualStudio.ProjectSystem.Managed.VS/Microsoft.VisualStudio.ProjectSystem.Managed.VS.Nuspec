@@ -4,7 +4,7 @@
     <id>Microsoft.VisualStudio.ProjectSystem.Managed.VS</id>
     <summary>"Microsoft VisualStudio Managed Project System VS Components</summary>
     <description>
-      Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects which interact with VisualStudio interfaces
+      Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.
     </description>
     <language>en-US</language>
     <version>2.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->

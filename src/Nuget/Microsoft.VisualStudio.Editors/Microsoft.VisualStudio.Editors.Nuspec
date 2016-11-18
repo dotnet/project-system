@@ -4,7 +4,7 @@
     <id>Microsoft.VisualStudio.Editors</id>
     <summary>Editors implementation for Project Properties</summary>
     <description>
-      This is the editors implementation of the Project properties page in VisualStudio
+      Implementation of some designers and project property page editors in VisualStudio.
     </description>
     <language>en-US</language>
     <version>15.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->

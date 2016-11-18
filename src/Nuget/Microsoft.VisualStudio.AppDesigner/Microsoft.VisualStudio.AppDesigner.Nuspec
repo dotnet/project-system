@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.VisualStudio.AppDesigner</id>
-    <summary>AppDesigner implementation for Project Properties</summary>
+    <summary>AppDesigner designer host implementation for Visual Studio project property pages</summary>
     <description>
-      This is the AppDesigner implementation of the Project properties page in VisualStudio
+      This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio
     </description>
     <language>en-US</language>
     <version>15.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
