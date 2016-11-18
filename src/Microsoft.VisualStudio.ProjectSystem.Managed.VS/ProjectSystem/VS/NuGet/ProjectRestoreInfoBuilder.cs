@@ -46,9 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
 
-                string targetFramework; 
-                if (!update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
-                    !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework))
+                string targetFramework;
+                bool noTargetFramework = 
+                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
+                    !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework);
+
+                if (noTargetFramework || string.IsNullOrEmpty(targetFramework))
                 {
                     TraceUtilities.TraceWarning("Unable to find TargetFramework Property");
                     continue;
@@ -78,13 +81,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }
             }
 
-            return new ProjectRestoreInfo
-            {
-                BaseIntermediatePath = baseIntermediatePath,
-                OriginalTargetFrameworks = originalTargetFrameworks,
-                TargetFrameworks = targetFrameworks,
-                ToolReferences = toolReferences
-            };
+            // return nominate restore information if any target framework entries are found
+            return targetFrameworks.Any()
+                ? new ProjectRestoreInfo
+                {
+                    BaseIntermediatePath = baseIntermediatePath,
+                    OriginalTargetFrameworks = originalTargetFrameworks,
+                    TargetFrameworks = targetFrameworks,
+                    ToolReferences = toolReferences
+                }
+                : null;
         }
 
         private static IVsProjectProperties GetProperties(IImmutableDictionary<String, String> items)
