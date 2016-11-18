@@ -51,12 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public int GetGeneratorInformation(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out Guid pguidGenerator)
         {
-            Requires.NotNullOrEmpty(wszProgId, nameof(wszProgId));
-
             pbGeneratesDesignTimeSource = 0;
             pbGeneratesSharedDesignTimeSource = 0;
             pbUseTempPEFlag = 0;
             pguidGenerator = Guid.Empty;
+
+            if (wszProgId == null || string.IsNullOrWhiteSpace(wszProgId))
+            {
+                return VSConstants.E_INVALIDARG;
+            }
 
             // Get the guid of the project
             UIThreadHelper.VerifyOnUIThread();
