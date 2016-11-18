@@ -22,6 +22,10 @@
        <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
        <NuGetArguments>-Version "$(RoslynNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
      </NuSpec>
+      <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.nuspec">
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(RoslynNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+     </NuSpec>
 
      <!-- Make note, without actually knowing what's included in the NuSpec, 
           we just assume that everything in the output dir is, and treat them

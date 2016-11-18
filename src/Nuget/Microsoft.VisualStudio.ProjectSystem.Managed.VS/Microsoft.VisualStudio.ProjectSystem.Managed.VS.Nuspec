@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.VisualStudio.ProjectSystem.Managed.VS</id>
+    <summary>"Microsoft VisualStudio Managed Project System VS Components</summary>
+    <description>
+      Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects which interact with VisualStudio interfaces
+    </description>
+    <language>en-US</language>
+    <version>2.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
+    <authors>dotnet</authors>
+    <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
+    <dependencies>
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.Managed" version="$version$" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.574-pre-g1dd1014f4f" />
+      <dependency id="System.Collections.Immutable" version="1.1.36" />
+      <dependency id="Newtonsoft.Json" version="8.0.3" />
+      <dependency id="Microsoft.Build" version="15.1.262-preview5" />
+      <dependency id="Microsoft.Build.Framework" version="15.1.262-preview5" />
+      <dependency id="Microsoft.VisualStudio.LanguageServices" version="2.0.0-beta5-60909-09" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="10.0.30319" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="10.0.30319" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="11.0.61030" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="12.0.30110" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" version="12.1.30328" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" version="12.1.30328" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" version="14.1.24720" />
+      <dependency id="Microsoft.VisualStudio.SDK.EmbedInteropTypes" version="14.1.2" />
+      <dependency id="Microsoft.VisualStudio.Editor" version="15.0.25123-Dev15Preview" />
+      <dependency id="Microsoft.VisualStudio.ImageCatalog" version="15.0.25123-Dev15Preview" />
+      <dependency id="Microsoft.VisualStudio.Shell.Design" version="15.0.25123-Dev15Preview" />
+      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.25123-Dev15Preview" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll" target="lib" />
+  </files>
+</package>
