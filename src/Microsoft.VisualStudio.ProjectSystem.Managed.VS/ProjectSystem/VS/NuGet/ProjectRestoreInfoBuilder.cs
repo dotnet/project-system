@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     !update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
                     !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework);
 
-                if (noTargetFramework || string.IsNullOrWhiteSpace(targetFramework))
+                if (noTargetFramework || string.IsNullOrEmpty(targetFramework))
                 {
                     TraceUtilities.TraceWarning("Unable to find TargetFramework Property");
                     continue;
