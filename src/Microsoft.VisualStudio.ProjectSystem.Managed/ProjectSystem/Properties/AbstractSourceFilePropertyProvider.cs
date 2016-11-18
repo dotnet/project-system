@@ -28,9 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _threadingService = threadingService;
         }
 
+#pragma warning disable 0067
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging;
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter;
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged;
+#pragma warning restore 0067
 
         public string DefaultProjectPath => _unconfiguredProject.FullPath;
 
