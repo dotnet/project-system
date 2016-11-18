@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
     [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [ComServiceIid(typeof(IVsSingleFileGeneratorFactory))]
-    internal class SingleFileGeneratorFactoryAggregator : OnceInitializedOnceDisposed, IVsSingleFileGeneratorFactory
+    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
     {
         // Constants for the generator information registry keys
         private const string CLSIDKey = "CLSID";
@@ -19,21 +19,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string DesignTimeCompilationFlagKey = "UseDesignTimeCompilationFlag";
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly IVSRegistryHelper _registryHelper;
         private readonly IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
-        private IRegistryKey _settingsRoot;
 
         [ImportingConstructor]
-        public SingleFileGeneratorFactoryAggregator([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-            IVsUnconfiguredProjectIntegrationService projectIntegrationService,
-            IVSRegistryHelper registryHelper)
+        public SingleFileGeneratorFactoryAggregator(
+            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+            IVsUnconfiguredProjectIntegrationService projectIntegrationService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(projectIntegrationService, nameof(projectIntegrationService));
-            Requires.NotNull(registryHelper, nameof(registryHelper));
             _serviceProvider = serviceProvider;
             _projectIntegrationService = projectIntegrationService;
-            _registryHelper = registryHelper;
         }
 
         public int CreateGeneratorInstance(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out IVsSingleFileGenerator ppGenerate)
@@ -56,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public int GetGeneratorInformation(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out Guid pguidGenerator)
         {
             Requires.NotNullOrEmpty(wszProgId, nameof(wszProgId));
-            EnsureInitialized(true);
 
             pbGeneratesDesignTimeSource = 0;
             pbGeneratesSharedDesignTimeSource = 0;
@@ -72,56 +67,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 return VSConstants.E_FAIL;
             }
 
-            var generatorKey = GetGeneratorKey(projectGuid);
-            if (generatorKey == null)
+            IVsSettingsManager manager = _serviceProvider.GetService<IVsSettingsManager, SVsSettingsManager>();
+            HResult hr = manager.GetReadOnlySettingsStore((uint)__VsSettingsScope.SettingsScope_Configuration, out IVsSettingsStore store);
+            if (!hr.Succeeded)
+            {
+                return hr;
+            }
+
+            var key = $"Generators\\{projectGuid.ToString("B")}\\{wszProgId}";
+            hr = store.CollectionExists(key, out int exists);
+            if (!hr.Succeeded)
+            {
+                return hr;
+            }
+
+            if (exists != 1)
             {
                 return VSConstants.E_FAIL;
             }
-
-            if (!generatorKey.GetSubKeyNames().Contains(wszProgId))
-            {
-                return VSConstants.E_FAIL;
-            }
-
-            var progKey = generatorKey.OpenSubKey(wszProgId, false);
 
             // The clsid value is the only required value. The other 3 are optional
-            if (!progKey.GetValueNames().Contains(CLSIDKey))
+            hr = store.PropertyExists(key, CLSIDKey, out exists);
+            if (!hr.Succeeded)
+            {
+                return hr;
+            }
+            if (exists != 1)
             {
                 return VSConstants.E_FAIL;
             }
 
-            pguidGenerator = Guid.Parse(progKey.GetValue<string>(CLSIDKey));
+            hr = store.GetString(key, CLSIDKey, out string clsidString);
+            if (hr.Failed)
+            {
+                return hr;
+            }
+            if (string.IsNullOrWhiteSpace(clsidString) || !Guid.TryParse(clsidString, out pguidGenerator))
+            {
+                return VSConstants.E_FAIL;
+            }
 
-            // Explicitly convert anything that's not 1 to 0
-            pbGeneratesDesignTimeSource = progKey.GetValue<int>(DesignTimeSourceKey, 0) == 1 ? 1 : 0;
-            pbGeneratesSharedDesignTimeSource = progKey.GetValue<int>(SharedDesignTimeSourceKey, 0) == 1 ? 1 : 0;
-            pbUseTempPEFlag = progKey.GetValue<int>(DesignTimeCompilationFlagKey, 0) == 1 ? 1 : 0;
+            // Explicitly convert anything that's not 1 to 0. These aren't required keys, so we don't explicitly fail here.
+            store.GetIntOrDefault(key, DesignTimeSourceKey, 0, out pbGeneratesDesignTimeSource);
+            pbGeneratesDesignTimeSource = pbGeneratesDesignTimeSource == 1 ? 1 : 0;
+            store.GetIntOrDefault(key, SharedDesignTimeSourceKey, 0, out pbGeneratesSharedDesignTimeSource);
+            pbGeneratesSharedDesignTimeSource = pbGeneratesSharedDesignTimeSource == 1 ? 1 : 0;
+            store.GetIntOrDefault(key, DesignTimeCompilationFlagKey, 0, out pbUseTempPEFlag);
+            pbUseTempPEFlag = pbUseTempPEFlag == 1 ? 1 : 0;
 
             return VSConstants.S_OK;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _settingsRoot.Dispose();
-                _settingsRoot = null;
-            }
-        }
-
-        protected override void Initialize()
-        {
-            _settingsRoot = _registryHelper.RegistryRoot(_serviceProvider, __VsLocalRegistryType.RegType_Configuration, false);
-        }
-
-        private IRegistryKey GetGeneratorKey(Guid package)
-        {
-            if (!_settingsRoot.GetSubKeyNames().Contains("Generators")) return null;
-            var generatorKey = _settingsRoot.OpenSubKey("Generators", false);
-            var packageString = package.ToString("B");
-            var key = generatorKey.GetSubKeyNames().FirstOrDefault(genKey => genKey.Equals(packageString, StringComparison.OrdinalIgnoreCase));
-            return key != null ? generatorKey.OpenSubKey(key, false) : null;
         }
     }
 }

@@ -72,7 +72,8 @@
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
-    <Compile Include="Mocks\IVSRegistryHelperBuilder.cs" />
+    <Compile Include="Mocks\IVsSettingsManagerFactory.cs" />
+    <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
     <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
     <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
