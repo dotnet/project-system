@@ -11,9 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private PropertyPageElementHost host;
         private PropertyPageControl control;
         private PropertyPageViewModel viewModel;
-        private readonly UnconfiguredProject UnconfiguredProject;
-        private readonly IProjectThreadingService ThreadHandling;
-
 
         public WpfBasedPropertyPage()
         {
