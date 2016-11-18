@@ -166,6 +166,7 @@
        that any builds of portable projects end up in a sub folder of $(OutDir). Search for this flag in
        Microsoft.Common.CurrentVersion.targets to see how it is consumed -->
     <WindowsAppContainer>false</WindowsAppContainer>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <Choose>
