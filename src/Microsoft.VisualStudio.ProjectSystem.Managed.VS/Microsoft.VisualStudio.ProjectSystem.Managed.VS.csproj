@@ -38,6 +38,7 @@
     <Compile Include="ProjectSystem\VS\Editor\EditProjectFileCleanupFrameNotifyListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperties.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperty.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\VsItemList.cs" />
