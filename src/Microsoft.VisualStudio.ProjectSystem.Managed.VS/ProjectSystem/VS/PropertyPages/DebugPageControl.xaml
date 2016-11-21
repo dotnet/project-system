@@ -179,7 +179,7 @@
                 Grid.Row="4"
                 x:Uid="argumentsLabel"
                 Margin="4,4,3,0"
-                Content="_Application Arguments:"
+                Content="_Application arguments:"
                 IsTabStop="False" 
                 VerticalAlignment="Top"
                 Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
@@ -203,7 +203,7 @@
                 Grid.Row="5"
                 x:Uid="workingDirectoryLabel"
                 Margin="4,4,3,5"
-                Content="W_orking Directory:"
+                Content="W_orking directory:"
                 VerticalAlignment="Center"
                 Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
                 Target="{Binding ElementName=txtWorkingDirectory}"/>
@@ -270,7 +270,7 @@
                 Margin="4,4,3,0"
                 IsTabStop="False"
                 VerticalAlignment="Top"
-                Content="Environment Variables:"/>
+                Content="Environment variables:"/>
             <DataGrid
                 x:Name="dataGridEnvironmentVariables"
                 Grid.Row="8"
