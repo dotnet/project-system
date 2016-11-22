@@ -47,6 +47,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return _displayName
         End Function
 
+        'TODO: This data needs to flow in from props file
+        Private Shared Function AddDotNetCoreFramework(prgSupportedFrameworks As Array) As Array
+            Dim supportedFrameworksList As List(Of String) = New List(Of String)
+            For Each moniker As String In prgSupportedFrameworks
+                supportedFrameworksList.Add(moniker)
+            Next
+
+            supportedFrameworksList.Add(".NETCoreApp,Version=v1.0")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.0")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.1")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.2")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.3")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.4")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.5")
+            supportedFrameworksList.Add(".NETStandard,Version=v1.6")
+            Return supportedFrameworksList.ToArray
+
+        End Function
         ''' <summary>
         ''' Gets the supported target framework monikers from DTAR
         ''' </summary>
@@ -57,6 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim supportedFrameworksArray As Array = Nothing
             VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetSupportedFrameworks(supportedFrameworksArray))
+            supportedFrameworksArray = AddDotNetCoreFramework(supportedFrameworksArray)
 
             Dim targetFrameworkMonikerProperty As [Property] = currentProject.Properties.Item(ApplicationPropPage.Const_TargetFrameworkMoniker)
             Dim currentTargetFrameworkMoniker As String = CStr(targetFrameworkMonikerProperty.Value)

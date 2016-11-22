@@ -261,4 +261,7 @@ In order to debug this project, add an executable project to this solution which
   <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
     <value>Unable to run your project. The "RunCommand" property is not defined.</value>
   </data>
+  <data name="MultiTFEditNotSupported" xml:space="preserve">
+    <value>Editing of multiple target framework is not supported.</value>
+  </data>
 </root>

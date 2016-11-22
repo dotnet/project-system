@@ -283,6 +283,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Editing of multiple target framework is not supported..
+        /// </summary>
+        internal static string MultiTFEditNotSupported {
+            get {
+                return ResourceManager.GetString("MultiTFEditNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; is missing the path to the executable to debug..
         /// </summary>
         internal static string NoDebugExecutableSpecified {
