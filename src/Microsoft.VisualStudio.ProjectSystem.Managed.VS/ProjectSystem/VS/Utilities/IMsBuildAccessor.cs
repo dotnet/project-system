@@ -25,10 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// Removes an EventHandler for the ProjectXmlChanged event on the msbuild model for the given unconfigured project.
         /// </summary>
-        /// <param name="unconfiguredProject"></param>
-        /// <param name="handler"></param>
-        /// <returns></returns>
         Task UnsubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler);
+
+        /// <summary>
+        /// Returns whether or not the project xml has unsaved changes.
+        /// </summary>
+        Task<bool> IsProjectDirtyAsync(UnconfiguredProject unconfiguredProject);
 
         /// <summary>
         /// Runs a given task inside either a read lock or a write lock.
@@ -81,6 +83,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
 
                 xmlProject.ProjectCollection.ProjectXmlChanged -= handler;
+            }
+        }
+
+        public async Task<bool> IsProjectDirtyAsync(UnconfiguredProject unconfiguredProject)
+        {
+            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
+            using (var access = await _projectLockService.WriteLockAsync())
+            {
+                return (await access.GetProjectAsync(configuredProject).ConfigureAwait(true)).Xml.HasUnsavedChanges;
             }
         }
 
