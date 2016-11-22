@@ -110,9 +110,6 @@
   <data name="$this.GridSize" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>8, 8</value>
   </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>Tahoma, 8.25pt</value>
-  </data>
   <data name="$this.DrawGrid" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </data>
