@@ -21,7 +21,7 @@ if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :Pa
 call :Usage && exit /b 1
 :DoneParsing
 
-if not exist "%VSINSTALLDIR%" (
+if not exist "%VS150COMNTOOLS%" (
   echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
   echo.
   echo If Visual Studio is not installed, visit this page to download:
