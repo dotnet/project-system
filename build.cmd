@@ -42,12 +42,12 @@ if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFai
 msbuild /nologo /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
 if ERRORLEVEL 1 (
     echo.
-    echo Build failed, for full log see %LogFile%.
+    call :PrintColor Red "Build failed, for full log see %LogFile%."
     exit /b 1
 )
 
 echo.
-echo Build completed successfully, for full log see %LogFile%
+call :PrintColor Green "Build completed successfully, for full log see %LogFile%"
 exit /b 0
 
 :Usage
@@ -65,3 +65,6 @@ goto :eof
 :BuildFailed
 echo Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
+
+:PrintColor
+"%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe" write-host -foregroundcolor %1 "'%2'"
