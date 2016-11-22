@@ -67,7 +67,7 @@ echo     /no-multi-proc     No multi-proc build, useful for diagnosing build log
 goto :eof
 
 :BuildFailed
-echo Build failed with ERRORLEVEL %ERRORLEVEL%
+call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%"
 exit /b 1
 
 :PrintColor
