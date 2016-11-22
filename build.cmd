@@ -51,15 +51,19 @@ call :PrintColor Green "Build completed successfully, for full log see %LogFile%
 exit /b 0
 
 :Usage
-echo Usage: %BatchFile% [/debug^|/release] [/rebuild]
+echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc]
 echo.
-echo   /debug             Perform debug build (default)
-echo   /release           Perform release build
-echo   /rebuild           Perform a clean, then build
-echo   /restore           Only restore nuget packages
-echo   /no-node-reuse     Run msbuild with /nodeReuse=false, which affects performance
-echo   /no-multi-proc     No multi-proc build, useful for diagnosing build logs
-echo   /modernvsixonly    Only build modern vsman vsixes.
+echo   Build targets:
+echo     /rebuild           Perform a clean, then build
+echo     /restore           Only restore NuGet packages
+echo     /modernvsixonly    Only build modern vsman VSIXes
+echo.
+echo   Build options:
+echo     /debug             Perform debug build (default)
+echo     /release           Perform release build
+echo     /no-node-reuse     Prevents MSBuild from reusing existing MSBuild instances, 
+echo                        useful for avoiding unexpected behavior on build machines
+echo     /no-multi-proc     No multi-proc build, useful for diagnosing build logs
 goto :eof
 
 :BuildFailed
