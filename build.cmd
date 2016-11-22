@@ -6,7 +6,6 @@ set Root=%~dp0
 set BuildConfiguration=Debug
 set MSBuildTarget=Build
 set NodeReuse=true
-set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 
 :ParseArguments
@@ -22,21 +21,19 @@ if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :Pa
 call :Usage && exit /b 1
 :DoneParsing
 
-if not exist "%DeveloperCommandPrompt%" (
-  echo In order to build this repository, you need Visual Studio "15" Preview installed.
+if not exist "%VSINSTALLDIR%" (
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
   echo.
-  echo Visit this page to download:
+  echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo http://go.microsoft.com/fwlink/?LinkId=746567
+  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
   exit /b 1
 )
 
 if not exist "%VSSDK150Install%" (
-  echo In order to build this repository, you need to modify your Visual Studio installation to include "Visual Studio Extensibility Tools".
+  echo To build this repository, you need to modify your Visual Studio installation to include the "Visual Studio extension development" workload.
   exit /b 1
 )
-
-call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
