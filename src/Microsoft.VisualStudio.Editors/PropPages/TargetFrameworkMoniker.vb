@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return _displayName
         End Function
 
-        'TODO: This data needs to flow in from props file
+        'TODO: Remove this hardcoded list (Refer Bug: #795)
         Private Shared Function AddDotNetCoreFramework(prgSupportedFrameworks As Array) As Array
             Dim supportedFrameworksList As List(Of String) = New List(Of String)
             For Each moniker As String In prgSupportedFrameworks

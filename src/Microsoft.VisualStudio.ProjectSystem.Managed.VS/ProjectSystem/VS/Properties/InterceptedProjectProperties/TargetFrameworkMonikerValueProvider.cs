@@ -30,14 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            var currentTargetFrameWork = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
-            var currentTargetFrameWorks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
-            if (!string.IsNullOrEmpty(currentTargetFrameWorks))
+            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+            var currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
+            var currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
+            if (!string.IsNullOrEmpty(currentTargetFrameworks))
             {
-                throw new Exception(VSResources.MultiTFEditNotSupported);
+                throw new InvalidOperationException(VSResources.MultiTFEditNotSupported);
             }
-            else if (!string.IsNullOrEmpty(currentTargetFrameWork))
+            else if (!string.IsNullOrEmpty(currentTargetFramework))
             {
                 var frameworkName = new FrameworkName(unevaluatedPropertyValue);
                 await defaultProperties.SetPropertyValueAsync(_targetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName)).ConfigureAwait(true);
