@@ -99,6 +99,10 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>

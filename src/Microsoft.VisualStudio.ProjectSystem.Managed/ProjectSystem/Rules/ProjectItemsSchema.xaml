@@ -58,9 +58,10 @@
       <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
     </ContentType>
 
+    <ItemType Name="AdditionalFiles" DisplayName="AdditionalFiles"/>
     <ItemType Name="None" DisplayName="None"/>
     <ItemType Name="Content" DisplayName="Content" />
-    <ItemType Name="EmbeddedResource" DisplayName="Embedded resource "/>
+    <ItemType Name="EmbeddedResource" DisplayName="Embedded resource"/>
 
     <FileExtension Name=".asax" ContentType="Asax" />
     <FileExtension Name=".asmx" ContentType="HTML" />
