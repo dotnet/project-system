@@ -1,20 +1,26 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    internal abstract class AbstractEditProjectFileCommand : AbstractSingleNodeProjectCommand
+    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
+    [AppliesTo(ProjectCapability.CSharp)]
+    internal class AbstractEditProjectFileCommand : AbstractSingleNodeProjectCommand
     {
         private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -27,17 +33,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
         private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
+        private readonly TempProjectFileList _tempFileList;
+        private readonly object _lock = new object();
+        private string _tempProjectPath = null;
 
+        [ImportingConstructor]
         public AbstractEditProjectFileCommand(UnconfiguredProject unconfiguredProject,
             IProjectCapabilitiesService projectCapabilitiesService,
-            IServiceProvider serviceProvider,
+            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IMsBuildAccessor msbuildAccessor,
             IFileSystem fileSystem,
             ITextDocumentFactoryService textDocumentService,
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory)
+            IExportFactory<IMsBuildModelWatcher> watcherFactory,
+            TempProjectFileList tempFileList)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectCapabiltiesService = projectCapabilitiesService;
@@ -49,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _threadingService = threadingService;
             _shellUtilities = shellUtilities;
             _watcherFactory = watcherFactory;
+            _tempFileList = tempFileList;
         }
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus) =>
@@ -60,19 +72,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!ShouldHandle(node)) return false;
 
-            var projectFileName = Path.GetFileName(_unconfiguredProject.FullPath);
+            // If we've never created the buffer before, we need to create it now
+            if (_tempProjectPath == null)
+            {
+                lock (_lock)
+                {
+                    if (_tempProjectPath == null)
+                    {
+                        var projectFileName = Path.GetFileName(_unconfiguredProject.FullPath);
+                        _tempProjectPath = GetTempFileName(projectFileName);
+                        _tempFileList.AddFile(_tempProjectPath);
+                    }
+                }
+            }
 
-            var projPath = await GetFileAsync(projectFileName).ConfigureAwait(false);
+            await SetupFileAsync().ConfigureAwait(false);
+
+            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
+            await watcher.InitializeAsync(_tempProjectPath).ConfigureAwait(true);
+
             await _threadingService.SwitchToUIThread();
             IVsWindowFrame frame;
 
-            frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, projPath, XmlEditorFactoryGuid, Guid.Empty);
-
-            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
-            await watcher.InitializeAsync(projPath).ConfigureAwait(true);
+            frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, _tempProjectPath, XmlEditorFactoryGuid, Guid.Empty);
 
             // When the document is closed, clean up the file on disk
-            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(projPath, _fileSystem, watcher);
+            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(_tempProjectPath, _fileSystem, watcher);
             Verify.HResult(frame.SetProperty((int)__VSFPROPID.VSFPROPID_ViewHelper, fileCleanupListener));
 
             // Ensure that the window is not reopened when the solution is closed
@@ -84,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             uint unusedCookie;
             IVsPersistDocData docData;
 
-            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, projPath, out unusedHier, out unusedId, out docData, out unusedCookie);
+            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, _tempProjectPath, out unusedHier, out unusedId, out docData, out unusedCookie);
 
             var textBuffer = _editorFactoryService.GetDocumentBuffer((IVsTextBuffer)docData);
             ITextDocument textDoc;
@@ -115,14 +140,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }));
         }
 
-        private async Task<string> GetFileAsync(string projectFileName)
+        private async Task SetupFileAsync()
         {
             string projectXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
+            _fileSystem.WriteAllText(_tempProjectPath, projectXml);
+        }
+
+        private string GetTempFileName(string projectFileName)
+        {
             string tempDirectory = _fileSystem.GetTempFileName();
             _fileSystem.CreateDirectory(tempDirectory);
-            var tempFileName = $"{tempDirectory}\\{projectFileName}";
-            _fileSystem.WriteAllText(tempFileName, projectXml);
-            return tempFileName;
+            return $"{tempDirectory}\\{projectFileName}";
         }
 
         protected string GetCommandText(IProjectTree node)
@@ -130,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             return string.Format(VSResources.EditProjectFileCommand, node.Caption, FileExtension);
         }
 
-        protected abstract string FileExtension { get; }
+        protected string FileExtension => Path.GetExtension(_unconfiguredProject.FullPath);
 
         private bool ShouldHandle(IProjectTree node) => node.IsRoot() && _projectCapabiltiesService.Contains("OpenProjectFile");
     }
