@@ -266,7 +266,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                         var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        targetPath = NormalizeTargetPath(targetPath, projectData);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
                         configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName);
 
@@ -293,20 +292,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
             });
-        }
-
-        // TODO: https://github.com/dotnet/roslyn-project-system/issues/607
-        private static string NormalizeTargetPath(string targetPath, ProjectData projectData)
-        {
-            Requires.NotNullOrEmpty(targetPath, nameof(targetPath));
-
-            if (!Path.IsPathRooted(targetPath))
-            {
-                var directory = Path.GetDirectoryName(projectData.FullPath);
-                targetPath = Path.Combine(directory, targetPath);
-            }
-
-            return targetPath;
         }
 
         private static string GetDisplayName(ConfiguredProject configuredProject, ProjectData projectData, string targetFramework)
