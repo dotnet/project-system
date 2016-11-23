@@ -20,9 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
-
-            Me.MaximumSize = DpiHelper.LogicalToDeviceUnits(Me.MaximumSize)
-            Me.MinimumSize = DpiHelper.LogicalToDeviceUnits(Me.Size)
         End Sub
 
 
