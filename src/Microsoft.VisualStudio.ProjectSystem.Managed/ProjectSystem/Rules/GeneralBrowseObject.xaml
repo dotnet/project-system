@@ -30,7 +30,12 @@
       <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
     </StringProperty.DataSource>
   </StringProperty>
-  <IntProperty Name="TargetFramework" ReadOnly="True" Visible="False">
+  <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks" Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+        </StringProperty.DataSource>
+  </StringProperty>
+    <IntProperty Name="TargetFramework" ReadOnly="True" Visible="False">
     <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
     </IntProperty.DataSource>

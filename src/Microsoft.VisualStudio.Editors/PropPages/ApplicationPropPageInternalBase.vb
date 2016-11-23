@@ -125,7 +125,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 VSErrorHandler.ThrowOnFailure(MyBase.ProjectHierarchy.GetSite(siteServiceProvider))
                 Dim sp As New Microsoft.VisualStudio.Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
-                If vsFrameworkMultiTargeting IsNot Nothing Then
+                ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
+                If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
 
                     Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject)
 
@@ -151,6 +152,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
+        Private Function TargetFrameworksDefined() As Boolean
+            Dim obj As Object
+            Dim propTargetFrameworks As PropertyDescriptor
+            Dim stTargetFrameworks As String = Nothing
+            propTargetFrameworks = GetPropertyDescriptor("TargetFrameworks")
+            obj = TryGetNonCommonPropertyValue(propTargetFrameworks)
+            stTargetFrameworks = TryCast(obj, String)
+            If (String.IsNullOrEmpty(stTargetFrameworks)) Then
+                Return False
+            End If
+            Return True
+        End Function
         ''' <summary>
         ''' Takes the current value of the TargetFrameworkMoniker property (in string format), and sets
         '''   the current dropdown list to that value.
