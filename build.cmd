@@ -6,6 +6,7 @@ set Root=%~dp0
 set BuildConfiguration=Debug
 set MSBuildTarget=Build
 set NodeReuse=true
+set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 
 :ParseArguments
@@ -33,6 +34,11 @@ if not exist "%VS150COMNTOOLS%" (
 if not exist "%VSSDK150Install%" (
   echo To build this repository, you need to modify your Visual Studio installation to include the "Visual Studio extension development" workload.
   exit /b 1
+)
+
+if "%VisualStudioVersion%" == "" (
+  REM In Jenkins and MicroBuild, we set VS150COMNTOOLS and VSSDK150Install to point to where VS is installed but don't launch in a developer prompt
+  call "%DeveloperCommandPrompt%" || goto :BuildFailed
 )
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
