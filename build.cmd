@@ -22,21 +22,24 @@ if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :Pa
 call :Usage && exit /b 1
 :DoneParsing
 
-if not exist "%DeveloperCommandPrompt%" (
-  echo In order to build this repository, you need Visual Studio "15" Preview installed.
+if not exist "%VS150COMNTOOLS%" (
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
   echo.
-  echo Visit this page to download:
+  echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo http://go.microsoft.com/fwlink/?LinkId=746567
+  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
   exit /b 1
 )
 
 if not exist "%VSSDK150Install%" (
-  echo In order to build this repository, you need to modify your Visual Studio installation to include "Visual Studio Extensibility Tools".
+  echo To build this repository, you need to modify your Visual Studio installation to include the "Visual Studio extension development" workload.
   exit /b 1
 )
 
-call "%DeveloperCommandPrompt%" || goto :BuildFailed
+if "%VisualStudioVersion%" == "" (
+  REM In Jenkins and MicroBuild, we set VS150COMNTOOLS and VSSDK150Install to point to where VS is installed but don't launch in a developer prompt
+  call "%DeveloperCommandPrompt%" || goto :BuildFailed
+)
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
@@ -45,26 +48,33 @@ if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFai
 msbuild /nologo /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
 if ERRORLEVEL 1 (
     echo.
-    echo Build failed, for full log see %LogFile%.
+    call :PrintColor Red "Build failed, for full log see %LogFile%."
     exit /b 1
 )
 
 echo.
-echo Build completed successfully, for full log see %LogFile%
+call :PrintColor Green "Build completed successfully, for full log see %LogFile%"
 exit /b 0
 
 :Usage
-echo Usage: %BatchFile% [/debug^|/release] [/rebuild]
+echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc]
 echo.
-echo   /debug             Perform debug build (default)
-echo   /release           Perform release build
-echo   /rebuild           Perform a clean, then build
-echo   /restore           Only restore nuget packages
-echo   /no-node-reuse     Run msbuild with /nodeReuse=false, which affects performance
-echo   /no-multi-proc     No multi-proc build, useful for diagnosing build logs
-echo   /modernvsixonly    Only build modern vsman vsixes.
+echo   Build targets:
+echo     /rebuild           Perform a clean, then build
+echo     /restore           Only restore NuGet packages
+echo     /modernvsixonly    Only build modern vsman VSIXes
+echo.
+echo   Build options:
+echo     /debug             Perform debug build (default)
+echo     /release           Perform release build
+echo     /no-node-reuse     Prevents MSBuild from reusing existing MSBuild instances, 
+echo                        useful for avoiding unexpected behavior on build machines
+echo     /no-multi-proc     No multi-proc build, useful for diagnosing build logs
 goto :eof
 
 :BuildFailed
-echo Build failed with ERRORLEVEL %ERRORLEVEL%
+call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%"
 exit /b 1
+
+:PrintColor
+"%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe" write-host -foregroundcolor %1 "'%2'"
