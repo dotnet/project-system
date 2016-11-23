@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 
@@ -31,17 +32,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public string FileFullPath
+            public string GetFileFullPath(ILanguageServiceHost languageServiceHost)
             {
-                get
+                var projectFile = this.ProjectFile;
+                if (string.IsNullOrEmpty(projectFile))
                 {
-                    if (!string.IsNullOrEmpty(this.ProjectFile) && !string.IsNullOrEmpty(this.File))
-                    {
-                        return TryMakeRooted(this.ProjectFile, this.File);
-                    }
-
-                    return string.Empty;
+                    projectFile = languageServiceHost.ActiveProjectContext?.ProjectFilePath;
                 }
+
+                if (!string.IsNullOrEmpty(projectFile) && !string.IsNullOrEmpty(this.File))
+                {
+                    return TryMakeRooted(projectFile, this.File);
+                }
+
+                return string.Empty;
             }
 
             public int LineNumber
