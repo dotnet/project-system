@@ -14,6 +14,7 @@ folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(SourcePath)\Targets\Microsoft.Managed.DesignTime.targets"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
+  file source="$(OutputPath)Rules\AdditionalFiles.xaml"
   file source="$(OutputPath)Rules\AnalyzerReference.xaml"
   file source="$(OutputPath)Rules\AppDesigner.xaml"
   file source="$(OutputPath)Rules\AssemblyReference.xaml"
