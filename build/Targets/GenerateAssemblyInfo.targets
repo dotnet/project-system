@@ -3,6 +3,14 @@
     <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo_$(BuildVersion)$(DefaultLanguageSourceExtension)</GeneratedAssemblyInfoFile>
   </PropertyGroup>
 
+  <!-- Disable build warning CS7035/BC42366: "The specified version string does not conform to the recommended format - major.minor.build.revision" -->
+  <PropertyGroup Condition=" '$(Language)' == 'C#' ">
+    <NoWarn>$(NoWarn);CS7035</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Language)' == 'VB' ">
+    <NoWarn>$(NoWarn);BC42366</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <AssemblyVersionAttribute Include="System.Reflection.AssemblyCompanyAttribute">
       <_Parameter1>Microsoft Corporation</_Parameter1>
