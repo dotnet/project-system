@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                                                                     details.ColumnNumberForErrorList,
                                                                     details.EndLineNumberForErrorList,
                                                                     details.EndColumnNumberForErrorList,
-                                                                    details.FileFullPath);
+                                                                    details.GetFileFullPath(_host));
                     handled = true;
                 }
                 catch (NotImplementedException)
