@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 .Returns(0);
         }
 
-        public static void ImplementAddItemWithSpecific(this IVsProject4 project, Func<uint, VSADDITEMOPERATION, string, string[], VSADDRESULT[], int> addItemWithSpecificFunc)
+        public static void ImplementAddItemWithSpecific(this IVsProject4 project, Func<uint, VSADDITEMOPERATION, string, uint, string[], VSADDRESULT[], int> addItemWithSpecificFunc)
         {
             var mock = Mock.Get(project);
             Guid guidEditorType = Guid.Empty;
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             mock.Setup(h => h.AddItemWithSpecific(It.IsAny<uint>(), It.IsAny<VSADDITEMOPERATION>(), It.IsAny<string>(), It.IsAny<uint>(), It.IsAny<string[]>(), It.IsAny<IntPtr>(), It.IsAny<uint>(), ref guidEditorType, It.IsAny<string>(), ref rguidLogicalView, It.IsAny<VSADDRESULT[]>()))
                 .Returns<uint, VSADDITEMOPERATION, string, uint, string[], IntPtr, uint, Guid, string, Guid, VSADDRESULT[]>((itemId, op, itemName, cOpen, arrFiles, handle, flags, editorType, physView, logicalView, result) =>
                 {
-                    return addItemWithSpecificFunc(itemId, op, itemName, arrFiles, result);
+                    return addItemWithSpecificFunc(itemId, op, itemName, cOpen, arrFiles, result);
                 });
         }
     }

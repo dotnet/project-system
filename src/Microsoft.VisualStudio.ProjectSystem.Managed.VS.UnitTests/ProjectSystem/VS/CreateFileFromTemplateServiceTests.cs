@@ -102,11 +102,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             
             var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
-            vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, files, result) =>
+            vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, cOpen, files, result) =>
             {
                 Assert.Equal((uint)inputTree.GetHierarchyId(), itemId);
                 Assert.Equal(VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, itemOperation);
                 Assert.Equal(fileName, itemName);
+                Assert.Equal((uint)1, cOpen);
                 Assert.Equal(new string[] { templateFilePath }, files);
 
                 result[0] = expectedResult ? VSADDRESULT.ADDRESULT_Success : VSADDRESULT.ADDRESULT_Failure;
