@@ -67,6 +67,7 @@
     <Compile Include="Mocks\IJsonModel.cs" />
     <Compile Include="Mocks\IDependencyNodeFactory.cs" />
     <Compile Include="Mocks\IProjectCatalogSnapshotFactory.cs" />
+    <Compile Include="Mocks\IServiceProviderHelperFactory.cs" />
     <Compile Include="Mocks\ITextBufferFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
     <Compile Include="Mocks\IVsSettingsManagerFactory.cs" />
     <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
+    <Compile Include="Mocks\IVsUIShell7Factory.cs" />
     <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
     <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />

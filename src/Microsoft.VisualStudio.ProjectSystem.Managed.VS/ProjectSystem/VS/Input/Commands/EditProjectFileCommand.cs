@@ -19,8 +19,8 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
-    [AppliesTo(ProjectCapability.CSharp)]
-    internal class AbstractEditProjectFileCommand : AbstractSingleNodeProjectCommand
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    internal class EditProjectFileCommand : AbstractSingleNodeProjectCommand
     {
         private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -32,13 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
+        private readonly IServiceProviderHelper _serviceProviderHelper;
         private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
-        private readonly TempProjectFileList _tempFileList;
-        private readonly object _lock = new object();
+        private bool _isInitialized = false;
+        private IVsWindowFrame _frame = null;
         private string _tempProjectPath = null;
+        private string _lastWrittenXml = null;
 
         [ImportingConstructor]
-        public AbstractEditProjectFileCommand(UnconfiguredProject unconfiguredProject,
+        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject,
             IProjectCapabilitiesService projectCapabilitiesService,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IMsBuildAccessor msbuildAccessor,
@@ -47,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory,
-            TempProjectFileList tempFileList)
+            IServiceProviderHelper serviceProviderHelper,
+            IExportFactory<IMsBuildModelWatcher> watcherFactory)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectCapabiltiesService = projectCapabilitiesService;
@@ -59,8 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _editorFactoryService = editorFactoryService;
             _threadingService = threadingService;
             _shellUtilities = shellUtilities;
+            _serviceProviderHelper = serviceProviderHelper;
             _watcherFactory = watcherFactory;
-            _tempFileList = tempFileList;
         }
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus) =>
@@ -72,36 +74,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!ShouldHandle(node)) return false;
 
-            // If we've never created the buffer before, we need to create it now
-            if (_tempProjectPath == null)
+            await _threadingService.SwitchToUIThread();
+
+            // If the window has already been opened and hasn't yet been closed, reshow it.
+            if (_isInitialized)
             {
-                lock (_lock)
-                {
-                    if (_tempProjectPath == null)
-                    {
-                        var projectFileName = Path.GetFileName(_unconfiguredProject.FullPath);
-                        _tempProjectPath = GetTempFileName(projectFileName);
-                        _tempFileList.AddFile(_tempProjectPath);
-                    }
-                }
+                _frame.Show();
+                return true;
             }
 
-            await SetupFileAsync().ConfigureAwait(false);
+            await SetupFileAsync().ConfigureAwait(true);
 
             IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
-            await watcher.InitializeAsync(_tempProjectPath).ConfigureAwait(true);
+            await watcher.InitializeAsync(_tempProjectPath, _lastWrittenXml).ConfigureAwait(true);
 
-            await _threadingService.SwitchToUIThread();
-            IVsWindowFrame frame;
-
-            frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, _tempProjectPath, XmlEditorFactoryGuid, Guid.Empty);
+            _frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, _tempProjectPath, XmlEditorFactoryGuid, Guid.Empty);
 
             // When the document is closed, clean up the file on disk
-            var fileCleanupListener = new EditProjectFileCleanupFrameNotifyListener(_tempProjectPath, _fileSystem, watcher);
-            Verify.HResult(frame.SetProperty((int)__VSFPROPID.VSFPROPID_ViewHelper, fileCleanupListener));
+            var fileCleanupListener = new EditProjectFileVsFrameEvents(_tempProjectPath, _fileSystem, watcher, _frame, _serviceProviderHelper, this);
+            fileCleanupListener.InitializeEvents();
 
             // Ensure that the window is not reopened when the solution is closed
-            Verify.HResult(frame.SetProperty((int)__VSFPROPID5.VSFPROPID_DontAutoOpen, true));
+            Verify.HResult(_frame.SetProperty((int)__VSFPROPID5.VSFPROPID_DontAutoOpen, true));
 
             // Set up a save listener, that will overwrite the project file on save.
             IVsHierarchy unusedHier;
@@ -121,9 +115,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             Assumes.NotNull(textDoc);
             textDoc.FileActionOccurred += TextDocument_FileActionOccurred;
 
-            Verify.HResult(frame.Show());
+            Verify.HResult(_frame.Show());
+
+            _isInitialized = true;
 
             return true;
+        }
+
+        /// <summary>
+        /// This tells the command that the IVsWindowFrame that was being used for displaying the project file has been closed. This
+        /// must be called from the UI thread to avoid races, and will throw if it is not.
+        /// </summary>
+        internal void Deinit()
+        {
+            UIThreadHelper.VerifyOnUIThread();
+            _isInitialized = false;
+            _frame = null;
         }
 
         private void TextDocument_FileActionOccurred(object sender, TextDocumentFileActionEventArgs args)
@@ -142,8 +149,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private async Task SetupFileAsync()
         {
-            string projectXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
-            _fileSystem.WriteAllText(_tempProjectPath, projectXml);
+            _tempProjectPath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
+            _lastWrittenXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
+            _fileSystem.WriteAllText(_tempProjectPath, _lastWrittenXml);
         }
 
         private string GetTempFileName(string projectFileName)

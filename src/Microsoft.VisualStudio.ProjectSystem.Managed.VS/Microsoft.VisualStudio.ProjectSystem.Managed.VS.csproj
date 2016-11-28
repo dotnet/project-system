@@ -35,11 +35,9 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileCleanupFrameNotifyListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\TempProjectFileCleanupSolutionListener.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\TempProjectFileList.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperties.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperty.cs" />
@@ -56,7 +54,7 @@
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\EditProjectFileCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
@@ -189,6 +187,7 @@
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\ServiceProviderHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\VsShellUtilitiesHelper.cs" />
