@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public Task Initialize()
         {
-            return InitializeCoreAsync(CancellationToken.None);
+            return InitializeAsync();
         }
 
         /// <summary>
