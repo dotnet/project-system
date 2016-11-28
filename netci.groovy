@@ -49,7 +49,6 @@ def newVsiJobName = Utilities.getFullJobName(project, "vsi", false /* isPr */)
 
 def newVsiJob = job(newVsiJobName) {
     description('')
-    label('windows-roslyn-internal-dev15-project-system')
 
     // This opens the set of build steps that will be run.
     steps {
@@ -119,7 +118,7 @@ static void addVsiMultiScm(def myJob, def project) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('8b317590243b3d567687a4204833fe3631970a9d')
+                branch('a8f887e56a98e173f9049d176f3996f3a6171c27')
             }
         }
     }
@@ -127,6 +126,7 @@ static void addVsiMultiScm(def myJob, def project) {
 // END ISSUE
 
 addVsiArchive(newVsiJob)
+Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
 // For now, trigger VSI jobs only on explicit request.
 Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
 // ISSUE: Temporary until a full builder for source control is available.
