@@ -126,7 +126,7 @@ static void addVsiMultiScm(def myJob, def project) {
 // END ISSUE
 
 addVsiArchive(newVsiJob)
-Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
+Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
 // For now, trigger VSI jobs only on explicit request.
 Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
 // ISSUE: Temporary until a full builder for source control is available.
