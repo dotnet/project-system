@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public class EditProjectFileCommandTests
     {
         private const long CommandId = ManagedProjectSystemPackage.EditProjectFileCmdId;
-        private static readonly Guid XmlGuid = Guid.Parse("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private const string Extension = "proj";
 
         [Fact]
