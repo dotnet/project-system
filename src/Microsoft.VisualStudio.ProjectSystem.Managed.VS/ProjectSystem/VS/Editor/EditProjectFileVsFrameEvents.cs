@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IFileSystem _fileSystem;
         private readonly IMsBuildModelWatcher _watcher;
         private readonly IVsWindowFrame _frame;
-        private readonly IServiceProviderHelper _helper;
+        private readonly IServiceProvider _serviceProvider;
         private readonly EditProjectFileCommand _command;
         private uint _eventCookie;
 
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             IFileSystem fileSystem, 
             IMsBuildModelWatcher watcher, 
             IVsWindowFrame frame, 
-            IServiceProviderHelper helper,
+            IServiceProvider helper,
             EditProjectFileCommand command) : 
             base(synchronousDisposal: true)
         {
@@ -30,14 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _fileSystem = fileSystem;
             _watcher = watcher;
             _frame = frame;
-            _helper = helper;
+            _serviceProvider = helper;
             _command = command;
         }
 
         protected override void Initialize()
         {
             UIThreadHelper.VerifyOnUIThread();
-            var uiShellService = _helper.GlobalProvider.GetService<IVsUIShell7, SVsUIShell>();
+            var uiShellService = _serviceProvider.GetService<IVsUIShell7, SVsUIShell>();
             _eventCookie = uiShellService.AdviseWindowFrameEvents(this);
         }
 
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 _watcher.Dispose();
                 _fileSystem.RemoveDirectory(Path.GetDirectoryName(_tempFile), true);
 
-                var uiShellService = _helper.GlobalProvider.GetService<IVsUIShell7, SVsUIShell>();
+                var uiShellService = _serviceProvider.GetService<IVsUIShell7, SVsUIShell>();
                 uiShellService.UnadviseWindowFrameEvents(_eventCookie);
                 _command.Deinit();
             }

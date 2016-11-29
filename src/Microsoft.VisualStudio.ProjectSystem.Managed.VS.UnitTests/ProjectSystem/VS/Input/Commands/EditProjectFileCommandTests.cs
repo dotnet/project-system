@@ -61,21 +61,6 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_NoCapability_ShouldntHandle()
-        {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
-
-            var nodes = ImmutableHashSet.Create(tree);
-            var command = CreateInstance(implementCapabilities: false);
-
-            var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
-            Assert.False(result.Handled);
-            Assert.Equal(CommandStatus.NotSupported, result.Status);
-        }
-
-        [Fact]
         public async Task EditProjectFileCommand_WrongCmdId_ShouldntHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
@@ -222,20 +207,6 @@ Root (flags: {ProjectRoot})
             Assert.False(await command.TryHandleCommandAsync(nodes, 0, true, 0, IntPtr.Zero, IntPtr.Zero));
         }
 
-        [Fact]
-        public async Task EditProjectFileCommand_NoCapability_DoesNotHandle()
-        {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
-
-            var nodes = ImmutableHashSet.Create(tree);
-
-            var command = CreateInstance(implementCapabilities: false);
-
-            Assert.False(await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero));
-        }
-
         private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile,
             IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame, IVsUIShell7 shellService,
             IExportFactory<IMsBuildModelWatcher> watcherFactory = null)
@@ -247,12 +218,9 @@ Root (flags: {ProjectRoot})
             {
                 Assert.Equal(tempProjectFile, path);
                 return Tuple.Create(IVsHierarchyFactory.Create(), (uint)0, IVsPersistDocDataFactory.ImplementAsIVsTextBuffer(), (uint)0);
-            }, (sp, path, factoryGuid, logicalView) =>
+            }, (sp, path) =>
             {
                 Assert.Equal(tempProjectFile, path);
-                Assert.Equal(XmlGuid, factoryGuid);
-                Assert.Equal(Guid.Empty, logicalView);
-
                 return frame;
             });
 
@@ -269,40 +237,37 @@ Root (flags: {ProjectRoot})
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var globalProvider = IServiceProviderFactory.Create(typeof(SVsUIShell), shellService);
-            var serviceProviderHelper = IServiceProviderHelperFactory.ImplementGlobalProvider(globalProvider);
+            var provider = IServiceProviderFactory.Create(typeof(SVsUIShell), shellService);
 
-            return CreateInstance(unconfiguredProject, true, msbuildAccessor, fileSystem, textDocFactory,
-                editorFactoryService, threadingService, shellUtilities, serviceProviderHelper, watcherFactory);
+            return CreateInstance(unconfiguredProject, msbuildAccessor, fileSystem, textDocFactory,
+                editorFactoryService, threadingService, shellUtilities, provider, watcherFactory);
         }
 
         private EditProjectFileCommand CreateInstance(
             UnconfiguredProject unconfiguredProject = null,
-            bool implementCapabilities = true,
             IMsBuildAccessor msbuildAccessor = null,
             IFileSystem fileSystem = null,
             ITextDocumentFactoryService textDocumentService = null,
             IVsEditorAdaptersFactoryService editorAdapterService = null,
             IProjectThreadingService threadingService = null,
             IVsShellUtilitiesHelper shellUtilities = null,
-            IServiceProviderHelper serviceProviderHelper = null,
+            IServiceProvider serviceProvider = null,
             IExportFactory<IMsBuildModelWatcher> watcherFactory = null
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var uProj = unconfiguredProject ?? IUnconfiguredProjectFactory.Create();
-            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(CapabilityChecker(implementCapabilities));
             var msbuild = msbuildAccessor ?? IMsBuildAccessorFactory.Create();
             var fs = fileSystem ?? new IFileSystemMock();
             var tds = textDocumentService ?? ITextDocumentFactoryServiceFactory.Create();
             var eas = editorAdapterService ?? IVsEditorAdaptersFactoryServiceFactory.Create();
             var threadServ = threadingService ?? IProjectThreadingServiceFactory.Create();
             var shellUt = shellUtilities ?? new TestShellUtilitiesHelper(
-                (sp, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
-                (sp, path, edType, logView) => IVsWindowFrameFactory.Create());
-            var sph = serviceProviderHelper ?? IServiceProviderHelperFactory.Create();
+                (provider, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
+                (provider, path) => IVsWindowFrameFactory.Create());
+            var sp = serviceProvider ?? IServiceProviderFactory.Create();
             var wFact = watcherFactory ?? IExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
-            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt, sph, wFact);
+            return new EditProjectFileCommand(uProj, sp, msbuild, fs, tds, eas, threadServ, shellUt, wFact);
         }
 
         private Func<string, bool> CapabilityChecker(bool result)

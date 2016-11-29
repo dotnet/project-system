@@ -187,7 +187,6 @@
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\ServiceProviderHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\VsShellUtilitiesHelper.cs" />

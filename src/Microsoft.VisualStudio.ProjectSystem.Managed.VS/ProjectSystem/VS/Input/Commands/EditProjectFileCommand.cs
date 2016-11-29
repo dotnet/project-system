@@ -14,17 +14,17 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+using IServiceProvider = System.IServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
+    // TODO: Refactor out the state machine into a separate ViewModel. https://github.com/dotnet/roslyn-project-system/issues/836
     [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.OpenProjectFile)]
     internal class EditProjectFileCommand : AbstractSingleNodeProjectCommand
     {
-        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IProjectCapabilitiesService _projectCapabiltiesService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMsBuildAccessor _msbuildAccessor;
         private readonly IFileSystem _fileSystem;
@@ -32,16 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
-        private readonly IServiceProviderHelper _serviceProviderHelper;
         private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
-        private bool _isInitialized = false;
-        private IVsWindowFrame _frame = null;
-        private string _tempProjectPath = null;
-        private string _lastWrittenXml = null;
+        private bool _isInitialized;
+        private IVsWindowFrame _frame;
 
         [ImportingConstructor]
         public EditProjectFileCommand(UnconfiguredProject unconfiguredProject,
-            IProjectCapabilitiesService projectCapabilitiesService,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IMsBuildAccessor msbuildAccessor,
             IFileSystem fileSystem,
@@ -49,11 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
-            IServiceProviderHelper serviceProviderHelper,
             IExportFactory<IMsBuildModelWatcher> watcherFactory)
         {
             _unconfiguredProject = unconfiguredProject;
-            _projectCapabiltiesService = projectCapabilitiesService;
             _serviceProvider = serviceProvider;
             _msbuildAccessor = msbuildAccessor;
             _fileSystem = fileSystem;
@@ -61,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _editorFactoryService = editorFactoryService;
             _threadingService = threadingService;
             _shellUtilities = shellUtilities;
-            _serviceProviderHelper = serviceProviderHelper;
             _watcherFactory = watcherFactory;
         }
 
@@ -83,15 +76,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return true;
             }
 
-            await SetupFileAsync().ConfigureAwait(true);
+            Tuple<string, string> fileReturns = await SetupFileAsync().ConfigureAwait(true);
+            var tempProjectPath = fileReturns.Item1;
+            var lastWrittenXml = fileReturns.Item2;
 
             IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
-            await watcher.InitializeAsync(_tempProjectPath, _lastWrittenXml).ConfigureAwait(true);
+            await watcher.InitializeAsync(tempProjectPath, lastWrittenXml).ConfigureAwait(true);
 
-            _frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, _tempProjectPath, XmlEditorFactoryGuid, Guid.Empty);
+            _frame = _shellUtilities.OpenDocument(_serviceProvider, tempProjectPath);
 
             // When the document is closed, clean up the file on disk
-            var fileCleanupListener = new EditProjectFileVsFrameEvents(_tempProjectPath, _fileSystem, watcher, _frame, _serviceProviderHelper, this);
+            var fileCleanupListener = new EditProjectFileVsFrameEvents(tempProjectPath, _fileSystem, watcher, _frame, _serviceProvider, this);
             fileCleanupListener.InitializeEvents();
 
             // Ensure that the window is not reopened when the solution is closed
@@ -103,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             uint unusedCookie;
             IVsPersistDocData docData;
 
-            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, _tempProjectPath, out unusedHier, out unusedId, out docData, out unusedCookie);
+            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, tempProjectPath, out unusedHier, out unusedId, out docData, out unusedCookie);
 
             var textBuffer = _editorFactoryService.GetDocumentBuffer((IVsTextBuffer)docData);
             ITextDocument textDoc;
@@ -147,11 +142,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }));
         }
 
-        private async Task SetupFileAsync()
+        private async Task<Tuple<string, string>> SetupFileAsync()
         {
-            _tempProjectPath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
-            _lastWrittenXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
-            _fileSystem.WriteAllText(_tempProjectPath, _lastWrittenXml);
+            var tempProjectPath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
+
+            // We don't want to do file IO on the UI thread, so pick up on any old thread and then switch back to the UI thread
+            // when we're done the write.
+            var lastWrittenXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
+            _fileSystem.WriteAllText(tempProjectPath, lastWrittenXml);
+            await _threadingService.SwitchToUIThread();
+            return Tuple.Create(tempProjectPath, lastWrittenXml);
         }
 
         private string GetTempFileName(string projectFileName)
@@ -163,11 +163,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected string GetCommandText(IProjectTree node)
         {
-            return string.Format(VSResources.EditProjectFileCommand, node.Caption, FileExtension);
+            return string.Format(VSResources.EditProjectFileCommand, Path.GetFileName(_unconfiguredProject.FullPath));
         }
 
-        protected string FileExtension => Path.GetExtension(_unconfiguredProject.FullPath);
-
-        private bool ShouldHandle(IProjectTree node) => node.IsRoot() && _projectCapabiltiesService.Contains("OpenProjectFile");
+        private bool ShouldHandle(IProjectTree node) => node.IsRoot();
     }
 }

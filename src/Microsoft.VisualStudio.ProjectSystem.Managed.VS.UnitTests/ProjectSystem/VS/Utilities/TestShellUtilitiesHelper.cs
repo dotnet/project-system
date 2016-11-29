@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     class TestShellUtilitiesHelper : IVsShellUtilitiesHelper
     {
         public delegate Tuple<IVsHierarchy, uint, IVsPersistDocData, uint> GetRDTInfoDelegate(IServiceProvider serviceProvider, string fullPath);
-        public delegate IVsWindowFrame OpenDocumentWithSpecificEditorDelegate(IServiceProvider provider, string fullPath, Guid editorType, Guid logicalView);
+        public delegate IVsWindowFrame OpenDocumentWithSpecificEditorDelegate(IServiceProvider provider, string fullPath);
 
         private readonly GetRDTInfoDelegate _rdtDelegate;
         private readonly OpenDocumentWithSpecificEditorDelegate _openDocDelegate;
@@ -28,9 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             docCookie = res.Item4;
         }
 
-        public IVsWindowFrame OpenDocumentWithSpecificEditor(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView)
+        public IVsWindowFrame OpenDocument(IServiceProvider serviceProvider, string fullPath)
         {
-            return _openDocDelegate(serviceProvider, fullPath, editorType, logicalView);
+            return _openDocDelegate(serviceProvider, fullPath);
         }
     }
 }
