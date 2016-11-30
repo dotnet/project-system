@@ -1,8 +1,8 @@
-﻿   
+﻿
 <ui:DialogWindow
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
+    xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     x:Uid="ProfileNameDialog"
     x:Class="Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog"
     Name="GetProfileNameDialogWindow"
@@ -10,7 +10,7 @@
     HasHelpButton="False"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterOwner"
-    SizeToContent="Height" 
+    SizeToContent="Height"
     Loaded="GetProfileNameDialogWindow_Loaded"
     ResizeMode="NoResize"
     Width="400">
