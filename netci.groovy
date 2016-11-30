@@ -60,13 +60,13 @@ SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\
 build.cmd /release""")
         
         // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
-        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\MSBuild\Microsoft\VisualStudio\Managed
+        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\\MSBuild\\Microsoft\\VisualStudio\\Managed
 
 mkdir backup
-xcopy /SIY "%VS_MSBUILD_MANAGED%" backup\Managed
+xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
 
-xcopy /SIY .\src\Targets\*.targets "%VS_MSBUILD_MANAGED%"
-xcopy /SIY .\bin\Release\Rules\*.xaml "%VS_MSBUILD_MANAGED%"
+xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
+xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 """)
 
         // Build sdk repo and install templates into RoslynDev hive.
@@ -112,9 +112,9 @@ BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAcces
 popd""")
 
        // Revert patched targets and rules from backup.
-        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\MSBuild\Microsoft\VisualStudio\Managed
-del /SQ "%VS_MSBUILD_MANAGED%\"
-xcopy /SIY backup\Managed "%VS_MSBUILD_MANAGED%"
+        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\\MSBuild\\Microsoft\\VisualStudio\\Managed
+del /SQ "%VS_MSBUILD_MANAGED%\\"
+xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
 rmdir /S /Q backup
 """)
     }
