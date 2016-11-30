@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         private ISet<string> _files = new HashSet<string>();
 
+        // Test accessor code
+        internal ISet<string> Files => _files;
+
         public ISet<string> DrainFiles()
         {
             lock (_lock)

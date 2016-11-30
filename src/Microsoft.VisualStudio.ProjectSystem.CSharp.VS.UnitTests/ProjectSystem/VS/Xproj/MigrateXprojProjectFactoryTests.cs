@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -24,21 +25,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void MigrateXprojProjectFactory_NullProcessRunner_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>("runner", () => new MigrateXprojProjectFactory(null, new IFileSystemMock()));
+            Assert.Throws<ArgumentNullException>("runner", () => new MigrateXprojProjectFactory(null, new IFileSystemMock(), IServiceProviderFactory.Create()));
         }
 
         [Fact]
         public void MigrateXprojProjectFactory_NullFileSystem_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>("fileSystem", () => new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), null));
+            Assert.Throws<ArgumentNullException>("fileSystem", () => new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), null, IServiceProviderFactory.Create()));
         }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_NullServiceProvider_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>("provider", () => new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), new IFileSystemMock(), null));
+        }
+
 
         [Fact]
         public void MigrateXprojProjectFactory_ValidArgs_BackupsCorrectly()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var fileSystem = CreateFileSystem();
-            var migrator = new MigrateXprojProjectFactory(procRunner, fileSystem);
+            var migrator = new MigrateXprojProjectFactory(procRunner, fileSystem, IServiceProviderFactory.Create());
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -73,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public void MigrateXprojProjectFactory_NonExistantProjectJson_DoesNotBackUp()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
-            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false));
+            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false), IServiceProviderFactory.Create());
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -92,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier);
-            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false));
+            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false), IServiceProviderFactory.Create());
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -106,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier, outputText: "Standard Output", errorText: "Standard Error");
-            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false));
+            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false), IServiceProviderFactory.Create());
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -134,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier, exitCode: VSConstants.E_FAIL);
-            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false));
+            var migrator = new MigrateXprojProjectFactory(procRunner, CreateFileSystem(false), IServiceProviderFactory.Create());
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -159,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem, IServiceProviderFactory.Create());
 
             Assert.Equal(csproj, migrator.GetCsproj(RootLocation, "XprojMigrationTests", XprojLocation, logger));
             Assert.Equal(0, loggedMessages.Count);
@@ -173,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem, IServiceProviderFactory.Create());
 
             Assert.Equal("", migrator.GetCsproj(RootLocation, "XprojMigrationTests", XprojLocation, logger));
             Assert.Equal(1, loggedMessages.Count);
@@ -197,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Guid newProjectFactory;
             uint capabilityFlags;
 
-            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem, IServiceProviderFactory.Create());
 
             Assert.Equal(VSConstants.S_OK,
                 migrator.UpgradeProject_CheckOnly(XprojLocation, logger, out upgradeRequired, out newProjectFactory, out capabilityFlags));
@@ -225,7 +233,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem);
+            var store = new MigrationCleanStore();
+            var componentModel = IComponentModelFactory.ImplementGetService<IMigrationCleanStore>(store);
+            var serviceProvider = IServiceProviderFactory.Create(typeof(SComponentModel), componentModel);
+
+            var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem, serviceProvider);
 
             Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out outCsproj, logger, out upgradeRequired, out newProjectFactory));
             Assert.True(fileSystem.FileExists(csproj));
@@ -234,6 +246,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal(csproj, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
+            var toDelete = store.DrainFiles();
+            Assert.Equal(2, toDelete.Count);
+            Assert.Contains(XprojLocation, toDelete);
+            Assert.Contains(ProjectJsonLocation, toDelete);
         }
 
         private void ProcessVerifier(ProcessStartInfo info)

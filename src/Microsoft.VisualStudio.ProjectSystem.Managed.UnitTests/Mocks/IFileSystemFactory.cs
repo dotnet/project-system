@@ -9,6 +9,8 @@ namespace Microsoft.VisualStudio.Mocks
 {
     internal class IFileSystemFactory
     {
+        public static IFileSystem Create() => Mock.Of<IFileSystem>();
+
         public static IFileSystem Create(Func<string, bool> existsFunc, Func<string, FileStream> createFunc = null)
         {
             var mock = new Mock<IFileSystem>();
