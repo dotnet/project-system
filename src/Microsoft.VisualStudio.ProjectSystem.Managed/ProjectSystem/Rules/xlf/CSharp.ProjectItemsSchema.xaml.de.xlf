@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.ProjectItemsSchema.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.ProjectItemsSchema.xaml" />
+      <trans-unit id="ContentType|CSharpFile|DisplayName">
+        <source>C# file</source>
+        <target state="new">C# file</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ItemType|Compile|DisplayName">
+        <source>C# compiler</source>
+        <target state="new">C# compiler</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

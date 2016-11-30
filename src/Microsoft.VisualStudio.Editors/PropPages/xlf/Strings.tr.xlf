@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="src/Microsoft.VisualStudio.Editors/PropPages/Strings.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/Strings.resx" />
+      <trans-unit id="ErrorLoadingPermissions">
+        <source>Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+ 
+1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+ 
+2. Restart Visual Studio.</source>
+        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+ 
+1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+ 
+2. Restart Visual Studio.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InstallOtherFrameworks">
+        <source>Install other frameworks...</source>
+        <target state="new">Install other frameworks...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InstallOtherFrameworksFWLink">
+        <source>http://go.microsoft.com/fwlink/?LinkID=287120</source>
+        <target state="new">http://go.microsoft.com/fwlink/?LinkID=287120</target>
+        <note>{Locked}</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

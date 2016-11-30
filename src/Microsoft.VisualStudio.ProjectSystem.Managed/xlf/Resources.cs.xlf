@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx" />
+      <trans-unit id="JsonErrorReadingLaunchSettings">
+        <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
+        <target state="new">Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ErrorReadingLaunchSettings">
+        <source>The following error occurred when reading the launch settings file '{0}'. {1} </source>
+        <target state="new">The following error occurred when reading the launch settings file '{0}'. {1} </target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ErrorWritingDebugSettings">
+        <source>The following error occurred when writing to the launch settings file '{0}'. {1} </source>
+        <target state="new">The following error occurred when writing to the launch settings file '{0}'. {1} </target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileMissingName">
+        <source>At least one launch profile is missing the required name attribute. These profiles will be ignored</source>
+        <target state="new">At least one launch profile is missing the required name attribute. These profiles will be ignored</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NoActionProfileName">
+        <source>Start</source>
+        <target state="new">Start</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="JsonErrorNeedToBeCorrected">
+        <source>Errors in '{0}' need to be corrected before applying changes.</source>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

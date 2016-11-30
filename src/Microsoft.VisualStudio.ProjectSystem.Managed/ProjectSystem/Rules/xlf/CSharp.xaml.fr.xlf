@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml" />
+      <trans-unit id="Rule|CSharp|DisplayName">
+        <source>C#</source>
+        <target state="new">C#</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|CSharp|Description">
+        <source>C# source file</source>
+        <target state="new">C# source file</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="new">Misc</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="new">Build Action</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="new">How the file relates to the build and deployment processes.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="new">Copy to Output Directory</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="new">Specifies the source file will be copied to the output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="new">Do not copy</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="new">Copy always</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="new">Copy if newer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|DisplayName">
+        <source>Custom Tool</source>
+        <target state="new">Custom Tool</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|Description">
+        <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
+        <target state="new">Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
+        <source>Custom Tool Namespace</source>
+        <target state="new">Custom Tool Namespace</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|Description">
+        <source>The namespace into which the output of the custom tool is placed.</source>
+        <target state="new">The namespace into which the output of the custom tool is placed.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExcludedFromBuild|DisplayName">
+        <source>Excluded From Build</source>
+        <target state="new">Excluded From Build</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|LastGenOutput|Description">
+        <source>The filename of the last file generated as a result of the SFG.</source>
+        <target state="new">The filename of the last file generated as a result of the SFG.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|DesignTime|Description">
+        <source>A value indicating whether this file has a designer.</source>
+        <target state="new">A value indicating whether this file has a designer.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGen|Description">
+        <source>A value indicating whether this is a generated file.</source>
+        <target state="new">A value indicating whether this is a generated file.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
