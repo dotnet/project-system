@@ -7,104 +7,16 @@
         <source>OK</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Name">
-        <source>okButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Name">
-        <source>cancelButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.ZOrder">
-        <source>0</source>
         <note></note>
       </trans-unit>
       <trans-unit id="Label2.Text">
         <source>&amp;Provide the HTTP address of an XML document:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;Label2.Name">
-        <source>Label2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label2.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label2.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label2.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_urlComboBox.Name">
-        <source>_urlComboBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_urlComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_urlComboBox.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_urlComboBox.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Name">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add an XML document from the Web</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>WebUrlDialog</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
         <note></note>
       </trans-unit>
     </body>

@@ -3,26 +3,6 @@
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.Editors/PropPages/compileproppage2.resx">
     <body>
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/compileproppage2.resx" />
-      <trans-unit id="&gt;&gt;BuildOutputPathTextBox.Name">
-        <source>BuildOutputPathTextBox</source>
-        <target state="new">BuildOutputPathTextBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathTextBox.Parent">
-        <source>buildOutputTableLayoutPanel</source>
-        <target state="new">buildOutputTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathTextBox.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="BuildOutputPathButton.AccessibleName">
         <source>Browse...</source>
         <target state="new">Browse...</target>
@@ -33,89 +13,9 @@
         <target state="new">B&amp;rowse...</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathButton.Name">
-        <source>BuildOutputPathButton</source>
-        <target state="new">BuildOutputPathButton</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathButton.Parent">
-        <source>buildOutputTableLayoutPanel</source>
-        <target state="new">buildOutputTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathButton.ZOrder">
-        <source>1</source>
-        <target state="new">1</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;buildOutputTableLayoutPanel.Name">
-        <source>buildOutputTableLayoutPanel</source>
-        <target state="new">buildOutputTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;buildOutputTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;buildOutputTableLayoutPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;buildOutputTableLayoutPanel.ZOrder">
-        <source>1</source>
-        <target state="new">1</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedCompileOptionsLabelLine.Name">
-        <source>AdvancedCompileOptionsLabelLine</source>
-        <target state="new">AdvancedCompileOptionsLabelLine</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedCompileOptionsLabelLine.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedCompileOptionsLabelLine.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedCompileOptionsLabelLine.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
         <target state="new">Option e&amp;xplicit:</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitLabel.Name">
-        <source>OptionExplicitLabel</source>
-        <target state="new">OptionExplicitLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitLabel.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitLabel.ZOrder">
-        <source>1</source>
-        <target state="new">1</target>
         <note></note>
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
@@ -123,69 +23,9 @@
         <target state="new">D&amp;isable all warnings</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;DisableAllWarningsCheckBox.Name">
-        <source>DisableAllWarningsCheckBox</source>
-        <target state="new">DisableAllWarningsCheckBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DisableAllWarningsCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DisableAllWarningsCheckBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DisableAllWarningsCheckBox.ZOrder">
-        <source>2</source>
-        <target state="new">2</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
         <target state="new">Treat a&amp;ll warnings as errors</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsAsErrorCheckBox.Name">
-        <source>WarningsAsErrorCheckBox</source>
-        <target state="new">WarningsAsErrorCheckBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsAsErrorCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsAsErrorCheckBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsAsErrorCheckBox.ZOrder">
-        <source>3</source>
-        <target state="new">3</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitComboBox.Name">
-        <source>OptionExplicitComboBox</source>
-        <target state="new">OptionExplicitComboBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitComboBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionExplicitComboBox.ZOrder">
-        <source>4</source>
-        <target state="new">4</target>
         <note></note>
       </trans-unit>
       <trans-unit id="BuildEventsButton.Text">
@@ -193,69 +33,9 @@
         <target state="new">Build Eve&amp;nts...</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;BuildEventsButton.Name">
-        <source>BuildEventsButton</source>
-        <target state="new">BuildEventsButton</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildEventsButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildEventsButton.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildEventsButton.ZOrder">
-        <source>5</source>
-        <target state="new">5</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
         <target state="new">R&amp;egister for COM interop</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;RegisterForComInteropCheckBox.Name">
-        <source>RegisterForComInteropCheckBox</source>
-        <target state="new">RegisterForComInteropCheckBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;RegisterForComInteropCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;RegisterForComInteropCheckBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;RegisterForComInteropCheckBox.ZOrder">
-        <source>6</source>
-        <target state="new">6</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareComboBox.Name">
-        <source>OptionCompareComboBox</source>
-        <target state="new">OptionCompareComboBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareComboBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareComboBox.ZOrder">
-        <source>7</source>
-        <target state="new">7</target>
         <note></note>
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
@@ -263,69 +43,9 @@
         <target state="new">&amp;Generate XML documentation file</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;GenerateXMLCheckBox.Name">
-        <source>GenerateXMLCheckBox</source>
-        <target state="new">GenerateXMLCheckBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GenerateXMLCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GenerateXMLCheckBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GenerateXMLCheckBox.ZOrder">
-        <source>8</source>
-        <target state="new">8</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
         <target state="new">Option &amp;strict:</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictLabel.Name">
-        <source>OptionStrictLabel</source>
-        <target state="new">OptionStrictLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictLabel.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictLabel.ZOrder">
-        <source>9</source>
-        <target state="new">9</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictComboBox.Name">
-        <source>OptionStrictComboBox</source>
-        <target state="new">OptionStrictComboBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictComboBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionStrictComboBox.ZOrder">
-        <source>10</source>
-        <target state="new">10</target>
         <note></note>
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
@@ -333,94 +53,14 @@
         <target state="new">Option c&amp;ompare:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareLabel.Name">
-        <source>OptionCompareLabel</source>
-        <target state="new">OptionCompareLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareLabel.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionCompareLabel.ZOrder">
-        <source>11</source>
-        <target state="new">11</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
         <target state="new">Option in&amp;fer:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferLabel.Name">
-        <source>OptionInferLabel</source>
-        <target state="new">OptionInferLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferLabel.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferLabel.ZOrder">
-        <source>12</source>
-        <target state="new">12</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferComboBox.Name">
-        <source>OptionInferComboBox</source>
-        <target state="new">OptionInferComboBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferComboBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OptionInferComboBox.ZOrder">
-        <source>13</source>
-        <target state="new">13</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
         <target state="new">Warning configurations:</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsConfigurationsGridViewLabel.Name">
-        <source>WarningsConfigurationsGridViewLabel</source>
-        <target state="new">WarningsConfigurationsGridViewLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsConfigurationsGridViewLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsConfigurationsGridViewLabel.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsConfigurationsGridViewLabel.ZOrder">
-        <source>14</source>
-        <target state="new">14</target>
         <note></note>
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">
@@ -433,69 +73,9 @@
         <target state="new">Notification</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsGridView.Name">
-        <source>WarningsGridView</source>
-        <target state="new">WarningsGridView</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsGridView.Type">
-        <source>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.DataGridView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsGridView.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;WarningsGridView.ZOrder">
-        <source>15</source>
-        <target state="new">15</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="AdvancedOptionsButton.Text">
         <source>&amp;Advanced Compile Options...</source>
         <target state="new">&amp;Advanced Compile Options...</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedOptionsButton.Name">
-        <source>AdvancedOptionsButton</source>
-        <target state="new">AdvancedOptionsButton</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedOptionsButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedOptionsButton.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AdvancedOptionsButton.ZOrder">
-        <source>16</source>
-        <target state="new">16</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsTableLayoutPanel.Name">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsTableLayoutPanel.Parent">
-        <source>CompileOptionsGroupBox</source>
-        <target state="new">CompileOptionsGroupBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
         <note></note>
       </trans-unit>
       <trans-unit id="CompileOptionsGroupBox.Text">
@@ -503,69 +83,9 @@
         <target state="new">Compile Options:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsGroupBox.Name">
-        <source>CompileOptionsGroupBox</source>
-        <target state="new">CompileOptionsGroupBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsGroupBox.Type">
-        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsGroupBox.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompileOptionsGroupBox.ZOrder">
-        <source>2</source>
-        <target state="new">2</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <target state="new">$this</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
         <target state="new">B&amp;uild output path:</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathLabel.Name">
-        <source>BuildOutputPathLabel</source>
-        <target state="new">BuildOutputPathLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;BuildOutputPathLabel.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
         <note></note>
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
@@ -573,99 +93,9 @@
         <target state="new">&amp;Target CPU:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPULabel.Name">
-        <source>TargetCPULabel</source>
-        <target state="new">TargetCPULabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPULabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPULabel.Parent">
-        <source>&gt;CompileOptionsTableLayoutPanel</source>
-        <target state="new">&gt;CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPULabel.ZOrder">
-        <source>17</source>
-        <target state="new">17</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPUComboBox.Name">
-        <source>TargetCPUComboBox</source>
-        <target state="new">TargetCPUComboBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPUComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPUComboBox.Parent">
-        <source>&gt;CompileOptionsTableLayoutPanel</source>
-        <target state="new">&gt;CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TargetCPUComboBox.ZOrder">
-        <source>18</source>
-        <target state="new">18</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
         <target state="new">&amp;Prefer 32-bit</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Prefer32BitCheckBox.Name">
-        <source>Prefer32BitCheckBox</source>
-        <target state="new">Prefer32BitCheckBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Prefer32BitCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Prefer32BitCheckBox.Parent">
-        <source>CompileOptionsTableLayoutPanel</source>
-        <target state="new">CompileOptionsTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Prefer32BitCheckBox.ZOrder">
-        <source>19</source>
-        <target state="new">19</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ConditionColumn.Name">
-        <source>ConditionColumn</source>
-        <target state="new">ConditionColumn</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ConditionColumn.Type">
-        <source>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NotificationColumn.Name">
-        <source>NotificationColumn</source>
-        <target state="new">NotificationColumn</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NotificationColumn.Type">
-        <source>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>CompilePropPage2</source>
-        <target state="new">CompilePropPage2</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         <note></note>
       </trans-unit>
     </body>

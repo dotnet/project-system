@@ -7,300 +7,40 @@
         <source>Indent type:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeLabel.Name">
-        <source>_indentTypeLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeLabel.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeLabel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="_indentTypeNoneRadioButton.Text">
         <source>&amp;None</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeNoneRadioButton.Name">
-        <source>_indentTypeNoneRadioButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeNoneRadioButton.Type">
-        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeNoneRadioButton.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeNoneRadioButton.ZOrder">
-        <source>1</source>
         <note></note>
       </trans-unit>
       <trans-unit id="_indentTypeBlockRadioButton.Text">
         <source>&amp;Block</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeBlockRadioButton.Name">
-        <source>_indentTypeBlockRadioButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeBlockRadioButton.Type">
-        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeBlockRadioButton.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeBlockRadioButton.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="_indentTypeSmartRadioButton.Text">
         <source>&amp;Smart</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeSmartRadioButton.Name">
-        <source>_indentTypeSmartRadioButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeSmartRadioButton.Type">
-        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeSmartRadioButton.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentTypeSmartRadioButton.ZOrder">
-        <source>3</source>
         <note></note>
       </trans-unit>
       <trans-unit id="_tabSizeLabel.Text">
         <source>&amp;Tab size:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeLabel.Name">
-        <source>_tabSizeLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeLabel.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeLabel.ZOrder">
-        <source>4</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeTextBox.Name">
-        <source>_tabSizeTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeTextBox.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_tabSizeTextBox.ZOrder">
-        <source>5</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="_indentSizeLabel.Text">
         <source>&amp;Indent size:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeLabel.Name">
-        <source>_indentSizeLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeLabel.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeLabel.ZOrder">
-        <source>6</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeTextBox.Name">
-        <source>_indentSizeTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeTextBox.Parent">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_indentSizeTextBox.ZOrder">
-        <source>7</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingLayoutPanel.Name">
-        <source>IndentingLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingLayoutPanel.Parent">
-        <source>IndentingGroupBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="IndentingLayoutPanel.LayoutSettings">
-        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_indentTypeLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_indentTypeNoneRadioButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_indentTypeBlockRadioButton" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_indentTypeSmartRadioButton" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_tabSizeLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_tabSizeTextBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_indentSizeLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_indentSizeTextBox" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
         <note></note>
       </trans-unit>
       <trans-unit id="_wordWrapCheckBox.Text">
         <source>&amp;Word wrap</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;_wordWrapCheckBox.Name">
-        <source>_wordWrapCheckBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_wordWrapCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_wordWrapCheckBox.Parent">
-        <source>InteractionTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_wordWrapCheckBox.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="_lineNumbersCheckBox.Text">
         <source>Line n&amp;umbers</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_lineNumbersCheckBox.Name">
-        <source>_lineNumbersCheckBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_lineNumbersCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_lineNumbersCheckBox.Parent">
-        <source>InteractionTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_lineNumbersCheckBox.ZOrder">
-        <source>1</source>
         <note></note>
       </trans-unit>
       <trans-unit id="IndentingGroupBox.Text">
         <source>Indenting</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingGroupBox.Name">
-        <source>IndentingGroupBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingGroupBox.Type">
-        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingGroupBox.Parent">
-        <source>IndentingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingGroupBox.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionTableLayoutPanel.Name">
-        <source>InteractionTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionTableLayoutPanel.Parent">
-        <source>InteractionGroupBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="InteractionTableLayoutPanel.LayoutSettings">
-        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_wordWrapCheckBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_lineNumbersCheckBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="InteractionGroupBox.Text">
         <source>Interaction</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionGroupBox.Name">
-        <source>InteractionGroupBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionGroupBox.Type">
-        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionGroupBox.Parent">
-        <source>IndentingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;InteractionGroupBox.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingTableLayoutPanel.Name">
-        <source>IndentingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;IndentingTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="IndentingTableLayoutPanel.LayoutSettings">
-        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="IndentingGroupBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="InteractionGroupBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>EditorToolsOptionsPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
         <note></note>
       </trans-unit>
     </body>

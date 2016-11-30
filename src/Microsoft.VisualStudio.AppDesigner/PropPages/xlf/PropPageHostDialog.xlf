@@ -7,84 +7,12 @@
         <source>OK</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;OK.Name">
-        <source>OK</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OK.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OK.Parent">
-        <source>okCancelTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;OK.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>Cancel</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;Cancel.Name">
-        <source>Cancel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Cancel.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Cancel.Parent">
-        <source>okCancelTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Cancel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Name">
-        <source>okCancelTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Parent">
-        <source>overArchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overArchingTableLayoutPanel.Name">
-        <source>overArchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overArchingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overArchingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overArchingTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="$this.Text">
         <source>PropPageHostDialog</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>PropPageHostDialog</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
         <note></note>
       </trans-unit>
     </body>

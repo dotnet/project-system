@@ -7,132 +7,20 @@
         <source>P&amp;re-build event command line:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;lblPreBuildEventCommandLine.Name">
-        <source>lblPreBuildEventCommandLine</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPreBuildEventCommandLine.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPreBuildEventCommandLine.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPreBuildEventCommandLine.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPreBuildEventCommandLine.Name">
-        <source>txtPreBuildEventCommandLine</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPreBuildEventCommandLine.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPreBuildEventCommandLine.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPreBuildEventCommandLine.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build ...</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPreBuildBuilder.Name">
-        <source>btnPreBuildBuilder</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPreBuildBuilder.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPreBuildBuilder.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPreBuildBuilder.ZOrder">
-        <source>5</source>
         <note></note>
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;lblPostBuildEventCommandLine.Name">
-        <source>lblPostBuildEventCommandLine</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPostBuildEventCommandLine.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPostBuildEventCommandLine.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblPostBuildEventCommandLine.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPostBuildEventCommandLine.Name">
-        <source>txtPostBuildEventCommandLine</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPostBuildEventCommandLine.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPostBuildEventCommandLine.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;txtPostBuildEventCommandLine.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild ...</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;btnPostBuildBuilder.Name">
-        <source>btnPostBuildBuilder</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPostBuildBuilder.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPostBuildBuilder.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;btnPostBuildBuilder.ZOrder">
-        <source>4</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblRunPostBuildEvent.Name">
-        <source>lblRunPostBuildEvent</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblRunPostBuildEvent.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblRunPostBuildEvent.Parent">
-        <source>runPostBuildEventPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;lblRunPostBuildEvent.ZOrder">
-        <source>0</source>
         <note></note>
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items">
@@ -145,62 +33,6 @@
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items2">
         <source>When the build updates the project output</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cboRunPostBuildEvent.Name">
-        <source>cboRunPostBuildEvent</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cboRunPostBuildEvent.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cboRunPostBuildEvent.Parent">
-        <source>runPostBuildEventPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cboRunPostBuildEvent.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;runPostBuildEventPanel.Name">
-        <source>runPostBuildEventPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;runPostBuildEventPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;runPostBuildEventPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;runPostBuildEventPanel.ZOrder">
-        <source>6</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>BuildEventsPropPage</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
         <note></note>
       </trans-unit>
     </body>

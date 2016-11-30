@@ -7,104 +7,16 @@
         <source>&amp;OK</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Name">
-        <source>okButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okButton.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Name">
-        <source>cancelButton</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;cancelButton.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_xmlTextBox.Name">
-        <source>_xmlTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_xmlTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_xmlTextBox.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;_xmlTextBox.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Name">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TableLayoutPanel2.ZOrder">
-        <source>0</source>
         <note></note>
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>&amp;Type or paste an XML document</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;Label1.Name">
-        <source>Label1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label1.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label1.Parent">
-        <source>TableLayoutPanel2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Label1.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add XML</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>PasteXmlDialog</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
         <note></note>
       </trans-unit>
     </body>

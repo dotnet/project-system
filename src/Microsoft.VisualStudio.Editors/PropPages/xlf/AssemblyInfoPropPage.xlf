@@ -7,540 +7,60 @@
         <source>&amp;Title:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;TitleLabel.Name">
-        <source>TitleLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TitleLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TitleLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TitleLabel.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TrademarkLabel.Name">
-        <source>TrademarkLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TrademarkLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TrademarkLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TrademarkLabel.ZOrder">
-        <source>12</source>
         <note></note>
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;CopyrightLabel.Name">
-        <source>CopyrightLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CopyrightLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CopyrightLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CopyrightLabel.ZOrder">
-        <source>10</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ProductLabel.Name">
-        <source>ProductLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ProductLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ProductLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ProductLabel.ZOrder">
-        <source>8</source>
         <note></note>
       </trans-unit>
       <trans-unit id="CompanyLabel.Text">
         <source>&amp;Company:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;CompanyLabel.Name">
-        <source>CompanyLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompanyLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompanyLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;CompanyLabel.ZOrder">
-        <source>6</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DescriptionLabel.Name">
-        <source>DescriptionLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DescriptionLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DescriptionLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;DescriptionLabel.ZOrder">
-        <source>4</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Title.Name">
-        <source>Title</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Title.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Title.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Title.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Description.Name">
-        <source>Description</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Description.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Description.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Description.ZOrder">
-        <source>5</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Company.Name">
-        <source>Company</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Company.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Company.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Company.ZOrder">
-        <source>7</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Product.Name">
-        <source>Product</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Product.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Product.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Product.ZOrder">
-        <source>9</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Copyright.Name">
-        <source>Copyright</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Copyright.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Copyright.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Copyright.ZOrder">
-        <source>11</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Trademark.Name">
-        <source>Trademark</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Trademark.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Trademark.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;Trademark.ZOrder">
-        <source>13</source>
         <note></note>
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;ComVisibleCheckBox.Name">
-        <source>ComVisibleCheckBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ComVisibleCheckBox.Type">
-        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ComVisibleCheckBox.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;ComVisibleCheckBox.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageLabel.Name">
-        <source>NeutralLanguageLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageLabel.ZOrder">
-        <source>2</source>
         <note></note>
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLabel.Name">
-        <source>AssemblyVersionLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLabel.ZOrder">
-        <source>14</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMajorTextBox.Name">
-        <source>AssemblyVersionMajorTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMajorTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMajorTextBox.Parent">
-        <source>AssemblyVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMajorTextBox.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMinorTextBox.Name">
-        <source>AssemblyVersionMinorTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMinorTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMinorTextBox.Parent">
-        <source>AssemblyVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionMinorTextBox.ZOrder">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionBuildTextBox.Name">
-        <source>AssemblyVersionBuildTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionBuildTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionBuildTextBox.Parent">
-        <source>AssemblyVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionBuildTextBox.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionRevisionTextBox.Name">
-        <source>AssemblyVersionRevisionTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionRevisionTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionRevisionTextBox.Parent">
-        <source>AssemblyVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionRevisionTextBox.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLayoutPanel.Name">
-        <source>AssemblyVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLayoutPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;AssemblyVersionLayoutPanel.ZOrder">
-        <source>15</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLabel.Name">
-        <source>FileVersionLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLabel.ZOrder">
-        <source>16</source>
         <note></note>
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMajorTextBox.Name">
-        <source>FileVersionMajorTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMajorTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMajorTextBox.Parent">
-        <source>FileVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMajorTextBox.ZOrder">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMinorTextBox.Name">
-        <source>FileVersionMinorTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMinorTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMinorTextBox.Parent">
-        <source>FileVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionMinorTextBox.ZOrder">
-        <source>1</source>
         <note></note>
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionBuildTextBox.Name">
-        <source>FileVersionBuildTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionBuildTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionBuildTextBox.Parent">
-        <source>FileVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionBuildTextBox.ZOrder">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionRevisionTextBox.Name">
-        <source>FileVersionRevisionTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionRevisionTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionRevisionTextBox.Parent">
-        <source>FileVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionRevisionTextBox.ZOrder">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLayoutPanel.Name">
-        <source>FileVersionLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLayoutPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;FileVersionLayoutPanel.ZOrder">
-        <source>17</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidTextBox.Name">
-        <source>GuidTextBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidTextBox.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidTextBox.ZOrder">
-        <source>18</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="GuidLabel.Text">
         <source>&amp;GUID:</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidLabel.Name">
-        <source>GuidLabel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;GuidLabel.ZOrder">
-        <source>19</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageComboBox.Name">
-        <source>NeutralLanguageComboBox</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageComboBox.Type">
-        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageComboBox.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;NeutralLanguageComboBox.ZOrder">
-        <source>20</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
-        <source>overarchingTableLayoutPanel</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
-        <source>0</source>
         <note></note>
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
@@ -557,14 +77,6 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>AssemblyInfoPropPage</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
         <note></note>
       </trans-unit>
     </body>

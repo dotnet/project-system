@@ -40,10 +40,6 @@
         <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
         <note></note>
       </trans-unit>
-      <trans-unit id="AddImportsExtensionMethodsSecondaryFormatString">
-        <source></source>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

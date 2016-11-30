@@ -299,11 +299,6 @@ Please select a valid folder path.</target>
         <target state="new"> Solution Explorer), and make changes on the Application tab.</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="PPG_Application_MyAppCommentLine5">
-        <source></source>
-        <target state="new"></target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="PPG_Application_InvalidIdentifierStartupForm_1Arg">
         <source>'{0}' is not a valid identifier. Please select a different Startup form.</source>
         <target state="new">'{0}' is not a valid identifier. Please select a different Startup form.</target>
@@ -327,11 +322,6 @@ Please select a valid folder path.</target>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
         <source>The following events are available for MyApplication:</source>
         <target state="new">The following events are available for MyApplication:</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="PPG_Application_AppEventsCommentLine2">
-        <source></source>
-        <target state="new"></target>
         <note></note>
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine3">
@@ -1911,32 +1901,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Delete values in {0} cell(s)</source>
         <target state="new">Delete values in {0} cell(s)</target>
         <note>{0} = number of cells cleared</note>
-      </trans-unit>
-      <trans-unit id="RSE_Font_MenuStrip">
-        <source></source>
-        <target state="new"></target>
-        <note># Fonts (should be left blank to pick up font from environment automatically, but could be changed if needed for last-minute font bugs)
-#
-# Format of these strings is the same as it would be in a form resx.  Example:    RSE_Font_MenuStrip=Arial, 12pt</note>
-      </trans-unit>
-      <trans-unit id="RSE_Font_StringTable">
-        <source></source>
-        <target state="new"></target>
-        <note># Fonts (should be left blank to pick up font from environment automatically, but could be changed if needed for last-minute font bugs)
-#
-# Format of these strings is the same as it would be in a form resx.  Example:    RSE_Font_MenuStrip=Arial, 12pt</note>
-      </trans-unit>
-      <trans-unit id="RSE_Font_ListView">
-        <source></source>
-        <target state="new"></target>
-        <note># Fonts (should be left blank to pick up font from environment automatically, but could be changed if needed for last-minute font bugs)
-#
-# Format of these strings is the same as it would be in a form resx.  Example:    RSE_Font_MenuStrip=Arial, 12pt</note>
-      </trans-unit>
-      <trans-unit id="RSE_NoBoldFontsInCategoryButtons">
-        <source></source>
-        <target state="new"></target>
-        <note>Whether or not to bold the font on category buttons (e.g. "Strings", "Images") when they contain one or more resources.  If this resource string is set to anything other than an empty string, this bolding behavior will be turned off</note>
       </trans-unit>
       <trans-unit id="RSE_CategiesLabel">
         <source>&amp;Categories:</source>

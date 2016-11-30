@@ -3,49 +3,9 @@
   <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypePickerDialog.resx">
     <body>
       <group id="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypePickerDialog.resx" />
-      <trans-unit id="&gt;&gt;TypeTextBox.Name">
-        <source>TypeTextBox</source>
-        <target state="new">TypeTextBox</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TypeTextBox.Type">
-        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TypeTextBox.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TypeTextBox.ZOrder">
-        <source>3</source>
-        <target state="new">3</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="m_CancelButton.Text">
         <source>Cancel</source>
         <target state="new">Cancel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_CancelButton.Name">
-        <source>m_CancelButton</source>
-        <target state="new">m_CancelButton</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_CancelButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_CancelButton.Parent">
-        <source>okCancelTableLayoutPanel</source>
-        <target state="new">okCancelTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_CancelButton.ZOrder">
-        <source>1</source>
-        <target state="new">1</target>
         <note></note>
       </trans-unit>
       <trans-unit id="m_OkButton.Text">
@@ -53,134 +13,14 @@
         <target state="new">OK</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;m_OkButton.Name">
-        <source>m_OkButton</source>
-        <target state="new">m_OkButton</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_OkButton.Type">
-        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_OkButton.Parent">
-        <source>okCancelTableLayoutPanel</source>
-        <target state="new">okCancelTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;m_OkButton.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Name">
-        <source>okCancelTableLayoutPanel</source>
-        <target state="new">okCancelTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;okCancelTableLayoutPanel.ZOrder">
-        <source>1</source>
-        <target state="new">1</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="okCancelTableLayoutPanel.LayoutSettings">
-        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_OkButton" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_CancelButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
-        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_OkButton" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_CancelButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="SelectedTypeLabel.Text">
         <source>Selected &amp;type:</source>
         <target state="new">Selected &amp;type:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="&gt;&gt;SelectedTypeLabel.Name">
-        <source>SelectedTypeLabel</source>
-        <target state="new">SelectedTypeLabel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;SelectedTypeLabel.Type">
-        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;SelectedTypeLabel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;SelectedTypeLabel.ZOrder">
-        <source>2</source>
-        <target state="new">2</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
-        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
-        <source>$this</source>
-        <target state="new">$this</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="overarchingTableLayoutPanel.LayoutSettings">
-        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TreeViewPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="okCancelTableLayoutPanel" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="SelectedTypeLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TypeTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
-        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TreeViewPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="okCancelTableLayoutPanel" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="SelectedTypeLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TypeTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TreeViewPanel.Name">
-        <source>TreeViewPanel</source>
-        <target state="new">TreeViewPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TreeViewPanel.Type">
-        <source>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-        <target state="new">System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TreeViewPanel.Parent">
-        <source>overarchingTableLayoutPanel</source>
-        <target state="new">overarchingTableLayoutPanel</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;TreeViewPanel.ZOrder">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="$this.Text">
         <source>Select a Type</source>
         <target state="new">Select a Type</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Name">
-        <source>TypePickerDialog</source>
-        <target state="new">TypePickerDialog</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="&gt;&gt;$this.Type">
-        <source>Microsoft.VisualStudio.Editors.DesignerFramework.BaseDialog, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-        <target state="new">Microsoft.VisualStudio.Editors.DesignerFramework.BaseDialog, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         <note></note>
       </trans-unit>
     </body>
