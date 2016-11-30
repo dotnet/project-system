@@ -48,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
         public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
         {
+            pbstrBuildMacroValue = null;
             var configuredProject = _projectVsServices.ThreadingService.ExecuteSynchronously(async delegate
             {
                 return await _unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
@@ -59,7 +60,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return await commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName).ConfigureAwait(false);
             });
 
-            return PropertyPage.NativeMethods.S_OK;
+            if (pbstrBuildMacroValue == null)
+            {
+                pbstrBuildMacroValue = string.Empty;
+                return VSConstants.E_FAIL;
+            }
+            else
+            {
+                return VSConstants.S_OK;
+            }
         }
 
         #endregion
