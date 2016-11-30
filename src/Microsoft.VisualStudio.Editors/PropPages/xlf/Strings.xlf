@@ -15,10 +15,6 @@
         <source>Install other frameworks...</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="InstallOtherFrameworksFWLink">
-        <source>http://go.microsoft.com/fwlink/?LinkID=287120</source>
-        <note>{Locked}</note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

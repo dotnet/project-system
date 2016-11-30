@@ -13,55 +13,10 @@
         <target state="new">&amp;Internal compiler error reporting:</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items">
-        <source>none</source>
-        <target state="new">none</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items1">
-        <source>prompt</source>
-        <target state="new">prompt</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items2">
-        <source>send</source>
-        <target state="new">send</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items3">
-        <source>queue</source>
-        <target state="new">queue</target>
-        <note>{Locked}</note>
-      </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
         <target state="new">D&amp;ebugging information:</target>
         <note></note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items">
-        <source>none</source>
-        <target state="new">none</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items1">
-        <source>full</source>
-        <target state="new">full</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items2">
-        <source>pdb-only</source>
-        <target state="new">pdb-only</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items3">
-        <source>portable</source>
-        <target state="new">portable</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items4">
-        <source>embedded</source>
-        <target state="new">embedded</target>
-        <note>{Locked}</note>
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>

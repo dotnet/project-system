@@ -21,11 +21,6 @@
         <target state="new">Install other frameworks...</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="InstallOtherFrameworksFWLink">
-        <source>http://go.microsoft.com/fwlink/?LinkID=287120</source>
-        <target state="new">http://go.microsoft.com/fwlink/?LinkID=287120</target>
-        <note>{Locked}</note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

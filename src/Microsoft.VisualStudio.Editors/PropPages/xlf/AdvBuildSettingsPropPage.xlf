@@ -11,45 +11,9 @@
         <source>&amp;Internal compiler error reporting:</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items">
-        <source>none</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items1">
-        <source>prompt</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items2">
-        <source>send</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboReportCompilerErrors.Items3">
-        <source>queue</source>
-        <note>{Locked}</note>
-      </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
         <note></note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items">
-        <source>none</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items1">
-        <source>full</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items2">
-        <source>pdb-only</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items3">
-        <source>portable</source>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="cboDebugInfo.Items4">
-        <source>embedded</source>
-        <note>{Locked}</note>
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>

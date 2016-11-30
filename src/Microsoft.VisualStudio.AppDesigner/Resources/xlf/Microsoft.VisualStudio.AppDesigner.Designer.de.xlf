@@ -314,30 +314,10 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
         <target state="new">Change property: {0}</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="ResourceEditorFactory_GUID">
-        <source>ff4d6aca-9352-4a5f-821e-f4d6ebdcab11</source>
-        <target state="new">ff4d6aca-9352-4a5f-821e-f4d6ebdcab11</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="SettingsDesignerEditorFactory_GUID">
-        <source>6d2695f9-5365-4a78-89ed-f205c045bfe6</source>
-        <target state="new">6d2695f9-5365-4a78-89ed-f205c045bfe6</target>
-        <note>{Locked}</note>
-      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="new">Failed to generate file: {0}</target>
         <note></note>
-      </trans-unit>
-      <trans-unit id="VBPackage_GUID">
-        <source>67909B06-91E9-4F3E-AB50-495046BE9A9A</source>
-        <target state="new">67909B06-91E9-4F3E-AB50-495046BE9A9A</target>
-        <note>{Locked}</note>
-      </trans-unit>
-      <trans-unit id="WPFApplicationWithMyPropPageComClass_GUID">
-        <source>00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d</source>
-        <target state="new">00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d</target>
-        <note>{Locked}</note>
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
