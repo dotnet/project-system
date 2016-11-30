@@ -54,7 +54,10 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProvider.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectGuidProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\IMigrationCleanStore.cs" />
     <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\MigrationCleaner.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\MigrationCleanStore.cs" />
     <Compile Include="ProjectSystem\VS\Xproj\ProcessRunner.cs" />
   </ItemGroup>
   <ItemGroup>
