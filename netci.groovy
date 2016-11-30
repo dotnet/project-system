@@ -76,7 +76,7 @@ SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
 pushd %WORKSPACE%\\sdk
-build.cmd -Configuration release
+call build.cmd -Configuration release || goto :BuildFailed
 
 pushd %WORKSPACE%\\roslyn-internal\\Closed\\Tools\\Source\\VsixExpInstaller
 msbuild /p:Configuration=Release
@@ -89,7 +89,6 @@ exit /b %ERRORLEVEL%
 :BuildFailed
 echo Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
-BuildFailed
 """)
 
         // Build roslyn-internal and run netcore VSI tao tests.
