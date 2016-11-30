@@ -257,19 +257,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             }
                                
                             var failedProjects = new List<Tuple<IReloadableProject, ProjectReloadResult>>();
-                            _threadHandling.ExecuteSynchronously(async () =>
+
+                            foreach (var project in changedProjects)
                             {
-                                foreach (var project in changedProjects)
+                                ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
+
+                                if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
                                 {
-                                    ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
-
-                                    if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
-                                    {
-                                        failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
-                                    }
+                                    failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
                                 }
-                            });
-
+                            }
+                            
                             ProcessProjectReloadFailures(failedProjects);
 
                         });
