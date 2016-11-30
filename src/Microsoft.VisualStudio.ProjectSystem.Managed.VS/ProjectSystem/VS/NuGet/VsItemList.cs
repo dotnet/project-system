@@ -26,21 +26,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public T Item(Object index)
         {
-            try
+            if (index is string)
             {
-                if (index is string)
-                {
-                    return this[(string)index];
-                }
-                else if (index is int)
-                {
-                    return this[(int)index];
-                }
+                TryGetValue((string)index, out var value);
+                return value;
             }
-            catch (KeyNotFoundException) { }
-            catch (ArgumentOutOfRangeException) { }
 
-            return default(T);
+            return this[(int)index];
         }
+
+    public bool TryGetValue(string key, out T value)
+    {
+        // Until we have https://github.com/dotnet/corefx/issues/4690
+
+        Requires.NotNull(key, nameof(key));
+
+        if (Dictionary != null)
+        {
+            return Dictionary.TryGetValue(key, out value);
+        }
+
+        foreach (T item in Items)
+        {
+            if (Comparer.Equals(GetKeyForItem(item), key))
+            {
+                value = item;
+                return true;
+            }
+        }
+
+        value = default(T);
+        return false;
     }
+}
 }
