@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsExtensionCollisionDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsExtensionCollisionDialog.resx" />
+      <trans-unit id="&gt;&gt;txtMain_.Name">
+        <source>txtMain_</source>
+        <target state="new">txtMain_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtMain_.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtMain_.Parent">
+        <source>pnlLayout_</source>
+        <target state="new">pnlLayout_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtMain_.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnOk_.Text">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOk_.Name">
+        <source>btnOk_</source>
+        <target state="new">btnOk_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOk_.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOk_.Parent">
+        <source>pnlLayout_</source>
+        <target state="new">pnlLayout_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOk_.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnCancel_.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnCancel_.Name">
+        <source>btnCancel_</source>
+        <target state="new">btnCancel_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnCancel_.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnCancel_.Parent">
+        <source>pnlLayout_</source>
+        <target state="new">pnlLayout_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnCancel_.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;pnlLayout_.Name">
+        <source>pnlLayout_</source>
+        <target state="new">pnlLayout_</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;pnlLayout_.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;pnlLayout_.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;pnlLayout_.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add Imports Validation Error</source>
+        <target state="new">Add Imports Validation Error</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AutoAddImportsExtensionCollisionDialog</source>
+        <target state="new">AutoAddImportsExtensionCollisionDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

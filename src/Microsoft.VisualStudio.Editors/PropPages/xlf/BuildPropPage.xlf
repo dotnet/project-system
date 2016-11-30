@@ -1,0 +1,748 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx" />
+      <trans-unit id="lblConditionalCompilationSymbols.Text">
+        <source>Conditional compilation s&amp;ymbols:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblConditionalCompilationSymbols.Name">
+        <source>lblConditionalCompilationSymbols</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblConditionalCompilationSymbols.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblConditionalCompilationSymbols.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblConditionalCompilationSymbols.ZOrder">
+        <source>25</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtConditionalCompilationSymbols.Name">
+        <source>txtConditionalCompilationSymbols</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtConditionalCompilationSymbols.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtConditionalCompilationSymbols.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtConditionalCompilationSymbols.ZOrder">
+        <source>24</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Name">
+        <source>outputLineLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Parent">
+        <source>outputTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Name">
+        <source>outputLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Parent">
+        <source>outputTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Name">
+        <source>outputTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Name">
+        <source>generalLineLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Parent">
+        <source>generalHeaderTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Name">
+        <source>generalLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Parent">
+        <source>generalHeaderTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalHeaderTableLayoutPanel.Name">
+        <source>generalHeaderTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalHeaderTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalHeaderTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalHeaderTableLayoutPanel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLineLabel.Name">
+        <source>treatWarningsAsErrorsLineLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLineLabel.Parent">
+        <source>treatWarningsAsErrorsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLineLabel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+        <source>Treat warnings as errors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLabel.Name">
+        <source>treatWarningsAsErrorsLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLabel.Parent">
+        <source>treatWarningsAsErrorsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsLabel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsTableLayoutPanel.Name">
+        <source>treatWarningsAsErrorsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;treatWarningsAsErrorsTableLayoutPanel.ZOrder">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLineLabel.Name">
+        <source>errorsAndWarningsLineLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLineLabel.Parent">
+        <source>errorsAndWarningsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLineLabel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="errorsAndWarningsLabel.Text">
+        <source>Errors and warnings</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLabel.Name">
+        <source>errorsAndWarningsLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLabel.Parent">
+        <source>errorsAndWarningsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsLabel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsTableLayoutPanel.Name">
+        <source>errorsAndWarningsTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;errorsAndWarningsTableLayoutPanel.ZOrder">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkRegisterForCOM.Text">
+        <source>Register for &amp;COM interop</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkRegisterForCOM.Name">
+        <source>chkRegisterForCOM</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkRegisterForCOM.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkRegisterForCOM.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkRegisterForCOM.ZOrder">
+        <source>4</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkXMLDocumentationFile.Text">
+        <source>&amp;XML documentation file:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkXMLDocumentationFile.Name">
+        <source>chkXMLDocumentationFile</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkXMLDocumentationFile.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkXMLDocumentationFile.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkXMLDocumentationFile.ZOrder">
+        <source>5</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtXMLDocumentationFile.Name">
+        <source>txtXMLDocumentationFile</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtXMLDocumentationFile.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtXMLDocumentationFile.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtXMLDocumentationFile.ZOrder">
+        <source>6</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnOutputPathBrowse.Text">
+        <source>B&amp;rowse...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOutputPathBrowse.Name">
+        <source>btnOutputPathBrowse</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOutputPathBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOutputPathBrowse.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnOutputPathBrowse.ZOrder">
+        <source>7</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtOutputPath.Name">
+        <source>txtOutputPath</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtOutputPath.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtOutputPath.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtOutputPath.ZOrder">
+        <source>8</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblOutputPath.Text">
+        <source>&amp;Output path:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblOutputPath.Name">
+        <source>lblOutputPath</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblOutputPath.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblOutputPath.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblOutputPath.ZOrder">
+        <source>9</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningSpecific.Text">
+        <source>Specif&amp;ic warnings:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningSpecific.Name">
+        <source>rbWarningSpecific</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningSpecific.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningSpecific.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningSpecific.ZOrder">
+        <source>10</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSpecificWarnings.Name">
+        <source>txtSpecificWarnings</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSpecificWarnings.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSpecificWarnings.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSpecificWarnings.ZOrder">
+        <source>11</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningAll.Text">
+        <source>A&amp;ll</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningAll.Name">
+        <source>rbWarningAll</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningAll.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningAll.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningAll.ZOrder">
+        <source>12</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningNone.Text">
+        <source>&amp;None</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningNone.Name">
+        <source>rbWarningNone</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningNone.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningNone.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbWarningNone.ZOrder">
+        <source>13</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSupressWarnings.Name">
+        <source>txtSupressWarnings</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSupressWarnings.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSupressWarnings.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtSupressWarnings.ZOrder">
+        <source>14</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblSupressWarnings.Text">
+        <source>&amp;Suppress warnings:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSupressWarnings.Name">
+        <source>lblSupressWarnings</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSupressWarnings.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSupressWarnings.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSupressWarnings.ZOrder">
+        <source>15</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items1">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items2">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items3">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items4">
+        <source>4</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboWarningLevel.Name">
+        <source>cboWarningLevel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboWarningLevel.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboWarningLevel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboWarningLevel.ZOrder">
+        <source>16</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblWarningLevel.Text">
+        <source>W&amp;arning level:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblWarningLevel.Name">
+        <source>lblWarningLevel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblWarningLevel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblWarningLevel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblWarningLevel.ZOrder">
+        <source>17</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboPlatformTarget.Name">
+        <source>cboPlatformTarget</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboPlatformTarget.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboPlatformTarget.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboPlatformTarget.ZOrder">
+        <source>18</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkOptimizeCode.Text">
+        <source>Optimi&amp;ze code</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOptimizeCode.Name">
+        <source>chkOptimizeCode</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOptimizeCode.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOptimizeCode.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOptimizeCode.ZOrder">
+        <source>19</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkAllowUnsafeCode.Text">
+        <source>Allow unsa&amp;fe code</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkAllowUnsafeCode.Name">
+        <source>chkAllowUnsafeCode</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkAllowUnsafeCode.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkAllowUnsafeCode.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkAllowUnsafeCode.ZOrder">
+        <source>20</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkPrefer32Bit.Text">
+        <source>&amp;Prefer 32-bit</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkPrefer32Bit.Name">
+        <source>chkPrefer32Bit</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkPrefer32Bit.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkPrefer32Bit.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkPrefer32Bit.ZOrder">
+        <source>21</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkDefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineTrace.Name">
+        <source>chkDefineTrace</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineTrace.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineTrace.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineTrace.ZOrder">
+        <source>22</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblPlatformTarget.Text">
+        <source>Platform tar&amp;get:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblPlatformTarget.Name">
+        <source>lblPlatformTarget</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblPlatformTarget.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblPlatformTarget.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblPlatformTarget.ZOrder">
+        <source>26</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblSGenOption.Text">
+        <source>G&amp;enerate serialization assembly:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSGenOption.Name">
+        <source>lblSGenOption</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSGenOption.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSGenOption.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblSGenOption.ZOrder">
+        <source>27</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboSGenOption.Name">
+        <source>cboSGenOption</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboSGenOption.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboSGenOption.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboSGenOption.ZOrder">
+        <source>28</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnAdvanced.Text">
+        <source>A&amp;dvanced...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnAdvanced.Name">
+        <source>btnAdvanced</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnAdvanced.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnAdvanced.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;btnAdvanced.ZOrder">
+        <source>29</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkDefineDebug.Text">
+        <source>Define DEB&amp;UG constant</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineDebug.Name">
+        <source>chkDefineDebug</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineDebug.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineDebug.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkDefineDebug.ZOrder">
+        <source>23</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>BuildPropPage</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

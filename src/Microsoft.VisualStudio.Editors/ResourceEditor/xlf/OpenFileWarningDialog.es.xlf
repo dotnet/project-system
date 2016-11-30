@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx" />
+      <trans-unit id="alwaysCheckCheckBox.Text">
+        <source>&amp;Always ask before opening this file type.</source>
+        <target state="new">&amp;Always ask before opening this file type.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;alwaysCheckCheckBox.Name">
+        <source>alwaysCheckCheckBox</source>
+        <target state="new">alwaysCheckCheckBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;alwaysCheckCheckBox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;alwaysCheckCheckBox.Parent">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;alwaysCheckCheckBox.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="messageLabel.Text">
+        <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
+        <target state="new">The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel.Name">
+        <source>messageLabel</source>
+        <target state="new">messageLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel.Parent">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Name">
+        <source>buttonOK</source>
+        <target state="new">buttonOK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Parent">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Name">
+        <source>buttonCancel</source>
+        <target state="new">buttonCancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Parent">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="messageLabel2.Text">
+        <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
+        <target state="new">Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel2.Name">
+        <source>messageLabel2</source>
+        <target state="new">messageLabel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel2.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel2.Parent">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;messageLabel2.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;dialogLayoutPanel.Name">
+        <source>dialogLayoutPanel</source>
+        <target state="new">dialogLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;dialogLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;dialogLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;dialogLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="dialogLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="alwaysCheckCheckBox" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="messageLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="buttonOK" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonCancel" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="messageLabel2" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="alwaysCheckCheckBox" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="messageLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="buttonOK" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonCancel" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="messageLabel2" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Open File</source>
+        <target state="new">Open File</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>OpenFileWarningDialog</source>
+        <target state="new">OpenFileWarningDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

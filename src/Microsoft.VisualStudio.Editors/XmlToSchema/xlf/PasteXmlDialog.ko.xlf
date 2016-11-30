@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.Editors/XmlToSchema/PasteXmlDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/PasteXmlDialog.resx" />
+      <trans-unit id="okButton.Text">
+        <source>&amp;OK</source>
+        <target state="new">&amp;OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;okButton.Name">
+        <source>okButton</source>
+        <target state="new">okButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;okButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;okButton.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;okButton.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cancelButton.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cancelButton.Name">
+        <source>cancelButton</source>
+        <target state="new">cancelButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cancelButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cancelButton.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cancelButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlTextBox.Name">
+        <source>_xmlTextBox</source>
+        <target state="new">_xmlTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlTextBox.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlTextBox.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Name">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>&amp;Type or paste an XML document</source>
+        <target state="new">&amp;Type or paste an XML document</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Name">
+        <source>Label1</source>
+        <target state="new">Label1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add XML</source>
+        <target state="new">Add XML</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>PasteXmlDialog</source>
+        <target state="new">PasteXmlDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

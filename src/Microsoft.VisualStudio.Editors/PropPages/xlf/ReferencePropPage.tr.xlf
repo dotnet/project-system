@@ -1,0 +1,638 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePropPage.resx" />
+      <trans-unit id="ReferenceListLabel.Text">
+        <source>&amp;References:</source>
+        <target state="new">&amp;References:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceListLabel.Name">
+        <source>ReferenceListLabel</source>
+        <target state="new">ReferenceListLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceListLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceListLabel.Parent">
+        <source>ReferencePageTableLayoutPanel</source>
+        <target state="new">ReferencePageTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceListLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferenceList.Columns">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="new">Reference Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferenceList.Columns1">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="new">Type</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferenceList.Columns2">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferenceList.Columns3">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="new">Copy Local</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferenceList.Columns4">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferences.Text">
+        <source>U&amp;nused References...</source>
+        <target state="new">U&amp;nused References...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferences.Name">
+        <source>UnusedReferences</source>
+        <target state="new">UnusedReferences</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferences.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferences.Parent">
+        <source>referenceButtonsTableLayoutPanel</source>
+        <target state="new">referenceButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferences.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferencePathsButton.Text">
+        <source>Reference &amp;Paths...</source>
+        <target state="new">Reference &amp;Paths...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathsButton.Name">
+        <source>ReferencePathsButton</source>
+        <target state="new">ReferencePathsButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathsButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathsButton.Parent">
+        <source>referenceButtonsTableLayoutPanel</source>
+        <target state="new">referenceButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathsButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceButtonsTableLayoutPanel.Name">
+        <source>referenceButtonsTableLayoutPanel</source>
+        <target state="new">referenceButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceButtonsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceButtonsTableLayoutPanel.Parent">
+        <source>ReferencePageTableLayoutPanel</source>
+        <target state="new">ReferencePageTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceButtonsTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="referenceButtonsTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="UnusedReferences" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ReferencePathsButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="UnusedReferences" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ReferencePathsButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoveReference.Text">
+        <source>Remo&amp;ve</source>
+        <target state="new">Remo&amp;ve</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveReference.Name">
+        <source>RemoveReference</source>
+        <target state="new">RemoveReference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveReference.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveReference.Parent">
+        <source>addRemoveButtonsTableLayoutPanel</source>
+        <target state="new">addRemoveButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveReference.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="referenceToolStripMenuItem.Text">
+        <source>Reference...</source>
+        <target state="new">Reference...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="webReferenceToolStripMenuItem.Text">
+        <source>Web Reference...</source>
+        <target state="new">Web Reference...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="serviceReferenceToolStripMenuItem.Text">
+        <source>Service Reference...</source>
+        <target state="new">Service Reference...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addContextMenuStrip.Name">
+        <source>addContextMenuStrip</source>
+        <target state="new">addContextMenuStrip</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addContextMenuStrip.Type">
+        <source>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="addSplitButton.Text">
+        <source>&amp;Add...</source>
+        <target state="new">&amp;Add...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addSplitButton.Name">
+        <source>addSplitButton</source>
+        <target state="new">addSplitButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addSplitButton.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPage+SplitButton, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPage+SplitButton, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addSplitButton.Parent">
+        <source>addRemoveButtonsTableLayoutPanel</source>
+        <target state="new">addRemoveButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addSplitButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UpdateReferences.Text">
+        <source>&amp;Update</source>
+        <target state="new">&amp;Update</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateReferences.Name">
+        <source>UpdateReferences</source>
+        <target state="new">UpdateReferences</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateReferences.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateReferences.Parent">
+        <source>addRemoveButtonsTableLayoutPanel</source>
+        <target state="new">addRemoveButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateReferences.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addRemoveButtonsTableLayoutPanel.Name">
+        <source>addRemoveButtonsTableLayoutPanel</source>
+        <target state="new">addRemoveButtonsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addRemoveButtonsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addRemoveButtonsTableLayoutPanel.Parent">
+        <source>ReferencePageTableLayoutPanel</source>
+        <target state="new">ReferencePageTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addRemoveButtonsTableLayoutPanel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="addRemoveButtonsTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="RemoveReference" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="addSplitButton" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UpdateReferences" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="RemoveReference" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="addSplitButton" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UpdateReferences" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageTableLayoutPanel.Name">
+        <source>ReferencePageTableLayoutPanel</source>
+        <target state="new">ReferencePageTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageTableLayoutPanel.Parent">
+        <source>ReferencePageSplitContainer.Panel1</source>
+        <target state="new">ReferencePageSplitContainer.Panel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferencePageTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="referenceButtonsTableLayoutPanel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ReferenceListLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ReferenceList" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="addRemoveButtonsTableLayoutPanel" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="referenceButtonsTableLayoutPanel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ReferenceListLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ReferenceList" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="addRemoveButtonsTableLayoutPanel" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceList.Name">
+        <source>ReferenceList</source>
+        <target state="new">ReferenceList</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceList.Type">
+        <source>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceList.Parent">
+        <source>ReferencePageTableLayoutPanel</source>
+        <target state="new">ReferencePageTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferenceList.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AddUserImportButton.Text">
+        <source>Add User Imp&amp;ort</source>
+        <target state="new">Add User Imp&amp;ort</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddUserImportButton.Name">
+        <source>AddUserImportButton</source>
+        <target state="new">AddUserImportButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddUserImportButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddUserImportButton.Parent">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddUserImportButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UpdateUserImportButton.Text">
+        <source>Up&amp;date User Import</source>
+        <target state="new">Up&amp;date User Import</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateUserImportButton.Name">
+        <source>UpdateUserImportButton</source>
+        <target state="new">UpdateUserImportButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateUserImportButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateUserImportButton.Parent">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateUserImportButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleDescription">
+        <source>List of imported namespaces.</source>
+        <target state="new">List of imported namespaces.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleName">
+        <source>Imported Namespaces:</source>
+        <target state="new">Imported Namespaces:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportList.Name">
+        <source>ImportList</source>
+        <target state="new">ImportList</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportList.Type">
+        <source>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportList.Parent">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportList.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UserImportTextBox.AccessibleName">
+        <source>Imported Namespace:</source>
+        <target state="new">Imported Namespace:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserImportTextBox.Name">
+        <source>UserImportTextBox</source>
+        <target state="new">UserImportTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserImportTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserImportTextBox.Parent">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserImportTextBox.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUserImportTableLayoutPanel.Name">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUserImportTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUserImportTableLayoutPanel.Parent">
+        <source>ReferencePageSplitContainer.Panel2</source>
+        <target state="new">ReferencePageSplitContainer.Panel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUserImportTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="addUserImportTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AddUserImportButton" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="UpdateUserImportButton" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="ImportsListLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="ImportList" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="UserImportTextBox" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <target state="new">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AddUserImportButton" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="UpdateUserImportButton" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="ImportsListLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="ImportList" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="UserImportTextBox" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ImportsListLabel.Text">
+        <source>&amp;Imported namespaces:</source>
+        <target state="new">&amp;Imported namespaces:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportsListLabel.Name">
+        <source>ImportsListLabel</source>
+        <target state="new">ImportsListLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportsListLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportsListLabel.Parent">
+        <source>addUserImportTableLayoutPanel</source>
+        <target state="new">addUserImportTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ImportsListLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel1.Name">
+        <source>ReferencePageSplitContainer.Panel1</source>
+        <target state="new">ReferencePageSplitContainer.Panel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel1.Type">
+        <source>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel1.Parent">
+        <source>ReferencePageSplitContainer</source>
+        <target state="new">ReferencePageSplitContainer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel1.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel2.Name">
+        <source>ReferencePageSplitContainer.Panel2</source>
+        <target state="new">ReferencePageSplitContainer.Panel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel2.Type">
+        <source>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel2.Parent">
+        <source>ReferencePageSplitContainer</source>
+        <target state="new">ReferencePageSplitContainer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Panel2.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferencePageSplitContainer.Text">
+        <source>ReferencePageSplitContainer</source>
+        <target state="new">ReferencePageSplitContainer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Name">
+        <source>ReferencePageSplitContainer</source>
+        <target state="new">ReferencePageSplitContainer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Type">
+        <source>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePageSplitContainer.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_RefName.Name">
+        <source>ColHdr_RefName</source>
+        <target state="new">ColHdr_RefName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_RefName.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Type.Name">
+        <source>ColHdr_Type</source>
+        <target state="new">ColHdr_Type</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Type.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Version.Name">
+        <source>ColHdr_Version</source>
+        <target state="new">ColHdr_Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Version.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_CopyLocal.Name">
+        <source>ColHdr_CopyLocal</source>
+        <target state="new">ColHdr_CopyLocal</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_CopyLocal.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Path.Name">
+        <source>ColHdr_Path</source>
+        <target state="new">ColHdr_Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Path.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceToolStripMenuItem.Name">
+        <source>referenceToolStripMenuItem</source>
+        <target state="new">referenceToolStripMenuItem</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;referenceToolStripMenuItem.Type">
+        <source>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;webReferenceToolStripMenuItem.Name">
+        <source>webReferenceToolStripMenuItem</source>
+        <target state="new">webReferenceToolStripMenuItem</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;webReferenceToolStripMenuItem.Type">
+        <source>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;serviceReferenceToolStripMenuItem.Name">
+        <source>serviceReferenceToolStripMenuItem</source>
+        <target state="new">serviceReferenceToolStripMenuItem</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;serviceReferenceToolStripMenuItem.Type">
+        <source>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ReferencePropPage</source>
+        <target state="new">ReferencePropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

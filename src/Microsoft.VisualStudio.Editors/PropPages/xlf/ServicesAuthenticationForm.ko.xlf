@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx" />
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="new">&amp;Authentication service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Name">
+        <source>AuthenticationServiceUrlLabel</source>
+        <target state="new">AuthenticationServiceUrlLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Name">
+        <source>AuthenticationServiceUrl</source>
+        <target state="new">AuthenticationServiceUrl</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UserNameLabel.Text">
+        <source>&amp;Username:</source>
+        <target state="new">&amp;Username:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameLabel.Name">
+        <source>UserNameLabel</source>
+        <target state="new">UserNameLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameLabel.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameTextBox.Name">
+        <source>UserNameTextBox</source>
+        <target state="new">UserNameTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameTextBox.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UserNameTextBox.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PasswordLabel.Text">
+        <source>&amp;Password:</source>
+        <target state="new">&amp;Password:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordLabel.Name">
+        <source>PasswordLabel</source>
+        <target state="new">PasswordLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordLabel.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordLabel.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordTextBox.Name">
+        <source>PasswordTextBox</source>
+        <target state="new">PasswordTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordTextBox.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PasswordTextBox.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>&amp;Log In</source>
+        <target state="new">&amp;Log In</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Name">
+        <source>OKButton</source>
+        <target state="new">OKButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Parent">
+        <source>OKCancelTableLayoutPanel</source>
+        <target state="new">OKCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Cancel.Text">
+        <source>&amp;Skip Login</source>
+        <target state="new">&amp;Skip Login</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel.Name">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel.Parent">
+        <source>OKCancelTableLayoutPanel</source>
+        <target state="new">OKCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKCancelTableLayoutPanel.Name">
+        <source>OKCancelTableLayoutPanel</source>
+        <target state="new">OKCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKCancelTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKCancelTableLayoutPanel.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKCancelTableLayoutPanel.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InfoLabel.Text">
+        <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</source>
+        <target state="new">To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InfoLabel.Name">
+        <source>InfoLabel</source>
+        <target state="new">InfoLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InfoLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InfoLabel.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InfoLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Name">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Parent">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InnerTableLayoutPanel.Name">
+        <source>InnerTableLayoutPanel</source>
+        <target state="new">InnerTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InnerTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InnerTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InnerTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Login</source>
+        <target state="new">Login</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ServicesAuthenticationForm</source>
+        <target state="new">ServicesAuthenticationForm</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

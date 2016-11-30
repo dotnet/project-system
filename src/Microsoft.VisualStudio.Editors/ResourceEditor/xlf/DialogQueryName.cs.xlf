@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.Editors/ResourceEditor/DialogQueryName.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/DialogQueryName.resx" />
+      <trans-unit id="LabelDescription.Text">
+        <source>P&amp;lease enter a name for the new resource.</source>
+        <target state="new">P&amp;lease enter a name for the new resource.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;LabelDescription.Name">
+        <source>LabelDescription</source>
+        <target state="new">LabelDescription</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;LabelDescription.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;LabelDescription.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;LabelDescription.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TextBoxName.Name">
+        <source>TextBoxName</source>
+        <target state="new">TextBoxName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TextBoxName.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TextBoxName.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TextBoxName.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ButtonCancel.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonCancel.Name">
+        <source>ButtonCancel</source>
+        <target state="new">ButtonCancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonCancel.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonCancel.Parent">
+        <source>addCancelTableLayoutPanel</source>
+        <target state="new">addCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonCancel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ButtonAdd.Text">
+        <source>&amp;Add</source>
+        <target state="new">&amp;Add</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonAdd.Name">
+        <source>ButtonAdd</source>
+        <target state="new">ButtonAdd</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonAdd.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonAdd.Parent">
+        <source>addCancelTableLayoutPanel</source>
+        <target state="new">addCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ButtonAdd.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addCancelTableLayoutPanel.Name">
+        <source>addCancelTableLayoutPanel</source>
+        <target state="new">addCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addCancelTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addCancelTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addCancelTableLayoutPanel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add New Resource</source>
+        <target state="new">Add New Resource</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>DialogQueryName</source>
+        <target state="new">DialogQueryName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

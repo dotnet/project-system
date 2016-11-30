@@ -1,0 +1,608 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.Editors/PropPages/DebugPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/DebugPropPage.resx" />
+      <trans-unit id="StartActionLabel.Text">
+        <source>Start action</source>
+        <target state="new">Start action</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabel.Name">
+        <source>StartActionLabel</source>
+        <target state="new">StartActionLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabel.Parent">
+        <source>startActionTableLayoutPanel</source>
+        <target state="new">startActionTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabelLine.Name">
+        <source>StartActionLabelLine</source>
+        <target state="new">StartActionLabelLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabelLine.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabelLine.Parent">
+        <source>startActionTableLayoutPanel</source>
+        <target state="new">startActionTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartActionLabelLine.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbStartProject.Text">
+        <source>&amp;Start project</source>
+        <target state="new">&amp;Start project</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProject.Name">
+        <source>rbStartProject</source>
+        <target state="new">rbStartProject</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProject.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProject.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProject.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbStartProgram.Text">
+        <source>Start e&amp;xternal program:</source>
+        <target state="new">Start e&amp;xternal program:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProgram.Name">
+        <source>rbStartProgram</source>
+        <target state="new">rbStartProgram</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProgram.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProgram.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartProgram.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbStartURL.Text">
+        <source>Start browser with U&amp;RL:</source>
+        <target state="new">Start browser with U&amp;RL:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartURL.Name">
+        <source>rbStartURL</source>
+        <target state="new">rbStartURL</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartURL.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartURL.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;rbStartURL.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartProgram.AccessibleName">
+        <source>Program to start</source>
+        <target state="new">Program to start</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgram.Name">
+        <source>StartProgram</source>
+        <target state="new">StartProgram</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgram.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgram.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgram.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartURL.AccessibleName">
+        <source>URL to start browser with</source>
+        <target state="new">URL to start browser with</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartURL.Name">
+        <source>StartURL</source>
+        <target state="new">StartURL</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartURL.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartURL.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartURL.ZOrder">
+        <source>16</source>
+        <target state="new">16</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.AccessibleName">
+        <source>Browse for external program</source>
+        <target state="new">Browse for external program</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.Text">
+        <source>&amp;Browse...</source>
+        <target state="new">&amp;Browse...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgramBrowse.Name">
+        <source>StartProgramBrowse</source>
+        <target state="new">StartProgramBrowse</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgramBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgramBrowse.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartProgramBrowse.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabelLine.Name">
+        <source>StartOptionsLabelLine</source>
+        <target state="new">StartOptionsLabelLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabelLine.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabelLine.Parent">
+        <source>startOptionsTableLayoutPanel</source>
+        <target state="new">startOptionsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabelLine.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartOptionsLabel.Text">
+        <source>Start options</source>
+        <target state="new">Start options</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabel.Name">
+        <source>StartOptionsLabel</source>
+        <target state="new">StartOptionsLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabel.Parent">
+        <source>startOptionsTableLayoutPanel</source>
+        <target state="new">startOptionsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartOptionsLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CommandLineArgsLabel.Text">
+        <source>Comma&amp;nd line arguments:</source>
+        <target state="new">Comma&amp;nd line arguments:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLineArgsLabel.Name">
+        <source>CommandLineArgsLabel</source>
+        <target state="new">CommandLineArgsLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLineArgsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLineArgsLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLineArgsLabel.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WorkingDirLabel.Text">
+        <source>Wor&amp;king directory:</source>
+        <target state="new">Wor&amp;king directory:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WorkingDirLabel.Name">
+        <source>WorkingDirLabel</source>
+        <target state="new">WorkingDirLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WorkingDirLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WorkingDirLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WorkingDirLabel.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoteDebugEnabled.Text">
+        <source>Use remote m&amp;achine</source>
+        <target state="new">Use remote m&amp;achine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugEnabled.Name">
+        <source>RemoteDebugEnabled</source>
+        <target state="new">RemoteDebugEnabled</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugEnabled.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugEnabled.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugEnabled.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartArguments.Name">
+        <source>StartArguments</source>
+        <target state="new">StartArguments</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartArguments.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage+MultilineTextBoxRejectsEnter, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage+MultilineTextBoxRejectsEnter, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartArguments.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartArguments.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectory.Name">
+        <source>StartWorkingDirectory</source>
+        <target state="new">StartWorkingDirectory</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectory.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectory.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectory.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachine.AccessibleName">
+        <source>Remote Machine Name:</source>
+        <target state="new">Remote Machine Name:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugMachine.Name">
+        <source>RemoteDebugMachine</source>
+        <target state="new">RemoteDebugMachine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugMachine.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugMachine.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoteDebugMachine.ZOrder">
+        <source>17</source>
+        <target state="new">17</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
+        <source>Browse for working directory</source>
+        <target state="new">Browse for working directory</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.Text">
+        <source>&amp;Bro&amp;wse...</source>
+        <target state="new">&amp;Bro&amp;wse...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectoryBrowse.Name">
+        <source>StartWorkingDirectoryBrowse</source>
+        <target state="new">StartWorkingDirectoryBrowse</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectoryBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectoryBrowse.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartWorkingDirectoryBrowse.ZOrder">
+        <source>11</source>
+        <target state="new">11</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabelLine.Name">
+        <source>EnableDebuggerLabelLine</source>
+        <target state="new">EnableDebuggerLabelLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabelLine.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabelLine.Parent">
+        <source>enableDebuggersTableLayoutPanel</source>
+        <target state="new">enableDebuggersTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabelLine.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableDebuggerLabel.Text">
+        <source>Debugger engines</source>
+        <target state="new">Debugger engines</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabel.Name">
+        <source>EnableDebuggerLabel</source>
+        <target state="new">EnableDebuggerLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabel.Parent">
+        <source>enableDebuggersTableLayoutPanel</source>
+        <target state="new">enableDebuggersTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableDebuggerLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startActionTableLayoutPanel.Name">
+        <source>startActionTableLayoutPanel</source>
+        <target state="new">startActionTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startActionTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startActionTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startActionTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startOptionsTableLayoutPanel.Name">
+        <source>startOptionsTableLayoutPanel</source>
+        <target state="new">startOptionsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startOptionsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startOptionsTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;startOptionsTableLayoutPanel.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;enableDebuggersTableLayoutPanel.Name">
+        <source>enableDebuggersTableLayoutPanel</source>
+        <target state="new">enableDebuggersTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;enableDebuggersTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;enableDebuggersTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;enableDebuggersTableLayoutPanel.ZOrder">
+        <source>13</source>
+        <target state="new">13</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableSQLServerDebugging.Text">
+        <source>Enable SQ&amp;L Server debugging</source>
+        <target state="new">Enable SQ&amp;L Server debugging</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableSQLServerDebugging.Name">
+        <source>EnableSQLServerDebugging</source>
+        <target state="new">EnableSQLServerDebugging</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableSQLServerDebugging.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableSQLServerDebugging.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableSQLServerDebugging.ZOrder">
+        <source>15</source>
+        <target state="new">15</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableUnmanagedDebugging.Text">
+        <source>Enable na&amp;tive code debugging</source>
+        <target state="new">Enable na&amp;tive code debugging</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableUnmanagedDebugging.Name">
+        <source>EnableUnmanagedDebugging</source>
+        <target state="new">EnableUnmanagedDebugging</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableUnmanagedDebugging.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableUnmanagedDebugging.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableUnmanagedDebugging.ZOrder">
+        <source>14</source>
+        <target state="new">14</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>DebugPropPage</source>
+        <target state="new">DebugPropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

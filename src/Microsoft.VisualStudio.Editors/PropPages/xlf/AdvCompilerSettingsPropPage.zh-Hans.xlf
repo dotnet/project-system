@@ -1,0 +1,523 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx" />
+      <trans-unit id="OptimizationsLabel.Text">
+        <source>Optimizations</source>
+        <target state="new">Optimizations</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsLabel.Name">
+        <source>OptimizationsLabel</source>
+        <target state="new">OptimizationsLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsLabel.Parent">
+        <source>optimizationTableLayoutPanel</source>
+        <target state="new">optimizationTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoveIntegerChecks.Text">
+        <source>&amp;Remove integer overflow checks</source>
+        <target state="new">&amp;Remove integer overflow checks</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveIntegerChecks.Name">
+        <source>RemoveIntegerChecks</source>
+        <target state="new">RemoveIntegerChecks</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveIntegerChecks.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveIntegerChecks.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveIntegerChecks.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Optimize.Text">
+        <source>&amp;Enable optimizations</source>
+        <target state="new">&amp;Enable optimizations</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Optimize.Name">
+        <source>Optimize</source>
+        <target state="new">Optimize</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Optimize.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Optimize.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Optimize.ZOrder">
+        <source>17</source>
+        <target state="new">17</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DllBaseLabel.Text">
+        <source>DLL &amp;base address:</source>
+        <target state="new">DLL &amp;base address:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseLabel.Name">
+        <source>DllBaseLabel</source>
+        <target state="new">DllBaseLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseLabel.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseTextbox.Name">
+        <source>DllBaseTextbox</source>
+        <target state="new">DllBaseTextbox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseTextbox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseTextbox.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DllBaseTextbox.ZOrder">
+        <source>18</source>
+        <target state="new">18</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DefineDebug.Text">
+        <source>Define &amp;DEBUG constant</source>
+        <target state="new">Define &amp;DEBUG constant</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineDebug.Name">
+        <source>DefineDebug</source>
+        <target state="new">DefineDebug</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineDebug.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineDebug.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineDebug.ZOrder">
+        <source>13</source>
+        <target state="new">13</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="new">Define &amp;TRACE constant</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineTrace.Name">
+        <source>DefineTrace</source>
+        <target state="new">DefineTrace</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineTrace.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineTrace.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineTrace.ZOrder">
+        <source>16</source>
+        <target state="new">16</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssemblyComboBox.Name">
+        <source>GenerateSerializationAssemblyComboBox</source>
+        <target state="new">GenerateSerializationAssemblyComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssemblyComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssemblyComboBox.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssemblyComboBox.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineConstantsTextbox.Name">
+        <source>DefineConstantsTextbox</source>
+        <target state="new">DefineConstantsTextbox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineConstantsTextbox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineConstantsTextbox.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DefineConstantsTextbox.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="GenerateSerializationAssembliesLabel.Text">
+        <source>Generate &amp;serialization assemblies:</source>
+        <target state="new">Generate &amp;serialization assemblies:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssembliesLabel.Name">
+        <source>GenerateSerializationAssembliesLabel</source>
+        <target state="new">GenerateSerializationAssembliesLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssembliesLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssembliesLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateSerializationAssembliesLabel.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomConstantsLabel.Text">
+        <source>&amp;Custom constants:</source>
+        <target state="new">&amp;Custom constants:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsLabel.Name">
+        <source>CustomConstantsLabel</source>
+        <target state="new">CustomConstantsLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsLabel.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompilationConstantsLabel.Name">
+        <source>CompilationConstantsLabel</source>
+        <target state="new">CompilationConstantsLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompilationConstantsLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompilationConstantsLabel.Parent">
+        <source>compilationConstantsTableLayoutPanel</source>
+        <target state="new">compilationConstantsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompilationConstantsLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ConstantsSeparatorLabel.Name">
+        <source>ConstantsSeparatorLabel</source>
+        <target state="new">ConstantsSeparatorLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ConstantsSeparatorLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ConstantsSeparatorLabel.Parent">
+        <source>compilationConstantsTableLayoutPanel</source>
+        <target state="new">compilationConstantsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ConstantsSeparatorLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;compilationConstantsTableLayoutPanel.Name">
+        <source>compilationConstantsTableLayoutPanel</source>
+        <target state="new">compilationConstantsTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;compilationConstantsTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;compilationConstantsTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;compilationConstantsTableLayoutPanel.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsSeparatorLabel.Name">
+        <source>OptimizationsSeparatorLabel</source>
+        <target state="new">OptimizationsSeparatorLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsSeparatorLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsSeparatorLabel.Parent">
+        <source>optimizationTableLayoutPanel</source>
+        <target state="new">optimizationTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OptimizationsSeparatorLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;optimizationTableLayoutPanel.Name">
+        <source>optimizationTableLayoutPanel</source>
+        <target state="new">optimizationTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;optimizationTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;optimizationTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;optimizationTableLayoutPanel.ZOrder">
+        <source>11</source>
+        <target state="new">11</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="GenerateDebugInfoLabel.Text">
+        <source>&amp;Generate debug info:</source>
+        <target state="new">&amp;Generate debug info:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateDebugInfoLabel.Name">
+        <source>GenerateDebugInfoLabel</source>
+        <target state="new">GenerateDebugInfoLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateDebugInfoLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateDebugInfoLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;GenerateDebugInfoLabel.ZOrder">
+        <source>14</source>
+        <target state="new">14</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DebugInfoComboBox.Name">
+        <source>DebugInfoComboBox</source>
+        <target state="new">DebugInfoComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DebugInfoComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DebugInfoComboBox.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;DebugInfoComboBox.ZOrder">
+        <source>15</source>
+        <target state="new">15</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomConstantsExampleLabel.Text">
+        <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
+        <target state="new">Example: Name1="Value1",Name2="Value2",Name3="Value3"</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsExampleLabel.Name">
+        <source>CustomConstantsExampleLabel</source>
+        <target state="new">CustomConstantsExampleLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsExampleLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsExampleLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConstantsExampleLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CompilationConstantsLabel.Text">
+        <source>Compilation Constants</source>
+        <target state="new">Compilation Constants</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AdvCompilerSettingsPropPage</source>
+        <target state="new">AdvCompilerSettingsPropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CompileWithDotNetNative.Text">
+        <source>Compile with .NET Native toolchain</source>
+        <target state="new">Compile with .NET Native toolchain</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompileWithDotNetNative.Name">
+        <source>CompileWithDotNetNative</source>
+        <target state="new">CompileWithDotNetNative</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompileWithDotNetNative.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompileWithDotNetNative.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CompileWithDotNetNative.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableGatekeeperAudit.Text">
+        <source>Enable static analysis for .NET Native</source>
+        <target state="new">Enable static analysis for .NET Native</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableGatekeeperAudit.Name">
+        <source>EnableGatekeeperAudit</source>
+        <target state="new">EnableGatekeeperAudit</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableGatekeeperAudit.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableGatekeeperAudit.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableGatekeeperAudit.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

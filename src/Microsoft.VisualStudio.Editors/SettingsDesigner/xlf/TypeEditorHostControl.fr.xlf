@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypeEditorHostControl.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypeEditorHostControl.resx" />
+      <trans-unit id="&gt;&gt;ValueTextBox.Name">
+        <source>ValueTextBox</source>
+        <target state="new">ValueTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueTextBox.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueTextBox.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ShowEditorButton.AccessibleName">
+        <source>Show type editor</source>
+        <target state="new">Show type editor</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ShowEditorButton.Text">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowEditorButton.Name">
+        <source>ShowEditorButton</source>
+        <target state="new">ShowEditorButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowEditorButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowEditorButton.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowEditorButton.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PreviewPanel.Name">
+        <source>PreviewPanel</source>
+        <target state="new">PreviewPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PreviewPanel.Type">
+        <source>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PreviewPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;PreviewPanel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueComboBox.Name">
+        <source>ValueComboBox</source>
+        <target state="new">ValueComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueComboBox.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ValueComboBox.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>TypeEditorHostControl</source>
+        <target state="new">TypeEditorHostControl</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

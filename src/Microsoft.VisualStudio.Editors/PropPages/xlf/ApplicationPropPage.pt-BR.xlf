@@ -1,0 +1,633 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx" />
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="new">Assembly &amp;name:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Name">
+        <source>AssemblyNameLabel</source>
+        <target state="new">AssemblyNameLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyName.Name">
+        <source>AssemblyName</source>
+        <target state="new">AssemblyName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyName.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyName.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyName.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>Defau&amp;lt namespace:</source>
+        <target state="new">Defau&amp;lt namespace:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Name">
+        <source>RootNamespaceLabel</source>
+        <target state="new">RootNamespaceLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNameSpace.Name">
+        <source>RootNameSpace</source>
+        <target state="new">RootNameSpace</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNameSpace.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNameSpace.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNameSpace.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OutputTypeLabel.Text">
+        <source>O&amp;utput type:</source>
+        <target state="new">O&amp;utput type:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputTypeLabel.Name">
+        <source>OutputTypeLabel</source>
+        <target state="new">OutputTypeLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputTypeLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputTypeLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputTypeLabel.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputType.Name">
+        <source>OutputType</source>
+        <target state="new">OutputType</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputType.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputType.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OutputType.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <target state="new">Startup &amp;object:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Name">
+        <source>StartupObjectLabel</source>
+        <target state="new">StartupObjectLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObject.Name">
+        <source>StartupObject</source>
+        <target state="new">StartupObject</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObject.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObject.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObject.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembly &amp;Information...</source>
+        <target state="new">Assembly &amp;Information...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Name">
+        <source>AssemblyInfoButton</source>
+        <target state="new">AssemblyInfoButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>Tar&amp;get framework:</source>
+        <target state="new">Tar&amp;get framework:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Name">
+        <source>TargetFrameworkLabel</source>
+        <target state="new">TargetFrameworkLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFramework.Name">
+        <source>TargetFramework</source>
+        <target state="new">TargetFramework</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFramework.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFramework.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFramework.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Name">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Parent">
+        <source>overarchingLayoutPanel</source>
+        <target state="new">overarchingLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesLabel.Text">
+        <source>Specify how application resources will be managed:</source>
+        <target state="new">Specify how application resources will be managed:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesLabel.Name">
+        <source>ResourcesLabel</source>
+        <target state="new">ResourcesLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesLabel.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IconRadioButton.Text">
+        <source>I&amp;con and manifest</source>
+        <target state="new">I&amp;con and manifest</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconRadioButton.Name">
+        <source>IconRadioButton</source>
+        <target state="new">IconRadioButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconRadioButton.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconRadioButton.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconRadioButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ManifestExplanationLabel.Text">
+        <source>A manifest determines specific settings for an application. To embed a custom manifest, first add it to your project and then select it from the list below.</source>
+        <target state="new">A manifest determines specific settings for an application. To embed a custom manifest, first add it to your project and then select it from the list below.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ManifestExplanationLabel.Name">
+        <source>ManifestExplanationLabel</source>
+        <target state="new">ManifestExplanationLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ManifestExplanationLabel.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ManifestExplanationLabel.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ManifestExplanationLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationIconLabel.Text">
+        <source>Icon:</source>
+        <target state="new">Icon:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIconLabel.Name">
+        <source>ApplicationIconLabel</source>
+        <target state="new">ApplicationIconLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIconLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIconLabel.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIconLabel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIcon.Name">
+        <source>ApplicationIcon</source>
+        <target state="new">ApplicationIcon</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIcon.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIcon.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationIcon.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AppIconBrowse.Text">
+        <source>...</source>
+        <target state="new">...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconBrowse.Name">
+        <source>AppIconBrowse</source>
+        <target state="new">AppIconBrowse</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconBrowse.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconBrowse.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconImage.Name">
+        <source>AppIconImage</source>
+        <target state="new">AppIconImage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconImage.Type">
+        <source>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconImage.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AppIconImage.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationManifestLabel.Text">
+        <source>Manifest:</source>
+        <target state="new">Manifest:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifestLabel.Name">
+        <source>ApplicationManifestLabel</source>
+        <target state="new">ApplicationManifestLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifestLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifestLabel.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifestLabel.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifest.Name">
+        <source>ApplicationManifest</source>
+        <target state="new">ApplicationManifest</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifest.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifest.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationManifest.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceRadioButton.Text">
+        <source>Re&amp;source file:</source>
+        <target state="new">Re&amp;source file:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceRadioButton.Name">
+        <source>Win32ResourceRadioButton</source>
+        <target state="new">Win32ResourceRadioButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceRadioButton.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceRadioButton.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceRadioButton.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFile.Name">
+        <source>Win32ResourceFile</source>
+        <target state="new">Win32ResourceFile</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFile.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFile.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFile.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceFileBrowse.Text">
+        <source>...</source>
+        <target state="new">...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFileBrowse.Name">
+        <source>Win32ResourceFileBrowse</source>
+        <target state="new">Win32ResourceFileBrowse</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFileBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFileBrowse.Parent">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Win32ResourceFileBrowse.ZOrder">
+        <source>11</source>
+        <target state="new">11</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;iconTableLayoutPanel.Name">
+        <source>iconTableLayoutPanel</source>
+        <target state="new">iconTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;iconTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;iconTableLayoutPanel.Parent">
+        <source>ResourcesGroupBox</source>
+        <target state="new">ResourcesGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;iconTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesGroupBox.Text">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesGroupBox.Name">
+        <source>ResourcesGroupBox</source>
+        <target state="new">ResourcesGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesGroupBox.Type">
+        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesGroupBox.Parent">
+        <source>overarchingLayoutPanel</source>
+        <target state="new">overarchingLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ResourcesGroupBox.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingLayoutPanel.Name">
+        <source>overarchingLayoutPanel</source>
+        <target state="new">overarchingLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ApplicationPropPage</source>
+        <target state="new">ApplicationPropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageBase, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageBase, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

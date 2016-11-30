@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="src/Microsoft.VisualStudio.Editors/PropPages/UnusedReferencePropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/UnusedReferencePropPage.resx" />
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="new">Type</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.AccessibleName">
+        <source>Unused references</source>
+        <target state="new">Unused references</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.Columns">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="new">Reference Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.Columns1">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.Columns2">
+        <source></source>
+        <target state="new"></target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="new">Copy Local</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferenceList.Name">
+        <source>UnusedReferenceList</source>
+        <target state="new">UnusedReferenceList</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferenceList.Type">
+        <source>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferenceList.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferenceList.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UnusedReferencesListLabel.Text">
+        <source>Clicking "Remove" will remove all checked references.</source>
+        <target state="new">Clicking "Remove" will remove all checked references.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferencesListLabel.Name">
+        <source>UnusedReferencesListLabel</source>
+        <target state="new">UnusedReferencesListLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferencesListLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferencesListLabel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UnusedReferencesListLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Type.Name">
+        <source>ColHdr_Type</source>
+        <target state="new">ColHdr_Type</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Type.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Path.Name">
+        <source>ColHdr_Path</source>
+        <target state="new">ColHdr_Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Path.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_RefName.Name">
+        <source>ColHdr_RefName</source>
+        <target state="new">ColHdr_RefName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_RefName.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Version.Name">
+        <source>ColHdr_Version</source>
+        <target state="new">ColHdr_Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_Version.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_CopyLocal.Name">
+        <source>ColHdr_CopyLocal</source>
+        <target state="new">ColHdr_CopyLocal</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColHdr_CopyLocal.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>UnusedReferencePropPage</source>
+        <target state="new">UnusedReferencePropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

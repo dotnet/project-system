@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsCollisionDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsCollisionDialog.resx" />
+      <trans-unit id="&gt;&gt;m_lblImportsAnyways.Name">
+        <source>m_lblImportsAnyways</source>
+        <target state="new">m_lblImportsAnyways</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblImportsAnyways.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblImportsAnyways.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblImportsAnyways.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="m_cancelButton.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_cancelButton.Name">
+        <source>m_cancelButton</source>
+        <target state="new">m_cancelButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_cancelButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_cancelButton.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_cancelButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbQualifyCurrentLine.Name">
+        <source>m_rbQualifyCurrentLine</source>
+        <target state="new">m_rbQualifyCurrentLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbQualifyCurrentLine.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbQualifyCurrentLine.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbQualifyCurrentLine.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="m_okButton.Text">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_okButton.Name">
+        <source>m_okButton</source>
+        <target state="new">m_okButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_okButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_okButton.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_okButton.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblMain.Name">
+        <source>m_lblMain</source>
+        <target state="new">m_lblMain</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblMain.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblMain.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblMain.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblQualifyCurrentLine.Name">
+        <source>m_lblQualifyCurrentLine</source>
+        <target state="new">m_lblQualifyCurrentLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblQualifyCurrentLine.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblQualifyCurrentLine.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_lblQualifyCurrentLine.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbImportsAnyways.Name">
+        <source>m_rbImportsAnyways</source>
+        <target state="new">m_rbImportsAnyways</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbImportsAnyways.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbImportsAnyways.Parent">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_rbImportsAnyways.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_layoutPanel.Name">
+        <source>m_layoutPanel</source>
+        <target state="new">m_layoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_layoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_layoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;m_layoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add Imports Validation Error</source>
+        <target state="new">Add Imports Validation Error</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AutoAddImportsCollisionDialog</source>
+        <target state="new">AutoAddImportsCollisionDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

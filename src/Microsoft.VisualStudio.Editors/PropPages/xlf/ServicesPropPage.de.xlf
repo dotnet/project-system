@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="new">Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HelpLabel.Name">
+        <source>HelpLabel</source>
+        <target state="new">HelpLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HelpLabel.Type">
+        <source>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HelpLabel.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HelpLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="new">Use &amp;Windows authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsBasedAuth.Name">
+        <source>WindowsBasedAuth</source>
+        <target state="new">WindowsBasedAuth</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsBasedAuth.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsBasedAuth.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsBasedAuth.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderType.Name">
+        <source>CustomCredentialProviderType</source>
+        <target state="new">CustomCredentialProviderType</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderType.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderType.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderType.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="new">Use &amp;Forms authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FormBasedAuth.Name">
+        <source>FormBasedAuth</source>
+        <target state="new">FormBasedAuth</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FormBasedAuth.Type">
+        <source>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FormBasedAuth.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FormBasedAuth.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="new">Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderTypeLabel.Name">
+        <source>CustomCredentialProviderTypeLabel</source>
+        <target state="new">CustomCredentialProviderTypeLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderTypeLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderTypeLabel.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomCredentialProviderTypeLabel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="new">&amp;Authentication service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Name">
+        <source>AuthenticationServiceUrlLabel</source>
+        <target state="new">AuthenticationServiceUrlLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrlLabel.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Name">
+        <source>AuthenticationServiceUrl</source>
+        <target state="new">AuthenticationServiceUrl</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.Parent">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationServiceUrl.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Name">
+        <source>TableLayoutPanel2</source>
+        <target state="new">TableLayoutPanel2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.Parent">
+        <source>AuthenticationProviderGroupBox</source>
+        <target state="new">AuthenticationProviderGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel2.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="new">Authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationProviderGroupBox.Name">
+        <source>AuthenticationProviderGroupBox</source>
+        <target state="new">AuthenticationProviderGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationProviderGroupBox.Type">
+        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationProviderGroupBox.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationProviderGroupBox.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="new">&amp;Roles service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrlLabel.Name">
+        <source>RolesServiceUrlLabel</source>
+        <target state="new">RolesServiceUrlLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrlLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrlLabel.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrlLabel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrl.Name">
+        <source>RolesServiceUrl</source>
+        <target state="new">RolesServiceUrl</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrl.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrl.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RolesServiceUrl.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="new">We&amp;b settings service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrlLabel.Name">
+        <source>WebSettingsUrlLabel</source>
+        <target state="new">WebSettingsUrlLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrlLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrlLabel.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrlLabel.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrl.Name">
+        <source>WebSettingsUrl</source>
+        <target state="new">WebSettingsUrl</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrl.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrl.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WebSettingsUrl.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="new">A&amp;dvanced...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AdvancedSettings.Name">
+        <source>AdvancedSettings</source>
+        <target state="new">AdvancedSettings</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AdvancedSettings.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AdvancedSettings.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AdvancedSettings.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Name">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="new">&amp;Enable client application services</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableApplicationServices.Name">
+        <source>EnableApplicationServices</source>
+        <target state="new">EnableApplicationServices</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableApplicationServices.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableApplicationServices.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableApplicationServices.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ServicesPropPage</source>
+        <target state="new">ServicesPropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

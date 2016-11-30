@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.Editors/MyExtensibility/AddMyExtensionsDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/MyExtensibility/AddMyExtensionsDialog.resx" />
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Name">
+        <source>buttonOK</source>
+        <target state="new">buttonOK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.Parent">
+        <source>tableLayoutOKCancelButtons</source>
+        <target state="new">tableLayoutOKCancelButtons</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonOK.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Name">
+        <source>buttonCancel</source>
+        <target state="new">buttonCancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.Parent">
+        <source>tableLayoutOKCancelButtons</source>
+        <target state="new">tableLayoutOKCancelButtons</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;buttonCancel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOKCancelButtons.Name">
+        <source>tableLayoutOKCancelButtons</source>
+        <target state="new">tableLayoutOKCancelButtons</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOKCancelButtons.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOKCancelButtons.Parent">
+        <source>tableLayoutOverarching</source>
+        <target state="new">tableLayoutOverarching</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOKCancelButtons.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.Text">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.Text">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="colHeaderExensionDescription.Text">
+        <source>Description</source>
+        <target state="new">Description</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="listViewExtensions.AccessibleName">
+        <source>Available My Namespace Extensions</source>
+        <target state="new">Available My Namespace Extensions</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;listViewExtensions.Name">
+        <source>listViewExtensions</source>
+        <target state="new">listViewExtensions</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;listViewExtensions.Type">
+        <source>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;listViewExtensions.Parent">
+        <source>tableLayoutOverarching</source>
+        <target state="new">tableLayoutOverarching</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;listViewExtensions.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOverarching.Name">
+        <source>tableLayoutOverarching</source>
+        <target state="new">tableLayoutOverarching</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOverarching.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOverarching.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;tableLayoutOverarching.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add Visual Basic My Namespace Extension</source>
+        <target state="new">Add Visual Basic My Namespace Extension</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExtensionName.Name">
+        <source>colHeaderExtensionName</source>
+        <target state="new">colHeaderExtensionName</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExtensionName.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExtensionVersion.Name">
+        <source>colHeaderExtensionVersion</source>
+        <target state="new">colHeaderExtensionVersion</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExtensionVersion.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExensionDescription.Name">
+        <source>colHeaderExensionDescription</source>
+        <target state="new">colHeaderExensionDescription</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;colHeaderExensionDescription.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AddMyExtensionsDialog</source>
+        <target state="new">AddMyExtensionsDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

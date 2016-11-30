@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventCommandLineDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventCommandLineDialog.resx" />
+      <trans-unit id="InsertButton.Text">
+        <source>I&amp;nsert</source>
+        <target state="new">I&amp;nsert</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InsertButton.Name">
+        <source>InsertButton</source>
+        <target state="new">InsertButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InsertButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InsertButton.Parent">
+        <source>insertOkCancelTableLayoutPanel</source>
+        <target state="new">insertOkCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;InsertButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Name">
+        <source>OKButton</source>
+        <target state="new">OKButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.Parent">
+        <source>insertOkCancelTableLayoutPanel</source>
+        <target state="new">insertOkCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;OKButton.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Cancel_Button.Text">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel_Button.Name">
+        <source>Cancel_Button</source>
+        <target state="new">Cancel_Button</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel_Button.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel_Button.Parent">
+        <source>insertOkCancelTableLayoutPanel</source>
+        <target state="new">insertOkCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Cancel_Button.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CommandLine.AccessibleName">
+        <source>Build Command Line</source>
+        <target state="new">Build Command Line</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLine.Name">
+        <source>CommandLine</source>
+        <target state="new">CommandLine</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLine.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLine.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLine.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ShowMacrosButton.Text">
+        <source>&amp;Macros &gt;&gt;</source>
+        <target state="new">&amp;Macros &gt;&gt;</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowMacrosButton.Name">
+        <source>ShowMacrosButton</source>
+        <target state="new">ShowMacrosButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowMacrosButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowMacrosButton.Parent">
+        <source>insertOkCancelTableLayoutPanel</source>
+        <target state="new">insertOkCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShowMacrosButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="HideMacrosButton.Text">
+        <source>&lt;&lt; &amp;Macros</source>
+        <target state="new">&lt;&lt; &amp;Macros</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HideMacrosButton.Name">
+        <source>HideMacrosButton</source>
+        <target state="new">HideMacrosButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HideMacrosButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HideMacrosButton.Parent">
+        <source>MacrosPanel</source>
+        <target state="new">MacrosPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HideMacrosButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TokenList.AccessibleName">
+        <source>Macro List</source>
+        <target state="new">Macro List</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Macro.Text">
+        <source>Macro</source>
+        <target state="new">Macro</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Value.Text">
+        <source>Value</source>
+        <target state="new">Value</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TokenList.Name">
+        <source>TokenList</source>
+        <target state="new">TokenList</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TokenList.Type">
+        <source>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TokenList.Parent">
+        <source>MacrosPanel</source>
+        <target state="new">MacrosPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TokenList.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MacrosPanel.Name">
+        <source>MacrosPanel</source>
+        <target state="new">MacrosPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MacrosPanel.Type">
+        <source>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MacrosPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MacrosPanel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLinePanel.Name">
+        <source>CommandLinePanel</source>
+        <target state="new">CommandLinePanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CommandLinePanel.Type">
+        <source>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;insertOkCancelTableLayoutPanel.Name">
+        <source>insertOkCancelTableLayoutPanel</source>
+        <target state="new">insertOkCancelTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;insertOkCancelTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;insertOkCancelTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;insertOkCancelTableLayoutPanel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Macro.Name">
+        <source>Macro</source>
+        <target state="new">Macro</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Macro.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Value.Name">
+        <source>Value</source>
+        <target state="new">Value</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Value.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>BuildEventCommandLineDialog</source>
+        <target state="new">BuildEventCommandLineDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx" />
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="new">Role service cache &amp;timeout:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RoleServiceCacheTimeoutLabel.Name">
+        <source>RoleServiceCacheTimeoutLabel</source>
+        <target state="new">RoleServiceCacheTimeoutLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RoleServiceCacheTimeoutLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RoleServiceCacheTimeoutLabel.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RoleServiceCacheTimeoutLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeQuantity.Name">
+        <source>TimeQuantity</source>
+        <target state="new">TimeQuantity</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeQuantity.Type">
+        <source>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeQuantity.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeQuantity.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeUnitComboBox.Name">
+        <source>TimeUnitComboBox</source>
+        <target state="new">TimeUnitComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeUnitComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeUnitComboBox.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TimeUnitComboBox.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="new">&amp;Save password hash locally to enable offline login</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SavePasswordHashLocallyCheckbox.Name">
+        <source>SavePasswordHashLocallyCheckbox</source>
+        <target state="new">SavePasswordHashLocallyCheckbox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SavePasswordHashLocallyCheckbox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SavePasswordHashLocallyCheckbox.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SavePasswordHashLocallyCheckbox.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="new">&amp;Require users to log on again whenever the server cookie expires</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HonorServerCookieExpirationCheckbox.Name">
+        <source>HonorServerCookieExpirationCheckbox</source>
+        <target state="new">HonorServerCookieExpirationCheckbox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HonorServerCookieExpirationCheckbox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HonorServerCookieExpirationCheckbox.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;HonorServerCookieExpirationCheckbox.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="new">&amp;Use custom connection string:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseCustomConnectionStringCheckBox.Name">
+        <source>UseCustomConnectionStringCheckBox</source>
+        <target state="new">UseCustomConnectionStringCheckBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseCustomConnectionStringCheckBox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseCustomConnectionStringCheckBox.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseCustomConnectionStringCheckBox.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Name">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConnectionString.Name">
+        <source>CustomConnectionString</source>
+        <target state="new">CustomConnectionString</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConnectionString.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConnectionString.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;CustomConnectionString.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AdvancedServicesDialog</source>
+        <target state="new">AdvancedServicesDialog</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPageVBWinForms.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPageVBWinForms.resx" />
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="new">Assembly &amp;name:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Name">
+        <source>AssemblyNameLabel</source>
+        <target state="new">AssemblyNameLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameTextBox.Name">
+        <source>AssemblyNameTextBox</source>
+        <target state="new">AssemblyNameTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameTextBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyNameTextBox.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>&amp;Root namespace:</source>
+        <target state="new">&amp;Root namespace:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Name">
+        <source>RootNamespaceLabel</source>
+        <target state="new">RootNamespaceLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceLabel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceTextBox.Name">
+        <source>RootNamespaceTextBox</source>
+        <target state="new">RootNamespaceTextBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceTextBox.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceTextBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RootNamespaceTextBox.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>&amp;Target framework:</source>
+        <target state="new">&amp;Target framework:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Name">
+        <source>TargetFrameworkLabel</source>
+        <target state="new">TargetFrameworkLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkLabel.ZOrder">
+        <source>13</source>
+        <target state="new">13</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkComboBox.Name">
+        <source>TargetFrameworkComboBox</source>
+        <target state="new">TargetFrameworkComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkComboBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TargetFrameworkComboBox.ZOrder">
+        <source>14</source>
+        <target state="new">14</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectComboBox.Name">
+        <source>StartupObjectComboBox</source>
+        <target state="new">StartupObjectComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectComboBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectComboBox.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <target state="new">Startup &amp;object:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Name">
+        <source>StartupObjectLabel</source>
+        <target state="new">StartupObjectLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;StartupObjectLabel.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationTypeLabel.Text">
+        <source>&amp;Application type:</source>
+        <target state="new">&amp;Application type:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeLabel.Name">
+        <source>ApplicationTypeLabel</source>
+        <target state="new">ApplicationTypeLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeLabel.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeComboBox.Name">
+        <source>ApplicationTypeComboBox</source>
+        <target state="new">ApplicationTypeComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeComboBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ApplicationTypeComboBox.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IconLabel.Text">
+        <source>&amp;Icon:</source>
+        <target state="new">&amp;Icon:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconLabel.Name">
+        <source>IconLabel</source>
+        <target state="new">IconLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconLabel.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconLabel.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconPicturebox.Name">
+        <source>IconPicturebox</source>
+        <target state="new">IconPicturebox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconPicturebox.Type">
+        <source>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconPicturebox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconPicturebox.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconCombobox.Name">
+        <source>IconCombobox</source>
+        <target state="new">IconCombobox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconCombobox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconCombobox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;IconCombobox.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UseApplicationFrameworkCheckBox.Text">
+        <source>Enable application framewor&amp;k</source>
+        <target state="new">Enable application framewor&amp;k</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseApplicationFrameworkCheckBox.Name">
+        <source>UseApplicationFrameworkCheckBox</source>
+        <target state="new">UseApplicationFrameworkCheckBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseApplicationFrameworkCheckBox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseApplicationFrameworkCheckBox.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UseApplicationFrameworkCheckBox.ZOrder">
+        <source>11</source>
+        <target state="new">11</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Name">
+        <source>AssemblyInfoButton</source>
+        <target state="new">AssemblyInfoButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AssemblyInfoButton.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewUACSettingsButton.Name">
+        <source>ViewUACSettingsButton</source>
+        <target state="new">ViewUACSettingsButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewUACSettingsButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewUACSettingsButton.Parent">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewUACSettingsButton.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Name">
+        <source>TableLayoutPanel1</source>
+        <target state="new">TableLayoutPanel1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Parent">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Name">
+        <source>TopHalfLayoutPanel</source>
+        <target state="new">TopHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TopHalfLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembl&amp;y Information...</source>
+        <target state="new">Assembl&amp;y Information...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ViewUACSettingsButton.Text">
+        <source>View Windows Settin&amp;gs</source>
+        <target state="new">View Windows Settin&amp;gs</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableXPThemesCheckBox.Text">
+        <source>Enable &amp;XP visual styles</source>
+        <target state="new">Enable &amp;XP visual styles</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableXPThemesCheckBox.Name">
+        <source>EnableXPThemesCheckBox</source>
+        <target state="new">EnableXPThemesCheckBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableXPThemesCheckBox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableXPThemesCheckBox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;EnableXPThemesCheckBox.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="SingleInstanceCheckBox.Text">
+        <source>Make &amp;single instance application</source>
+        <target state="new">Make &amp;single instance application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SingleInstanceCheckBox.Name">
+        <source>SingleInstanceCheckBox</source>
+        <target state="new">SingleInstanceCheckBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SingleInstanceCheckBox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SingleInstanceCheckBox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SingleInstanceCheckBox.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="SaveMySettingsCheckbox.Text">
+        <source>Save My.Settin&amp;gs on Shutdown</source>
+        <target state="new">Save My.Settin&amp;gs on Shutdown</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SaveMySettingsCheckbox.Name">
+        <source>SaveMySettingsCheckbox</source>
+        <target state="new">SaveMySettingsCheckbox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SaveMySettingsCheckbox.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SaveMySettingsCheckbox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SaveMySettingsCheckbox.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Aut&amp;hentication mode:</source>
+        <target state="new">Aut&amp;hentication mode:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeLabel.Name">
+        <source>AuthenticationModeLabel</source>
+        <target state="new">AuthenticationModeLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeLabel.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeLabel.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeComboBox.Name">
+        <source>AuthenticationModeComboBox</source>
+        <target state="new">AuthenticationModeComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeComboBox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AuthenticationModeComboBox.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ShutdownModeLabel.Text">
+        <source>Sh&amp;utdown mode:</source>
+        <target state="new">Sh&amp;utdown mode:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeLabel.Name">
+        <source>ShutdownModeLabel</source>
+        <target state="new">ShutdownModeLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeLabel.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeLabel.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeComboBox.Name">
+        <source>ShutdownModeComboBox</source>
+        <target state="new">ShutdownModeComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeComboBox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ShutdownModeComboBox.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="SplashScreenLabel.Text">
+        <source>Sp&amp;lash screen:</source>
+        <target state="new">Sp&amp;lash screen:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenLabel.Name">
+        <source>SplashScreenLabel</source>
+        <target state="new">SplashScreenLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenLabel.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenLabel.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenComboBox.Name">
+        <source>SplashScreenComboBox</source>
+        <target state="new">SplashScreenComboBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenComboBox.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenComboBox.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;SplashScreenComboBox.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ViewCodeButton.Text">
+        <source>&amp;View Application Events</source>
+        <target state="new">&amp;View Application Events</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewCodeButton.Name">
+        <source>ViewCodeButton</source>
+        <target state="new">ViewCodeButton</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewCodeButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewCodeButton.Parent">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ViewCodeButton.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;BottomHalfLayoutPanel.Name">
+        <source>BottomHalfLayoutPanel</source>
+        <target state="new">BottomHalfLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;BottomHalfLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;BottomHalfLayoutPanel.Parent">
+        <source>WindowsAppGroupBox</source>
+        <target state="new">WindowsAppGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;BottomHalfLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WindowsAppGroupBox.Text">
+        <source>Windows application framework properties</source>
+        <target state="new">Windows application framework properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsAppGroupBox.Name">
+        <source>WindowsAppGroupBox</source>
+        <target state="new">WindowsAppGroupBox</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsAppGroupBox.Type">
+        <source>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsAppGroupBox.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;WindowsAppGroupBox.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ApplicationPropPageVBWinForms</source>
+        <target state="new">ApplicationPropPageVBWinForms</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

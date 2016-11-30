@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/XmlToSchema/InputXmlForm.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/InputXmlForm.resx" />
+      <trans-unit id="_cancelButton.Text">
+        <source>Cancel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_cancelButton.Name">
+        <source>_cancelButton</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_cancelButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_cancelButton.Parent">
+        <source>FlowLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_cancelButton.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColumnHeader1.Text">
+        <source>Source Type</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ColumnHeader2.Text">
+        <source>XML Document Location</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_listView.AccessibleName">
+        <source>XML Documents</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_listView.Name">
+        <source>_listView</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_listView.Type">
+        <source>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_listView.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_listView.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.AccessibleName">
+        <source>Type or paste XML</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.Text">
+        <source>Type or paste &amp;XML</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addAsTextButton.Name">
+        <source>_addAsTextButton</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addAsTextButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addAsTextButton.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addAsTextButton.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_picutreBox.Name">
+        <source>_picutreBox</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_picutreBox.Type">
+        <source>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_picutreBox.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_picutreBox.ZOrder">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>Specify XML documents to infer XML Schema set</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Name">
+        <source>Label1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Label1.ZOrder">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.AccessibleName">
+        <source>Add from File</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.Text">
+        <source>Add from &amp;File</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromFileButton.Name">
+        <source>_addFromFileButton</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromFileButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromFileButton.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromFileButton.ZOrder">
+        <source>4</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.AccessibleName">
+        <source>Add from Web</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.Text">
+        <source>Add from &amp;Web</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromWebButton.Name">
+        <source>_addFromWebButton</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromWebButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromWebButton.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_addFromWebButton.ZOrder">
+        <source>5</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_okButton.Text">
+        <source>OK</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_okButton.Name">
+        <source>_okButton</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_okButton.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_okButton.Parent">
+        <source>FlowLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_okButton.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FlowLayoutPanel1.Name">
+        <source>FlowLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FlowLayoutPanel1.Type">
+        <source>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FlowLayoutPanel1.Parent">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FlowLayoutPanel1.ZOrder">
+        <source>6</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Name">
+        <source>TableLayoutPanel1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.Parent">
+        <source>$this</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;TableLayoutPanel1.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Filter">
+        <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Title">
+        <source>Add XML Files</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Infer XML Schema set from XML documents</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_imageList1.Name">
+        <source>_imageList1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_imageList1.Type">
+        <source>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColumnHeader1.Name">
+        <source>ColumnHeader1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColumnHeader1.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColumnHeader2.Name">
+        <source>ColumnHeader2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ColumnHeader2.Type">
+        <source>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_imageList2.Name">
+        <source>_imageList2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_imageList2.Type">
+        <source>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlFileDialog.Name">
+        <source>_xmlFileDialog</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;_xmlFileDialog.Type">
+        <source>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>InputXmlForm</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

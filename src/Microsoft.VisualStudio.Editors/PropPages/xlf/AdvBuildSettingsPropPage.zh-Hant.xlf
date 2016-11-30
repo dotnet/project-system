@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx" />
+      <trans-unit id="lblLanguageVersion.Text">
+        <source>&amp;Language version:</source>
+        <target state="new">&amp;Language version:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblLanguageVersion.Name">
+        <source>lblLanguageVersion</source>
+        <target state="new">lblLanguageVersion</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblLanguageVersion.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblLanguageVersion.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblLanguageVersion.ZOrder">
+        <source>12</source>
+        <target state="new">12</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblReportCompilerErrors.Text">
+        <source>&amp;Internal compiler error reporting:</source>
+        <target state="new">&amp;Internal compiler error reporting:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblReportCompilerErrors.Name">
+        <source>lblReportCompilerErrors</source>
+        <target state="new">lblReportCompilerErrors</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblReportCompilerErrors.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblReportCompilerErrors.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblReportCompilerErrors.ZOrder">
+        <source>11</source>
+        <target state="new">11</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboLanguageVersion.Name">
+        <source>cboLanguageVersion</source>
+        <target state="new">cboLanguageVersion</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboLanguageVersion.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboLanguageVersion.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboLanguageVersion.ZOrder">
+        <source>9</source>
+        <target state="new">9</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboReportCompilerErrors.Items">
+        <source>none</source>
+        <target state="new">none</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboReportCompilerErrors.Items1">
+        <source>prompt</source>
+        <target state="new">prompt</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboReportCompilerErrors.Items2">
+        <source>send</source>
+        <target state="new">send</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboReportCompilerErrors.Items3">
+        <source>queue</source>
+        <target state="new">queue</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboReportCompilerErrors.Name">
+        <source>cboReportCompilerErrors</source>
+        <target state="new">cboReportCompilerErrors</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboReportCompilerErrors.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboReportCompilerErrors.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboReportCompilerErrors.ZOrder">
+        <source>8</source>
+        <target state="new">8</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblDebugInfo.Text">
+        <source>D&amp;ebugging information:</source>
+        <target state="new">D&amp;ebugging information:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDebugInfo.Name">
+        <source>lblDebugInfo</source>
+        <target state="new">lblDebugInfo</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDebugInfo.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDebugInfo.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDebugInfo.ZOrder">
+        <source>7</source>
+        <target state="new">7</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboDebugInfo.Items">
+        <source>none</source>
+        <target state="new">none</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboDebugInfo.Items1">
+        <source>full</source>
+        <target state="new">full</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboDebugInfo.Items2">
+        <source>pdb-only</source>
+        <target state="new">pdb-only</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboDebugInfo.Items3">
+        <source>portable</source>
+        <target state="new">portable</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="cboDebugInfo.Items4">
+        <source>embedded</source>
+        <target state="new">embedded</target>
+        <note>{Locked}</note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboDebugInfo.Name">
+        <source>cboDebugInfo</source>
+        <target state="new">cboDebugInfo</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboDebugInfo.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboDebugInfo.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboDebugInfo.ZOrder">
+        <source>5</source>
+        <target state="new">5</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblFileAlignment.Text">
+        <source>&amp;File alignment:</source>
+        <target state="new">&amp;File alignment:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblFileAlignment.Name">
+        <source>lblFileAlignment</source>
+        <target state="new">lblFileAlignment</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblFileAlignment.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblFileAlignment.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblFileAlignment.ZOrder">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items">
+        <source>512</source>
+        <target state="new">512</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items1">
+        <source>1024</source>
+        <target state="new">1024</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items2">
+        <source>2048</source>
+        <target state="new">2048</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items3">
+        <source>4096</source>
+        <target state="new">4096</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items4">
+        <source>8192</source>
+        <target state="new">8192</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboFileAlignment.Name">
+        <source>cboFileAlignment</source>
+        <target state="new">cboFileAlignment</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboFileAlignment.Type">
+        <source>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboFileAlignment.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;cboFileAlignment.ZOrder">
+        <source>6</source>
+        <target state="new">6</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblDLLBase.Text">
+        <source>Library &amp;base address:</source>
+        <target state="new">Library &amp;base address:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDLLBase.Name">
+        <source>lblDLLBase</source>
+        <target state="new">lblDLLBase</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDLLBase.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDLLBase.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;lblDLLBase.ZOrder">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtDLLBase.Name">
+        <source>txtDLLBase</source>
+        <target state="new">txtDLLBase</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtDLLBase.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtDLLBase.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;txtDLLBase.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <target state="new">Output</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Name">
+        <source>outputLabel</source>
+        <target state="new">outputLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.Parent">
+        <source>outputTableLayoutPanel</source>
+        <target state="new">outputTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Name">
+        <source>outputLineLabel</source>
+        <target state="new">outputLineLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.Parent">
+        <source>outputTableLayoutPanel</source>
+        <target state="new">outputTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputLineLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Name">
+        <source>outputTableLayoutPanel</source>
+        <target state="new">outputTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;outputTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <target state="new">General</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Name">
+        <source>generalLabel</source>
+        <target state="new">generalLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.Parent">
+        <source>generalTableLayoutPanel</source>
+        <target state="new">generalTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLabel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Name">
+        <source>generalLineLabel</source>
+        <target state="new">generalLineLabel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.Parent">
+        <source>generalTableLayoutPanel</source>
+        <target state="new">generalTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalLineLabel.ZOrder">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalTableLayoutPanel.Name">
+        <source>generalTableLayoutPanel</source>
+        <target state="new">generalTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;generalTableLayoutPanel.ZOrder">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkOverflow.Text">
+        <source>Chec&amp;k for arithmetic overflow/underflow</source>
+        <target state="new">Chec&amp;k for arithmetic overflow/underflow</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOverflow.Name">
+        <source>chkOverflow</source>
+        <target state="new">chkOverflow</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOverflow.Type">
+        <source>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOverflow.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;chkOverflow.ZOrder">
+        <source>10</source>
+        <target state="new">10</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <target state="new">overarchingTableLayoutPanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <target state="new">System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <target state="new">$this</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>AdvBuildSettingsPropPage</source>
+        <target state="new">AdvBuildSettingsPropPage</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <target state="new">Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

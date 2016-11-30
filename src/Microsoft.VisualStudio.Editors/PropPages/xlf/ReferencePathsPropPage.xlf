@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePathsPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePathsPropPage.resx" />
+      <trans-unit id="AddFolder.Text">
+        <source>&amp;Add Folder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddFolder.Name">
+        <source>AddFolder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddFolder.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddFolder.Parent">
+        <source>addUpdateTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;AddFolder.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UpdateFolder.Text">
+        <source>&amp;Update</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateFolder.Name">
+        <source>UpdateFolder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateFolder.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateFolder.Parent">
+        <source>addUpdateTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;UpdateFolder.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUpdateTableLayoutPanel.Name">
+        <source>addUpdateTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUpdateTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUpdateTableLayoutPanel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;addUpdateTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="addUpdateTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AddFolder" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UpdateFolder" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferencePath.AccessibleName">
+        <source>Order of Reference Paths</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePath.Name">
+        <source>ReferencePath</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePath.Type">
+        <source>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePath.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePath.ZOrder">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ReferencePathLabel.Text">
+        <source>Reference &amp;paths:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathLabel.Name">
+        <source>ReferencePathLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;ReferencePathLabel.ZOrder">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Folder.Name">
+        <source>Folder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Folder.Type">
+        <source>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Folder.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;Folder.ZOrder">
+        <source>4</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FolderBrowse.AccessibleName">
+        <source>Browse for Folder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FolderBrowse.Text">
+        <source>...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderBrowse.Name">
+        <source>FolderBrowse</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderBrowse.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderBrowse.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderBrowse.ZOrder">
+        <source>5</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="MoveUp.AccessibleName">
+        <source>Move up</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveUp.Name">
+        <source>MoveUp</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveUp.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveUp.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveUp.ZOrder">
+        <source>6</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="MoveDown.AccessibleName">
+        <source>Move down</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveDown.Name">
+        <source>MoveDown</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveDown.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveDown.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;MoveDown.ZOrder">
+        <source>7</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoveFolder.AccessibleName">
+        <source>Delete</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveFolder.Name">
+        <source>RemoveFolder</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveFolder.Type">
+        <source>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveFolder.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;RemoveFolder.ZOrder">
+        <source>8</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Name">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Type">
+        <source>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.Parent">
+        <source>$this</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;overarchingTableLayoutPanel.ZOrder">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="overarchingTableLayoutPanel.LayoutSettings">
+        <source>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="addUpdateTableLayoutPanel" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="FolderLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="ReferencePath" Row="4" RowSpan="4" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ReferencePathLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="Folder" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FolderBrowse" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="MoveUp" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="MoveDown" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RemoveFolder" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FolderLabel.Text">
+        <source>&amp;Folder:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderLabel.Name">
+        <source>FolderLabel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderLabel.Type">
+        <source>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderLabel.Parent">
+        <source>overarchingTableLayoutPanel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;FolderLabel.ZOrder">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Name">
+        <source>ReferencePathsPropPage</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="&gt;&gt;$this.Type">
+        <source>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.Editors, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
