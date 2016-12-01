@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     internal class BuildMacroInfo : IVsBuildMacroInfo
     {
         /// <summary>
-        /// Provides access to common Visual Studio project services.
+        /// Project threading service.
         /// </summary>
-        private IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectThreadingService _threadingService;
 
         /// <summary>
         /// Project components for the configuration being evaluated.
@@ -27,15 +27,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
         /// </summary>
         /// <param name="unconfiguredProject">Project being evaluated.</param>
-        /// <param name="projectVsServices">Visual Studio project services.</param>
+        /// <param name="threadingService">Project threading service.</param>
         [ImportingConstructor]
         public BuildMacroInfo(
             UnconfiguredProject unconfiguredProject,
-            IUnconfiguredProjectVsServices projectVsServices
-            )
+            IProjectThreadingService threadingService)
         {
             _unconfiguredProject = unconfiguredProject;
-            _projectVsServices = projectVsServices;
+            _threadingService = threadingService;
         }
 
         #region IVsBuildMacroInfo
@@ -49,16 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
         {
             pbstrBuildMacroValue = null;
-            var configuredProject = _projectVsServices.ThreadingService.ExecuteSynchronously(async delegate
-            {
-                return await _unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            });
-
+            var configuredProject = _threadingService.ExecuteSynchronously(_unconfiguredProject.GetSuggestedConfiguredProjectAsync);
             var commonProperties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            pbstrBuildMacroValue = _projectVsServices.ThreadingService.ExecuteSynchronously<string>(async delegate
-            {
-                return await commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName).ConfigureAwait(false);
-            });
+            pbstrBuildMacroValue = _threadingService.ExecuteSynchronously<string>(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
 
             if (pbstrBuildMacroValue == null)
             {

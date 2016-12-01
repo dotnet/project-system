@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 o.ProjectPropertiesProvider == propertiesProvider);
             var configuredProject = ConfiguredProjectFactory.Create(services: configuredProjectServices);
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(configuredProject: configuredProject);
-            var vsServices = IUnconfiguredProjectVsServicesFactory.Implement();
+            var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var buildMacroInfo = new BuildMacroInfo(unconfiguredProject, vsServices);
+            var buildMacroInfo = new BuildMacroInfo(unconfiguredProject, threadingService);
 
             string macroValue;
             int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out macroValue);
