@@ -85,6 +85,11 @@
       <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
     </EnumProperty.DataSource>
   </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="DebugSymbols" DisplayName="Debug symbols" Visible="False"/>
   <EnumProperty Name="FileAlignment" DisplayName="File Alignment" Visible="False"/>
   <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="False"/>
