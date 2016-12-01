@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.Editors/PropPages/AssemblyInfoPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AssemblyInfoPropPage.resx" />
+      <trans-unit id="TitleLabel.Text">
+        <source>&amp;Title:</source>
+        <target state="new">&amp;Title:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TrademarkLabel.Text">
+        <source>T&amp;rademark:</source>
+        <target state="new">T&amp;rademark:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CopyrightLabel.Text">
+        <source>C&amp;opyright:</source>
+        <target state="new">C&amp;opyright:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProductLabel.Text">
+        <source>&amp;Product:</source>
+        <target state="new">&amp;Product:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CompanyLabel.Text">
+        <source>&amp;Company:</source>
+        <target state="new">&amp;Company:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DescriptionLabel.Text">
+        <source>&amp;Description:</source>
+        <target state="new">&amp;Description:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ComVisibleCheckBox.Text">
+        <source>&amp;Make assembly COM-Visible</source>
+        <target state="new">&amp;Make assembly COM-Visible</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguageLabel.Text">
+        <source>&amp;Neutral language:</source>
+        <target state="new">&amp;Neutral language:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyVersionLabel.Text">
+        <source>&amp;Assembly version:</source>
+        <target state="new">&amp;Assembly version:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FileVersionLabel.Text">
+        <source>&amp;File version:</source>
+        <target state="new">&amp;File version:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FileVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="new">Major</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FileVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="new">Minor</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FileVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="new">Build</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="new">Revision</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="GuidLabel.Text">
+        <source>&amp;GUID:</source>
+        <target state="new">&amp;GUID:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="new">Major</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="new">Minor</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="new">Build</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="new">Revision</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

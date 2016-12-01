@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx" />
+      <trans-unit id="lblLanguageVersion.Text">
+        <source>&amp;Language version:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblReportCompilerErrors.Text">
+        <source>&amp;Internal compiler error reporting:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblDebugInfo.Text">
+        <source>D&amp;ebugging information:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblFileAlignment.Text">
+        <source>&amp;File alignment:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items">
+        <source>512</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items1">
+        <source>1024</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items2">
+        <source>2048</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items3">
+        <source>4096</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items4">
+        <source>8192</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblDLLBase.Text">
+        <source>Library &amp;base address:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkOverflow.Text">
+        <source>Chec&amp;k for arithmetic overflow/underflow</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

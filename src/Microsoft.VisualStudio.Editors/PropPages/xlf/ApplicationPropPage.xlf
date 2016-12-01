@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx" />
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>Defau&amp;lt namespace:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OutputTypeLabel.Text">
+        <source>O&amp;utput type:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembly &amp;Information...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>Tar&amp;get framework:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesLabel.Text">
+        <source>Specify how application resources will be managed:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IconRadioButton.Text">
+        <source>I&amp;con and manifest</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ManifestExplanationLabel.Text">
+        <source>A manifest determines specific settings for an application. To embed a custom manifest, first add it to your project and then select it from the list below.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationIconLabel.Text">
+        <source>Icon:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AppIconBrowse.Text">
+        <source>...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationManifestLabel.Text">
+        <source>Manifest:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceRadioButton.Text">
+        <source>Re&amp;source file:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceFileBrowse.Text">
+        <source>...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesGroupBox.Text">
+        <source>Resources</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

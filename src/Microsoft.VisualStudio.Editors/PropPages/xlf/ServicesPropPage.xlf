@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

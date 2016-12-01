@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml" />
+      <trans-unit id="Rule|AssemblyReference|DisplayName">
+        <source>Assembly Reference</source>
+        <target state="new">Assembly Reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|AssemblyReference|Description">
+        <source>Assembly reference properties</source>
+        <target state="new">Assembly reference properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="new">Aliases</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to this reference.</source>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+        <source>Copy Local</source>
+        <target state="new">Copy Local</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|Description">
+        <source>Indicates whether the reference will be copied to the output directory.</source>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
+        <source>Embed Interop Types</source>
+        <target state="new">Embed Interop Types</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
+        <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
+        <source>Specific Version</source>
+        <target state="new">Specific Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|SpecificVersion|Description">
+        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
+        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
+        <source>Required Target Framework</source>
+        <target state="new">Required Target Framework</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
+        <source>Runtime Version</source>
+        <target state="new">Runtime Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ImageRuntime|Description">
+        <source>The CLR runtime version targeted by this assembly.</source>
+        <target state="new">The CLR runtime version targeted by this assembly.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

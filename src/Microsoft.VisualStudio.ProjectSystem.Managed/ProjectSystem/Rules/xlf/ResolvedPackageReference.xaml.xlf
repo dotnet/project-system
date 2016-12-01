@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedPackageReference.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedPackageReference.xaml" />
+      <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
+        <source>Package</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|ResolvedPackageReference|Description">
+        <source>Package</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Description</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|Description">
+        <source>Dependency description.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of dependency.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|OriginalItemSpec|Description">
+        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringListProperty|Dependencies|DisplayName">
+        <source>Dependencies</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringListProperty|Dependencies|Description">
+        <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

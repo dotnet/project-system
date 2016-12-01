@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx" />
+      <trans-unit id="OptimizationsLabel.Text">
+        <source>Optimizations</source>
+        <target state="new">Optimizations</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoveIntegerChecks.Text">
+        <source>&amp;Remove integer overflow checks</source>
+        <target state="new">&amp;Remove integer overflow checks</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Optimize.Text">
+        <source>&amp;Enable optimizations</source>
+        <target state="new">&amp;Enable optimizations</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DllBaseLabel.Text">
+        <source>DLL &amp;base address:</source>
+        <target state="new">DLL &amp;base address:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DefineDebug.Text">
+        <source>Define &amp;DEBUG constant</source>
+        <target state="new">Define &amp;DEBUG constant</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="new">Define &amp;TRACE constant</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="GenerateSerializationAssembliesLabel.Text">
+        <source>Generate &amp;serialization assemblies:</source>
+        <target state="new">Generate &amp;serialization assemblies:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomConstantsLabel.Text">
+        <source>&amp;Custom constants:</source>
+        <target state="new">&amp;Custom constants:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="GenerateDebugInfoLabel.Text">
+        <source>&amp;Generate debug info:</source>
+        <target state="new">&amp;Generate debug info:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomConstantsExampleLabel.Text">
+        <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
+        <target state="new">Example: Name1="Value1",Name2="Value2",Name3="Value3"</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CompilationConstantsLabel.Text">
+        <source>Compilation Constants</source>
+        <target state="new">Compilation Constants</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CompileWithDotNetNative.Text">
+        <source>Compile with .NET Native toolchain</source>
+        <target state="new">Compile with .NET Native toolchain</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableGatekeeperAudit.Text">
+        <source>Enable static analysis for .NET Native</source>
+        <target state="new">Enable static analysis for .NET Native</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

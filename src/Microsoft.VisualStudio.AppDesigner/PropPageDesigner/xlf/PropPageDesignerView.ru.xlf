@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="src/Microsoft.VisualStudio.AppDesigner/PropPageDesigner/PropPageDesignerView.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.AppDesigner/PropPageDesigner/PropPageDesignerView.resx" />
+      <trans-unit id="PlatformLabel.Text">
+        <source>Platfor&amp;m:</source>
+        <target state="new">Platfor&amp;m:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ConfigurationLabel.Text">
+        <source>&amp;Configuration:</source>
+        <target state="new">&amp;Configuration:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PropertyPagePanel.AccessibleName">
+        <source>Property Page Panel</source>
+        <target state="new">Property Page Panel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PropertyPagePanel.Text">
+        <source>PropertyPagePanel</source>
+        <target state="new">PropertyPagePanel</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.AccessibleName">
+        <source>Property Designer Panel</source>
+        <target state="new">Property Designer Panel</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

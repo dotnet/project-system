@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
+      <trans-unit id="AdminRequiredForPort">
+        <source>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</source>
+        <target state="new">You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AllFiles">
+        <source>All files</source>
+        <target state="new">All files</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationArgumentsWatermark">
+        <source>Arguments to be passed to the application</source>
+        <target state="new">Arguments to be passed to the application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationUrlWatermark">
+        <source>The URL of the application</source>
+        <target state="new">The URL of the application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CopyHyperlinkText">
+        <source>Copy</source>
+        <target state="new">Copy</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DebugPropertyPageTitle">
+        <source>Debug</source>
+        <target state="new">Debug</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DuplicateKey">
+        <source>Duplicate Key</source>
+        <target state="new">Duplicate Key</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnvVariableNameWatermark">
+        <source>Key</source>
+        <target state="new">Key</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnvVariableValueWatermark">
+        <source>Value</source>
+        <target state="new">Value</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ExecutableFiles">
+        <source>Executable files</source>
+        <target state="new">Executable files</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ExecutablePathWatermark">
+        <source>Path to the executable to run</source>
+        <target state="new">Path to the executable to run</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IISExpressMissingAppUrl">
+        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
+        <target state="new">The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IISMissingAppUrl">
+        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
+        <target state="new">The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InvalidAppUrl">
+        <source>The Application Url is invalid. {0}</source>
+        <target state="new">The Application Url is invalid. {0}</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InvalidIISAppUrl">
+        <source>The IIS Application Url is invalid. {0}</source>
+        <target state="new">The IIS Application Url is invalid. {0}</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InvalidIISExpressAppUrl">
+        <source>The IIS Express Application Url is invalid. {0}</source>
+        <target state="new">The IIS Express Application Url is invalid. {0}</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="LaunchUrlWatermark">
+        <source>Absolute or relative URL</source>
+        <target state="new">Absolute or relative URL</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NameCannotBeEmpty">
+        <source>Name cannot be empty.</source>
+        <target state="new">Name cannot be empty.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NewProfileCaption">
+        <source>New profile</source>
+        <target state="new">New profile</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NewProfileSeedName">
+        <source>newProfile</source>
+        <target state="new">newProfile</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileKindCommandName">
+        <source>Command</source>
+        <target state="new">Command</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileKindExecutableName">
+        <source>Executable</source>
+        <target state="new">Executable</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileKindIISExpressName">
+        <source>IIS Express</source>
+        <target state="new">IIS Express</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileKindNoActionName">
+        <source>Start</source>
+        <target state="new">Start</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileKindProjectName">
+        <source>Project</source>
+        <target state="new">Project</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileNameInvalid">
+        <source>That profile name is invalid or there is an existing profile with the same name.</source>
+        <target state="new">That profile name is invalid or there is an existing profile with the same name.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ProfileNameRequired">
+        <source>You must specify a profile name.</source>
+        <target state="new">You must specify a profile name.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ValueCannotBeEmpty">
+        <source>Value cannot be empty.</source>
+        <target state="new">Value cannot be empty.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WorkingDirectoryWatermark">
+        <source>Absolute path to working directory</source>
+        <target state="new">Absolute path to working directory</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
