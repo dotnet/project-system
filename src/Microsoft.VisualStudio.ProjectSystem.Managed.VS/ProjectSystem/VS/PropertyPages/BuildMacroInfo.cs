@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Project components for the configuration being evaluated.
         /// </summary>
-        private UnconfiguredProject _unconfiguredProject;
+        private readonly UnconfiguredProject _unconfiguredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -36,8 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _unconfiguredProject = unconfiguredProject;
             _threadingService = threadingService;
         }
-
-        #region IVsBuildMacroInfo
 
         /// <summary>
         /// Retrieves the value or body of a macro based on the macro's name.
@@ -62,7 +60,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return VSConstants.S_OK;
             }
         }
-
-        #endregion
     }
 }
