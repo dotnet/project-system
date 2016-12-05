@@ -55,6 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
 
             supportedFrameworksList.Add(".NETCoreApp,Version=v1.0")
+            supportedFrameworksList.Add(".NETCoreApp,Version=v1.1")
             supportedFrameworksList.Add(".NETStandard,Version=v1.0")
             supportedFrameworksList.Add(".NETStandard,Version=v1.1")
             supportedFrameworksList.Add(".NETStandard,Version=v1.2")
