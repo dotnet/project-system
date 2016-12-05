@@ -15,14 +15,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates)
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates, 
+            UnconfiguredProject project = null)
         {
             Requires.NotNull(updates, nameof(updates));
 
             return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
         }
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
+            UnconfiguredProject project = null)
         {
             Requires.NotNull(updates, nameof(updates));
 
@@ -66,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferenceItems, packageReferenceItems),
+                        ProjectReferences = GetProjectReferences(projectReferenceItems, packageReferenceItems, project),
                         PackageReferences = GetPackageReferences(packageReferenceItems),
                         Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
@@ -132,7 +134,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static IVsReferenceItems GetProjectReferences(
             IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> packageReferenceItems)
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> packageReferenceItems,
+            UnconfiguredProject project = null)
         {
             var referenceItems = new ReferenceItems(projectReferenceItems.Select(p => GetReferenceItem(p)));
 
@@ -145,13 +148,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
-            {
+            {                
                 var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                string fullPathFromDefining = definingProjectDirectory != null
-                    ? Path.Combine(definingProjectDirectory.Value, item.Name)
-                    : item.Name;
-
-                string projectFileFullPath = Path.GetFullPath(fullPathFromDefining);
+                string projectFileFullPath;
+                if (definingProjectDirectory != null)
+                {
+                    projectFileFullPath = PathHelper.MakeRooted(definingProjectDirectory.Value, item.Name);
+                }
+                else if (project != null)
+                {
+                    projectFileFullPath = project.MakeRooted(item.Name);
+                }
+                else
+                {
+                    projectFileFullPath = item.Name;
+                }
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {

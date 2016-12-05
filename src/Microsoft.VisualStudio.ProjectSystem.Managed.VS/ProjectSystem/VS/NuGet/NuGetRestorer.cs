@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
         {
-            IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1);
+            IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1, _projectVsServices.Project);
 
             if (projectRestoreInfo != null)
             {
