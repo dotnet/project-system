@@ -7,6 +7,18 @@
         <source>Web Debugger</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="cmdidEditProjFile|ButtonText">
+        <source>Edit Project File</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidEditProjFile|ToolTipText">
+        <source>Edit Project File</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidEditProjFile|CommandName">
+        <source>EditProjectFile</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

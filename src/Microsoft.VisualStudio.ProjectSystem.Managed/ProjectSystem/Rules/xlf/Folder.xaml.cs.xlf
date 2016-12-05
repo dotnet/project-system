@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Folder.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Folder.xaml" />
+      <trans-unit id="Rule|Folder|DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Folder|Description">
+        <source>Folder Properties</source>
+        <target state="new">Folder Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="new">Full Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the folder</source>
+        <target state="new">Location of the folder</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FolderName|DisplayName">
+        <source>Folder Name</source>
+        <target state="new">Folder Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FolderName|Description">
+        <source>Name of this folder</source>
+        <target state="new">Name of this folder</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Content.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Content.xaml" />
+      <trans-unit id="Rule|Content|DisplayName">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Content|Description">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="new">Misc</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="new">Build Action</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="new">How the file relates to the build and deployment processes.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="new">Copy to Output Directory</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="new">Specifies the source file will be copied to the output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="new">Do not copy</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="new">Copy always</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="new">Copy if newer</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>The item specified in the Include attribute.</source>
+        <target state="new">The item specified in the Include attribute.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="new">Full Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="new">Location of the file.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="new">File Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="new">Name of the file or folder.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

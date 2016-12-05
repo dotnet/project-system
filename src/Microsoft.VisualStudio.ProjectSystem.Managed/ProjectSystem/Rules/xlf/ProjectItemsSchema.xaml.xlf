@@ -39,6 +39,10 @@
         <source>Embedded resource</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>AdditionalFiles</source>
+        <note></note>
+      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <note></note>
@@ -48,7 +52,7 @@
         <note></note>
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
-        <source>Embedded resource </source>
+        <source>Embedded resource</source>
         <note></note>
       </trans-unit>
     </body>

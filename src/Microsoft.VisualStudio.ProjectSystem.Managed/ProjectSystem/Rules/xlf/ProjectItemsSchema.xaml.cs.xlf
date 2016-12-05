@@ -48,6 +48,11 @@
         <target state="new">Embedded resource</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>AdditionalFiles</source>
+        <target state="new">AdditionalFiles</target>
+        <note></note>
+      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <target state="new">None</target>
@@ -59,8 +64,8 @@
         <note></note>
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
-        <source>Embedded resource </source>
-        <target state="new">Embedded resource </target>
+        <source>Embedded resource</source>
+        <target state="new">Embedded resource</target>
         <note></note>
       </trans-unit>
     </body>

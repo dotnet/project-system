@@ -31,6 +31,10 @@
         <source>Target Frameworks</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|TargetFramework|DisplayName">
+        <source>Target Framework</source>
+        <note></note>
+      </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkProfile|DisplayName">
         <source>Target Framework Profile</source>
         <note></note>
