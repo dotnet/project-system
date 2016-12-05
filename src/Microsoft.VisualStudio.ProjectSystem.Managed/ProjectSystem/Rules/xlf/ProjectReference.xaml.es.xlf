@@ -23,16 +23,6 @@
         <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="BoolProperty|Private|DisplayName">
-        <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="BoolProperty|Private|Description">
-        <source>Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference.</source>
-        <target state="new">Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference.</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
         <target state="new">Copy Local Satellite Assemblies</target>
@@ -61,6 +51,36 @@
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <target state="new">IncludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="new">Assets to include from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <target state="new">ExcludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="new">Assets to exclude from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <target state="new">PrivateAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="new">Assets that are private in this reference</target>
         <note></note>
       </trans-unit>
     </body>

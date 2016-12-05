@@ -33,6 +33,16 @@
         <target state="new">A project for creating a class library that targets .NET Standard.</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="7">
+        <source>Loaded Project File Editor</source>
+        <target state="new">Loaded Project File Editor</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="new">.NET Core 2015 Project Files (*.xproj);*.xproj</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

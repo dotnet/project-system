@@ -19,14 +19,6 @@
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="BoolProperty|Private|DisplayName">
-        <source>Copy Local</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="BoolProperty|Private|Description">
-        <source>Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference.</source>
-        <note></note>
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
         <note></note>
@@ -49,6 +41,30 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
         <note></note>
       </trans-unit>
     </body>

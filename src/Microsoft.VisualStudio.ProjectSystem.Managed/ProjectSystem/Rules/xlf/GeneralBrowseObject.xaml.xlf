@@ -39,6 +39,10 @@
         <source>Default namespace</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target Frameworks</source>
+        <note></note>
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|OutputType|DisplayName">
         <source>Output Type</source>
         <note></note>
@@ -145,6 +149,10 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugInfo|DisplayName">
         <source>Debug Info</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>CheckForOverflowUnderflow</source>
         <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|DebugSymbols|DisplayName">

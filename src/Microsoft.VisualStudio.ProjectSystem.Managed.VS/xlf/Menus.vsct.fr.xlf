@@ -8,6 +8,21 @@
         <target state="new">Web Debugger</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="cmdidEditProjFile|ButtonText">
+        <source>Edit Project File</source>
+        <target state="new">Edit Project File</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidEditProjFile|ToolTipText">
+        <source>Edit Project File</source>
+        <target state="new">Edit Project File</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidEditProjFile|CommandName">
+        <source>EditProjectFile</source>
+        <target state="new">EditProjectFile</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
