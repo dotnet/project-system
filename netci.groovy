@@ -69,6 +69,13 @@ xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 """)
 
+        // Sync roslyn-internal upfront as we use the VsixExpInstaller from roslyn-internal repo to install VSIXes built from SDK repo into RoslynDev hive.
+        batchFile("""pushd %WORKSPACE%\\roslyn-internal
+git submodule init
+git submodule sync
+git submodule update --init --recursive
+popd""")
+
         // Build sdk repo and install templates into RoslynDev hive.
         batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
@@ -97,10 +104,6 @@ SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterpri
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
 pushd %WORKSPACE%\\roslyn-internal
-git submodule init
-git submodule sync
-git submodule update --init --recursive
-
 set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
