@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private T WaitForAsync<T>(Func<Task<T>> asyncFunc)
         {
-            return _threadHandling != null ? _threadHandling.ExecuteSynchronously<T>(asyncFunc) : default(T);
+            return _threadHandling.ExecuteSynchronously<T>(asyncFunc);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void WaitForAsync(Func<Task> asyncFunc)
         {
-            _threadHandling?.ExecuteSynchronously(asyncFunc);
+            _threadHandling.ExecuteSynchronously(asyncFunc);
         }
 
         ///--------------------------------------------------------------------------------------------
