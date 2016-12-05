@@ -14,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
-        private const string TargetFrameworkProperty = "TargetFramework";
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates)
         {
@@ -48,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 string targetFramework;
                 bool noTargetFramework = 
-                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out targetFramework) &&
-                    !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework);
+                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework) &&
+                    !nugetRestoreChanges.After.Properties.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework);
 
                 if (noTargetFramework || string.IsNullOrEmpty(targetFramework))
                 {
@@ -61,12 +60,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
+                    var projectReferenceItems = projectReferencesChanges.After.Items;
+                    var packageReferenceItems = packageReferencesChanges.After.Items;
 
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
-                        PackageReferences = GetReferences(packageReferencesChanges.After.Items),
+                        ProjectReferences = GetProjectReferences(projectReferenceItems, packageReferenceItems),
+                        PackageReferences = GetPackageReferences(packageReferenceItems),
                         Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
                 }
@@ -93,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 : null;
         }
 
-        private static IVsProjectProperties GetProperties(IImmutableDictionary<String, String> items)
+        private static IVsProjectProperties GetProperties(IImmutableDictionary<string, string> items)
         {
             return new ProjectProperties(items.Select(v => new ProjectProperty
             {
@@ -102,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }));
         }
 
-        private static IVsReferenceItem GetReferenceItem(KeyValuePair<String, IImmutableDictionary<String, String>> item)
+        private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
             return new ReferenceItem
             {
@@ -115,14 +116,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             };
         }
 
-        private static IVsReferenceItems GetReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
+        private static bool HasVersionAttribute(IImmutableDictionary<string, string> value)
         {
-            return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
+            return value.TryGetValue(PackageReference.VersionProperty, out string version) 
+                && !string.IsNullOrEmpty(version);
         }
 
-        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
+        private static IVsReferenceItems GetPackageReferences(
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        {            
+            return new ReferenceItems(items
+                .Where(p => HasVersionAttribute(p.Value))
+                .Select(v => GetReferenceItem(v)));
+        }
+
+        private static IVsReferenceItems GetProjectReferences(
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> packageReferenceItems)
         {
-            var referenceItems = GetReferences(items);
+            var referenceItems = new ReferenceItems(projectReferenceItems.Select(p => GetReferenceItem(p)));
+
+            // include package references with no 'Version' attribute
+            var packageProjects = packageReferenceItems.Where(p => !HasVersionAttribute(p.Value));
+            foreach (var packageProjectItem in packageProjects)
+            {
+                referenceItems.Add(GetReferenceItem(packageProjectItem));
+            }
+
+            // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
             {
                 var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
@@ -137,7 +158,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     Name = ProjectFileFullPathProperty, Value = projectFileFullPath
                 });
             }
+
             return referenceItems;
-        }        
+        }
     }
 }
