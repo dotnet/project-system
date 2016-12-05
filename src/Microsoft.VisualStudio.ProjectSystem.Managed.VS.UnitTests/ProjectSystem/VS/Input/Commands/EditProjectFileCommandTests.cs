@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         private const long CommandId = ManagedProjectSystemPackage.EditProjectFileCmdId;
         private const string Extension = "proj";
+        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
         public async Task EditProjectFileCommand_ValidNode_ShouldHandle()
@@ -217,9 +218,11 @@ Root (flags: {ProjectRoot})
             {
                 Assert.Equal(tempProjectFile, path);
                 return Tuple.Create(IVsHierarchyFactory.Create(), (uint)0, IVsPersistDocDataFactory.ImplementAsIVsTextBuffer(), (uint)0);
-            }, (sp, path) =>
+            }, (sp, path, editorType, logicalView) =>
             {
                 Assert.Equal(tempProjectFile, path);
+                Assert.Equal(editorType, XmlEditorFactoryGuid);
+                Assert.Equal(logicalView, Guid.Empty);
                 return frame;
             });
 
@@ -263,7 +266,7 @@ Root (flags: {ProjectRoot})
             var threadServ = threadingService ?? IProjectThreadingServiceFactory.Create();
             var shellUt = shellUtilities ?? new TestShellUtilitiesHelper(
                 (provider, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
-                (provider, path) => IVsWindowFrameFactory.Create());
+                (provider, path, editorType, logicalView) => IVsWindowFrameFactory.Create());
             var sp = serviceProvider ?? IServiceProviderFactory.Create();
             var wFact = watcherFactory ?? IExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
             return new EditProjectFileCommand(uProj, sp, msbuild, fs, tds, eas, threadServ, shellUt, wFact);

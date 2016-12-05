@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal interface IVsShellUtilitiesHelper
     {
-        IVsWindowFrame OpenDocument(IServiceProvider serviceProvider, string fullPath);
+        IVsWindowFrame OpenDocumentWithSpecificEditor(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView);
 
         void GetRDTDocumentInfo(IServiceProvider serviceProvider,
             string fullPath,
@@ -31,10 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             VsShellUtilities.GetRDTDocumentInfo(serviceProvider, fullPath, out hierarchy, out itemid, out persistDocData, out docCookie);
         }
 
-        public IVsWindowFrame OpenDocument(IServiceProvider serviceProvider, string fullPath)
+        public IVsWindowFrame OpenDocumentWithSpecificEditor(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView)
         {
-            VsShellUtilities.OpenDocument(serviceProvider, fullPath, Guid.Empty, out IVsUIHierarchy unusedH, out uint unusedI, out IVsWindowFrame frame);
-            return frame;
+            return VsShellUtilities.OpenDocumentWithSpecificEditor(serviceProvider, fullPath, editorType, logicalView);
         }
     }
 }

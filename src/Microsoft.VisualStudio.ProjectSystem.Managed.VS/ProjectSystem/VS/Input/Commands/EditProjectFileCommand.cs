@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [AppliesTo(ProjectCapability.OpenProjectFile)]
     internal class EditProjectFileCommand : AbstractSingleNodeProjectCommand
     {
+        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMsBuildAccessor _msbuildAccessor;
@@ -83,7 +84,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
             await watcher.InitializeAsync(tempProjectPath, lastWrittenXml).ConfigureAwait(true);
 
-            _frame = _shellUtilities.OpenDocument(_serviceProvider, tempProjectPath);
+            // TODO: We shouldn't hardcode the xml editor, as it doesn't respect the user choice for what editor to use.
+            // https://github.com/dotnet/roslyn-project-system/issues/871
+            _frame = _shellUtilities.OpenDocumentWithSpecificEditor(_serviceProvider, tempProjectPath, XmlEditorFactoryGuid, Guid.Empty);
 
             // When the document is closed, clean up the file on disk
             var fileCleanupListener = new EditProjectFileVsFrameEvents(tempProjectPath, _fileSystem, watcher, _frame, _serviceProvider, this);
