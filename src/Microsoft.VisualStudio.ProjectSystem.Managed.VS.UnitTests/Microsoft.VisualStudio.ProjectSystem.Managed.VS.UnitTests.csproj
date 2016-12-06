@@ -121,6 +121,7 @@
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfoTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
