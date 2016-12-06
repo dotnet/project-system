@@ -89,7 +89,9 @@ call build.cmd -Configuration release || goto :BuildFailed
 pushd %WORKSPACE%\\roslyn-internal\\Closed\\Tools\\Source\\VsixExpInstaller
 msbuild /p:Configuration=Release
 SET VSIXExpInstallerExe=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
+%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
 %VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
+%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
 %VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
 
 exit /b %ERRORLEVEL%
