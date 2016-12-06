@@ -754,15 +754,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Overrides Sub OnSystemColorsChanged(e As EventArgs)
             MyBase.OnSystemColorsChanged(e)
 
-            ' Update sort indicator...
-            _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_UP) = MapBitmapColor(ParentView.CachedResources.SortUpGlyph, Color.Black,
-                                                                                       Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
-            _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_DOWN) = MapBitmapColor(ParentView.CachedResources.SortDownGlyph, Color.Black,
-                                                                                         Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
+            ' We've not yet populated the thumbnails yet
+            If _thumbnailImageList IsNot Nothing Then
 
-            ' Reset column header sort indicator
-            If Me.View = ResourceView.Details AndAlso _sorter IsNot Nothing Then
-                SetColumnSortImage(_sorter.ColumnIndex, _sorter.InReverseOrder)
+                ' Update sort indicator...
+                _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_UP) = MapBitmapColor(ParentView.CachedResources.SortUpGlyph, Color.Black,
+                                                                                       Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
+                _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_DOWN) = MapBitmapColor(ParentView.CachedResources.SortDownGlyph, Color.Black,
+                                                                                             Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
+
+                ' Reset column header sort indicator
+                If Me.View = ResourceView.Details AndAlso _sorter IsNot Nothing Then
+                    SetColumnSortImage(_sorter.ColumnIndex, _sorter.InReverseOrder)
+                End If
             End If
         End Sub
 
