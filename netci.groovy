@@ -74,7 +74,7 @@ xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 git submodule init
 git submodule sync
 git submodule update --init --recursive
-restore.cmd
+init.cmd
 popd""")
 
         // Build sdk repo and install templates into RoslynDev hive.
