@@ -165,12 +165,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         using (var access = await _projectLockService.WriteLockAsync())
                         {
-                        // notify all the loaded configured projects
-                        var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                            // notify all the loaded configured projects
+                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
                             foreach (var configuredProject in currentProjects)
                             {
-                            // Inside a write lock, we should get back to the same thread.
-                            var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                                // Inside a write lock, we should get back to the same thread.
+                                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
                                 project.MarkDirty();
                                 configuredProject.NotifyProjectChange();
                             }
