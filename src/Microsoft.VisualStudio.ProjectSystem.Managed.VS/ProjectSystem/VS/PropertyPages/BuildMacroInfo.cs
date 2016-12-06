@@ -21,20 +21,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Project components for the configuration being evaluated.
         /// </summary>
-        private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
         /// </summary>
-        /// <param name="unconfiguredProject">Project being evaluated.</param>
+        /// <param name="configuredProject">Project being evaluated.</param>
         /// <param name="threadingService">Project threading service.</param>
         [ImportingConstructor]
         public BuildMacroInfo(
-            UnconfiguredProject unconfiguredProject,
+            ActiveConfiguredProject<ConfiguredProject> configuredProject,
             IProjectThreadingService threadingService)
         {
-            _unconfiguredProject = unconfiguredProject;
             _threadingService = threadingService;
+            _configuredProject = configuredProject;
         }
 
         /// <summary>
@@ -46,8 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
         {
             pbstrBuildMacroValue = null;
-            var configuredProject = _threadingService.ExecuteSynchronously(_unconfiguredProject.GetSuggestedConfiguredProjectAsync);
-            var commonProperties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            var commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
             pbstrBuildMacroValue = _threadingService.ExecuteSynchronously<string>(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
 
             if (pbstrBuildMacroValue == null)

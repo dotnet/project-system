@@ -18,10 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == propertiesProvider);
             var configuredProject = ConfiguredProjectFactory.Create(services: configuredProjectServices);
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(configuredProject: configuredProject);
+            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = IActiveConfiguredProjectFactory.ImplementValue(() => configuredProject);
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var buildMacroInfo = new BuildMacroInfo(unconfiguredProject, threadingService);
+            var buildMacroInfo = new BuildMacroInfo(activeConfiguredProject, threadingService);
 
             string macroValue;
             int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out macroValue);
