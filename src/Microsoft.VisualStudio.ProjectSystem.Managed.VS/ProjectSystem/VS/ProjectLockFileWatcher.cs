@@ -159,17 +159,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // the kind of change since we are interested in all changes.
             _projectServices.ThreadingService.Fork(async () =>
             {
-                using (var access = await _projectLockService.WriteLockAsync())
+                try
                 {
-                    // notify all the loaded configured projects
-                    var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                    foreach (var configuredProject in currentProjects)
+                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                     {
-                        // Inside a write lock, we should get back to the same thread.
-                        var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-                        project.MarkDirty();
-                        configuredProject.NotifyProjectChange();
-                    }
+                        using (var access = await _projectLockService.WriteLockAsync())
+                        {
+                            // notify all the loaded configured projects
+                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                            foreach (var configuredProject in currentProjects)
+                            {
+                                // Inside a write lock, we should get back to the same thread.
+                                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                                project.MarkDirty();
+                                configuredProject.NotifyProjectChange();
+                            }
+                        }
+                    });
+                }
+                catch (OperationCanceledException)
+                {
+                    // Project is already unloaded
                 }
             }, unconfiguredProject: _projectServices.Project);
 
