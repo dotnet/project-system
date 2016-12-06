@@ -68,7 +68,7 @@
              />
   </Target>
 
-  <Target Name="Test">
+  <Target Name="Test" Condition="'$(RunTests)' == 'true'">
 
     <ItemGroup>
       <TestAssembly Include="$(TestsDirectory)*Tests.dll" />

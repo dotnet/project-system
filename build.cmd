@@ -8,6 +8,7 @@ set MSBuildTarget=Build
 set NodeReuse=true
 set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
+set RunTests=true
 
 :ParseArguments
 if "%1" == "" goto :DoneParsing
@@ -17,6 +18,7 @@ if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArgu
 if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
 if /I "%1" == "/restore" set MSBuildTarget=RestorePackages&&shift&& goto :ParseArguments
 if /I "%1" == "/modernvsixonly" set MSBuildTarget=BuildModernVsixPackages&&shift&& goto :ParseArguments
+if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
@@ -45,7 +47,7 @@ set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
 
-msbuild /nologo /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+msbuild /nologo /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
 if ERRORLEVEL 1 (
     echo.
     call :PrintColor Red "Build failed, for full log see %LogFile%."
@@ -57,12 +59,13 @@ call :PrintColor Green "Build completed successfully, for full log see %LogFile%
 exit /b 0
 
 :Usage
-echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc]
+echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests]
 echo.
 echo   Build targets:
 echo     /rebuild           Perform a clean, then build
 echo     /restore           Only restore NuGet packages
 echo     /modernvsixonly    Only build modern vsman VSIXes
+echo     /skiptests         Don't run unit tests
 echo.
 echo   Build options:
 echo     /debug             Perform debug build (default)

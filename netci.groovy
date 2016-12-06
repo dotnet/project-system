@@ -57,7 +57,7 @@ def newVsiJob = job(newVsiJobName) {
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /release""")
+build.cmd /release /skiptests""")
         
         // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
         batchFile("""SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
