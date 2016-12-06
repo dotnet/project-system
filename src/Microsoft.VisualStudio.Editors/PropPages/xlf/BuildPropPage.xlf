@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx" />
+      <trans-unit id="lblConditionalCompilationSymbols.Text">
+        <source>Conditional compilation s&amp;ymbols:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+        <source>Treat warnings as errors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="errorsAndWarningsLabel.Text">
+        <source>Errors and warnings</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkRegisterForCOM.Text">
+        <source>Register for &amp;COM interop</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkXMLDocumentationFile.Text">
+        <source>&amp;XML documentation file:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnOutputPathBrowse.Text">
+        <source>B&amp;rowse...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblOutputPath.Text">
+        <source>&amp;Output path:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningSpecific.Text">
+        <source>Specif&amp;ic warnings:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningAll.Text">
+        <source>A&amp;ll</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="rbWarningNone.Text">
+        <source>&amp;None</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblSupressWarnings.Text">
+        <source>&amp;Suppress warnings:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items1">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items2">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items3">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items4">
+        <source>4</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblWarningLevel.Text">
+        <source>W&amp;arning level:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkOptimizeCode.Text">
+        <source>Optimi&amp;ze code</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkAllowUnsafeCode.Text">
+        <source>Allow unsa&amp;fe code</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkPrefer32Bit.Text">
+        <source>&amp;Prefer 32-bit</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkDefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblPlatformTarget.Text">
+        <source>Platform tar&amp;get:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="lblSGenOption.Text">
+        <source>G&amp;enerate serialization assembly:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="btnAdvanced.Text">
+        <source>A&amp;dvanced...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="chkDefineDebug.Text">
+        <source>Define DEB&amp;UG constant</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

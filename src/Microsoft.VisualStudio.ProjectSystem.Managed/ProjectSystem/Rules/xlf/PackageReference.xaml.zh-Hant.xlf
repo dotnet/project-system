@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PackageReference.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PackageReference.xaml" />
+      <trans-unit id="Rule|PackageReference|DisplayName">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|PackageReference|Description">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Description</source>
+        <target state="new">Description</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|Description">
+        <source>Dependency description.</source>
+        <target state="new">Dependency description.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of dependency.</source>
+        <target state="new">Version of dependency.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <target state="new">IncludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="new">Assets to include from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <target state="new">ExcludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="new">Assets to exclude from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <target state="new">PrivateAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="new">Assets that are private in this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|OriginalItemSpec|Description">
+        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
+        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

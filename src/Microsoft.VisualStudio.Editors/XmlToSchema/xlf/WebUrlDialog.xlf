@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/XmlToSchema/WebUrlDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/WebUrlDialog.resx" />
+      <trans-unit id="okButton.Text">
+        <source>OK</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cancelButton.Text">
+        <source>Cancel</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Label2.Text">
+        <source>&amp;Provide the HTTP address of an XML document:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add an XML document from the Web</source>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

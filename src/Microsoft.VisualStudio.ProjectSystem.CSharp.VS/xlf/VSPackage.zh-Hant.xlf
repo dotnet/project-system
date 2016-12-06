@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
+      <trans-unit id="1">
+        <source>C#</source>
+        <target state="new">C#</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>C# Project Files (*.csproj);*.csproj</source>
+        <target state="new">C# Project Files (*.csproj);*.csproj</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Console App (.NET Core)</source>
+        <target state="new">Console App (.NET Core)</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="new">A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Class Library (.NET Standard)</source>
+        <target state="new">Class Library (.NET Standard)</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>A project for creating a class library that targets .NET Standard.</source>
+        <target state="new">A project for creating a class library that targets .NET Standard.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Loaded Project File Editor</source>
+        <target state="new">Loaded Project File Editor</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="new">.NET Core 2015 Project Files (*.xproj);*.xproj</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

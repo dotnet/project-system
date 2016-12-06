@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx" />
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="new">&amp;Authentication service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UserNameLabel.Text">
+        <source>&amp;Username:</source>
+        <target state="new">&amp;Username:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PasswordLabel.Text">
+        <source>&amp;Password:</source>
+        <target state="new">&amp;Password:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>&amp;Log In</source>
+        <target state="new">&amp;Log In</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Cancel.Text">
+        <source>&amp;Skip Login</source>
+        <target state="new">&amp;Skip Login</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="InfoLabel.Text">
+        <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</source>
+        <target state="new">To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Login</source>
+        <target state="new">Login</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

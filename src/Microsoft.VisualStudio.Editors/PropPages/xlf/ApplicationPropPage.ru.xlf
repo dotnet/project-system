@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx" />
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="new">Assembly &amp;name:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>Defau&amp;lt namespace:</source>
+        <target state="new">Defau&amp;lt namespace:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="OutputTypeLabel.Text">
+        <source>O&amp;utput type:</source>
+        <target state="new">O&amp;utput type:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <target state="new">Startup &amp;object:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembly &amp;Information...</source>
+        <target state="new">Assembly &amp;Information...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>Tar&amp;get framework:</source>
+        <target state="new">Tar&amp;get framework:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesLabel.Text">
+        <source>Specify how application resources will be managed:</source>
+        <target state="new">Specify how application resources will be managed:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="IconRadioButton.Text">
+        <source>I&amp;con and manifest</source>
+        <target state="new">I&amp;con and manifest</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ManifestExplanationLabel.Text">
+        <source>A manifest determines specific settings for an application. To embed a custom manifest, first add it to your project and then select it from the list below.</source>
+        <target state="new">A manifest determines specific settings for an application. To embed a custom manifest, first add it to your project and then select it from the list below.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationIconLabel.Text">
+        <source>Icon:</source>
+        <target state="new">Icon:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AppIconBrowse.Text">
+        <source>...</source>
+        <target state="new">...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationManifestLabel.Text">
+        <source>Manifest:</source>
+        <target state="new">Manifest:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceRadioButton.Text">
+        <source>Re&amp;source file:</source>
+        <target state="new">Re&amp;source file:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Win32ResourceFileBrowse.Text">
+        <source>...</source>
+        <target state="new">...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ResourcesGroupBox.Text">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

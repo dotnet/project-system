@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectReference.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectReference.xaml" />
+      <trans-unit id="Rule|ProjectReference|DisplayName">
+        <source>Project Reference</source>
+        <target state="new">Project Reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|ProjectReference|Description">
+        <source>Project reference properties</source>
+        <target state="new">Project reference properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
+        <source>Reference Output Assembly</source>
+        <target state="new">Reference Output Assembly</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
+        <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
+        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
+        <source>Copy Local Satellite Assemblies</source>
+        <target state="new">Copy Local Satellite Assemblies</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
+        <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
+        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Project|Description">
+        <source>the Guid the solution tracks an individual project reference target with</source>
+        <target state="new">the Guid the solution tracks an individual project reference target with</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
+        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
+        <target state="new">The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+        <source>Copy Local</source>
+        <target state="new">Copy Local</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|Description">
+        <source>Indicates whether the reference will be copied to the output directory.</source>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <target state="new">IncludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="new">Assets to include from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <target state="new">ExcludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="new">Assets to exclude from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <target state="new">PrivateAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="new">Assets that are private in this reference</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

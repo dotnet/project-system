@@ -60,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
             Assert.Equal(tfm, restoreInfo.TargetFrameworks.Item(0));
-            Assert.Null(restoreInfo.TargetFrameworks.Item(1));
             Assert.Null(restoreInfo.TargetFrameworks.Item("InvalidFrameworkMoniker"));
 
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);

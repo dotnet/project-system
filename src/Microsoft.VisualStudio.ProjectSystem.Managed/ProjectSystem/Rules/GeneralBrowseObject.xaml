@@ -13,7 +13,7 @@
   </Rule.Categories>
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
   </Rule.DataSource>
 
   <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" Visible="False" />
@@ -27,7 +27,7 @@
   <StringProperty Name="RootNamespace" DisplayName="Root namespace" Visible="False"/>
   <StringProperty Name="DefaultNamespace" DisplayName="Default namespace" Visible="False">
     <StringProperty.DataSource>
-      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks" Visible="False">
@@ -85,6 +85,11 @@
       <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
     </EnumProperty.DataSource>
   </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="DebugSymbols" DisplayName="Debug symbols" Visible="False"/>
   <EnumProperty Name="FileAlignment" DisplayName="File Alignment" Visible="False"/>
   <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="False"/>

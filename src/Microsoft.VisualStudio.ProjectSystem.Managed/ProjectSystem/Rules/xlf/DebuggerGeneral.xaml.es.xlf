@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/DebuggerGeneral.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/DebuggerGeneral.xaml" />
+      <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
+        <source>Debugger General Properties</source>
+        <target state="new">Debugger General Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|DebuggerGeneralProperties|Description">
+        <source>General Debugger options</source>
+        <target state="new">General Debugger options</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|SymbolsPath|DisplayName">
+        <source>Symbol Search Path</source>
+        <target state="new">Symbol Search Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|SymbolsPath|Description">
+        <source>The search path used by the debugger to locate symbols.</source>
+        <target state="new">The search path used by the debugger to locate symbols.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|DebuggerFlavor|Description">
+        <source>The debug rule selected as the active debugger.</source>
+        <target state="new">The debug rule selected as the active debugger.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImageClrType|Description">
+        <source>The 'hidden' property we pass to debuggers to let them know if this is a managed project.</source>
+        <target state="new">The 'hidden' property we pass to debuggers to let them know if this is a managed project.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Native|DisplayName">
+        <source>Native Image</source>
+        <target state="new">Native Image</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Native|Description">
+        <source>The executable image to debug is a fully native application.</source>
+        <target state="new">The executable image to debug is a fully native application.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Mixed|DisplayName">
+        <source>Mixed Image</source>
+        <target state="new">Mixed Image</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Mixed|Description">
+        <source>The executable image to debug is a mixture of native and managed code.</source>
+        <target state="new">The executable image to debug is a mixture of native and managed code.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Managed|DisplayName">
+        <source>Managed Image</source>
+        <target state="new">Managed Image</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|ImageClrType.Managed|Description">
+        <source>The executable image to debug is a fully managed application.</source>
+        <target state="new">The executable image to debug is a fully managed application.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

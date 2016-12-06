@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ComReference.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ComReference.xaml" />
+      <trans-unit id="Rule|ComReference|DisplayName">
+        <source>COM Reference</source>
+        <target state="new">COM Reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|ComReference|Description">
+        <source>COM reference properties</source>
+        <target state="new">COM reference properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Guid|DisplayName">
+        <source>CLSID</source>
+        <target state="new">CLSID</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Guid|Description">
+        <source>The GUID of the COM server.</source>
+        <target state="new">The GUID of the COM server.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|DisplayName">
+        <source>Locale</source>
+        <target state="new">Locale</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|Description">
+        <source>The LCID of the COM server.</source>
+        <target state="new">The LCID of the COM server.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="new">Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="new">Use &amp;Windows authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="new">Use &amp;Forms authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="new">Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="new">&amp;Authentication service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="new">Authentication</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="new">&amp;Roles service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="new">We&amp;b settings service location:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="new">A&amp;dvanced...</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="new">&amp;Enable client application services</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

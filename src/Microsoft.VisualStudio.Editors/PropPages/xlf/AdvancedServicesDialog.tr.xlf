@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx" />
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="new">Role service cache &amp;timeout:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="new">&amp;Save password hash locally to enable offline login</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="new">&amp;Require users to log on again whenever the server cookie expires</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="new">&amp;Use custom connection string:</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
