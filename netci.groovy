@@ -84,7 +84,7 @@ SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
 pushd %WORKSPACE%\\sdk
-call build.cmd -Configuration release || goto :BuildFailed
+call build.cmd -Configuration release -SkipTests || goto :BuildFailed
 
 pushd %WORKSPACE%\\roslyn-internal\\Closed\\Tools\\Source\\VsixExpInstaller
 msbuild /p:Configuration=Release
@@ -163,7 +163,7 @@ static void addVsiMultiScm(def myJob, def project) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('aca5d1556f7c9b3e2182a38844d66be663ff26fb')
+                branch('c82725bc657ad369ecd4e59bf860acf6205027b6')
             }
             git {
                 remote {
