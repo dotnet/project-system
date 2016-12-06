@@ -57,7 +57,7 @@ def newVsiJob = job(newVsiJobName) {
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /release""")
+build.cmd /release /skiptests""")
 
         // Build roslyn-internal and run netcore VSI tao tests.
         batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
