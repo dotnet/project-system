@@ -64,10 +64,10 @@ exit /b 0
 echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests] [/no-deploy-extension]
 echo.
 echo   Build targets:
-echo     /rebuild           Perform a clean, then build
-echo     /restore           Only restore NuGet packages
-echo     /modernvsixonly    Only build modern vsman VSIXes
-echo     /skiptests         Don't run unit tests
+echo     /rebuild                 Perform a clean, then build
+echo     /restore                 Only restore NuGet packages
+echo     /modernvsixonly          Only build modern vsman VSIXes
+echo     /skiptests               Don't run unit tests
 echo.
 echo   Build options:
 echo     /debug                   Perform debug build (default)
