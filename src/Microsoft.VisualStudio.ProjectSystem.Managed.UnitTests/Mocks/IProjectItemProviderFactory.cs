@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.Mocks
                     // Find the node that has the parent folder and add the new node as a child.
                     foreach (var node in inputTree.GetSelfAndDescendentsBreadthFirst())
                     {
-                        if (node.FilePath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
+                        string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
+                        if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
                         {
                             IProjectTree child;
                             if (node.TryFindImmediateChild(fileName, out child) && !child.Flags.IsIncludedInProject())

@@ -41,30 +41,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Theory]
         // No file - return default path.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
 ", @"C:\Foo\Settings.settings")]
         // File in app designer folder
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Properties\Settings.settings")]
         // File in root folder.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
     Settings.settings, FilePath: ""C:\Foo\Settings.settings""
 ", @"C:\Foo\Settings.settings")]
         // Linked file inside app designer folder.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings (flags: {Linked}), FilePath: ""C:\SomeOtherPath\Settings.settings""
 ", @"C:\SomeOtherPath\Settings.settings")]
         // File inside a non-app designer folder - return default path.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Settings.settings")]
@@ -85,13 +85,13 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [Theory]
         // File exists in the root folder.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
     App.config, FilePath: ""C:\Foo\App.config""
 ", @"C:\Foo\App.config")]
         // File exists in the app designer folder - should return default path under root.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         App.config, FilePath: ""C:\Foo\Properties\App.config""
 ", @"C:\Foo\App.config")]
@@ -112,7 +112,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [Theory]
         // A folder with the right name exists at the right place - should return default path under root.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings (flags: {Folder}), FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Settings.settings")]
@@ -133,13 +133,13 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [Theory]
         // A file exists in the tree but not in the file system
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", /*fileExistsOnDisk*/ false, @"C:\Foo\Settings.settings")]
         // A file exists on disk but is not included in the project.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings (flags: {IncludeInProjectCandidate}), FilePath: ""C:\Foo\Properties\Settings.settings""
 ", /*fileExistsOnDisk*/ true, @"C:\Foo\Settings.settings")]
@@ -159,10 +159,10 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
         [Theory]
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
 ", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Properties\Settings.settings")]
@@ -190,10 +190,10 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
 
         [Theory]
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
 ", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
     App.config, FilePath: ""C:\Foo\App.config""
 ", @"C:\Foo\App.config")]
@@ -222,21 +222,21 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [Theory]
         // A file exists in the tree but not in the file system
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", /*fileExistsOnDisk*/ false, @"C:\Foo\Properties\Settings.settings")]
         // A file exists on disk but is not included in the project.
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings (flags: {IncludeInProjectCandidate}), FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", /*fileExistsOnDisk*/ true, @"C:\Foo\Properties\Settings.settings")]
@@ -267,10 +267,10 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
         [Theory]
         // A file exists in the tree but not in the file system
         [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
 ", @"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
 ", @"C:\Foo\Properties\Settings.settings")]

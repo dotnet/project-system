@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // We haven't found the file but return the default file path as that's the contract.
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
             string rootFilePath = _projectTreeService.CurrentTree.TreeProvider.GetPath(rootNode);
-            string fullPath = Path.Combine(rootFilePath, specialFileName);
+            string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), specialFileName);
             return fullPath;
         }
 
@@ -216,7 +216,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             else
             {
                 var parentPath = _projectTreeService.CurrentTree.TreeProvider.GetPath(parentNode);
-                var specialFilePath = Path.Combine(parentPath, specialFileName);
+                var specialFilePath = Path.Combine(
+                    parentNode.IsFolder ? parentPath : Path.GetDirectoryName(parentPath),
+                    specialFileName);
                 _fileSystem.Create(specialFilePath);
                 IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
