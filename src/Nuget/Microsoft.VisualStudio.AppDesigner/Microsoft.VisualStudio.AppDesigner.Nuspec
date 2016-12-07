@@ -27,6 +27,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib" />
+    <file src="Microsoft.VisualStudio.AppDesigner.dll" target="lib\net46" />
   </files>
 </package>

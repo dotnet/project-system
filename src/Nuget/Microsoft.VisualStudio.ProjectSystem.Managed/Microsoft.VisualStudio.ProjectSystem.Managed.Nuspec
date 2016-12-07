@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.dll" target="lib" />
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.dll" target="lib\net46" />
   </files>
 </package>
