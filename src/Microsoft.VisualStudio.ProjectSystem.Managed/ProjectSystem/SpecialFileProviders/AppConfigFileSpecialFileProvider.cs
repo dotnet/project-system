@@ -20,17 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AppConfig);
-            return "App.config";
-        }
+        protected override string Name => "App.config";
 
-        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AppConfig);
-            return "AppConfigurationInternal.zip";
-        }
+        protected override string TemplateName => "AppConfigurationInternal.zip";
 
         protected override bool CreatedByDefaultUnderAppDesignerFolder => false;
     }

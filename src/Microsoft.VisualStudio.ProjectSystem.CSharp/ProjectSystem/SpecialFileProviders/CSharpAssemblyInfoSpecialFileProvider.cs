@@ -19,14 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
-        {
-            return "AssemblyInfo.cs";
-        }
+        protected override string Name => "AssemblyInfo.cs";
 
-        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
-        {
-            return "AssemblyInfoInternal.zip";
-        }
+        protected override string TemplateName => "AssemblyInfoInternal.zip";
     }
 }
