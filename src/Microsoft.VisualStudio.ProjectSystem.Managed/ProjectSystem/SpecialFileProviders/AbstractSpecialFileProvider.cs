@@ -52,12 +52,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// <summary>
         /// Gets the name of a special file.
         /// </summary>
-        protected abstract string GetFileNameOfSpecialFile(SpecialFiles fileId);
+        protected abstract string Name
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the name of a template that can be used to create a new special file.
         /// </summary>
-        protected abstract string GetTemplateForSpecialFile(SpecialFiles fileId);
+        protected abstract string TemplateName
+        {
+            get;
+        }
 
         /// <summary>
         /// We follow this algorithm for looking up files:
@@ -74,10 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string specialFileName = GetFileNameOfSpecialFile(fileId);
-
             // Search for the file in the app designer and root folders.
-            IProjectTree specialFileNode = FindFile(specialFileName);
+            IProjectTree specialFileNode = FindFile(Name);
             if (specialFileNode != null)
             {
                 if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken).ConfigureAwait(false))
@@ -89,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // File doesn't exist. Create it if we've been asked to.
             if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
-                string createdFilePath = await CreateFileAsync(fileId, specialFileName).ConfigureAwait(false);
+                string createdFilePath = await CreateFileAsync(fileId, Name).ConfigureAwait(false);
                 if (createdFilePath != null)
                 {
                     return createdFilePath;
@@ -99,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // We haven't found the file but return the default file path as that's the contract.
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
             string rootFilePath = _projectTreeService.CurrentTree.TreeProvider.GetPath(rootNode);
-            string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), specialFileName);
+            string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
             return fullPath;
         }
 
@@ -194,8 +198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private async Task<string> CreateFileAsync(SpecialFiles fileId, string specialFileName)
         {
-            string templateFile = GetTemplateForSpecialFile(fileId);
-
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
             IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
 
@@ -211,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(templateFile, parentNode, specialFileName).ConfigureAwait(false);
+                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentNode, specialFileName).ConfigureAwait(false);
             }
             else
             {
