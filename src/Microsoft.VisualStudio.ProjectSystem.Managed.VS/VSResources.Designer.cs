@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit {0}.{1}.
+        ///   Looks up a localized string similar to Edit {0}.
         /// </summary>
         internal static string EditProjectFileCommand {
             get {

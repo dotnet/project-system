@@ -72,7 +72,7 @@ echo.
 echo   Build options:
 echo     /debug                   Perform debug build (default)
 echo     /release                 Perform release build
-echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild instances, 
+echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild instances,
 echo                              useful for avoiding unexpected behavior on build machines
 echo     /no-multi-proc           No multi-proc build, useful for diagnosing build logs
 echo     /no-deploy-extension     Does not deploy the VSIX extension when building the solution

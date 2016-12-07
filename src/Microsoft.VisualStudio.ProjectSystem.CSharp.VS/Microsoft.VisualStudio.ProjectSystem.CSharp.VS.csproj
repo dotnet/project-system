@@ -44,7 +44,6 @@
     <Compile Include="Packaging\CSharpProjectSystemPackage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Input\Commands\EditCsprojCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPage.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProvider.cs" />

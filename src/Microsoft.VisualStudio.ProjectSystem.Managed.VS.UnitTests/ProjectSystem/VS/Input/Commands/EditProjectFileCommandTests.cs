@@ -7,25 +7,24 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Text;
 using Xunit;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.Input;
-using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
+using Microsoft.VisualStudio.Packaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ProjectSystemTrait]
-    public class AbstractEditProjectFileCommandTests
+    public class EditProjectFileCommandTests
     {
-        private const long CommandId = VisualStudioStandard97CommandId.SaveProjectItem;
-        private static readonly Guid XmlGuid = Guid.Parse("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
+        private const long CommandId = ManagedProjectSystemPackage.EditProjectFileCmdId;
+        private const string Extension = "proj";
+        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_ValidNode_ShouldHandle()
+        public async Task EditProjectFileCommand_ValidNode_ShouldHandle()
         {
             var capabilityChecker = IProjectCapabilitiesServiceFactory.ImplementsContains(CapabilityChecker(true));
             var tree = ProjectTreeParser.Parse(@"
@@ -34,16 +33,18 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree);
 
-            var command = CreateInstance();
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+
+            var command = CreateInstance(unconfiguredProject: unconfiguredProject);
 
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal($"Edit Root.{EditProjectFileCommand.Extension}", result.CommandText);
+            Assert.Equal($"Edit Root.{Extension}", result.CommandText);
         }
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_NonRootNode_ShouldntHandle()
+        public async Task EditProjectFileCommand_NonRootNode_ShouldntHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -60,22 +61,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_NoCapability_ShouldntHandle()
-        {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
-
-            var nodes = ImmutableHashSet.Create(tree);
-            var command = CreateInstance(implementCapabilities: false);
-
-            var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
-            Assert.False(result.Handled);
-            Assert.Equal(CommandStatus.NotSupported, result.Status);
-        }
-
-        [Fact]
-        public async Task AbstractEditProjectFileCommand_WrongCmdId_ShouldntHandle()
+        public async Task EditProjectFileCommand_WrongCmdId_ShouldntHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -91,15 +77,13 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_CorrectNode_CreatesWindowCorrectly()
+        public async Task EditProjectFileCommand_CorrectNode_CreatesWindowCorrectly()
         {
-            var projectPath = $"C:\\Project1\\Project1.{EditProjectFileCommand.Extension}";
+            var projectPath = $"C:\\Project1\\Project1.{Extension}";
             var tempDirectory = "C:\\Temp\\asdf.xyz";
-            var tempProjFile = $"{tempDirectory}\\Project1.{EditProjectFileCommand.Extension}";
+            var tempProjFile = $"{tempDirectory}\\Project1.{Extension}";
             var projectXml = @"<Project></Project>";
             var autoOpenSet = false;
-            var listenerSet = false;
-            IVsWindowFrameNotify2 notifier = null;
 
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
@@ -109,11 +93,6 @@ Root (flags: {ProjectRoot})
                 {
                     case (int)__VSFPROPID5.VSFPROPID_DontAutoOpen:
                         autoOpenSet = true;
-                        break;
-                    case (int)__VSFPROPID.VSFPROPID_ViewHelper:
-                        listenerSet = true;
-                        Assert.IsAssignableFrom<IVsWindowFrameNotify2>(obj);
-                        notifier = obj as IVsWindowFrameNotify2;
                         break;
                     default:
                         Assert.False(true, $"Unexpected property ID {property}");
@@ -126,7 +105,14 @@ Root (flags: {ProjectRoot})
             var modelWatcher = IMsBuildModelWatcherFactory.CreateInstance();
             var modelWatcherFactory = IExportFactoryFactory.ImplementCreateValue(() => modelWatcher);
 
-            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, modelWatcherFactory);
+            IVsWindowFrameEvents events = null;
+            var uiShell = IVsUIShell7Factory.ImplementAdviseUnadviseWindowEvents(ev =>
+            {
+                events = ev;
+                return 1;
+            }, cookie => Assert.Equal(1u, cookie));
+
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, uiShell, modelWatcherFactory);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -138,11 +124,10 @@ Root (flags: {ProjectRoot})
             Assert.Equal(projectXml, fileSystem.ReadAllText(tempProjFile));
             Mock.Get(frame).Verify(f => f.Show());
             Assert.True(autoOpenSet);
-            Assert.True(listenerSet);
-            Assert.NotNull(notifier);
+            Assert.NotNull(events);
 
             // Verify that the model watcher was correctly initialized
-            Mock.Get(modelWatcher).Verify(m => m.InitializeAsync(tempProjFile), Times.Once);
+            Mock.Get(modelWatcher).Verify(m => m.InitializeAsync(tempProjFile, It.IsAny<string>()), Times.Once);
             Mock.Get(modelWatcher).Verify(m => m.Dispose(), Times.Never);
 
             // Now see if the event correctly saved the text from the buffer into the project file
@@ -153,7 +138,7 @@ Root (flags: {ProjectRoot})
 
             // Finally, ensure the cleanup works as expected. We don't do anything with the passed option. The notifier
             // should remove the file temp file from the filesystem.
-            Assert.Equal(VSConstants.S_OK, notifier.OnClose(0));
+            events.OnFrameDestroyed(frame);
             Assert.False(fileSystem.DirectoryExists(tempDirectory));
             Assert.False(fileSystem.FileExists(tempProjFile));
 
@@ -164,19 +149,20 @@ Root (flags: {ProjectRoot})
         [Theory]
         [InlineData(FileActionTypes.ContentLoadedFromDisk)]
         [InlineData(FileActionTypes.DocumentRenamed)]
-        public async Task AbstractEditProjectFileCommand_NonSaveAction_DoesNotOverwriteProjectFile(FileActionTypes actionType)
+        public async Task EditProjectFileCommand_NonSaveAction_DoesNotOverwriteProjectFile(FileActionTypes actionType)
         {
-            var projectPath = $"C:\\Project1\\Project1.{EditProjectFileCommand.Extension}";
+            var projectPath = $"C:\\Project1\\Project1.{Extension}";
             var tempDirectory = "C:\\Temp\\asdf.xyz";
-            var tempProjFile = $"{tempDirectory}\\Project1.{EditProjectFileCommand.Extension}";
+            var tempProjFile = $"{tempDirectory}\\Project1.{Extension}";
             var projectXml = @"<Project></Project>";
 
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
             var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (prop, obj) => VSConstants.S_OK);
             var exportFactory = IExportFactoryFactory.ImplementCreateValue(() => IMsBuildModelWatcherFactory.CreateInstance());
+            var uiShell = IVsUIShell7Factory.ImplementAdviseWindowEvents(ev => 1);
 
-            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, exportFactory);
+            var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, uiShell, exportFactory);
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
 ");
@@ -191,7 +177,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_NonRootNode_DoesNotHandle()
+        public async Task EditProjectFileCommand_NonRootNode_DoesNotHandle()
         {
             var capabilityChecker = IProjectCapabilitiesServiceFactory.ImplementsContains(CapabilityChecker(true));
             var tree = ProjectTreeParser.Parse(@"
@@ -207,7 +193,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task AbstractEditProjectFileCommand_WrongCmdId_DoesNotHandle()
+        public async Task EditProjectFileCommand_WrongCmdId_DoesNotHandle()
         {
             var capabilityChecker = IProjectCapabilitiesServiceFactory.ImplementsContains(CapabilityChecker(true));
             var tree = ProjectTreeParser.Parse(@"
@@ -221,22 +207,9 @@ Root (flags: {ProjectRoot})
             Assert.False(await command.TryHandleCommandAsync(nodes, 0, true, 0, IntPtr.Zero, IntPtr.Zero));
         }
 
-        [Fact]
-        public async Task AbstractEditProjectFileCommand_NoCapability_DoesNotHandle()
-        {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
-
-            var nodes = ImmutableHashSet.Create(tree);
-
-            var command = CreateInstance(implementCapabilities: false);
-
-            Assert.False(await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero));
-        }
-
         private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile,
-            IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame, IExportFactory<IMsBuildModelWatcher> watcherFactory = null)
+            IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame, IVsUIShell7 shellService,
+            IExportFactory<IMsBuildModelWatcher> watcherFactory = null)
         {
             fileSystem.SetTempFile(tempPath);
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -245,12 +218,11 @@ Root (flags: {ProjectRoot})
             {
                 Assert.Equal(tempProjectFile, path);
                 return Tuple.Create(IVsHierarchyFactory.Create(), (uint)0, IVsPersistDocDataFactory.ImplementAsIVsTextBuffer(), (uint)0);
-            }, (sp, path, factoryGuid, logicalView) =>
+            }, (sp, path, editorType, logicalView) =>
             {
                 Assert.Equal(tempProjectFile, path);
-                Assert.Equal(XmlGuid, factoryGuid);
-                Assert.Equal(Guid.Empty, logicalView);
-
+                Assert.Equal(editorType, XmlEditorFactoryGuid);
+                Assert.Equal(logicalView, Guid.Empty);
                 return frame;
             });
 
@@ -267,35 +239,37 @@ Root (flags: {ProjectRoot})
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            return CreateInstance(unconfiguredProject, true, msbuildAccessor, fileSystem, textDocFactory,
-                editorFactoryService, threadingService, shellUtilities, watcherFactory);
+            var provider = IServiceProviderFactory.Create(typeof(SVsUIShell), shellService);
+
+            return CreateInstance(unconfiguredProject, msbuildAccessor, fileSystem, textDocFactory,
+                editorFactoryService, threadingService, shellUtilities, provider, watcherFactory);
         }
 
         private EditProjectFileCommand CreateInstance(
             UnconfiguredProject unconfiguredProject = null,
-            bool implementCapabilities = true,
             IMsBuildAccessor msbuildAccessor = null,
             IFileSystem fileSystem = null,
             ITextDocumentFactoryService textDocumentService = null,
             IVsEditorAdaptersFactoryService editorAdapterService = null,
             IProjectThreadingService threadingService = null,
             IVsShellUtilitiesHelper shellUtilities = null,
+            IServiceProvider serviceProvider = null,
             IExportFactory<IMsBuildModelWatcher> watcherFactory = null
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var uProj = unconfiguredProject ?? IUnconfiguredProjectFactory.Create();
-            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(CapabilityChecker(implementCapabilities));
             var msbuild = msbuildAccessor ?? IMsBuildAccessorFactory.Create();
             var fs = fileSystem ?? new IFileSystemMock();
             var tds = textDocumentService ?? ITextDocumentFactoryServiceFactory.Create();
             var eas = editorAdapterService ?? IVsEditorAdaptersFactoryServiceFactory.Create();
             var threadServ = threadingService ?? IProjectThreadingServiceFactory.Create();
             var shellUt = shellUtilities ?? new TestShellUtilitiesHelper(
-                (sp, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
-                (sp, path, edType, logView) => IVsWindowFrameFactory.Create());
+                (provider, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
+                (provider, path, editorType, logicalView) => IVsWindowFrameFactory.Create());
+            var sp = serviceProvider ?? IServiceProviderFactory.Create();
             var wFact = watcherFactory ?? IExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
-            return new EditProjectFileCommand(uProj, capabilities, IServiceProviderFactory.Create(), msbuild, fs, tds, eas, threadServ, shellUt, wFact);
+            return new EditProjectFileCommand(uProj, sp, msbuild, fs, tds, eas, threadServ, shellUt, wFact);
         }
 
         private Func<string, bool> CapabilityChecker(bool result)
@@ -306,35 +280,6 @@ Root (flags: {ProjectRoot})
                 Assert.Equal("OpenProjectFile", cap);
                 return result;
             };
-        }
-    }
-
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, VisualStudioStandard97CommandId.SaveProjectItem)]
-    internal class EditProjectFileCommand : AbstractEditProjectFileCommand
-    {
-        public const string Extension = "proj";
-
-        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject,
-            IProjectCapabilitiesService projectCapabilitiesService,
-            IServiceProvider serviceProvider,
-            IMsBuildAccessor msbuildAccessor,
-            IFileSystem fileSystem,
-            ITextDocumentFactoryService textDocumentService,
-            IVsEditorAdaptersFactoryService editorFactoryService,
-            IProjectThreadingService threadingService,
-            IVsShellUtilitiesHelper shellUtilities,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory) :
-            base(unconfiguredProject, projectCapabilitiesService, serviceProvider, msbuildAccessor,
-                fileSystem, textDocumentService, editorFactoryService, threadingService, shellUtilities, watcherFactory)
-        {
-        }
-
-        protected override string FileExtension
-        {
-            get
-            {
-                return Extension;
-            }
         }
     }
 }

@@ -35,6 +35,8 @@
     <NgenApplication>vsn.exe</NgenApplication>
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
+    <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
+    <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
