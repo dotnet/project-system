@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             if (isDirty != _lastDirtyState)
             {
                 var windowFrame = _delegatePane.GetService<IVsWindowFrame, SVsWindowFrame>();
-                windowFrame.SetProperty((int)__VSFPROPID2.VSFPROPID_OverrideDirtyState, isDirty ? 1 : 0);
+                windowFrame.SetProperty((int)__VSFPROPID2.VSFPROPID_OverrideDirtyState, isDirty);
                 _lastDirtyState = isDirty;
             }
         }
