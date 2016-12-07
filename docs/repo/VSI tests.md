@@ -5,9 +5,9 @@ Our VSI tests validate the end-to-end dotnet core project system and sdk scenari
 #### Local setup for executing VSI tests
 
 1. Enlist into the following dotnet repos and sync to the relevant branch/commits:
-  a. [roslyn-project-system](https://github.com/dotnet/roslyn-project-system): Sync to the desired commit to test.
-  b. [sdk](https://github.com/dotnet/sdk): Sync to a known LKG commit from the master branch, though this might change to latest commit from the master branch in future. Search for 'https://github.com/dotnet/sdk' in [netci.groovy](/netci.groovy) and the corresponding branch invocation for the commit ID.
-  c. [roslyn-internal](https://github.com/dotnet/roslyn-internal): Sync to a known LKG commit from the master branch. Search for 'https://github.com/dotnet/roslyn-internal' in [netci.groovy](/netci.groovy) and the corresponding branch invocation for the commit ID.
+  1. [roslyn-project-system](https://github.com/dotnet/roslyn-project-system): Sync to the desired commit to test.
+  2. [sdk](https://github.com/dotnet/sdk): Sync to a known LKG commit from the master branch, though this might change to latest commit from the master branch in future. Search for 'https://github.com/dotnet/sdk' in [netci.groovy](/netci.groovy) and the corresponding branch invocation for the commit ID.
+  3. [roslyn-internal](https://github.com/dotnet/roslyn-internal): Sync to a known LKG commit from the master branch. Search for 'https://github.com/dotnet/roslyn-internal' in [netci.groovy](/netci.groovy) and the corresponding branch invocation for the commit ID.
 2. Build [roslyn-project-system](https://github.com/dotnet/roslyn-project-system) using the build.cmd at the root of the repo. This should also deploy the built VSIXes into the RoslynDev hive. For further guidance, see the 'batchFile' with comment header "Build roslyn-project-system repo" in [netci.groovy](/netci.groovy).
 3. Patch all the MSBuild xaml and targets files from the current roslyn-project-system build into VS install. For further guidance, see the 'batchFile' with comment header "Patch all the MSBuild xaml and targets" in [netci.groovy](/netci.groovy).
 4. Build [sdk](https://github.com/dotnet/sdk) using the build.cmd at the root of the repo. For further guidance, see the 'batchFile' with comment header "Build sdk repo" in [netci.groovy](/netci.groovy).
