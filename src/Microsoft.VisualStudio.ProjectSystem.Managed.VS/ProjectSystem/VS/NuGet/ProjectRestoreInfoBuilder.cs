@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 string projectFileFullPath;
                 if (definingProjectDirectory != null)
                 {
-                    projectFileFullPath = PathHelper.MakeRooted(definingProjectDirectory.Value, item.Name);
+                    projectFileFullPath = MakeRooted(definingProjectDirectory.Value, item.Name);
                 }
                 else if (project != null)
                 {
@@ -171,6 +171,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             return referenceItems;
+        }
+
+        private static string MakeRooted(string basePath, string path)
+        {
+            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar);
+            basePath = basePath.TrimEnd(Path.AltDirectorySeparatorChar);
+            return PathHelper.MakeRooted(basePath + Path.DirectorySeparatorChar, path);
         }
     }
 }
