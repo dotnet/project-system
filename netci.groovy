@@ -53,76 +53,76 @@ build.cmd /${configuration.toLowerCase()}""")
 
         // This opens the set of build steps that will be run.
         steps {
-            // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
-            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+            // 1. Sync roslyn-internal and build VsixExpInstaller.exe from roslyn-internal repo to install VSIXes built from SDK repo into RoslynDev hive.
+            // 2. Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
+            // 3. Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
+            // 4. Build sdk repo and install templates into RoslynDev hive
+            // 5. Build roslyn-internal and run netcore VSI tao tests.
+            // 6. Revert patched targets and rules from backup.            
+            batchFile("""
+SET VSINSTALLDIR=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\
+SET PROJECT_SYSTEM_REPO_ROOT=%WORKSPACE%
+SET ROSLYN_INTERNAL_REPO_ROOT=%WORKSPACE%\\roslyn-internal
+SET SDK_REPO_ROOT=%WORKSPACE%\\sdk
 
-build.cmd /release /skiptests""")
+REM Setup environment
+SET VS150COMNTOOLS=%VSINSTALLDIR%Common7\\Tools\\
+SET VSSDK150Install=%VSINSTALLDIR%VSSDK\\
+SET VSSDKInstall=%VSINSTALLDIR%VSSDK\\
+SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%MSBuild\\Microsoft\\VisualStudio\\Managed
+SET VSIXExpInstallerExe=ROSLYN_INTERNAL_REPO_ROOT\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
+SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsDevCmd.bat
+call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
-            // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
-            batchFile("""SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
-
-mkdir backup
-xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
-
-xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
-xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
-""")
-
-            // Sync roslyn-internal upfront as we use the VsixExpInstaller from roslyn-internal repo to install VSIXes built from SDK repo into RoslynDev hive.
-            batchFile("""pushd %WORKSPACE%\\roslyn-internal
+REM Step 1.
+cd %ROSLYN_INTERNAL_REPO_ROOT%
 git submodule init
 git submodule sync
 git submodule update --init --recursive
-init.cmd
-popd""")
+call init.cmd  || goto :BuildFailed
+cd %ROSLYN_INTERNAL_REPO_ROOT%\\Closed\\Tools\\Source\\VsixExpInstaller
+msbuild /p:Configuration=Release /v:m
+%VSIXExpInstallerExe% /uninstallAll /rootsuffix:RoslynDev
+if %ERRORLEVEL% neq 0 goto :BuildFailed
 
-            // Build sdk repo and install templates into RoslynDev hive.
-            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
+REM Step 2.
+cd %PROJECT_SYSTEM_REPO_ROOT%
+call build.cmd /release /skiptests || goto :BuildFailed
 
-call "%DeveloperCommandPrompt%" || goto :BuildFailed
+REM Step 3.
+cd %PROJECT_SYSTEM_REPO_ROOT%
+mkdir backup
+xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
+xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
+xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
+if %ERRORLEVEL% neq 0 goto :BuildFailed
 
-pushd %WORKSPACE%\\sdk
+REM Step 4.
+cd %SDK_REPO_ROOT%
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %SDK_REPO_ROOT%\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %SDK_REPO_ROOT%\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
+if %ERRORLEVEL% neq 0 goto :BuildFailed
 
-pushd %WORKSPACE%\\roslyn-internal\\Closed\\Tools\\Source\\VsixExpInstaller
-msbuild /p:Configuration=Release
-SET VSIXExpInstallerExe=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
-%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
-%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
+REM Step 5.
+cd %ROSLYN_INTERNAL_REPO_ROOT%
+set TEMP=%ROSLYN_INTERNAL_REPO_ROOT%\\Open\\Binaries\\Temp
+mkdir %TEMP%
+set TMP=%TEMP%
+set EchoOn=true
+call BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun || goto :BuildFailed
+
+REM Step 6.
+cd %PROJECT_SYSTEM_REPO_ROOT%
+del /SQ "%VS_MSBUILD_MANAGED%\\"
+xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
+rmdir /S /Q backup
 
 exit /b %ERRORLEVEL%
 
 :BuildFailed
 echo Build failed with ERRORLEVEL %ERRORLEVEL%
-exit /b 1
-""")
-
-            // Build roslyn-internal and run netcore VSI tao tests.
-            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
-
-pushd %WORKSPACE%\\roslyn-internal
-set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
-mkdir %TEMP%
-set TMP=%TEMP%
-
-set EchoOn=true
-
-BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
-popd""")
-
-           // Revert patched targets and rules from backup.
-            batchFile("""SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
-del /SQ "%VS_MSBUILD_MANAGED%\\"
-xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
-rmdir /S /Q backup
-""")
+exit /b %ERRORLEVEL%""")
         }
     }
 
