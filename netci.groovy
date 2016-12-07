@@ -128,11 +128,11 @@ rmdir /S /Q backup
 
     addVsiArchive(newVsiJob)
     Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
-    Utilities.standardJobSetup(newVsiJob, project, isPr, "*/${branch}")
+    Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
     // ISSUE: Temporary until a full builder for source control is available.
     addVsiMultiScm(newVsiJob, project)
 
-    if (isPr) {
+    if (isPR) {
         def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
         Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
     } else {
