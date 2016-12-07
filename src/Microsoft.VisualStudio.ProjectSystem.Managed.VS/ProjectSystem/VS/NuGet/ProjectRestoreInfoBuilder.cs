@@ -16,17 +16,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates, 
-            UnconfiguredProject project = null)
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
+            Requires.NotNull(project, nameof(project));
 
-            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
+            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
         }
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
-            UnconfiguredProject project = null)
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
+            Requires.NotNull(project, nameof(project));
 
             // if none of the underlying subscriptions have any changes
             if (!updates.Any(u => u.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges)))
@@ -135,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private static IVsReferenceItems GetProjectReferences(
             IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
             IImmutableDictionary<string, IImmutableDictionary<string, string>> packageReferenceItems,
-            UnconfiguredProject project = null)
+            UnconfiguredProject project)
         {
             var referenceItems = new ReferenceItems(projectReferenceItems.Select(p => GetReferenceItem(p)));
 
@@ -155,13 +157,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     projectFileFullPath = MakeRooted(definingProjectDirectory.Value, item.Name);
                 }
-                else if (project != null)
-                {
-                    projectFileFullPath = project.MakeRooted(item.Name);
-                }
                 else
                 {
-                    projectFileFullPath = item.Name;
+                    projectFileFullPath = project.MakeRooted(item.Name);
                 }
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
