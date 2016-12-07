@@ -30,6 +30,8 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProducingSignedVsix>true</ProducingSignedVsix>
     <IsProductComponent>true</IsProductComponent>
+    <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> 
+    <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder> 
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
