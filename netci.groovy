@@ -70,7 +70,7 @@ SET VS150COMNTOOLS=%VSINSTALLDIR%Common7\\Tools\\
 SET VSSDK150Install=%VSINSTALLDIR%VSSDK\\
 SET VSSDKInstall=%VSINSTALLDIR%VSSDK\\
 SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%MSBuild\\Microsoft\\VisualStudio\\Managed
-SET VSIXExpInstallerExe=ROSLYN_INTERNAL_REPO_ROOT\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
+SET VSIXExpInstallerExe=%ROSLYN_INTERNAL_REPO_ROOT%\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsDevCmd.bat
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
