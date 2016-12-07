@@ -470,6 +470,78 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal("1.0.0", toolRef.Properties.Item("Version").Value);
         }
 
+        [Fact]
+        public void ProjectRestoreInfoBuilder_WithoutDefiningProjectDirectory_UsesUnconfiguredProjectRoot()
+        {
+            var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
+    ""ProjectConfiguration"": {
+        ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
+        ""Dimensions"": {
+            ""Configuration"": ""Debug"",
+            ""TargetFramework"": ""netcoreapp1.0"",
+            ""Platform"": ""AnyCPU""
+        }
+    },
+    ""ProjectChanges"": {
+        ""NuGetRestore"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Properties"": {
+                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""TargetFrameworks"": """",
+                   ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
+                }
+            }
+        },
+        ""PackageReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""DotNetCliToolReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""false""
+            },
+            ""After"": {
+                ""Items"": { }
+            }
+        },
+        ""ProjectReference"": {
+            ""Difference"": {
+                ""AnyChanges"": ""true"",
+                ""AddedItems"": [ ""..\\TestLib\\TestLib.csproj"" ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""..\\TestLib\\TestLib.csproj"": { }
+                }
+            }
+        }
+    }
+}");
+            var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
+
+            Assert.NotNull(restoreInfo);
+            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+
+            var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
+            Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
+            Assert.Equal(1, tfm.ProjectReferences.Count);
+
+            // project references
+            var projectRef = tfm.ProjectReferences.Item(0);
+            Assert.Equal(projectRef, tfm.ProjectReferences.Item("..\\TestLib\\TestLib.csproj"));
+            Assert.Equal("..\\TestLib\\TestLib.csproj", projectRef.Name);
+            Assert.Equal("D:\\Test\\Projects\\TestLib\\TestLib.csproj", projectRef.Properties.Item("ProjectFileFullPath").Value);
+            Assert.Null(projectRef.Properties.Item("DefiningProjectDirectory"));
+            Assert.Null(projectRef.Properties.Item("DefiningProjectFullPath"));
+        }
+
         private const string _sampleSubscriptionUpdate = @"{
     ""ProjectConfiguration"": {
         ""Name"": ""Debug|AnyCPU|netcoreapp1.0"",
@@ -552,8 +624,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     }
 }";
 
-        private UnconfiguredProject GetMockProject(string projectRoot = "D:\\Test\\Projects\\UCProject") =>
-            IUnconfiguredProjectFactory.Create(projectRoot: projectRoot);        
+        private UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
+            IUnconfiguredProjectFactory.Create(filePath: projectFullPath);        
 
         private ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
             params string[] jsonStrings) =>
