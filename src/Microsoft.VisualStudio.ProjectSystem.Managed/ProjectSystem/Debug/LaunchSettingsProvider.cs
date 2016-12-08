@@ -261,8 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if(activeProfile == null)
                 {
                     var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    var activeProfileVal = await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) as IEnumValue;
-                    if (activeProfileVal != null)
+                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }

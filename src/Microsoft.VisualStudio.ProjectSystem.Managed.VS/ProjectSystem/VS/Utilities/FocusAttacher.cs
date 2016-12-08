@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             if ((bool)e.NewValue)
             {
                 ((UIElement)sender).Focus();
-                TextBox tb = sender as TextBox;
-                if (tb != null)
+                if (sender is TextBox tb)
                 {
                     tb.SelectAll();
                 }

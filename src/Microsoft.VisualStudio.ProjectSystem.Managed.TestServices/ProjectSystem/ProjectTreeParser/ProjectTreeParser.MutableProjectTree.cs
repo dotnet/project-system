@@ -137,8 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Add(IProjectTree subtree)
             {
-                var mutableTree = subtree as MutableProjectTree;
-                if (mutableTree != null)
+                if (subtree is MutableProjectTree mutableTree)
                 {
                     Children.Add(mutableTree);
                 }
@@ -168,8 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IProjectTree IProjectTree.Remove(IProjectTree subtree)
             {
-                var mutableTree = subtree as MutableProjectTree;
-                if (mutableTree != null)
+                if (subtree is MutableProjectTree mutableTree)
                 {
                     if (Children.Contains(mutableTree))
                     {
