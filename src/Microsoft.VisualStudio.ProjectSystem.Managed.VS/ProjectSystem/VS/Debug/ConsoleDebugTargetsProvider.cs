@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -25,6 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ExportOrder(10)] // The higher the number the higher priority and we want this one last
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
+        private static readonly ICollection<char> s_escapedChars = new List<char>()
+        {
+            '^', '<', '>', '&'
+        };
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
@@ -138,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, new[] { '^', '<', '>', '&' });
+                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -342,64 +345,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <param name="unescaped">The string to escape.</param>
         /// <param name="toEscape">The characters to escape in the string.</param>
         /// <returns>The escaped string.</returns>
-        internal static string EscapeString(string unescaped, char[] toEscape)
+        internal static string EscapeString(string unescaped, ICollection<char> toEscape)
         {
             if (string.IsNullOrWhiteSpace(unescaped)) return unescaped;
 
-            var currentState = StringState.NoSlash;
+            var currentState = StringState.NormalCharacter;
             var finalBuilder = new StringBuilder();
-            foreach (var currentLetter in unescaped)
+            foreach (var currentChar in unescaped)
             {
                 switch (currentState)
                 {
-                    case StringState.NoSlash:
+                    case StringState.NormalCharacter:
                         // If we're currently not in a quoted string, then we need to escape anything in toEscape.
-                        // The valid transitions are to OneSlash and InString. Any '"' encountered here is a raw quote.
-                        if (currentLetter == '\\')
+                        // The valid transitions are to EscapedCharacter (for a '\', such as '\"'), and QuotedString.
+                        if (currentChar == '\\')
                         {
-                            currentState = StringState.OneSlash;
+                            currentState = StringState.EscapedCharacter;
                         }
-                        else if (currentLetter == '"')
+                        else if (currentChar == '"')
                         {
-                            currentState = StringState.InString;
+                            currentState = StringState.QuotedString;
                         }
-                        else if (toEscape.Contains(currentLetter))
+                        else if (toEscape.Contains(currentChar))
                         {
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentLetter);
+                        finalBuilder.Append(currentChar);
                         break;
-                    case StringState.OneSlash:
+                    case StringState.EscapedCharacter:
                         // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
-                        // and move back to NoSlash.
-                        if (toEscape.Contains(currentLetter))
+                        // and move back to NormalCharacter. This handles '\"'
+                        if (toEscape.Contains(currentChar))
                         {
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentLetter);
-                        currentState = StringState.NoSlash;
+                        finalBuilder.Append(currentChar);
+                        currentState = StringState.NormalCharacter;
                         break;
-                    case StringState.InString:
+                    case StringState.QuotedString:
                         // If we're in a string, we don't escape any characters. If the current character is a '\',
-                        // then we move to InStringOneSlash. Otherwise, we're still in the string.
-                        if (currentLetter == '\\')
+                        // then we move to QuotedStringEscapedCharacter. This handles '\"'. If the current character
+                        // is a '"', then we're out of the string. Otherwise, we stay in the string.
+                        if (currentChar == '\\')
                         {
-                            currentState = StringState.InStringOneSlash;
+                            currentState = StringState.QuotedStringEscapedCharacter;
                         }
-                        else if (currentLetter == '"')
+                        else if (currentChar == '"')
                         {
-                            currentState = StringState.NoSlash;
+                            currentState = StringState.NormalCharacter;
                         }
 
-                        finalBuilder.Append(currentLetter);
+                        finalBuilder.Append(currentChar);
                         break;
-                    case StringState.InStringOneSlash:
+                    case StringState.QuotedStringEscapedCharacter:
                         // If we have one slash, then we blindly append to the string, no escaping, and move back to
-                        // InString.
-                        finalBuilder.Append(currentLetter);
-                        currentState = StringState.InString;
+                        // QuotedString. This handles escaped '"' inside strings.
+                        finalBuilder.Append(currentChar);
+                        currentState = StringState.QuotedString;
                         break;
                     default:
                         // We can't get here.
@@ -412,7 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private enum StringState
         {
-            NoSlash, OneSlash, InString, InStringOneSlash
+            NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
         }
     }
 }
