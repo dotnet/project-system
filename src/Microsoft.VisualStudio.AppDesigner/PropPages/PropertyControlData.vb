@@ -1,11 +1,12 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.ComponentModel
+Imports Microsoft.VisualStudio.ProjectSystem.Properties
 
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -1537,9 +1538,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(Extender IsNot Nothing)
 
             'Note: For property get we must pass in the extended object as the component.
-            Return Descriptor.GetValue(Extender)
+            Return GetValue(Descriptor, Extender)
         End Function
 
+        ''' <summary>
+        ''' Gets the value of the specified property.
+        ''' </summary>
+        ''' <param name="Descriptor">Property descriptor used to retrieve the value</param>
+        ''' <param name="obj">Object containing the property data.</param>
+        ''' <returns>Value of the property to be used by the property control.</returns>
+        Private Shared Function GetValue(Descriptor As PropertyDescriptor, obj As Object) As Object
+            Dim descriptorValue As Object = Descriptor.GetValue(obj)
+            Dim valueAsIEnumValue As IEnumValue = TryCast(descriptorValue, IEnumValue)
+            If valueAsIEnumValue Is Nothing Then
+                Return descriptorValue
+            Else
+                Return valueAsIEnumValue.DisplayName
+            End If
+        End Function
 
         ''' <summary>
         ''' Sets the current value of this property (into the project system, not into the 
@@ -1836,7 +1852,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared Function GetCommonPropertyValueNative(Descriptor As PropertyDescriptor, ProjectCommonPropertiesObject As Object) As Object
             Debug.Assert(Descriptor IsNot Nothing, "Calling GetCommonPropertyValue() on a property that could not be found [Descriptor Is Nothing]")
             Debug.Assert(ProjectCommonPropertiesObject IsNot Nothing)
-            Return Descriptor.GetValue(ProjectCommonPropertiesObject)
+            Return GetValue(Descriptor, ProjectCommonPropertiesObject)
         End Function
 
 
