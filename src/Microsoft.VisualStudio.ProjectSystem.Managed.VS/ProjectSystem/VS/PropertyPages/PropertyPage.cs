@@ -287,8 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         internal void AdviseDebugger()
         {
-            System.IServiceProvider sp = _site as System.IServiceProvider;
-            if (sp != null)
+            if (_site is System.IServiceProvider sp)
             {
                 _debugger = sp.GetService<IVsDebugger, IVsDebugger>();
                 if (_debugger != null)

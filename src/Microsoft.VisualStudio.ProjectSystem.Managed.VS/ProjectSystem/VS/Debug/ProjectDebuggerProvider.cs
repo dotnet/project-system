@@ -325,8 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
             localPath = null;
-            var deployedItemMapper = LastLaunchProvider as IDeployedProjectItemMappingProvider;
-            if (deployedItemMapper != null)
+            if (LastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }

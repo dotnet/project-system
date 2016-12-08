@@ -878,8 +878,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             public override bool Equals(object obj)
             {
-                LaunchType oth = obj as LaunchType;
-                if (oth != null)
+                if (obj is LaunchType oth)
                 {
                     return CommandName.Equals(oth.CommandName);
                 }
