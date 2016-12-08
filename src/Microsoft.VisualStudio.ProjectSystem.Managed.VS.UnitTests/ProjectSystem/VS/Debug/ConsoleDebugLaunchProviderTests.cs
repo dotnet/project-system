@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                     {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
                     {"RunWorkingDirectory",  @"bin\"},
                     { "TargetFrameworkIdentifier", @".NetCoreApp" }
-                }; 
+                };
             }
             var delegatePropertiesMock = IProjectPropertiesFactory
                 .MockWithPropertiesAndValues(properties);
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
         {
             var debugger = GetDebugTargetsProvider();
-            
+
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var debugger = GetDebugTargetsProvider();
             var profileName="run";
             try
-            {   
+            {
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
             }
@@ -285,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var debugger = GetDebugTargetsProvider();
             var profileName="run";
             try
-            {   
+            {
                 executable = @"c:\foo\bar.exe";
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             debugger.ValidateSettings(executable, workingDir, profileName);
 
             try
-            {   
+            {
                 workingDir = @"c:\foo";
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
@@ -325,6 +325,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(true);
             }
+        }
+
+        [Theory]
+        [InlineData("exec \"C:\\temp\\test.dll\"", "exec \"C:\\temp\\test.dll\"")]
+        [InlineData("exec ^<>\"C:\\temp&^\\test.dll\"&", "exec ^^^<^>\"C:\\temp&^\\test.dll\"^&")]
+        public void ConsoleDebugTargetsProvider_EscapeString_WorksCorrectly(string input, string expected)
+        {
+            Assert.Equal(expected, ConsoleDebugTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
         }
     }
 }
