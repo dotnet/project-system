@@ -24,10 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ExportOrder(10)] // The higher the number the higher priority and we want this one last
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
-        private static readonly ICollection<char> s_escapedChars = new List<char>()
-        {
-            '^', '<', '>', '&'
-        };
+        private static readonly char[] EscapedChars = new[] { '^', '<', '>', '&' };
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
@@ -141,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
+                string escapedArgs = EscapeString(debugArgs, EscapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -345,9 +342,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <param name="unescaped">The string to escape.</param>
         /// <param name="toEscape">The characters to escape in the string.</param>
         /// <returns>The escaped string.</returns>
-        internal static string EscapeString(string unescaped, ICollection<char> toEscape)
+        internal static string EscapeString(string unescaped, char[] toEscape)
         {
             if (string.IsNullOrWhiteSpace(unescaped)) return unescaped;
+
+            bool ShouldEscape(char c)
+            {
+                foreach (var escapeChar in toEscape)
+                {
+                    if (escapeChar == c) return true;
+                }
+                return false;
+            }
 
             var currentState = StringState.NormalCharacter;
             var finalBuilder = new StringBuilder();
@@ -366,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                         {
                             currentState = StringState.QuotedString;
                         }
-                        else if (toEscape.Contains(currentChar))
+                        else if (ShouldEscape(currentChar))
                         {
                             finalBuilder.Append('^');
                         }
@@ -376,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     case StringState.EscapedCharacter:
                         // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
                         // and move back to NormalCharacter. This handles '\"'
-                        if (toEscape.Contains(currentChar))
+                        if (ShouldEscape(currentChar))
                         {
                             finalBuilder.Append('^');
                         }
