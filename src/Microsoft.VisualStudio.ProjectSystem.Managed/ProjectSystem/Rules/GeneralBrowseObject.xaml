@@ -65,8 +65,8 @@
   </StringProperty>
   <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="True"/>
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="True"/>
-  <StringProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="True"/>
-  <StringProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="True"/>
+  <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="True"/>
+  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="True"/>
   <StringProperty Name="Optimize" DisplayName="Optimize" Visible="True"/>
   <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="True"/>
   <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="True"/>
@@ -173,8 +173,8 @@
       <DataSource Persistence="SourceFile" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="SignAssembly" DisplayName="Sign the assembly" Visible="True"/>
-  <StringProperty Name="DelaySign" DisplayName="Delay sign only" Visible="True"/>
+  <BoolProperty Name="SignAssembly" DisplayName="Sign the assembly" Visible="True"/>
+  <BoolProperty Name="DelaySign" DisplayName="Delay sign only" Visible="True"/>
   <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Strong name key file" Visible="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="AssemblyOriginatorKeyFile" />
