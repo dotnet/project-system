@@ -10,24 +10,26 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 using Task = System.Threading.Tasks.Task;
+using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
     /// Provides QueryDebugTargetsAsync() support for running the project output or any random executable. It is not an exported
-    /// CPS debugger but hooks into the launch profiles extensibility point. The order of this provider is 
+    /// CPS debugger but hooks into the launch profiles extensibility point. The order of this provider is
     /// near the bottom to ensure other providers get chance to handle it first
     /// </summary>
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [ExportOrder(10)] // The higher the number the higher priority and we want this one last
-     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
+    internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
+        private static readonly char[] EscapedChars = new[] { '^', '<', '>', '&' };
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject, 
-                                           IDebugTokenReplacer tokenReplacer, 
-                                           IFileSystem fileSystem, 
+        public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
+                                           IDebugTokenReplacer tokenReplacer,
+                                           IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
                                            ProjectProperties properties)
         {
@@ -86,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         /// <summary>
         /// This is called on F5/Ctrl-F5 to return the list of debug targets.What we return depends on the type
-        /// of project.  
+        /// of project.
         /// </summary>
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
@@ -114,15 +116,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public void ValidateSettings(string executable, string workingDir, string profileName)
         {
-            if(string.IsNullOrEmpty(executable))
+            if (string.IsNullOrEmpty(executable))
             {
                 throw new Exception(string.Format(VSResources.NoDebugExecutableSpecified, profileName));
             }
-            else if(executable.IndexOf(Path.DirectorySeparatorChar) != -1 && !TheFileSystem.FileExists(executable))
+            else if (executable.IndexOf(Path.DirectorySeparatorChar) != -1 && !TheFileSystem.FileExists(executable))
             {
                 throw new Exception(string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
             }
-            else if(!string.IsNullOrEmpty(workingDir) && !TheFileSystem.DirectoryExists(workingDir))
+            else if (!string.IsNullOrEmpty(workingDir) && !TheFileSystem.DirectoryExists(workingDir))
             {
                 throw new Exception(string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
             }
@@ -133,17 +135,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public void GetExeAndArguments(bool useCmdShell, string debugExe, string debugArgs, out string finalExePath, out string finalArguments)
         {
-            if(useCmdShell)
+            if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = string.Empty;
-                if(!string.IsNullOrWhiteSpace(debugArgs))
-                {
-                    escapedArgs = debugArgs.Replace("^","^^");
-                    escapedArgs = escapedArgs.Replace("<","^<");
-                    escapedArgs = escapedArgs.Replace(">","^>");
-                    escapedArgs = escapedArgs.Replace("&","^&");
-                }
+                string escapedArgs = EscapeString(debugArgs, EscapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -153,12 +148,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 finalExePath = debugExe;
             }
         }
-    
+
         /// <summary>
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
-        /// of project.  
+        /// of project.
         /// </summary>
-        private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, 
+        private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions,
                                                               string projectFolder, bool useCmdShell)
         {
             var settings = new DebugLaunchSettings(launchOptions);
@@ -171,25 +166,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string defaultWorkingDir = projectFolder;
 
             // Is this profile just running the project? If so we ignore the exe
-            if(string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
             {
                 // Can't run a class library directly
-                if(await GetIsClassLibraryAsync().ConfigureAwait(false))
+                if (await GetIsClassLibraryAsync().ConfigureAwait(false))
                 {
                     throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
-                
+
                 // Get the executable to run, the arguments and the default working directory
                 var runData = await GetRunnableProjectInformationAsync().ConfigureAwait(false);
                 executable = runData.Item1;
                 arguments = runData.Item2;
-                if(!string.IsNullOrWhiteSpace(runData.Item3))
+                if (!string.IsNullOrWhiteSpace(runData.Item3))
                 {
                     defaultWorkingDir = runData.Item3;
                 }
 
-                if(!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
-                {                 
+                if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+                {
                     arguments = arguments + " " + resolvedProfile.CommandLineArgs;
                 }
             }
@@ -200,14 +195,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             string workingDir;
-            if(string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
+            if (string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
                 workingDir = defaultWorkingDir;
             }
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                if(Path.IsPathRooted(resolvedProfile.WorkingDirectory))
+                if (Path.IsPathRooted(resolvedProfile.WorkingDirectory))
                 {
                     workingDir = resolvedProfile.WorkingDirectory;
                 }
@@ -219,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
             // any path elements. In that case we are going to assume it is on the path
-            if(!string.IsNullOrWhiteSpace(executable))
+            if (!string.IsNullOrWhiteSpace(executable))
             {
                 if (!Path.IsPathRooted(executable) && executable.IndexOf(Path.DirectorySeparatorChar) != -1)
                 {
@@ -229,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Now validate the executable path and working directory exist
             ValidateSettings(executable, workingDir, resolvedProfile.Name);
-            
+
             // Now get final exe and args. CTtrl-F5 wraps exe in cmd prompt
             string finalExecutable, finalArguments;
             GetExeAndArguments(useCmdShell, executable, arguments, out finalExecutable, out finalArguments);
@@ -238,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
             {
-                foreach(var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (var kvp in resolvedProfile.EnvironmentVariables)
                 {
                     settings.Environment[kvp.Key] = kvp.Value;
                 }
@@ -250,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
             settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync().ConfigureAwait(false);
             settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
-            if(settings.Environment.Count > 0)
+            if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
             }
@@ -270,22 +265,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
             var runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
 
-            if(string.IsNullOrWhiteSpace(runCommand))
+            if (string.IsNullOrWhiteSpace(runCommand))
             {
                 throw new Exception(VSResources.NoRunCommandSpecifiedInProject);
             }
-            
-            // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe 
+
+            // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
-            if(!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            if (!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
             {
                 runCommand += ".exe";
             }
 
             // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
-            if(runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
+            if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
             {
-                var executable = GetFullPathOfExeFromEnvironmentPath(runCommand);  
+                var executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
                 if (executable != null)
                 {
                     runCommand = executable;
@@ -293,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // If the working directory is relative, it will be relative to the project root so make it a full path
-            if(!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
+            if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
             {
                 runWorkingDirectory = Path.Combine(Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath), runWorkingDirectory);
             }
@@ -309,8 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Searchs the path variable for the first match of exeToSearchFor. Returns 
-        /// null if not found. 
+        /// Searchs the path variable for the first match of exeToSearchFor. Returns
+        /// null if not found.
         /// </summary>
         public string GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
         {
@@ -321,24 +316,113 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            var paths = pathEnv.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            var paths = pathEnv.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var path in paths)
             {
                 // We don't want one bad path entry to derail the search
                 try
                 {
                     string exePath = Path.Combine(path, exeToSearchFor);
-                    if(TheFileSystem.FileExists(exePath))
+                    if (TheFileSystem.FileExists(exePath))
                     {
                         return exePath;
                     }
                 }
-                catch(ArgumentException)
+                catch (ArgumentException)
                 {
                 }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Escapes the given characters in a given string, ignoring escape sequences when inside a quoted string.
+        /// </summary>
+        /// <param name="unescaped">The string to escape.</param>
+        /// <param name="toEscape">The characters to escape in the string.</param>
+        /// <returns>The escaped string.</returns>
+        internal static string EscapeString(string unescaped, char[] toEscape)
+        {
+            if (string.IsNullOrWhiteSpace(unescaped)) return unescaped;
+
+            bool ShouldEscape(char c)
+            {
+                foreach (var escapeChar in toEscape)
+                {
+                    if (escapeChar == c) return true;
+                }
+                return false;
+            }
+
+            var currentState = StringState.NormalCharacter;
+            var finalBuilder = new StringBuilder();
+            foreach (var currentChar in unescaped)
+            {
+                switch (currentState)
+                {
+                    case StringState.NormalCharacter:
+                        // If we're currently not in a quoted string, then we need to escape anything in toEscape.
+                        // The valid transitions are to EscapedCharacter (for a '\', such as '\"'), and QuotedString.
+                        if (currentChar == '\\')
+                        {
+                            currentState = StringState.EscapedCharacter;
+                        }
+                        else if (currentChar == '"')
+                        {
+                            currentState = StringState.QuotedString;
+                        }
+                        else if (ShouldEscape(currentChar))
+                        {
+                            finalBuilder.Append('^');
+                        }
+
+                        finalBuilder.Append(currentChar);
+                        break;
+                    case StringState.EscapedCharacter:
+                        // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
+                        // and move back to NormalCharacter. This handles '\"'
+                        if (ShouldEscape(currentChar))
+                        {
+                            finalBuilder.Append('^');
+                        }
+
+                        finalBuilder.Append(currentChar);
+                        currentState = StringState.NormalCharacter;
+                        break;
+                    case StringState.QuotedString:
+                        // If we're in a string, we don't escape any characters. If the current character is a '\',
+                        // then we move to QuotedStringEscapedCharacter. This handles '\"'. If the current character
+                        // is a '"', then we're out of the string. Otherwise, we stay in the string.
+                        if (currentChar == '\\')
+                        {
+                            currentState = StringState.QuotedStringEscapedCharacter;
+                        }
+                        else if (currentChar == '"')
+                        {
+                            currentState = StringState.NormalCharacter;
+                        }
+
+                        finalBuilder.Append(currentChar);
+                        break;
+                    case StringState.QuotedStringEscapedCharacter:
+                        // If we have one slash, then we blindly append to the string, no escaping, and move back to
+                        // QuotedString. This handles escaped '"' inside strings.
+                        finalBuilder.Append(currentChar);
+                        currentState = StringState.QuotedString;
+                        break;
+                    default:
+                        // We can't get here.
+                        throw new InvalidOperationException();
+                }
+            }
+
+            return finalBuilder.ToString();
+        }
+
+        private enum StringState
+        {
+            NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
         }
     }
 }
