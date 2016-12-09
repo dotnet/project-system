@@ -1581,15 +1581,17 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             Dim frameworkName As New FrameworkName(CStr(propertyValue))
-
-            ' Verify that we are targeting .NET
-            If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) <> 0 Then
+            '
+            If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) = 0 AndAlso
+                (frameworkName.Version.Major > 4 OrElse (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)) Then
+                ' Targeting .NET framework 4.5 or higher
+                Return True
+            ElseIf String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.OrdinalIgnoreCase) = 0 Then
+                ' Targetting .Net Core
+                Return True
+            Else
                 Return False
             End If
-
-            ' Verify that the version of the target framework is >= 4.5
-            Return frameworkName.Version.Major > 4 OrElse
-                   (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)
 
         End Function
 
