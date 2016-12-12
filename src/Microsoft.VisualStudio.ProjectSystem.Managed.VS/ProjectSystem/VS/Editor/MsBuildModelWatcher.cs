@@ -40,15 +40,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public void ProjectXmlHandler(object sender, ProjectXmlChangedEventArgs args)
         {
-            XmlHandler(args.ProjectXml.RawXml);
+            XmlHandler(args.ProjectXml.RawXml, args.ProjectXml.FullPath);
         }
 
         /// <summary>
         /// Because we can't construct an instance of ProjectxmlChangedEventArgs for testing purposes, I've extracted this functionality, and set up ProjectXmlHandler
         /// as a forwarder for the actual project xml.
         /// </summary>
-        internal void XmlHandler(string xml)
+        internal void XmlHandler(string xml, string projectPath)
         {
+            // Only write to the file if the project path matches the path for the project we're watching
+            if (!projectPath.Equals(_unconfiguredProject.FullPath)) return;
+
             // Dedup writes if the XML hasn't changed between now and the last write. We normalize the xml to remove all whitespace, and only compare the actual
             // xml content.
             var normalizedXml = Regex.Replace(xml, @"\s", "");
