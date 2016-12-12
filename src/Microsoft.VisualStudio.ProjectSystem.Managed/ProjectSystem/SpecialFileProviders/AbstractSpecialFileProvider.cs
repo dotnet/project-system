@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             IProjectTree specialFileNode;
 
             // First, we look in the AppDesigner folder.
-            IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
+            IProjectTree appDesignerFolder = GetAppDesignerFolder();
             if (appDesignerFolder != null && CreatedByDefaultUnderAppDesignerFolder)
             {
                 specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
@@ -199,8 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private async Task<string> CreateFileAsync(SpecialFiles fileId, string specialFileName)
         {
             IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
-            IProjectTree appDesignerFolder = rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
-
+            IProjectTree appDesignerFolder = GetAppDesignerFolder();
             if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder)
             {
                 return null;
@@ -243,6 +242,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             return null;
+        }
+
+        private IProjectTree GetAppDesignerFolder()
+        {
+            IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
+
+            return rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
         }
     }
 }
