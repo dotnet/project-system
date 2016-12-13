@@ -50,7 +50,8 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
-
+    
+    <BoolProperty Name="SaveAssemblyInfoInSource" DisplayName="Save assembly info attribute values in source" />
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
     <StringProperty Name="AssemblyName" />
@@ -79,7 +80,6 @@
     <StringProperty Name="VCInstallDir" Visible="false" />
     <StringProperty Name="VSInstallDir" Visible="false" />
     <StringProperty Name="Platform" Visible="false" />
-    <StringProperty Name="Configuration" Visible="false" />
     <StringProperty Name="DebuggerSymbolsPath" Visible="false" />
     <StringProperty Name="IntDir" Visible="false" />
     <StringProperty Name="TargetPlatformWinMDLocation" Visible="false" />
