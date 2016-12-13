@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         internal void XmlHandler(string xml, string projectPath)
         {
             // Only write to the file if the project path matches the path for the project we're watching
-            if (!projectPath.Equals(_unconfiguredProject.FullPath)) return;
+            if (!StringComparers.Paths.Equals(projectPath, _unconfiguredProject.FullPath)) return;
 
             // Dedup writes if the XML hasn't changed between now and the last write. We normalize the xml to remove all whitespace, and only compare the actual
             // xml content.
