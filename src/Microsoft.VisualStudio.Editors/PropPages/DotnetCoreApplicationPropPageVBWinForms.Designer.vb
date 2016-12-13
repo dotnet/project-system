@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
         End Sub
 
     End Class

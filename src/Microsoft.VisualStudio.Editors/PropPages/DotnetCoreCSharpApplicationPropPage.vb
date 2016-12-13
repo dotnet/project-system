@@ -4,7 +4,7 @@
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
-    ''' C#/J# application property page - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    ''' C# dotnet core application property page - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
     Partial Friend Class DotnetCoreCSharpApplicationPropPage
@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            ' Hide the Assembly Information dialog on the Application property page for dotnet core project.
+            ' Hide the Assembly Information button on the Application property page for dotnet core projects.
             Me.AssemblyInfoButton.Visible = False
 
             'Add any initialization after the InitializeComponent() call

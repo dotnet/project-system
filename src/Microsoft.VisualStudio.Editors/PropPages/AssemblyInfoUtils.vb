@@ -1,8 +1,8 @@
+' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 Option Strict On
 Option Explicit On
 Imports System.ComponentModel
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
 Imports System.Globalization
 Imports Microsoft.VisualStudio.Editors.Common
 
@@ -63,20 +63,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-        ''' <summary>
-        ''' Parses a version from separated string values into a combined string value for the project system.
-        ''' </summary>
-        ''' <param name="Major">Major version to parse (as string).</param>
-        ''' <param name="Minor">Minor version to parse (as string).</param>
-        ''' <param name="Build">Build version to parse (as string).</param>
-        ''' <param name="Revision">Revision version to parse (as string).</param>
-        ''' <param name="PropertyName">The (localized) name of the property that is being validated.  Used for error messages.</param>
-        ''' <param name="MaxVersionPartValue">Maximum value of each part of the version.</param>
-        ''' <param name="WildcardsAllowed">Whether or not wildcards are allowed.</param>
-        ''' <param name="FormattedVersion">[out] The resulting combined version string.</param>
-        Private Sub InternalParseVersion(Major As String, Minor As String, Build As String, Revision As String, PropertyName As String, MaxVersionPartValue As UInteger, WildcardsAllowed As Boolean, ByRef FormattedVersion As String)
-
-        End Sub
 
         ''' <summary>
         ''' Parses a version from separated string values into a combined string value for the project system.

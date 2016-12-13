@@ -3,7 +3,7 @@
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
-    ''' The application property page for VB WinForms apps
+    ''' The application property page for VB Dotnet core apps
     ''' - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
 
-            ' Hide the Assembly Information dialog on the Application property page for dotnet core project.
+            ' Hide the Assembly Information button on the Application property page for dotnet core projects.
             Me.AssemblyInfoButton.Visible = False
 
             MyBase.PageRequiresScaling = False
