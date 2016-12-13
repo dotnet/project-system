@@ -34,13 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Create a file with the given template file and add it to the parent node.
         /// </summary>
         /// <param name="templateFile">The name of the template zip file.</param>
-        /// <param name="parentNode">The node to which the new file will be added.</param>
+        /// <param name="parentDocumentMoniker">The path to the node to which the new file will be added.</param>
         /// <param name="fileName">The name of the file to be created.</param>
         /// <returns>true if file is added successfully.</returns>
-        public async Task<bool> CreateFileAsync(string templateFile, IProjectTree parentNode, string fileName)
+        public async Task<bool> CreateFileAsync(string templateFile, string parentDocumentMoniker, string fileName)
         {
             Requires.NotNull(templateFile, nameof(templateFile));
-            Requires.NotNull(parentNode, nameof(parentNode));
+            Requires.NotNullOrEmpty(parentDocumentMoniker, nameof(parentDocumentMoniker));
             Requires.NotNull(fileName, nameof(fileName));
 
             string templateLanguage = await GetTemplateLanguageAsync().ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (templateFilePath != null)
             {
-                var parentId = parentNode.GetHierarchyId();
+                HierarchyId parentId = _projectVsServices.VsProject.GetHierarchyId(parentDocumentMoniker);
                 var result = new VSADDRESULT[1];
                 var files = new string[] { templateFilePath };
                 _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, (uint)files.Length, files, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);

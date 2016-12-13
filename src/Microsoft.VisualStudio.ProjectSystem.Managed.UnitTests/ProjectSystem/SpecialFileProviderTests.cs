@@ -294,7 +294,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
-            AssertAreEquivalent(expectedTree, inputTree);
         }
 
         private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)

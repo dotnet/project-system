@@ -13,11 +13,9 @@ namespace Microsoft.VisualStudio.Mocks
         {
             var mock = new Mock<ICreateFileFromTemplateService>();
 
-            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<IProjectTree>(), It.IsAny<string>()))
-                .Returns<string, IProjectTree, string>((templateFile, parentNode, specialFileName) =>
+            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns<string, string, string>((templateFile, parentNode, specialFileName) =>
                 {
-                    var newNode = ProjectTreeParser.Parse($@"{specialFileName}, FilePath: ""{Path.Combine(parentNode.FilePath, specialFileName)}""");
-                    parentNode.Add(newNode);
                     return Task.FromResult(true);
                 });
 
