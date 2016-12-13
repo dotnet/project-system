@@ -80,6 +80,33 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
+#Region "VisualBasicDotnetCoreApplicationPropPageComClass (VB DotNetCore Application property page)"
+
+    'Note: This is the VB Application page (naming is historical)
+    <System.Runtime.InteropServices.GuidAttribute("d6a537ac-1046-43ee-8c31-a6d72deb6b67"), ComVisible(True), CLSCompliantAttribute(False)>
+    Public NotInheritable Class VisualBasicDotnetCoreApplicationPropPageComClass 'See class hierarchy comments above
+        Inherits VBPropPageBase
+
+        Protected Overrides ReadOnly Property Title() As String
+            Get
+                Return SR.GetString(SR.PPG_ApplicationTitle)
+            End Get
+        End Property
+
+        Protected Overrides ReadOnly Property ControlType() As System.Type
+            Get
+                Return GetType(PropertyPages.DotnetCoreApplicationPropPageVBWinForms)
+            End Get
+        End Property
+
+        Protected Overrides Function CreateControl() As Control
+            Return New PropertyPages.DotnetCoreApplicationPropPageVBWinForms
+        End Function
+
+    End Class
+
+#End Region
+
 #Region "WPFApplicationWithMyPropPageComClass (VB Application page for WPF)"
 
     <System.Runtime.InteropServices.GuidAttribute("00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d"), ComVisible(True), CLSCompliantAttribute(False)>
@@ -133,8 +160,59 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
+#Region "CSharpDotnetCoreApplicationPropPageComClass (C#/J# Application property page)"
+
+    <System.Runtime.InteropServices.GuidAttribute("9ac27c7d-07d6-45de-bf01-2ffedf796fb3"), ComVisible(True), CLSCompliantAttribute(False)>
+    Public NotInheritable Class CSharpDotnetCoreApplicationPropPageComClass 'See class hierarchy comments above
+        Inherits VBPropPageBase
+
+        Protected Overrides ReadOnly Property Title() As String
+            Get
+                Return SR.GetString(SR.PPG_ApplicationTitle)
+            End Get
+        End Property
+
+        Protected Overrides ReadOnly Property ControlType() As System.Type
+            Get
+                Return GetType(PropertyPages.DotnetCoreCSharpApplicationPropPage)
+            End Get
+        End Property
+
+        Protected Overrides Function CreateControl() As Control
+            Return New PropertyPages.DotnetCoreCSharpApplicationPropPage
+        End Function
+
+    End Class
+
 #End Region
 
+#End Region
+
+#Region "PackagePropPageComClass (Package property page)"
+
+    <Guid("21b78be8-3957-4caa-bf2f-e626107da58e"), ComVisible(True), CLSCompliant(False)>
+    Public NotInheritable Class PackagePropPageComClass 'See class hierarchy comments above
+        Inherits VBPropPageBase
+
+        Protected Overrides ReadOnly Property Title() As String
+            Get
+                Return SR.GetString(SR.PPG_PackageTitle)
+            End Get
+        End Property
+
+        Protected Overrides ReadOnly Property ControlType() As System.Type
+            Get
+                Return GetType(PropertyPages.PackagePropPage)
+            End Get
+        End Property
+
+        Protected Overrides Function CreateControl() As Control
+            Return New PropertyPages.PackagePropPage
+        End Function
+
+    End Class
+
+#End Region
 
 #Region "CompilePropPageComClass"
 

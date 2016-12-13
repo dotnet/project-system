@@ -135,6 +135,9 @@
   <data name="PPG_ApplicationTitle" xml:space="preserve">
     <value>Application</value>
   </data>
+  <data name="PPG_PackageTitle" xml:space="preserve">
+    <value>Package</value>
+  </data>
   <data name="PPG_CompileTitle" xml:space="preserve">
     <value>Compile</value>
   </data>
@@ -794,6 +797,9 @@ Error:</value>
   </data>
   <data name="PPG_Property_AssemblyFileVersion" xml:space="preserve">
     <value>Assembly File Version</value>
+  </data>
+  <data name="PPG_Property_PackageVersion" xml:space="preserve">
+    <value>Package Version</value>
   </data>
   <data name="PPG_Property_AssemblyGuid" xml:space="preserve">
     <value>Assembly GUID</value>
