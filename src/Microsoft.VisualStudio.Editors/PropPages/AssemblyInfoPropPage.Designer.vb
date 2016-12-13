@@ -59,8 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Copyright = New System.Windows.Forms.TextBox()
             Me.Trademark = New System.Windows.Forms.TextBox()
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.ConfigurationTextBox = New System.Windows.Forms.TextBox()
-            Me.InformationalVersionTextBox = New System.Windows.Forms.TextBox()
             Me.ComVisibleCheckBox = New System.Windows.Forms.CheckBox()
             Me.NeutralLanguageLabel = New System.Windows.Forms.Label()
             Me.AssemblyVersionLabel = New System.Windows.Forms.Label()
@@ -78,10 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.GuidTextBox = New System.Windows.Forms.TextBox()
             Me.NeutralLanguageComboBox = New System.Windows.Forms.ComboBox()
             Me.GuidLabel = New System.Windows.Forms.Label()
-            Me.InformationalVersionLabel = New System.Windows.Forms.Label()
-            Me.ConfigurationLabel = New System.Windows.Forms.Label()
-            Me.CultureLabel = New System.Windows.Forms.Label()
-            Me.CultureTextBox = New System.Windows.Forms.TextBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.AssemblyVersionLayoutPanel.SuspendLayout()
             Me.FileVersionLayoutPanel.SuspendLayout()
@@ -150,12 +144,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.CultureTextBox, 1, 12)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.ConfigurationTextBox, 1, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.InformationalVersionTextBox, 1, 8)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.TitleLabel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.ComVisibleCheckBox, 0, 13)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.NeutralLanguageLabel, 0, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.ComVisibleCheckBox, 0, 10)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.NeutralLanguageLabel, 0, 9)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.Title, 1, 0)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.DescriptionLabel, 0, 1)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.Description, 1, 1)
@@ -171,23 +162,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.AssemblyVersionLayoutPanel, 1, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.FileVersionLabel, 0, 7)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.FileVersionLayoutPanel, 1, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidTextBox, 1, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.NeutralLanguageComboBox, 1, 11)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidLabel, 0, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.InformationalVersionLabel, 0, 8)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.ConfigurationLabel, 0, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.CultureLabel, 0, 12)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidTextBox, 1, 8)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.NeutralLanguageComboBox, 1, 9)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidLabel, 0, 8)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            '
-            'ConfigurationTextBox
-            '
-            resources.ApplyResources(Me.ConfigurationTextBox, "ConfigurationTextBox")
-            Me.ConfigurationTextBox.Name = "ConfigurationTextBox"
-            '
-            'InformationalVersionTextBox
-            '
-            resources.ApplyResources(Me.InformationalVersionTextBox, "InformationalVersionTextBox")
-            Me.InformationalVersionTextBox.Name = "InformationalVersionTextBox"
             '
             'ComVisibleCheckBox
             '
@@ -287,26 +265,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.GuidLabel, "GuidLabel")
             Me.GuidLabel.Name = "GuidLabel"
             '
-            'InformationalVersionLabel
-            '
-            resources.ApplyResources(Me.InformationalVersionLabel, "InformationalVersionLabel")
-            Me.InformationalVersionLabel.Name = "InformationalVersionLabel"
-            '
-            'ConfigurationLabel
-            '
-            resources.ApplyResources(Me.ConfigurationLabel, "ConfigurationLabel")
-            Me.ConfigurationLabel.Name = "ConfigurationLabel"
-            '
-            'CultureLabel
-            '
-            resources.ApplyResources(Me.CultureLabel, "CultureLabel")
-            Me.CultureLabel.Name = "CultureLabel"
-            '
-            'CultureTextBox
-            '
-            resources.ApplyResources(Me.CultureTextBox, "CultureTextBox")
-            Me.CultureTextBox.Name = "CultureTextBox"
-            '
             'AssemblyInfoPropPage
             '
             resources.ApplyResources(Me, "$this")
@@ -323,13 +281,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.PerformLayout()
 
         End Sub
-
-        Friend WithEvents InformationalVersionTextBox As Windows.Forms.TextBox
-        Friend WithEvents InformationalVersionLabel As Windows.Forms.Label
-        Friend WithEvents ConfigurationLabel As Windows.Forms.Label
-        Friend WithEvents ConfigurationTextBox As Windows.Forms.TextBox
-        Friend WithEvents CultureLabel As Windows.Forms.Label
-        Friend WithEvents CultureTextBox As Windows.Forms.TextBox
     End Class
 
 End Namespace
