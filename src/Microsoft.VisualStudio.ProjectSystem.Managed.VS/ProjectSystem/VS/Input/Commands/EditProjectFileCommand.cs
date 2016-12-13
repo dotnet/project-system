@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private string GetTempFileName(string projectFileName)
         {
-            string tempDirectory = _fileSystem.GetTempFileName();
+            string tempDirectory = _fileSystem.GetTempDirectoryOrFileName();
             _fileSystem.CreateDirectory(tempDirectory);
             return $"{tempDirectory}\\{projectFileName}";
         }

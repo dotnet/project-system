@@ -112,22 +112,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             return Directory.EnumerateFiles(path, searchPattern, searchOption);
         }
 
-        public string GetTempFileName()
+        public string GetTempDirectoryOrFileName()
         {
-            var tempFileName = Path.GetTempFileName();
-            try
-            {
-                if (File.Exists(tempFileName))
-                {
-                    File.Delete(tempFileName);
-                }
-            }
-            catch
-            {
-                // do nothing - its a temporary file
-            }
+            var fileNameWithoutPath = Path.GetRandomFileName();
 
-            return tempFileName;
+            return Path.Combine(Path.GetTempPath(), fileNameWithoutPath);
         }
     }
 }

@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _tempFile = tempFile;
         }
 
-        public string GetTempFileName()
+        public string GetTempDirectoryOrFileName()
         {
             return _tempFile;
         }

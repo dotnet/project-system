@@ -34,6 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption);
         IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption);
 
-        string GetTempFileName();
+        /// <summary>
+        ///     Returns a name suitable for usage as a file or directory name.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="string"/> containing a name suitable for usage as a file or directory name.
+        /// </returns>
+        /// <remarks>
+        ///     NOTE: Unlike <see cref="Path.GetTempFileName"/>, this method does not create a zero byte file on disk.
+        /// </remarks>
+        string GetTempDirectoryOrFileName();
     }
 }
