@@ -81,9 +81,19 @@
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesStore.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\DefaultToAnotherPropertyProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AssemblyCompanyValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\ProductValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\PackageVersionValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AssemblyVersionValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\BaseVersionValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\FileVersionValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\PackageIdValueProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AuthorsValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
+    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\SourceAssemblyAttributePropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceChecker.cs" />
     <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
@@ -121,8 +131,8 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\AbstractSourceFilePropertyProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\SourceFileProperties.cs" />
+    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\AbstractProjectFileOrAssemblyInfoPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\AssemblyInfoProperties.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
