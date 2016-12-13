@@ -66,14 +66,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End Try
 
-            If Not TypeOf propertyValue Is UInteger Then
+            Dim uintValue As UInteger = 0
+            Try
+                uintValue = CUInt(propertyValue)
+            Catch ex As InvalidCastException
                 Return False
-            End If
-
-            Dim uintValue As UInteger = CUInt(propertyValue)
+            End Try
 
             ' Prefer32Bit is only allowed for Exe based output types
-
             Return uintValue = prjOutputTypeEx.prjOutputTypeEx_AppContainerExe OrElse
                    uintValue = prjOutputTypeEx.prjOutputTypeEx_Exe OrElse
                    uintValue = prjOutputTypeEx.prjOutputTypeEx_WinExe
