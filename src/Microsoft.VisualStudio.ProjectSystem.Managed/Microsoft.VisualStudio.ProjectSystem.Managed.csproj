@@ -53,6 +53,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\IPhysicalProjectTreeStorage.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
+    <Compile Include="ProjectSystem\PhysicalProjectTreeStorage.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
