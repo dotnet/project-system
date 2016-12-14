@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Value used to override the CPS provider
         /// </summary>
-        public const int OverrideCPSProvider = 1;
+        protected const int OverrideCPSProvider = 1;
 
         /// <summary>
         /// Lazy instance of the next handler in the chain.
@@ -31,13 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [ImportingConstructor]
         public BaseReferenceContextProvider(ConfiguredProject configuredProject)
         {
-            this.VsReferenceManagerUsers = new OrderPrecedenceImportCollection<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>(projectCapabilityCheckProvider: configuredProject);
-            this.nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
+            ConfiguredProject = configuredProject;
+            VsReferenceManagerUsers = new OrderPrecedenceImportCollection<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>(projectCapabilityCheckProvider: configuredProject);
+            nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
             {
-                Type provider = this.GetType();
+                Type provider = GetType();
                 var order = provider.GetCustomAttribute<OrderAttribute>();
                 var user = provider.GetCustomAttribute<ExportIVsReferenceManagerUserAsyncAttribute>();
-                return this.VsReferenceManagerUsers.FirstOrDefault(
+                return VsReferenceManagerUsers.FirstOrDefault(
                         export =>
                             export.Metadata.OrderPrecedence < order.OrderPrecedence &&
                             export.Metadata.ProviderContextIdentifier == user.ProviderContextIdentifier);
@@ -47,13 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Gets the next handler in the chain.
         /// </summary>
-        private IVsReferenceManagerUserAsync NextHandler
-        {
-            get
-            {
-                return nextHandler?.Value?.Value;
-            }
-        }
+        private IVsReferenceManagerUserAsync NextHandler => nextHandler?.Value?.Value;
 
         /// <summary>
         /// Gets the collection of reference provider contexts that can handle individual reference type operations.
@@ -65,8 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Gets the configured project.
         /// </summary>
-        [Import]
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Called by MEF")]
         protected ConfiguredProject ConfiguredProject { get; private set; }
 
         #region IVsReferenceManagerUserAsync
@@ -79,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             // There should always be a "next" handler as the usage of this class is to override a base
             // provider. If there's no other handler in the chain mark the provider as not applicable.
-            return this.NextHandler?.IsApplicable() ?? false;
+            return NextHandler?.IsApplicable() ?? false;
         }
 
         /// <summary>
@@ -95,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// </returns>
         public virtual Task<ExportLifetimeContext<object>> CreateProviderContextAsync()
         {
-            return this.NextHandler.CreateProviderContextAsync();
+            return NextHandler.CreateProviderContextAsync();
         }
 
         /// <summary>
@@ -107,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>A task whose result changes the references.</returns>
         public virtual Task ChangeReferencesAsync(uint operation, object changedContext)
         {
-            return this.NextHandler.ChangeReferencesAsync(operation, changedContext);
+            return NextHandler.ChangeReferencesAsync(operation, changedContext);
         }
 
         #endregion
