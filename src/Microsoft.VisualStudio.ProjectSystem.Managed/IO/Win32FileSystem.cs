@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.IO
     ///     and <see cref="File"/> classes, and ultimately through Win32 APIs.
     /// </summary>
     [Export(typeof(IFileSystem))]
-    internal class FileSystem : IFileSystem
+    internal class Win32FileSystem : IFileSystem
     {
         public FileStream Create(string filePath)
         {

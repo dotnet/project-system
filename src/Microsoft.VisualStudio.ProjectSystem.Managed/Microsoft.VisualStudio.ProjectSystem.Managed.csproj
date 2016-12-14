@@ -133,7 +133,7 @@
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
-    <Compile Include="IO\FileSystem.cs" />
+    <Compile Include="IO\Win32FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
     <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
