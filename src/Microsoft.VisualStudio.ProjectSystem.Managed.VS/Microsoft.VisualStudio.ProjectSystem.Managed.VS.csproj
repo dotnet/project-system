@@ -104,6 +104,13 @@
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
+    <Compile Include="ProjectSystem\VS\References\AddFileContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\AssemblyReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\BaseReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\ComReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\ProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\SharedProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\WinRTReferencesProviderContext.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
