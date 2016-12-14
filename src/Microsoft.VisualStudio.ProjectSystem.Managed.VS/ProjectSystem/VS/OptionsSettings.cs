@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
 
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IOptionsSettings))]
