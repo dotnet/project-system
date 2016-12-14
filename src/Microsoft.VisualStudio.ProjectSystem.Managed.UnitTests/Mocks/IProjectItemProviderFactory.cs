@@ -2,10 +2,9 @@
 
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectItemProviderFactory
     {
