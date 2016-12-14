@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 using Task = System.Threading.Tasks.Task;
-using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {

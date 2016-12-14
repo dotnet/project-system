@@ -133,9 +133,9 @@
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
-    <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
+    <Compile Include="IO\FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
-    <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
+    <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />

@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
     /// A wrapper for <see cref="File"/> that gives us the ability to mock

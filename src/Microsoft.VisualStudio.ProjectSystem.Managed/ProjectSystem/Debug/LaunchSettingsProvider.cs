@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.VisualStudio.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {

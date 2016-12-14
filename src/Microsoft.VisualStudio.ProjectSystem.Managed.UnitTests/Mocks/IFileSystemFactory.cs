@@ -2,7 +2,7 @@
 
 using System;
 using System.IO;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.IO;
 using Moq;
 
 namespace Microsoft.VisualStudio.Mocks

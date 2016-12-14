@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
     /// An interface wrapper for <see cref="File"/> and <see cref="Directory"/> that gives us the ability to mock
