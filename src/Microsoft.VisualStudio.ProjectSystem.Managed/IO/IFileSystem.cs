@@ -12,23 +12,23 @@ namespace Microsoft.VisualStudio.IO
     /// </summary>
     interface IFileSystem
     {
-        FileStream Create(string filePath);
+        FileStream Create(string path);
 
         bool FileExists(string path);
-        void RemoveFile(string referenceFile);
+        void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
-        string ReadAllText(string filePath);
-        void WriteAllText(string filePath, string content);
-        void WriteAllText(string filePath, string content, Encoding encoding);
-        void WriteAllBytes(string filePath, byte[] bytes);
-        DateTime LastFileWriteTime(string filepath);
-        DateTime LastFileWriteTimeUtc(string filepath);
+        string ReadAllText(string path);
+        void WriteAllText(string path, string content);
+        void WriteAllText(string path, string content, Encoding encoding);
+        void WriteAllBytes(string path, byte[] bytes);
+        DateTime LastFileWriteTime(string path);
+        DateTime LastFileWriteTimeUtc(string path);
         long FileLength(string filename);
 
-        bool DirectoryExists(string dirPath);
-        void CreateDirectory(string dirPath);
-        void RemoveDirectory(string directoryPath, bool recursive);
-        void SetDirectoryAttribute(string directoryPath, FileAttributes newAttribute);
+        bool DirectoryExists(string path);
+        void CreateDirectory(string path);
+        void RemoveDirectory(string path, bool recursive);
+        void SetDirectoryAttribute(string path, FileAttributes newAttribute);
         IEnumerable<string> EnumerateDirectories(string path);
         IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption);
         IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption);

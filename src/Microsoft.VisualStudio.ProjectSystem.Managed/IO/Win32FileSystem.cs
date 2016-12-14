@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.IO
     [Export(typeof(IFileSystem))]
     internal class Win32FileSystem : IFileSystem
     {
-        public FileStream Create(string filePath)
+        public FileStream Create(string path)
         {
-            return File.Create(filePath);
+            return File.Create(path);
         }
 
         public bool FileExists(string path)
@@ -25,11 +25,11 @@ namespace Microsoft.VisualStudio.IO
             return File.Exists(path);
         }
 
-        public void RemoveFile(string referenceFile)
+        public void RemoveFile(string path)
         {
-            if (FileExists(referenceFile))
+            if (FileExists(path))
             {
-                File.Delete(referenceFile);
+                File.Delete(path);
             }
         }
 
@@ -38,39 +38,39 @@ namespace Microsoft.VisualStudio.IO
             File.Copy(source, destination, overwrite);
         }
 
-        public string ReadAllText(string filePath)
+        public string ReadAllText(string path)
         {
-            return File.ReadAllText(filePath);
+            return File.ReadAllText(path);
         }
 
-        public void WriteAllText(string filePath, string content)
+        public void WriteAllText(string path, string content)
         {
-            File.WriteAllText(filePath, content);
+            File.WriteAllText(path, content);
         }
 
-        public void WriteAllText(string filePath, string content, Encoding encoding)
+        public void WriteAllText(string path, string content, Encoding encoding)
         {
-            File.WriteAllText(filePath, content, encoding);
+            File.WriteAllText(path, content, encoding);
         }
 
-        public void WriteAllBytes(string filePath, byte[] bytes)
+        public void WriteAllBytes(string path, byte[] bytes)
         {
-            File.WriteAllBytes(filePath, bytes);
+            File.WriteAllBytes(path, bytes);
         }
 
-        public DateTime LastFileWriteTime(string filepath)
+        public DateTime LastFileWriteTime(string path)
         {
-            return File.GetLastWriteTime(filepath);
+            return File.GetLastWriteTime(path);
         }
 
-        public DateTime LastFileWriteTimeUtc(string filepath)
+        public DateTime LastFileWriteTimeUtc(string path)
         {
-            return File.GetLastWriteTimeUtc(filepath);
+            return File.GetLastWriteTimeUtc(path);
         }
 
-        public long FileLength(string filename)
+        public long FileLength(string path)
         {
-            return new FileInfo(filename).Length;
+            return new FileInfo(path).Length;
         }
 
         public bool DirectoryExists(string dirPath)
@@ -83,14 +83,14 @@ namespace Microsoft.VisualStudio.IO
             Directory.CreateDirectory(dirPath);
         }
 
-        public void RemoveDirectory(string directoryPath, bool recursive)
+        public void RemoveDirectory(string path, bool recursive)
         {
-            Directory.Delete(directoryPath, recursive);
+            Directory.Delete(path, recursive);
         }
 
-        public void SetDirectoryAttribute(string directoryPath, FileAttributes newAttribute)
+        public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
         {
-            var di = new DirectoryInfo(directoryPath);
+            var di = new DirectoryInfo(path);
             if ((di.Attributes & newAttribute) != newAttribute)
             {
                 di.Attributes |= newAttribute;
