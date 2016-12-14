@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.IO
     [Export(typeof(IFileSystem))]
     internal class Win32FileSystem : IFileSystem
     {
-        public FileStream Create(string path)
+        public Stream Create(string path)
         {
             return File.Create(path);
         }

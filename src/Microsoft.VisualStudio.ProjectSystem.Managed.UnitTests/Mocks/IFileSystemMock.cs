@@ -28,11 +28,11 @@ namespace Microsoft.VisualStudio.IO
 
         public Dictionary<string, FileData> Files { get => _files; }
 
-        public FileStream Create(string path)
+        public Stream Create(string path)
         {
             WriteAllText(path, "");
 
-            // No way to mock FileStream. Only caller does not check the return value.
+            // Caller does not check the return value.
             return null;
         }
 

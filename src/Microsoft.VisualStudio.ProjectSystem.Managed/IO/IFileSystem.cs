@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.IO
     /// </summary>
     interface IFileSystem
     {
-        FileStream Create(string path);
+        Stream Create(string path);
 
         bool FileExists(string path);
         void RemoveFile(string path);
