@@ -2,10 +2,9 @@
 
 using System;
 using System.IO;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     internal class IFileSystemFactory
     {
