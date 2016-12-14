@@ -42,13 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
 
             Assert.NotNull(subscription);
-            watcher.XmlHandler(xml);
+            watcher.XmlHandler(xml, file);
             Assert.True(fileSystem.FileExists(file));
             Assert.Equal(xml, fileSystem.ReadAllText(file));
         }
@@ -64,13 +64,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => unsubscription = sub);
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
 
             Assert.NotNull(subscription);
-            watcher.XmlHandler(xml);
+            watcher.XmlHandler(xml, file);
             Assert.True(fileSystem.FileExists(file));
             Assert.Equal(xml, fileSystem.ReadAllText(file));
 
@@ -93,20 +93,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = IUnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
 
             Assert.NotNull(subscription);
-            watcher.XmlHandler(xml);
+            watcher.XmlHandler(xml, file);
             Assert.True(fileSystem.FileExists(file));
             Assert.Equal(xml, fileSystem.ReadAllText(file));
 
             // If we delete the underlying xml from the file system, a consectutive call to XmlHandler with the same xml should not regenerate
             // it.
             fileSystem.RemoveFile(file);
-            watcher.XmlHandler(xml);
+            watcher.XmlHandler(xml, file);
+            Assert.False(fileSystem.FileExists(file));
+        }
+
+        [Fact]
+        public async Task MsBuildModelWatcher_DifferentFile_DoesNotWriteToDisk()
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var fileSystem = new IFileSystemMock();
+            HandlerCallback subscription = null;
+            var xml = @"<Project></Project>";
+            var file = @"C:\Test\Test.proj";
+            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
+                sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
+            var project = IUnconfiguredProjectFactory.Create(filePath: file);
+
+            var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
+            await watcher.InitializeAsync(file, "");
+
+            Assert.NotNull(subscription);
+            watcher.XmlHandler(xml, @"C:\Test\AnotherTest.proj");
             Assert.False(fileSystem.FileExists(file));
         }
     }

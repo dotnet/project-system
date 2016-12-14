@@ -2,7 +2,7 @@
 using System;
 using static Microsoft.VisualStudio.Shell.RegistrationAttribute;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Shell
 {
     internal class RegistrationContextFactory
     {
