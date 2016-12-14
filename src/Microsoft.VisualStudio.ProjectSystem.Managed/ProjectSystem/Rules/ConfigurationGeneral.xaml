@@ -80,6 +80,7 @@
     <StringProperty Name="VCInstallDir" Visible="false" />
     <StringProperty Name="VSInstallDir" Visible="false" />
     <StringProperty Name="Platform" Visible="false" />
+    <StringProperty Name="Configuration" Visible="false" />
     <StringProperty Name="DebuggerSymbolsPath" Visible="false" />
     <StringProperty Name="IntDir" Visible="false" />
     <StringProperty Name="TargetPlatformWinMDLocation" Visible="false" />
