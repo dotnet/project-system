@@ -507,15 +507,6 @@ Root (flags: {ProjectRoot})
         [InlineData(@"
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
-", @"
-Root (flags: {ProjectRoot})
-    My Project (flags: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    My Project (flags: {Folder})
         Folder (flags: {IncludeInProjectCandidate})
             Item.cs (flags: {IncludeInProjectCandidate})
 ", @"
