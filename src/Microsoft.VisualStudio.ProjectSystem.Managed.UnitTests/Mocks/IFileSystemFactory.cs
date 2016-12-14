@@ -2,13 +2,19 @@
 
 using System;
 using System.IO;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     internal class IFileSystemFactory
     {
+        public static IFileSystem Create()
+        {
+            var mock = new Mock<IFileSystem>();
+
+            return mock.Object;
+        }
+
         public static IFileSystem Create(Func<string, bool> existsFunc, Func<string, FileStream> createFunc = null)
         {
             var mock = new Mock<IFileSystem>();
