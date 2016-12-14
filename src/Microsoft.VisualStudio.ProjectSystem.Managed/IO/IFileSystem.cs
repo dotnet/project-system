@@ -8,8 +8,7 @@ using System.Text;
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
-    /// An interface wrapper for <see cref="File"/> and <see cref="Directory"/> that gives us the ability to mock
-    /// the type for testing.
+    ///     Provides static methods for the creation, copying, deletion, moving of files and directories.
     /// </summary>
     interface IFileSystem
     {

@@ -9,8 +9,8 @@ using System.Text;
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
-    /// A wrapper for <see cref="File"/> that gives us the ability to mock
-    /// the type for testing.
+    ///     Provides an implementation of <see cref="IFileSystem"/> that calls through the <see cref="Directory"/>
+    ///     and <see cref="File"/> classes, and ultimately through Win32 APIs.
     /// </summary>
     [Export(typeof(IFileSystem))]
     internal class FileSystem : IFileSystem
