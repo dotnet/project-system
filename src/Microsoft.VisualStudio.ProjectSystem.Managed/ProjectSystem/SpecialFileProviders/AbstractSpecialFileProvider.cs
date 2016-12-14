@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Diagnostics = System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
