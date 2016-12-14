@@ -142,13 +142,13 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="AssemblyVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 13</value>
+    <value>91, 13</value>
   </data>
   <data name="AssemblyVersionLabel.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
-    <value>&amp;Assembly Version:</value>
+    <value>&amp;Assembly version:</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionLabel.Name" xml:space="preserve">
     <value>AssemblyVersionLabel</value>
@@ -199,7 +199,7 @@
     <value>1</value>
   </data>
   <data name="Copyright.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 256</value>
+    <value>139, 256</value>
   </data>
   <data name="Copyright.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -256,7 +256,7 @@
     <value>3</value>
   </data>
   <data name="Description.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 199</value>
+    <value>139, 199</value>
   </data>
   <data name="Description.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -283,7 +283,7 @@
     <value>4</value>
   </data>
   <data name="PackageIconUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 334</value>
+    <value>139, 334</value>
   </data>
   <data name="PackageIconUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -340,7 +340,7 @@
     <value>6</value>
   </data>
   <data name="PackageProjectUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 308</value>
+    <value>139, 308</value>
   </data>
   <data name="PackageProjectUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -361,7 +361,7 @@
     <value>7</value>
   </data>
   <data name="PackageVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 95</value>
+    <value>139, 95</value>
   </data>
   <data name="PackageVersion.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -397,13 +397,13 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="PackageVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 13</value>
+    <value>90, 13</value>
   </data>
   <data name="PackageVersionLabel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="PackageVersionLabel.Text" xml:space="preserve">
-    <value>Package &amp;Version:</value>
+    <value>Package &amp;version:</value>
   </data>
   <data name="&gt;&gt;PackageVersionLabel.Name" xml:space="preserve">
     <value>PackageVersionLabel</value>
@@ -454,7 +454,7 @@
     <value>10</value>
   </data>
   <data name="RepositoryUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 360</value>
+    <value>139, 360</value>
   </data>
   <data name="RepositoryUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -475,7 +475,7 @@
     <value>11</value>
   </data>
   <data name="RepositoryType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 386</value>
+    <value>139, 386</value>
   </data>
   <data name="RepositoryType.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -640,7 +640,7 @@
     <value>16</value>
   </data>
   <data name="PackageTags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 412</value>
+    <value>139, 412</value>
   </data>
   <data name="PackageTags.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -661,7 +661,7 @@
     <value>17</value>
   </data>
   <data name="PackageReleaseNotes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 438</value>
+    <value>139, 438</value>
   </data>
   <data name="PackageReleaseNotes.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -772,13 +772,13 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="NeutralLanguageLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
+    <value>136, 13</value>
   </data>
   <data name="NeutralLanguageLabel.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
-    <value>&amp;Neutral Language:</value>
+    <value>Assembly &amp;neutral language:</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageLabel.Name" xml:space="preserve">
     <value>NeutralLanguageLabel</value>
@@ -892,7 +892,7 @@
     <value>3</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 524</value>
+    <value>139, 524</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1018,7 +1018,7 @@
     <value>3</value>
   </data>
   <data name="FileVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 556</value>
+    <value>139, 556</value>
   </data>
   <data name="FileVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1045,7 +1045,7 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="FileVersionRevisionTextBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionBuildTextBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMinorTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMajorTextBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="PackageLicenseUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 282</value>
+    <value>139, 282</value>
   </data>
   <data name="PackageLicenseUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -1066,7 +1066,7 @@
     <value>24</value>
   </data>
   <data name="NeutralLanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 497</value>
+    <value>139, 497</value>
   </data>
   <data name="NeutralLanguageComboBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 21</value>
@@ -1135,13 +1135,13 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="PackageIdLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 13</value>
+    <value>64, 13</value>
   </data>
   <data name="PackageIdLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="PackageIdLabel.Text" xml:space="preserve">
-    <value>Package &amp;Id:</value>
+    <value>Package &amp;id:</value>
   </data>
   <data name="&gt;&gt;PackageIdLabel.Name" xml:space="preserve">
     <value>PackageIdLabel</value>
@@ -1156,7 +1156,7 @@
     <value>27</value>
   </data>
   <data name="PackageId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 69</value>
+    <value>139, 69</value>
   </data>
   <data name="PackageId.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -1213,7 +1213,7 @@
     <value>29</value>
   </data>
   <data name="Authors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 121</value>
+    <value>139, 121</value>
   </data>
   <data name="Authors.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -1306,7 +1306,7 @@
     <value>32</value>
   </data>
   <data name="AssemblyCompany.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 147</value>
+    <value>139, 147</value>
   </data>
   <data name="AssemblyCompany.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -1327,7 +1327,7 @@
     <value>33</value>
   </data>
   <data name="Product.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 173</value>
+    <value>139, 173</value>
   </data>
   <data name="Product.Size" type="System.Drawing.Size, System.Drawing">
     <value>571, 20</value>
@@ -1363,13 +1363,13 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="AssemblyFileVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 13</value>
+    <value>107, 13</value>
   </data>
   <data name="AssemblyFileVersionLabel.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
   </data>
   <data name="AssemblyFileVersionLabel.Text" xml:space="preserve">
-    <value>Assembly &amp;File Version:</value>
+    <value>Assembly &amp;file version:</value>
   </data>
   <data name="&gt;&gt;AssemblyFileVersionLabel.Name" xml:space="preserve">
     <value>AssemblyFileVersionLabel</value>
