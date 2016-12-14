@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -15,34 +15,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class SourceAssemblyAttributePropertyValueProvider
     {
         private readonly string _assemblyAttributeFullName;
-        private readonly ILanguageServiceHost _languageServiceHost;
+        private readonly Func<ProjectId> _getActiveProjectId;
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
         public SourceAssemblyAttributePropertyValueProvider(
             string assemblyAttributeFullName,
-            ILanguageServiceHost languageServiceHost,
+            Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
             _assemblyAttributeFullName = assemblyAttributeFullName;
-            _languageServiceHost = languageServiceHost;
+            _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;
             _threadingService = threadingService;
         }
 
         private Project GetActiveProject()
         {
-            var activeConfiguredProject = _languageServiceHost.ActiveProjectContext;
-            if (activeConfiguredProject == null)
+            var activeProjectId = _getActiveProjectId();
+            if (activeProjectId == null)
             {
                 return null;
             }
 
             return _workspace
                 .CurrentSolution
-                .Projects.Where(p => p.Id == ((AbstractProject)activeConfiguredProject).Id)
-                .FirstOrDefault();
+                .Projects
+                .Where(p => p.Id == activeProjectId)
+                .SingleOrDefault();
         }
 
         /// <summary>

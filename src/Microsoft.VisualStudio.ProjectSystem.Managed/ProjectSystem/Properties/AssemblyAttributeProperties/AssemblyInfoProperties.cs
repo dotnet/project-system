@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -31,24 +32,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public AssemblyInfoProperties(
             IProjectProperties delegatedProjectProperties,
             ProjectProperties ruleBasedProperties,
-            ILanguageServiceHost languageServiceHost,
+            Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
             : base (delegatedProjectProperties)
         {
             _ruleBasedProperties = ruleBasedProperties;
-            _attributeValueProviderMap = CreateAttributeValueProviderMap(languageServiceHost, workspace, threadingService);
+            _attributeValueProviderMap = CreateAttributeValueProviderMap(getActiveProjectId, workspace, threadingService);
         }
 
         private static ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider> CreateAttributeValueProviderMap(
-            ILanguageServiceHost languageServiceHost,
+            Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
             var builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
             foreach (var kvp in s_attributeNameMap)
             {
-                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value, languageServiceHost, workspace, threadingService);
+                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value, getActiveProjectId, workspace, threadingService);
                 builder.Add(kvp.Key, provider);
             }
 

@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
+using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -29,8 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             ILanguageServiceHost languageServiceHost,
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
-            : base(delegatedProvider, instanceProvider, interceptingValueProviders, unconfiguredProject,
-                  projectProperties, languageServiceHost, workspace, threadingService)
+            : base(delegatedProvider, instanceProvider, interceptingValueProviders, unconfiguredProject, projectProperties,
+                  getActiveProjectId: () => ((AbstractProject)languageServiceHost.ActiveProjectContext)?.Id,
+                  workspace: workspace,
+                  threadingService: threadingService)
         {
         }
     }
