@@ -221,7 +221,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
             else
             {
-                _fileSystem.Create(specialFilePath);
+                using (_fileSystem.Create(specialFilePath)) { }
+
                 IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
                 {
