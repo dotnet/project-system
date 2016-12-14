@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.Build.Evaluation;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
@@ -15,22 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// Gets the XML for a given unconfigured project.
         /// </summary>
-        Task<string> GetProjectXmlAsync(UnconfiguredProject unconfiguredProject);
+        Task<string> GetProjectXmlAsync();
 
         /// <summary>
-        /// Registers an EventHandler for the ProjectXmlChanged event on the msbuild model for the given unconfigured project.
+        /// Saves the given xml to the project file.
         /// </summary>
-        Task SubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler);
-
-        /// <summary>
-        /// Removes an EventHandler for the ProjectXmlChanged event on the msbuild model for the given unconfigured project.
-        /// </summary>
-        Task UnsubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler);
-
-        /// <summary>
-        /// Returns whether or not the project xml has unsaved changes.
-        /// </summary>
-        Task<bool> IsProjectDirtyAsync(UnconfiguredProject unconfiguredProject);
+        Task SaveProjectXmlAsync(string toSave);
 
         /// <summary>
         /// Runs a given task inside either a read lock or a write lock.
@@ -43,55 +35,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class MsBuildAccessor : IMsBuildAccessor
     {
         private readonly IProjectLockService _projectLockService;
+        private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly IFileSystem _fileSystem;
 
         [ImportingConstructor]
-        public MsBuildAccessor(IProjectLockService projectLockService)
+        public MsBuildAccessor(IProjectLockService projectLockService, UnconfiguredProject unconfiguredProject, IFileSystem fileSystem)
         {
             _projectLockService = projectLockService;
+            _unconfiguredProject = unconfiguredProject;
+            _fileSystem = fileSystem;
         }
 
-        public async Task<string> GetProjectXmlAsync(UnconfiguredProject unconfiguredProject)
+        public async Task<string> GetProjectXmlAsync()
         {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            using (var access = await _projectLockService.ReadLockAsync())
-            {
-                var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                // If we don't save here, then there will be a file-changed popup if the msbuild model differed from the file
-                // on disc before we grabbed it here.
-                xmlProject.Save();
-                return xmlProject.Xml.RawXml;
-            }
-        }
-
-        public async Task SubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler)
-        {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
             using (var access = await _projectLockService.WriteLockAsync())
             {
-                var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                xmlProject.ProjectCollection.ProjectXmlChanged += handler;
-            }
-        }
-
-        public async Task UnsubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler)
-        {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                xmlProject.ProjectCollection.ProjectXmlChanged -= handler;
-            }
-        }
-
-        public async Task<bool> IsProjectDirtyAsync(UnconfiguredProject unconfiguredProject)
-        {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                return (await access.GetProjectAsync(configuredProject).ConfigureAwait(true)).Xml.HasUnsavedChanges;
+                var stringWriter = new StringWriter();
+                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                projectXml.Save(stringWriter);
+                return stringWriter.ToString();
             }
         }
 
@@ -110,6 +72,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 {
                     await task().ConfigureAwait(true);
                 }
+            }
+        }
+
+        public async Task SaveProjectXmlAsync(string toSave)
+        {
+            var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
+            using (var access = await _projectLockService.WriteLockAsync())
+            {
+                await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
             }
         }
     }

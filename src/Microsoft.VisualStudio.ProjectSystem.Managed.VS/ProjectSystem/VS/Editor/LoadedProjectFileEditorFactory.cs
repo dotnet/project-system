@@ -5,6 +5,7 @@ using System;
 using IOLEProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
@@ -38,16 +39,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             if (result == VSConstants.S_OK)
             {
                 var punkView = Marshal.GetObjectForIUnknown(ppunkDocView);
-                var viewWindow = punkView as WindowPane;
-                if (viewWindow != null)
+                if (punkView is WindowPane viewWindow)
                 {
                     var unknownData = Marshal.GetObjectForIUnknown(punkDocDataExisting);
 
                     // Reset the contents of the docdata buffer. This is necessary every time we open a new editor to make sure the data in the buffer is up to date.
                     ((IResettableBuffer)unknownData).Reset();
 
-                    var project = (IVsProject)unknownData;
-                    var wrapper = new XmlEditorWrapper(viewWindow, _serviceProvider, project);
+                    var wrapper = new XmlEditorWrapper(viewWindow, _serviceProvider, (IVsProject)unknownData);
+                    wrapper.InitializeWindow();
 
                     ppunkDocView = Marshal.GetIUnknownForObject(wrapper);
                 }

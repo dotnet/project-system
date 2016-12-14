@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.Packaging
 
         private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
         private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
-      
+
         private IVsProjectFactory _factory;
 
         public CSharpProjectSystemPackage()
