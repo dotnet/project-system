@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Moq;
