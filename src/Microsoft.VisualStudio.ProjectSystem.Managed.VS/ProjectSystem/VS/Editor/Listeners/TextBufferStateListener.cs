@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using System.Threading;
-using Microsoft.VisualStudio.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
@@ -114,6 +115,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             if (isDirty != _lastDirtyState || _forceUpdateState)
             {
                 var windowFrame = _windowPane.GetService<IVsWindowFrame, SVsWindowFrame>();
+                // If there's no visible area, there won't yet be a window pane, so return and set _forceUpdateState. This
+                // will make sure that we have the correct state on the next user change.
+                if (windowFrame == null)
+                {
+                    _forceUpdateState = true;
+                    return;
+                }
+
                 windowFrame.SetProperty((int)__VSFPROPID2.VSFPROPID_OverrideDirtyState, isDirty);
                 _editorState.SetEditorDirty(isDirty);
                 _lastDirtyState = isDirty;
@@ -128,11 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                     var getResult = _textBufferManager.TextBuffer.Properties.TryGetProperty(typeof(ITextDocument), out doc);
                     var eventDelegate = (MulticastDelegate)doc.GetType().GetField("FileActionOccurred", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(doc);
                     var fileAction = new TextDocumentFileActionEventArgs(_unconfiguredProject.FullPath, DateTime.Now, FileActionTypes.ContentSavedToDisk);
-                    foreach (var dlg in eventDelegate.GetInvocationList())
-                    {
-                        dlg.Method.Invoke(dlg.Target, new object[] { doc, fileAction });
-                    }
-
+                    eventDelegate.DynamicInvoke(new object[] { doc, fileAction });
                 }
             }
         }

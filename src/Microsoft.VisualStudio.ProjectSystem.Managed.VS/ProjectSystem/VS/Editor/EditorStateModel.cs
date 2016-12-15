@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
-using System;
-using System.ComponentModel.Composition;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
@@ -30,52 +29,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             NoEditor,
             /// <summary>
             /// The editor is being initialized.
-            /// Allowed Transitioins: <see cref="EditorClean"/> once initialization is completed.
+            /// Allowed Transitioins: <see cref="NoUnsavedChanges"/> once initialization is completed.
             /// </summary>
             Initializing,
             /// <summary>
             /// There is an open editor, and it has no unsaved changes.
             /// Allowed Transitions:
-            /// * <see cref="EditorDirty"/> if the user makes an edit.
-            /// * <see cref="ProjectFileUpdateScheduledFromClean"/> if the user makes a change from the UI, ushc as adding a NuGet package.
+            /// * <see cref="UnsavedChanges"/> if the user makes an edit.
+            /// * <see cref="BufferUpdateScheduledFromClean"/> if the user makes a change from the UI, ushc as adding a NuGet package.
             /// * <see cref="EditorClosing"/> if the user closes the buffer.
             /// </summary>
-            EditorClean,
+            NoUnsavedChanges,
             /// <summary>
             /// There is an open editor, and it has one or more unsaved changes.
             /// Allowed Transitions:
             /// * <see cref="WritingProjectFile"/> if the user presses save.
-            /// * <see cref="ProjectFileUpdateScheduledFromDirty"/> if the user makes a change from the UI, such as adding a NuGet package.
-            /// * <see cref="EditorClean"/> if the user undoes their edits.
+            /// * <see cref="BufferUpdateScheduledFromDirty"/> if the user makes a change from the UI, such as adding a NuGet package.
+            /// * <see cref="NoUnsavedChanges"/> if the user undoes their edits.
             /// </summary>
-            EditorDirty,
+            UnsavedChanges,
             /// <summary>
             /// The changes from the open editor are being written to disk.
-            /// Allowed Transitions: <see cref="EditorClean"/> once the updated file is written out.
+            /// Allowed Transitions: <see cref="NoUnsavedChanges"/> once the updated file is written out.
             /// </summary>
             WritingProjectFile,
             /// <summary>
-            /// A project file update has been scheduled. Before the update began, the state was <see cref="EditorClean"/>.
-            /// Allowed Transitions: <see cref="ProjectFileChangingFromClean"/> when the editor update is run.
+            /// A buffe update has been scheduled. Before the update began, the state was <see cref="NoUnsavedChanges"/>.
+            /// Allowed Transitions: <see cref="BufferChangedFromClean"/> when the editor update is run.
             /// </summary>
-            ProjectFileUpdateScheduledFromClean,
+            BufferUpdateScheduledFromClean,
             /// <summary>
-            /// A project file update has been scheduled. Before the update began, the state was <see cref="EditorDirty"/>.
-            /// Allowed Transitions: <see cref="ProjectFileChangingFromDirty"/> when the editor update is run.
+            /// A buffer update has been scheduled. Before the update began, the state was <see cref="UnsavedChanges"/>.
+            /// Allowed Transitions: <see cref="BufferChangingFromDirty"/> when the editor update is run.
             /// </summary>
-            ProjectFileUpdateScheduledFromDirty,
+            BufferUpdateScheduledFromDirty,
             /// <summary>
             /// The project is being changed programmatically. The open editor was originally in a clean state.
-            /// Allowed Transitions: <see cref="EditorClean"/> when the editor is updated.
+            /// Allowed Transitions: <see cref="NoUnsavedChanges"/> when the editor is updated.
             /// </summary>
-            ProjectFileChangingFromClean,
+            BufferChangedFromClean,
             /// <summary>
             /// The project is being changed programmatically. The open editor was originally in a dirty state.
             /// Allowed Transitions:
-            /// * <see cref="EditorDirty"/> if the user cancels the update.
-            /// * <see cref="ProjectFileChangingFromClean"/> if the user discards changes.
+            /// * <see cref="UnsavedChanges"/> if the user cancels the update.
+            /// * <see cref="BufferChangedFromClean"/> if the user discards changes.
             /// </summary>
-            ProjectFileChangingFromDirty,
+            BufferChangingFromDirty,
             /// <summary>
             /// The editor is being closed and states being cleaned up. It should not be possible to reach this from dirty states, as
             /// the editor should be saved before then.
@@ -89,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IServiceProvider _serviceProvider;
         private readonly IVsShellUtilitiesHelper _shellHelper;
-        private readonly IExportFactory<IProjectFileModelWatcher> _projectFileWatcherFactory;
-        private readonly IExportFactory<ITextBufferStateListener> _textBufferListenerFactory;
+        private readonly ExportFactory<IProjectFileModelWatcher> _projectFileWatcherFactory;
+        private readonly ExportFactory<ITextBufferStateListener> _textBufferListenerFactory;
         private readonly ITextBufferManager _textBufferManager;
 
         private EditorState _currentState = EditorState.NoEditor;
@@ -104,8 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             UnconfiguredProject unconfiguredProject,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IVsShellUtilitiesHelper shellHelper,
-            IExportFactory<IProjectFileModelWatcher> projectFileModelWatcherFactory,
-            IExportFactory<ITextBufferStateListener> textBufferListenerFactory,
+            ExportFactory<IProjectFileModelWatcher> projectFileModelWatcherFactory,
+            ExportFactory<ITextBufferStateListener> textBufferListenerFactory,
             ITextBufferManager textBufferManager)
         {
             _threadingService = threadingService;
@@ -144,15 +143,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _windowFrame = _shellHelper.OpenDocumentWithSpecificEditor(_serviceProvider, _unconfiguredProject.FullPath, loadedProjectEditorGuid, Guid.Empty);
 
             // Set up the project file watcher, so changes to the project file are detected and the buffer is updated.
-            _projectFileModelWatcher = _projectFileWatcherFactory.CreateExport();
+            _projectFileModelWatcher = _projectFileWatcherFactory.CreateExport().Value;
             _projectFileModelWatcher.Initialize();
+            _frameEventsListener = new EditProjectFileVsFrameEvents(_windowFrame, _serviceProvider, this, _threadingService);
+            await _frameEventsListener.InitializeEvents().ConfigureAwait(true);
 
             // Finally, show the frame and move to EditorClean in lockstep
             lock (_lock)
             {
                 _windowFrame.Show();
-                _currentState = EditorState.EditorClean;
-                _projectFileModelWatcher.Initialize();
+                _currentState = EditorState.NoUnsavedChanges;
             }
         }
 
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// </summary>
         public async Task InitializeTextBufferStateListenerAsync(WindowPane hostPane)
         {
-            _textBufferStateListener = _textBufferListenerFactory.CreateExport();
+            _textBufferStateListener = _textBufferListenerFactory.CreateExport().Value;
             await _textBufferStateListener.InitializeAsync(hostPane).ConfigureAwait(false);
         }
 
@@ -175,17 +175,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 if (_currentState == EditorState.NoEditor) return;
 
                 // If there was no changes, then we just close the editor
-                if (_currentState == EditorState.EditorClean || _currentState == EditorState.ProjectFileChangingFromClean)
+                if (_currentState == EditorState.NoUnsavedChanges || _currentState == EditorState.BufferChangedFromClean)
                 {
                     _currentState = EditorState.EditorClosing;
                 }
 
-                Requires.Range(_currentState != EditorState.EditorDirty && _currentState != EditorState.ProjectFileChangingFromDirty, nameof(_currentState));
+                Requires.Range(_currentState != EditorState.UnsavedChanges && _currentState != EditorState.BufferChangingFromDirty, nameof(_currentState));
             }
 
             _projectFileModelWatcher?.Dispose();
             _textBufferStateListener?.Dispose();
-            await (_frameEventsListener?.DisposeAsync() ?? Task.CompletedTask).ConfigureAwait(false);
+            if (_frameEventsListener != null)
+            {
+                await _frameEventsListener.DisposeAsync().ConfigureAwait(false);
+            }
+
             _projectFileModelWatcher = null;
             _frameEventsListener = null;
             _textBufferStateListener = null;
@@ -210,8 +214,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             lock (_lock)
             {
-                _currentState = _currentState == EditorState.EditorDirty ?
-                    EditorState.ProjectFileUpdateScheduledFromDirty : EditorState.ProjectFileUpdateScheduledFromClean;
+                // If the current state is writing project file, we don't want to update now, as the project will not have been fully
+                // reloaded yet. We'll get called back again after the ProjectReloadManager is finished reloading the project
+                if (_currentState == EditorState.WritingProjectFile) return;
+                _currentState = _currentState == EditorState.UnsavedChanges ?
+                    EditorState.BufferUpdateScheduledFromDirty : EditorState.BufferUpdateScheduledFromClean;
                 _threadingService.JoinableTaskFactory.RunAsync(UpdateProjectFileAsync);
             }
         }
@@ -229,18 +236,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             {
                 // Only update the project file if we have scheduled an update. Any other state is either already updating the buffer,
                 // or in the processes of closing the buffer.
-                if (_currentState != EditorState.ProjectFileUpdateScheduledFromClean
-                    && _currentState != EditorState.ProjectFileUpdateScheduledFromDirty)
+                if (_currentState != EditorState.BufferUpdateScheduledFromClean
+                    && _currentState != EditorState.BufferUpdateScheduledFromDirty)
                 {
                     return;
                 }
 
-                _currentState = _currentState == EditorState.ProjectFileUpdateScheduledFromDirty ?
-                    EditorState.ProjectFileChangingFromDirty : EditorState.ProjectFileChangingFromClean;
+                _currentState = _currentState == EditorState.BufferUpdateScheduledFromDirty ?
+                    EditorState.BufferChangingFromDirty : EditorState.BufferChangedFromClean;
             }
 
             // Set set the buffer to be unmodifiable to prevent any changes while we update the project
-            await SetBufferReadonlyAsync(true).ConfigureAwait(true);
+            await _textBufferManager.SetReadOnlyAsync(true).ConfigureAwait(true);
 
             // TODO: Handle dirty state
 
@@ -249,9 +256,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             await _textBufferStateListener.ForceBufferStateCleanAsync().ConfigureAwait(true);
             lock (_lock)
             {
-                _currentState = EditorState.EditorClean;
+                _currentState = EditorState.NoUnsavedChanges;
             }
-            await SetBufferReadonlyAsync(false).ConfigureAwait(true);
+            await _textBufferManager.SetReadOnlyAsync(false).ConfigureAwait(true);
         }
 
         #endregion
@@ -264,19 +271,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             lock (_lock)
             {
                 // In order to save, the editor must be in the dirty state.
-                if (_currentState != EditorState.EditorDirty) return;
+                if (_currentState != EditorState.UnsavedChanges) return;
                 _currentState = EditorState.WritingProjectFile;
             }
 
             // While saving the file, we disallow edits to the project file for sync purposes.
-            await SetBufferReadonlyAsync(true).ConfigureAwait(false);
+            await _textBufferManager.SetReadOnlyAsync(true).ConfigureAwait(false);
             await _textBufferStateListener.SaveAsync().ConfigureAwait(false);
 
             lock (_lock)
             {
-                _currentState = EditorState.EditorClean;
+                _currentState = EditorState.NoUnsavedChanges;
             }
-            await SetBufferReadonlyAsync(false).ConfigureAwait(false);
+            await _textBufferManager.SetReadOnlyAsync(false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -287,16 +294,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             lock (_lock)
             {
                 // If the current state isn't clean or dirty, some other change is happening, and we should not touch the current state
-                if (_currentState != EditorState.EditorClean && _currentState != EditorState.EditorDirty) return;
+                if (_currentState != EditorState.NoUnsavedChanges && _currentState != EditorState.UnsavedChanges) return;
 
-                _currentState = _currentState == EditorState.EditorClean ? EditorState.EditorDirty : EditorState.EditorClean;
+                _currentState = isDirty ? EditorState.UnsavedChanges : EditorState.NoUnsavedChanges;
             }
-        }
-
-        private async Task SetBufferReadonlyAsync(bool readOnly)
-        {
-            await _threadingService.SwitchToUIThread();
-            _textBufferManager.SetStateFlags(readOnly ? (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY : 0);
         }
     }
 }

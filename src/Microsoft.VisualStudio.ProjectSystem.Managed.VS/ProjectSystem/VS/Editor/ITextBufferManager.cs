@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -18,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         ITextBuffer TextBuffer { get; }
 
         /// <summary>
-        /// Sets a state flag on the buffer. Valid values are taken from <seealso cref="BUFFERSTATEFLAGS"/>
+        /// Sets the buffer to be ReadOnly, preventing user input to the buffer.
         /// </summary>
-        void SetStateFlags(uint flags);
+        Task SetReadOnlyAsync(bool readOnly);
 
         /// <summary>
         /// Resets the content of the buffer, initializing it to the content of the msbuild model.
