@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
