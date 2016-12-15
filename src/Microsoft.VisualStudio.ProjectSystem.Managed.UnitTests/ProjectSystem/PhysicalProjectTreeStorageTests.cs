@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties\Folder",       @"C:\Properties\Folder")]
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties\Folder",       @"D:\Properties\Folder")]
 
-        public async Task CreateFolderAsync_ValueAsPath_IsCalcualtedRelativeToProjectDirectory(string projectPath, string input, string expected)
+        public async Task CreateFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectPath);
             string result = null;
