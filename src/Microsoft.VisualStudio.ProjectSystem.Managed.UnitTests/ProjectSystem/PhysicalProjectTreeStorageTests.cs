@@ -45,17 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Theory]
-        [InlineData(@"C:\Project.csproj",           @"Properties",                 @"C:\Properties")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"Properties",                 @"C:\Projects\Properties")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties",              @"C:\Properties")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties",              @"C:\Properties")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties",              @"D:\Properties")]
-        [InlineData(@"C:\Project.csproj",           @"Properties\Folder",          @"C:\Properties\Folder")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"Properties\Folder",          @"C:\Projects\Properties\Folder")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties\Folder",       @"C:\Properties\Folder")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties\Folder",       @"C:\Properties\Folder")]
-        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties\Folder",       @"D:\Properties\Folder")]
-
+        [InlineData(@"C:\Project.csproj",           @"Properties",                   @"C:\Properties")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Properties",                   @"C:\Projects\Properties")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties",                @"C:\Properties")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties",                @"C:\Properties")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties",                @"D:\Properties")]
+        [InlineData(@"C:\Project.csproj",           @"Properties\Folder",            @"C:\Properties\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Properties\Folder",            @"C:\Projects\Properties\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties\Folder",         @"C:\Properties\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties\Folder",         @"C:\Properties\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties\Folder",         @"D:\Properties\Folder")]
+        [InlineData(@"C:\Project.csproj",           @"Folder With Spaces",           @"C:\Folder With Spaces")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Folder With Spaces\Folder",    @"C:\Projects\Folder With Spaces\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Folder With Spaces\Folder", @"C:\Folder With Spaces\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Folder With Spaces\Folder", @"C:\Folder With Spaces\Folder")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder", @"D:\Folder With Spaces\Folder")]
         public async Task CreateFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
             var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectPath);
