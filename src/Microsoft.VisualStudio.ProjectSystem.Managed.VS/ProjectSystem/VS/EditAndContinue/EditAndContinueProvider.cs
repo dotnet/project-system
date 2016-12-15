@@ -20,13 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
     class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
     {
         private const int E_NOTIMPL = unchecked((int)0x80004001);
-        private readonly IWorkspaceProjectContext _projectContext;
+        private readonly ILanguageServiceHost _host;
 
         [ImportingConstructor]
         public EditAndContinueProvider(
             ILanguageServiceHost host)
         {
-            _projectContext = host.ActiveProjectContext;
+            _host = host;
         }
 
         #region IVsENCRebuildableProjectCfg Implementation
@@ -75,73 +75,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         #region IVsENCRebuildableProjectCfg2 Implementation
         public int BuildForEnc([In, MarshalAs(UnmanagedType.IUnknown)] object pUpdatePE)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).BuildForEnc(pUpdatePE);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).BuildForEnc(pUpdatePE);
         }
 
         public int EncApplySucceeded([In] int hrApplyResult)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).EncApplySucceeded(hrApplyResult);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).EncApplySucceeded(hrApplyResult);
         }
 
         public int EnterBreakStateOnPE([In] EncInterop.ENC_BREAKSTATE_REASON encBreakReason, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ENC_ACTIVE_STATEMENT[] pActiveStatements, [In] uint cActiveStatements)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements);
         }
 
         public int ExitBreakStateOnPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).ExitBreakStateOnPE();
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).ExitBreakStateOnPE();
         }
 
         public int GetCurrentActiveStatementPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetCurrentActiveStatementPosition(id, ptsNewPosition);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetCurrentActiveStatementPosition(id, ptsNewPosition);
         }
 
         public int GetCurrentExceptionSpanPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetCurrentExceptionSpanPosition(id, ptsNewPosition);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetCurrentExceptionSpanPosition(id, ptsNewPosition);
         }
 
         public int GetENCBuildState([MarshalAs(UnmanagedType.LPArray), Out] ENC_BUILD_STATE[] pENCBuildState)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetENCBuildState(pENCBuildState);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetENCBuildState(pENCBuildState);
         }
 
         public int GetExceptionSpanCount([Out] out uint pcExceptionSpan)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetExceptionSpanCount(out pcExceptionSpan);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetExceptionSpanCount(out pcExceptionSpan);
         }
 
         public int GetExceptionSpans([In] uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), Out] ENC_EXCEPTION_SPAN[] rgelt, [In, Out] ref uint pceltFetched)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetExceptionSpans(celt, rgelt, ref pceltFetched);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetExceptionSpans(celt, rgelt, ref pceltFetched);
         }
 
         public int GetPEBuildTimeStamp([MarshalAs(UnmanagedType.LPArray), Out] OLE.Interop.FILETIME[] pTimeStamp)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetPEBuildTimeStamp(pTimeStamp);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetPEBuildTimeStamp(pTimeStamp);
         }
 
         public int GetPEidentity([MarshalAs(UnmanagedType.LPArray), Out] Guid[] pMVID, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.BStr), Out] string[] pbstrPEName)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).GetPEidentity(pMVID, pbstrPEName);
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetPEidentity(pMVID, pbstrPEName);
         }
 
         public int StartDebuggingPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).StartDebuggingPE();
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).StartDebuggingPE();
         }
 
         public int StopDebuggingPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_projectContext).StopDebuggingPE();
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).StopDebuggingPE();
         }
         #endregion
         #region IVsENCRebuildableProjectCfg4 Implementation
         public int HasCustomMetadataEmitter([MarshalAs(UnmanagedType.VariantBool)] out bool value)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg4)_projectContext).HasCustomMetadataEmitter(out value);
+            return ((EncInterop.IVsENCRebuildableProjectCfg4)_host.ActiveProjectContext).HasCustomMetadataEmitter(out value);
         }
         #endregion
     }
