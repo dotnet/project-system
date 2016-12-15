@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Collections
 {
     /// <summary>
     /// Provides simple dictionary equality checks.
