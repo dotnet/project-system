@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using System.Text;
+using Microsoft.VisualStudio.ComponentModelHost;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -18,13 +19,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     {
         private readonly ProcessRunner _runner;
         private readonly IFileSystem _fileSystem;
+        private readonly IServiceProvider _provider;
 
-        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem)
+        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem, IServiceProvider provider)
         {
             Requires.NotNull(runner, nameof(runner));
             Requires.NotNull(fileSystem, nameof(fileSystem));
+            Requires.NotNull(provider, nameof(provider));
             _runner = runner;
             _fileSystem = fileSystem;
+            _provider = provider;
         }
 
         public int UpgradeProject(string bstrFileName, uint fUpgradeFlag, string bstrCopyLocation, out string pbstrUpgradedFullyQualifiedFileName,
@@ -71,6 +75,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 success = false;
             }
 
+            // If the migration succeeded, we need to add the project.json and .xproj to the list of files to be cleaned up by
+            // the MigrationCleaner when the migration is and the final solution is loaded.
+            if (success)
+            {
+                AddFilesToRemoveList(bstrFileName, Path.Combine(directory, $"project.json"));
+            }
+
             return success ? VSConstants.S_OK : VSConstants.VS_E_PROJECTMIGRATIONFAILED;
         }
 
@@ -106,10 +117,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"");
-            pInfo.UseShellExecute = false;
-            pInfo.RedirectStandardError = true;
-            pInfo.RedirectStandardOutput = true;
+            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"")
+            {
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
             // Skip it.
@@ -174,6 +188,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             }
 
             return csproj;
+        }
+
+        internal void AddFilesToRemoveList(string xprojLocation, string jsonLocation)
+        {
+            var componentModel = _provider.GetService<IComponentModel, SComponentModel>();
+            var cleaner = componentModel.GetService<IMigrationCleanStore>();
+            cleaner.AddFiles(xprojLocation, jsonLocation);
         }
 
         public int UpgradeProject_CheckOnly(string bstrFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory, out uint pUpgradeProjectCapabilityFlags)

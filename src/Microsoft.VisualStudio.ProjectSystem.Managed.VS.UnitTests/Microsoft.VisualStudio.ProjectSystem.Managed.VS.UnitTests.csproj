@@ -52,6 +52,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Mocks\DteFactory.cs" />
     <Compile Include="Mocks\IActiveConfiguredProjectSubscriptionServiceFactory.cs" />
+    <Compile Include="Mocks\IComponentModelFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
