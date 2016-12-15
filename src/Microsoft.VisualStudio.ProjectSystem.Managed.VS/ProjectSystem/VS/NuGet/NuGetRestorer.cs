@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _evaluationSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
 
+        private const int perfPackageRestoreEnd = 7343;
+
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
 
@@ -133,9 +135,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (projectRestoreInfo != null)
             {
                 _projectVsServices.Project.Services.ProjectAsynchronousTasks
-                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(() => _solutionRestoreService
-                            .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)),
-                            registerFaultHandler: true);
+                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(async () =>
+                    {
+                        await _solutionRestoreService
+                               .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                               .ConfigureAwait(false);
+
+                        Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+
+                    }), registerFaultHandler: true);
             }
 
             return Task.CompletedTask;
