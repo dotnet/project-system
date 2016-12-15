@@ -2,13 +2,13 @@
 
 using System;
 using System.Collections.Immutable;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Moq;
@@ -103,7 +103,7 @@ Root (flags: {ProjectRoot})
             });
 
             var modelWatcher = IMsBuildModelWatcherFactory.CreateInstance();
-            var modelWatcherFactory = IExportFactoryFactory.ImplementCreateValue(() => modelWatcher);
+            var modelWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => modelWatcher);
 
             IVsWindowFrameEvents events = null;
             var uiShell = IVsUIShell7Factory.ImplementAdviseUnadviseWindowEvents(ev =>
@@ -159,7 +159,7 @@ Root (flags: {ProjectRoot})
             var fileSystem = new IFileSystemMock();
             var textDoc = ITextDocumentFactory.Create();
             var frame = IVsWindowFrameFactory.ImplementShowAndSetProperty(VSConstants.S_OK, (prop, obj) => VSConstants.S_OK);
-            var exportFactory = IExportFactoryFactory.ImplementCreateValue(() => IMsBuildModelWatcherFactory.CreateInstance());
+            var exportFactory = ExportFactoryFactory.ImplementCreateValue(() => IMsBuildModelWatcherFactory.CreateInstance());
             var uiShell = IVsUIShell7Factory.ImplementAdviseWindowEvents(ev => 1);
 
             var command = SetupScenario(projectXml, tempDirectory, tempProjFile, projectPath, fileSystem, textDoc, frame, uiShell, exportFactory);
@@ -209,7 +209,7 @@ Root (flags: {ProjectRoot})
 
         private EditProjectFileCommand SetupScenario(string projectXml, string tempPath, string tempProjectFile, string projectFile,
             IFileSystemMock fileSystem, ITextDocument textDoc, IVsWindowFrame frame, IVsUIShell7 shellService,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory = null)
+            ExportFactory<IMsBuildModelWatcher> watcherFactory = null)
         {
             fileSystem.SetTempFile(tempPath);
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -254,7 +254,7 @@ Root (flags: {ProjectRoot})
             IProjectThreadingService threadingService = null,
             IVsShellUtilitiesHelper shellUtilities = null,
             IServiceProvider serviceProvider = null,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory = null
+            ExportFactory<IMsBuildModelWatcher> watcherFactory = null
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
@@ -268,7 +268,7 @@ Root (flags: {ProjectRoot})
                 (provider, path) => Tuple.Create(IVsHierarchyFactory.Create(), (uint)1, IVsPersistDocDataFactory.Create(), (uint)1),
                 (provider, path, editorType, logicalView) => IVsWindowFrameFactory.Create());
             var sp = serviceProvider ?? IServiceProviderFactory.Create();
-            var wFact = watcherFactory ?? IExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
+            var wFact = watcherFactory ?? ExportFactoryFactory.CreateInstance<IMsBuildModelWatcher>();
             return new EditProjectFileCommand(uProj, sp, msbuild, fs, tds, eas, threadServ, shellUt, wFact);
         }
 

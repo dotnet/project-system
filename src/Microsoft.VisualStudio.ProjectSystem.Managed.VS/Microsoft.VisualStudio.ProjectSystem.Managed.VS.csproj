@@ -188,9 +188,7 @@
     <Compile Include="ProjectSystem\VS\Utilities\Converters.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\DelegateCommand.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverter.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\ExportFactory\MsBuildModelWatcherExportFactory.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\FocusAttacher.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\ExportFactory\IExportFactory.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\IMsBuildAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
