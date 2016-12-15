@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
@@ -31,7 +32,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <paramref name="path"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentException">
-        ///     <paramref name="path"/> is an empty string ("").
+        ///     <paramref name="path"/> is an empty string (""), contains only white space, or contains one or more invalid characters.
+        ///     
+        ///     <paramref name="path"/> is prefixed with, or contains, only a colon character (:).
+        /// </exception>
+        /// <exception cref="IOException">
+        ///     The directory specified by <paramref name="path"/> is a file.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     The network name is not known.
+        /// </exception>
+        /// <exception cref="UnauthorizedAccessException">
+        ///     The caller does not have the required permission.
+        /// </exception>
+        /// <exception cref="PathTooLongException"> 
+        ///     The specified path, file name, or both exceed the system-defined maximum length.
+        /// </exception>
+        /// <exception cref="DirectoryNotFoundException">
+        ///     The specified path is invalid (for example, it is on an unmapped drive).
+        /// </exception>
+        /// <exception cref="NotSupportedException">
+        ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
         /// </exception>
         Task<IProjectTree> CreateFolderAsync(string path);
     }
