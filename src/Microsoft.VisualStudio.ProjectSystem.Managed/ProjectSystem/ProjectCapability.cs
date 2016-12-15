@@ -19,5 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string DependenciesTree = nameof(DependenciesTree);
         public const string LaunchProfiles = "LaunchProfiles";
         public const string OpenProjectFile = "OpenProjectFile";
+        public const string GenerateNuGetPackage = "GenerateNuGetPackage";
     }
 }

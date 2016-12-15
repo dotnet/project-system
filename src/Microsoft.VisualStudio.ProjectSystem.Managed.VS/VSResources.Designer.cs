@@ -355,6 +355,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack.
+        /// </summary>
+        internal static string PackCommand {
+            get {
+                return ResourceManager.GetString("PackCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack {0}.
+        /// </summary>
+        internal static string PackSelectedProjectCommand {
+            get {
+                return ResourceManager.GetString("PackSelectedProjectCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project Modification Detected.
         /// </summary>
         internal static string ProjectModificationDlgTitle {
