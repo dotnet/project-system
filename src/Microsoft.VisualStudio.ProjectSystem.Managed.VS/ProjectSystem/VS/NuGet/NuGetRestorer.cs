@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     {
                         await _solutionRestoreService
                                .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
-                               .ConfigureAwait(true);
+                               .ConfigureAwait(false);
 
                         Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
 
