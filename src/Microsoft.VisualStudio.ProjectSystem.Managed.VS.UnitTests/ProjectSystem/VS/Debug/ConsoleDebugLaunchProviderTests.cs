@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;

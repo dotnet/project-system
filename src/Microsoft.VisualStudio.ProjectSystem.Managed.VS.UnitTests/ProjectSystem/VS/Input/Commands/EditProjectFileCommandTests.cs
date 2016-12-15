@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Text;
-using Xunit;
-using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities.ExportFactory;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text;
+using Moq;
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

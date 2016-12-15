@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
