@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
     [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
     class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
     {
-        private const int E_NOTIMPL = unchecked((int)0x80004001);
         private readonly ILanguageServiceHost _host;
 
         [ImportingConstructor]
@@ -30,48 +29,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         }
 
         #region IVsENCRebuildableProjectCfg Implementation
-        // Managed ENC always uses IVsENCRebuildableProjectCfg2. 
+        // Managed ENC always uses IVsENCRebuildableProjectCfg2.
+        // Although we don't implement the methods of IVsENCRebuildableProjectCfg, it is important that we implement the interface and return VSConstants.E_NOTIMPL.
+        // This is how the EncManager recognizes the project system that supports EnC.
         public int ENCRebuild(object in_pProgram, out object out_ppSnapshot)
         {
             out_ppSnapshot = null;
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int ENCComplete(int in_fENCSuccess)
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int CancelENC()
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int StartDebugging()
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int StopDebugging()
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
 
         public int SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
         {
-            return E_NOTIMPL;
+            return VSConstants.E_NOTIMPL;
         }
         #endregion
+
         #region IVsENCRebuildableProjectCfg2 Implementation
         public int BuildForEnc([In, MarshalAs(UnmanagedType.IUnknown)] object pUpdatePE)
         {
@@ -138,6 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
             return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).StopDebuggingPE();
         }
         #endregion
+
         #region IVsENCRebuildableProjectCfg4 Implementation
         public int HasCustomMetadataEmitter([MarshalAs(UnmanagedType.VariantBool)] out bool value)
         {
