@@ -238,9 +238,9 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}.{1}</source>
-        <target state="translated">{0} を編集します。{1}</target>
-        <note />
+        <source>Edit {0}</source>
+        <target state="needs-review-translation">{0} を編集します。{1}</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -251,6 +251,16 @@ In order to debug this project, add an executable project to this solution which
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">複数のターゲット フレームワークの編集はサポートされていません。</target>
         <note />
+      </trans-unit>
+      <trans-unit id="PackCommand">
+        <source>&amp;Pack</source>
+        <target state="new">&amp;Pack</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PackSelectedProjectCommand">
+        <source>&amp;Pack {0}</source>
+        <target state="new">&amp;Pack {0}</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

@@ -2709,6 +2709,16 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
         <target state="translated">Importations actuelles</target>
         <note />
       </trans-unit>
+      <trans-unit id="PPG_PackageTitle">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PPG_Property_PackageVersion">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

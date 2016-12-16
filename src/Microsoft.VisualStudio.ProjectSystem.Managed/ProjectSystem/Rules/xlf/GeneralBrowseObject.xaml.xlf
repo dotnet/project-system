@@ -203,16 +203,8 @@
         <source>Project Folder</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Title|DisplayName">
-        <source>Assembly Title</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Assembly Description</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Company|DisplayName">
-        <source>Company</source>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
@@ -223,28 +215,8 @@
         <source>Copyright</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Trademark|DisplayName">
-        <source>Trademark</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly Version</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyFileVersion|DisplayName">
-        <source>Assembly FileVersion</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyGuid|DisplayName">
-        <source>Assembly Guid</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NeutralResourcesLanguage|DisplayName">
-        <source>Neutral Resources Language</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ComVisible|DisplayName">
-        <source>ComVisible</source>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SignAssembly|DisplayName">
@@ -258,6 +230,70 @@
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate Package On Build</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package Id</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+        <source>Package Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Package Require License Acceptance</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
+        <source>Package License Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Package Project Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
+        <source>Package Icon Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Package Tags</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release Notes</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository Type</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+        <source>Assembly Company</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>Assembly File Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
+        <source>Neutral Resources Language</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

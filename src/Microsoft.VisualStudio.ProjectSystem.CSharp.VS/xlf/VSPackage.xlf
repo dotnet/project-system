@@ -35,6 +35,10 @@
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <note />
       </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

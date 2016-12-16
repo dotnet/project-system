@@ -184,8 +184,8 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}.{1}</source>
-        <note />
+        <source>Edit {0}</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -194,6 +194,14 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="PackCommand">
+        <source>&amp;Pack</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PackSelectedProjectCommand">
+        <source>&amp;Pack {0}</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

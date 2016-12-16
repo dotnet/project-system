@@ -43,6 +43,11 @@
         <target state="translated">Файлы проектов .NET Core 2015 (*.xproj);*.xproj</target>
         <note />
       </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
+        <target state="new">Class Library (.NET Core)</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

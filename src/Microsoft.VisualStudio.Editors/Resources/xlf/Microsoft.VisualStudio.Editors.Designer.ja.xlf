@@ -2709,6 +2709,16 @@ app.config ファイルでの新しい値は '{1}' です
         <target state="translated">現在のインポート</target>
         <note />
       </trans-unit>
+      <trans-unit id="PPG_PackageTitle">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PPG_Property_PackageVersion">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

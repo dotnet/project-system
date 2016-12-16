@@ -253,19 +253,9 @@
         <target state="translated">项目文件夹</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Title|DisplayName">
-        <source>Assembly Title</source>
-        <target state="translated">程序及标题</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Assembly Description</source>
         <target state="translated">程序集说明</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Company|DisplayName">
-        <source>Company</source>
-        <target state="translated">公司</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
@@ -278,34 +268,9 @@
         <target state="translated">版权</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Trademark|DisplayName">
-        <source>Trademark</source>
-        <target state="translated">商标</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly Version</source>
         <target state="translated">程序集版本</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyFileVersion|DisplayName">
-        <source>Assembly FileVersion</source>
-        <target state="translated">程序集 FileVersion</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyGuid|DisplayName">
-        <source>Assembly Guid</source>
-        <target state="translated">程序集 Guid</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NeutralResourcesLanguage|DisplayName">
-        <source>Neutral Resources Language</source>
-        <target state="translated">非特定区域性语言</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ComVisible|DisplayName">
-        <source>ComVisible</source>
-        <target state="translated">ComVisible</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SignAssembly|DisplayName">
@@ -322,6 +287,86 @@
         <source>Strong name key file</source>
         <target state="translated">强名称密钥文件</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <target state="new">Treat specific warnings as errors</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate Package On Build</source>
+        <target state="new">Generate Package On Build</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package Id</source>
+        <target state="new">Package Id</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <target state="new">Authors</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Package Require License Acceptance</source>
+        <target state="new">Package Require License Acceptance</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
+        <source>Package License Url</source>
+        <target state="new">Package License Url</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Package Project Url</source>
+        <target state="new">Package Project Url</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
+        <source>Package Icon Url</source>
+        <target state="new">Package Icon Url</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Package Tags</source>
+        <target state="new">Package Tags</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release Notes</source>
+        <target state="new">Release Notes</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository Url</source>
+        <target state="new">Repository Url</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository Type</source>
+        <target state="new">Repository Type</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+        <source>Assembly Company</source>
+        <target state="new">Assembly Company</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>Assembly File Version</source>
+        <target state="new">Assembly File Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
+        <source>Neutral Resources Language</source>
+        <target state="new">Neutral Resources Language</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>
