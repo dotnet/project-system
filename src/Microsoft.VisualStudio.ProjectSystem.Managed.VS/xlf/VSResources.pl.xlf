@@ -239,7 +239,7 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">Edytuj element {0}.{1}</target>
+        <target state="needs-review-translation">Edytuj element {0}</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">

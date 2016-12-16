@@ -239,7 +239,7 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">Editar {0}.{1}</target>
+        <target state="needs-review-translation">Editar {0}</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">

@@ -239,7 +239,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">{0}을(를) 편집합니다.{1}</target>
+        <target state="needs-review-translation">{0}을(를) 편집합니다</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">

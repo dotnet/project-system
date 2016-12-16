@@ -239,7 +239,7 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">{0} öğesini düzenleyin.{1}</target>
+        <target state="needs-review-translation">{0} öğesini düzenleyin</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">

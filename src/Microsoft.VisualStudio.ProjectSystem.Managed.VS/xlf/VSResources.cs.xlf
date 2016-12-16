@@ -239,7 +239,7 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">Upravte {0}.{1}</target>
+        <target state="needs-review-translation">Upravte {0}</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
