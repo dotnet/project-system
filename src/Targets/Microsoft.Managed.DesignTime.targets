@@ -30,7 +30,8 @@
     <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="OpenProjectFile"/>
-    
+    <ProjectCapability Include="GenerateNuGetPackage"/>
+
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />

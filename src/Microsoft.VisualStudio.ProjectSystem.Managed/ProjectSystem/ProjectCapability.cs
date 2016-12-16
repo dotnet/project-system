@@ -25,5 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ReferenceManagerProjects = nameof(ReferenceManagerProjects);
         public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
         public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
+        public const string GenerateNuGetPackage = "GenerateNuGetPackage";
     }
 }
