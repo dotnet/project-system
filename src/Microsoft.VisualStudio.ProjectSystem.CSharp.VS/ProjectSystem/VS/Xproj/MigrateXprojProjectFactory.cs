@@ -106,10 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"");
-            pInfo.UseShellExecute = false;
-            pInfo.RedirectStandardError = true;
-            pInfo.RedirectStandardOutput = true;
+            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"")
+            {
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
             // Skip it.
