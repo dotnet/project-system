@@ -91,6 +91,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorageTests.cs" />
+    <Compile Include="ProjectSystem\Properties\AssemblyInfoPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
@@ -98,7 +99,6 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\AssemblyOriginatorKeyFileValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\SourceFilePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceCheckerTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />

@@ -135,6 +135,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
+#Region "PackagePropPageComClass (Package property page)"
+
+    <Guid("21b78be8-3957-4caa-bf2f-e626107da58e"), ComVisible(True), CLSCompliant(False)>
+    Public NotInheritable Class PackagePropPageComClass 'See class hierarchy comments above
+        Inherits VBPropPageBase
+
+        Protected Overrides ReadOnly Property Title() As String
+            Get
+                Return SR.GetString(SR.PPG_PackageTitle)
+            End Get
+        End Property
+
+        Protected Overrides ReadOnly Property ControlType() As System.Type
+            Get
+                Return GetType(PropertyPages.PackagePropPage)
+            End Get
+        End Property
+
+        Protected Overrides Function CreateControl() As Control
+            Return New PropertyPages.PackagePropPage
+        End Function
+
+    End Class
+
+#End Region
 
 #Region "CompilePropPageComClass"
 
