@@ -1566,6 +1566,56 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsTargetingDotNetFramework45OrAbove(hierarchy As IVsHierarchy) As Boolean
 
+            Dim frameworkName As FrameworkName = Nothing
+            If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
+                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) = 0 AndAlso
+                (frameworkName.Version.Major > 4 OrElse (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)) Then
+                    ' Targeting .NET framework 4.5 or higher
+                    Return True
+                ElseIf IsTargetingDotNetCore(frameworkName.Identifier) Then
+                    Return True
+                End If
+            End If
+
+            Return False
+
+        End Function
+
+        ''' <summary>
+        ''' Determines whether the project associated with the given hierarchy is targeting .NET Core
+        ''' </summary>
+        ''' <param name="hierarchy"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Friend Function IsTargetingDotNetCore(hierarchy As IVsHierarchy) As Boolean
+
+            Dim frameworkName As FrameworkName = Nothing
+            If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
+                Return IsTargetingDotNetCore(frameworkName.Identifier)
+            Else
+                Return False
+            End If
+
+        End Function
+
+        ''' <summary>
+        ''' Determines whether the specified framework is .NET Core
+        ''' </summary>
+        ''' <param name="frameworkIdentifier"></param>
+        ''' <returns>Value indicating whether the specified framework is .Net Core</returns>
+        Friend Function IsTargetingDotNetCore(frameworkIdentifier As String) As Boolean
+
+            Return String.Compare(frameworkIdentifier, ".NETCoreApp", StringComparison.OrdinalIgnoreCase) = 0
+
+        End Function
+
+        ''' <summary>
+        ''' Gets the TargetFrameworkMoniker property value for the project associated with the given hierarchy
+        ''' </summary>
+        ''' <param name="hierarchy">Hierarchy object.</param>
+        ''' <returns>Value indicating whether the property was retrieved successfully</returns>
+        Private Function TryGetTargetFrameworkMoniker(hierarchy As IVsHierarchy, ByRef frameworkName As FrameworkName) As Boolean
+
             Dim propertyValue As Object = Nothing
 
             If VSErrorHandler.Failed(hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID4.VSHPROPID_TargetFrameworkMoniker, propertyValue)) Then
@@ -1580,19 +1630,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return False
             End If
 
-            Dim frameworkName As New FrameworkName(CStr(propertyValue))
-            '
-            If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) = 0 AndAlso
-                (frameworkName.Version.Major > 4 OrElse (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)) Then
-                ' Targeting .NET framework 4.5 or higher
-                Return True
-            ElseIf String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.OrdinalIgnoreCase) = 0 Then
-                ' Targetting .Net Core
-                Return True
-            Else
-                Return False
-            End If
-
+            frameworkName = New FrameworkName(CStr(propertyValue))
+            Return True
         End Function
 
         ''' <summary>
