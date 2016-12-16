@@ -5,19 +5,19 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SpecialFolder.xaml" />
       <trans-unit id="Rule|SpecialFolder|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SpecialFolder|Description">
         <source>Special folders</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
         <source>Folder Name</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

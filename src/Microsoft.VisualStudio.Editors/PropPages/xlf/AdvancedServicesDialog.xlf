@@ -5,19 +5,19 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx" />
       <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
         <source>Role service cache &amp;timeout:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
         <source>&amp;Save password hash locally to enable offline login</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
         <source>&amp;Require users to log on again whenever the server cookie expires</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UseCustomConnectionStringCheckBox.Text">
         <source>&amp;Use custom connection string:</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

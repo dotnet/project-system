@@ -5,43 +5,43 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SdkReference.xaml" />
       <trans-unit id="Rule|SdkReference|DisplayName">
         <source>SDK Reference</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
         <source>SDK reference properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
         <source>FrameworkIdentity</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">
         <source>Expand Content</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
         <source>Expand Reference Assemblies</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
         <source>Copy Local Expanded Reference Assemblies</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

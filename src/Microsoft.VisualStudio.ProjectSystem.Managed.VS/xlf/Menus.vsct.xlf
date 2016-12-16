@@ -5,19 +5,19 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/Menus.vsct" />
       <trans-unit id="cmdidProjectDebugger|ButtonText">
         <source>Web Debugger</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|ButtonText">
         <source>Edit Project File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|ToolTipText">
         <source>Edit Project File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|CommandName">
         <source>EditProjectFile</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

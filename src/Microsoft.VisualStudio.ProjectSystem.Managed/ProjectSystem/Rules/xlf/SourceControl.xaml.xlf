@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SourceControl.xaml" />
       <trans-unit id="Rule|SourceControl|DisplayName">
         <source>Source control</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SourceControl|Description">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

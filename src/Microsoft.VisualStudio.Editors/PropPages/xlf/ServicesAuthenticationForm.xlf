@@ -5,34 +5,34 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx" />
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UserNameLabel.Text">
         <source>&amp;Username:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PasswordLabel.Text">
         <source>&amp;Password:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">
         <source>&amp;Log In</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>&amp;Skip Login</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="InfoLabel.Text">
         <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
  
 You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
 </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Login</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

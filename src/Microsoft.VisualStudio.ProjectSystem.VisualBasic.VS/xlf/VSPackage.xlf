@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS/VSPackage.resx" />
       <trans-unit id="#1">
         <source>Visual Basic</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="#2">
         <source>Visual Basic Project Files (*.vbproj);*.vbproj</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

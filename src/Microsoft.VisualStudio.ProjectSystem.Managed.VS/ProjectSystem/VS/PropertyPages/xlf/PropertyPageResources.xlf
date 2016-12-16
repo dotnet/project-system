@@ -5,119 +5,119 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
       <trans-unit id="AdminRequiredForPort">
         <source>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AllFiles">
         <source>All files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationUrlWatermark">
         <source>The URL of the application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CopyHyperlinkText">
         <source>Copy</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DuplicateKey">
         <source>Duplicate Key</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnvVariableNameWatermark">
         <source>Key</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnvVariableValueWatermark">
         <source>Value</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ExecutableFiles">
         <source>Executable files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ExecutablePathWatermark">
         <source>Path to the executable to run</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IISExpressMissingAppUrl">
         <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IISMissingAppUrl">
         <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="InvalidAppUrl">
         <source>The Application Url is invalid. {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="InvalidIISAppUrl">
         <source>The IIS Application Url is invalid. {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="InvalidIISExpressAppUrl">
         <source>The IIS Express Application Url is invalid. {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
         <source>New profile</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NewProfileSeedName">
         <source>newProfile</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileKindCommandName">
         <source>Command</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
         <source>IIS Express</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileKindNoActionName">
         <source>Start</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">
         <source>Project</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileNameInvalid">
         <source>That profile name is invalid or there is an existing profile with the same name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileNameRequired">
         <source>You must specify a profile name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirectoryWatermark">
         <source>Absolute path to working directory</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

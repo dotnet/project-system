@@ -5,43 +5,43 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePathsPropPage.resx" />
       <trans-unit id="AddFolder.Text">
         <source>&amp;Add Folder</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">
         <source>Browse for Folder</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">
         <source>...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="MoveUp.AccessibleName">
         <source>Move up</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="MoveDown.AccessibleName">
         <source>Move down</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveFolder.AccessibleName">
         <source>Delete</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FolderLabel.Text">
         <source>&amp;Folder:</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

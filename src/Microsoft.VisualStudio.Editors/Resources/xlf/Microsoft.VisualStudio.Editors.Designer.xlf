@@ -5,105 +5,105 @@
       <group id="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx" />
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
         <source>Property Page</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ReferencesTitle">
         <source>References</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_VersionTitle">
         <source>Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SigningTitle">
         <source>Signing</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
         <source>Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_CompileTitle">
         <source>Compile</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_DeployTitle">
         <source>Deploy</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_VdtGeneralTitle">
         <source>Database</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Security">
         <source>Security</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_BuildTitle">
         <source>Build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_BuildEventsTitle">
         <source>Build Events</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ReferencePathsTitle">
         <source>Reference Paths</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_OutputPathNotSecure">
         <source>The output path is not trusted.
 The application may throw security exceptions when it attempts to perform actions which require full trust.
 Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_BrowseText">
         <source>&lt;Browse...&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_KeyFileNewText">
         <source>&lt;New...&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_KeyFileBrowseText">
         <source>&lt;Browse...&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllConfigurations">
         <source>All Configurations</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllPlatforms">
         <source>All Platforms</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
@@ -111,116 +111,116 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectFileTitle">
         <source>Select File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AddExistingFilesTitle">
         <source>Add existing file to project</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AddIconFilesFilter">
         <source>Icon Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ExeFilesFilter">
         <source>Executable Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectWorkingDirectoryTitle">
         <source>Select Working Directory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AddWin32ResourceFilter">
         <source>Win32 Resource Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AddWin32ResourceTitle">
         <source>Add Win32 resource file to project</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_InvalidFolderPath">
         <source>Folder path does not exist.
 Please select a valid folder path.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedCompilerSettings_Title">
         <source>Advanced Compiler Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_Title">
         <source>Advanced Build Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_CompilerWarnings_Title">
         <source>Compiler Warnings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ReferencePaths_Title">
         <source>Reference Paths</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_CompatibleSettings_Title">
         <source>Compatible Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_Title">
         <source>Assembly Information</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_InvalidVersion">
         <source>Invalid version format, expected "[Major]", "[Major].[Minor]", "[Major].[Minor].[Build]" or "[Major].[Minor].[Build].[Revision]"</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_BadWildcard">
         <source>A wildcard ("*") is not allowed in this field.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_VersionOutOfRange_2Args">
         <source>Each part of the version number for '{0}' must be an integer between 0 and {1}.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_DefaultIconText">
         <source>(Default Icon)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_InvalidSubMainStartup">
         <source>Startup object must be a form when 'Enable application framework' is checked.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectNotSet">
         <source>(Not set)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_CantAddIcon">
         <source>Icon could not be added to the project.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_BadIcon">
         <source>Invalid icon file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_BadIcon_1Arg">
         <source>{0} is not a valid icon file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_BadGuid">
         <source>The GUID should match the format dddddddd-dddd-dddd-dddd-dddddddddddd.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_MyAppCommentLine1">
         <source>NOTE: This file is auto-generated; do not modify it directly.  To make changes,</source>
@@ -228,128 +228,128 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Application_MyAppCommentLine2">
         <source> or if you encounter build errors in this file, go to the Project Designer</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_MyAppCommentLine3">
         <source> (go to Project Properties or double-click the My Project node in</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_MyAppCommentLine4">
         <source> Solution Explorer), and make changes on the Application tab.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_InvalidIdentifierStartupForm_1Arg">
         <source>'{0}' is not a valid identifier. Please select a different Startup form.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_InvalidIdentifierSplashScreenForm_1Arg">
         <source>'{0}' is not a valid identifier. Please select a different Splash screen form.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_SplashSameAsStart">
         <source>The splash screen form cannot be the start-up form.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupFormLabelText">
         <source>Startup f&amp;orm:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
         <source>The following events are available for MyApplication:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine3">
         <source>Startup: Raised when the application starts, before the startup form is created.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine4">
         <source>Shutdown: Raised after all application forms are closed.  This event is not raised if the application terminates abnormally.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine5">
         <source>UnhandledException: Raised if the application encounters an unhandled exception.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine6">
         <source>StartupNextInstance: Raised when launching a single-instance application and the application is already active. </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine7">
         <source>NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_InvalidBaseAddress">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, 0x11000000.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
         <source>Warning</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Error">
         <source>Error</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">
         <source>Implicit conversion</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42017_42018_42019">
         <source>Late binding; call could fail at run time</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42020">
         <source>Implicit type; object assumed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42104">
         <source>Use of variable prior to assignment</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42105_42106_42107">
         <source>Function returning reference type without return value</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42353_42354_42355">
         <source>Function returning intrinsic value type without return value</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42024">
         <source>Unused local variable</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42025">
         <source>Instance variable accesses shared member</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42004">
         <source>Recursive operator or property access</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42029">
         <source>Duplicate or overlapping catch blocks</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_ResetIndeterminateWarningLevels">
         <source>The warning settings for one or more configurations conflict.
 Changing this setting will reset the settings in all configurations.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
         <source>When startup form closes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
         <source>When last form closes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_AuthenMode_Windows">
         <source>Windows</source>
@@ -361,47 +361,47 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Cancel">
         <source>Cancel</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Calculate">
         <source>&amp;Calculate Permissions</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Stopped">
         <source>Stopped...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Starting">
         <source>Starting...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Building">
         <source>Building...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Analyzing">
         <source>Analyzing...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_AnalyzeFailed">
         <source>Analyze Failed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Aborting">
         <source>Aborting...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Cancelling">
         <source>Canceling...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_InternetZone">
         <source>Internet</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_LocalIntranetZone">
         <source>Local Intranet</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CustomZone">
         <source>(Custom)</source>
@@ -409,19 +409,19 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_ZoneDefault">
         <source>(Zone Default)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Included">
         <source>Include</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Excluded">
         <source>Exclude</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_FullTrustToolTip">
         <source>The application will require elevated permissions to run in the selected zone. Click the help link above for more info.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BadPermissionToolTip">
         <source>This permission could not be loaded. Press the delete key to remove it from your project.</source>
@@ -429,88 +429,88 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderIncluded">
         <source>Included</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderPermission">
         <source>Permission</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderSetting">
         <source>Setting</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HelpLabelText">
         <source>Specify the code access security permissions that your ClickOnce application requires in order to run. Learn more about code access security...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HelpLabelLink">
         <source>Learn more about code access security...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BadDropDownValue">
         <source>Invalid value</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_SecurityPermissionCannotBeExcluded">
         <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. Mark this permission as "Zone Default" or "Include."</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_ExecuteCannotBeExcluded">
         <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. The Execute flag has been added to the SecurityPermission in your manifest.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialog">
         <source>This application requires full trust to run correctly. Would you like to set this as a full trust application?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialogTitle">
         <source>Full Trust Required</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CouldNotSaveManifest">
         <source>An error occurred and the app.manifest file could not be saved.
 Error:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CouldNotLoadManifest">
         <source>An error occurred and the app.manifest file could not be loaded. Please remove any changes you have made to the file and reload the Security property page again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
         <source>Included</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
         <source>Not Included</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
         <source>Included with warning</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_PermCalcFailed">
         <source>Calculating permissions failed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_PermCalcFailedCaption">
         <source>Error</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityAdvancedPage_Title">
         <source>Advanced Security Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_BuildFailed">
         <source>Build Failed.  Click CANCEL and correct the build failure before analyzing again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_BuildComplete">
         <source>Build completed...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_BuildUnableToStart">
         <source>Unable to start the build.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_BuildFailedToStart">
         <source>Serious error.  The build must begin in order to analyze permissions.  It has not started.</source>
@@ -522,355 +522,355 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_KeyFileBrowse_Title">
         <source>Selecting existing key file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_KeyFileBrowse_Filter">
         <source>Key Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_KeyFileNew_Title">
         <source>Create key file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OldPassWrong">
         <source>The old password is invalid.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OldPassEmpty">
         <source>Enter the old password.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NewPassEmpty">
         <source>Enter a new password.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NewPassMismatch">
         <source>The new passwords do not match. Enter the password again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NewPassTooShort">
         <source>The new password must be at least 6 characters in length. Enter the password again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_BrowseCertTitle">
         <source>Select a Certificate</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_BrowseCertStorePrompt">
         <source>Select a certificate to sign your ClickOnce manifests</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_BrowseCertFileFilter">
         <source>Certificate Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_IssuedTo">
         <source>Issued To</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_IssuedBy">
         <source>Issued By</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_Purpose">
         <source>Intended Purpose</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ExpirationDate">
         <source>Expiration Date</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_InvalidPassword">
         <source>The password is invalid.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_InvalidPasswordTitle">
         <source>Invalid password</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoPrivateKey">
         <source>The selected file does not contain a private key. You must choose a certificate that contains a private key.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoPrivateKeyTitle">
         <source>Invalid key</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CertCreationError">
         <source>Certificate Creation Error</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_AllPurposes">
         <source>&lt;All&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_PasswordMismatch">
         <source>The passwords do not match.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoPassword">
         <source>Enter a password.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoConfirm">
         <source>Confirm the password.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
         <source>Enter password to open file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
         <source>Enter &amp;password to open file {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
         <source>Enter &amp;password for new file {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
         <source>The project already contains a file with that name. Choose another certificate file or rename the file in your project.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CouldNotImportFile">
         <source>The file '{0}' could not be imported: {1}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_KeyFileNameSuffix">
         <source>_TemporaryKey.pfx</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CertificateNotCodeSigning">
         <source>The selected certificate is not valid for code signing. Choose another certificate file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsApp">
         <source>Windows Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsService">
         <source>Windows Service</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsClassLib">
         <source>Class Library</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_CommandLineApp">
         <source>Console Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WebControlLib">
         <source>Web Control Library</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Reference_CanNotRemoveReference">
         <source>Cannot remove '{0}'. {1}
 </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Reference_RemoveImportsFailUnexpected">
         <source>Adding or removing '{0}' as a project import failed because of an unexpected error from the project system.  The error returned was:  '{1}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Reference_AddWebReference">
         <source>Adding web reference failed. {0}
 </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Reference_FailedToUpdateWebReference">
         <source>Updating web reference '{0}' failed.
 {1}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WebReferenceTypeName">
         <source>Web Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Static">
         <source>Static</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
         <source>Dynamic</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WebReferenceNameDescription">
         <source>Name of the web reference</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehaviorName">
         <source>URL Behavior</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehaviorDescription">
         <source>Web reference URL behavior</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WebReferenceUrlName">
         <source>Web Reference URL</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WebReferenceUrlDescription">
         <source>Web Reference URL</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ReferenceDetail_Title">
         <source>Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
         <source>The remote machine name cannot be blank.  Please specify the name of the machine to debug remotely.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ProgramNotExist">
         <source>The external program cannot be found. Please enter a valid executable file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedExternalProgram">
         <source>The external program property cannot be empty. Please enter a valid executable file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_NotAnExeError">
         <source>We can only debug an EXE file. Please enter a valid executable file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedURL">
         <source>The URL property cannot be empty. Please enter a valid URL.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_InvalidURL">
         <source>The URL is invalid. Please enter a valid URL like "http://www.microsoft.com/"</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_WorkingDirError">
         <source>The working directory you entered does not exist. Please enter a valid working directory.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ReferenceNotFound">
         <source>&lt;The system cannot find the reference specified&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ImportedNamespacesTitle">
         <source>Imported Namespaces</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ComputingReferencedNamespacesMessage">
         <source>Computing referenced namespaces...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceTitle">
         <source>Unused References</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceRemoveButton">
         <source>&amp;Remove</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceNoUnusedReferences">
         <source>No unused references</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceCompileFail">
         <source>Project compilation failed. Cannot determine unused references.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceCompileWaiting">
         <source>Gathering list of unused references...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceError">
         <source>Error getting unused references.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
         <source>"Resource files must have a .res file extension. Please enter a valid resource file name."</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ResourceFileNotExist">
         <source>"The resource file entered does not exist."</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_Title">
         <source>Project Designer</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SettingsTabTitle">
         <source>Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ResourceTabTitle">
         <source>Resources</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoading_Msg">
         <source>An error occurred trying to load the project properties window.  Close the window and try again.
 {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoadingPropPage">
         <source>An error occurred trying to load the page.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_DesignerLoader_NotDeferred">
         <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateResx">
         <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateSettings">
         <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_FileNotFound_1Arg">
         <source>Could not find the file '{0}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_AccessibilityName">
         <source>All Project Designer Pages</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_Tooltip">
         <source>More Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SpecialFileNotSupported">
         <source>The requested file type is not supported in projects of this type.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyName">
         <source>Assembly Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_RootNamespace">
         <source>Root Namespace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_StartupObject">
         <source>Startup Object</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_ApplicationIcon">
         <source>Application Icon</source>
@@ -878,47 +878,47 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyVersion">
         <source>Assembly Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyFileVersion">
         <source>Assembly File Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyGuid">
         <source>Assembly GUID</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_CustomSubMain">
         <source>Enable application framework</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_StartProgram">
         <source>External Program Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_StartURL">
         <source>Start Browser With URL</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_StartWorkingDirectory">
         <source>Working Directory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_RemoteDebugMachine">
         <source>Remote Machine Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_HostingPanelName">
         <source>Project Designer Page Container</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabButtonDefaultAction">
         <source>Switch Project Designer Page</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabListDescription">
         <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_PageName">
         <source>{0} page:</source>
@@ -942,7 +942,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="DFX_InvalidPhysicalViewName">
         <source>Invalid physical view name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
@@ -958,19 +958,19 @@ Error:</source>
       </trans-unit>
       <trans-unit id="DFX_BufferReadOnly">
         <source>Buffer is read only.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_NotSupported">
         <source>Unsupported format.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
         <source>Unknown Error.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
@@ -986,11 +986,11 @@ Error:</source>
       </trans-unit>
       <trans-unit id="OptionPage_Editor_InvalidTabSize">
         <source>Please enter an integer between 1 and 60.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionPage_Editor_InvalidIndentSize">
         <source>Please enter an integer between 1 and 60.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionPage_Environment_StartUpShowEmptyEnvironment">
         <source>Show empty environment</source>
@@ -1010,15 +1010,15 @@ Error:</source>
       </trans-unit>
       <trans-unit id="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde">
         <source>Changes in Help Options will not take effect until the environment is restarted.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionPage_Project_IllegalDefaultProjectDirectory">
         <source>The location specified is on an invalid or read-only disk, or contains a device name reserved for the system.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_ResourceNameColumn">
         <source>Name</source>
@@ -1038,15 +1038,15 @@ Error:</source>
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantEditEmbeddedResource">
         <source>Editing embedded resources directly is not supported. Do you wish to convert this item to a linked resource in order to edit it?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_RenameNotSupported">
         <source>The current object is auto-generated and only supports renaming through the Managed Resources Editor.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantFindResourceFile_1Arg">
         <source>Cannot find the file '{0}'.  It may have been moved or deleted.</source>
@@ -1058,7 +1058,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_NameBlank">
         <source>The resource name cannot be empty.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_DuplicateName_1Arg">
         <source>There is already another resource with the name '{0}'.</source>
@@ -1082,11 +1082,11 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_UserCancel">
         <source>The operation has been canceled by the user.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_BadData">
         <source>The resource value contains invalid data or has an incorrect format.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
@@ -1094,7 +1094,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
         <source>Too many files specified.  Please select fewer files and try again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
@@ -1117,17 +1117,17 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_CantBeEmpty">
         <source>One or more of the selected resource values could not be cleared.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantEditInDebugMode">
         <source>The resource file cannot be modified at this time.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_UpdateADependentFile">
         <source>You are trying to edit a resource file that is a part of another project item (such as a form or a control).  Editing this item could corrupt the project item, and you will have to recover it by hand.  In addition, changes made to this resource file may be lost if further changes are made to the project item.
 
 Do you really want to edit this file?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantAddUnsupportedResource_1Arg">
         <source>The resource '{0}' cannot be added.</source>
@@ -1323,7 +1323,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_BinaryFile">
         <source>Binary File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Type_Wave">
         <source>Wave Sound</source>
@@ -1439,11 +1439,11 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_DlgTitle_AddExisting">
         <source>Add existing file to resources</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_DlgTitle_Import_1Arg">
         <source>Import file into resource '{0}'</source>
@@ -1455,7 +1455,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_DlgTitle_AddNew">
         <source>Please specify where to save the new file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Dlg_ReplaceExistingFile">
         <source>The file '{0}' already exists.  Do you want to replace it?</source>
@@ -1463,19 +1463,19 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Dlg_ReplaceExistingFiles">
         <source>The following files already exist.  Do you want to replace them?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Dlg_ExportMultiple">
         <source>Select a folder in which to export the resources.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Dlg_ContinueAnyway">
         <source>Do you want to continue anyway?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Dlg_SetCustomTool">
         <source>Do you want to enable strongly-typed resource generation for this file?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Task_BadLink_2Args">
         <source>Resource '{0}' could not be loaded because the file to which it is linked could not be found: {1}.</source>
@@ -1495,11 +1495,11 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Task_WarningCustomToolNotSet">
         <source>Double-click here to enable strongly-typed resources for this file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Task_InvalidName_1Arg">
         <source>The resource name '{0}' is not a valid identifier.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_EncodingDisplayName">
         <source>{0} - Codepage {1}</source>
@@ -1507,11 +1507,11 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_DefaultEncoding">
         <source>(Default)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Undo_ChangeName">
         <source>Change resource name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Undo_AddResources_1Arg">
         <source>Add {0} new resource(s)</source>
@@ -1531,35 +1531,35 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Name">
         <source>Name used to identify the resource in code.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Comment">
         <source>Additional information about the resource.  This property is only meaningful at design time.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Encoding">
         <source>Character encoding of the file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Filename">
         <source>The path to the linked resource.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_FileType">
         <source>Specifies whether the file resource is text or binary.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Persistence">
         <source>Specifies whether the resource is embedded or linked.  Embedded resources are saved in the resource file.  Linked resources reside in an external location on disk.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Type">
         <source>The resource will be generated as this type in the strongly-typed resource class.  For example, the resource might be generated as a String or Bitmap object.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Value">
         <source>The value of the resource.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RFS_CantCreateResourcesFolder_Folder_ExMsg">
         <source>Unable to add a '{0}' folder to this project.
@@ -1611,170 +1611,170 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_ApplicationScope">
         <source>Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_WebApplicationScope">
         <source>Application (Web)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_UserScope">
         <source>User</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_WebUserScope">
         <source>User (Web)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_GridViewNameColumnHeaderText">
         <source>Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_GridViewTypeColumnHeaderText">
         <source>Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_GridViewScopeColumnHeaderText">
         <source>Scope</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_GridViewValueColumnHeaderText">
         <source>Value</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UnknownType">
         <source>Type '{0}' is not defined.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_NameChanged">
         <source>Name changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_TypeChanged">
         <source>Type changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_ScopeChanged">
         <source>Scope changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_RoamingChanged">
         <source>Roaming changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_DescriptionChanged">
         <source>Description changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_ProviderChanged">
         <source>Provider changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_SerializedValueChanged">
         <source>Value changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_GenerateDefaultValueInCode">
         <source>Generate default value in code changed</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_UndoTran_RemoveMultipleSettings_1Arg">
         <source>Remove {0} setting(s)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_Err_CantLoadSettingsFile">
         <source>Unable to load settings file.  It might be corrupted or contain invalid XML or contain duplicate identifiers.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_NewValuesAdded">
         <source>New values from the app.config file were automatically added</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ReplaceValueWithAppConfigValueTitle">
         <source>Value of setting '{0}' was changed in the app.config file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ReplaceValueWithAppConfigValue">
         <source>The current value in the .settings file is '{0}'
 The new value in the app.config file is '{1}'
 
 Do you want to update the value in the .settings file?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_FailedToLoadAppConfigValues">
         <source>An error occurred while reading the app.config file. The file might be corrupted or contain invalid XML.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_FailedToSaveAppConfigValues">
         <source>An error occurred while saving values to the app.config file. The file might be corrupted or contain invalid XML.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_DuplicateName_1Arg">
         <source>There is already another setting with the name '{0}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_InvalidIdentifier_1Arg">
         <source>'{0}' is not a valid identifier.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_InvalidTypeName_1Arg">
         <source>'{0}' is not a valid type name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_NameEmpty">
         <source>The setting name cannot be empty.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_InvalidValue_2Arg">
         <source>'{0}' cannot be converted to an instance of type '{1}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_GenericTypesNotSupported_1Arg">
         <source>Generic types are not supported.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_AbstractTypesNotSupported_1Arg">
         <source>Abstract types are not supported.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_RenameNotSupported">
         <source>The current object is auto-generated and only supports renaming through the Settings Designer.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_RenameNotSupportedForWcfGeneratedCode">
         <source>The current object is auto-generated by the Wcf Client Generator and cannot be renamed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_ModifyParamsNotSupported">
         <source>The current object is auto-generated and does not support modifying parameters.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_CantEditInDebugMode">
         <source>The settings file cannot be modified at this time.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_MNU_AddSettingText">
         <source>&amp;Add Setting</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_MNU_RemoveSettingText">
         <source>R&amp;emove Setting</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_FullDescriptionText">
         <source>Application settings allow you to store and retrieve property settings and other information for your application dynamically. For example, the application can save a user's color preferences, then retrieve them the next time it runs.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_LinkPartOfDescriptionText">
         <source>Learn more about application settings...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_IncludeSensitiveInfoInConnectionStringWarning">
         <source>This connection string appears to contain sensitive data (for example, a password), which is required to connect to the database. However, storing sensitive data in the connection string can be a security risk. Do you want to include sensitive data in the connection string?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_SelectATypeTreeView_AccessibleName">
         <source>Select a Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON1">
         <source>This class allows you to handle specific events on the settings class:</source>
@@ -1782,75 +1782,75 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON2">
         <source> The SettingChanging event is raised before a setting's value is changed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON3">
         <source> The PropertyChanged event is raised after a setting's value is changed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON4">
         <source> The SettingsLoaded event is raised after the setting values are loaded.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON5">
         <source> The SettingsSaving event is raised before the setting values are saved.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_HOWTO_ATTACHEVTS">
         <source>To add event handlers for saving and changing settings, uncomment the lines below:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_HANDLE_CHANGING">
         <source>Add code to handle the SettingChangingEvent event here.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_HANDLE_SAVING">
         <source>Add code to handle the SettingsSaving event here.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_CODEGEN_FAILEDOPENCREATEEXTENDINGFILE">
         <source>Failed to create or open file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Description">
         <source>Description of the setting.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_GenerateDefaultValueInCode">
         <source>Specifies whether or not the default setting value should be generated in the strongly-typed settings class.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Group">
         <source>Specifies the group to which this Settings file belongs.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_GroupDescription">
         <source>Description of the group to which this Settings file belongs.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Roaming">
         <source>Indicates whether the setting should roam when Windows roaming profiles are enabled.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Name">
         <source>Name used to identify the setting.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Provider">
         <source>The provider (System.Configuration.Provider.ProviderBase) used to manage the setting.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Scope">
         <source>Specifies whether the setting is per-application (read-only) or per-user (read-write).</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_SerializedSettingType">
         <source>The setting will be generated as this type in the strongly-typed settings class. For example, the setting might be generated as a String or Integer object.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Value">
         <source>The current value for the setting.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_SyncFiles_1Arg">
         <source>The following files will be deleted:
@@ -1862,11 +1862,11 @@ Do you want to update the value in the .settings file?</source>
         <source>No user.config files were found in any of the following locations:
 
 {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_SyncFilesOneOrMoreFailed">
         <source>One or more user.config files was not removed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_SFG_AutoSaveRegionText">
         <source>My.Settings Auto-Save Functionality</source>
@@ -1890,7 +1890,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_WindowsApp_WPF">
         <source>WPF Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_InvalidShutdownMode">
         <source>(Invalid value: "{0}")</source>
@@ -1898,43 +1898,43 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ShutdownMode_OnExplicitShutdown">
         <source>On explicit shutdown</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ShutdownMode_OnLastWindowClose">
         <source>On last window close</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ShutdownMode_OnMainWindowClose">
         <source>On main window close</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_Xaml_CouldntFindRootElement">
         <source>Could not find the expected root element "{0}" in the application definition file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_Xaml_UnexpectedFormat_2Args">
         <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectLabelText">
         <source>Startup &amp;object:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupUriLabelText">
         <source>Startup &amp;URI:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_AppXamlOpenInUnsupportedEditor">
         <source>The application definition file is already opened in an incompatible editor.  Please close the other editor and reload the project properties page.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg">
         <source>There was an error trying to open or create the application definition file for this project.  {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ErrorControlMessage_1Arg">
         <source>An error occurred trying to load the application definition file for this project.  The file '{0}' could not be parsed.  Please edit the file in the XAML editor to fix the error.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_CantReadPropertyValue">
         <source>(Error)</source>
@@ -1942,15 +1942,15 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_Unexpected">
         <source>An unspecified error has occurred.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_CantFindAppXaml">
         <source>This project does not contain an application definition file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg">
         <source>An error occurred trying to create the application events file.  {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_InvalidArgument_1Arg">
         <source>Invalid argument '{0}'</source>
@@ -1958,99 +1958,99 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_CommandLineApp_WPF">
         <source>WPF Console Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsClassLib_WPF">
         <source>WPF Class Library</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_DefaultManifestText">
         <source>Embed manifest with default settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_NoManifestText">
         <source>Create application without a manifest</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Application_BadManifest">
         <source>Invalid manifest file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services">
         <source>Services</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelText">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services. To enable client application services, you must set the Target Framework for your application to the full version of the .NET Framework 3.5 or later.  </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelLink">
         <source>Learn more about client application services...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServicesAdvancedPage_Title">
         <source>Advanced Settings for Services</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_ConfirmRemoveServices">
         <source>Disabling application services will clear the default services for Authentication, Roles, and Settings.  Click OK to disable application services.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_ConfirmRemoveServices_Caption">
         <source>Disable Application Services</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
         <source>To enable client application services, you must set the Target Framework for your application to .NET Framework 3.5 or later. In C#, you can do this on the Application property page. In Visual Basic, you can do this on the Compile property page by clicking Advanced Compile Options.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
         <source>The URL is invalid. Please enter a valid URL like http://microsoft.com/services</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrls">
         <source>A service URL in the application configuration file is not in the expected format.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_ConnectionStringsDontMatch">
         <source>Authentication, Roles and Web Settings providers have been configured via the Application configuration file such that they do not share a common connection string.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Services_connectionStringValueDefaultDisplayValue">
         <source>Specify a connection string to a SQL Server database, or use the special connection string "Data Source = |SQL/CE|", which causes SQL Server Compact to generate local database files for offline storage.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_UnreferencedTypeNameList_1Arg">
         <source>The following type names were not understood: '{0}'.  Make sure you have references to these types.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_DuplicateNameList_1Arg">
         <source>There are already settings with the following names: {0}.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_ERR_CantAuthenticate">
         <source>The username/password combination cannot be authenticated.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsFormsApp">
         <source>Windows Forms Application</source>
@@ -2058,39 +2058,39 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceNamespaceDescription">
         <source>Namespace of the service reference.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">
         <source>Service Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceUrlDescription">
         <source>Metadata Location Url</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceUrlName">
         <source>Metadata Location</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceProperty_MultipleUrlNotSupported">
         <source>A service reference with multiple source urls is not supported.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceProperty_SetReferenceUrlEmpty">
         <source>Cannot change reference Url to empty. The reference url must be a valid URL.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
         <source>Invalid XML Format: {0}</source>
@@ -2098,7 +2098,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="XmlToSchema_XMLSchemaInferenceWizard">
         <source>XML Schema Inference Wizard</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_Error">
         <source>Error: {0}</source>
@@ -2114,7 +2114,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidEmptyItemName">
         <source>Invalid empty project item name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidProjectPath">
         <source>Invalid project path: {0}</source>
@@ -2122,47 +2122,47 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="XmlToSchema_NoProjectSelected">
         <source>No project selected.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ResolveKeySource_InvalidKeyName">
         <source>Invalid key file name "{0}".</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Unable_To_Get_Checksum">
         <source>Unable to get MD5 checksum for the key file "{0}". {1}.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorImportingKey">
         <source>Error importing key</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">
         <source>Multiple addresses (editable in .svcmap file)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_WinMDObj">
         <source>Windows Runtime Component</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AppContainerExe">
         <source>Windows Store App</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UnknownOutputType">
         <source>Unknown output type: {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SD_DefaultSettingName">
         <source>Setting</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_ComputingCurrentImportsMessage">
         <source>Computing current imports...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PropPage_CurrentImportsTitle">
         <source>Current Imports</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>
