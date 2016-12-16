@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
-using System;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Threading.Tasks;
 using IServiceProvider = System.IServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsEditorAdaptersFactoryService _editorFactoryService;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
-        private readonly IExportFactory<IMsBuildModelWatcher> _watcherFactory;
+        private readonly ExportFactory<IMsBuildModelWatcher> _watcherFactory;
         private bool _isInitialized;
         private IVsWindowFrame _frame;
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IVsEditorAdaptersFactoryService editorFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
-            IExportFactory<IMsBuildModelWatcher> watcherFactory)
+            ExportFactory<IMsBuildModelWatcher> watcherFactory)
         {
             _unconfiguredProject = unconfiguredProject;
             _serviceProvider = serviceProvider;
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             var tempProjectPath = fileReturns.Item1;
             var lastWrittenXml = fileReturns.Item2;
 
-            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport();
+            IMsBuildModelWatcher watcher = _watcherFactory.CreateExport().Value;
             await watcher.InitializeAsync(tempProjectPath, lastWrittenXml).ConfigureAwait(true);
 
             // TODO: We shouldn't hardcode the xml editor, as it doesn't respect the user choice for what editor to use.

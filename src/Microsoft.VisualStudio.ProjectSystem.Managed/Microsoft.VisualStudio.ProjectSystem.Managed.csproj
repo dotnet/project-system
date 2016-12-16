@@ -53,6 +53,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
+    <Compile Include="ProjectSystem\IPhysicalProjectTreeStorage.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
+    <Compile Include="ProjectSystem\PhysicalProjectTreeStorage.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
@@ -128,14 +130,14 @@
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
-    <Compile Include="ProjectSystem\Utilities\DictionaryEqualityComparer.cs" />
+    <Compile Include="Collections\DictionaryEqualityComparer.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
-    <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
+    <Compile Include="IO\Win32FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
-    <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
+    <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />

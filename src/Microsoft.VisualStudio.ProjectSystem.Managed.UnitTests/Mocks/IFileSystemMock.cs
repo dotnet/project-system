@@ -6,9 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
     /// A useful helper moq for IFileSystem.
@@ -29,11 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Dictionary<string, FileData> Files { get => _files; }
 
-        public FileStream Create(string filePath)
+        public Stream Create(string path)
         {
-            WriteAllText(filePath, "");
+            WriteAllText(path, "");
 
-            // No way to mock FileStream. Only caller does not check the return value.
+            // Caller does not check the return value.
             return null;
         }
 
@@ -61,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
 
-        public void SetDirectoryAttribute(string directoryPath, FileAttributes newAttribute)
+        public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
         {
         }
 
@@ -119,27 +118,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return _files.ContainsKey(path);
         }
 
-        public bool DirectoryExists(string dirPath)
+        public bool DirectoryExists(string path)
         {
-            bool val = _folders.Contains(dirPath);
+            bool val = _folders.Contains(path);
             return val;
         }
 
-        public void CreateDirectory(string dirPath)
+        public void CreateDirectory(string path)
         {
-            if (!DirectoryExists(dirPath))
+            if (!DirectoryExists(path))
             {
-                _folders.Add(dirPath);
+                _folders.Add(path);
             }
         }
 
-        public void RemoveFile(string referenceFile)
+        public void RemoveFile(string path)
         {
-            if (!FileExists(referenceFile))
+            if (!FileExists(path))
             {
                 throw new System.IO.FileNotFoundException();
             }
-            _files.Remove(referenceFile);
+            _files.Remove(path);
         }
 
         public void CopyFile(string source, string destination, bool overwrite)
@@ -150,19 +149,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public string ReadAllText(string filePath)
+        public string ReadAllText(string path)
         {
-            if (!FileExists(filePath))
+            if (!FileExists(path))
             {
                 throw new System.IO.FileNotFoundException();
             }
-            return _files[filePath].FileContents;
+            return _files[path].FileContents;
         }
 
-        public void WriteAllText(string filePath, string content)
+        public void WriteAllText(string path, string content)
         {
             FileData curData;
-            if (_files.TryGetValue(filePath, out curData))
+            if (_files.TryGetValue(path, out curData))
             {
                 // This makes sure each write to the file increases the timestamp
                 curData.FileContents = content;
@@ -170,24 +169,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                _files[filePath] = new FileData() { FileContents = content };
-                SetLastWriteTime(_files[filePath]);
+                _files[path] = new FileData() { FileContents = content };
+                SetLastWriteTime(_files[path]);
             }
         }
 
-        public void WriteAllText(string filePath, string content, Encoding encoding)
+        public void WriteAllText(string path, string content, Encoding encoding)
         {
-            WriteAllText(filePath, content);
+            WriteAllText(path, content);
         }
 
-        public DateTime LastFileWriteTime(string filepath)
+        public DateTime LastFileWriteTime(string path)
         {
-            return _files[filepath].LastWriteTime;
+            return _files[path].LastWriteTime;
         }
 
-        public DateTime LastFileWriteTimeUtc(string filepath)
+        public DateTime LastFileWriteTimeUtc(string path)
         {
-            return _files[filepath].LastWriteTime;
+            return _files[path].LastWriteTime;
         }
 
         public void RemoveDirectory(string directoryPath, bool recursive)
@@ -218,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return _tempFile;
         }
 
-        public void WriteAllBytes(string filePath, byte[] bytes)
+        public void WriteAllBytes(string path, byte[] bytes)
         {
 
         }

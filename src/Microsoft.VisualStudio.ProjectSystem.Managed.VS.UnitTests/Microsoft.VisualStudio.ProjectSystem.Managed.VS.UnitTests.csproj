@@ -55,7 +55,7 @@
     <Compile Include="Mocks\IDebugLaunchProviderFactory.cs" />
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
-    <Compile Include="Mocks\IExportFactoryMock.cs" />
+    <Compile Include="Mocks\ExportFactoryFactory.cs" />
     <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\TestPropertyProviders.cs" />
+    <Compile Include="ProjectSystem\VS\References\ReferenceContextProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />
@@ -162,6 +163,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>

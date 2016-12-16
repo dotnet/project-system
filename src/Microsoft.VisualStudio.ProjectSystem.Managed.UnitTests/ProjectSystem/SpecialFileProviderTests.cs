@@ -2,9 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
