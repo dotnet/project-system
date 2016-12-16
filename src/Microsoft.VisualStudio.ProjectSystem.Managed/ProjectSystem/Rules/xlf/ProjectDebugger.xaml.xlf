@@ -5,19 +5,19 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectDebugger.xaml" />
       <trans-unit id="Rule|ProjectDebugger|DisplayName">
         <source>Start</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugger|Description">
         <source>Web debugging options</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|DisplayName">
         <source>Debug Target</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
         <source>Specifies the profile to use for debugging</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,75 +5,75 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/DebugPropPage.resx" />
       <trans-unit id="StartActionLabel.Text">
         <source>Start action</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="rbStartProject.Text">
         <source>&amp;Start project</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="rbStartProgram.Text">
         <source>Start e&amp;xternal program:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="rbStartURL.Text">
         <source>Start browser with U&amp;RL:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartProgram.AccessibleName">
         <source>Program to start</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartURL.AccessibleName">
         <source>URL to start browser with</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartProgramBrowse.AccessibleName">
         <source>Browse for external program</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartProgramBrowse.Text">
         <source>&amp;Browse...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartOptionsLabel.Text">
         <source>Start options</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CommandLineArgsLabel.Text">
         <source>Comma&amp;nd line arguments:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirLabel.Text">
         <source>Wor&amp;king directory:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RemoteDebugEnabled.Text">
         <source>Use remote m&amp;achine</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachine.AccessibleName">
         <source>Remote Machine Name:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
         <source>Browse for working directory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.Text">
         <source>&amp;Bro&amp;wse...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableDebuggerLabel.Text">
         <source>Debugger engines</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableSQLServerDebugging.Text">
         <source>Enable SQ&amp;L Server debugging</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableUnmanagedDebugging.Text">
         <source>Enable na&amp;tive code debugging</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

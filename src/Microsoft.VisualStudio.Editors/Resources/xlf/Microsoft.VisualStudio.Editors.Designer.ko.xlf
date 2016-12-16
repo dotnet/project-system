@@ -2709,6 +2709,16 @@ app.config 파일의 새 값은 '{1}'입니다.
         <target state="translated">현재 가져오기</target>
         <note />
       </trans-unit>
+      <trans-unit id="PPG_PackageTitle">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PPG_Property_PackageVersion">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

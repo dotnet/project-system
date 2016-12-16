@@ -5,15 +5,15 @@
       <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsExtensionCollisionDialog.resx" />
       <trans-unit id="btnOk_.Text">
         <source>OK</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="btnCancel_.Text">
         <source>Cancel</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

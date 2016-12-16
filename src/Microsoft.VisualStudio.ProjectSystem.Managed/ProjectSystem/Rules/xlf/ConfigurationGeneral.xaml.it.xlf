@@ -138,6 +138,11 @@
         <target state="translated">Rappresenta il linguaggio impostato come permanente in elementi e modelli di progetto</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
+        <source>Save assembly info attribute values in source</source>
+        <target state="new">Save assembly info attribute values in source</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

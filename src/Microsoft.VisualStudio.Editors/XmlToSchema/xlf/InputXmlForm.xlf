@@ -5,63 +5,63 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/InputXmlForm.resx" />
       <trans-unit id="_cancelButton.Text">
         <source>Cancel</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader1.Text">
         <source>Source Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader2.Text">
         <source>XML Document Location</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_listView.AccessibleName">
         <source>XML Documents</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.AccessibleName">
         <source>Type or paste XML</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.Text">
         <source>Type or paste &amp;XML</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>Specify XML documents to infer XML Schema set</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.AccessibleName">
         <source>Add from File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.Text">
         <source>Add from &amp;File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.AccessibleName">
         <source>Add from Web</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.Text">
         <source>Add from &amp;Web</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_okButton.Text">
         <source>OK</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Filter">
         <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">
         <source>Add XML Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Infer XML Schema set from XML documents</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -138,6 +138,11 @@
         <target state="translated">항목 및 프로젝트 템플릿에 있는 언어를 나타냅니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
+        <source>Save assembly info attribute values in source</source>
+        <target state="new">Save assembly info attribute values in source</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

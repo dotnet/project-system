@@ -5,55 +5,55 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/WPF/ApplicationPropPageVBWPF.resx" />
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>&amp;Root namespace:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StartupObjectOrUriLabel.Text">
         <source>#</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">
         <source>&amp;Application type:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UseApplicationFrameworkCheckBox.Text">
         <source>Enable application framewor&amp;k</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IconLabel.Text">
         <source>&amp;Icon:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembl&amp;y Information...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ViewUACSettingsButton.Text">
         <source>View Windows Settin&amp;gs</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WindowsAppGroupBox.Text">
         <source>Windows application framework properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EditXamlButton.Text">
         <source>Edit &amp;XAML</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ViewCodeButton.Text">
         <source>&amp;View Application Events</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ShutdownModeLabel.Text">
         <source>Shutdown m&amp;ode:</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

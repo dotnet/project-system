@@ -238,9 +238,9 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <note />
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}.{1}</source>
-        <target state="translated">Modifiez {0}.{1}</target>
-        <note />
+        <source>Edit {0}</source>
+        <target state="needs-review-translation">Modifiez {0}</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -251,6 +251,16 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">La modification de plusieurs frameworks cibles n'est pas prise en charge.</target>
         <note />
+      </trans-unit>
+      <trans-unit id="PackCommand">
+        <source>&amp;Pack</source>
+        <target state="new">&amp;Pack</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PackSelectedProjectCommand">
+        <source>&amp;Pack {0}</source>
+        <target state="new">&amp;Pack {0}</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

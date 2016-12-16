@@ -5,79 +5,79 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AssemblyInfoPropPage.resx" />
       <trans-unit id="TitleLabel.Text">
         <source>&amp;Title:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CompanyLabel.Text">
         <source>&amp;Company:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
         <source>&amp;GUID:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

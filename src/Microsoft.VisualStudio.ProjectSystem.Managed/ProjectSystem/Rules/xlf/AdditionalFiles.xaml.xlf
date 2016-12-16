@@ -5,99 +5,99 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AdditionalFiles.xaml" />
       <trans-unit id="Rule|AdditionalFiles|DisplayName">
         <source>Additional File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AdditionalFiles|Description">
         <source>Additional file items</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
         <source>How the file relates to the build and deployment processes.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
         <source>Copy to Output Directory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
         <source>Copy always</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
         <source>Copy if newer</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
         <source>File Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|Description">
         <source>Name of the file or folder.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">
         <source>The filename of the last file generated as a result of the SFG.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DesignTime|Description">
         <source>A value indicating whether this file has a designer.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGen|Description">
         <source>A value indicating whether this is a generated file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomTool|Description">
         <source>DTE Property for accessing the Generator property.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>
