@@ -8,9 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IFolderManager Create()
         {
-            var mock = new Mock<IFolderManager>();
-
-            return mock.Object;
+            return Mock.Of<IFolderManager>();
         }
     }
 }
