@@ -5,18 +5,18 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedAnalyzerReference.xaml" />
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="new">Resolved Analyzer Reference</target>
-        <note></note>
+        <target state="translated">Referência de Analisador Resolvida</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Resolved Analyzer reference properties</source>
-        <target state="new">Resolved Analyzer reference properties</target>
-        <note></note>
+        <target state="translated">Propriedades de referência de analisador resolvida</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">O nome do item avaliado do item de referência original cuja resolução resultou nesse item de referência resolvido.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

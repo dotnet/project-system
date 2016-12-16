@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypePickerDialog.resx" />
       <trans-unit id="m_CancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Отмена</target>
+        <note />
       </trans-unit>
       <trans-unit id="m_OkButton.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">ОК</target>
+        <note />
       </trans-unit>
       <trans-unit id="SelectedTypeLabel.Text">
         <source>Selected &amp;type:</source>
-        <target state="new">Selected &amp;type:</target>
-        <note></note>
+        <target state="translated">Выбранный &amp;тип:</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Select a Type</source>
-        <target state="new">Select a Type</target>
-        <note></note>
+        <target state="translated">Выбор типа</target>
+        <note />
       </trans-unit>
     </body>
   </file>

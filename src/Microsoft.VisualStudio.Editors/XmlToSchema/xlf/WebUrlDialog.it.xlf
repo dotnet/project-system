@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/WebUrlDialog.resx" />
       <trans-unit id="okButton.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">OK</target>
+        <note />
       </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Annulla</target>
+        <note />
       </trans-unit>
       <trans-unit id="Label2.Text">
         <source>&amp;Provide the HTTP address of an XML document:</source>
-        <target state="new">&amp;Provide the HTTP address of an XML document:</target>
-        <note></note>
+        <target state="translated">&amp;Specificare l'indirizzo HTTP di un documento XML:</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add an XML document from the Web</source>
-        <target state="new">Add an XML document from the Web</target>
-        <note></note>
+        <target state="translated">Aggiungi un documento XML dal Web</target>
+        <note />
       </trans-unit>
     </body>
   </file>

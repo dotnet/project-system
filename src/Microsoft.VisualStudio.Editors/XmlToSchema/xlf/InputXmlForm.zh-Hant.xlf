@@ -5,78 +5,78 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/InputXmlForm.resx" />
       <trans-unit id="_cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">取消</target>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader1.Text">
         <source>Source Type</source>
-        <target state="new">Source Type</target>
-        <note></note>
+        <target state="translated">來源類型</target>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader2.Text">
         <source>XML Document Location</source>
-        <target state="new">XML Document Location</target>
-        <note></note>
+        <target state="translated">XML 文件位置</target>
+        <note />
       </trans-unit>
       <trans-unit id="_listView.AccessibleName">
         <source>XML Documents</source>
-        <target state="new">XML Documents</target>
-        <note></note>
+        <target state="translated">XML 文件</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.AccessibleName">
         <source>Type or paste XML</source>
-        <target state="new">Type or paste XML</target>
-        <note></note>
+        <target state="translated">鍵入或貼上 XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.Text">
         <source>Type or paste &amp;XML</source>
-        <target state="new">Type or paste &amp;XML</target>
-        <note></note>
+        <target state="translated">鍵入或貼上 XML(&amp;X)</target>
+        <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>Specify XML documents to infer XML Schema set</source>
-        <target state="new">Specify XML documents to infer XML Schema set</target>
-        <note></note>
+        <target state="translated">指定要推斷 XML 結構描述集的 XML 文件</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.AccessibleName">
         <source>Add from File</source>
-        <target state="new">Add from File</target>
-        <note></note>
+        <target state="translated">從檔案新增</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.Text">
         <source>Add from &amp;File</source>
-        <target state="new">Add from &amp;File</target>
-        <note></note>
+        <target state="translated">從檔案新增(&amp;F)</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.AccessibleName">
         <source>Add from Web</source>
-        <target state="new">Add from Web</target>
-        <note></note>
+        <target state="translated">從 Web 新增</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.Text">
         <source>Add from &amp;Web</source>
-        <target state="new">Add from &amp;Web</target>
-        <note></note>
+        <target state="translated">從 Web 新增(&amp;W)</target>
+        <note />
       </trans-unit>
       <trans-unit id="_okButton.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">確定</target>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Filter">
         <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
-        <target state="new">XML files (*.xml)|*.xml|All files (*.*)|*.*</target>
-        <note></note>
+        <target state="translated">XML 檔案 (*.xml)|*.xml|所有檔案 (*.*)|*.*</target>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">
         <source>Add XML Files</source>
-        <target state="new">Add XML Files</target>
-        <note></note>
+        <target state="translated">新增 XML 檔案</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Infer XML Schema set from XML documents</source>
-        <target state="new">Infer XML Schema set from XML documents</target>
-        <note></note>
+        <target state="translated">從 XML 文件推斷 XML 結構描述集</target>
+        <note />
       </trans-unit>
     </body>
   </file>

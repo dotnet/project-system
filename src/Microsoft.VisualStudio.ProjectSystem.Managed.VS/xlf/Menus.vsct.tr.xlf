@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/Menus.vsct" />
       <trans-unit id="cmdidProjectDebugger|ButtonText">
         <source>Web Debugger</source>
-        <target state="new">Web Debugger</target>
-        <note></note>
+        <target state="translated">Web Hata Ayıklayıcısı</target>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|ButtonText">
         <source>Edit Project File</source>
-        <target state="new">Edit Project File</target>
-        <note></note>
+        <target state="translated">Proje Dosyasını Düzenle</target>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|ToolTipText">
         <source>Edit Project File</source>
-        <target state="new">Edit Project File</target>
-        <note></note>
+        <target state="translated">Proje Dosyasını Düzenle</target>
+        <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjFile|CommandName">
         <source>EditProjectFile</source>
-        <target state="new">EditProjectFile</target>
-        <note></note>
+        <target state="translated">EditProjectFile</target>
+        <note />
       </trans-unit>
     </body>
   </file>

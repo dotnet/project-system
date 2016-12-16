@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS/VSPackage.resx" />
       <trans-unit id="#1">
         <source>Visual Basic</source>
-        <target state="new">Visual Basic</target>
-        <note></note>
+        <target state="translated">Visual Basic</target>
+        <note />
       </trans-unit>
       <trans-unit id="#2">
         <source>Visual Basic Project Files (*.vbproj);*.vbproj</source>
-        <target state="new">Visual Basic Project Files (*.vbproj);*.vbproj</target>
-        <note></note>
+        <target state="translated">Visual Basic プロジェクト ファイル (*.vbproj);*.vbproj</target>
+        <note />
       </trans-unit>
     </body>
   </file>

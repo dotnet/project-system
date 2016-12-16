@@ -5,53 +5,53 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePathsPropPage.resx" />
       <trans-unit id="AddFolder.Text">
         <source>&amp;Add Folder</source>
-        <target state="new">&amp;Add Folder</target>
-        <note></note>
+        <target state="translated">&amp;Aggiungi cartella</target>
+        <note />
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <target state="new">&amp;Update</target>
-        <note></note>
+        <target state="translated">Aggi&amp;orna</target>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="new">Order of Reference Paths</target>
-        <note></note>
+        <target state="translated">Ordine dei percorsi del riferimento</target>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <target state="new">Reference &amp;paths:</target>
-        <note></note>
+        <target state="translated">&amp;Percorsi del riferimento:</target>
+        <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">
         <source>Browse for Folder</source>
-        <target state="new">Browse for Folder</target>
-        <note></note>
+        <target state="translated">Cerca cartella</target>
+        <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">
         <source>...</source>
-        <target state="new">...</target>
-        <note></note>
+        <target state="translated">...</target>
+        <note />
       </trans-unit>
       <trans-unit id="MoveUp.AccessibleName">
         <source>Move up</source>
-        <target state="new">Move up</target>
-        <note></note>
+        <target state="translated">Sposta su</target>
+        <note />
       </trans-unit>
       <trans-unit id="MoveDown.AccessibleName">
         <source>Move down</source>
-        <target state="new">Move down</target>
-        <note></note>
+        <target state="translated">Sposta giù</target>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveFolder.AccessibleName">
         <source>Delete</source>
-        <target state="new">Delete</target>
-        <note></note>
+        <target state="translated">Elimina</target>
+        <note />
       </trans-unit>
       <trans-unit id="FolderLabel.Text">
         <source>&amp;Folder:</source>
-        <target state="new">&amp;Folder:</target>
-        <note></note>
+        <target state="translated">Carte&amp;lla:</target>
+        <note />
       </trans-unit>
     </body>
   </file>

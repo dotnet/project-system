@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.Editors/MyExtensibility/AssemblyOptionDialog.resx" />
       <trans-unit id="buttonYes.Text">
         <source>&amp;Yes</source>
-        <target state="new">&amp;Yes</target>
-        <note></note>
+        <target state="translated">是(&amp;Y)</target>
+        <note />
       </trans-unit>
       <trans-unit id="buttonNo.Text">
         <source>&amp;No</source>
-        <target state="new">&amp;No</target>
-        <note></note>
+        <target state="translated">否(&amp;N)</target>
+        <note />
       </trans-unit>
     </body>
   </file>

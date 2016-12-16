@@ -5,68 +5,68 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PackageReference.xaml" />
       <trans-unit id="Rule|PackageReference|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Descripción</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>Dependency description.</source>
-        <target state="new">Dependency description.</target>
-        <note></note>
+        <target state="translated">Descripción de la dependencia.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versión</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of dependency.</source>
-        <target state="new">Version of dependency.</target>
-        <note></note>
+        <target state="translated">Versión de la dependencia.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>IncludeAssets</source>
-        <target state="new">IncludeAssets</target>
-        <note></note>
+        <target state="translated">IncludeAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="new">Assets to include from this reference</target>
-        <note></note>
+        <target state="translated">Recursos de esta referencia que se deben incluir</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>ExcludeAssets</source>
-        <target state="new">ExcludeAssets</target>
-        <note></note>
+        <target state="translated">ExcludeAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
-        <target state="new">Assets to exclude from this reference</target>
-        <note></note>
+        <target state="translated">Recursos de esta referencia que se deben excluir</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>PrivateAssets</source>
-        <target state="new">PrivateAssets</target>
-        <note></note>
+        <target state="translated">PrivateAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
-        <target state="new">Assets that are private in this reference</target>
-        <note></note>
+        <target state="translated">Recursos que son privados en esta referencia</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">Nombre del elemento evaluado del elemento de referencia original cuya resolución produjo este elemento de referencia resuelto.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,63 +5,63 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/DebuggerGeneral.xaml" />
       <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
         <source>Debugger General Properties</source>
-        <target state="new">Debugger General Properties</target>
-        <note></note>
+        <target state="translated">디버거 일반 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|DebuggerGeneralProperties|Description">
         <source>General Debugger options</source>
-        <target state="new">General Debugger options</target>
-        <note></note>
+        <target state="translated">일반 디버거 옵션</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|DisplayName">
         <source>Symbol Search Path</source>
-        <target state="new">Symbol Search Path</target>
-        <note></note>
+        <target state="translated">기호 검색 경로</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <target state="new">The search path used by the debugger to locate symbols.</target>
-        <note></note>
+        <target state="translated">디버거가 기호를 찾기 위해 사용하는 검색 경로입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebuggerFlavor|Description">
         <source>The debug rule selected as the active debugger.</source>
-        <target state="new">The debug rule selected as the active debugger.</target>
-        <note></note>
+        <target state="translated">활성 디버거로 선택된 디버그 규칙입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImageClrType|Description">
         <source>The 'hidden' property we pass to debuggers to let them know if this is a managed project.</source>
-        <target state="new">The 'hidden' property we pass to debuggers to let them know if this is a managed project.</target>
-        <note></note>
+        <target state="translated">관리되는 프로젝트인지 알 수 있도록 디버거로 전달되는 '숨김' 속성입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|DisplayName">
         <source>Native Image</source>
-        <target state="new">Native Image</target>
-        <note></note>
+        <target state="translated">네이티브 이미지</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|Description">
         <source>The executable image to debug is a fully native application.</source>
-        <target state="new">The executable image to debug is a fully native application.</target>
-        <note></note>
+        <target state="translated">디버깅할 실행 가능 이미지가 완전한 네이티브 응용 프로그램입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|DisplayName">
         <source>Mixed Image</source>
-        <target state="new">Mixed Image</target>
-        <note></note>
+        <target state="translated">혼합 이미지</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|Description">
         <source>The executable image to debug is a mixture of native and managed code.</source>
-        <target state="new">The executable image to debug is a mixture of native and managed code.</target>
-        <note></note>
+        <target state="translated">디버깅할 실행 가능 이미지가 네이티브 코드와 관리 코드가 혼합된 이미지입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|DisplayName">
         <source>Managed Image</source>
-        <target state="new">Managed Image</target>
-        <note></note>
+        <target state="translated">관리되는 이미지</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|Description">
         <source>The executable image to debug is a fully managed application.</source>
-        <target state="new">The executable image to debug is a fully managed application.</target>
-        <note></note>
+        <target state="translated">디버깅할 실행 가능 이미지가 완전히 관리되는 응용 프로그램입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>
