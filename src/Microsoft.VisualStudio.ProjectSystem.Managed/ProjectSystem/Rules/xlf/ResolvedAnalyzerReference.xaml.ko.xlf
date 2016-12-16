@@ -5,18 +5,18 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedAnalyzerReference.xaml" />
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="new">Resolved Analyzer Reference</target>
-        <note></note>
+        <target state="translated">확인된 분석기 참조</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Resolved Analyzer reference properties</source>
-        <target state="new">Resolved Analyzer reference properties</target>
-        <note></note>
+        <target state="translated">확인된 분석기 참조 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

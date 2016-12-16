@@ -5,18 +5,18 @@
       <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsExtensionCollisionDialog.resx" />
       <trans-unit id="btnOk_.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">확인</target>
+        <note />
       </trans-unit>
       <trans-unit id="btnCancel_.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">취소</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <target state="new">Add Imports Validation Error</target>
-        <note></note>
+        <target state="translated">가져오기 추가 유효성 검사 오류</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,98 +5,98 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml" />
       <trans-unit id="Rule|CSharp|DisplayName">
         <source>C#</source>
-        <target state="new">C#</target>
-        <note></note>
+        <target state="translated">C#</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|CSharp|Description">
         <source>C# source file</source>
-        <target state="new">C# source file</target>
-        <note></note>
+        <target state="translated">Zdrojový soubor C#</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">Upřesnit</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">Různé</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <target state="new">Build Action</target>
-        <note></note>
+        <target state="translated">Akce sestavení</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
         <source>How the file relates to the build and deployment processes.</source>
-        <target state="new">How the file relates to the build and deployment processes.</target>
-        <note></note>
+        <target state="translated">Jak se soubor vztahuje k procesům sestavení a nasazení.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
         <source>Copy to Output Directory</source>
-        <target state="new">Copy to Output Directory</target>
-        <note></note>
+        <target state="translated">Kopírovat do výstupního adresáře</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="new">Specifies the source file will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Určuje zdrojový soubor, který se zkopíruje do výstupního adresáře.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
-        <target state="new">Do not copy</target>
-        <note></note>
+        <target state="translated">Nekopírovat</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
         <source>Copy always</source>
-        <target state="new">Copy always</target>
-        <note></note>
+        <target state="translated">Kopírovat vždycky</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
         <source>Copy if newer</source>
-        <target state="new">Copy if newer</target>
-        <note></note>
+        <target state="translated">Kopírovat, pokud je novější</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="new">Custom Tool</target>
-        <note></note>
+        <target state="translated">Vlastní nástroj</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <target state="new">Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</target>
-        <note></note>
+        <target state="translated">Určuje nástroj, který transformuje soubor v okamžiku návrhu a vloží výstup této transformace do jiného souboru. Například k souboru DataSet (.xsd) se dodává výchozí vlastní nástroj.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <target state="new">Custom Tool Namespace</target>
-        <note></note>
+        <target state="translated">Obor názvů vlastního nástroje</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="new">The namespace into which the output of the custom tool is placed.</target>
-        <note></note>
+        <target state="translated">Obor názvů, do kterého se umístí výstup vlastního nástroje</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExcludedFromBuild|DisplayName">
         <source>Excluded From Build</source>
-        <target state="new">Excluded From Build</target>
-        <note></note>
+        <target state="translated">Vyloučené ze sestavení</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">
         <source>The filename of the last file generated as a result of the SFG.</source>
-        <target state="new">The filename of the last file generated as a result of the SFG.</target>
-        <note></note>
+        <target state="translated">Název posledního souboru vygenerovaného jako výsledek nástroje SFG</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DesignTime|Description">
         <source>A value indicating whether this file has a designer.</source>
-        <target state="new">A value indicating whether this file has a designer.</target>
-        <note></note>
+        <target state="translated">Hodnota určující, jestli má tento soubor návrháře</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGen|Description">
         <source>A value indicating whether this is a generated file.</source>
-        <target state="new">A value indicating whether this is a generated file.</target>
-        <note></note>
+        <target state="translated">Hodnota určující, jestli jde o vygenerovaný soubor</target>
+        <note />
       </trans-unit>
     </body>
   </file>

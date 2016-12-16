@@ -5,8 +5,8 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx" />
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="new">Class</target>
-        <note></note>
+        <target state="translated">클래스</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
@@ -14,12 +14,12 @@
 Press Reload to load the updated project from disk.
 Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
     </source>
-        <target state="new">The project '{0}' has been modified outside the environment.
+        <target state="translated">'{0}' 프로젝트가 환경 외부에서 수정되었습니다.
 
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
+디스크에서 업데이트된 프로젝트를 로드하려면 [다시 로드]를 누르세요.
+외부 변경을 무시하려면 [무시]를 누르세요. 변경 내용은 다음에 프로젝트를 열 때 사용됩니다.
     </target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ConflictingModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
@@ -29,228 +29,228 @@ Press Discard to discard the unsaved changes and load the updated project from d
 Press Overwrite to overwrite the external changes with your changes.
 Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
     </source>
-        <target state="new">The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
+        <target state="translated">'{0}' 프로젝트가 환경 외부에서 수정되었으며 프로젝트에 저장되지 않은 변경 내용이 있습니다.
 
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
+저장되지 않은 변경 내용을 저장하려면 [다른 이름으로 저장]을 눌러 디스크에서 업데이트된 프로젝트를 로드하세요.
+저장되지 않은 변경 내용을 버리려면 [버리기]를 누르고 디스크에서 업데이트된 프로젝트를 로드하세요.
+변경 내용으로 외부 변경 내용을 덮어쓰려면 [덮어쓰기]를 누르세요.
+외부 변경을 무시하려면 [무시]를 누르세요. 프로젝트를 닫고 다시 열면 변경 내용이 손실됩니다.
     </target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ConflictingProjectModificationTitle">
         <source>Conflicting Project Modification Detected</source>
-        <target state="new">Conflicting Project Modification Detected</target>
-        <note></note>
+        <target state="translated">충돌하는 프로젝트 수정 감지</target>
+        <note />
       </trans-unit>
       <trans-unit id="Discard">
         <source>_Discard</source>
-        <target state="new">_Discard</target>
-        <note></note>
+        <target state="translated">삭제(_D)</target>
+        <note />
       </trans-unit>
       <trans-unit id="Ignore">
         <source>_Ignore</source>
-        <target state="new">_Ignore</target>
-        <note></note>
+        <target state="translated">무시(_I)</target>
+        <note />
       </trans-unit>
       <trans-unit id="IgnoreAll">
         <source>Ignore A_ll</source>
-        <target state="new">Ignore A_ll</target>
-        <note></note>
+        <target state="translated">모두 무시(_L)</target>
+        <note />
       </trans-unit>
       <trans-unit id="Overwrite">
         <source>_Overwrite</source>
-        <target state="new">_Overwrite</target>
-        <note></note>
+        <target state="translated">덮어쓰기(_O)</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectModificationDlgTitle">
         <source>Project Modification Detected</source>
-        <target state="new">Project Modification Detected</target>
-        <note></note>
+        <target state="translated">프로젝트 수정 감지</target>
+        <note />
       </trans-unit>
       <trans-unit id="Reload">
         <source>_Reload</source>
-        <target state="new">_Reload</target>
-        <note></note>
+        <target state="translated">다시 로드(_R)</target>
+        <note />
       </trans-unit>
       <trans-unit id="ReloadAll">
         <source>Reload A_ll</source>
-        <target state="new">Reload A_ll</target>
-        <note></note>
+        <target state="translated">모두 다시 로드(_L)</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
-        <target state="new">Renaming the code element '{0}' failed.</target>
-        <note></note>
+        <target state="translated">코드 포인트 '&lt;0/&gt;'의 이름을 바꾸지 못했습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolPrompt">
         <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
-        <target state="new">You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</target>
-        <note></note>
+        <target state="translated">파일의 이름을 바꾸고 있습니다. 이 프로젝트에서 코드 포인트 '&lt;0/&gt;'의 모든 참조 이름도 바꾸시겠습니까?</target>
+        <note />
       </trans-unit>
       <trans-unit id="SaveAs">
         <source>_Save As</source>
-        <target state="new">_Save As</target>
-        <note></note>
+        <target state="translated">다른 이름으로 저장(_S)</target>
+        <note />
       </trans-unit>
       <trans-unit id="FailedToWatchProject">
         <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="new">An unexpected error occurred attempting to watch project file '{0}'</target>
-        <note></note>
+        <target state="translated">프로젝트 파일 '{0}'을(를) 조사하는 동안 예기치 않은 오류가 발생했습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="new">Framework Assemblies</target>
-        <note></note>
+        <target state="translated">프레임워크 어셈블리</target>
+        <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="new">COM</target>
-        <note></note>
+        <target state="translated">COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="new">SDK</target>
-        <note></note>
+        <target state="translated">SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="new">Assemblies</target>
-        <note></note>
+        <target state="translated">어셈블리</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesLoadingPostfix">
         <source> (Loading...)</source>
-        <target state="new"> (Loading...)</target>
-        <note></note>
+        <target state="translated"> (로드 중...)</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeErrorsSuffix">
         <source>(Errors - see Error List)</source>
-        <target state="new">(Errors - see Error List)</target>
-        <note></note>
+        <target state="translated">(오류 - 오류 목록 참조)</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
-        <note></note>
+        <target state="translated">종속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
-        <target state="new">Dependency</target>
-        <note></note>
+        <target state="translated">종속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="new">Expected to find item type for rule {0}. The rule file is either missing or malformed.</target>
-        <note></note>
+        <target state="translated">{0} 규칙의 항목 형식을 찾아야 합니다. 규칙 파일이 없거나 형식이 잘못되었습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NuGetPackagesNodeName">
         <source>NuGet</source>
-        <target state="new">NuGet</target>
-        <note></note>
+        <target state="translated">NuGet</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="new">Projects</target>
-        <note></note>
+        <target state="translated">프로젝트</target>
+        <note />
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="new">Analyzers</target>
-        <note></note>
+        <target state="translated">분석기</target>
+        <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">
         <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="new">.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</target>
-        <note></note>
+        <target state="translated">이번 Visual Studio 릴리스에서는 .NET Core 프로젝트가 지원되지 않습니다. 이후 업데이트에서 지원됩니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
-        <target state="new">There aren't any active launch profiles configured for this project.</target>
-        <note></note>
+        <target state="translated">이 프로젝트에 대해 구성된 활성 시작 프로필이 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile">
         <source>The project doesn't know how to run the profile {0}.</source>
-        <target state="new">The project doesn't know how to run the profile {0}.</target>
-        <note></note>
+        <target state="translated">프로젝트에서 {0} 프로필을 실행하는 방법을 모릅니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile">
         <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</source>
-        <target state="new">An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</target>
-        <note></note>
+        <target state="translated">'{0}' 프로젝트를 실행하려면 시작 설정 파일의 오류를 수정해야 합니다. 자세한 내용은 오류 목록을 참조하세요.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile2">
         <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</source>
-        <target state="new">An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</target>
-        <note></note>
+        <target state="translated">'{0}' 프로젝트를 실행하려면 시작 설정 파일의 오류를 수정해야 합니다. {1}. 자세한 내용은 오류 목록을 참조하세요.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectNotRunnableDirectly">
         <source>A project with an Output Type of Class Library cannot be started directly.
 
 In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</source>
-        <target state="new">A project with an Output Type of Class Library cannot be started directly.
+        <target state="translated">출력 형식이 클래스 라이브러리인 프로젝트는 직접 시작할 수 없습니다.
 
-In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</target>
-        <note></note>
+이 프로젝트를 디버그하려면 라이브러리 프로젝트를 참조하는 실행 가능 프로젝트를 이 솔루션에 추가하고 해당 실행 가능 프로젝트를 시작 프로젝트로 설정하세요.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoUrlSpecified">
         <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="new">The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</target>
-        <note></note>
+        <target state="translated">디버그 프로필 '{0}'에서 웹 브라우저를 시작하도록 요청했지만 URL이 지정되지 않았습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InvalidAbsoluteUrlSpecified">
         <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="new">The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</target>
-        <note></note>
+        <target state="translated">디버그 프로필 '{0}'에서 웹 브라우저를 시작하도록 요청했지만 지정된 URL이 올바른 절대 URL이 아닙니다. {1}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">
         <source>The debug profile '{0}' is missing the path to the executable to debug.</source>
-        <target state="new">The debug profile '{0}' is missing the path to the executable to debug.</target>
-        <note></note>
+        <target state="translated">디버그 프로필 '{0}'에 디버그할 실행 파일 경로가 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DebugExecutableNotFound">
         <source>The debug executable '{0}' specified in the '{1}' debug profile does not exist.</source>
-        <target state="new">The debug executable '{0}' specified in the '{1}' debug profile does not exist.</target>
-        <note></note>
+        <target state="translated">'{1}' 디버그 프로필에 지정된 디버그 실행 파일 '{0}'이(가) 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
-        <target state="new">The working directory '{0}' specified in the '{1}' debug profile does not exist.</target>
-        <note></note>
+        <target state="translated">'{1}' 디버그 프로필에 지정된 작업 디렉터리 '{0}'이(가) 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoMigratedCSProjFound">
         <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="new">Expected to find migrated cpsroj in {0}, but did not find any.</target>
-        <note></note>
+        <target state="translated">{0}에 마이그레이션된 cpsroj가 있어야 하지만 찾을 수 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailed">
         <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="new">Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</target>
-        <note></note>
+        <target state="translated">XProj 프로젝트 {0}을(를) 마이그레이션하지 못했습니다. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"'가 종료되었습니다(오류 코드: {3}).</target>
+        <note />
       </trans-unit>
       <trans-unit id="MigrationBackupFile">
         <source>Backing up {0} to {1}.</source>
-        <target state="new">Backing up {0} to {1}.</target>
-        <note></note>
+        <target state="translated">{0}을(를) {1}에 백업하는 중입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
         <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="new">Failed to migrate XProj project {0}. Could not find project.json at {1}.</target>
-        <note></note>
+        <target state="translated">XProj 프로젝트 {0}을(를) 마이그레이션하지 못했습니다. {1}에서 project.json을 찾을 수 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}.{1}</source>
-        <target state="new">Edit {0}.{1}</target>
-        <note></note>
+        <target state="translated">{0}을(를) 편집합니다.{1}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="new">Unable to run your project. The "RunCommand" property is not defined.</target>
-        <note></note>
+        <target state="translated">프로젝트를 실행할 수 없습니다. "RunCommand" 속성이 정의되지 않았습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
-        <target state="new">Editing of multiple target framework is not supported.</target>
-        <note></note>
+        <target state="translated">여러 대상 프레임워크를 편집할 수 없습니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

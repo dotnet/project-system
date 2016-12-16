@@ -5,48 +5,48 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedSdkReference.xaml" />
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
         <source>Resolved SDK Reference</source>
-        <target state="new">Resolved SDK Reference</target>
-        <note></note>
+        <target state="translated">已解析的 SDK 參考</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
         <source>Resolved SDK reference</source>
-        <target state="new">Resolved SDK reference</target>
-        <note></note>
+        <target state="translated">已解析的 SDK 參考</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
-        <target state="new">App Package Location</target>
-        <note></note>
+        <target state="translated">應用程式套件位置</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
         <source>FrameworkIdentity</source>
-        <target state="new">FrameworkIdentity</target>
-        <note></note>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">顯示名稱</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <target state="new">Copy Payload</target>
-        <note></note>
+        <target state="translated">複製承載</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">
         <source>Expand Content</source>
-        <target state="new">Expand Content</target>
-        <note></note>
+        <target state="translated">展開內容</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
         <source>Expand Reference Assemblies</source>
-        <target state="new">Expand Reference Assemblies</target>
-        <note></note>
+        <target state="translated">展開參考組件</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
         <source>Copy Local Expanded Reference Assemblies</source>
-        <target state="new">Copy Local Expanded Reference Assemblies</target>
-        <note></note>
+        <target state="translated">複製展開的參考組件到本機</target>
+        <note />
       </trans-unit>
     </body>
   </file>

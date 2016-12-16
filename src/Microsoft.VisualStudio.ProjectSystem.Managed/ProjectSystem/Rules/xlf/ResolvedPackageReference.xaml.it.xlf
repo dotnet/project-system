@@ -5,48 +5,48 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedPackageReference.xaml" />
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Pacchetto</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Pacchetto</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Descrizione</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>Dependency description.</source>
-        <target state="new">Dependency description.</target>
-        <note></note>
+        <target state="translated">Descrizione della dipendenza.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versione</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of dependency.</source>
-        <target state="new">Version of dependency.</target>
-        <note></note>
+        <target state="translated">Versione della dipendenza.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|DisplayName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
-        <note></note>
+        <target state="translated">Dipendenze</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|Description">
         <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
-        <target state="new">A semicolon-delimited list of direct dependencies of current dependency.</target>
-        <note></note>
+        <target state="translated">Elenco delimitato da punti e virgola delle dipendenze dirette della dipendenza corrente.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

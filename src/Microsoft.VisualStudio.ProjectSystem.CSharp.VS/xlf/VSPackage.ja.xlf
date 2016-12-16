@@ -5,43 +5,43 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>C#</source>
-        <target state="new">C#</target>
-        <note></note>
+        <target state="translated">C#</target>
+        <note />
       </trans-unit>
       <trans-unit id="2">
         <source>C# Project Files (*.csproj);*.csproj</source>
-        <target state="new">C# Project Files (*.csproj);*.csproj</target>
-        <note></note>
+        <target state="translated">C# プロジェクト ファイル (*.csproj);*.csproj</target>
+        <note />
       </trans-unit>
       <trans-unit id="3">
         <source>Console App (.NET Core)</source>
-        <target state="new">Console App (.NET Core)</target>
-        <note></note>
+        <target state="translated">コンソール アプリ (.NET Core)</target>
+        <note />
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="new">A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</target>
-        <note></note>
+        <target state="translated">Windows、Linux、MacOS 上の .NET Core で実行できるコマンドライン アプリケーションを作成するためのプロジェクトです。</target>
+        <note />
       </trans-unit>
       <trans-unit id="5">
         <source>Class Library (.NET Standard)</source>
-        <target state="new">Class Library (.NET Standard)</target>
-        <note></note>
+        <target state="translated">クラス ライブラリ (.NET Standard)</target>
+        <note />
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="new">A project for creating a class library that targets .NET Standard.</target>
-        <note></note>
+        <target state="translated">.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクトです。</target>
+        <note />
       </trans-unit>
       <trans-unit id="7">
         <source>Loaded Project File Editor</source>
-        <target state="new">Loaded Project File Editor</target>
-        <note></note>
+        <target state="translated">読み込まれたプロジェクト ファイル エディター</target>
+        <note />
       </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="new">.NET Core 2015 Project Files (*.xproj);*.xproj</target>
-        <note></note>
+        <target state="translated">.NET Core 2015 プロジェクト ファイル (*.xproj);*.xproj</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,38 +5,38 @@
       <group id="src/Microsoft.VisualStudio.Editors/MyExtensibility/AddMyExtensionsDialog.resx" />
       <trans-unit id="buttonOK.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">OK</target>
+        <note />
       </trans-unit>
       <trans-unit id="buttonCancel.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Annulla</target>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.Text">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nome</target>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.Text">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versione</target>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExensionDescription.Text">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Descrizione</target>
+        <note />
       </trans-unit>
       <trans-unit id="listViewExtensions.AccessibleName">
         <source>Available My Namespace Extensions</source>
-        <target state="new">Available My Namespace Extensions</target>
-        <note></note>
+        <target state="translated">Estensioni dello spazio dei nomi My disponibili</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Visual Basic My Namespace Extension</source>
-        <target state="new">Add Visual Basic My Namespace Extension</target>
-        <note></note>
+        <target state="translated">Aggiungi estensione dello spazio dei nomi My di Visual Basic</target>
+        <note />
       </trans-unit>
     </body>
   </file>

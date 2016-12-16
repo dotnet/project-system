@@ -5,68 +5,68 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx" />
       <trans-unit id="OptimizationsLabel.Text">
         <source>Optimizations</source>
-        <target state="new">Optimizations</target>
-        <note></note>
+        <target state="translated">Optimierungen</target>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <target state="new">&amp;Remove integer overflow checks</target>
-        <note></note>
+        <target state="translated">Überprüfungen auf Ganzzahlüberlauf entfe&amp;rnen</target>
+        <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <target state="new">&amp;Enable optimizations</target>
-        <note></note>
+        <target state="translated">Optimierungen aktivi&amp;eren</target>
+        <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <target state="new">DLL &amp;base address:</target>
-        <note></note>
+        <target state="translated">DLL-&amp;Basisadresse:</target>
+        <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <target state="new">Define &amp;DEBUG constant</target>
-        <note></note>
+        <target state="translated">&amp;DEBUG-Konstante definieren</target>
+        <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="new">Define &amp;TRACE constant</target>
-        <note></note>
+        <target state="translated">&amp;TRACE-Konstante definieren</target>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <target state="new">Generate &amp;serialization assemblies:</target>
-        <note></note>
+        <target state="translated">&amp;Serialisierungsassemblys generieren:</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <target state="new">&amp;Custom constants:</target>
-        <note></note>
+        <target state="translated">&amp;Benutzerdefinierte Konstanten:</target>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <target state="new">&amp;Generate debug info:</target>
-        <note></note>
+        <target state="translated">Debuginformationen &amp;generieren:</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <target state="new">Example: Name1="Value1",Name2="Value2",Name3="Value3"</target>
-        <note></note>
+        <target state="translated">Beispiel: Name1="Wert1",Name2="Wert2",Name3="Wert3"</target>
+        <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">
         <source>Compilation Constants</source>
-        <target state="new">Compilation Constants</target>
-        <note></note>
+        <target state="translated">Kompilierungskonstanten</target>
+        <note />
       </trans-unit>
       <trans-unit id="CompileWithDotNetNative.Text">
         <source>Compile with .NET Native toolchain</source>
-        <target state="new">Compile with .NET Native toolchain</target>
-        <note></note>
+        <target state="translated">Mit .NET Native-Toolkette kompilieren</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnableGatekeeperAudit.Text">
         <source>Enable static analysis for .NET Native</source>
-        <target state="new">Enable static analysis for .NET Native</target>
-        <note></note>
+        <target state="translated">Statische Analyse für .NET Native aktivieren</target>
+        <note />
       </trans-unit>
     </body>
   </file>
