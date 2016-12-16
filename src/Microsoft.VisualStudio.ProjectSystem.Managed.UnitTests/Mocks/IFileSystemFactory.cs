@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.IO
 {
     internal class IFileSystemFactory
     {

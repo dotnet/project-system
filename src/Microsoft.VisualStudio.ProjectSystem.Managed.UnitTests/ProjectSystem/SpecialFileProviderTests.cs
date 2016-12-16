@@ -2,7 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Mocks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Xunit;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -220,7 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
             else
             {
-                _fileSystem.Create(specialFilePath);
+                using (_fileSystem.Create(specialFilePath)) { }
+
                 IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
                 {

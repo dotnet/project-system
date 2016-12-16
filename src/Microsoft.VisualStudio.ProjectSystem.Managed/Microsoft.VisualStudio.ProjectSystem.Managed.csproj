@@ -130,14 +130,14 @@
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
-    <Compile Include="ProjectSystem\Utilities\DictionaryEqualityComparer.cs" />
+    <Compile Include="Collections\DictionaryEqualityComparer.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
-    <Compile Include="ProjectSystem\Utilities\FileSystem.cs" />
+    <Compile Include="IO\Win32FileSystem.cs" />
     <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
-    <Compile Include="ProjectSystem\Utilities\IFileSystem.cs" />
+    <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />

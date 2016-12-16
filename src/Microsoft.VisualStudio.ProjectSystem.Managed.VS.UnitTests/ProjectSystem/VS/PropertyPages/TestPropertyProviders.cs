@@ -50,8 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (properties.ContainsKey(name))
                 {
-                    IProperty property = properties[name] as IProperty;
-                    if (property != null)
+                    if (properties[name] is IProperty property)
                     {
                         property.SetValueAsync(value);
                     }
