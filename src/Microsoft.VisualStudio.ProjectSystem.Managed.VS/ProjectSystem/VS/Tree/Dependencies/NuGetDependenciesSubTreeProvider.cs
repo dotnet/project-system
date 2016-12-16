@@ -709,8 +709,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public override bool Equals(object obj)
             {
-                DependencyMetadata other = obj as DependencyMetadata;
-                if (other != null)
+                if (obj is DependencyMetadata other)
                 {
                     return Equals(other);
                 }

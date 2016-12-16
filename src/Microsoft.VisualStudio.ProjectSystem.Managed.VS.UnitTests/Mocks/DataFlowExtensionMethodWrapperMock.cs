@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions
 {
     public class DataFlowExtensionMethodWrapperMock : IDataFlowExtensionWrapper
     {

@@ -1,14 +1,24 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Moq;
 using System.Threading.Tasks.Dataflow;
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectTreeProviderFactory
     {
+        public static IProjectTreeProvider ImplementFindByPath(Func<IProjectTree, string, IProjectTree> action)
+        {
+            var mock = new Mock<IProjectTreeProvider>();
+            mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
+                .Returns(action);
+
+            return mock.Object;
+        }
+
         public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null)
         {
             var mock = new Mock<IProjectTreeProvider>();

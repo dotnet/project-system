@@ -67,11 +67,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var task1 = scheduler.ScheduleAsyncTask((ct) =>
             {
                 taskRan = true;
+                int count = 50;
+                while (count != 0)
+                {
+                    ct.ThrowIfCancellationRequested();
+                    Thread.Sleep(20);
+                    --count;
+                }
                 return Task.CompletedTask;
             });
+
             scheduler.Dispose();
-            task1.Task.Wait();
-            Assert.False(taskRan);
+
+            // There are two cases to consider in the verification. One, the cancellation is detected by the scheduler. In that case 
+            // the task will complete successfully (it does not cancel itself), but the inner async task will not run.  And 2, the cancellation 
+            // occurs after the scheduling starts. In that case the inner task will execute, but is crafted to throw and OperationCancelledException. 
+            try
+            {
+                task1.Task.Wait();
+                Assert.False(taskRan);
+            }
+            catch(OperationCanceledException)
+            {
+            }
         }
 
         [Fact]
@@ -83,12 +101,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var task1 = scheduler.ScheduleAsyncTask((ct) =>
             {
                 taskRan = true;
+                int count = 50;
+                while (count != 0)
+                {
+                    ct.ThrowIfCancellationRequested();
+                    Thread.Sleep(20);
+                    --count;
+                }
                 return Task.CompletedTask;
             });
 
             scheduler.CancelPendingUpdates();
-            task1.Task.Wait();
-            Assert.False(taskRan);
+
+            try
+            {
+                task1.Task.Wait();
+                Assert.False(taskRan);
+            }
+            catch(OperationCanceledException)
+            {
+            }
         }
     }
 }

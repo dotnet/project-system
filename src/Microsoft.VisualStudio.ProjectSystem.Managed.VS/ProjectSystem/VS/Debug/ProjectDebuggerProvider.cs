@@ -103,8 +103,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public override async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)
         {
-            // Get the active debug profile
-            ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
+            // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
+            // a snapshot is produced).
+            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(true);
+            ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
             if (activeProfile == null)
@@ -325,8 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
             localPath = null;
-            var deployedItemMapper = LastLaunchProvider as IDeployedProjectItemMappingProvider;
-            if (deployedItemMapper != null)
+            if (LastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }

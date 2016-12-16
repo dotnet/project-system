@@ -691,10 +691,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #Region "Application.xaml handling"
 
-        Private Enum __PSFFILEID3
-            PSFFILEID_AppXaml = -1008
-        End Enum
-
         ''' <summary>
         ''' Returns true iff the project contains an Application.xaml file
         ''' </summary>

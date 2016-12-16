@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
