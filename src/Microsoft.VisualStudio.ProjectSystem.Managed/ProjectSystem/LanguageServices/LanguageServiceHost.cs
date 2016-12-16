@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -62,11 +63,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IWorkspaceProjectContext ActiveProjectContext => _currentAggregateProjectContext?.ActiveProjectContext;
 
+        public IVsENCRebuildableProjectCfg2 ENCProjectConfig2 => _currentAggregateProjectContext?.ENCProjectConfig2;
+
+        public IVsENCRebuildableProjectCfg4 ENCProjectConfig4 => _currentAggregateProjectContext?.ENCProjectConfig4;
+
         [ImportMany]
         public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
         {
             get;
         }
+
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]

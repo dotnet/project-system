@@ -76,74 +76,76 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         #region IVsENCRebuildableProjectCfg2 Implementation
         public int BuildForEnc([In, MarshalAs(UnmanagedType.IUnknown)] object pUpdatePE)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).BuildForEnc(pUpdatePE);
+            return _host.ENCProjectConfig2?.BuildForEnc(pUpdatePE) ?? VSConstants.S_OK;
         }
 
         public int EncApplySucceeded([In] int hrApplyResult)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).EncApplySucceeded(hrApplyResult);
+            return _host.ENCProjectConfig2?.EncApplySucceeded(hrApplyResult) ?? VSConstants.S_OK;
         }
 
         public int EnterBreakStateOnPE([In] EncInterop.ENC_BREAKSTATE_REASON encBreakReason, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ENC_ACTIVE_STATEMENT[] pActiveStatements, [In] uint cActiveStatements)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements);
+            return _host.ENCProjectConfig2?.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements) ?? VSConstants.S_OK;
         }
 
         public int ExitBreakStateOnPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).ExitBreakStateOnPE();
+            return _host.ENCProjectConfig2?.ExitBreakStateOnPE() ?? VSConstants.S_OK;
         }
 
         public int GetCurrentActiveStatementPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetCurrentActiveStatementPosition(id, ptsNewPosition);
+            return _host.ENCProjectConfig2?.GetCurrentActiveStatementPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
         }
 
         public int GetCurrentExceptionSpanPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetCurrentExceptionSpanPosition(id, ptsNewPosition);
+            return _host.ENCProjectConfig2?.GetCurrentExceptionSpanPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
         }
 
         public int GetENCBuildState([MarshalAs(UnmanagedType.LPArray), Out] ENC_BUILD_STATE[] pENCBuildState)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetENCBuildState(pENCBuildState);
+            return _host.ENCProjectConfig2?.GetENCBuildState(pENCBuildState) ?? VSConstants.E_FAIL;
         }
 
         public int GetExceptionSpanCount([Out] out uint pcExceptionSpan)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetExceptionSpanCount(out pcExceptionSpan);
+            pcExceptionSpan = default(uint);
+            return _host.ENCProjectConfig2?.GetExceptionSpanCount(out pcExceptionSpan) ?? VSConstants.E_FAIL;
         }
 
         public int GetExceptionSpans([In] uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), Out] ENC_EXCEPTION_SPAN[] rgelt, [In, Out] ref uint pceltFetched)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetExceptionSpans(celt, rgelt, ref pceltFetched);
+            return _host.ENCProjectConfig2?.GetExceptionSpans(celt, rgelt, ref pceltFetched) ?? VSConstants.E_FAIL;
         }
 
         public int GetPEBuildTimeStamp([MarshalAs(UnmanagedType.LPArray), Out] OLE.Interop.FILETIME[] pTimeStamp)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetPEBuildTimeStamp(pTimeStamp);
+            return _host.ENCProjectConfig2?.GetPEBuildTimeStamp(pTimeStamp) ?? VSConstants.E_NOTIMPL;
         }
 
         public int GetPEidentity([MarshalAs(UnmanagedType.LPArray), Out] Guid[] pMVID, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.BStr), Out] string[] pbstrPEName)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).GetPEidentity(pMVID, pbstrPEName);
+            return _host.ENCProjectConfig2?.GetPEidentity(pMVID, pbstrPEName) ?? VSConstants.E_FAIL;
         }
 
         public int StartDebuggingPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).StartDebuggingPE();
+            return _host.ENCProjectConfig2?.StartDebuggingPE() ?? VSConstants.S_OK;
         }
 
         public int StopDebuggingPE()
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.ActiveProjectContext).StopDebuggingPE();
+            return _host.ENCProjectConfig2?.StopDebuggingPE() ?? VSConstants.S_OK;
         }
         #endregion
 
         #region IVsENCRebuildableProjectCfg4 Implementation
         public int HasCustomMetadataEmitter([MarshalAs(UnmanagedType.VariantBool)] out bool value)
         {
-            return ((EncInterop.IVsENCRebuildableProjectCfg4)_host.ActiveProjectContext).HasCustomMetadataEmitter(out value);
+            value = true;
+            return _host.ENCProjectConfig4?.HasCustomMetadataEmitter(out value) ?? VSConstants.S_OK;
         }
         #endregion
     }

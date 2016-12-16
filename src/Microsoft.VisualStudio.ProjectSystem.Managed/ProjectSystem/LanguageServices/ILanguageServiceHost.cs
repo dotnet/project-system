@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -30,6 +31,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     An <see cref="IWorkspaceProjectContext"/> that provides access to the language service for the active configured project.
         /// </value>
         IWorkspaceProjectContext ActiveProjectContext
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the object that represents the IVsENCRebuildableProjectCfg2.
+        /// </summary>
+        EncInterop.IVsENCRebuildableProjectCfg2 ENCProjectConfig2
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the object that represents the IVsENCRebuildableProjectCfg4.
+        /// </summary>
+        EncInterop.IVsENCRebuildableProjectCfg4 ENCProjectConfig4
         {
             get;
         }
