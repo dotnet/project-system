@@ -17,13 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
     [ComServiceIid(typeof(IVsENCRebuildableProjectCfg))]
     [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg2))]
     [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
-    class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
+    internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
     {
         private readonly ILanguageServiceHost _host;
 
         [ImportingConstructor]
-        public EditAndContinueProvider(
-            ILanguageServiceHost host)
+        public EditAndContinueProvider(ILanguageServiceHost host)
         {
             _host = host;
         }
