@@ -84,12 +84,6 @@
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
-[$RootKey$\CLSID\{9ac27c7d-07d6-45de-bf01-2ffedf796fb3}]
-"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
-"Class"="Microsoft.VisualStudio.Editors.PropertyPages.CSharpDotnetCoreApplicationPropPageComClass"
-"InprocServer32"="$System$\mscoree.dll"
-"ThreadingModel"="Both"
-
 [$RootKey$\CLSID\{6185191F-1008-4FB2-A715-3A4E4F27E610}]
 "Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPageComClass"
@@ -99,12 +93,6 @@
 [$RootKey$\CLSID\{8998E48E-B89A-4034-B66E-353D8C1FDC2E}]
 "Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.ApplicationWithMyPropPageComClass"
-"InprocServer32"="$System$\mscoree.dll"
-"ThreadingModel"="Both"
-
-[$RootKey$\CLSID\{d6a537ac-1046-43ee-8c31-a6d72deb6b67}]
-"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
-"Class"="Microsoft.VisualStudio.Editors.PropertyPages.VisualBasicDotnetCoreApplicationPropPageComClass"
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 

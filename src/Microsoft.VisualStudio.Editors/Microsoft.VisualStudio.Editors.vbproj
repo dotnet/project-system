@@ -105,16 +105,8 @@
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropPages\DotnetCoreApplicationPropPageVBWinForms.resx">
-      <DependentUpon>DotnetCoreApplicationPropPageVBWinForms.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="PropPages\ApplicationPropPageVBWinForms.resx">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropPages\DotnetCoreCSharpApplicationPropPage.resx">
-      <DependentUpon>DotnetCoreCSharpApplicationPropPage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PropPages\PackagePropPage.resx">
@@ -284,20 +276,8 @@
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
     </Compile>
     <Compile Include="PropPages\AssemblyInfoUtils.vb" />
-    <Compile Include="PropPages\DotnetCoreApplicationPropPageVBWinForms.Designer.vb">
-      <DependentUpon>DotnetCoreApplicationPropPageVBWinForms.vb</DependentUpon>
-    </Compile>
-    <Compile Include="PropPages\DotnetCoreApplicationPropPageVBWinForms.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
-    </Compile>
-    <Compile Include="PropPages\DotnetCoreCSharpApplicationPropPage.Designer.vb">
-      <DependentUpon>DotnetCoreCSharpApplicationPropPage.vb</DependentUpon>
-    </Compile>
-    <Compile Include="PropPages\DotnetCoreCSharpApplicationPropPage.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\PackagePropPage.Designer.vb">
       <DependentUpon>PackagePropPage.vb</DependentUpon>
