@@ -44,6 +44,48 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
         }
 
+        [Fact]
+        public async Task CreateFolderAsync_CreatesFolderOnDisk()
+        {
+            string result = null;
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var fileSystem = IFileSystemFactory.ImplementCreateDirectory((path) => { result = path; });
+
+            var storage = CreateInstance(fileSystem: fileSystem, unconfiguredProject: unconfiguredProject);
+
+            await storage.CreateFolderAsync("Folder");
+
+            Assert.Equal(@"C:\Folder", result);
+        }
+
+        [Fact]
+        public async Task CreateFolderAsync_IncludesFolderInProject()
+        {
+            string result = null;
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = path; return Task.CompletedTask; });
+
+            var storage = CreateInstance(folderManager: folderManager, unconfiguredProject: unconfiguredProject);
+
+            await storage.CreateFolderAsync("Folder");
+
+            Assert.Equal(@"C:\Folder", result);
+        }
+
+        [Fact]
+        public async Task CreateFolderAsync_IncludesFolderInProjectNonRecusively()
+        {
+            bool? result = null;
+            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = recursive; return Task.CompletedTask; });
+
+            var storage = CreateInstance(folderManager: folderManager, unconfiguredProject: unconfiguredProject);
+
+            await storage.CreateFolderAsync("Folder");
+
+            Assert.False(result);
+        }
+
         [Theory]
         [InlineData(@"C:\Project.csproj",           @"Properties",                   @"C:\Properties")]
         [InlineData(@"C:\Projects\Project.csproj",  @"Properties",                   @"C:\Projects\Properties")]

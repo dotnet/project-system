@@ -7,18 +7,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IPhysicalProjectTreeFactory
     {
+
         public static IPhysicalProjectTree Create(IProjectTreeProvider provider = null, IProjectTree currentTree = null, IProjectTreeService service = null)
         {
             var mock = new Mock<IPhysicalProjectTree>();
-            mock.Setup(t => t.TreeProvider).Returns(provider ?? IProjectTreeProviderFactory.Create());
+            mock.Setup(t => t.TreeProvider)
+                .Returns(provider ?? IProjectTreeProviderFactory.Create());
 
-            if (currentTree != null)
-                mock.Setup(t => t.CurrentTree)
-                    .Returns(currentTree);
+            mock.Setup(t => t.CurrentTree)
+                .Returns(currentTree ?? ProjectTreeParser.Parse("Project"));
 
-            if (service != null)
-                mock.Setup(t => t.TreeService)
-                    .Returns(service);
+            mock.Setup(t => t.TreeService)
+                .Returns(service ?? IProjectTreeServiceFactory.Create());
 
             return mock.Object;
         }
