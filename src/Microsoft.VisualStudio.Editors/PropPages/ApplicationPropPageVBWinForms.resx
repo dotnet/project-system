@@ -112,25 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="overarchingTableLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="overarchingTableLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="overarchingTableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="TopHalfLayoutPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="TopHalfLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -146,10 +137,7 @@
   <data name="AssemblyNameLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="AssemblyNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="AssemblyNameLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
   </data>
@@ -169,7 +157,7 @@
     <value>AssemblyNameLabel</value>
   </data>
   <data name="&gt;&gt;AssemblyNameLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AssemblyNameLabel.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
@@ -196,7 +184,7 @@
     <value>AssemblyNameTextBox</value>
   </data>
   <data name="&gt;&gt;AssemblyNameTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AssemblyNameTextBox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
@@ -209,9 +197,6 @@
   </data>
   <data name="RootNamespaceLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="RootNamespaceLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="RootNamespaceLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>265, 3</value>
@@ -232,7 +217,7 @@
     <value>RootNamespaceLabel</value>
   </data>
   <data name="&gt;&gt;RootNamespaceLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;RootNamespaceLabel.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
@@ -259,7 +244,7 @@
     <value>RootNamespaceTextBox</value>
   </data>
   <data name="&gt;&gt;RootNamespaceTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;RootNamespaceTextBox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
@@ -273,17 +258,11 @@
   <data name="TargetFrameworkLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="TargetFrameworkLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="TargetFrameworkLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 47</value>
-  </data>
   <data name="TargetFrameworkLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 3, 0</value>
   </data>
   <data name="TargetFrameworkLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 13</value>
+    <value>181, 13</value>
   </data>
   <data name="TargetFrameworkLabel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -295,19 +274,16 @@
     <value>TargetFrameworkLabel</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkLabel.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>13</value>
   </data>
   <data name="TargetFrameworkComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
-  </data>
-  <data name="TargetFrameworkComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 63</value>
   </data>
   <data name="TargetFrameworkComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 3, 3</value>
@@ -322,76 +298,13 @@
     <value>TargetFrameworkComboBox</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkComboBox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;TargetFrameworkComboBox.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="ApplicationTypeLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="ApplicationTypeLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ApplicationTypeLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ApplicationTypeLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 47</value>
-  </data>
-  <data name="ApplicationTypeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>9, 5, 0, 0</value>
-  </data>
-  <data name="ApplicationTypeLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
-  </data>
-  <data name="ApplicationTypeLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="ApplicationTypeLabel.Text" xml:space="preserve">
-    <value>&amp;Application type:</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeLabel.Name" xml:space="preserve">
-    <value>ApplicationTypeLabel</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeLabel.Parent" xml:space="preserve">
-    <value>TopHalfLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="ApplicationTypeComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="ApplicationTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 63</value>
-  </data>
-  <data name="ApplicationTypeComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>9, 3, 0, 3</value>
-  </data>
-  <data name="ApplicationTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 21</value>
-  </data>
-  <data name="ApplicationTypeComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeComboBox.Name" xml:space="preserve">
-    <value>ApplicationTypeComboBox</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeComboBox.Parent" xml:space="preserve">
-    <value>TopHalfLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;ApplicationTypeComboBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>14</value>
   </data>
   <data name="StartupObjectComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -412,22 +325,19 @@
     <value>StartupObjectComboBox</value>
   </data>
   <data name="&gt;&gt;StartupObjectComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StartupObjectComboBox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;StartupObjectComboBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>4</value>
   </data>
   <data name="StartupObjectLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
   <data name="StartupObjectLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="StartupObjectLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="StartupObjectLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 92</value>
@@ -448,13 +358,73 @@
     <value>StartupObjectLabel</value>
   </data>
   <data name="&gt;&gt;StartupObjectLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StartupObjectLabel.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;StartupObjectLabel.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>5</value>
+  </data>
+  <data name="ApplicationTypeLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="ApplicationTypeLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ApplicationTypeLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 47</value>
+  </data>
+  <data name="ApplicationTypeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>9, 5, 0, 0</value>
+  </data>
+  <data name="ApplicationTypeLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 13</value>
+  </data>
+  <data name="ApplicationTypeLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="ApplicationTypeLabel.Text" xml:space="preserve">
+    <value>&amp;Application type:</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeLabel.Name" xml:space="preserve">
+    <value>ApplicationTypeLabel</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeLabel.Parent" xml:space="preserve">
+    <value>TopHalfLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="ApplicationTypeComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="ApplicationTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 63</value>
+  </data>
+  <data name="ApplicationTypeComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>9, 3, 0, 3</value>
+  </data>
+  <data name="ApplicationTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>253, 21</value>
+  </data>
+  <data name="ApplicationTypeComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeComboBox.Name" xml:space="preserve">
+    <value>ApplicationTypeComboBox</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeComboBox.Parent" xml:space="preserve">
+    <value>TopHalfLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;ApplicationTypeComboBox.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="IconLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -462,11 +432,8 @@
   <data name="IconLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="IconLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="IconLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 92</value>
+    <value>265, 47</value>
   </data>
   <data name="IconLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 5, 0, 0</value>
@@ -484,22 +451,19 @@
     <value>IconLabel</value>
   </data>
   <data name="&gt;&gt;IconLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;IconLabel.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;IconLabel.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="IconPicturebox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="IconPicturebox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="IconPicturebox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>488, 105</value>
+    <value>486, 57</value>
   </data>
   <data name="IconPicturebox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
@@ -517,19 +481,19 @@
     <value>IconPicturebox</value>
   </data>
   <data name="&gt;&gt;IconPicturebox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;IconPicturebox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;IconPicturebox.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="IconCombobox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
   <data name="IconCombobox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 108</value>
+    <value>265, 63</value>
   </data>
   <data name="IconCombobox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 3, 3, 3</value>
@@ -544,22 +508,19 @@
     <value>IconCombobox</value>
   </data>
   <data name="&gt;&gt;IconCombobox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;IconCombobox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;IconCombobox.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="UseApplicationFrameworkCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
   <data name="UseApplicationFrameworkCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="UseApplicationFrameworkCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="UseApplicationFrameworkCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 182</value>
@@ -580,13 +541,13 @@
     <value>UseApplicationFrameworkCheckBox</value>
   </data>
   <data name="&gt;&gt;UseApplicationFrameworkCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;UseApplicationFrameworkCheckBox.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;UseApplicationFrameworkCheckBox.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>11</value>
   </data>
   <data name="TableLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -594,38 +555,11 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="AssemblyInfoButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="AssemblyInfoButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="AssemblyInfoButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="AssemblyInfoButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 9</value>
-  </data>
-  <data name="AssemblyInfoButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 9, 3, 3</value>
-  </data>
-  <data name="AssemblyInfoButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 0, 11, 0</value>
-  </data>
-  <data name="AssemblyInfoButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 23</value>
-  </data>
-  <data name="AssemblyInfoButton.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="AssemblyInfoButton.Text" xml:space="preserve">
-    <value>Assembl&amp;y Information...</value>
-  </data>
   <data name="&gt;&gt;AssemblyInfoButton.Name" xml:space="preserve">
     <value>AssemblyInfoButton</value>
   </data>
   <data name="&gt;&gt;AssemblyInfoButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AssemblyInfoButton.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -633,38 +567,11 @@
   <data name="&gt;&gt;AssemblyInfoButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="ViewUACSettingsButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ViewUACSettingsButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="ViewUACSettingsButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ViewUACSettingsButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 9</value>
-  </data>
-  <data name="ViewUACSettingsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 9, 3, 3</value>
-  </data>
-  <data name="ViewUACSettingsButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 0, 11, 0</value>
-  </data>
-  <data name="ViewUACSettingsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 23</value>
-  </data>
-  <data name="ViewUACSettingsButton.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="ViewUACSettingsButton.Text" xml:space="preserve">
-    <value>View Windows Settin&amp;gs</value>
-  </data>
   <data name="&gt;&gt;ViewUACSettingsButton.Name" xml:space="preserve">
     <value>ViewUACSettingsButton</value>
   </data>
   <data name="&gt;&gt;ViewUACSettingsButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ViewUACSettingsButton.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -682,7 +589,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>306, 35</value>
+    <value>300, 35</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -691,13 +598,13 @@
     <value>TableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>12</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyInfoButton" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ViewUACSettingsButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -721,7 +628,7 @@
     <value>TopHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;TopHalfLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TopHalfLayoutPanel.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
@@ -730,7 +637,85 @@
     <value>0</value>
   </data>
   <data name="TopHalfLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyNameLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyNameTextBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RootNamespaceLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RootNamespaceTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="TargetFrameworkLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TargetFrameworkComboBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ApplicationTypeLabel" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ApplicationTypeComboBox" Row="3" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="StartupObjectComboBox" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartupObjectLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="IconLabel" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="IconPicturebox" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="IconCombobox" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="UseApplicationFrameworkCheckBox" Row="7" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="TableLayoutPanel1" Row="6" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyNameLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyNameTextBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RootNamespaceLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RootNamespaceTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="TargetFrameworkLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TargetFrameworkComboBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartupObjectComboBox" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartupObjectLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ApplicationTypeLabel" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ApplicationTypeComboBox" Row="3" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="IconLabel" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="IconPicturebox" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="IconCombobox" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="UseApplicationFrameworkCheckBox" Row="7" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="TableLayoutPanel1" Row="6" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="AssemblyInfoButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AssemblyInfoButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="AssemblyInfoButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="AssemblyInfoButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 9</value>
+  </data>
+  <data name="AssemblyInfoButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 9, 3, 3</value>
+  </data>
+  <data name="AssemblyInfoButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 0, 11, 0</value>
+  </data>
+  <data name="AssemblyInfoButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="AssemblyInfoButton.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="AssemblyInfoButton.Text" xml:space="preserve">
+    <value>Assembl&amp;y Information...</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoButton.Name" xml:space="preserve">
+    <value>AssemblyInfoButton</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoButton.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;AssemblyInfoButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ViewUACSettingsButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ViewUACSettingsButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ViewUACSettingsButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ViewUACSettingsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>150, 9</value>
+  </data>
+  <data name="ViewUACSettingsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 9, 3, 3</value>
+  </data>
+  <data name="ViewUACSettingsButton.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 0, 11, 0</value>
+  </data>
+  <data name="ViewUACSettingsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="ViewUACSettingsButton.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="ViewUACSettingsButton.Text" xml:space="preserve">
+    <value>View Windows Settin&amp;gs</value>
+  </data>
+  <data name="&gt;&gt;ViewUACSettingsButton.Name" xml:space="preserve">
+    <value>ViewUACSettingsButton</value>
+  </data>
+  <data name="&gt;&gt;ViewUACSettingsButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ViewUACSettingsButton.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;ViewUACSettingsButton.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="WindowsAppGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -756,9 +741,6 @@
   <data name="EnableXPThemesCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="EnableXPThemesCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="EnableXPThemesCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
   </data>
@@ -778,7 +760,7 @@
     <value>EnableXPThemesCheckBox</value>
   </data>
   <data name="&gt;&gt;EnableXPThemesCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;EnableXPThemesCheckBox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -791,9 +773,6 @@
   </data>
   <data name="SingleInstanceCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="SingleInstanceCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="SingleInstanceCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 26</value>
@@ -814,7 +793,7 @@
     <value>SingleInstanceCheckBox</value>
   </data>
   <data name="&gt;&gt;SingleInstanceCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SingleInstanceCheckBox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -827,9 +806,6 @@
   </data>
   <data name="SaveMySettingsCheckbox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="SaveMySettingsCheckbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="SaveMySettingsCheckbox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 49</value>
@@ -850,7 +826,7 @@
     <value>SaveMySettingsCheckbox</value>
   </data>
   <data name="&gt;&gt;SaveMySettingsCheckbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SaveMySettingsCheckbox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -863,9 +839,6 @@
   </data>
   <data name="AuthenticationModeLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="AuthenticationModeLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="AuthenticationModeLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 74</value>
@@ -886,7 +859,7 @@
     <value>AuthenticationModeLabel</value>
   </data>
   <data name="&gt;&gt;AuthenticationModeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AuthenticationModeLabel.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -913,7 +886,7 @@
     <value>AuthenticationModeComboBox</value>
   </data>
   <data name="&gt;&gt;AuthenticationModeComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AuthenticationModeComboBox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -926,9 +899,6 @@
   </data>
   <data name="ShutdownModeLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="ShutdownModeLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="ShutdownModeLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 119</value>
@@ -949,7 +919,7 @@
     <value>ShutdownModeLabel</value>
   </data>
   <data name="&gt;&gt;ShutdownModeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ShutdownModeLabel.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -976,7 +946,7 @@
     <value>ShutdownModeComboBox</value>
   </data>
   <data name="&gt;&gt;ShutdownModeComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ShutdownModeComboBox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -989,9 +959,6 @@
   </data>
   <data name="SplashScreenLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="SplashScreenLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="SplashScreenLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 164</value>
@@ -1012,7 +979,7 @@
     <value>SplashScreenLabel</value>
   </data>
   <data name="&gt;&gt;SplashScreenLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SplashScreenLabel.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -1039,7 +1006,7 @@
     <value>SplashScreenComboBox</value>
   </data>
   <data name="&gt;&gt;SplashScreenComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SplashScreenComboBox.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -1052,9 +1019,6 @@
   </data>
   <data name="ViewCodeButton.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="ViewCodeButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="ViewCodeButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>311, 180</value>
@@ -1078,7 +1042,7 @@
     <value>ViewCodeButton</value>
   </data>
   <data name="&gt;&gt;ViewCodeButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ViewCodeButton.Parent" xml:space="preserve">
     <value>BottomHalfLayoutPanel</value>
@@ -1105,7 +1069,7 @@
     <value>BottomHalfLayoutPanel</value>
   </data>
   <data name="&gt;&gt;BottomHalfLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;BottomHalfLayoutPanel.Parent" xml:space="preserve">
     <value>WindowsAppGroupBox</value>
@@ -1138,12 +1102,21 @@
     <value>WindowsAppGroupBox</value>
   </data>
   <data name="&gt;&gt;WindowsAppGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;WindowsAppGroupBox.Parent" xml:space="preserve">
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;WindowsAppGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="overarchingTableLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="overarchingTableLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="overarchingTableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="overarchingTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
@@ -1162,7 +1135,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;overarchingTableLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;overarchingTableLayoutPanel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1173,7 +1146,7 @@
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TopHalfLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="WindowsAppGroupBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -1195,6 +1168,6 @@
     <value>ApplicationPropPageVBWinForms</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageVBBase, Microsoft.VisualStudio.Editors, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
