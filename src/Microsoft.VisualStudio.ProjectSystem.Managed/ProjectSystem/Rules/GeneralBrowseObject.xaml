@@ -71,6 +71,7 @@
   <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="True"/>
   <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="True"/>
   <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Description="Treat warnings as errors" Visible="True"/>
+  <StringProperty Name="TreatSpecificWarningsAsErrors"  Description="Treat specific warnings as errors" Visible="True" />
   <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="True"/>
   <StringProperty Name="DocumentationFile" DisplayName="Documentation file" Visible="True"/>
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies" Visible="True">
