@@ -211,11 +211,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     }
 }")]
         [InlineData(false, @"c:\myproject\project.csproj", @"")]
-        public async Task DependenciesGraphProvider_GetChildrenAsync_InvalidNodeData(
+        public async Task DependenciesGraphProvider_GetChildrenAsync_InvalidNodeData_NoId(
                         bool canceledToken, string projectPath, string nodeJson)
         {
             // Arrange
-            var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
+            var nodeIdString = @"";
             var tcs = new CancellationTokenSource();
             if (canceledToken)
             {
@@ -235,6 +235,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Act (if something is wrong, there would be exception since we did not provide more mocks)
             await provider.BeginGetGraphDataAsync(mockGraphContext);
+        }
+
+        [Fact]
+        public async Task DependenciesGraphProvider_GetChildrenAsync_NoNodeAttachedToInputNode_ShouldDiscoverItAgain()
+        {
+            var projectPath = @"c:\myproject\project.csproj";
+            var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
+
+            var nodeJson = @"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyNodeItemSpec""
+    }
+}";
+            var childNodeJson = @"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyChildNodeItemSpec""
+    }
+}";
+
+            var existingNode = IDependencyNodeFactory.FromJson(nodeJson);
+            var existingChildNode = IDependencyNodeFactory.FromJson(childNodeJson);
+            existingNode.Children.Add(existingChildNode);
+
+            var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString, null);
+            var outputNodes = new HashSet<GraphNode>();
+
+            var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.AddTestDependencyNodes(new[] { existingNode });
+
+            var mockProjectContextProvider = IDependenciesGraphProjectContextProviderFactory.Implement(projectPath, mockProvider);
+            var mockGraphContext = IGraphContextFactory.ImplementGetChildrenAsync(inputNode,
+                                                                                  trackChanges: true,
+                                                                                  outputNodes: outputNodes);
+
+            var provider = new TestableDependenciesGraphProvider(mockProjectContextProvider,
+                                                         Mock.Of<SVsServiceProvider>(),
+                                                         new IProjectThreadingServiceMock().JoinableTaskContext);
+
+            // Act
+            await provider.BeginGetGraphDataAsync(mockGraphContext);
+
+            // Assert
+            Assert.Equal(1, outputNodes.Count);
+            var childGraphNode = outputNodes.First();
+            Assert.Equal(existingChildNode, childGraphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty));
+            Assert.False(childGraphNode.GetValue<bool>(DgmlNodeProperties.ContainsChildren));
+            Assert.True(childGraphNode.GetValue(DependenciesGraphSchema.ProviderProperty) is IProjectDependenciesSubTreeProviderMock);
+            Assert.Equal(1, childGraphNode.IncomingLinkCount);
+            Assert.Equal(1, provider.GetRegisteredSubTreeProviders().Count());
         }
 
         [Fact]
@@ -577,8 +630,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             }
 
+            /// <summary>
+            /// Holds a hard reference to the IGraphContext stored in weak collection ExpandedGraphContexts,
+            /// to avoid random GC cleans during unit tests execution.
+            /// </summary>
+            private IGraphContext ContextHolder { get; set; }
+
             public void AddExpandedGraphContext(IGraphContext context)
             {
+                ContextHolder = context;
                 ExpandedGraphContexts = new PlatformUI.WeakCollection<IGraphContext>();
                 ExpandedGraphContexts.Add(context);
             }
