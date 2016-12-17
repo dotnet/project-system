@@ -193,5 +193,11 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dependencies\CPS\CPS.csproj">
+      <Project>{03ab838c-1b9d-4eca-856f-476616c35f0c}</Project>
+      <Name>CPS</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
