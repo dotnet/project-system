@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData, appDesignerData  });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null,  new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create(CancellationToken.None));
-            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem != null? fileSystem : new IFileSystemMock(), commonServices, null);
+            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null);
             return provider;
         }
 
