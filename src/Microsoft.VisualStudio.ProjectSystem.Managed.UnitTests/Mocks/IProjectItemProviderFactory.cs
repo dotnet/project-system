@@ -30,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
                         if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
                         {
-                            IProjectTree child;
-                            if (node.TryFindImmediateChild(fileName, out child) && !child.Flags.IsIncludedInProject())
+                            if (node.TryFindImmediateChild(fileName, out IProjectTree child) && !child.Flags.IsIncludedInProject())
                             {
                                 var newFlags = child.Flags.Remove(ProjectTreeFlags.Common.IncludeInProjectCandidate);
                                 child.SetProperties(flags: newFlags);

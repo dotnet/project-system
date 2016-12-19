@@ -140,8 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Runtime.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", null)]
         public async void SourceFileProperties_GetEvalutedPropertyAsync(string code, string propertyName, string expectedValue)
         {
-            Workspace workspace;
-            var provider = CreateProviderForSourceFileValidation(code, propertyName, out workspace);
+            var provider = CreateProviderForSourceFileValidation(code, propertyName, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -163,8 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription""]", "Description", null, null)]
         public async void ProjectFileProperties_GetEvalutedPropertyAsync(string code, string propertyName, string propertyValueInProjectFile, string expectedValue)
         {
-            Workspace workspace;
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out workspace);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -193,8 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     @"[assembly: System.AssemblyDescriptionAttribute(""MyDescription"")]")]
         public async void SourceFileProperties_SetPropertyValueAsync(string code, string propertyName, string propertyValue, string expectedCode)
         {
-            Workspace workspace;
-            var provider = CreateProviderForSourceFileValidation(code, propertyName, out workspace);
+            var provider = CreateProviderForSourceFileValidation(code, propertyName, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -213,8 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async void ProjectFileProperties_SetPropertyValueAsync(string code, string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue)
         {
             var propertyValues = new Dictionary<string, string>();
-            Workspace workspace;
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out workspace, additionalProps: propertyValues);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: propertyValues);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -237,8 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "MyDescription")]
         public async void SourceFileProperties_GetUnevalutedPropertyAsync(string code, string propertyName, string expectedValue)
         {
-            Workspace workspace;
-            var provider = CreateProviderForSourceFileValidation(code, propertyName, out workspace);
+            var provider = CreateProviderForSourceFileValidation(code, propertyName, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -252,8 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("", "Description", "MyDescription", "MyDescription")]
         public async void ProjectFileProperties_GetUnevalutedPropertyAsync(string code, string propertyName, string propertyValueInProjectFile, string expectedValue)
         {
-            Workspace workspace;
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out workspace);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -289,8 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var interceptingProvider = new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
                 metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName));
-            Workspace workspace;
-            var provider = CreateProviderForSourceFileValidation(code, propertyName, out workspace, interceptingProvider);
+            var provider = CreateProviderForSourceFileValidation(code, propertyName, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -320,8 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var additionalProps = new Dictionary<string, string>() { { "AssemblyName", assemblyName } };
 
             string code = "";
-            Workspace workspace;
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out workspace, interceptingProvider, additionalProps);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider, additionalProps);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -364,8 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName));
             
             string code = "";
-            Workspace workspace;
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out workspace, interceptingProvider);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);

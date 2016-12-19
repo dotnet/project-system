@@ -108,8 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private IProjectTree FindProjectJsonNode(IProjectTree newTree)
         {
-            IProjectTree projectJsonNode;
-            if (newTree.TryFindImmediateChild("project.json", out projectJsonNode))
+            if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {
                 return projectJsonNode;
             }

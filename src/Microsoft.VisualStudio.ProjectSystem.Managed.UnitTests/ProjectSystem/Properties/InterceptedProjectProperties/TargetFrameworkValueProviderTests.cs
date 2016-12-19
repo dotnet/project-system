@@ -55,8 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var provider = CreateInstance(configuredTargetFramework);
             var properties = provider.GetProperties("path/to/project.testproj", null, null);
             var propertyValueStr = await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);
-            uint propertyValue;
-            Assert.True(uint.TryParse(propertyValueStr, out propertyValue));
+            Assert.True(uint.TryParse(propertyValueStr, out uint propertyValue));
             Assert.Equal(expectedTargetFrameworkPropertyValue, propertyValue);
         }
     }

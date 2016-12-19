@@ -577,11 +577,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
-
-            // Check snapshot
-            object updatedSettings;
             Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            // Check snapshot
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
 
@@ -610,11 +608,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
-
             // Check snapshot
-            object updatedSettings;
             Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
         [Fact]
@@ -668,9 +664,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            object updatedSettings;
             Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
 string JsonString1 = @"{

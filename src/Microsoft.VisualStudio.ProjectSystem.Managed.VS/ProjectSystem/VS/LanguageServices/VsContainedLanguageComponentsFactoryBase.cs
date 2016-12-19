@@ -50,9 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
-                int isFound;
                 HResult result = ProjectServices.VsProject.IsDocumentInProject(filePath, 
-                                                                               out isFound, 
+                                                                               out int isFound, 
                                                                                priority, 
                                                                                out myItemId);
                 if (result.Failed || isFound == 0)

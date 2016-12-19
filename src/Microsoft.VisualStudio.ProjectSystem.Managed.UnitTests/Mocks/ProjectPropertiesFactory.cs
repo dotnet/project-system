@@ -77,8 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                    .Returns((string schemaName, string file, string itemType, string itemName) => {
 
-                       IRule rule;
-                       rulesBySchemaName.TryGetValue(schemaName, out rule);
+                       rulesBySchemaName.TryGetValue(schemaName, out IRule rule);
                        return rule;
                 });
 
