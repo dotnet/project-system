@@ -64,14 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
-                    var projectReferenceItems = projectReferencesChanges.After.Items;
-                    var packageReferenceItems = packageReferencesChanges.After.Items;
 
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferenceItems, packageReferenceItems, project),
-                        PackageReferences = GetPackageReferences(packageReferenceItems),
+                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items, project),
+                        PackageReferences = GetReferences(packageReferencesChanges.After.Items),
                         Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
                 }
@@ -120,47 +118,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             };
         }
 
-        private static bool HasVersionAttribute(IImmutableDictionary<string, string> value)
-        {
-            return value.TryGetValue(PackageReference.VersionProperty, out string version) 
-                && !string.IsNullOrEmpty(version);
-        }
-
-        private static IVsReferenceItems GetPackageReferences(
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {            
-            return new ReferenceItems(items
-                .Where(p => HasVersionAttribute(p.Value))
-                .Select(v => GetReferenceItem(v)));
+            return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
         private static IVsReferenceItems GetProjectReferences(
             IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> packageReferenceItems,
             UnconfiguredProject project)
         {
-            var referenceItems = new ReferenceItems(projectReferenceItems.Select(p => GetReferenceItem(p)));
-
-            // include package references with no 'Version' attribute
-            var packageProjects = packageReferenceItems.Where(p => !HasVersionAttribute(p.Value));
-            foreach (var packageProjectItem in packageProjects)
-            {
-                referenceItems.Add(GetReferenceItem(packageProjectItem));
-            }
+            var referenceItems = GetReferences(projectReferenceItems);
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
             {                
                 var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                string projectFileFullPath;
-                if (definingProjectDirectory != null)
-                {
-                    projectFileFullPath = MakeRooted(definingProjectDirectory.Value, item.Name);
-                }
-                else
-                {
-                    projectFileFullPath = project.MakeRooted(item.Name);
-                }
+                var projectFileFullPath = definingProjectDirectory != null 
+                    ? MakeRooted(definingProjectDirectory.Value, item.Name)
+                    : project.MakeRooted(item.Name);
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {
@@ -173,8 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static string MakeRooted(string basePath, string path)
         {
-            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar);
-            basePath = basePath.TrimEnd(Path.AltDirectorySeparatorChar);
+            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             return PathHelper.MakeRooted(basePath + Path.DirectorySeparatorChar, path);
         }
     }
