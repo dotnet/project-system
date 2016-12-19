@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             PropertyName = propertyName;
         }
 
-        public static string GetFile(ExportInterceptingPropertyValueProviderFile file)
+        private static string GetFile(ExportInterceptingPropertyValueProviderFile file)
         {
             switch (file)
             {

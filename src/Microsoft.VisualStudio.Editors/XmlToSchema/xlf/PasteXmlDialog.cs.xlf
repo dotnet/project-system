@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/PasteXmlDialog.resx" />
       <trans-unit id="okButton.Text">
         <source>&amp;OK</source>
-        <target state="new">&amp;OK</target>
-        <note></note>
+        <target state="translated">&amp;OK</target>
+        <note />
       </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Zrušit</target>
+        <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>&amp;Type or paste an XML document</source>
-        <target state="new">&amp;Type or paste an XML document</target>
-        <note></note>
+        <target state="translated">&amp;Zadat nebo vložit dokument XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add XML</source>
-        <target state="new">Add XML</target>
-        <note></note>
+        <target state="translated">Přidat XML</target>
+        <note />
       </trans-unit>
     </body>
   </file>

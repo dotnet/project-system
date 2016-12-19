@@ -258,10 +258,51 @@ In order to debug this project, add an executable project to this solution which
   <data name="EditProjectFileCommand" xml:space="preserve">
     <value>Edit {0}</value>
   </data>
+  <data name="PackCommand" xml:space="preserve">
+    <value>&amp;Pack</value>
+  </data>
   <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
     <value>Unable to run your project. The "RunCommand" property is not defined.</value>
   </data>
   <data name="MultiTFEditNotSupported" xml:space="preserve">
     <value>Editing of multiple target framework is not supported.</value>
+  </data>
+  <data name="PackSelectedProjectCommand" xml:space="preserve">
+    <value>&amp;Pack {0}</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DiscardChanges" xml:space="preserve">
+    <value>Discard Unsaved Changes</value>
+  </data>
+  <data name="IgnoreUpdates" xml:space="preserve">
+    <value>Ignore Changes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="OverwriteUpdates" xml:space="preserve">
+    <value>Overwrite Updates</value>
+  </data>
+  <data name="ProjectFileBufferClosing" xml:space="preserve">
+    <value>Save changes to '{0}'?</value>
+  </data>
+  <data name="ProjectFileClosingTitle" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="ProjectFileNeedsToBeReloaded" xml:space="preserve">
+    <value>The project file has updated in the background and needs to be reloaded, but you have made unsaved changes.
+
+Press Save As to save your changes to another file and show the latest changes.
+Press Overwrite Updates to save your changes over the updated project file.
+Press Discard Unsaved Changes to discard your unsaved changes.
+Press Ignore Updates to leave the view unchanged. The solution explorer will reflect the updated project file.</value>
+  </data>
+  <data name="ProjectFileReloadTitle" xml:space="preserve">
+    <value>Project File Updated</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

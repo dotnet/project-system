@@ -9,17 +9,17 @@
 1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
  
 2. Restart Visual Studio.</source>
-        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+        <target state="translated">프로젝트에 적용 가능한 CAS(코드 액세스 보안) 권한을 Visual Studio에서 결정할 수 없었습니다. 프로젝트에서 참조하는 강력한 이름의 어셈블리에 사용자 지정 권한이 정의되어 있지만 이 어셈블리가 GAC(전역 어셈블리 캐시)에 제대로 설치되지 않아 문제가 발생했을 가능성이 높습니다. 이 문제를 해결하려면 다음을 실행해 보세요.
  
-1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+1. 프로젝트에서 참조하는 사용자 지정 권한 정의 어셈블리가 GAC에 모두 제대로 설치되어 있는지 확인합니다. 이러한 어셈블리 중 다시 빌드되었거나 버전 번호가 수정된 어셈블리가 있으면 GAC에 새 어셈블리를 설치해야 합니다.
  
-2. Restart Visual Studio.</target>
-        <note></note>
+2. Visual Studio를 다시 시작합니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InstallOtherFrameworks">
         <source>Install other frameworks...</source>
-        <target state="new">Install other frameworks...</target>
-        <note></note>
+        <target state="translated">기타 프레임워크 설치...</target>
+        <note />
       </trans-unit>
     </body>
   </file>

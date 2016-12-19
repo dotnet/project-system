@@ -45,6 +45,9 @@
     <Compile Include="ProjectSystem\VS\Editor\Listeners\TextBufferStateListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\VsTextBufferProviderAggregator.cs" />
     <Compile Include="ProjectSystem\VS\Editor\LoadedProjectFileEditorFactory.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfo.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\Editor\XmlEditorWrapper.Delegation.cs" />
@@ -113,6 +116,13 @@
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
+    <Compile Include="ProjectSystem\VS\References\AddFileContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\AssemblyReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\BaseReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\ComReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\ProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\SharedProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\WinRTReferencesProviderContext.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
@@ -123,7 +133,7 @@
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkMonikerValueProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\ProjectFileOrAssemblyInfoPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProject.cs" />

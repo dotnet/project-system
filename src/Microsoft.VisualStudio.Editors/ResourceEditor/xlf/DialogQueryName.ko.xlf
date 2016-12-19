@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/DialogQueryName.resx" />
       <trans-unit id="LabelDescription.Text">
         <source>P&amp;lease enter a name for the new resource.</source>
-        <target state="new">P&amp;lease enter a name for the new resource.</target>
-        <note></note>
+        <target state="translated">새 리소스의 이름을 입력하십시오(&amp;L).</target>
+        <note />
       </trans-unit>
       <trans-unit id="ButtonCancel.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">취소</target>
+        <note />
       </trans-unit>
       <trans-unit id="ButtonAdd.Text">
         <source>&amp;Add</source>
-        <target state="new">&amp;Add</target>
-        <note></note>
+        <target state="translated">추가(&amp;A)</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add New Resource</source>
-        <target state="new">Add New Resource</target>
-        <note></note>
+        <target state="translated">새 리소스 추가</target>
+        <note />
       </trans-unit>
     </body>
   </file>

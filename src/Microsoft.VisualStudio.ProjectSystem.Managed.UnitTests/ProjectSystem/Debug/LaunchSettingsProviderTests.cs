@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Moq;
@@ -16,7 +17,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-  
+
     [ProjectSystemTrait]
     public class LaunchSettingsProviderTests
     {
@@ -41,8 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData, appDesignerData  });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null,  new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create(CancellationToken.None));
-            Lazy<ISourceCodeControlIntegration> sccIntegration = new Lazy<ISourceCodeControlIntegration>(() => ISourceCodeControlIntegrationFactory.Create());
-            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem != null? fileSystem : new IFileSystemMock(), commonServices, null, sccIntegration);
+            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem != null? fileSystem : new IFileSystemMock(), commonServices, null);
             return provider;
         }
 
@@ -751,9 +751,8 @@ string JsonString1 = @"{
         // ECan pass null for all and a default will be crewated
         public LaunchSettingsUnderTest(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices, 
                                       IFileSystem fileSystem,   IUnconfiguredProjectCommonServices commonProjectServices, 
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      Lazy<ISourceCodeControlIntegration> sourceControlIntegration)
-          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, sourceControlIntegration)
+                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
+          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();
@@ -763,8 +762,6 @@ string JsonString1 = @"{
                     CancellationToken.None);
         }
 
-
-       
         // Wrappers to call protected members
         public void SetCurrentSnapshot(ILaunchSettings profiles) { CurrentSnapshot = profiles;}
         public LaunchSettingsData ReadSettingsFileFromDiskTest() { return ReadSettingsFileFromDisk();}

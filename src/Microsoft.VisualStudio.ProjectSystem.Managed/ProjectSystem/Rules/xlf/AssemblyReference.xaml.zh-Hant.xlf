@@ -5,68 +5,68 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml" />
       <trans-unit id="Rule|AssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="new">Assembly Reference</target>
-        <note></note>
+        <target state="translated">組件參考</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly reference properties</source>
-        <target state="new">Assembly reference properties</target>
-        <note></note>
+        <target state="translated">組件參考屬性</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">別名</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">這個參考的逗號分隔別名清單。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">複製到本機</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">表示是否將參考複製到輸出目錄。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">內嵌 Interop 類型</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">指出此組件中所定義的類型是否將內嵌在目標組件中。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">特定版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">指出這個組件是否可以解析 (不考慮組件解析的多目標規則)。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">需要的目標 Framework</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">執行階段版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|Description">
         <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="new">The CLR runtime version targeted by this assembly.</target>
-        <note></note>
+        <target state="translated">此組件的目標 CLR 執行階段版本。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

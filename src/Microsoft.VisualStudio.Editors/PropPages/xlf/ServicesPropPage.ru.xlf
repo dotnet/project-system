@@ -5,55 +5,55 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
       <trans-unit id="HelpLabel.Text">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
-        <target state="new">Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</target>
-        <note></note>
+        <target state="translated">Службы клиентских приложений позволяют использовать в Windows приложениях службы ASP.NET входа (аутентификации), ролей и профиля (настроек).  Дополнительные сведения о службах клиентских приложений...</target>
+        <note />
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
         <source>Use &amp;Windows authentication</source>
-        <target state="new">Use &amp;Windows authentication</target>
-        <note></note>
+        <target state="translated">Использовать &amp;проверку подлинности Windows</target>
+        <note />
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="new">Use &amp;Forms authentication</target>
-        <note></note>
+        <target state="translated">Проверка подлинности на &amp;основе форм</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="new">Optional: Credentials &amp;provider
-(for example: MyNamespace.MyLoginClass, MyAssembly):</target>
-        <note></note>
+        <target state="translated">Дополнительно: П&amp;оставщик учетных данных
+(например, MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note />
       </trans-unit>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="new">&amp;Authentication service location:</target>
-        <note></note>
+        <target state="translated">&amp;Расположение службы проверки подлинности:</target>
+        <note />
       </trans-unit>
       <trans-unit id="AuthenticationProviderGroupBox.Text">
         <source>Authentication</source>
-        <target state="new">Authentication</target>
-        <note></note>
+        <target state="translated">Проверка подлинности</target>
+        <note />
       </trans-unit>
       <trans-unit id="RolesServiceUrlLabel.Text">
         <source>&amp;Roles service location:</source>
-        <target state="new">&amp;Roles service location:</target>
-        <note></note>
+        <target state="translated">Расположение &amp;службы роли:</target>
+        <note />
       </trans-unit>
       <trans-unit id="WebSettingsUrlLabel.Text">
         <source>We&amp;b settings service location:</source>
-        <target state="new">We&amp;b settings service location:</target>
-        <note></note>
+        <target state="translated">Расположение службы &amp;веб-параметров:</target>
+        <note />
       </trans-unit>
       <trans-unit id="AdvancedSettings.Text">
         <source>A&amp;dvanced...</source>
-        <target state="new">A&amp;dvanced...</target>
-        <note></note>
+        <target state="translated">Д&amp;ополнительно...</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnableApplicationServices.Text">
         <source>&amp;Enable client application services</source>
-        <target state="new">&amp;Enable client application services</target>
-        <note></note>
+        <target state="translated">Включить службы приложений &amp;клиента</target>
+        <note />
       </trans-unit>
     </body>
   </file>

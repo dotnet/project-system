@@ -9,17 +9,17 @@
 1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
  
 2. Restart Visual Studio.</source>
-        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+        <target state="translated">Visual Studio no pudo determinar los permisos de seguridad de acceso del código (CAS) aplicables al proyecto. La causa más probable es que el proyecto haga referencia a un ensamblado con nombre seguro que define permisos personalizados, pero que no está correctamente instalado en la caché global de ensamblados (GAC). Para solucionar este problema, pruebe lo siguiente:
  
-1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+1. Asegúrese de que todos los ensamblados que definen permisos personalizados a los que hace referencia el proyecto están correctamente instalados en la caché global de ensamblados Si se ha recompilado alguno de esos ensamblados o se han modificado sus números de versión, debe instalar los nuevos ensamblados en la caché global de ensamblados.
  
-2. Restart Visual Studio.</target>
-        <note></note>
+2. Reinicie Visual Studio.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InstallOtherFrameworks">
         <source>Install other frameworks...</source>
-        <target state="new">Install other frameworks...</target>
-        <note></note>
+        <target state="translated">Instalar otras plataformas...</target>
+        <note />
       </trans-unit>
     </body>
   </file>

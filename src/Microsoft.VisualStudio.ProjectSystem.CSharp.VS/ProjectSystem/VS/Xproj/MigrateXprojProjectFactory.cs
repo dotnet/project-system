@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.Shell.Flavor;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Shell.Flavor;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -106,10 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"");
-            pInfo.UseShellExecute = false;
-            pInfo.RedirectStandardError = true;
-            pInfo.RedirectStandardOutput = true;
+            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"")
+            {
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
             // Skip it.

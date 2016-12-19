@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.VisualStudio.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -30,28 +31,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [ImportingConstructor]
         public LaunchSettingsProvider(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices, 
                                       IFileSystem fileSystem,   IUnconfiguredProjectCommonServices commonProjectServices, 
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      [Import(AllowDefault = true)]Lazy<ISourceCodeControlIntegration> sourceControlIntegration)
+                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
         {
-            SourceControlIntegration = sourceControlIntegration;
             ProjectServices = projectServices;
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
             JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, 
-                                                                                                                    unconfiguredProject);;
+                                                                                                                    unconfiguredProject);
+            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: unconfiguredProject);
+
             ProjectSubscriptionService = projectSubscriptionService;
         }
 
         // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
         //protected IProjectErrorManager ProjectErrorManager { get; }
 
-        private Lazy<ISourceCodeControlIntegration> SourceControlIntegration { get; }
         private IUnconfiguredProjectServices ProjectServices { get; }
         private IUnconfiguredProjectCommonServices CommonProjectServices { get; }
         private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; }
 
         [ImportMany]
         protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
+
+        [ImportMany]
+        private OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
@@ -261,8 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if(activeProfile == null)
                 {
                     var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    var activeProfileVal = await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) as IEnumValue;
-                    if (activeProfileVal != null)
+                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
@@ -550,9 +552,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task CheckoutSettingsFileAsync()
         {
-            if (SourceControlIntegration!= null && SourceControlIntegration.Value != null)
+            var sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+            if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
             {
-                await SourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { LaunchSettingsFile }).ConfigureAwait(false);
+                await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { LaunchSettingsFile }).ConfigureAwait(false);
             }
         }
 

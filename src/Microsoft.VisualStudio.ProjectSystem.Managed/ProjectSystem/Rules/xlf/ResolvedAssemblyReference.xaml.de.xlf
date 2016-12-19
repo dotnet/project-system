@@ -5,188 +5,188 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedAssemblyReference.xaml" />
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
         <source>Resolved Assembly Reference</source>
-        <target state="new">Resolved Assembly Reference</target>
-        <note></note>
+        <target state="translated">Aufgelöster Assemblyverweis</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Resolved reference</source>
-        <target state="new">Resolved reference</target>
-        <note></note>
+        <target state="translated">Aufgelöster Verweis</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">Aliase</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">Eine durch Komma getrennte Liste von Aliasen zu diesem Verweis.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">Lokale Kopie</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Gibt an, ob der Verweis in das Ausgabeverzeichnis kopiert wird.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
-        <note></note>
+        <target state="translated">Kultur</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Der Wert des Felds "Kultur" aus den Assemblymetadaten.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Beschreibung</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Der Wert des Felds "Title" aus den Assemblymetadaten.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">Interoptypen einbetten</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">Gibt an, ob in der Assembly definierte Typen in die Zielassembly eingebettet werden.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|DisplayName">
         <source>File Type</source>
-        <target state="new">File Type</target>
-        <note></note>
+        <target state="translated">Dateityp</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|Description">
         <source>The file type of the reference.</source>
-        <target state="new">The file type of the reference.</target>
-        <note></note>
+        <target state="translated">Der Dateityp des Verweises.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
         <source>.NET assembly</source>
-        <target state="new">.NET assembly</target>
-        <note></note>
+        <target state="translated">.NET-Assembly</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
         <source>COM type library</source>
-        <target state="new">COM type library</target>
-        <note></note>
+        <target state="translated">COM-Typbibliothek</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="new">Native Assembly</target>
-        <note></note>
+        <target state="translated">Native Assembly</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">Identität</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">Sicherheits-ID der referenzierten Assembly (siehe System.Reflection.Assembly.Evidence oder System.Security.Policy.Evidence).</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Pfad</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">Speicherort der Datei, auf die verwiesen wird.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">Laufzeitversion</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|Description">
         <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="new">Version of the .NET runtime this assembly was compiled against.</target>
-        <note></note>
+        <target state="translated">Die Version der .NET-Laufzeit, mit der diese Assembly kompiliert wurde.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">Spezifische Version</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">Gibt an, ob diese Assembly ohne Rücksicht auf die Regeln zur Festlegung von Zielversionen für die Assemblyauflösung aufgelöst werden kann.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|DisplayName">
         <source>Strong Name</source>
-        <target state="new">Strong Name</target>
-        <note></note>
+        <target state="translated">Starker Name</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|Description">
         <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="new">True indicates that the reference has been signed with a key-pair.</target>
-        <note></note>
+        <target state="translated">"True" gibt an, dass der Verweis mit einem Schlüsselpaar signiert wurde.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Version</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">Verweisversion</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">Erforderliches Zielframework</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsWinMDFile|Description">
         <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">Gibt an, ob vom Projektsystem überprüft wurde, dass es sich hierbei um eine WinMD handelt (im Gegensatz zu einer Assembly)</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">
         <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">Gibt an, ob vom Buildsystem überprüft wurde, dass es sich hierbei um eine WinMD handelt (im Gegensatz zu einer Assembly)</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">Der ausgewertete Elementname des ursprünglichen Verweiselements, dessen Auflösung zu diesem aufgelösten Verweiselement geführt hat.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReferenceFromSDK|Description">
         <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="new">The SDK that this reference came from when using the expand SDK target.</target>
-        <note></note>
+        <target state="translated">Das SDK, von dem dieser Verweis stammte, als das erweiterte SDK-Ziel verwendet wurde.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FusionName|Description">
         <source>The full fusion name of the resolved assembly.</source>
-        <target state="new">The full fusion name of the resolved assembly.</target>
-        <note></note>
+        <target state="translated">Der vollständige Fusionsname der aufgelösten Assembly.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedFrom|Description">
         <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="new">{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</target>
-        <note></note>
+        <target state="translated">{}Das Repository, das den Verweis enthielt, der für die Auflösung verwendet wurde. ("{GAC}", wenn er sich im GAC befand).</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkFile|Description">
         <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="new">Is this file a framework file. Ie Found in the target framework directory or in the redist list.</target>
-        <note></note>
+        <target state="translated">Gibt an, ob es sich bei der Datei um eine Frameworkdatei handelt. (Also ob sie sich im Zielframeworkverzeichnis oder in der redist-Liste befindet.)</target>
+        <note />
       </trans-unit>
     </body>
   </file>

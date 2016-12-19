@@ -5,173 +5,173 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedProjectReference.xaml" />
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Resolved Project Reference</source>
-        <target state="new">Resolved Project Reference</target>
-        <note></note>
+        <target state="translated">解決されたプロジェクト参照</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
         <source>Resolved reference</source>
-        <target state="new">Resolved reference</target>
-        <note></note>
+        <target state="translated">解決された参照</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">エイリアス</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">この参照へのエイリアスのコンマ区切りのリストです。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">ローカルにコピー</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">参照が出力ディレクトリにコピーされるかどうかを示します。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
-        <note></note>
+        <target state="translated">カルチャ</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">アセンブリ メタデータの Culture フィールドの値です。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">説明</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">アセンブリ メタデータの Title フィールドの値です。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">相互運用型の埋め込み</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|DisplayName">
         <source>File Type</source>
-        <target state="new">File Type</target>
-        <note></note>
+        <target state="translated">ファイルの種類</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|Description">
         <source>The file type of the reference.</source>
-        <target state="new">The file type of the reference.</target>
-        <note></note>
+        <target state="translated">参照のファイルの種類です。</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
         <source>.NET assembly</source>
-        <target state="new">.NET assembly</target>
-        <note></note>
+        <target state="translated">.NET アセンブリ</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
         <source>COM type library</source>
-        <target state="new">COM type library</target>
-        <note></note>
+        <target state="translated">COM タイプ ライブラリ</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="new">Native Assembly</target>
-        <note></note>
+        <target state="translated">ネイティブ アセンブリ</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">ID</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">参照されたアセンブリのセキュリティ ID です。System.Reflection.Assembly.Evidence または System.Security.Policy.Evidence を参照してください。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">パス</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">参照されているファイルの場所です。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">ランタイム バージョン</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|Description">
         <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="new">Version of the .NET runtime this assembly was compiled against.</target>
-        <note></note>
+        <target state="translated">このアセンブリをコンパイルした .NET ランタイムのバージョンです。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">特定バージョン</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">アセンブリ解像度のマルチターゲット ルールに関係なく、このアセンブリを解決できるかどうかを示します。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|DisplayName">
         <source>Strong Name</source>
-        <target state="new">Strong Name</target>
-        <note></note>
+        <target state="translated">厳密な名前</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|Description">
         <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="new">True indicates that the reference has been signed with a key-pair.</target>
-        <note></note>
+        <target state="translated">True は、参照がキー ペアで署名されたことを示します。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">バージョン</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">参照のバージョンです。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">必要なターゲット フレームワーク</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsWinMDFile|Description">
         <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">プロジェクト システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Project|Description">
         <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="new">the Guid the solution tracks an individual project reference target with</target>
-        <note></note>
+        <target state="translated">個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">
         <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">ビルド システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

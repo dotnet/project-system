@@ -5,68 +5,68 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml" />
       <trans-unit id="Rule|AssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="new">Assembly Reference</target>
-        <note></note>
+        <target state="translated">어셈블리 참조</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly reference properties</source>
-        <target state="new">Assembly reference properties</target>
-        <note></note>
+        <target state="translated">어셈블리 참조 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">별칭</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">이 참조에 대한 쉼표로 구분된 별칭 목록입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">로컬 복사</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">참조를 출력 디렉터리로 복사할지 여부를 나타냅니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">Interop 형식 포함</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">이 어셈블리에 정의된 형식이 대상 어셈블리에 포함되는지 여부를 나타냅니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">특정 버전</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">어셈블리 확인을 위한 멀티 타기팅 규칙에 관계없이 이 어셈블리를 확인할 수 있는지 여부를 나타냅니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">필요한 대상 프레임워크</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">런타임 버전</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|Description">
         <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="new">The CLR runtime version targeted by this assembly.</target>
-        <note></note>
+        <target state="translated">이 어셈블리의 대상인 CLR 런타임 버전입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

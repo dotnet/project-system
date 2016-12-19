@@ -5,178 +5,178 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedCOMReference.xaml" />
       <trans-unit id="Rule|ResolvedCOMReference|DisplayName">
         <source>Resolved COM Reference</source>
-        <target state="new">Resolved COM Reference</target>
-        <note></note>
+        <target state="translated">Разрешенная ссылка COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
         <source>Resolved reference</source>
-        <target state="new">Resolved reference</target>
-        <note></note>
+        <target state="translated">Разрешенная ссылка</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <target state="new">CLSID</target>
-        <note></note>
+        <target state="translated">CLSID</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <target state="new">The GUID of the COM server.</target>
-        <note></note>
+        <target state="translated">Идентификатор GUID COM-сервера.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">Псевдонимы</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">Разделенный запятыми список псевдонимов данной сборки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">Копировать локально</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
-        <note></note>
+        <target state="translated">Культура</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Значение поля культуры из метаданных сборки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Описание</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Значение поля заголовка из метаданных сборки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">Внедрить типы взаимодействия</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|DisplayName">
         <source>File Type</source>
-        <target state="new">File Type</target>
-        <note></note>
+        <target state="translated">Тип файла</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|Description">
         <source>The file type of the reference.</source>
-        <target state="new">The file type of the reference.</target>
-        <note></note>
+        <target state="translated">Тип файла ссылки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
         <source>.NET assembly</source>
-        <target state="new">.NET assembly</target>
-        <note></note>
+        <target state="translated">Сборка .NET</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
         <source>COM type library</source>
-        <target state="new">COM type library</target>
-        <note></note>
+        <target state="translated">Библиотека типов COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="new">Native Assembly</target>
-        <note></note>
+        <target state="translated">Машинная сборка</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">Идентификатор</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">Идентификатор безопасности сборки, на которую указывает ссылка (см System.Reflection.Assembly.Evidence или System.Security.Policy.Evidence).</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Путь</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">Расположение файла, на который указывает ссылка.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">Версия среды выполнения</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|Description">
         <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="new">Version of the .NET runtime this assembly was compiled against.</target>
-        <note></note>
+        <target state="translated">Версия среды выполнения .NET, для которой была скомпилирована эта сборка.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">Конкретная версия</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|DisplayName">
         <source>Strong Name</source>
-        <target state="new">Strong Name</target>
-        <note></note>
+        <target state="translated">Строгое имя</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|Description">
         <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="new">True indicates that the reference has been signed with a key-pair.</target>
-        <note></note>
+        <target state="translated">Значение true указывает, что ссылочная сборка была подписана с помощью пары ключей.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Версия</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">Версия ссылочной сборки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">Требуемая версия .NET Framework</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsWinMDFile|Description">
         <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">Указывает, действительно ли система проекта подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">
         <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">Указывает, действительно ли система сборки подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

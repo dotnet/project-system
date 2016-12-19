@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
@@ -50,22 +49,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task CreateFile_NullTemplateFile_ThrowsArgumentNull()
         {
             var service = CreateInstance();
-            var parentNode = ProjectTreeParser.Parse("Properties");
 
             await Assert.ThrowsAsync<ArgumentNullException>("templateFile", () =>
             {
-                return service.CreateFileAsync(null, parentNode, "FileName");
+                return service.CreateFileAsync(null, "ParentNode", "FileName");
             });
         }
 
         [Fact]
-        public async Task CreateFile_NullParentNode_ThrowsArgumentNull()
+        public async Task CreateFile_NullAsParentNode_ThrowsArgumentNull()
         {
             var service = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("parentNode", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("parentDocumentMoniker", () =>
             {
                 return service.CreateFileAsync("SomeFile", null, "FileName");
+            });
+        }
+
+        [Fact]
+        public async Task CreateFile_EmptyAsParentNode_ThrowsArgument()
+        {
+            var service = CreateInstance();
+
+            await Assert.ThrowsAsync<ArgumentException>("parentDocumentMoniker", () =>
+            {
+                return service.CreateFileAsync("SomeFile", string.Empty, "FileName");
             });
         }
 
@@ -73,11 +82,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task CreateFile_NullFileName_ThrowsArgumentNull()
         {
             var service = CreateInstance();
-            var parentNode = ProjectTreeParser.Parse("Properties");
 
             await Assert.ThrowsAsync<ArgumentNullException>("fileName", async () =>
             {
-                await service.CreateFileAsync("SomeFile", parentNode, null);
+                await service.CreateFileAsync("SomeFile", "ParentNode", null);
             });
         }
 
@@ -91,7 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             string templateName = "SettingsInternal.zip";
             string fileName = "Settings.settings";
-            var inputTree = ProjectTreeParser.Parse(input);
 
             var hierarchy = IVsHierarchyFactory.Create();
             var solution = SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) => 
@@ -104,7 +111,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
             vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, cOpen, files, result) =>
             {
-                Assert.Equal((uint)inputTree.GetHierarchyId(), itemId);
                 Assert.Equal(VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, itemOperation);
                 Assert.Equal(fileName, itemName);
                 Assert.Equal((uint)1, cOpen);
@@ -121,11 +127,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var properties = CreateProperties();
             var service = new CreateFileFromTemplateService(projectVsServices, dteServices, properties);
 
-            bool returnValue = await service.CreateFileAsync(templateName, inputTree, fileName);
+            bool returnValue = await service.CreateFileAsync(templateName, "Moniker", fileName);
             Assert.Equal(returnValue, expectedResult);
         }
-
-        
 
         private CreateFileFromTemplateService CreateInstance()
         {

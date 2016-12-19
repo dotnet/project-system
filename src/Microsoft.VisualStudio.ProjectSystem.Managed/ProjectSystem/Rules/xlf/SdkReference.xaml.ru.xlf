@@ -5,53 +5,53 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SdkReference.xaml" />
       <trans-unit id="Rule|SdkReference|DisplayName">
         <source>SDK Reference</source>
-        <target state="new">SDK Reference</target>
-        <note></note>
+        <target state="translated">Ссылка на пакет SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
         <source>SDK reference properties</source>
-        <target state="new">SDK reference properties</target>
-        <note></note>
+        <target state="translated">Свойства ссылки на пакет SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">Корень пакета SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
-        <target state="new">App Package Location</target>
-        <note></note>
+        <target state="translated">Расположение пакета приложения</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
         <source>FrameworkIdentity</source>
-        <target state="new">FrameworkIdentity</target>
-        <note></note>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <target state="new">Copy Payload</target>
-        <note></note>
+        <target state="translated">Копировать полезные данные</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Копировать полезные данные в подкаталог</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">
         <source>Expand Content</source>
-        <target state="new">Expand Content</target>
-        <note></note>
+        <target state="translated">Расширить содержимое</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
         <source>Expand Reference Assemblies</source>
-        <target state="new">Expand Reference Assemblies</target>
-        <note></note>
+        <target state="translated">Расширить эталонные сборки</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
         <source>Copy Local Expanded Reference Assemblies</source>
-        <target state="new">Copy Local Expanded Reference Assemblies</target>
-        <note></note>
+        <target state="translated">Копировать локальные расширенные ссылочные сборки</target>
+        <note />
       </trans-unit>
     </body>
   </file>

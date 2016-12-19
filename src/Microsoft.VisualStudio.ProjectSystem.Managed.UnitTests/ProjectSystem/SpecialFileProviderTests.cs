@@ -2,9 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Mocks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -294,7 +295,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
-            AssertAreEquivalent(expectedTree, inputTree);
         }
 
         private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)

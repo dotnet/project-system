@@ -198,8 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override bool Equals(object obj)
         {
-            IDependencyNode other = obj as IDependencyNode;
-            if (other != null)
+            if (obj is IDependencyNode other)
             {
                 return Equals(other);
             }

@@ -3,12 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Collections;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     [ProjectSystemTrait]
     public class LaunchProfileTests
     {

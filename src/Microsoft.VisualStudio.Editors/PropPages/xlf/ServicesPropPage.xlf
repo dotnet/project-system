@@ -5,44 +5,44 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
       <trans-unit id="HelpLabel.Text">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
         <source>Use &amp;Windows authentication</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AuthenticationProviderGroupBox.Text">
         <source>Authentication</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RolesServiceUrlLabel.Text">
         <source>&amp;Roles service location:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WebSettingsUrlLabel.Text">
         <source>We&amp;b settings service location:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AdvancedSettings.Text">
         <source>A&amp;dvanced...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableApplicationServices.Text">
         <source>&amp;Enable client application services</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

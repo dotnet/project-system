@@ -88,6 +88,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         internal static string ClassTemplateName {
@@ -171,6 +180,15 @@ namespace Microsoft.VisualStudio {
         internal static string Discard {
             get {
                 return ResourceManager.GetString("Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard Unsaved Changes.
+        /// </summary>
+        internal static string DiscardChanges {
+            get {
+                return ResourceManager.GetString("DiscardChanges", resourceCulture);
             }
         }
         
@@ -265,6 +283,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignore Changes.
+        /// </summary>
+        internal static string IgnoreUpdates {
+            get {
+                return ResourceManager.GetString("IgnoreUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug profile &apos;{0}&apos; has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}.
         /// </summary>
         internal static string InvalidAbsoluteUrlSpecified {
@@ -288,6 +315,15 @@ namespace Microsoft.VisualStudio {
         internal static string MultiTFEditNotSupported {
             get {
                 return ResourceManager.GetString("MultiTFEditNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -351,6 +387,74 @@ namespace Microsoft.VisualStudio {
         internal static string Overwrite {
             get {
                 return ResourceManager.GetString("Overwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite Updates.
+        /// </summary>
+        internal static string OverwriteUpdates {
+            get {
+                return ResourceManager.GetString("OverwriteUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack.
+        /// </summary>
+        internal static string PackCommand {
+            get {
+                return ResourceManager.GetString("PackCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack {0}.
+        /// </summary>
+        internal static string PackSelectedProjectCommand {
+            get {
+                return ResourceManager.GetString("PackSelectedProjectCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes to &apos;{0}&apos;?.
+        /// </summary>
+        internal static string ProjectFileBufferClosing {
+            get {
+                return ResourceManager.GetString("ProjectFileBufferClosing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        internal static string ProjectFileClosingTitle {
+            get {
+                return ResourceManager.GetString("ProjectFileClosingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project file has updated in the background and needs to be reloaded, but you have made unsaved changes.
+        ///
+        ///Press Save As to save your changes to another file and show the latest changes.
+        ///Press Overwrite Updates to save your changes over the updated project file.
+        ///Press Discard Unsaved Changes to discard your unsaved changes.
+        ///Press Ignore Updates to leave the view unchanged. The solution explorer will reflect the updated project file..
+        /// </summary>
+        internal static string ProjectFileNeedsToBeReloaded {
+            get {
+                return ResourceManager.GetString("ProjectFileNeedsToBeReloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project File Updated.
+        /// </summary>
+        internal static string ProjectFileReloadTitle {
+            get {
+                return ResourceManager.GetString("ProjectFileReloadTitle", resourceCulture);
             }
         }
         
@@ -474,6 +578,15 @@ namespace Microsoft.VisualStudio {
         internal static string XprojMigrationFailedProjectJsonFileNotFound {
             get {
                 return ResourceManager.GetString("XprojMigrationFailedProjectJsonFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

@@ -30,7 +30,8 @@
     <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="OpenProjectFile"/>
-    
+    <ProjectCapability Include="GenerateNuGetPackage"/>
+
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />
@@ -55,6 +56,14 @@
 
     <ProjectCapability Include="LanguageService" />
     <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
+
+    <!-- Reference Manager capabilities -->
+    <ProjectCapability Include="ReferenceManagerAssemblies" />
+    <ProjectCapability Include="ReferenceManagerBrowse" />
+    <ProjectCapability Include="ReferenceManagerCOM" />
+    <ProjectCapability Include="ReferenceManagerProjects" />
+    <ProjectCapability Include="ReferenceManagerSharedProjects" />
+    <ProjectCapability Include="ReferenceManagerWinRT" />
  </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->

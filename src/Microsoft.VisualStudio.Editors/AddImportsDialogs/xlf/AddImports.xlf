@@ -38,7 +38,7 @@
       </trans-unit>
       <trans-unit id="AddImportsExtensionMethodsMainFormatString">
         <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

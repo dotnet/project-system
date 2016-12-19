@@ -5,123 +5,123 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/EmbeddedResource.xaml" />
       <trans-unit id="Rule|EmbeddedResource|DisplayName">
         <source>Embedded Resource</source>
-        <target state="new">Embedded Resource</target>
-        <note></note>
+        <target state="translated">Recurso incrustado</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|EmbeddedResource|Description">
         <source>Embedded resources</source>
-        <target state="new">Embedded resources</target>
-        <note></note>
+        <target state="translated">Recursos incrustados</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">Avanzadas</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">Varios</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <target state="new">Build Action</target>
-        <note></note>
+        <target state="translated">Acción de compilación</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
         <source>How the file relates to the build and deployment processes.</source>
-        <target state="new">How the file relates to the build and deployment processes.</target>
-        <note></note>
+        <target state="translated">Cómo se relaciona el archivo con los procesos de compilación e implementación.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
         <source>Copy to Output Directory</source>
-        <target state="new">Copy to Output Directory</target>
-        <note></note>
+        <target state="translated">Copiar en el directorio de salida</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="new">Specifies the source file will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Especifica que el archivo de código fuente se copiará en el directorio de salida.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
-        <target state="new">Do not copy</target>
-        <note></note>
+        <target state="translated">No copiar</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
         <source>Copy always</source>
-        <target state="new">Copy always</target>
-        <note></note>
+        <target state="translated">Copiar siempre</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
         <source>Copy if newer</source>
-        <target state="new">Copy if newer</target>
-        <note></note>
+        <target state="translated">Copiar si es posterior</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="new">Custom Tool</target>
-        <note></note>
+        <target state="translated">Herramienta personalizada</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <target state="new">Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</target>
-        <note></note>
+        <target state="translated">Especifica la herramienta que transforma un archivo en tiempo de diseño y pone la salida de esa transformación en otro archivo. Por ejemplo, un archivo de conjunto de datos (.xsd) viene con una herramienta personalizada predeterminada.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <target state="new">Custom Tool Namespace</target>
-        <note></note>
+        <target state="translated">Espacio de nombres de la herramienta personalizada</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="new">The namespace into which the output of the custom tool is placed.</target>
-        <note></note>
+        <target state="translated">Espacio de nombres donde se sitúa la salida de la herramienta personalizada.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
-        <note></note>
+        <target state="translated">El elemento especificado en el atributo Include.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">Ruta de acceso completa</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">Ubicación del archivo.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
         <source>File Name</source>
-        <target state="new">File Name</target>
-        <note></note>
+        <target state="translated">Nombre de archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|Description">
         <source>Name of the file or folder.</source>
-        <target state="new">Name of the file or folder.</target>
-        <note></note>
+        <target state="translated">Nombre del archivo o carpeta.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">
         <source>The filename of the last file generated as a result of the SFG.</source>
-        <target state="new">The filename of the last file generated as a result of the SFG.</target>
-        <note></note>
+        <target state="translated">Nombre del último archivo generado como resultado de SFG.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DesignTime|Description">
         <source>A value indicating whether this file has a designer.</source>
-        <target state="new">A value indicating whether this file has a designer.</target>
-        <note></note>
+        <target state="translated">Valor que indica si el archivo tiene un diseñador.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGen|Description">
         <source>A value indicating whether this is a generated file.</source>
-        <target state="new">A value indicating whether this is a generated file.</target>
-        <note></note>
+        <target state="translated">Valor que indica si este es un archivo generado.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomTool|Description">
         <source>DTE Property for accessing the Generator property.</source>
-        <target state="new">DTE Property for accessing the Generator property.</target>
-        <note></note>
+        <target state="translated">Propiedad DTE para tener acceso a la propiedad Generator.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

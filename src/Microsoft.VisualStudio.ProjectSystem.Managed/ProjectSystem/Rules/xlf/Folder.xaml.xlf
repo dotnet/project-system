@@ -5,27 +5,27 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Folder.xaml" />
       <trans-unit id="Rule|Folder|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Folder|Description">
         <source>Folder Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the folder</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
         <source>Folder Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
         <source>Name of this folder</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

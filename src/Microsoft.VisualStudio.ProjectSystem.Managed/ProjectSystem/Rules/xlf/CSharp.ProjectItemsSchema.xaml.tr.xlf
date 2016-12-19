@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.ProjectItemsSchema.xaml" />
       <trans-unit id="ContentType|CSharpFile|DisplayName">
         <source>C# file</source>
-        <target state="new">C# file</target>
-        <note></note>
+        <target state="translated">C# dosyası</target>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|Compile|DisplayName">
         <source>C# compiler</source>
-        <target state="new">C# compiler</target>
-        <note></note>
+        <target state="translated">C# derleyicisi</target>
+        <note />
       </trans-unit>
     </body>
   </file>
