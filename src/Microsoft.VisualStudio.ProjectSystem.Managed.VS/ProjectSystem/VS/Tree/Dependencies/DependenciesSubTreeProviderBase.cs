@@ -575,7 +575,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     var rule = catalogs.GetSchema(PropertyPageContexts.Project, ruleName)
                         ?? catalogs.GetSchema(PropertyPageContexts.File, ruleName);
-                    itemType = rule != null ? rule.DataSource.ItemType : null;
+                    itemType = rule?.DataSource.ItemType;
 
                     if (itemType != null)
                     {
