@@ -5,88 +5,88 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPageVBWinForms.resx" />
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="new">Assembly &amp;name:</target>
-        <note></note>
+        <target state="translated">アセンブリ名(&amp;N):</target>
+        <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>&amp;Root namespace:</source>
-        <target state="new">&amp;Root namespace:</target>
-        <note></note>
+        <target state="translated">ルート名前空間(&amp;R):</target>
+        <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <target state="new">&amp;Target framework:</target>
-        <note></note>
+        <target state="translated">ターゲット フレームワーク(&amp;T):</target>
+        <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="new">Startup &amp;object:</target>
-        <note></note>
+        <target state="translated">スタートアップ オブジェクト(&amp;O):</target>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">
         <source>&amp;Application type:</source>
-        <target state="new">&amp;Application type:</target>
-        <note></note>
+        <target state="translated">アプリケーションの種類(&amp;A):</target>
+        <note />
       </trans-unit>
       <trans-unit id="IconLabel.Text">
         <source>&amp;Icon:</source>
-        <target state="new">&amp;Icon:</target>
-        <note></note>
+        <target state="translated">アイコン(&amp;I):</target>
+        <note />
       </trans-unit>
       <trans-unit id="UseApplicationFrameworkCheckBox.Text">
         <source>Enable application framewor&amp;k</source>
-        <target state="new">Enable application framewor&amp;k</target>
-        <note></note>
+        <target state="translated">アプリケーション フレームワークを有効にする(&amp;K)</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembl&amp;y Information...</source>
-        <target state="new">Assembl&amp;y Information...</target>
-        <note></note>
+        <target state="translated">アセンブリ情報(&amp;Y)...</target>
+        <note />
       </trans-unit>
       <trans-unit id="ViewUACSettingsButton.Text">
         <source>View Windows Settin&amp;gs</source>
-        <target state="new">View Windows Settin&amp;gs</target>
-        <note></note>
+        <target state="translated">Windows 設定の表示(&amp;G)</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnableXPThemesCheckBox.Text">
         <source>Enable &amp;XP visual styles</source>
-        <target state="new">Enable &amp;XP visual styles</target>
-        <note></note>
+        <target state="translated">XP Visual スタイルを有効にする(&amp;X)</target>
+        <note />
       </trans-unit>
       <trans-unit id="SingleInstanceCheckBox.Text">
         <source>Make &amp;single instance application</source>
-        <target state="new">Make &amp;single instance application</target>
-        <note></note>
+        <target state="translated">単一インスタンスのアプリケーションを作成する(&amp;S)</target>
+        <note />
       </trans-unit>
       <trans-unit id="SaveMySettingsCheckbox.Text">
         <source>Save My.Settin&amp;gs on Shutdown</source>
-        <target state="new">Save My.Settin&amp;gs on Shutdown</target>
-        <note></note>
+        <target state="translated">シャットダウン時に My.Settings を保存する(&amp;G)</target>
+        <note />
       </trans-unit>
       <trans-unit id="AuthenticationModeLabel.Text">
         <source>Aut&amp;hentication mode:</source>
-        <target state="new">Aut&amp;hentication mode:</target>
-        <note></note>
+        <target state="translated">認証モード(&amp;H):</target>
+        <note />
       </trans-unit>
       <trans-unit id="ShutdownModeLabel.Text">
         <source>Sh&amp;utdown mode:</source>
-        <target state="new">Sh&amp;utdown mode:</target>
-        <note></note>
+        <target state="translated">シャットダウン モード(&amp;U):</target>
+        <note />
       </trans-unit>
       <trans-unit id="SplashScreenLabel.Text">
         <source>Sp&amp;lash screen:</source>
-        <target state="new">Sp&amp;lash screen:</target>
-        <note></note>
+        <target state="translated">スプラッシュ スクリーン(&amp;L):</target>
+        <note />
       </trans-unit>
       <trans-unit id="ViewCodeButton.Text">
         <source>&amp;View Application Events</source>
-        <target state="new">&amp;View Application Events</target>
-        <note></note>
+        <target state="translated">アプリケーション イベントの表示(&amp;V)</target>
+        <note />
       </trans-unit>
       <trans-unit id="WindowsAppGroupBox.Text">
         <source>Windows application framework properties</source>
-        <target state="new">Windows application framework properties</target>
-        <note></note>
+        <target state="translated">Windows アプリケーション フレームワーク プロパティ</target>
+        <note />
       </trans-unit>
     </body>
   </file>

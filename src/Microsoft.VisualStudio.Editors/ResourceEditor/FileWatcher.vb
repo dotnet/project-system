@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Note that we're using a Windows Forms timer, which always fires its events
             '''   in the thread from which it was created.  So no synchronization issues.
             ''' </remarks>
-            Private Sub Timer_Elapsed(sender As Object, e As System.EventArgs) Handles _timer.Tick
+            Private Sub Timer_Elapsed(sender As Object, e As EventArgs) Handles _timer.Tick
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Raising delayed FileChanged event: " & ToString() & ", Thread = " & Microsoft.VisualBasic.Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & VB.Now.Millisecond)
 
                 'First thing to do is get rid of the timer - we don't need it anymore.

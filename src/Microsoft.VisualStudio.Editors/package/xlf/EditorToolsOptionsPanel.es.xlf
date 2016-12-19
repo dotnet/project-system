@@ -5,53 +5,53 @@
       <group id="src/Microsoft.VisualStudio.Editors/package/EditorToolsOptionsPanel.resx" />
       <trans-unit id="_indentTypeLabel.Text">
         <source>Indent type:</source>
-        <target state="new">Indent type:</target>
-        <note></note>
+        <target state="translated">Tipo de sangría:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeNoneRadioButton.Text">
         <source>&amp;None</source>
-        <target state="new">&amp;None</target>
-        <note></note>
+        <target state="translated">&amp;Ninguna</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeBlockRadioButton.Text">
         <source>&amp;Block</source>
-        <target state="new">&amp;Block</target>
-        <note></note>
+        <target state="translated">&amp;Bloque</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeSmartRadioButton.Text">
         <source>&amp;Smart</source>
-        <target state="new">&amp;Smart</target>
-        <note></note>
+        <target state="translated">Int&amp;eligente</target>
+        <note />
       </trans-unit>
       <trans-unit id="_tabSizeLabel.Text">
         <source>&amp;Tab size:</source>
-        <target state="new">&amp;Tab size:</target>
-        <note></note>
+        <target state="translated">&amp;Tamaño de tabulación:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentSizeLabel.Text">
         <source>&amp;Indent size:</source>
-        <target state="new">&amp;Indent size:</target>
-        <note></note>
+        <target state="translated">Ta&amp;maño de sangría:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_wordWrapCheckBox.Text">
         <source>&amp;Word wrap</source>
-        <target state="new">&amp;Word wrap</target>
-        <note></note>
+        <target state="translated">Aj&amp;uste automático de línea</target>
+        <note />
       </trans-unit>
       <trans-unit id="_lineNumbersCheckBox.Text">
         <source>Line n&amp;umbers</source>
-        <target state="new">Line n&amp;umbers</target>
-        <note></note>
+        <target state="translated">&amp;Números de línea</target>
+        <note />
       </trans-unit>
       <trans-unit id="IndentingGroupBox.Text">
         <source>Indenting</source>
-        <target state="new">Indenting</target>
-        <note></note>
+        <target state="translated">Sangría</target>
+        <note />
       </trans-unit>
       <trans-unit id="InteractionGroupBox.Text">
         <source>Interaction</source>
-        <target state="new">Interaction</target>
-        <note></note>
+        <target state="translated">Interacción</target>
+        <note />
       </trans-unit>
     </body>
   </file>

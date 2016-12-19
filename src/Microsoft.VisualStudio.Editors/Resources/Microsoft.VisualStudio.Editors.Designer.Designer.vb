@@ -1364,7 +1364,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_OutputPathNotSecure", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Package.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_PackageTitle() As String
+            Get
+                Return ResourceManager.GetString("PPG_PackageTitle", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Post-build Event Command Line.
         '''</summary>
@@ -1373,7 +1382,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_PostBuildCommandLineTitle", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Pre-build Event Command Line.
         '''</summary>
@@ -1382,7 +1391,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_PreBuildCommandLineTitle", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to The project was reloaded, and some changes on this page may have been lost..
         '''</summary>
@@ -1391,7 +1400,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Application Icon.
         '''</summary>
@@ -1400,7 +1409,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_ApplicationIcon", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Assembly File Version.
         '''</summary>
@@ -1409,7 +1418,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyFileVersion", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Assembly GUID.
         '''</summary>
@@ -1418,7 +1427,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyGuid", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Assembly Name.
         '''</summary>
@@ -1427,7 +1436,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyName", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Assembly Version.
         '''</summary>
@@ -1436,7 +1445,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyVersion", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
         '''  Looks up a localized string similar to Enable application framework.
         '''</summary>
@@ -1445,7 +1454,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_CustomSubMain", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Package Version.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_Property_PackageVersion() As String
+            Get
+                Return ResourceManager.GetString("PPG_Property_PackageVersion", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Remote Machine Name.
         '''</summary>

@@ -5,87 +5,87 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ReferencePropPage.resx" />
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
         <source>Reference Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
         <source>Reference...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="webReferenceToolStripMenuItem.Text">
         <source>Web Reference...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="serviceReferenceToolStripMenuItem.Text">
         <source>Service Reference...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
         <source>List of imported namespaces.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleName">
         <source>Imported Namespaces:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="UserImportTextBox.AccessibleName">
         <source>Imported Namespace:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">
         <source>ReferencePageSplitContainer</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

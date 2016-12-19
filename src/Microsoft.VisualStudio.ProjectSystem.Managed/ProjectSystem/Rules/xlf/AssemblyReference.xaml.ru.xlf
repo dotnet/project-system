@@ -5,68 +5,68 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml" />
       <trans-unit id="Rule|AssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="new">Assembly Reference</target>
-        <note></note>
+        <target state="translated">Ссылка на сборку</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly reference properties</source>
-        <target state="new">Assembly reference properties</target>
-        <note></note>
+        <target state="translated">Свойства ссылки на сборку</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">Псевдонимы</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">Разделенный запятыми список псевдонимов данной сборки.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">Копировать локально</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">Внедрить типы взаимодействия</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">Конкретная версия</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">Требуемая версия .NET Framework</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">Версия среды выполнения</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImageRuntime|Description">
         <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="new">The CLR runtime version targeted by this assembly.</target>
-        <note></note>
+        <target state="translated">Версия среды CLR, для которой предназначена данная сборка.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

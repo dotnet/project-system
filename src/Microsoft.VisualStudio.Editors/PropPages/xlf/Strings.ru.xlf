@@ -9,17 +9,17 @@
 1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
  
 2. Restart Visual Studio.</source>
-        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+        <target state="translated">Visual Studio не удалось определить разрешения системы управления доступом для кода, применимые для вашего проекта. Наиболее вероятная причина — проект ссылается на строго именованную сборку, которая определяет особые разрешения, но неправильно установлена в глобальном кэше сборок. Чтобы исправить это, выполните следующие действия.
  
-1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+1. Убедитесь, что все сборки с особыми разрешениями, на которые есть ссылки в проекте, правильно установлены в глобальном кэше сборок. Если какая-либо из таких сборок была перестроена или у нее изменился номер версии, нужно установить новые сборки в глобальном кэше сборок.
  
-2. Restart Visual Studio.</target>
-        <note></note>
+2. Перезапустите Visual Studio.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InstallOtherFrameworks">
         <source>Install other frameworks...</source>
-        <target state="new">Install other frameworks...</target>
-        <note></note>
+        <target state="translated">Установка других платформ...</target>
+        <note />
       </trans-unit>
     </body>
   </file>

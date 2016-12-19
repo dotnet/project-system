@@ -71,14 +71,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             If _windowPane Is Nothing Then
                 Debug.Fail("CmdTargetHelper.IOleCommandTarget_Exec(): m_WindowPane shouldn't be Nothing")
-                Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED 'Not much we can do
+                Return NativeMethods.OLECMDERR_E_NOTSUPPORTED 'Not much we can do
             End If
 
             'Grab certain commands and handle ourselves
-            If pguidCmdGroup.Equals(Microsoft.VisualStudio.Editors.Constants.MenuConstants.guidVSStd97) Then
+            If pguidCmdGroup.Equals(Constants.MenuConstants.guidVSStd97) Then
                 Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=guidVSStd97, nCmdID=" & nCmdID)
                 Select Case nCmdID
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItem
+                    Case Constants.MenuConstants.cmdidSaveProjectItem
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidSaveProjectItem")
                         'Execute a Save for the App Designer (saves all DocData pages)
                         Return HrSaveProjectDesigner()
@@ -97,14 +97,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         End If
 
                         'Now let the shell do its normal processing of this command
-                        Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+                        Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
 
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItemAs
+                    Case Constants.MenuConstants.cmdidSaveProjectItemAs
                         Debug.Fail("Shouldn't get able to get here - we were supposed to have disabled the menu for save as...")
                         Return NativeMethods.S_OK
 
 
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
+                    Case Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
                         'cmdidFileClose = File.CLose
                         'cmdidCloseDocument = CTRL+F4 or right-click Close on the MDI tab
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _windowPane.ClosePromptSave()
 
                         'Now let the shell do its normal processing of this command
-                        Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+                        Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
 
                     Case s_cmdidPaneNextTab 'Window.NextTab (CTRL+PGDN by default) - move to the next tab in the project designer
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPaneNextTab")
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & nCmdID)
             End If
 
-            Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
 
         ''' <summary>
@@ -202,20 +202,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Debug.Assert(cCmds = 1, "Unsupported: Multiple commands in QueryStatus") 'I don't think VS is ever supposed to give us more than one at a time
 
-            If pguidCmdGroup.Equals(Microsoft.VisualStudio.Editors.Constants.MenuConstants.guidVSStd97) Then
+            If pguidCmdGroup.Equals(Constants.MenuConstants.guidVSStd97) Then
                 Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, "CmdTargetHelper.IOleCommandTarget.QueryStatus: Guid=guidVSStd97, nCmdID=" & prgCmds(0).cmdID)
                 Select Case prgCmds(0).cmdID
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItem
+                    Case Constants.MenuConstants.cmdidSaveProjectItem
                         Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidSaveProjectItem")
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
 
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidSaveProjectItemAs
+                    Case Constants.MenuConstants.cmdidSaveProjectItemAs
                         Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidSaveProjectItemAs")
                         prgCmds(0).cmdf = Supported Or Invisible 'CONSIDER: Invisible doesn't seem to work, but it does at least get disabled
                         Return NativeMethods.S_OK
 
-                    Case Microsoft.VisualStudio.Editors.Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
+                    Case Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
                         Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidFileClose, cmdidCloseDocument")
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDCmdTarget(TraceLevel.Verbose, "CmdTargetHelper.IOleCommandTarget.QueryStatus: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & prgCmds(0).cmdID)
             End If
 
-            Return AppDesInterop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
 
 

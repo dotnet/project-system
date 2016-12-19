@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using System.Windows;
 using System.Windows.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -465,7 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 SelectedDebugProfile.MutableEnvironmentVariables = null;
             }
             var globalSettings = provider.CurrentSnapshot.GlobalSettings;
-            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, globalSettings, SelectedDebugProfile != null ? SelectedDebugProfile.Name : null)).ConfigureAwait(false);
+            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, globalSettings, SelectedDebugProfile?.Name)).ConfigureAwait(false);
         }
 
         private void SetEnvironmentGrid(LaunchProfile oldProfile)
@@ -532,7 +531,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (profilesChanged)
                 {
                     // Remember the current selection
-                    string curProfileName = SelectedDebugProfile == null ? null : SelectedDebugProfile.Name;
+                    string curProfileName = SelectedDebugProfile?.Name;
 
                     // Load debug profiles
                     var debugProfiles = new ObservableCollection<LaunchProfile>();
@@ -878,8 +877,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             public override bool Equals(object obj)
             {
-                LaunchType oth = obj as LaunchType;
-                if (oth != null)
+                if (obj is LaunchType oth)
                 {
                     return CommandName.Equals(oth.CommandName);
                 }

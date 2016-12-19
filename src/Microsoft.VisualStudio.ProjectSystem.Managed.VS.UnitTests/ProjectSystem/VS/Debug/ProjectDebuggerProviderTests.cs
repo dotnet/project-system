@@ -42,6 +42,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockExeProvider.Object, mockMetadata.Object));
 
             _LaunchSettingsProviderMoq.Setup(x => x.ActiveProfile).Returns(() => _activeProfile);
+            _LaunchSettingsProviderMoq.Setup(x => x.WaitForFirstSnapshot(It.IsAny<int>())).Returns(() =>
+            {
+                if (_activeProfile != null)
+                {
+                    return Task.FromResult((ILaunchSettings)new LaunchSettings(new List<ILaunchProfile>() { _activeProfile }, null, _activeProfile.Name));
+                }
+
+                return Task.FromResult((ILaunchSettings)new LaunchSettings());
+            });
         }
         
         

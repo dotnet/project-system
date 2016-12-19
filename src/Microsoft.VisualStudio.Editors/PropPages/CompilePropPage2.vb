@@ -733,7 +733,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-        Private Sub DisableAllWarningsCheckBox_Checked(sender As Object, e As System.EventArgs) Handles DisableAllWarningsCheckBox.CheckStateChanged
+        Private Sub DisableAllWarningsCheckBox_Checked(sender As Object, e As EventArgs) Handles DisableAllWarningsCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
                 EnableDisableWarningControls(Me.Enabled)
@@ -772,7 +772,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End With
         End Sub
 
-        Private Sub WarningsAsErrorCheckBox_Checked(sender As Object, e As System.EventArgs) Handles WarningsAsErrorCheckBox.CheckStateChanged
+        Private Sub WarningsAsErrorCheckBox_Checked(sender As Object, e As EventArgs) Handles WarningsAsErrorCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not WarningsAsErrorCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
                 EnableDisableWarningControls(Me.Enabled)
@@ -784,7 +784,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Make sure we set the Register for COM interop property whenever the
         ''' user checkes the corresponding checkbox on the property page
         ''' </summary>
-        Private Sub RegisterForComInteropCheckBox_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
+        Private Sub RegisterForComInteropCheckBox_CheckedChanged(sender As System.Object, e As EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
             If Not m_fInsideInit Then
                 If RegisterForComInteropCheckBox.Checked Then
                     ' Whenever the user checks the register for Com interop, we should also set the COM visible property
@@ -1073,15 +1073,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 #End Region
 
-        Private Sub AdvancedOptionsButton_Click(sender As Object, e As System.EventArgs) Handles AdvancedOptionsButton.Click
+        Private Sub AdvancedOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedOptionsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AdvancedCompilerSettings_Title), GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
         End Sub
 
-        Private Sub BuildEventsButton_Click(sender As Object, e As System.EventArgs) Handles BuildEventsButton.Click
+        Private Sub BuildEventsButton_Click(sender As Object, e As EventArgs) Handles BuildEventsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_BuildEventsTitle), GetType(BuildEventsPropPage))
         End Sub
 
-        Private Sub BuildOutputPathButton_Click(sender As Object, e As System.EventArgs) Handles BuildOutputPathButton.Click
+        Private Sub BuildOutputPathButton_Click(sender As Object, e As EventArgs) Handles BuildOutputPathButton.Click
             Dim value As String = Nothing
             If GetDirectoryViaBrowseRelativeToProject(Me.BuildOutputPathTextBox.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), value) Then
                 Me.BuildOutputPathTextBox.Text = value
@@ -1089,7 +1089,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub GenerateXMLCheckBox_CheckStateChanged(sender As Object, e As System.EventArgs) Handles GenerateXMLCheckBox.CheckStateChanged
+        Private Sub GenerateXMLCheckBox_CheckStateChanged(sender As Object, e As EventArgs) Handles GenerateXMLCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not _settingGenerateXmlDocumentation Then
                 Me.SetDirty(VsProjPropId.VBPROJPROPID_DocumentationFile, True)
             End If
@@ -1268,13 +1268,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Whenever the user changes the option strict combobox in the UI, we have to
         ''' update the corresponding project properties
         ''' </summary>
-        Private Sub OptionStrictComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles OptionStrictComboBox.SelectionChangeCommitted
+        Private Sub OptionStrictComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles OptionStrictComboBox.SelectionChangeCommitted
             If Not m_fInsideInit Then
                 ResetOptionStrictness(TryCast(OptionStrictComboBox.SelectedItem, String))
             End If
         End Sub
 
-        Private Sub TargetCPUComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles TargetCPUComboBox.SelectionChangeCommitted
+        Private Sub TargetCPUComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles TargetCPUComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1545,7 +1545,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private _configurationObjectCache As ConfigurationObjectCache
 
             ' Create a new instance
-            Public Sub New(ConfigurationObjectCache As ConfigurationObjectCache, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As System.Windows.Forms.Control())
+            Public Sub New(ConfigurationObjectCache As ConfigurationObjectCache, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
                 MyBase.New(id, name, control, setter, getter, flags, AssocControls)
                 _configurationObjectCache = ConfigurationObjectCache
             End Sub

@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_Click(sender As Object, e As System.EventArgs) Handles ButtonAdd.Click
+        Private Sub ButtonAdd_Click(sender As Object, e As EventArgs) Handles ButtonAdd.Click
             Dim ResourceView As ResourceEditorView = _rootDesigner.GetView()
             Debug.Assert(ResourceView IsNot Nothing, "Why there is no view?")
             If ResourceView IsNot Nothing Then
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonCancel_Click(sender As Object, e As System.EventArgs) Handles ButtonCancel.Click
+        Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
             Close()
         End Sub
 

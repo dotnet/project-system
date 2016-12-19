@@ -9,17 +9,17 @@
 1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
  
 2. Restart Visual Studio.</source>
-        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+        <target state="translated">Visual Studio non è riuscito a determinare le autorizzazioni di sicurezza dall'accesso di codice applicabili al progetto. La causa più probabile è che il progetto fa riferimento a un assembly con un nome sicuro che definisce autorizzazioni personalizzate, ma che non è installato correttamente nella Global Assembly Cache (GAC). Per correggere il problema, provare le soluzioni seguenti:
  
-1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+1. Assicurarsi che eventuali autorizzazioni personalizzate che definiscono gli assembly a cui fa riferimento il progetto siano state installate correttamente nella GAC. Se uno o più di tali assembly sono stati ricompilati o ne sono stati modificati i numeri di versione, è necessario installare i nuovi assembly nella GAC.
  
-2. Restart Visual Studio.</target>
-        <note></note>
+2. Riavviare Visual Studio.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InstallOtherFrameworks">
         <source>Install other frameworks...</source>
-        <target state="new">Install other frameworks...</target>
-        <note></note>
+        <target state="translated">Installa altri framework...</target>
+        <note />
       </trans-unit>
     </body>
   </file>

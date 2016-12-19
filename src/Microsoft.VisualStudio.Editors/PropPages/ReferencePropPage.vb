@@ -904,7 +904,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ResultList.ToArray()
         End Function
 
-        Private Sub RemoveReference_Click(sender As Object, e As System.EventArgs) Handles RemoveReference.Click
+        Private Sub RemoveReference_Click(sender As Object, e As EventArgs) Handles RemoveReference.Click
             RemoveSelectedReference()
         End Sub
 
@@ -1027,7 +1027,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub addContextMenuStrip_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles addContextMenuStrip.Opening
+        Private Sub addContextMenuStrip_Opening(sender As Object, e As CancelEventArgs) Handles addContextMenuStrip.Opening
             Dim vsHierarchy As IVsHierarchy = ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject)
             If vsHierarchy IsNot Nothing Then
                 webReferenceToolStripMenuItem.Visible = Utils.IsWebReferenceSupportedByDefaultInProject(vsHierarchy)
@@ -1035,7 +1035,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub referenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles referenceToolStripMenuItem.Click, addSplitButton.Click
+        Private Sub referenceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles referenceToolStripMenuItem.Click, addSplitButton.Click
             Dim UIHier As IVsUIHierarchy
             If TypeOf ProjectHierarchy Is IVsUIHierarchy Then
                 Try
@@ -1071,7 +1071,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub webReferenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles webReferenceToolStripMenuItem.Click
+        Private Sub webReferenceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles webReferenceToolStripMenuItem.Click
             Dim AddWebRefDlg As IVsAddWebReferenceDlg2
             Dim DiscoveryResult As IDiscoveryResult = Nothing
 
@@ -1108,7 +1108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub serviceReferenceToolStripMenuItem_Click(sender As Object, e As System.EventArgs) Handles serviceReferenceToolStripMenuItem.Click
+        Private Sub serviceReferenceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles serviceReferenceToolStripMenuItem.Click
             Dim AddServiceRefDlg As IVsAddWebReferenceDlg3
 
             AddServiceRefDlg = CType(ServiceProvider.GetService(GetType(SVsAddWebReferenceDlg3)), IVsAddWebReferenceDlg3)
@@ -1255,7 +1255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             UpdateUserImportButton.Enabled = EnableUpdateUserImportButton
         End Sub
 
-        Private Sub ReferenceList_ItemActivate(sender As Object, e As System.EventArgs) Handles ReferenceList.ItemActivate
+        Private Sub ReferenceList_ItemActivate(sender As Object, e As EventArgs) Handles ReferenceList.ItemActivate
             Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
             If items.Count > 0 Then
                 DTE.ExecuteCommand("View.PropertiesWindow", String.Empty)
@@ -1271,13 +1271,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferenceList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ReferenceList.SelectedIndexChanged
+        Private Sub ReferenceList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ReferenceList.SelectedIndexChanged
             Me.EnableReferenceGroup()
 
             PushSelection()
         End Sub
 
-        Private Sub ReferenceList_Enter(sender As Object, e As System.EventArgs) Handles ReferenceList.Enter
+        Private Sub ReferenceList_Enter(sender As Object, e As EventArgs) Handles ReferenceList.Enter
             PushSelection()
         End Sub
 
@@ -1290,7 +1290,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ListViewComparer.HandleColumnClick(ReferenceList, _referenceSorter, e)
         End Sub
 
-        Private Sub UpdateReferences_Click(sender As Object, e As System.EventArgs) Handles UpdateReferences.Click
+        Private Sub UpdateReferences_Click(sender As Object, e As EventArgs) Handles UpdateReferences.Click
             Using New WaitCursor
                 Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
                 For Each item As ListViewItem In items
@@ -1309,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub UnusedReferences_Click(sender As System.Object, e As System.EventArgs) Handles UnusedReferences.Click
+        Private Sub UnusedReferences_Click(sender As System.Object, e As EventArgs) Handles UnusedReferences.Click
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
@@ -1326,7 +1326,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferencePathsButton_Click(sender As Object, e As System.EventArgs) Handles ReferencePathsButton.Click
+        Private Sub ReferencePathsButton_Click(sender As Object, e As EventArgs) Handles ReferencePathsButton.Click
             ShowChildPage(SR.GetString(SR.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
         End Sub
 
@@ -1352,7 +1352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportPanel_Enter(sender As Object, e As System.EventArgs) Handles addUserImportTableLayoutPanel.Enter
+        Private Sub ImportPanel_Enter(sender As Object, e As EventArgs) Handles addUserImportTableLayoutPanel.Enter
             ' We restore the selection through a message pump. 
             ' The reason is vswhidbey 496909.
             ' When the user clicks an item in the ListBox to select it, we will get OnEnter first, then we noticed the selection change.
@@ -1388,7 +1388,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportPanel_Leave(sender As Object, e As System.EventArgs) Handles addUserImportTableLayoutPanel.Leave
+        Private Sub ImportPanel_Leave(sender As Object, e As EventArgs) Handles addUserImportTableLayoutPanel.Leave
             _hidingImportListSelectedItem = True
             Try
                 _importListSelectedItem = DirectCast(Me.ImportList.SelectedItem, String)
@@ -1623,7 +1623,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropReference
         End Function
 
-        Private Sub ImportList_Validated(sender As Object, e As System.EventArgs) Handles ImportList.Validated
+        Private Sub ImportList_Validated(sender As Object, e As EventArgs) Handles ImportList.Validated
         End Sub
 
         ''' <summary>
@@ -1632,7 +1632,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AddUserImportButton_Click(sender As System.Object, e As System.EventArgs) Handles AddUserImportButton.Click
+        Private Sub AddUserImportButton_Click(sender As System.Object, e As EventArgs) Handles AddUserImportButton.Click
             Debug.Assert(UserImportTextBox.Text.Trim().Length > 0, "Why was the AddUserImportButton enabled when the UserImport text was empty?")
             ' Get the current list
             Dim CurrentImports As String() = GetCurrentImports()
@@ -1673,7 +1673,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ImportList.SelectedIndexChanged
+        Private Sub ImportList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles ImportList.SelectedIndexChanged
 
             If Not _hidingImportListSelectedItem Then
                 _importListSelectedItem = Nothing
@@ -1689,7 +1689,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UpdateUserImportButton_Click(sender As System.Object, e As System.EventArgs) Handles UpdateUserImportButton.Click
+        Private Sub UpdateUserImportButton_Click(sender As System.Object, e As EventArgs) Handles UpdateUserImportButton.Click
 
             Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso
                         ImportListSelectedItem IsNot Nothing AndAlso
@@ -1740,7 +1740,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UserImportTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles UserImportTextBox.TextChanged
+        Private Sub UserImportTextBox_TextChanged(sender As Object, e As EventArgs) Handles UserImportTextBox.TextChanged
             EnableImportGroup()
         End Sub
 

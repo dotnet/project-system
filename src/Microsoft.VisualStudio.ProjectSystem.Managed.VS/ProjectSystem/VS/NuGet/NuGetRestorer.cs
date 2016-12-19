@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using NuGet.SolutionRestoreManager;
 using System;
@@ -24,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _evaluationSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
+
+        private const int perfPackageRestoreEnd = 7343;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
@@ -134,9 +135,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (projectRestoreInfo != null)
             {
                 _projectVsServices.Project.Services.ProjectAsynchronousTasks
-                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(() => _solutionRestoreService
-                            .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)),
-                            registerFaultHandler: true);
+                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(async () =>
+                    {
+                        await _solutionRestoreService
+                               .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                               .ConfigureAwait(false);
+
+                        Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+
+                    }), registerFaultHandler: true);
             }
 
             return Task.CompletedTask;
@@ -144,8 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
-            IProjectChangeDescription projectChange;
-            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out projectChange))
+            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out IProjectChangeDescription projectChange))
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
                 return changedProperties.Contains(NuGetRestore.TargetFrameworksProperty)

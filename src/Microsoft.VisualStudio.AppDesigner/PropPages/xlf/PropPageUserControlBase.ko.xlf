@@ -5,8 +5,8 @@
       <group id="src/Microsoft.VisualStudio.AppDesigner/PropPages/PropPageUserControlBase.resx" />
       <trans-unit id="$this.Name">
         <source>PropPageUserControlBase</source>
-        <target state="new">PropPageUserControlBase</target>
-        <note></note>
+        <target state="translated">PropPageUserControlBase</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,83 +5,83 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Content.xaml" />
       <trans-unit id="Rule|Content|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Propiedades del archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Content|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Propiedades del archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">Avanzadas</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">Varios</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <target state="new">Build Action</target>
-        <note></note>
+        <target state="translated">Acción de compilación</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
         <source>How the file relates to the build and deployment processes.</source>
-        <target state="new">How the file relates to the build and deployment processes.</target>
-        <note></note>
+        <target state="translated">Cómo se relaciona el archivo con los procesos de compilación e implementación.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
         <source>Copy to Output Directory</source>
-        <target state="new">Copy to Output Directory</target>
-        <note></note>
+        <target state="translated">Copiar en el directorio de salida</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="new">Specifies the source file will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Especifica que el archivo de código fuente se copiará en el directorio de salida.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
-        <target state="new">Do not copy</target>
-        <note></note>
+        <target state="translated">No copiar</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
         <source>Copy always</source>
-        <target state="new">Copy always</target>
-        <note></note>
+        <target state="translated">Copiar siempre</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
         <source>Copy if newer</source>
-        <target state="new">Copy if newer</target>
-        <note></note>
+        <target state="translated">Copiar si es posterior</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
-        <note></note>
+        <target state="translated">El elemento especificado en el atributo Include.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">Ruta de acceso completa</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">Ubicación del archivo.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
         <source>File Name</source>
-        <target state="new">File Name</target>
-        <note></note>
+        <target state="translated">Nombre de archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|Description">
         <source>Name of the file or folder.</source>
-        <target state="new">Name of the file or folder.</target>
-        <note></note>
+        <target state="translated">Nombre del archivo o carpeta.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

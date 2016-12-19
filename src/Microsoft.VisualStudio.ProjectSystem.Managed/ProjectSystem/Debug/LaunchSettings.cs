@@ -49,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public object GetGlobalSetting(string settingName)
         {
-            object o;
-            GlobalSettings.TryGetValue(settingName, out o);
+            GlobalSettings.TryGetValue(settingName, out object o);
             return o;
         }
 

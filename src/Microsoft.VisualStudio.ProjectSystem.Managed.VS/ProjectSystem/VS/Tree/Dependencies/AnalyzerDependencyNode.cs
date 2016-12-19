@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.IO;
-using System.Reflection;
 using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies

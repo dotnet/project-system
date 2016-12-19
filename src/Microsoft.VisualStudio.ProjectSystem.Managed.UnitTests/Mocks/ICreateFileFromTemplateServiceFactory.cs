@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem;
 using Moq;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ICreateFileFromTemplateServiceFactory
     {
@@ -13,11 +11,9 @@ namespace Microsoft.VisualStudio.Mocks
         {
             var mock = new Mock<ICreateFileFromTemplateService>();
 
-            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<IProjectTree>(), It.IsAny<string>()))
-                .Returns<string, IProjectTree, string>((templateFile, parentNode, specialFileName) =>
+            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns<string, string, string>((templateFile, parentNode, specialFileName) =>
                 {
-                    var newNode = ProjectTreeParser.Parse($@"{specialFileName}, FilePath: ""{Path.Combine(parentNode.FilePath, specialFileName)}""");
-                    parentNode.Add(newNode);
                     return Task.FromResult(true);
                 });
 

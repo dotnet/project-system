@@ -5,98 +5,98 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AssemblyInfoPropPage.resx" />
       <trans-unit id="TitleLabel.Text">
         <source>&amp;Title:</source>
-        <target state="new">&amp;Title:</target>
-        <note></note>
+        <target state="translated">&amp;Tytuł:</target>
+        <note />
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="new">T&amp;rademark:</target>
-        <note></note>
+        <target state="translated">Z&amp;nak towarowy:</target>
+        <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <target state="new">C&amp;opyright:</target>
-        <note></note>
+        <target state="translated">P&amp;rawa autorskie:</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="new">&amp;Product:</target>
-        <note></note>
+        <target state="translated">&amp;Produkt:</target>
+        <note />
       </trans-unit>
       <trans-unit id="CompanyLabel.Text">
         <source>&amp;Company:</source>
-        <target state="new">&amp;Company:</target>
-        <note></note>
+        <target state="translated">&amp;Firma:</target>
+        <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="new">&amp;Description:</target>
-        <note></note>
+        <target state="translated">&amp;Opis:</target>
+        <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="new">&amp;Make assembly COM-Visible</target>
-        <note></note>
+        <target state="translated">&amp;Ustaw zestaw jako widoczny dla modelu COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="new">&amp;Neutral language:</target>
-        <note></note>
+        <target state="translated">&amp;Język neutralny:</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="new">&amp;Assembly version:</target>
-        <note></note>
+        <target state="translated">&amp;Wersja zestawu:</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="new">&amp;File version:</target>
-        <note></note>
+        <target state="translated">&amp;Wersja pliku:</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
-        <note></note>
+        <target state="translated">Główna</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
-        <note></note>
+        <target state="translated">Pomocnicza</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
-        <note></note>
+        <target state="translated">Kompilacja</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
-        <note></note>
+        <target state="translated">Poprawka</target>
+        <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
         <source>&amp;GUID:</source>
-        <target state="new">&amp;GUID:</target>
-        <note></note>
+        <target state="translated">Identyfikator &amp;GUID:</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
-        <note></note>
+        <target state="translated">Główna</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
-        <note></note>
+        <target state="translated">Pomocnicza</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
-        <note></note>
+        <target state="translated">Kompilacja</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
-        <note></note>
+        <target state="translated">Poprawka</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,39 +5,39 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventCommandLineDialog.resx" />
       <trans-unit id="InsertButton.Text">
         <source>I&amp;nsert</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">
         <source>OK</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Cancel_Button.Text">
         <source>Cancel</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CommandLine.AccessibleName">
         <source>Build Command Line</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ShowMacrosButton.Text">
         <source>&amp;Macros &gt;&gt;</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="HideMacrosButton.Text">
         <source>&lt;&lt; &amp;Macros</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="TokenList.AccessibleName">
         <source>Macro List</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Macro.Text">
         <source>Macro</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Value.Text">
         <source>Value</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

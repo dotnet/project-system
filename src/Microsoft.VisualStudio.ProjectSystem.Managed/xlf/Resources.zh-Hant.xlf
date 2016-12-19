@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx" />
       <trans-unit id="JsonErrorReadingLaunchSettings">
         <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
-        <target state="new">Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </target>
-        <note></note>
+        <target state="translated">讀取啟動設定檔時發生錯誤。必須修正此錯誤，才能對此專案偵錯。'{0}' </target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorReadingLaunchSettings">
         <source>The following error occurred when reading the launch settings file '{0}'. {1} </source>
-        <target state="new">The following error occurred when reading the launch settings file '{0}'. {1} </target>
-        <note></note>
+        <target state="translated">讀取啟動設定檔 '{0}' 時發生下列錯誤。{1} </target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorWritingDebugSettings">
         <source>The following error occurred when writing to the launch settings file '{0}'. {1} </source>
-        <target state="new">The following error occurred when writing to the launch settings file '{0}'. {1} </target>
-        <note></note>
+        <target state="translated">寫入啟動設定檔 '{0}' 時發生下列錯誤。{1} </target>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileMissingName">
         <source>At least one launch profile is missing the required name attribute. These profiles will be ignored</source>
-        <target state="new">At least one launch profile is missing the required name attribute. These profiles will be ignored</target>
-        <note></note>
+        <target state="translated">至少一個啟動設定檔遺漏必要的名稱屬性。將會略過這些設定檔</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="new">Start</target>
-        <note></note>
+        <target state="translated">啟動</target>
+        <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
-        <note></note>
+        <target state="translated">必須先修正 '{0}' 中的錯誤，才能套用變更。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,53 +5,53 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SdkReference.xaml" />
       <trans-unit id="Rule|SdkReference|DisplayName">
         <source>SDK Reference</source>
-        <target state="new">SDK Reference</target>
-        <note></note>
+        <target state="translated">SDK Başvurusu</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
         <source>SDK reference properties</source>
-        <target state="new">SDK reference properties</target>
-        <note></note>
+        <target state="translated">SDK başvurusu özellikleri</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">SDK Kökü</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
-        <target state="new">App Package Location</target>
-        <note></note>
+        <target state="translated">Uygulama Paketi Konumu</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
         <source>FrameworkIdentity</source>
-        <target state="new">FrameworkIdentity</target>
-        <note></note>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <target state="new">Copy Payload</target>
-        <note></note>
+        <target state="translated">Yükü Kopyala</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Yükü Alt Dizine Kopyala</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">
         <source>Expand Content</source>
-        <target state="new">Expand Content</target>
-        <note></note>
+        <target state="translated">İçeriği Genişlet</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
         <source>Expand Reference Assemblies</source>
-        <target state="new">Expand Reference Assemblies</target>
-        <note></note>
+        <target state="translated">Başvuru Bütünleştirilmiş Kodlarını Genişlet</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
         <source>Copy Local Expanded Reference Assemblies</source>
-        <target state="new">Copy Local Expanded Reference Assemblies</target>
-        <note></note>
+        <target state="translated">Yerel Genişletilmiş Başvuru Derlemelerini Kopyala</target>
+        <note />
       </trans-unit>
     </body>
   </file>

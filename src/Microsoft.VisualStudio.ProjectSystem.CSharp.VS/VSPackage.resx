@@ -141,4 +141,7 @@
   <data name="8" xml:space="preserve">
     <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
   </data>
+  <data name="9" xml:space="preserve">
+    <value>Class Library (.NET Core)</value>
+  </data>
 </root>

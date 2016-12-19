@@ -3,11 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Collections;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>

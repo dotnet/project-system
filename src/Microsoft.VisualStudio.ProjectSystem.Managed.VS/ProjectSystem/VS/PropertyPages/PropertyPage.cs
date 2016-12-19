@@ -294,8 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         internal void AdviseDebugger()
         {
-            System.IServiceProvider sp = _site as System.IServiceProvider;
-            if (sp != null)
+            if (_site is System.IServiceProvider sp)
             {
                 _debugger = sp.GetService<IVsDebugger, IVsDebugger>();
                 if (_debugger != null)
@@ -372,10 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                 if (browseObj != null)
                 {
-                    IVsHierarchy hier = null;
-                    uint itemid;
-                    int hr;
-                    hr = browseObj.GetProjectItem(out hier, out itemid);
+                    int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)
                     {
                         _unconfiguredProject = GetUnconfiguredProject(hier);

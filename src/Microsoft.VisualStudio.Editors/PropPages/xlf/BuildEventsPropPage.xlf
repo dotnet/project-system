@@ -5,35 +5,35 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventsPropPage.resx" />
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build ...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild ...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items">
         <source>Always</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items1">
         <source>On successful build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items2">
         <source>When the build updates the project output</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

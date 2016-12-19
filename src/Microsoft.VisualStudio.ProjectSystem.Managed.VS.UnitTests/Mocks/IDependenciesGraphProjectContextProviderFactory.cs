@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders = null,
                                 MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IDependenciesGraphProjectContextProvider>(behavior);
             var mockProjectContext = new Mock<IDependenciesGraphProjectContext>();
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         string projectPath,
                         MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IDependenciesGraphProjectContext>(behavior);
 
             mock.Setup(x => x.ProjectFilePath).Returns(projectPath);

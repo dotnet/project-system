@@ -230,7 +230,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Size = Me.GetPreferredSize(System.Drawing.Size.Empty)
         End Sub
 
-        Private Sub rbStartAction_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
+        Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
             Dim action As VSLangProj.prjStartAction = StartActionGetValue()
             Me.StartProgram.Enabled = (action = VSLangProj.prjStartAction.prjStartActionProgram)
             Me.StartProgramBrowse.Enabled = Me.StartProgram.Enabled
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub StartWorkingDirectoryBrowse_Click(sender As Object, e As System.EventArgs) Handles StartWorkingDirectoryBrowse.Click
+        Private Sub StartWorkingDirectoryBrowse_Click(sender As Object, e As EventArgs) Handles StartWorkingDirectoryBrowse.Click
             Dim sInitialDirectory As String
             Dim DirName As String = ""
 
@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub RemoteDebugEnabled_CheckedChanged(sender As Object, e As System.EventArgs) Handles RemoteDebugEnabled.CheckedChanged
+        Private Sub RemoteDebugEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles RemoteDebugEnabled.CheckedChanged
             RemoteDebugMachine.Enabled = RemoteDebugEnabled.Checked
 
             If Not m_fInsideInit Then
@@ -296,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub StartProgramBrowse_Click(sender As Object, e As System.EventArgs) Handles StartProgramBrowse.Click
+        Private Sub StartProgramBrowse_Click(sender As Object, e As EventArgs) Handles StartProgramBrowse.Click
             Dim FileName As String = Nothing
 
             SkipValidating(StartProgram)

@@ -5,188 +5,188 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedAssemblyReference.xaml" />
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
         <source>Resolved Assembly Reference</source>
-        <target state="new">Resolved Assembly Reference</target>
-        <note></note>
+        <target state="translated">解析的程序集引用</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Resolved reference</source>
-        <target state="new">Resolved reference</target>
-        <note></note>
+        <target state="translated">解析的引用</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">别名</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">此引用的别名的逗号分隔列表。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">复制本地</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">指示是否将引用复制到输出目录。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
-        <note></note>
+        <target state="translated">区域性</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">程序集元数据中“区域性”字段的值。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">说明</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">程序集元数据中“标题”字段的值。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">嵌入互操作类型</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">指示是否将此程序集中定义的类型嵌入目标程序集。</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|DisplayName">
         <source>File Type</source>
-        <target state="new">File Type</target>
-        <note></note>
+        <target state="translated">文件类型</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileType|Description">
         <source>The file type of the reference.</source>
-        <target state="new">The file type of the reference.</target>
-        <note></note>
+        <target state="translated">引用的文件类型。</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
         <source>.NET assembly</source>
-        <target state="new">.NET assembly</target>
-        <note></note>
+        <target state="translated">.NET 程序集</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
         <source>COM type library</source>
-        <target state="new">COM type library</target>
-        <note></note>
+        <target state="translated">COM 类型库</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="new">Native Assembly</target>
-        <note></note>
+        <target state="translated">本机程序集</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">标识</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">路径</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">所引用的文件的位置。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
         <source>Runtime Version</source>
-        <target state="new">Runtime Version</target>
-        <note></note>
+        <target state="translated">运行时版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RuntimeVersion|Description">
         <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="new">Version of the .NET runtime this assembly was compiled against.</target>
-        <note></note>
+        <target state="translated">编译该程序集所使用的 .NET 运行时的版本。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="new">Specific Version</target>
-        <note></note>
+        <target state="translated">特定版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
-        <note></note>
+        <target state="translated">指示是否可以解析此程序集，无论程序集解析的多定向规则是什么。</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|DisplayName">
         <source>Strong Name</source>
-        <target state="new">Strong Name</target>
-        <note></note>
+        <target state="translated">强名称</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|StrongName|Description">
         <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="new">True indicates that the reference has been signed with a key-pair.</target>
-        <note></note>
+        <target state="translated">True 表示已用密钥对对该引用进行了签名。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">引用的版本。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
         <source>Required Target Framework</source>
-        <target state="new">Required Target Framework</target>
-        <note></note>
+        <target state="translated">需要目标框架</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsWinMDFile|Description">
         <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">指示项目系统是否已确定此为 WinMD (而非程序集)</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">
         <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="new">Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</target>
-        <note></note>
+        <target state="translated">指示生成系统是否已确定此为 WinMD (而非程序集)</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">经解析得到此解析的引用项的原始引用项的计算项名称。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReferenceFromSDK|Description">
         <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="new">The SDK that this reference came from when using the expand SDK target.</target>
-        <note></note>
+        <target state="translated">使用扩展的 SDK 目标时提供此引用的 SDK。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FusionName|Description">
         <source>The full fusion name of the resolved assembly.</source>
-        <target state="new">The full fusion name of the resolved assembly.</target>
-        <note></note>
+        <target state="translated">解析的程序集的完整融合名称。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedFrom|Description">
         <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="new">{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</target>
-        <note></note>
+        <target state="translated">{}用于对此进行解析的引用所在的存储库。(如果在 GAC 中，则为“{GAC}”)。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkFile|Description">
         <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="new">Is this file a framework file. Ie Found in the target framework directory or in the redist list.</target>
-        <note></note>
+        <target state="translated">此文件是否为框架文件。即是否位于目标框架目录或重新分发列表中。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

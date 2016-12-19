@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             IDictionary<string, string> properties = null,
                             MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IProjectRuleSnapshot>(behavior);
 
             if (ruleName != null)

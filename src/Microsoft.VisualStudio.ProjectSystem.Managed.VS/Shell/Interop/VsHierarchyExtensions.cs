@@ -19,9 +19,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static Guid GetGuidProperty(this IVsHierarchy hierarchy, VsHierarchyPropID property)
         {
             Requires.NotNull(hierarchy, nameof(hierarchy));
-
-            Guid result;
-            HResult hr = hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out result);
+            HResult hr = hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out Guid result);
             if (hr.Failed)
                 throw hr.Exception;
 
@@ -45,9 +43,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (item.IsNilOrEmpty || item.IsSelection)
                 throw new ArgumentException(null, nameof(item));
-
-            object resultObject;
-            HResult hr = hierarchy.GetProperty(item, (int)property, out resultObject);
+            HResult hr = hierarchy.GetProperty(item, (int)property, out object resultObject);
             if (hr == VSConstants.DISP_E_MEMBERNOTFOUND)
                 return defaultValue;
 
@@ -84,9 +80,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static EnvDTE.Project GetDTEProject(this IVsHierarchy hierarchy)
         {
             UIThreadHelper.VerifyOnUIThread();
-
-            object extObject;
-            if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out extObject)))
+            if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object extObject)))
             {
                 return extObject as EnvDTE.Project;
             }

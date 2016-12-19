@@ -5,39 +5,39 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedPackageReference.xaml" />
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
         <source>Package</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
         <source>Package</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>Dependency description.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of dependency.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|DisplayName">
         <source>Dependencies</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|Description">
         <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

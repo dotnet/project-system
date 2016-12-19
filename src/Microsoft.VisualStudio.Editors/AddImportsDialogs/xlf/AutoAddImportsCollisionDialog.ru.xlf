@@ -5,18 +5,18 @@
       <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AutoAddImportsCollisionDialog.resx" />
       <trans-unit id="m_cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Отмена</target>
+        <note />
       </trans-unit>
       <trans-unit id="m_okButton.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">ОК</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <target state="new">Add Imports Validation Error</target>
-        <note></note>
+        <target state="translated">Добавить ошибку проверки импорта</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,34 +5,38 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>C#</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="2">
         <source>C# Project Files (*.csproj);*.csproj</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="3">
         <source>Console App (.NET Core)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="5">
         <source>Class Library (.NET Standard)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="7">
         <source>Loaded Project File Editor</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
         <note></note>
       </trans-unit>
     </body>

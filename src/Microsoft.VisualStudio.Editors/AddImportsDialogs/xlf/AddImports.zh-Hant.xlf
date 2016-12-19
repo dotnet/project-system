@@ -5,14 +5,14 @@
       <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AddImports.resx" />
       <trans-unit id="AddImportsMainTextFormatString">
         <source>Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</source>
-        <target state="new">Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</target>
+        <target state="translated">匯入 '{0}' 將會變更此檔案中其他識別碼的意義。若要更正 '{1}' 並保留其他識別碼的意義，請選擇下列其中一個選項:</target>
         <note>
       Defines the replacement string for use in the main label of the Add Imports collision dialog.
     </note>
       </trans-unit>
       <trans-unit id="ImportsAnywaysFormatString">
         <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
-        <target state="new">&amp;Import '{0}' and qualify the affected identifiers.</target>
+        <target state="translated">匯入 '{0}' 並且限定受影響的識別項(&amp;I)</target>
         <note>
       Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
       This text will be formated as richtext.
@@ -26,7 +26,7 @@
       </trans-unit>
       <trans-unit id="QualifyCurrentLineFormatString">
         <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
-        <target state="new">&amp;Do not import '{0}', but change '{1}' to '{2}'.</target>
+        <target state="translated">不要匯入 '{0}'，但是將 '{1}' 變更為 '{2}'(&amp;D)</target>
         <note>
       Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
       This text will be formated as richtext. 
@@ -41,8 +41,8 @@
       </trans-unit>
       <trans-unit id="AddImportsExtensionMethodsMainFormatString">
         <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
-        <target state="new">Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </target>
-        <note></note>
+        <target state="translated">匯入 '{0}' 將會變更您檔案中其他程式碼的意義，包括對擴充方法的呼叫。按一下 [確定]，將 '{1}' 變更為 '{2}' 加以修正 </target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -1,29 +1,21 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-//-----------------------------------------------------------------------
-// NOTE that this was taken from CPS along with a couple of internal methods
-// from CommonProjectSystemTools.cs in cps
-//
-// <copyright file="DictionaryEqualityComparer.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//-----------------------------------------------------------------------
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+using System.Collections.Generic;
+using System.Collections.Immutable;
+
+namespace Microsoft.VisualStudio.Collections
 {
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-
     /// <summary>
     /// Provides simple dictionary equality checks.
     /// </summary>
     /// <typeparam name="TKey">The type of key in the dictionaries to compare.</typeparam>
     /// <typeparam name="TValue">The type of value in the dictionaries to compare.</typeparam>
-    public class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
+    internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
     {
         /// <summary>
         /// Backing field for the <see cref="Instance"/> static property.
         /// </summary>
-        private static DictionaryEqualityComparer<TKey, TValue> defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
+        private static DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
 
         /// <summary>
         /// Initializes a new instance of the DictionaryEqualityComparer class.
@@ -37,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// </summary>
         internal static IEqualityComparer<IImmutableDictionary<TKey, TValue>> Instance
         {
-            get { return defaultInstance; }
+            get { return s_defaultInstance; }
         }
 
         /// <summary>
@@ -115,8 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
             foreach (KeyValuePair<TKey, TValue> pair in dictionary1)
             {
-                TValue value;
-                if (!dictionary2.TryGetValue(pair.Key, out value) || !valueComparer.Equals(value, pair.Value))
+                if (!dictionary2.TryGetValue(pair.Key, out TValue value) || !valueComparer.Equals(value, pair.Value))
                 {
                     return false;
                 }

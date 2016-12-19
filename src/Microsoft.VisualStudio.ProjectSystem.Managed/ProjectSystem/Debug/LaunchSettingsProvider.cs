@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.VisualStudio.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -30,28 +31,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [ImportingConstructor]
         public LaunchSettingsProvider(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices, 
                                       IFileSystem fileSystem,   IUnconfiguredProjectCommonServices commonProjectServices, 
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      [Import(AllowDefault = true)]Lazy<ISourceCodeControlIntegration> sourceControlIntegration)
+                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
         {
-            SourceControlIntegration = sourceControlIntegration;
             ProjectServices = projectServices;
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
             JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, 
-                                                                                                                    unconfiguredProject);;
+                                                                                                                    unconfiguredProject);
+            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: unconfiguredProject);
+
             ProjectSubscriptionService = projectSubscriptionService;
         }
 
         // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
         //protected IProjectErrorManager ProjectErrorManager { get; }
 
-        private Lazy<ISourceCodeControlIntegration> SourceControlIntegration { get; }
         private IUnconfiguredProjectServices ProjectServices { get; }
         private IUnconfiguredProjectCommonServices CommonProjectServices { get; }
         private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; }
 
         [ImportMany]
         protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
+
+        [ImportMany]
+        private OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
@@ -217,11 +220,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate)
         {
-            IProjectRuleSnapshot ruleSnapshot;
-            if(projectSubscriptionUpdate.Value.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out ruleSnapshot) )
+            if (projectSubscriptionUpdate.Value.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) )
             {
-                string activeProfile;
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out activeProfile);
+                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
                 var snapshot = CurrentSnapshot;
                 if(snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                 {
@@ -261,8 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if(activeProfile == null)
                 {
                     var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    var activeProfileVal = await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) as IEnumValue;
-                    if (activeProfileVal != null)
+                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
@@ -326,9 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
         {
-            IProjectRuleSnapshot ruleSnapshot;
-            string activeProfile;
-            if(projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out ruleSnapshot) && ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out activeProfile))
+            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) && ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
             {
                 return activeProfile;
             }
@@ -550,9 +548,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task CheckoutSettingsFileAsync()
         {
-            if (SourceControlIntegration!= null && SourceControlIntegration.Value != null)
+            var sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+            if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
             {
-                await SourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { LaunchSettingsFile }).ConfigureAwait(false);
+                await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { LaunchSettingsFile }).ConfigureAwait(false);
             }
         }
 
@@ -760,8 +759,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
             ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
-            object currentValue;
-            if (currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
                 globalSettings = currentSettings.GlobalSettings.Remove(settingName);
             }
@@ -780,8 +778,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task RemoveGlobalSettingAsync(string settingName)
         {
             var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            object currentValue;
-            if(currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
                 var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);

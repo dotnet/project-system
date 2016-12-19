@@ -953,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Received when the resource editor view window is resized.  Cause a layout.
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnResize(e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As EventArgs)
             MyBase.OnResize(e)
 
             LayOutResourceEditor()
@@ -1550,7 +1550,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ResourceListView_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles _resourceListView.SelectedIndexChanged
+        Private Sub ResourceListView_SelectedIndexChanged(sender As Object, e As EventArgs) Handles _resourceListView.SelectedIndexChanged
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
@@ -3405,7 +3405,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ResourceListView_ItemActivate(sender As Object, e As System.EventArgs) Handles _resourceListView.ItemActivate
+        Private Sub ResourceListView_ItemActivate(sender As Object, e As EventArgs) Handles _resourceListView.ItemActivate
             If CanPlayResources(GetSelectedResources()) Then
                 MenuPlay(sender, e)
             Else
@@ -4082,7 +4082,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub Category_XXX_ResourcesExistChanged(sender As Object, e As System.EventArgs) _
+        Private Sub Category_XXX_ResourcesExistChanged(sender As Object, e As EventArgs) _
         Handles _
             _categoryAudio.ResourcesExistChanged, _
             _categoryFiles.ResourcesExistChanged, _
@@ -4099,7 +4099,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeStrings(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeStrings(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryStrings)
         End Sub
 
@@ -4110,7 +4110,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeImages(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeImages(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryImages)
         End Sub
 
@@ -4121,7 +4121,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeIcons(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeIcons(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryIcons)
         End Sub
 
@@ -4132,7 +4132,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeAudio(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeAudio(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryAudio)
         End Sub
 
@@ -4143,7 +4143,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeFiles(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeFiles(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryFiles)
         End Sub
 
@@ -4154,7 +4154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MenuResourceTypeOther(sender As Object, e As System.EventArgs)
+        Private Sub MenuResourceTypeOther(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryOther)
         End Sub
 
@@ -4169,7 +4169,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_ExistingFile_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_ExistingFile_Click(sender As Object, e As EventArgs)
             Dim Title As String = SR.GetString(SR.RSE_DlgTitle_AddExisting)
             Dim FilterIndex As Integer = 0
             Dim Filter As String = GetFileDialogFilterForCategories(_categories, _currentCategory, FilterIndex)
@@ -4225,7 +4225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonFixedAdd_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonFixedAdd_Click(sender As Object, e As EventArgs)
             If Me.CurrentCategory.AddCommand IsNot Nothing Then
                 Me.CurrentCategory.AddCommand.Invoke(sender, e)
             End If
@@ -4245,7 +4245,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New String" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewString_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewString_Click(sender As Object, e As EventArgs)
             CommitPendingChanges()
 
             'We simply switch to the string table and place the cursor in the bottom row, which is the add/new row.
@@ -4258,7 +4258,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Image.BMP Image" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewImage_BMP_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewImage_BMP_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_BMP)
 
             ' Remember the type of the last added image
@@ -4270,7 +4270,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Image.GIF Image" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewImage_GIF_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewImage_GIF_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_GIF)
 
             ' Remember the type of the last added image
@@ -4282,7 +4282,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Image.JPEG Image" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewImage_JPEG_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewImage_JPEG_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_JPG)
 
             ' Remember the type of the last added image
@@ -4294,7 +4294,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Image.PNG" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewImage_PNG_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewImage_PNG_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_PNG)
 
             ' Remember the type of the last added image
@@ -4306,7 +4306,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Image.TIFF Image" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewImage_TIFF_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewImage_TIFF_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_TIF)
 
             ' Remember the type of the last added image
@@ -4318,7 +4318,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Icon" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewIcon_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewIcon_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Icon, ResourceTypeEditorIcon.EXT_ICO)
         End Sub
 
@@ -4327,7 +4327,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles the "Add.New Text File" ToolStripMenuItem
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub ButtonAdd_NewTextFile_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonAdd_NewTextFile_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.TextFile, ResourceTypeEditorTextFile.EXT_TXT)
         End Sub
 
@@ -4489,7 +4489,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonFixedView_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonFixedView_Click(sender As Object, e As EventArgs)
         End Sub
 
         ''' <summary>
@@ -4498,7 +4498,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonViews_List_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonViews_List_Click(sender As Object, e As EventArgs)
             ChangeResourceView(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.List)
         End Sub
 
@@ -4509,7 +4509,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonViews_Details_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonViews_Details_Click(sender As Object, e As EventArgs)
             ChangeResourceView(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Details)
         End Sub
 
@@ -4520,7 +4520,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonViews_Thumbnail_Click(sender As Object, e As System.EventArgs)
+        Private Sub ButtonViews_Thumbnail_Click(sender As Object, e As EventArgs)
             ChangeResourceView(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Thumbnail)
         End Sub
 

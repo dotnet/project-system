@@ -386,15 +386,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         'Delegate to the base class for all functionality related to the icon combobox
         '
 
-        Private Sub IconCombobox_DropDown(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDown
+        Private Sub IconCombobox_DropDown(sender As Object, e As EventArgs) Handles IconCombobox.DropDown
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_DropDownClosed(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDownClosed
+        Private Sub IconCombobox_DropDownClosed(sender As Object, e As EventArgs) Handles IconCombobox.DropDownClosed
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
+        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles IconCombobox.SelectionChangeCommitted
             MyBase.HandleIconComboboxSelectionChangeCommitted(sender)
         End Sub
 
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AssemblyInfoButton_Click(sender As Object, e As System.EventArgs) Handles AssemblyInfoButton.Click
+        Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
@@ -690,10 +690,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #End Region
 
 #Region "Application.xaml handling"
-
-        Private Enum __PSFFILEID3
-            PSFFILEID_AppXaml = -1008
-        End Enum
 
         ''' <summary>
         ''' Returns true iff the project contains an Application.xaml file
@@ -997,7 +993,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub StartupObjectOrUriComboBox_DropDown(sender As Object, e As System.EventArgs) Handles StartupObjectOrUriComboBox.DropDown
+        Private Sub StartupObjectOrUriComboBox_DropDown(sender As Object, e As EventArgs) Handles StartupObjectOrUriComboBox.DropDown
             PopulateStartupObjectOrUriComboboxAndKeepCurrentEntry()
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1898,7 +1894,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewUACSettingsButton_Click(sender As Object, e As System.EventArgs) Handles ViewUACSettingsButton.Click
+        Private Sub ViewUACSettingsButton_Click(sender As Object, e As EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
         End Sub
 

@@ -257,7 +257,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             MyBase.OnEnter(rowIndex, throughMouseClick)
             If throughMouseClick Then
                 Dim dfxdgv As DesignerFramework.DesignerDataGridView = TryCast(Me.DataGridView, DesignerFramework.DesignerDataGridView)
-                Dim ec As New System.ComponentModel.CancelEventArgs(False)
+                Dim ec As New CancelEventArgs(False)
 
                 If dfxdgv IsNot Nothing Then
                     If dfxdgv.InMultiSelectionMode Then

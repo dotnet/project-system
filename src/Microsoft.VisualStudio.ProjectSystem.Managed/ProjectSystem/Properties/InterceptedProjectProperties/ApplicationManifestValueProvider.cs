@@ -81,11 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             else
             {
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
-
                 // If we can make the path relative to the project folder do so. Otherwise just use the given path.
-                string relativePath;
                 if (Path.IsPathRooted(unevaluatedPropertyValue) &&
-                    PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out relativePath))
+                    PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))
                 {
                     returnValue = relativePath;
                 }

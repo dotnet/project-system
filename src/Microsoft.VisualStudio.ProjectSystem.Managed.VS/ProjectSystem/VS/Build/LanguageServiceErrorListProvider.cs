@@ -3,7 +3,6 @@
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -52,8 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
-            ErrorListDetails details;
-            if (!TryExtractErrorListDetails(error.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
+            if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return await NotHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();

@@ -309,11 +309,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As System.UInt32, _
+        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, _
                 FileName As String, _
                 PhysicalView As String, _
                 Hierarchy As IVsHierarchy, _
-                ItemId As System.UInt32, _
+                ItemId As UInteger, _
                 ExistingDocData As Object, _
                 ByRef DocView As Object, _
                 ByRef DocData As Object, _
@@ -331,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     ' perform parameter validation and initialization.
                     '
-                    If (VsCreateEditorFlags And CType(__VSCREATEEDITORFLAGS.CEF_OPENFILE Or __VSCREATEEDITORFLAGS.CEF_SILENT, System.UInt32)) = 0 Then
+                    If (VsCreateEditorFlags And CType(__VSCREATEEDITORFLAGS.CEF_OPENFILE Or __VSCREATEEDITORFLAGS.CEF_SILENT, UInteger)) = 0 Then
                         Throw Common.CreateArgumentException("vscreateeditorflags")
                     End If
 
