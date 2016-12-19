@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                           IProjectChangeDiff difference = null,
                                                           MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IProjectChangeDescription>(behavior);
 
             if (after != null)

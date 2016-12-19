@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Caption = caption;
             Icon = icon;
-            ExpandedIcon = expandedIcon.HasValue ? expandedIcon.Value : Icon;
+            ExpandedIcon = expandedIcon ?? Icon;
         }
     }
 }

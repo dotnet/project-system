@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             mockProfiles.Setup(m => m.Profiles).Returns(() =>
             {
-                return data.Profiles == null ? null : data.Profiles.ToImmutableList();
+                return data.Profiles?.ToImmutableList();
             });
             
             data.LaunchProfiles = mockProfiles.Object;
