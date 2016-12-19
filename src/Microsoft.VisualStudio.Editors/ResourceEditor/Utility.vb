@@ -392,7 +392,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function IsWavSoundFile(Data As Byte()) As Boolean
             Try
                 Dim Position As Integer = 0
-                Dim wFormatTag As Int16 = -1
+                Dim wFormatTag As Short = -1
                 Dim FmtChunkFound As Boolean = False
 
                 ' validate the RIFF header
@@ -425,7 +425,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ' we are dealing w/ WAVEFORMATEX
                             ' do extra validation
                             Dim sizeOfWAVEFORMATEX As Integer = 18
-                            Dim cbSize As Int16 = BytesToInt16(Data(Position + 8 + sizeOfWAVEFORMATEX - 1), _
+                            Dim cbSize As Short = BytesToInt16(Data(Position + 8 + sizeOfWAVEFORMATEX - 1), _
                                                         Data(Position + 8 + sizeOfWAVEFORMATEX - 2))
                             If cbSize + sizeOfWAVEFORMATEX <> ChunkSize Then
                                 'Invalid wave header
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ch1">Second byte</param>
         ''' <returns>The Int16combined from the bytes</returns>
         ''' <remarks></remarks>
-        Private Function BytesToInt16(ch0 As Byte, ch1 As Byte) As Int16
+        Private Function BytesToInt16(ch0 As Byte, ch1 As Byte) As Short
             Return CShort(ch1) Or CShort(CInt(ch0) << 8)
         End Function
 

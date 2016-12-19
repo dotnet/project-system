@@ -101,12 +101,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             Dim objType As Type = obj.GetType()
-            If objType Is GetType(UInt16) OrElse
-                objType Is GetType(Int16) OrElse
-                objType Is GetType(UInt32) OrElse
-                objType Is GetType(Int32) OrElse
-                objType Is GetType(UInt64) OrElse
-                objType Is GetType(Int64) OrElse
+            If objType Is GetType(UShort) OrElse
+                objType Is GetType(Short) OrElse
+                objType Is GetType(UInteger) OrElse
+                objType Is GetType(Integer) OrElse
+                objType Is GetType(ULong) OrElse
+                objType Is GetType(Long) OrElse
                 objType Is GetType(Byte) OrElse
                 objType Is GetType(SByte) OrElse
                 objType Is GetType(Single) OrElse
@@ -139,14 +139,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function NoOverflowCUInt(LongValue As Long) As UInteger
-            Return CUInt(LongValue And UInt32.MaxValue)
+            Return CUInt(LongValue And UInteger.MaxValue)
         End Function
 
         Public Function NoOverflowCInt(LongValue As Long) As Integer
-            If LongValue <= UInt32.MaxValue Then
+            If LongValue <= UInteger.MaxValue Then
                 Return CInt(LongValue)
             End If
-            Return CInt(LongValue And UInt32.MaxValue)
+            Return CInt(LongValue And UInteger.MaxValue)
         End Function
 
         ''' <summary>
@@ -1016,7 +1016,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
             Try
                 If Interop.NativeMethods.SystemParametersInfo(Interop.win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
-                    Dim result As Int32 = Marshal.ReadInt32(pvParam)
+                    Dim result As Integer = Marshal.ReadInt32(pvParam)
                     Return result <> 0
                 End If
             Finally

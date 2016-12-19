@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             'Get the HWND's text
             Dim WindowText As New String(" "c, 30)
-            Dim CharsCopied As Integer = AppDesInterop.NativeMethods.GetWindowText(msg.HWnd, WindowText, WindowText.Length)
+            Dim CharsCopied As Integer = NativeMethods.GetWindowText(msg.HWnd, WindowText, WindowText.Length)
             If CharsCopied > 0 Then
                 WindowText = WindowText.Substring(0, CharsCopied)
                 str.Append(" """ & WindowText & """")
@@ -629,7 +629,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Trace.WriteLine("  AffectedComponent=" & DebugToString(e.AffectedComponent))
                 Trace.WriteLine("  AffectedProperty=" & DebugToString(e.AffectedProperty))
                 If PDPerf.TraceVerbose Then
-                    Trace.WriteLine(New System.Diagnostics.StackTrace().ToString)
+                    Trace.WriteLine(New StackTrace().ToString)
                 End If
             End If
         End Sub

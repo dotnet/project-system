@@ -108,14 +108,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Private Sub OKButton_Click(sender As System.Object, e As System.EventArgs) Handles OKButton.Click
+        Private Sub OKButton_Click(sender As System.Object, e As EventArgs) Handles OKButton.Click
             '// Store the command line
             m_CommandLine = Me.CommandLine.Text
 
             Me.Close()
         End Sub
 
-        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As EventArgs) Handles Cancel_Button.Click
             Me.Close()
         End Sub
 
@@ -139,15 +139,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub HideMacrosButton_Click(sender As System.Object, e As System.EventArgs) Handles HideMacrosButton.Click
+        Private Sub HideMacrosButton_Click(sender As System.Object, e As EventArgs) Handles HideMacrosButton.Click
             ShowCollapsedForm()
         End Sub
 
-        Private Sub ShowMacrosButton_Click(sender As Object, e As System.EventArgs) Handles ShowMacrosButton.Click
+        Private Sub ShowMacrosButton_Click(sender As Object, e As EventArgs) Handles ShowMacrosButton.Click
             ShowExpandedForm()
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub BuildEventCommandLineDialog_Load(sender As System.Object, e As EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
             '// Never let them resize to something smaller than the default form size
@@ -185,17 +185,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub InsertButton_Click(sender As System.Object, e As System.EventArgs) Handles InsertButton.Click
+        Private Sub InsertButton_Click(sender As System.Object, e As EventArgs) Handles InsertButton.Click
             AddCurrentMacroToCommandLine()
         End Sub
 
-        Private Sub TokenList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles TokenList.SelectedIndexChanged
+        Private Sub TokenList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles TokenList.SelectedIndexChanged
             SetInsertButtonEnableState()
         End Sub
 
 
 
-        Private Sub TokenList_DoubleClick(sender As Object, e As System.EventArgs) Handles TokenList.DoubleClick
+        Private Sub TokenList_DoubleClick(sender As Object, e As EventArgs) Handles TokenList.DoubleClick
             AddCurrentMacroToCommandLine()
         End Sub
 
