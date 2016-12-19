@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <PreserveSig()> Public Declare Auto Function _
             GetKeyState _
-                Lib "user32" (nVirtKey As Keys) As Int16
+                Lib "user32" (nVirtKey As Keys) As Short
 
         ''' <summary>
         ''' The GetNextDlgTabItem function retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control. 

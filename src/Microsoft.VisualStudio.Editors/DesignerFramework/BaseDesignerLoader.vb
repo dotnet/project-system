@@ -292,7 +292,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Friend ReadOnly Property ProjectItemid() As System.UInt32
+        Friend ReadOnly Property ProjectItemid() As UInteger
             Get
                 Return _projectItemid
             End Get
@@ -372,7 +372,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private Function GetDocDataState(BitFlagToTest As TextManager.Interop.BUFFERSTATEFLAGS) As Boolean
             If m_DocData IsNot Nothing AndAlso m_DocData.Buffer IsNot Nothing Then
-                Dim State As System.UInt32
+                Dim State As UInteger
                 VSErrorHandler.ThrowOnFailure(m_DocData.Buffer.GetStateFlags(State))
                 Return (State And BitFlagToTest) <> 0
             End If

@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim LongValue As ULong
                     Try
                         LongValue = CULng(StringValue)
-                        If LongValue < UInt32.MaxValue Then
+                        If LongValue < UInteger.MaxValue Then
                             value = CUInt(LongValue)
                             Return True
                         End If

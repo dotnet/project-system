@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Format baseaddress value into VB hex notation
         ''' </summary>
         Private Function ToHexAddress(BaseAddress As UInt64) As String
-            Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInt32.MaxValue, "Invalid baseaddress value")
+            Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInteger.MaxValue, "Invalid baseaddress value")
 
             Return "&H" & String.Format("{0:X8}", CUInt(BaseAddress))
         End Function
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Try
                     LongValue = CULng(StringValue)
-                    If LongValue < UInt32.MaxValue Then
+                    If LongValue < UInteger.MaxValue Then
                         Return CUInt(LongValue)
                     End If
                 Catch ex As Exception
@@ -235,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ElseIf String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Dim LongValue As ULong = CULng(StringValue)
-                If LongValue < UInt32.MaxValue Then
+                If LongValue < UInteger.MaxValue Then
                     'Reformat into clean
                     DllBaseTextbox.Text = ToHexAddress(LongValue)
                 Else

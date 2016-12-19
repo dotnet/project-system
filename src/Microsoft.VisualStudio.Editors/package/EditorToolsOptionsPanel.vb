@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '*
         Private Sub tabSizeTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles _tabSizeTextBox.TextChanged
             Try
-                TabSize = UInt16.Parse(_tabSizeTextBox.Text)
+                TabSize = UShort.Parse(_tabSizeTextBox.Text)
             Catch ex As Exception
                 ' Revert to old value
                 _tabSizeTextBox.Text = _tabSize.ToString()
