@@ -508,7 +508,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ListViewComparer.HandleColumnClick(UnusedReferenceList, _referenceSorter, e)
         End Sub
 
-        Private Sub GetUnusedRefsTimer_Tick(sender As Object, e As System.EventArgs)
+        Private Sub GetUnusedRefsTimer_Tick(sender As Object, e As EventArgs)
 
             ' Poll compiler
             GetUnusedRefs()
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub dialog_Shown(sender As Object, e As System.EventArgs) Handles m_HostDialog.Shown
+        Private Sub dialog_Shown(sender As Object, e As EventArgs) Handles m_HostDialog.Shown
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance

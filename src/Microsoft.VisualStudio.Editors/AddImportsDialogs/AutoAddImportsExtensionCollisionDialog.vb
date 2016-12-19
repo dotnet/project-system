@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             _lastFocus = CType(sender, Control)
         End Sub
 
-        Private Sub LabelGotFocus(sender As Object, e As System.EventArgs) Handles txtMain_.GotFocus
+        Private Sub LabelGotFocus(sender As Object, e As EventArgs) Handles txtMain_.GotFocus
             _lastFocus.Focus()
         End Sub
 

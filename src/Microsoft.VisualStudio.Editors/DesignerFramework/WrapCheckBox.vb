@@ -22,12 +22,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Me.AutoSize = True
         End Sub
 
-        Protected Overrides Sub OnTextChanged(e As System.EventArgs)
+        Protected Overrides Sub OnTextChanged(e As EventArgs)
             MyBase.OnTextChanged(e)
             CacheTextSize()
         End Sub
 
-        Protected Overrides Sub OnFontChanged(e As System.EventArgs)
+        Protected Overrides Sub OnFontChanged(e As EventArgs)
             MyBase.OnFontChanged(e)
             CacheTextSize()
         End Sub

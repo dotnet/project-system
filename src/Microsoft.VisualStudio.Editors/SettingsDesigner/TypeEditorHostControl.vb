@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ShowEditorButton_Click(sender As System.Object, e As System.EventArgs) Handles _showEditorButton.Click
+        Private Sub ShowEditorButton_Click(sender As System.Object, e As EventArgs) Handles _showEditorButton.Click
             Debug.Assert(Not _typeEditor Is Nothing)
             ShowUITypeEditor()
         End Sub
@@ -447,10 +447,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         Private Sub DropDownHolderSizeChanged(sender As Object, e As EventArgs)
-            DropDownHolderSize(TryCast(sender, System.Windows.Forms.Control))
+            DropDownHolderSize(TryCast(sender, Control))
         End Sub
 
-        Private Sub DropDownHolderSize(control As System.Windows.Forms.Control)
+        Private Sub DropDownHolderSize(control As Control)
             If _dialog IsNot Nothing AndAlso control IsNot Nothing Then
 
                 ' Calculate size & position
@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Public Sub DropDownControl(control As System.Windows.Forms.Control) Implements System.Windows.Forms.Design.IWindowsFormsEditorService.DropDownControl
+        Public Sub DropDownControl(control As Control) Implements System.Windows.Forms.Design.IWindowsFormsEditorService.DropDownControl
             If _dialog Is Nothing Then
                 _dialog = New DropDownHolder
             End If
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnDeactivate(e As System.EventArgs)
+            Protected Overrides Sub OnDeactivate(e As EventArgs)
                 Me.HideForm()
             End Sub
 
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ValueComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles _valueComboBox.SelectedIndexChanged
+        Private Sub ValueComboBox_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles _valueComboBox.SelectedIndexChanged
             _innerValue = _valueComboBox.SelectedItem
             TextValueDirty = False
             OnValueChanged()
@@ -900,7 +900,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
+            Protected Overrides Sub OnMouseEnter(e As EventArgs)
                 _drawHot = True
                 Invalidate()
                 MyBase.OnMouseEnter(e)
@@ -911,7 +911,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
+            Protected Overrides Sub OnMouseLeave(e As EventArgs)
                 _drawHot = False
                 Invalidate()
                 MyBase.OnMouseLeave(e)

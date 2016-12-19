@@ -595,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '     Reloading is deferred until the document is later activated, and reload is contingent 
         '     upon IsReloadNeeded returning true.
         '**************************************************************************
-        Private Sub DocData_DataChanged(sender As Object, e As System.EventArgs) Handles m_DocData.DataChanged
+        Private Sub DocData_DataChanged(sender As Object, e As EventArgs) Handles m_DocData.DataChanged
             'The DocData has been changed externally (either outside of VS or from another editor).
             '  We notify ourselves that we need to reload.  The reload doesn't actually happen until we
             '  have focus again and then hit idle time processing.

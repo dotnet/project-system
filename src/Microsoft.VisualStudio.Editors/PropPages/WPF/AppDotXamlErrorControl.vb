@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.ErrorText = errorText
         End Sub
 
-        Private Sub EditXamlButton_Click(sender As Object, e As System.EventArgs) Handles EditXamlButton.Click
+        Private Sub EditXamlButton_Click(sender As Object, e As EventArgs) Handles EditXamlButton.Click
             RaiseEvent EditXamlClicked()
         End Sub
 
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Set
         End Property
 
-        Private Sub AppDotXamlErrorControl_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Private Sub AppDotXamlErrorControl_Load(sender As Object, e As EventArgs) Handles Me.Load
             Me.TableLayoutPanel1.Width = System.Math.Max(Me.Width, 400)
             Me.TableLayoutPanel1.Height = ErrorControl.Height + Me.EditXamlButton.Height + 100
         End Sub

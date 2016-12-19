@@ -271,7 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub DebugInfo_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboDebugInfo.SelectedIndexChanged
+        Private Sub DebugInfo_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If Me.cboDebugInfo.SelectedIndex = 0 Then
                 '// user selcted none
                 m_bDebugSymbols = False

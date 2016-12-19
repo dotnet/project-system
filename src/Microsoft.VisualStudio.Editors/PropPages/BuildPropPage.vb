@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub AdvancedButton_Click(sender As Object, e As System.EventArgs) Handles btnAdvanced.Click
+        Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click
             ShowChildPage(SR.GetString(SR.PPG_AdvancedBuildSettings_Title), GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
 
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Sub OutputPathBrowse_Click(sender As Object, e As System.EventArgs) Handles btnOutputPathBrowse.Click
+        Private Sub OutputPathBrowse_Click(sender As Object, e As EventArgs) Handles btnOutputPathBrowse.Click
             Dim DirName As String = Nothing
             If GetDirectoryViaBrowseRelativeToProject(Me.txtOutputPath.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), DirName) Then
                 txtOutputPath.Text = DirName
@@ -385,7 +385,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return bRetVal
         End Function
 
-        Private Sub rbStartAction_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
+        Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
             If (Not m_bInsideInternalUpdate) Then
                 Dim warnings As TreatWarningsSetting = TreatSpecificWarningsGetValue()
                 Me.rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
@@ -526,7 +526,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub XMLDocumentationEnable_CheckStateChanged(sender As Object, e As System.EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
+        Private Sub XMLDocumentationEnable_CheckStateChanged(sender As Object, e As EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
             Const XML_FILE_EXTENSION As String = ".xml"
 
             If Me.chkXMLDocumentationFile.Checked Then
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
-        Private Sub DocumentationFile_TextChanged(sender As Object, e As System.EventArgs) Handles txtXMLDocumentationFile.TextChanged
+        Private Sub DocumentationFile_TextChanged(sender As Object, e As EventArgs) Handles txtXMLDocumentationFile.TextChanged
             If Not m_bInsideInternalUpdate Then
                 Debug.Assert(m_stDocumentationFile IsNot Nothing)
                 For i As Integer = 0 To m_stDocumentationFile.Length - 1
@@ -655,7 +655,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PlatformTarget_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles cboPlatformTarget.SelectionChangeCommitted
+        Private Sub PlatformTarget_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboPlatformTarget.SelectionChangeCommitted
             If m_fInsideInit OrElse m_bInsideInternalUpdate Then
                 Return
             End If
@@ -693,7 +693,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
-        Private Sub DefineConstants_TextChanged(sender As Object, e As System.EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
+        Private Sub DefineConstants_TextChanged(sender As Object, e As EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
             If Not m_bInsideInternalUpdate Then
                 Debug.Assert(m_stCondCompSymbols IsNot Nothing)
                 For i As Integer = 0 To m_stCondCompSymbols.Length - 1
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the "Define DEBUG Constant" check has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
-        Private Sub chkDefineDebug_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkDefineDebug.CheckedChanged
+        Private Sub chkDefineDebug_CheckedChanged(sender As Object, e As EventArgs) Handles chkDefineDebug.CheckedChanged
             If Not m_bInsideInternalUpdate Then
                 Dim DebugIndexDoNotChange As Integer 'Index to avoid changing, if in simplified configs mode
                 If IsSimplifiedConfigs() Then
@@ -765,7 +765,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Fired when the "Define DEBUG Constant" check has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
-        Private Sub chkDefineTrace_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkDefineTrace.CheckedChanged
+        Private Sub chkDefineTrace_CheckedChanged(sender As Object, e As EventArgs) Handles chkDefineTrace.CheckedChanged
             If Not m_bInsideInternalUpdate Then
                 For i As Integer = 0 To m_stCondCompSymbols.Length - 1
                     Select Case chkDefineTrace.CheckState

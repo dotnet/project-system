@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Validation method for BaseAddress
         ''' no cancellation, just normalizes value if not an error condition
         ''' </summary>
-        Private Sub BaseAddress_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles DllBaseTextbox.Validating
+        Private Sub BaseAddress_Validating(sender As Object, e As CancelEventArgs) Handles DllBaseTextbox.Validating
             Dim StringValue As String = Trim(Me.DllBaseTextbox.Text)
 
             Const DEFAULT_DLLBASEADDRESS As String = "&H11000000"
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Validation properties
         ''' </summary>
-        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
+        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             If controlData.FormControl Is DllBaseTextbox Then
                 Try
                     GetBaseAddressFromControl(DllBaseTextbox)

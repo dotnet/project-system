@@ -1,7 +1,9 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
 Option Strict On
 Option Explicit On
+
+Imports System.Windows.Forms
+
 Namespace Microsoft.VisualStudio.Editors.Package
     Public Class EditorToolsOptionsPanel
 
@@ -11,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '*
         '* Only allow numerical (and control i.e. backspace) characters
         '*
-        Private Sub FilterNumericInput(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) _
+        Private Sub FilterNumericInput(sender As Object, e As KeyPressEventArgs) _
                 Handles _tabSizeTextBox.KeyPress, _indentSizeTextBox.KeyPress
             If Char.IsDigit(e.KeyChar) Or Char.IsControl(e.KeyChar) Then
                 e.Handled = False
@@ -103,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '* Try to set TabSize to the value in the tabsize text box. If failure (i.e non-numerical value)
         '* reset the contents of the text box to previous value...
         '*
-        Private Sub tabSizeTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles _tabSizeTextBox.TextChanged
+        Private Sub tabSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles _tabSizeTextBox.TextChanged
             Try
                 TabSize = UShort.Parse(_tabSizeTextBox.Text)
             Catch ex As Exception
@@ -117,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         '* Try to set IndentSize to the value in the indentsize text box. If failure (i.e non-numerical value)
         '* reset the contents of the text box to previous value...
         '*
-        Private Sub indentSizeTextBox_TextChanged(sender As Object, e As System.EventArgs) Handles _indentSizeTextBox.TextChanged
+        Private Sub indentSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles _indentSizeTextBox.TextChanged
             Try
                 IndentSize = UInt16.Parse(_indentSizeTextBox.Text)
             Catch ex As Exception

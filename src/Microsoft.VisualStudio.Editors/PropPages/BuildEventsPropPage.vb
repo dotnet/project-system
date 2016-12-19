@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Private Sub PostBuildBuilderButton_Click(sender As Object, e As System.EventArgs) Handles btnPostBuildBuilder.Click
+        Private Sub PostBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPostBuildEventCommandLine.Text
 
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PreBuildBuilderButton_Click(sender As Object, e As System.EventArgs) Handles btnPreBuildBuilder.Click
+        Private Sub PreBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPreBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = Me.txtPreBuildEventCommandLine.Text
 
