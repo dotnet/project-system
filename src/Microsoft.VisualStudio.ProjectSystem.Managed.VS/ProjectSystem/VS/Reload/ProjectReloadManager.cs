@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// projects which fail the solution level reload, the next time the project file changes.
     /// </summary>
     [Export(typeof(IProjectReloadManager))]
-    [AppliesTo("HandlesOwnReload")] // Replace with ProjectCapabilities.HandlesOwnReload when new CPS is available
+    [AppliesTo(ProjectCapability.HandlesOwnReload)]
     internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, 
                                           IVsSolutionEvents, IVsSolutionEvents4
     {
