@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         IDictionary<string, IProjectChangeDescription> projectChanges = null,
                         MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IProjectSubscriptionUpdate>(behavior);
 
             if (currentState != null)
