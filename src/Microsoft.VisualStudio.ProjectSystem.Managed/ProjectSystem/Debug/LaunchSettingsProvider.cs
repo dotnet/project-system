@@ -220,11 +220,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate)
         {
-            IProjectRuleSnapshot ruleSnapshot;
-            if(projectSubscriptionUpdate.Value.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out ruleSnapshot) )
+            if (projectSubscriptionUpdate.Value.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) )
             {
-                string activeProfile;
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out activeProfile);
+                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
                 var snapshot = CurrentSnapshot;
                 if(snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                 {
@@ -328,9 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
         {
-            IProjectRuleSnapshot ruleSnapshot;
-            string activeProfile;
-            if(projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out ruleSnapshot) && ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out activeProfile))
+            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) && ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
             {
                 return activeProfile;
             }
@@ -763,8 +759,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
             ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
-            object currentValue;
-            if (currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
                 globalSettings = currentSettings.GlobalSettings.Remove(settingName);
             }
@@ -783,8 +778,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task RemoveGlobalSettingAsync(string settingName)
         {
             var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            object currentValue;
-            if(currentSettings.GlobalSettings.TryGetValue(settingName, out currentValue))
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
                 var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);

@@ -109,8 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// </summary>
             public override Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
             {
-                string unevaluatedPropertyValue;
-                if (_propertyValues.TryRemove(propertyName, out unevaluatedPropertyValue))
+                if (_propertyValues.TryRemove(propertyName, out string unevaluatedPropertyValue))
                 {
                     return Task.CompletedTask;
                 }
@@ -123,8 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// </summary>
             public override Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
             {
-                string unevaluatedPropertyValue;
-                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                if (_propertyValues.TryGetValue(propertyName, out string unevaluatedPropertyValue))
                 {
                     return Task.FromResult(unevaluatedPropertyValue);
                 }
@@ -137,8 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// </summary>
             public override Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
             {
-                string unevaluatedPropertyValue;
-                if (_propertyValues.TryGetValue(propertyName, out unevaluatedPropertyValue))
+                if (_propertyValues.TryGetValue(propertyName, out string unevaluatedPropertyValue))
                 {
                     return Task.FromResult(unevaluatedPropertyValue);
                 }

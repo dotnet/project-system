@@ -72,9 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 var targetFramework = projectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
                 isActiveConfiguration = string.Equals(targetFramework, _activeTargetFramework);
-
-                IWorkspaceProjectContext projectContext;
-                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out projectContext) ?
+                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out IWorkspaceProjectContext projectContext) ?
                     projectContext :
                     null;
             }

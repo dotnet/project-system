@@ -14,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public static IImmutableDictionary<string, IProjectRuleSnapshot> Add(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string propertyValue)
         {
-            IProjectRuleSnapshot snapshot;
-            if (!snapshots.TryGetValue(ruleName, out snapshot))
+            if (!snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot snapshot))
             {
                 snapshot = IProjectRuleSnapshotFactory.Create(ruleName, propertyName, propertyValue);
                 return snapshots.Add(ruleName, snapshot);

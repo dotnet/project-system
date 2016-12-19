@@ -151,8 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
-            IProjectChangeDescription projectChange;
-            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out projectChange))
+            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out IProjectChangeDescription projectChange))
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
                 return changedProperties.Contains(NuGetRestore.TargetFrameworksProperty)

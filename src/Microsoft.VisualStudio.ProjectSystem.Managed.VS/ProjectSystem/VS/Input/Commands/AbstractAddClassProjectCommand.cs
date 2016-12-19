@@ -55,14 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
 
             string strFilter = string.Empty;
-            int iDontShowAgain;
-
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
             Assumes.Present(addItemDialog);
             HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref guid, _projectVsServices.VsProject, (uint)uiFlags,
-                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out iDontShowAgain);
+                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out int iDontShowAgain);
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
             // handler isn't called after we run.

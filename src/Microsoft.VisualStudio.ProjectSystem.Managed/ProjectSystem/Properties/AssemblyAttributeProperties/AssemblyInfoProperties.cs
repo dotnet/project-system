@@ -89,8 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private async Task<string> GetPropertyValueFromSourceAttributeAsync(string propertyName)
         {
-            SourceAssemblyAttributePropertyValueProvider provider;
-            if (_attributeValueProviderMap.TryGetValue(propertyName, out provider))
+            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
             {
                 return await provider.GetPropertyValueAsync().ConfigureAwait(true);
             }
@@ -106,8 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 await SaveAssemblyInfoInSourceAsync().ConfigureAwait(true))
             {
-                SourceAssemblyAttributePropertyValueProvider provider;
-                if (_attributeValueProviderMap.TryGetValue(propertyName, out provider))
+                if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
                 {
                     await provider.SetPropertyValueAsync(unevaluatedPropertyValue).ConfigureAwait(true);
                 }

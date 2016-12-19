@@ -364,10 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                 if (browseObj != null)
                 {
-                    IVsHierarchy hier = null;
-                    uint itemid;
-                    int hr;
-                    hr = browseObj.GetProjectItem(out hier, out itemid);
+                    int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)
                     {
                         _unconfiguredProject = GetUnconfiguredProject(hier);
