@@ -76,68 +76,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         #region IVsENCRebuildableProjectCfg2 Implementation
         public int BuildForEnc([In, MarshalAs(UnmanagedType.IUnknown)] object pUpdatePE)
         {
-            return _host.ENCProjectConfig2?.BuildForEnc(pUpdatePE) ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.BuildForEnc(pUpdatePE) ?? VSConstants.S_OK;
         }
 
         public int EncApplySucceeded([In] int hrApplyResult)
         {
-            return _host.ENCProjectConfig2?.EncApplySucceeded(hrApplyResult) ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.EncApplySucceeded(hrApplyResult) ?? VSConstants.S_OK;
         }
 
         public int EnterBreakStateOnPE([In] EncInterop.ENC_BREAKSTATE_REASON encBreakReason, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ENC_ACTIVE_STATEMENT[] pActiveStatements, [In] uint cActiveStatements)
         {
-            return _host.ENCProjectConfig2?.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements) ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements) ?? VSConstants.S_OK;
         }
 
         public int ExitBreakStateOnPE()
         {
-            return _host.ENCProjectConfig2?.ExitBreakStateOnPE() ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.ExitBreakStateOnPE() ?? VSConstants.S_OK;
         }
 
         public int GetCurrentActiveStatementPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return _host.ENCProjectConfig2?.GetCurrentActiveStatementPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetCurrentActiveStatementPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
         }
 
         public int GetCurrentExceptionSpanPosition([In] uint id, [MarshalAs(UnmanagedType.LPArray), Out] TextSpan[] ptsNewPosition)
         {
-            return _host.ENCProjectConfig2?.GetCurrentExceptionSpanPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetCurrentExceptionSpanPosition(id, ptsNewPosition) ?? VSConstants.E_FAIL;
         }
 
         public int GetENCBuildState([MarshalAs(UnmanagedType.LPArray), Out] ENC_BUILD_STATE[] pENCBuildState)
         {
-            return _host.ENCProjectConfig2?.GetENCBuildState(pENCBuildState) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetENCBuildState(pENCBuildState) ?? VSConstants.E_FAIL;
         }
 
         public int GetExceptionSpanCount([Out] out uint pcExceptionSpan)
         {
             pcExceptionSpan = default(uint);
-            return _host.ENCProjectConfig2?.GetExceptionSpanCount(out pcExceptionSpan) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetExceptionSpanCount(out pcExceptionSpan) ?? VSConstants.E_FAIL;
         }
 
         public int GetExceptionSpans([In] uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), Out] ENC_EXCEPTION_SPAN[] rgelt, [In, Out] ref uint pceltFetched)
         {
-            return _host.ENCProjectConfig2?.GetExceptionSpans(celt, rgelt, ref pceltFetched) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetExceptionSpans(celt, rgelt, ref pceltFetched) ?? VSConstants.E_FAIL;
         }
 
         public int GetPEBuildTimeStamp([MarshalAs(UnmanagedType.LPArray), Out] OLE.Interop.FILETIME[] pTimeStamp)
         {
-            return _host.ENCProjectConfig2?.GetPEBuildTimeStamp(pTimeStamp) ?? VSConstants.E_NOTIMPL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetPEBuildTimeStamp(pTimeStamp) ?? VSConstants.E_NOTIMPL;
         }
 
         public int GetPEidentity([MarshalAs(UnmanagedType.LPArray), Out] Guid[] pMVID, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.BStr), Out] string[] pbstrPEName)
         {
-            return _host.ENCProjectConfig2?.GetPEidentity(pMVID, pbstrPEName) ?? VSConstants.E_FAIL;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.GetPEidentity(pMVID, pbstrPEName) ?? VSConstants.E_FAIL;
         }
 
         public int StartDebuggingPE()
         {
-            return _host.ENCProjectConfig2?.StartDebuggingPE() ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.StartDebuggingPE() ?? VSConstants.S_OK;
         }
 
         public int StopDebuggingPE()
         {
-            return _host.ENCProjectConfig2?.StopDebuggingPE() ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.StopDebuggingPE() ?? VSConstants.S_OK;
         }
         #endregion
 
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         public int HasCustomMetadataEmitter([MarshalAs(UnmanagedType.VariantBool)] out bool value)
         {
             value = true;
-            return _host.ENCProjectConfig4?.HasCustomMetadataEmitter(out value) ?? VSConstants.S_OK;
+            return ((EncInterop.IVsENCRebuildableProjectCfg4)_host.HostSpecificEditAndContinueService)?.HasCustomMetadataEmitter(out value) ?? VSConstants.S_OK;
         }
         #endregion
     }

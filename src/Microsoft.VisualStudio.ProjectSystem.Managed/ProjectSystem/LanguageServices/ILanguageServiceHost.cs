@@ -36,17 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Gets the object that represents the IVsENCRebuildableProjectCfg2.
+        ///     Gets the object that represents the host specific Edit and Continue Service.
         /// </summary>
-        EncInterop.IVsENCRebuildableProjectCfg2 ENCProjectConfig2
-        {
-            get;
-        }
-
-        /// <summary>
-        ///     Gets the object that represents the IVsENCRebuildableProjectCfg4.
-        /// </summary>
-        EncInterop.IVsENCRebuildableProjectCfg4 ENCProjectConfig4
+        object HostSpecificEditAndContinueService
         {
             get;
         }
