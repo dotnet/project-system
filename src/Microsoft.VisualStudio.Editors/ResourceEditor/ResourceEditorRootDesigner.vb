@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We need get undoEngine to monitor undo state. But it is not available when the designer is just loaded. We do this on the first transaction (change) happens in the designer.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub DesignerHost_TransactionOpening(sender As Object, e As System.EventArgs) Handles _designerHost.TransactionOpening
+        Private Sub DesignerHost_TransactionOpening(sender As Object, e As EventArgs) Handles _designerHost.TransactionOpening
             If _undoEngine Is Nothing Then
                 _undoEngine = DirectCast(GetService(GetType(UndoEngine)), UndoEngine)
                 ' We get UndoEngine here, because we need monitor undo start/end event. But when this trasaction itself is caused by an UNDO operation,
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UndoEngine_Undoing(sender As Object, e As System.EventArgs) Handles _undoEngine.Undoing
+        Private Sub UndoEngine_Undoing(sender As Object, e As EventArgs) Handles _undoEngine.Undoing
             If _view IsNot Nothing Then
                 _view.OnUndoing()
             End If
@@ -844,7 +844,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UndoEngine_Undone(sender As Object, e As System.EventArgs) Handles _undoEngine.Undone
+        Private Sub UndoEngine_Undone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
             If _view IsNot Nothing Then
                 _view.OnUndone()
             End If

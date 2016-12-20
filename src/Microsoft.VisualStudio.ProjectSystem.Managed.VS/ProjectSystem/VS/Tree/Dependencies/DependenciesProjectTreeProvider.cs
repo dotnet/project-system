@@ -610,9 +610,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var referencePath in resolvedReferences.Items)
                 {
-                    string originalItemSpec;
                     if (referencePath.Value.TryGetValue(ResolvedAssemblyReference.OriginalItemSpecProperty,
-                                                        out originalItemSpec)
+                                                        out string originalItemSpec)
                         && !string.IsNullOrEmpty(originalItemSpec))
                     {
                         if (string.Equals(originalItemSpec, unresolvedItemSpec, StringComparison.OrdinalIgnoreCase))

@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class ProjectProperty : IVsProjectProperty
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Value { get; set; }
+        public string Value { get; set; }
     }
 }

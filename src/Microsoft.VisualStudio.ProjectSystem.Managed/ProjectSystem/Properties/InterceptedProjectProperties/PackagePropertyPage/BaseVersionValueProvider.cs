@@ -24,9 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
             // Ignore the semantic version suffix (e.g. "1.0.0-beta1" => "1.0.0")
             versionStr = versionStr.Split('-')[0];
-
-            Version version;
-            return Version.TryParse(versionStr, out version) ? version : s_DefaultVersion;
+            return Version.TryParse(versionStr, out Version version) ? version : s_DefaultVersion;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -50,8 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             var propertyNames = await defaultProperties.GetPropertyNamesAsync().ConfigureAwait(true);
             if (!propertyNames.Contains(PropertyName))
             {
-                Version version;
-                if (Version.TryParse(unevaluatedPropertyValue, out version))
+                if (Version.TryParse(unevaluatedPropertyValue, out Version version))
                 {
                     var defaultVersion = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
                     if (version.Equals(defaultVersion))

@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             get
             {
-                this.EnsureInitialized();
+                EnsureInitialized();
                 return _publicBlock;
             }
         }
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var broadcastBlock = new BroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(b => b);
             
-            _launchProfileProviderLink  = this.LaunchSettingProvider.SourceBlock.LinkTo(
+            _launchProfileProviderLink  = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
 

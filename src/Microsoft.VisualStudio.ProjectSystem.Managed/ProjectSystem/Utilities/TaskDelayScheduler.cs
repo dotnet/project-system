@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// </summary>
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall)
         {
-            lock (this.SyncObject)
+            lock (SyncObject)
             {
                 // A new submission is being requested to be scheduled, cancel previous
                 // submissions first.
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 await Task.Delay(TaskDelayTime).ConfigureAwait(true);
 
                 bool isCanceled = token.IsCancellationRequested;
-                lock (this.SyncObject)
+                lock (SyncObject)
                 {
                     // We want to clear any existing cancelation token IF it matches our token
                     if (PendingUpdateTokenSource != null && PendingUpdateTokenSource.Token == token)
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// </summary>
         private void ClearPendingUpdates(bool cancel)
         {
-            lock (this.SyncObject)
+            lock (SyncObject)
             {
                 if (PendingUpdateTokenSource != null)
                 {

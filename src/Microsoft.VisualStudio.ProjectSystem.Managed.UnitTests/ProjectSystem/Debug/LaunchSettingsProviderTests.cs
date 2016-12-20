@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData, appDesignerData  });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null,  new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create(CancellationToken.None));
-            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem != null? fileSystem : new IFileSystemMock(), commonServices, null);
+            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null);
             return provider;
         }
 
@@ -577,11 +577,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
-
-            // Check snapshot
-            object updatedSettings;
             Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            // Check snapshot
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
 
@@ -610,11 +608,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
-
             // Check snapshot
-            object updatedSettings;
             Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
         [Fact]
@@ -668,9 +664,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            object updatedSettings;
             Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out updatedSettings));
+            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
 string JsonString1 = @"{
@@ -779,7 +774,7 @@ string JsonString1 = @"{
         {
             return FileChangeScheduler == null &&
                    FileWatcher == null &&
-                   _projectRuleSubscriptionLink == null && 
+                   ProjectRuleSubscriptionLink == null && 
                    _broadcastBlock == null;
         }
 

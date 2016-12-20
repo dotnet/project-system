@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private _oldGlobalObjects As Dictionary(Of Project, GlobalObjectCollection)
 
         Private _vsTrackProjectDocuments As IVsTrackProjectDocuments2
-        Private _vsTrackProjectDocumentsEventsCookie As UInt32
+        Private _vsTrackProjectDocumentsEventsCookie As UInteger
 
         Private _solutionEvents As SolutionEvents
         Private _rdt As IVsRunningDocumentTable

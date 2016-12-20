@@ -38,9 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNull(catalogName, nameof(catalogName));
             Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
-
-            IPropertyPagesCatalog catalog;
-            if (snapshot.NamedCatalogs.TryGetValue(catalogName, out catalog))
+            if (snapshot.NamedCatalogs.TryGetValue(catalogName, out IPropertyPagesCatalog catalog))
             {
                 return catalog.GetSchema(ruleName);
             }

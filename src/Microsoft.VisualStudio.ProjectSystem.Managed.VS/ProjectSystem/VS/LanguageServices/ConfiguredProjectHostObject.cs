@@ -24,12 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _projectDisplayName = projectDisplayName;
         }
 
-        public String ProjectDisplayName => _projectDisplayName;
-        public override String ActiveIntellisenseProjectDisplayName => _unconfiguredProjectHostObject.ActiveIntellisenseProjectDisplayName;
+        public string ProjectDisplayName => _projectDisplayName;
+        public override string ActiveIntellisenseProjectDisplayName => _unconfiguredProjectHostObject.ActiveIntellisenseProjectDisplayName;
 
         #region IVsHierarchy overrides
 
-        public override int GetProperty(uint itemid, int propid, out Object pvar)
+        public override int GetProperty(uint itemid, int propid, out object pvar)
         {
             switch (propid)
             {

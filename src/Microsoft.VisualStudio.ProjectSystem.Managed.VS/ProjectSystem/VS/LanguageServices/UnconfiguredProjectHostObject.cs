@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
-        public override String ActiveIntellisenseProjectDisplayName => ActiveIntellisenseProjectHostObject?.ProjectDisplayName;
+        public override string ActiveIntellisenseProjectDisplayName => ActiveIntellisenseProjectHostObject?.ProjectDisplayName;
         public bool DisposingConfiguredProjectHostObjects { get; set; }
 
         public void PushPendingIntellisenseProjectHostObjectUpdates()
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return hr;
         }
 
-        public override int GetProperty(uint itemid, int propid, out Object pvar)
+        public override int GetProperty(uint itemid, int propid, out object pvar)
         {
             if (ActiveIntellisenseProjectHostObject != null)
             {
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return base.GetProperty(itemid, propid, out pvar);
         }
 
-        public override int SetProperty(uint itemid, int propid, Object var)
+        public override int SetProperty(uint itemid, int propid, object var)
         {
             switch (propid)
             {

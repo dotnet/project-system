@@ -59,16 +59,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="pgrfCDW">[out] Flags to be passed to CreateDocumentWindow</param>
         ''' <remarks></remarks>
-        Private Function InternalCreateEditorInstance(VsCreateEditorFlags As System.UInt32, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                ItemId As System.UInt32, _
-                ExistingDocData As Object, _
-                ByRef DocView As Object, _
-                ByRef DocData As Object, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+        Private Function InternalCreateEditorInstance(VsCreateEditorFlags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                ItemId As UInteger,
+                ExistingDocData As Object,
+                ByRef DocView As Object,
+                ByRef DocData As Object,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As System.Guid,
                 ByRef pgrfCDW As Integer) As Integer
             pgrfCDW = 0
             CmdUIGuid = System.Guid.Empty

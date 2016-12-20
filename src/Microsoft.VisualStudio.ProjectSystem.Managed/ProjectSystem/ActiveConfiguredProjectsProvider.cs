@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                builder.Add(String.Empty, _services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+                builder.Add(string.Empty, _services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
             }
 
             return builder.ToImmutableDictionary();

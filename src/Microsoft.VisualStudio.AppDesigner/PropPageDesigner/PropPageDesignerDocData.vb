@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     localRegistry = DirectCast(_baseProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
                 End If
                 If localRegistry Is Nothing Then
-                    Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), AppDesInterop.NativeMethods.E_FAIL)
+                    Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), NativeMethods.E_FAIL)
                 End If
 
                 'CONSIDER: Need to check with FX team about removing assert in MS.VS.Shell.Design.DesignerWindowPane.RegisterView
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         End If
                     End If
                 Catch ex As Exception
-                    Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), AppDesInterop.NativeMethods.E_FAIL)
+                    Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), NativeMethods.E_FAIL)
                 End Try
                 Return _vsTextBuffer
             End Get
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Dim hr As Integer
             hr = Marshal.QueryInterface(punk, riid, ppvSite)
             Marshal.Release(punk)
-            If AppDesInterop.NativeMethods.Failed(hr) Then
+            If NativeMethods.Failed(hr) Then
                 Marshal.ThrowExceptionForHR(hr)
             End If
         End Sub

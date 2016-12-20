@@ -1426,7 +1426,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks>Kind of hacky...</remarks>
-        Private Sub m_SettingsGridView_CurrentCellDirtyStateChanged(sender As Object, e As System.EventArgs) Handles m_SettingsGridView.CurrentCellDirtyStateChanged
+        Private Sub m_SettingsGridView_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles m_SettingsGridView.CurrentCellDirtyStateChanged
             If m_SettingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
                 Dim cell As DataGridViewCell = m_SettingsGridView.CurrentCell
                 If cell IsNot Nothing Then

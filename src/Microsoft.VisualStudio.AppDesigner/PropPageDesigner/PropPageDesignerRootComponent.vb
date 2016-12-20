@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         'Private cache for important data
         Private _hierarchy As IVsHierarchy
-        Private _itemId As UInt32
+        Private _itemId As UInteger
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private _name As String = "PropPageDesignerRootComponent"
 
@@ -68,11 +68,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property ItemId() As System.UInt32
+        Public Property ItemId() As UInteger
             Get
                 Return _itemId
             End Get
-            Set(Value As System.UInt32)
+            Set(Value As UInteger)
                 _itemId = Value
             End Set
         End Property

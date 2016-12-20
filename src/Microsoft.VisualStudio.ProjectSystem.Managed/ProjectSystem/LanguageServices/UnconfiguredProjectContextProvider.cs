@@ -170,8 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                                      .ConfigureAwait(false);
-            Guid guid;
-            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out guid);
+            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid);
 
             return guid;
         }
@@ -250,17 +249,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
-                string activeTargetFramework = String.Empty;
+                string activeTargetFramework = string.Empty;
                 IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
                 foreach (var kvp in configuredProjectsMap)
                 {
                     var targetFramework = kvp.Key;
                     var configuredProject = kvp.Value;
-
-                    IWorkspaceProjectContext workspaceProjectContext;
-                    IConfiguredProjectHostObject configuredProjectHostObject;
-                    if (!TryGetConfiguredProjectState(configuredProject, out workspaceProjectContext, out configuredProjectHostObject))
+                    if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
                     {
                         // Get the target path for the configured project.
                         var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();

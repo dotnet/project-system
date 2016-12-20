@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 GetCommandStatusResult.Handled(GetCommandText(), CommandStatus.Enabled) :
                 GetCommandStatusResult.Unhandled;
 
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, Int64 commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
             if (!ShouldHandle(node)) return false;
 

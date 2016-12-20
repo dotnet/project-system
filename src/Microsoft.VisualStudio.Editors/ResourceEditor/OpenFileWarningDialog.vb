@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ButtonOk_Click(sender As Object, e As System.EventArgs) Handles buttonOK.Click
+        Private Sub ButtonOk_Click(sender As Object, e As EventArgs) Handles buttonOK.Click
             Close()
         End Sub
         Friend WithEvents messageLabel2 As System.Windows.Forms.Label
