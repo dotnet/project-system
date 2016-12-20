@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AnalyzerReference.xaml" />
       <trans-unit id="Rule|AnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
         <source>Analyzer reference properties</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,31 +5,31 @@
       <group id="src/Microsoft.VisualStudio.Editors/MyExtensibility/MyExtensibilityPropPage.resx" />
       <trans-unit id="labelDescription.Text">
         <source>My Namespace extensions: </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="linkLabelHelp.Text">
         <source>Learn more about customizing My Namespace.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.Text">
         <source>Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.Text">
         <source>Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.Text">
         <source>Description</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

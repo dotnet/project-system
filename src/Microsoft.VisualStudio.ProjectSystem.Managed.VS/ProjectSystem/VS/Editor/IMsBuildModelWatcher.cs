@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     internal interface IMsBuildModelWatcher
     {
-        Task InitializeAsync(string tempFile);
+        Task InitializeAsync(string tempFile, string lastWritten);
         void ProjectXmlHandler(object sender, ProjectXmlChangedEventArgs args);
         void Dispose();
     }

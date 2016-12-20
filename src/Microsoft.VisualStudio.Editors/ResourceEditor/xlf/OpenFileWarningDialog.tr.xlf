@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx" />
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
-        <target state="new">&amp;Always ask before opening this file type.</target>
-        <note></note>
+        <target state="translated">Bu dosy&amp;a türünü açmadan önce her zaman sor.</target>
+        <note />
       </trans-unit>
       <trans-unit id="messageLabel.Text">
         <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
-        <target state="new">The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</target>
-        <note></note>
+        <target state="translated">Yönetilen Kaynak Düzenleyicisi, istenen dosya türünü desteklemiyor. "{0}" için varsayılan düzenleyiciyi açmak istiyor musunuz?</target>
+        <note />
       </trans-unit>
       <trans-unit id="buttonOK.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">Tamam</target>
+        <note />
       </trans-unit>
       <trans-unit id="buttonCancel.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">İptal</target>
+        <note />
       </trans-unit>
       <trans-unit id="messageLabel2.Text">
         <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
-        <target state="new">Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</target>
-        <note></note>
+        <target state="translated">Bazı dosyalar kötü amaçlı içeriklere sahip olabilir.  Yalnızca, bu dosyanın kaynağına güveniyorsanız Evet yanıtını verin.</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Open File</source>
-        <target state="new">Open File</target>
-        <note></note>
+        <target state="translated">Dosyayı Aç</target>
+        <note />
       </trans-unit>
     </body>
   </file>

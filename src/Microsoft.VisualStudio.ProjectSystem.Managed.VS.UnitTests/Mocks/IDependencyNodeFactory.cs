@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IDependencyNode Implement(IEnumerable<IDependencyNode> children = null,
                                                 MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IDependencyNode>(behavior);
 
             if (children != null)
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IDependencyNode Implement(string childrenJson = null,
                                                 MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IDependencyNode>(behavior);
 
             if (childrenJson != null)

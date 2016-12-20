@@ -35,9 +35,13 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileCleanupFrameNotifyListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfo.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperties.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperty.cs" />
@@ -54,7 +58,7 @@
     <Compile Include="ProjectSystem\VS\DteServices.cs" />
     <Compile Include="ProjectSystem\VS\IDteServices.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\ProjectContextCodeModelProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractEditProjectFileCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\EditProjectFileCommand.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\VsContainedLanguageComponentsFactoryBase.cs" />
     <Compile Include="ProjectSystem\VS\LanguageServices\IVsContainedLanguageComponentsFactory.cs" />
     <Compile Include="Packaging\ManagedProjectSystemPackage.cs" />
@@ -103,6 +107,13 @@
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
+    <Compile Include="ProjectSystem\VS\References\AddFileContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\AssemblyReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\BaseReferenceContextProvider.cs" />
+    <Compile Include="ProjectSystem\VS\References\ComReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\ProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\SharedProjectReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\WinRTReferencesProviderContext.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManager.cs" />
     <Compile Include="ProjectSystem\VS\IOptionsSettings.cs" />
@@ -113,7 +124,7 @@
     <Compile Include="ProjectSystem\VS\OptionsSettings.cs" />
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkMonikerValueProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\SourceFilePropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\ProjectFileOrAssemblyInfoPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProject.cs" />
@@ -180,9 +191,7 @@
     <Compile Include="ProjectSystem\VS\Utilities\Converters.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\DelegateCommand.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverter.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\ExportFactory\MsBuildModelWatcherExportFactory.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\FocusAttacher.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\ExportFactory\IExportFactory.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\IMsBuildAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />

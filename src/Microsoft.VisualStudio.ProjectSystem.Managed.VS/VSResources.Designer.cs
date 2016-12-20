@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit {0}.{1}.
+        ///   Looks up a localized string similar to Edit {0}.
         /// </summary>
         internal static string EditProjectFileCommand {
             get {
@@ -351,6 +351,24 @@ namespace Microsoft.VisualStudio {
         internal static string Overwrite {
             get {
                 return ResourceManager.GetString("Overwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack.
+        /// </summary>
+        internal static string PackCommand {
+            get {
+                return ResourceManager.GetString("PackCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Pack {0}.
+        /// </summary>
+        internal static string PackSelectedProjectCommand {
+            get {
+                return ResourceManager.GetString("PackSelectedProjectCommand", resourceCulture);
             }
         }
         

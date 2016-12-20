@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -19,14 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
-        {
-            return "AssemblyInfo.vb";
-        }
+        protected override string Name => "AssemblyInfo.vb";
 
-        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
-        {
-            return "AssemblyInfoInternal.zip";
-        }
+        protected override string TemplateName => "AssemblyInfoInternal.zip";
     }
 }

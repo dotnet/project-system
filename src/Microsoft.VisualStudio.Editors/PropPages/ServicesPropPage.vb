@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             HelpLabel.LinkArea = New System.Windows.Forms.LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
 
-        Private Sub EnableApplicationServices_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles EnableApplicationServices.CheckedChanged
+        Private Sub EnableApplicationServices_CheckedChanged(sender As System.Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
             If _ignoreCheckedChanged Then
                 _ignoreCheckedChanged = False
                 Exit Sub
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropServices
         End Function
 
-        Private Sub AdvancedSettings_Click(sender As Object, e As System.EventArgs) Handles AdvancedSettings.Click
+        Private Sub AdvancedSettings_Click(sender As Object, e As EventArgs) Handles AdvancedSettings.Click
             ShowChildPage(SR.GetString(SR.PPG_ServicesAdvancedPage_Title), GetType(AdvancedServicesDialog))
         End Sub
 
@@ -257,7 +257,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _ignoreLostFocus = False
         End Sub
 
-        Private Sub RolesServiceUrl_Validated(sender As Object, e As System.EventArgs) Handles RolesServiceUrl.Validated
+        Private Sub RolesServiceUrl_Validated(sender As Object, e As EventArgs) Handles RolesServiceUrl.Validated
             If CurrentAppConfigDocument IsNot Nothing Then
                 If ServicesPropPageAppConfigHelper.SetRoleServiceUri(CurrentAppConfigDocument, RolesServiceUrl.Text, ProjectHierarchy) Then
                     WriteXml()
@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub AuthenticationServiceUrl_Validated(sender As Object, e As System.EventArgs) Handles AuthenticationServiceUrl.Validated
+        Private Sub AuthenticationServiceUrl_Validated(sender As Object, e As EventArgs) Handles AuthenticationServiceUrl.Validated
             If CurrentAppConfigDocument IsNot Nothing Then
                 If ServicesPropPageAppConfigHelper.SetAuthenticationServiceUri(CurrentAppConfigDocument, AuthenticationServiceUrl.Text, ProjectHierarchy) Then
                     WriteXml()
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub CustomCredentialProviderType_Validated(sender As Object, e As System.EventArgs) Handles CustomCredentialProviderType.Validated
+        Private Sub CustomCredentialProviderType_Validated(sender As Object, e As EventArgs) Handles CustomCredentialProviderType.Validated
             If CurrentAppConfigDocument IsNot Nothing Then
                 If ServicesPropPageAppConfigHelper.SetCustomCredentialProviderType(CurrentAppConfigDocument, CustomCredentialProviderType.Text, ProjectHierarchy) Then
                     WriteXml()
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub WebSettingsUrl_Validated(sender As Object, e As System.EventArgs) Handles WebSettingsUrl.Validated
+        Private Sub WebSettingsUrl_Validated(sender As Object, e As EventArgs) Handles WebSettingsUrl.Validated
             If CurrentAppConfigDocument IsNot Nothing Then
                 If ServicesPropPageAppConfigHelper.SetAppServicesServiceUri(CurrentAppConfigDocument, WebSettingsUrl.Text) Then
                     WriteXml()
@@ -290,7 +290,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub WindowsBasedAuth_CheckedChanged(sender As Object, e As System.EventArgs) Handles WindowsBasedAuth.CheckedChanged
+        Private Sub WindowsBasedAuth_CheckedChanged(sender As Object, e As EventArgs) Handles WindowsBasedAuth.CheckedChanged
             'DevDiv Bugs 100690, disable Authentication service location and credential type
             'if Windows auth is selected
             AuthenticationServiceUrl.Enabled = Not WindowsBasedAuth.Checked
@@ -301,7 +301,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub FormBasedAuth_CheckedChanged(sender As Object, e As System.EventArgs) Handles WindowsBasedAuth.CheckedChanged
+        Private Sub FormBasedAuth_CheckedChanged(sender As Object, e As EventArgs) Handles WindowsBasedAuth.CheckedChanged
             If FormBasedAuth.Checked And FormBasedAuth.Enabled Then
                 UpdateMembershipDefaultProviderToWindows(False)
             End If
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub Loaded(sender As System.Object, e As System.EventArgs) Handles Me.Load
+        Private Sub Loaded(sender As System.Object, e As EventArgs) Handles Me.Load
             _frameworkVersionNumber = Utils.GetProjectTargetFrameworkVersion(ProjectHierarchy)
             EnsureXmlUpToDate()
         End Sub
@@ -339,13 +339,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InvokeHelp()
         End Sub
 
-        Private Sub ValidateWhenHidden(sender As System.Object, e As System.EventArgs) Handles Me.VisibleChanged
+        Private Sub ValidateWhenHidden(sender As System.Object, e As EventArgs) Handles Me.VisibleChanged
             If Not Me.Visible Then
                 Me.Validate()
             End If
         End Sub
 
-        Private Sub ValidateWhenLostFocus(sender As System.Object, e As System.EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
+        Private Sub ValidateWhenLostFocus(sender As System.Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
             Me.Validate()
         End Sub
 

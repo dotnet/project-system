@@ -62,6 +62,32 @@
           <CommandName>EditProjectFile</CommandName>
         </Strings>
       </Button>
+      
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageProjectContextMenu" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Pack</ButtonText>
+          <ToolTipText>Generate NuGet Package</ToolTipText>
+          <CommandName>GenerateNuGetPackageProjectContextMenu</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageTopLevelBuild" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_BUILD_SELECTION" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Pack selection</ButtonText>
+          <ToolTipText>Generate NuGet Package for selected project</ToolTipText>
+          <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -79,6 +105,8 @@
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidEditProjFileGrp" value="0x1000"/>
       <IDSymbol name="cmdidEditProjFile" value="0x1001" />
+      <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
+      <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
     </GuidSymbol>
   </Symbols>
 

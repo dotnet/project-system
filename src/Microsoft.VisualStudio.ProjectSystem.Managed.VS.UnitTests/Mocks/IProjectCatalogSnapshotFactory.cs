@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                     IDictionary<string, string> rulesAndItemTypes,
                                                     MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mockSnapshot = new Mock<IProjectCatalogSnapshot>(behavior);
             var mockPropertyPageCatalog = new Mock<IPropertyPagesCatalog>(behavior);
 

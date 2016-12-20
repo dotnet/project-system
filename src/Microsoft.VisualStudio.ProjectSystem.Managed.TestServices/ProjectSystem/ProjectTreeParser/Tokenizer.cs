@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -151,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // If we already have access we can just use it to get an instance of the project
             if(Access == null)
             {
-                Access = await this.ProjectLockService.ReadLockAsync();
+                Access = await ProjectLockService.ReadLockAsync();
 
             }
 

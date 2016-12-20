@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 
@@ -48,8 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
             {
-                IEnumValue value;
-                if (_listedOutputTypeValues.TryGetValue(userSuppliedValue, out value))
+                if (_listedOutputTypeValues.TryGetValue(userSuppliedValue, out IEnumValue value))
                 {
                     return Task.FromResult(value);
                 }

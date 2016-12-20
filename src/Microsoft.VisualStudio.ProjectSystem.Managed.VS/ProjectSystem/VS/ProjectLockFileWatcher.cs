@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal void Load()
         {
-            this.EnsureInitialized();
+            EnsureInitialized();
         }
         
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected override void Initialize()
         {
             _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-            _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(this.ProjectTree_ChangedAsync)));
+            _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(ProjectTree_ChangedAsync)));
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             // If tree changed when we are disposing then ignore the change.
-            if (this.IsDisposing)
+            if (IsDisposing)
             {
                 return;
             }
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private async TPL.Task<String> GetProjectLockFilePathAsync(IProjectTree newTree)
+        private async TPL.Task<string> GetProjectLockFilePathAsync(IProjectTree newTree)
         {
             // First check to see if the project has a project.json. 
             IProjectTree projectJsonNode = FindProjectJsonNode(newTree);
@@ -108,8 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private IProjectTree FindProjectJsonNode(IProjectTree newTree)
         {
-            IProjectTree projectJsonNode;
-            if (newTree.TryFindImmediateChild("project.json", out projectJsonNode))
+            if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {
                 return projectJsonNode;
             }
@@ -159,17 +158,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // the kind of change since we are interested in all changes.
             _projectServices.ThreadingService.Fork(async () =>
             {
-                using (var access = await _projectLockService.WriteLockAsync())
+                try
                 {
-                    // notify all the loaded configured projects
-                    var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                    foreach (var configuredProject in currentProjects)
+                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                     {
-                        // Inside a write lock, we should get back to the same thread.
-                        var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-                        project.MarkDirty();
-                        configuredProject.NotifyProjectChange();
-                    }
+                        using (var access = await _projectLockService.WriteLockAsync())
+                        {
+                            // notify all the loaded configured projects
+                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                            foreach (var configuredProject in currentProjects)
+                            {
+                                // Inside a write lock, we should get back to the same thread.
+                                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                                project.MarkDirty();
+                                configuredProject.NotifyProjectChange();
+                            }
+                        }
+                    });
+                }
+                catch (OperationCanceledException)
+                {
+                    // Project is already unloaded
                 }
             }, unconfiguredProject: _projectServices.Project);
 

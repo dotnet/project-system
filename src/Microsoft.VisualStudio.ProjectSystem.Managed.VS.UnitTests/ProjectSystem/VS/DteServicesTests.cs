@@ -3,10 +3,8 @@
 using System;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

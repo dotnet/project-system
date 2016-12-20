@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {

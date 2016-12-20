@@ -27,13 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Theory]
-        [InlineData(Int32.MinValue)]
+        [InlineData(int.MinValue)]
         [InlineData(-10)]
         [InlineData(-1)]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(10)]
-        [InlineData(Int32.MaxValue)]
+        [InlineData(int.MaxValue)]
         public void Constructor_ValueAsPageOrder_SetsPageOrderProperty(int pageOrder)
         {
             var metadata = new ProjectDesignerPageMetadata(Guid.NewGuid(), pageOrder, hasConfigurationCondition: false);

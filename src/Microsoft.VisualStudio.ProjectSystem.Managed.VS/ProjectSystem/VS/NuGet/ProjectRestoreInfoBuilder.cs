@@ -48,10 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     nugetRestoreChanges.After.Properties[NuGetRestore.BaseIntermediateOutputPathProperty];
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
-
-                string targetFramework;
                 bool noTargetFramework = 
-                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework) &&
+                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(NuGetRestore.TargetFrameworkProperty, out string targetFramework) &&
                     !nugetRestoreChanges.After.Properties.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework);
 
                 if (noTargetFramework || string.IsNullOrEmpty(targetFramework))

@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SubProject.xaml" />
       <trans-unit id="Rule|SubProject|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SubProject|Description">
         <source>Projects that must be built as part of the containing project, but without an actual build dependency</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

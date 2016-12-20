@@ -5,328 +5,328 @@
       <group id="src/Microsoft.VisualStudio.AppDesigner/Resources/Microsoft.VisualStudio.AppDesigner.Designer.resx" />
       <trans-unit id="APPDES_ClickHereCreateResx">
         <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <target state="new">This project does not contain a default resources file.  Click here to create one.</target>
-        <note></note>
+        <target state="translated">Este projeto não contém um arquivo de recursos padrão.  Clique aqui para criar um.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateSettings">
         <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="new">This project does not contain a default settings file.  Click here to create one.</target>
-        <note></note>
+        <target state="translated">Este projeto não contém um arquivo de configurações padrão.  Clique aqui para criar um.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_DesignerLoader_NotDeferred">
         <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="new">The designer cannot be shown because the document for it was never loaded.</target>
-        <note></note>
+        <target state="translated">Não é possível mostrar o designer, pois o documento para ele não foi carregado.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <target state="new">The file '{0}' is already open in an editor.  Please close the file and try again.</target>
-        <note></note>
+        <target state="translated">O arquivo '{0}' já está aberto em um editor.  Feche o arquivo e tente novamente.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoadingPropPage">
         <source>An error occurred trying to load the page.</source>
-        <target state="new">An error occurred trying to load the page.</target>
-        <note></note>
+        <target state="translated">Erro ao tentar carregar a página.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoading_Msg">
         <source>An error occurred trying to load the project properties window.  Close the window and try again.
 {0}</source>
-        <target state="new">An error occurred trying to load the project properties window.  Close the window and try again.
+        <target state="translated">Erro ao tentar carregar a janela de propriedades do projeto.  Feche a janela e tente novamente.
 {0}</target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_FileNotFound_1Arg">
         <source>Could not find the file '{0}'.</source>
-        <target state="new">Could not find the file '{0}'.</target>
-        <note></note>
+        <target state="translated">Não foi possível encontrar o arquivo '{0}'.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_HostingPanelName">
         <source>Project Designer Page Container</source>
-        <target state="new">Project Designer Page Container</target>
-        <note></note>
+        <target state="translated">Contêiner da Página de Designer de Projeto</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_AccessibilityName">
         <source>All Project Designer Pages</source>
-        <target state="new">All Project Designer Pages</target>
-        <note></note>
+        <target state="translated">Todas as Páginas de Designer de Projeto</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_Tooltip">
         <source>More Settings</source>
-        <target state="new">More Settings</target>
-        <note></note>
+        <target state="translated">Mais Configurações</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_PageName">
         <source>{0} page:</source>
-        <target state="new">{0} page:</target>
+        <target state="translated">Página {0}:</target>
         <note>{0} = sub page name</note>
       </trans-unit>
       <trans-unit id="APPDES_ResourceTabTitle">
         <source>Resources</source>
-        <target state="new">Resources</target>
-        <note></note>
+        <target state="translated">Recursos</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SettingsTabTitle">
         <source>Settings</source>
-        <target state="new">Settings</target>
-        <note></note>
+        <target state="translated">Configurações</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SpecialFileNotSupported">
         <source>The requested file type is not supported in projects of this type.</source>
-        <target state="new">The requested file type is not supported in projects of this type.</target>
-        <note></note>
+        <target state="translated">Não há suporte para o tipo de arquivo solicitado em projetos deste tipo.</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabButtonDefaultAction">
         <source>Switch Project Designer Page</source>
-        <target state="new">Switch Project Designer Page</target>
-        <note></note>
+        <target state="translated">Mudar a Página de Designer de Projeto</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabListDescription">
         <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <target state="new">Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</target>
-        <note></note>
+        <target state="translated">Para alternar entre as páginas ativas do designer de projeto (use Ctrl+PageUp e Ctrl+PageDown)</target>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_Title">
         <source>Project Designer</source>
-        <target state="new">Project Designer</target>
-        <note></note>
+        <target state="translated">Designer de Projeto</target>
+        <note />
       </trans-unit>
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
-        <target state="new">All Files</target>
-        <note></note>
+        <target state="translated">Todos os Arquivos</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_BufferReadOnly">
         <source>Buffer is read only.</source>
-        <target state="new">Buffer is read only.</target>
-        <note></note>
+        <target state="translated">O buffer é somente leitura.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
-        <target state="new">Unable to create the designer.  {0}</target>
+        <target state="translated">Não é possível criar o designer. {0}</target>
         <note># {0}=inner exception</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFound">
         <source>The editor could not get the IVsTextStream for file {0}.</source>
-        <target state="new">The editor could not get the IVsTextStream for file {0}.</target>
+        <target state="translated">O editor não pôde obter o IVsTextStream para o arquivo {0}.</target>
         <note>#exception {0}=filename</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile">
         <source>The editor could not get the IVsTextStream.</source>
-        <target state="new">The editor could not get the IVsTextStream.</target>
+        <target state="translated">O editor não pôde obter o IVsTextStream.</target>
         <note>#exception (no file name)</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerReadOnlyCaption">
         <source>{0} [Read Only]</source>
-        <target state="new">{0} [Read Only]</target>
+        <target state="translated">{0} [Somente Leitura]</target>
         <note>Attach a readonly to the designer caption {0}=Designer caption</note>
       </trans-unit>
       <trans-unit id="DFX_EditorNoDesignerService">
         <source>No DesignerService for file '{0}'.</source>
-        <target state="new">No DesignerService for file '{0}'.</target>
+        <target state="translated">Nenhum DesignerService para o arquivo '{0}'.</target>
         <note>#{0}=file name</note>
       </trans-unit>
       <trans-unit id="DFX_Error_Default_Caption">
         <source>Microsoft Visual Studio</source>
-        <target state="new">Microsoft Visual Studio</target>
+        <target state="translated">Microsoft Visual Studio</target>
         <note>Error reporting</note>
       </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
-        <target state="new">File is already opened in an incompatible editor.</target>
-        <note></note>
+        <target state="translated">O arquivo já está aberto em um editor incompatível.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_InvalidPhysicalViewName">
         <source>Invalid physical view name.</source>
-        <target state="new">Invalid physical view name.</target>
-        <note></note>
+        <target state="translated">Nome de exibição físico inválido.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_NoLocalRegistry">
         <source>No LocalRegistry service.</source>
-        <target state="new">No LocalRegistry service.</target>
+        <target state="translated">Nenhum serviço LocalRegistry.</target>
         <note>#exception</note>
       </trans-unit>
       <trans-unit id="DFX_NotSupported">
         <source>Unsupported format.</source>
-        <target state="new">Unsupported format.</target>
-        <note></note>
+        <target state="translated">Formato sem suporte.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
-        <target state="new">One or more files were reloaded during the checkout. Please retry your operation.</target>
-        <note></note>
+        <target state="translated">Um ou mais arquivos foram recarregados durante o check-out. Tente realizar sua operação novamente.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_ReplaceTextStreamFailed">
         <source>Replacing text stream failed:{0}</source>
-        <target state="new">Replacing text stream failed:{0}</target>
+        <target state="translated">Falha ao substituir o fluxo de texto: {0}</target>
         <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
-        <target state="new">Unable to create text buffer.</target>
+        <target state="translated">Não é possível criar o buffer de texto.</target>
         <note># com exception</note>
       </trans-unit>
       <trans-unit id="DFX_UnableToCheckout">
         <source>Unable to check out the current file.  The file may be read-only or locked, or you may need to check the file out manually.</source>
-        <target state="new">Unable to check out the current file.  The file may be read-only or locked, or you may need to check the file out manually.</target>
+        <target state="translated">Não é possível fazer o check-out do arquivo atual.  O arquivo pode ser somente leitura ou estar bloqueado ou talvez você precise fazer check-out do arquivo manualmente.</target>
         <note># General checkout exception message</note>
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
         <source>Unknown Error.</source>
-        <target state="new">Unknown Error.</target>
-        <note></note>
+        <target state="translated">Erro Desconhecido.</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_InvalidArgument_1Arg">
         <source>Invalid argument '{0}'</source>
-        <target state="new">Invalid argument '{0}'</target>
+        <target state="translated">Argumento inválido '{0}'</target>
         <note>{0} = name of invalid argument</note>
       </trans-unit>
       <trans-unit id="General_MissingService">
         <source>Unable to find service '{0}'.  Ensure that the application is installed correctly.</source>
-        <target state="new">Unable to find service '{0}'.  Ensure that the application is installed correctly.</target>
+        <target state="translated">Não é possível localizar o serviço '{0}'.  Verifique se o aplicativo está instalado corretamente.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="new">Requires:</target>
-        <note></note>
+        <target state="translated">Requer:</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
-        <target state="new">Active ({0})</target>
-        <note></note>
+        <target state="translated">Ativo ({0})</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllConfigurations">
         <source>All Configurations</source>
-        <target state="new">All Configurations</target>
-        <note></note>
+        <target state="translated">Todas as Configurações</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllPlatforms">
         <source>All Platforms</source>
-        <target state="new">All Platforms</target>
-        <note></note>
+        <target state="translated">Todas as Plataformas</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
         <source>Application</source>
-        <target state="new">Application</target>
-        <note></note>
+        <target state="translated">Aplicativo</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <target state="new">(None)</target>
-        <note></note>
+        <target state="translated">(Nenhum)</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <target state="new">Could not find the configuration '{0}' for platform '{1}'.</target>
-        <note></note>
+        <target state="translated">Não foi possível encontrar a configuração '{0}' para a plataforma '{1}'.</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_AuthenMode_ApplicationDefined">
         <source>Application-defined</source>
-        <target state="new">Application-defined</target>
+        <target state="translated">Definido pelo aplicativo</target>
         <note>Authentication modes</note>
       </trans-unit>
       <trans-unit id="PPG_MyApplication_AuthenMode_Windows">
         <source>Windows</source>
-        <target state="new">Windows</target>
+        <target state="translated">Windows</target>
         <note>Authentication modes</note>
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
         <source>When last form closes</source>
-        <target state="new">When last form closes</target>
-        <note></note>
+        <target state="translated">Quando o último formulário fechar</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
         <source>When startup form closes</source>
-        <target state="new">When startup form closes</target>
-        <note></note>
+        <target state="translated">Quando o formulário de inicialização fechar</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
-        <target state="new">(None)</target>
-        <note></note>
+        <target state="translated">(Nenhum)</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
         <source>(None)</source>
-        <target state="new">(None)</target>
-        <note></note>
+        <target state="translated">(Nenhum)</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
-        <target state="new">N/A</target>
+        <target state="translated">N/A</target>
         <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
       </trans-unit>
       <trans-unit id="PPG_OutputPathNotSecure">
         <source>The output path is not trusted.
 The application may throw security exceptions when it attempts to perform actions which require full trust.
 Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <target state="new">The output path is not trusted.
-The application may throw security exceptions when it attempts to perform actions which require full trust.
-Click OK to ignore and continue. Click CANCEL to choose a different output path.</target>
-        <note></note>
+        <target state="translated">O caminho de saída não é confiável.
+O aplicativo pode lançar exceções de segurança quando ele tenta executar ações que exigem confiança total.
+Clique em OK para ignorar e continuar. Clique em CANCELAR para escolher um caminho de saída diferente.</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="new">Post-build Event Command Line</target>
-        <note></note>
+        <target state="translated">Linha de Comando de Eventos Pós-build</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="new">Pre-build Event Command Line</target>
-        <note></note>
+        <target state="translated">Linha de Comando de Eventos Pré-build</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <target state="new">The project was reloaded, and some changes on this page may have been lost.</target>
-        <note></note>
+        <target state="translated">O projeto foi recarregado e algumas alterações nesta página podem ter sido perdidas.</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
         <source>Property Page</source>
-        <target state="new">Property Page</target>
-        <note></note>
+        <target state="translated">Página de Propriedades</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectFileTitle">
         <source>Select File</source>
-        <target state="new">Select File</target>
-        <note></note>
+        <target state="translated">Selecionar Arquivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <target state="new">Select Output Path</target>
-        <note></note>
+        <target state="translated">Selecionar Caminho de Saída</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <target state="new">Select Reference Path</target>
-        <note></note>
+        <target state="translated">Selecionar Caminho de Referência</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectWorkingDirectoryTitle">
         <source>Select Working Directory</source>
-        <target state="new">Select Working Directory</target>
-        <note></note>
+        <target state="translated">Selecionar Diretório de Trabalho</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
         <source>(None)</source>
-        <target state="new">(None)</target>
-        <note></note>
+        <target state="translated">(Nenhum)</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
-        <target state="new">Change property: {0}</target>
-        <note></note>
+        <target state="translated">Alterar propriedade: {0}</target>
+        <note />
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
-        <target state="new">Failed to generate file: {0}</target>
-        <note></note>
+        <target state="translated">Falha ao gerar o arquivo: {0}</target>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
-        <target state="new">Unexpected error.</target>
+        <target state="translated">Erro inesperado.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_Unexpected_NoResource_1Arg">
         <source>Unable to load internal localized resource '{0}'.</source>
-        <target state="new">Unable to load internal localized resource '{0}'.</target>
+        <target state="translated">Não é possível carregar o recurso localizado internamente '{0}'.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
     </body>

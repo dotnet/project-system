@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
 
                 If Common.Switches.PDDesignerActivations.TraceVerbose Then
-                    s.AppendLine(New System.Diagnostics.StackTrace().ToString())
+                    s.AppendLine(New StackTrace().ToString())
                     'If e.NewDesigner Is Me.GetService(GetType(IDesignerHost)) Then
                     '    Dim rootComponent As ApplicationDesignerRootComponent = TryCast(e.NewDesigner.RootComponent, ApplicationDesignerRootComponent)
                     '    e.NewDesigner.Activate()

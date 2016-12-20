@@ -5,43 +5,43 @@
       <group id="src/Microsoft.VisualStudio.Editors/package/EditorToolsOptionsPanel.resx" />
       <trans-unit id="_indentTypeLabel.Text">
         <source>Indent type:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeNoneRadioButton.Text">
         <source>&amp;None</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeBlockRadioButton.Text">
         <source>&amp;Block</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeSmartRadioButton.Text">
         <source>&amp;Smart</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_tabSizeLabel.Text">
         <source>&amp;Tab size:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_indentSizeLabel.Text">
         <source>&amp;Indent size:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_wordWrapCheckBox.Text">
         <source>&amp;Word wrap</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="_lineNumbersCheckBox.Text">
         <source>Line n&amp;umbers</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IndentingGroupBox.Text">
         <source>Indenting</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="InteractionGroupBox.Text">
         <source>Interaction</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

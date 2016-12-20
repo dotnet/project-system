@@ -256,12 +256,18 @@ In order to debug this project, add an executable project to this solution which
     <value>Failed to migrate XProj project {0}. Could not find project.json at {1}.</value>
   </data>
   <data name="EditProjectFileCommand" xml:space="preserve">
-    <value>Edit {0}.{1}</value>
+    <value>Edit {0}</value>
+  </data>
+  <data name="PackCommand" xml:space="preserve">
+    <value>&amp;Pack</value>
   </data>
   <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
     <value>Unable to run your project. The "RunCommand" property is not defined.</value>
   </data>
   <data name="MultiTFEditNotSupported" xml:space="preserve">
     <value>Editing of multiple target framework is not supported.</value>
+  </data>
+  <data name="PackSelectedProjectCommand" xml:space="preserve">
+    <value>&amp;Pack {0}</value>
   </data>
 </root>

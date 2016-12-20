@@ -14,8 +14,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
         public const string CSharpOrVisualBasicLanguageService = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ") & " + ProjectCapabilities.LanguageService;
+        public const string CSharpOrVisualBasicOpenProjectFile = "(" + CSharp + " | " + VisualBasic + ") & " + OpenProjectFile;
         public const string AppDesigner = nameof(AppDesigner);
         public const string DependenciesTree = nameof(DependenciesTree);
         public const string LaunchProfiles = "LaunchProfiles";
+        public const string OpenProjectFile = "OpenProjectFile";
+        public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;
+        public const string ReferenceManagerAssemblies = nameof(ReferenceManagerAssemblies);
+        public const string ReferenceManagerBrowse = nameof(ReferenceManagerBrowse);
+        public const string ReferenceManagerCOM = nameof(ReferenceManagerCOM);
+        public const string ReferenceManagerProjects = nameof(ReferenceManagerProjects);
+        public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
+        public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
+        public const string GenerateNuGetPackage = "GenerateNuGetPackage";
     }
 }

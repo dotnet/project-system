@@ -5,27 +5,27 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ComReference.xaml" />
       <trans-unit id="Rule|ComReference|DisplayName">
         <source>COM Reference</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
         <source>COM reference properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
         <source>Locale</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|Description">
         <source>The LCID of the COM server.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

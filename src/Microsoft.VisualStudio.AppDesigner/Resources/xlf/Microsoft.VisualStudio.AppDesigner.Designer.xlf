@@ -5,44 +5,44 @@
       <group id="src/Microsoft.VisualStudio.AppDesigner/Resources/Microsoft.VisualStudio.AppDesigner.Designer.resx" />
       <trans-unit id="APPDES_ClickHereCreateResx">
         <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateSettings">
         <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_DesignerLoader_NotDeferred">
         <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoadingPropPage">
         <source>An error occurred trying to load the page.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_ErrorLoading_Msg">
         <source>An error occurred trying to load the project properties window.  Close the window and try again.
 {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_FileNotFound_1Arg">
         <source>Could not find the file '{0}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_HostingPanelName">
         <source>Project Designer Page Container</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_AccessibilityName">
         <source>All Project Designer Pages</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_Tooltip">
         <source>More Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_PageName">
         <source>{0} page:</source>
@@ -50,35 +50,35 @@
       </trans-unit>
       <trans-unit id="APPDES_ResourceTabTitle">
         <source>Resources</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SettingsTabTitle">
         <source>Settings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_SpecialFileNotSupported">
         <source>The requested file type is not supported in projects of this type.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabButtonDefaultAction">
         <source>Switch Project Designer Page</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_TabListDescription">
         <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="APPDES_Title">
         <source>Project Designer</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_BufferReadOnly">
         <source>Buffer is read only.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
@@ -106,11 +106,11 @@
       </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_InvalidPhysicalViewName">
         <source>Invalid physical view name.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_NoLocalRegistry">
         <source>No LocalRegistry service.</source>
@@ -118,11 +118,11 @@
       </trans-unit>
       <trans-unit id="DFX_NotSupported">
         <source>Unsupported format.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DFX_ReplaceTextStreamFailed">
         <source>Replacing text stream failed:{0}</source>
@@ -138,7 +138,7 @@
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
         <source>Unknown Error.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_InvalidArgument_1Arg">
         <source>Invalid argument '{0}'</source>
@@ -150,31 +150,31 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllConfigurations">
         <source>All Configurations</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_AllPlatforms">
         <source>All Platforms</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
         <source>Application</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_AuthenMode_ApplicationDefined">
         <source>Application-defined</source>
@@ -186,19 +186,19 @@
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
         <source>When last form closes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
         <source>When startup form closes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
@@ -208,51 +208,51 @@
         <source>The output path is not trusted.
 The application may throw security exceptions when it attempts to perform actions which require full trust.
 Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
         <source>Property Page</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectFileTitle">
         <source>Select File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_SelectWorkingDirectoryTitle">
         <source>Select Working Directory</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
         <source>(None)</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>

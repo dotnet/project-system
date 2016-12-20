@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -34,15 +33,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             public string GetFileFullPath(ILanguageServiceHost languageServiceHost)
             {
-                var projectFile = this.ProjectFile;
+                var projectFile = ProjectFile;
                 if (string.IsNullOrEmpty(projectFile))
                 {
                     projectFile = languageServiceHost.ActiveProjectContext?.ProjectFilePath;
                 }
 
-                if (!string.IsNullOrEmpty(projectFile) && !string.IsNullOrEmpty(this.File))
+                if (!string.IsNullOrEmpty(projectFile) && !string.IsNullOrEmpty(File))
                 {
-                    return TryMakeRooted(projectFile, this.File);
+                    return TryMakeRooted(projectFile, File);
                 }
 
                 return string.Empty;
@@ -71,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 {
                     // The VS error list uses 0-based line numbers so a -1 adjustment needs to be made.
                     // It's weird.  We report "12" and they'll display "13".
-                    return this.LineNumber > 0 ? this.LineNumber - 1 : 0;
+                    return LineNumber > 0 ? LineNumber - 1 : 0;
                 }
             }
 
@@ -85,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 {
                     // The VS error list uses 0-based line numbers so a -1 adjustment needs to be made.
                     // It's weird.  We report "12" and they'll display "13".
-                    return (this.EndLineNumber > LineNumber && this.EndLineNumber > 0) ? this.EndLineNumber - 1 : LineNumberForErrorList;
+                    return (EndLineNumber > LineNumber && EndLineNumber > 0) ? EndLineNumber - 1 : LineNumberForErrorList;
                 }
             }
 
@@ -108,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             /// </summary>
             public int ColumnNumberForErrorList
             {
-                get { return this.ColumnNumber > 0 ? this.ColumnNumber - 1 : 0; }
+                get { return ColumnNumber > 0 ? ColumnNumber - 1 : 0; }
             }
 
             /// <summary>
@@ -118,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             /// </summary>
             public int EndColumnNumberForErrorList
             {
-                get { return (this.EndColumnNumber > ColumnNumber && this.EndColumnNumber > 0) ? this.EndColumnNumber - 1 : ColumnNumberForErrorList; }
+                get { return (EndColumnNumber > ColumnNumber && EndColumnNumber > 0) ? EndColumnNumber - 1 : ColumnNumberForErrorList; }
             }
 
             public string Code

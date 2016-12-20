@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ComReference.xaml" />
       <trans-unit id="Rule|ComReference|DisplayName">
         <source>COM Reference</source>
-        <target state="new">COM Reference</target>
-        <note></note>
+        <target state="translated">Odwołanie COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
         <source>COM reference properties</source>
-        <target state="new">COM reference properties</target>
-        <note></note>
+        <target state="translated">Właściwości odwołania COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <target state="new">CLSID</target>
-        <note></note>
+        <target state="translated">CLSID</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <target state="new">The GUID of the COM server.</target>
-        <note></note>
+        <target state="translated">Identyfikator GUID serwera COM.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
         <source>Locale</source>
-        <target state="new">Locale</target>
-        <note></note>
+        <target state="translated">Ustawienia regionalne</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|Description">
         <source>The LCID of the COM server.</source>
-        <target state="new">The LCID of the COM server.</target>
-        <note></note>
+        <target state="translated">Identyfikator LCID serwera COM.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

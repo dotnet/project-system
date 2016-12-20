@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/VisualBasic.ProjectItemsSchema.xaml" />
       <trans-unit id="ContentType|VisualBasicFile|DisplayName">
         <source>VB file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|Compile|DisplayName">
         <source>VB compiler</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

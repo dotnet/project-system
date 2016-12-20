@@ -5,27 +5,27 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx" />
       <trans-unit id="JsonErrorReadingLaunchSettings">
         <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorReadingLaunchSettings">
         <source>The following error occurred when reading the launch settings file '{0}'. {1} </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorWritingDebugSettings">
         <source>The following error occurred when writing to the launch settings file '{0}'. {1} </source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ProfileMissingName">
         <source>At least one launch profile is missing the required name attribute. These profiles will be ignored</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

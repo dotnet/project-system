@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneralFile.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneralFile.xaml" />
+      <trans-unit id="Rule|ConfigurationGeneralFile|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralFile|Description">
+        <source>Project item general properties</source>
+        <target state="translated">Obecné vlastnosti položky projektu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">Upřesnit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">Různé</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">Akce sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">Jak se soubor vztahuje k procesům sestavení a nasazení.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">Kopírovat do výstupního adresáře</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">Určuje zdrojový soubor, který se zkopíruje do výstupního adresáře.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">Nekopírovat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">Kopírovat vždycky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">Kopírovat, pokud je novější</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>The item specified in the Include attribute.</source>
+        <target state="translated">Položka zadaná v atributu Include</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">Úplná cesta</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">Umístění souboru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">Název souboru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">Název souboru nebo složky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DependentUpon|Description">
+        <source>The leaf name of the file that this item appears as a child to in the project tree.</source>
+        <target state="translated">Název listu souboru, pro který se tato položka zobrazuje jako podřízená položka ve stromu projektu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LastGenOutput|Description">
+        <source>The filename of the last file generated as a result of the SFG.</source>
+        <target state="translated">Název posledního souboru vygenerovaného jako výsledek nástroje SFG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DesignTime|Description">
+        <source>A value indicating whether this file has a designer.</source>
+        <target state="translated">Hodnota určující, jestli má tento soubor návrháře</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGen|Description">
+        <source>A value indicating whether this is a generated file.</source>
+        <target state="translated">Hodnota určující, jestli jde o vygenerovaný soubor</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

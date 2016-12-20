@@ -5,14 +5,14 @@
       <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AddImports.resx" />
       <trans-unit id="AddImportsMainTextFormatString">
         <source>Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</source>
-        <target state="new">Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</target>
+        <target state="translated">Durch Importieren von "{0}" ändert sich die Bedeutung anderer Bezeichner in dieser Datei. Wenn Sie "{1}" korrigieren und dabei die Bedeutung anderer Bezeichner beibehalten möchten, wählen Sie eine der folgenden Optionen aus:</target>
         <note>
       Defines the replacement string for use in the main label of the Add Imports collision dialog.
     </note>
       </trans-unit>
       <trans-unit id="ImportsAnywaysFormatString">
         <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
-        <target state="new">&amp;Import '{0}' and qualify the affected identifiers.</target>
+        <target state="translated">"{0}" &amp;importieren und die betreffenden Bezeichner entsprechend ändern</target>
         <note>
       Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
       This text will be formated as richtext.
@@ -26,7 +26,7 @@
       </trans-unit>
       <trans-unit id="QualifyCurrentLineFormatString">
         <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
-        <target state="new">&amp;Do not import '{0}', but change '{1}' to '{2}'.</target>
+        <target state="translated">"{0}" &amp;nicht importieren, aber "{1}" in "{2}" ändern</target>
         <note>
       Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
       This text will be formated as richtext. 
@@ -41,8 +41,8 @@
       </trans-unit>
       <trans-unit id="AddImportsExtensionMethodsMainFormatString">
         <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
-        <target state="new">Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </target>
-        <note></note>
+        <target state="translated">Durch Importieren von "{0}" ändert sich die Bedeutung von anderem Code in Ihrer Datei. (Dies betrifft auch Aufrufe von Erweiterungsmethoden.) Klicken Sie auf "OK", um "{1}" zu korrigieren und in "{2}" zu ändern. </target>
+        <note />
       </trans-unit>
     </body>
   </file>

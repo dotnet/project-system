@@ -5,63 +5,83 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectReference.xaml" />
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="new">Project Reference</target>
-        <note></note>
+        <target state="translated">Ссылка проекта</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Project reference properties</source>
-        <target state="new">Project reference properties</target>
-        <note></note>
+        <target state="translated">Свойства ссылки проекта</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="new">Reference Output Assembly</target>
-        <note></note>
+        <target state="translated">Ссылка на выходную сборку</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="BoolProperty|Private|DisplayName">
-        <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="BoolProperty|Private|Description">
-        <source>Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference.</source>
-        <target state="new">Indicates whether the primary output of the reference target should be copied into this project's output directory, when that metadata is set on an unresolved reference.</target>
-        <note></note>
+        <target state="translated">Значение, указывающее, должен ли компилятор включить ссылку на основную выходную сборку целевого проекта.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="new">Copy Local Satellite Assemblies</target>
-        <note></note>
+        <target state="translated">Копировать локальные вспомогательные сборки</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
-        <note></note>
+        <target state="translated">Указывает, должны ли вспомогательные сборки ссылочной целевой сборки копироваться в выходной каталог проекта.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Project|Description">
         <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="new">the Guid the solution tracks an individual project reference target with</target>
-        <note></note>
+        <target state="translated">идентификатор GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
         <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="new">The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</target>
-        <note></note>
+        <target state="translated">Старый (из бета-версии VS2010) способ хранения идентификатора GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">Копировать локально</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <target state="translated">IncludeAssets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="translated">Ресурсы, включаемые из этой ссылки</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <target state="translated">ExcludeAssets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="translated">Ресурсы, исключаемые из этой ссылки</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <target state="translated">PrivateAssets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="translated">Ресурсы, являющиеся закрытыми в этой ссылке</target>
+        <note />
       </trans-unit>
     </body>
   </file>

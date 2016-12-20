@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell2 As IVsUIShell2, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             If VsUIShell2 IsNot Nothing Then
-                Dim abgrValue As System.UInt32
+                Dim abgrValue As UInteger
                 Dim Hr As Integer = VsUIShell2.GetVSSysColorEx(VsSysColorIndex, abgrValue)
                 If VSErrorHandler.Succeeded(Hr) Then
                     Return COLORREFToColor(abgrValue)
@@ -56,11 +56,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared Function GetDesignerThemeColor(uiShellService As IVsUIShell5, themeCategory As Guid, themeColorName As String, colorType As __THEMEDCOLORTYPE, defaultColor As Color) As Color
 
             If uiShellService IsNot Nothing Then
-                Dim rgbaValue As UInt32
+                Dim rgbaValue As UInteger
 
-                Dim hr As Int32 = VSErrorHandler.CallWithCOMConvention(
+                Dim hr As Integer = VSErrorHandler.CallWithCOMConvention(
                     Sub()
-                        rgbaValue = uiShellService.GetThemedColor(themeCategory, themeColorName, CType(colorType, System.UInt32))
+                        rgbaValue = uiShellService.GetThemedColor(themeCategory, themeColorName, CType(colorType, UInteger))
                     End Sub)
 
                 If VSErrorHandler.Succeeded(hr) Then
@@ -68,11 +68,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & VB.Hex(defaultColor.ToArgb))
             Return defaultColor
         End Function
 
-        Private Shared Function RGBAToColor(rgbaValue As UInt32) As Color
+        Private Shared Function RGBAToColor(rgbaValue As UInteger) As Color
             Return Color.FromArgb(CInt((rgbaValue And &HFF000000UI) >> 24), CInt(rgbaValue And &HFFUI), CInt((rgbaValue And &HFF00UI) >> 8), CInt((rgbaValue And &HFF0000UI) >> 16))
         End Function
 
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="abgrValue">The UInteger COLORREF value</param>
         ''' <returns>The System.Drawing.Color equivalent.</returns>
         ''' <remarks></remarks>
-        Private Shared Function COLORREFToColor(abgrValue As System.UInt32) As Color
+        Private Shared Function COLORREFToColor(abgrValue As UInteger) As Color
             Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
         End Function
 
@@ -312,7 +312,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hierarchy"></param>
         ''' <returns>true if it is a venus project</returns>
         ''' <remarks></remarks>
-        Public Shared Function IsVenusProject(hierarchy As IVsHierarchy) As [Boolean]
+        Public Shared Function IsVenusProject(hierarchy As IVsHierarchy) As Boolean
 
             If hierarchy Is Nothing Then
                 Return False
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function IsSilverLightProject(hierarchy As IVsHierarchy) As [Boolean]
+        Public Shared Function IsSilverLightProject(hierarchy As IVsHierarchy) As Boolean
             Const SilverLightProjectGuid As String = "{A1591282-1198-4647-A2B1-27E5FF5F6F3B}"
 
             If hierarchy Is Nothing Then
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function IsWebProject(hierarchy As IVsHierarchy) As [Boolean]
+        Public Shared Function IsWebProject(hierarchy As IVsHierarchy) As Boolean
             Const WebAppProjectGuid As String = "{349c5851-65df-11da-9384-00065b846f21}"
 
             If hierarchy Is Nothing Then

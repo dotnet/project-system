@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
-using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
             PROPPAGEINFO[] pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
-            page.Object.Help(String.Empty);
+            page.Object.Help(string.Empty);
 
             PROPPAGEINFO info = pageInfoArray[0];
             Assert.Equal("MyPage", info.pszTitle);

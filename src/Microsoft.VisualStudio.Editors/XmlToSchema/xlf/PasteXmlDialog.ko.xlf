@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/PasteXmlDialog.resx" />
       <trans-unit id="okButton.Text">
         <source>&amp;OK</source>
-        <target state="new">&amp;OK</target>
-        <note></note>
+        <target state="translated">확인(&amp;O)</target>
+        <note />
       </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">취소</target>
+        <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>&amp;Type or paste an XML document</source>
-        <target state="new">&amp;Type or paste an XML document</target>
-        <note></note>
+        <target state="translated">XML 문서 입력 또는 붙여넣기(&amp;T)</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add XML</source>
-        <target state="new">Add XML</target>
-        <note></note>
+        <target state="translated">XML 추가</target>
+        <note />
       </trans-unit>
     </body>
   </file>

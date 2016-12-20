@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SubProject.xaml" />
       <trans-unit id="Rule|SubProject|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
-        <note></note>
+        <target state="translated">Général</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|SubProject|Description">
         <source>Projects that must be built as part of the containing project, but without an actual build dependency</source>
-        <target state="new">Projects that must be built as part of the containing project, but without an actual build dependency</target>
-        <note></note>
+        <target state="translated">Projets qui doivent être générés comme partie du projet contenant, mais sans une dépendance réelle de la génération</target>
+        <note />
       </trans-unit>
     </body>
   </file>

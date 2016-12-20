@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using System.Windows;
 using System.Windows.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -20,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class DebugPageViewModel : PropertyPageViewModel
     {
-        private readonly string _executableFilter = String.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
+        private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
         private bool _useTaskFactory = true;
         
@@ -120,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         {
                             if (ExecutablePath == null)
                             {
-                                ExecutablePath = String.Empty;
+                                ExecutablePath = string.Empty;
                             }
                         }
                         else
@@ -465,7 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 SelectedDebugProfile.MutableEnvironmentVariables = null;
             }
             var globalSettings = provider.CurrentSnapshot.GlobalSettings;
-            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, globalSettings, SelectedDebugProfile != null ? SelectedDebugProfile.Name : null)).ConfigureAwait(false);
+            await provider.UpdateAndSaveSettingsAsync(new LaunchSettings(DebugProfiles, globalSettings, SelectedDebugProfile?.Name)).ConfigureAwait(false);
         }
 
         private void SetEnvironmentGrid(LaunchProfile oldProfile)
@@ -532,7 +531,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (profilesChanged)
                 {
                     // Remember the current selection
-                    string curProfileName = SelectedDebugProfile == null ? null : SelectedDebugProfile.Name;
+                    string curProfileName = SelectedDebugProfile?.Name;
 
                     // Load debug profiles
                     var debugProfiles = new ObservableCollection<LaunchProfile>();
@@ -670,7 +669,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
                         {
                             var folder = WorkingDirectory;
-                            if (!String.IsNullOrEmpty(folder) && Directory.Exists(folder))
+                            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
                             {
                                 dialog.SelectedPath = folder;
                             }
@@ -799,14 +798,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             for (int i = 1; i < int.MaxValue; i++)
             {
-                string profileName = String.Format("{0}{1}", PropertyPageResources.NewProfileSeedName, i.ToString());
+                string profileName = string.Format("{0}{1}", PropertyPageResources.NewProfileSeedName, i.ToString());
                 if (IsNewProfileNameValid(profileName))
                 {
                     return profileName;
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
         
         private void SetLaunchType()
@@ -873,13 +872,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 
         public class LaunchType
         {
-            public String CommandName { get; set; }
+            public string CommandName { get; set; }
             public string Name { get; set; }
 
             public override bool Equals(object obj)
             {
-                LaunchType oth = obj as LaunchType;
-                if (oth != null)
+                if (obj is LaunchType oth)
                 {
                     return CommandName.Equals(oth.CommandName);
                 }

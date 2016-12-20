@@ -5,51 +5,55 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml" />
       <trans-unit id="ContentType|Text|DisplayName">
         <source>Text file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
         <source>Xml file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|HTML|DisplayName">
         <source>Html file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|CSS|DisplayName">
         <source>Cascading style sheet</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|Json|DisplayName">
         <source>Json file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|Font|DisplayName">
         <source>Font file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|Media|DisplayName">
         <source>Media file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|Image|DisplayName">
         <source>Image file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ContentType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <note></note>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>AdditionalFiles</source>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|Content|DisplayName">
         <source>Content</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
-        <source>Embedded resource </source>
-        <note></note>
+        <source>Embedded resource</source>
+        <note />
       </trans-unit>
     </body>
   </file>

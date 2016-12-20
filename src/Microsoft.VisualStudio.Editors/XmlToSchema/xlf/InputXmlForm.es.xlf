@@ -5,78 +5,78 @@
       <group id="src/Microsoft.VisualStudio.Editors/XmlToSchema/InputXmlForm.resx" />
       <trans-unit id="_cancelButton.Text">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
-        <note></note>
+        <target state="translated">Cancelar</target>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader1.Text">
         <source>Source Type</source>
-        <target state="new">Source Type</target>
-        <note></note>
+        <target state="translated">Tipo de origen</target>
+        <note />
       </trans-unit>
       <trans-unit id="ColumnHeader2.Text">
         <source>XML Document Location</source>
-        <target state="new">XML Document Location</target>
-        <note></note>
+        <target state="translated">Ubicación de la documentación XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="_listView.AccessibleName">
         <source>XML Documents</source>
-        <target state="new">XML Documents</target>
-        <note></note>
+        <target state="translated">Documentos XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.AccessibleName">
         <source>Type or paste XML</source>
-        <target state="new">Type or paste XML</target>
-        <note></note>
+        <target state="translated">Escribir o pegar XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addAsTextButton.Text">
         <source>Type or paste &amp;XML</source>
-        <target state="new">Type or paste &amp;XML</target>
-        <note></note>
+        <target state="translated">Escribir o pegar &amp;XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>Specify XML documents to infer XML Schema set</source>
-        <target state="new">Specify XML documents to infer XML Schema set</target>
-        <note></note>
+        <target state="translated">Especifique los documentos XML para inferir el conjunto de esquemas XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.AccessibleName">
         <source>Add from File</source>
-        <target state="new">Add from File</target>
-        <note></note>
+        <target state="translated">Agregar desde archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.Text">
         <source>Add from &amp;File</source>
-        <target state="new">Add from &amp;File</target>
-        <note></note>
+        <target state="translated">Agregar desde &amp;archivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.AccessibleName">
         <source>Add from Web</source>
-        <target state="new">Add from Web</target>
-        <note></note>
+        <target state="translated">Agregar desde Web</target>
+        <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.Text">
         <source>Add from &amp;Web</source>
-        <target state="new">Add from &amp;Web</target>
-        <note></note>
+        <target state="translated">Agregar desde &amp;Web</target>
+        <note />
       </trans-unit>
       <trans-unit id="_okButton.Text">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note></note>
+        <target state="translated">Aceptar</target>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Filter">
         <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
-        <target state="new">XML files (*.xml)|*.xml|All files (*.*)|*.*</target>
-        <note></note>
+        <target state="translated">Archivos XML (*.xml)|*.xml|Todos los archivos (*.*)|*.*</target>
+        <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">
         <source>Add XML Files</source>
-        <target state="new">Add XML Files</target>
-        <note></note>
+        <target state="translated">Agregar archivos XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Infer XML Schema set from XML documents</source>
-        <target state="new">Infer XML Schema set from XML documents</target>
-        <note></note>
+        <target state="translated">Inferir conjunto de esquemas XML de documentos XML</target>
+        <note />
       </trans-unit>
     </body>
   </file>

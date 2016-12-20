@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneralFile.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneralFile.xaml" />
+      <trans-unit id="Rule|ConfigurationGeneralFile|DisplayName">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralFile|Description">
+        <source>Project item general properties</source>
+        <target state="translated">프로젝트 항목 일반 속성</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">고급</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">기타</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">빌드 작업</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">파일이 빌드 및 배포 프로세스와 연결되는 방법입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">출력 디렉터리에 복사</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">소스 파일을 출력 디렉터리로 복사할 것인지 여부를 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">복사 안 함</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">항상 복사</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">새 버전이면 복사</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>The item specified in the Include attribute.</source>
+        <target state="translated">Include 특성에 지정된 항목입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">전체 경로</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">파일의 위치입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">파일 이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">파일 또는 폴더의 이름입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DependentUpon|Description">
+        <source>The leaf name of the file that this item appears as a child to in the project tree.</source>
+        <target state="translated">프로젝트 트리에서 이 항목이 자식으로 나타나는 파일의 리프 이름입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LastGenOutput|Description">
+        <source>The filename of the last file generated as a result of the SFG.</source>
+        <target state="translated">SFG의 결과로 생성된 마지막 파일의 파일 이름입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DesignTime|Description">
+        <source>A value indicating whether this file has a designer.</source>
+        <target state="translated">이 파일에 디자이너가 있는지 여부를 나타내는 값입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGen|Description">
+        <source>A value indicating whether this is a generated file.</source>
+        <target state="translated">생성된 파일인지 여부를 나타내는 값입니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

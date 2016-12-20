@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
@@ -193,14 +193,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-            int upgradeRequired;
-            Guid newProjectFactory;
-            uint capabilityFlags;
-
             var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
 
             Assert.Equal(VSConstants.S_OK,
-                migrator.UpgradeProject_CheckOnly(XprojLocation, logger, out upgradeRequired, out newProjectFactory, out capabilityFlags));
+                migrator.UpgradeProject_CheckOnly(XprojLocation, logger, out int upgradeRequired, out Guid newProjectFactory, out uint capabilityFlags));
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
             Assert.Equal((uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP),
@@ -218,16 +214,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 fileSystem.Create(csproj);
             });
 
-            string outCsproj;
-            int upgradeRequired;
-            Guid newProjectFactory;
-
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
             var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem);
 
-            Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out outCsproj, logger, out upgradeRequired, out newProjectFactory));
+            Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out string outCsproj, logger, out int upgradeRequired, out Guid newProjectFactory));
             Assert.True(fileSystem.FileExists(csproj));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.csproj")));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, "project.json")));

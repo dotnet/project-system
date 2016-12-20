@@ -20,9 +20,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
             var priority = new VSDOCUMENTPRIORITY[1];
-            int isFound;
-            uint itemId;
-            HResult result = project.IsDocumentInProject(documentMoniker, out isFound, priority, out itemId);
+            HResult result = project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId);
             if (result.Failed)
                 throw result.Exception;
 
@@ -47,9 +45,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static IVsWindowFrame OpenItemWithSpecific(this IVsProject4 project, HierarchyId id, Guid editorType)
         {
             Requires.NotNull(project, nameof(project));
-
-            IVsWindowFrame frame;
-            HResult hr = project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out frame);
+            HResult hr = project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out IVsWindowFrame frame);
             if (hr.Failed)
                 throw hr.Exception;
 

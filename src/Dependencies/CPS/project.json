@@ -2,7 +2,7 @@
   "supports": {},
   "dependencies": {
     "Microsoft.VisualStudio.ProjectSystem.SDK": {
-      "version": "15.0.574-pre-g1dd1014f4f",
+      "version": "15.0.661-pre-g3d0c752f96",
       "suppressParent": "none"
     }
   },

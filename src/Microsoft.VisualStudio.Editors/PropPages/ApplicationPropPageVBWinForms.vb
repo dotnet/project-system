@@ -1402,7 +1402,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub AssemblyInfoButton_Click(sender As Object, e As System.EventArgs) Handles AssemblyInfoButton.Click
+        Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
@@ -1449,7 +1449,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
         End Sub
 
-        Private Sub ApplicationTypeComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles ApplicationTypeComboBox.SelectionChangeCommitted
+        Private Sub ApplicationTypeComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ApplicationTypeComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1518,7 +1518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub StartupObjectComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles StartupObjectComboBox.SelectionChangeCommitted
+        Private Sub StartupObjectComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles StartupObjectComboBox.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -1532,7 +1532,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewCodeButton_Click(sender As Object, e As System.EventArgs) Handles ViewCodeButton.Click
+        Private Sub ViewCodeButton_Click(sender As Object, e As EventArgs) Handles ViewCodeButton.Click
             Static IsInViewCodeButtonClick As Boolean
             If IsInViewCodeButtonClick Then
                 'Avoid recursive call (possible because of DoEvents work-around in CreateNewMyEventsFile
@@ -1565,7 +1565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub SplashScreenComboBox_DropDown(sender As Object, e As System.EventArgs) Handles SplashScreenComboBox.DropDown
+        Private Sub SplashScreenComboBox_DropDown(sender As Object, e As EventArgs) Handles SplashScreenComboBox.DropDown
             PopulateSplashScreenList(True)
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1578,7 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub StartupObjectComboBox_DropDown(sender As Object, e As System.EventArgs) Handles StartupObjectComboBox.DropDown
+        Private Sub StartupObjectComboBox_DropDown(sender As Object, e As EventArgs) Handles StartupObjectComboBox.DropDown
             PopulateStartupObject(StartUpObjectSupported(), True)
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -1610,21 +1610,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Application icon"
 
-        Private Sub IconCombobox_DropDown(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDown
+        Private Sub IconCombobox_DropDown(sender As Object, e As EventArgs) Handles IconCombobox.DropDown
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_DropDownClosed(sender As Object, e As System.EventArgs) Handles IconCombobox.DropDownClosed
+        Private Sub IconCombobox_DropDownClosed(sender As Object, e As EventArgs) Handles IconCombobox.DropDownClosed
             MyBase.HandleIconComboboxDropDown(sender)
         End Sub
 
-        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles IconCombobox.SelectionChangeCommitted
+        Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles IconCombobox.SelectionChangeCommitted
             MyBase.HandleIconComboboxSelectionChangeCommitted(sender)
         End Sub
 
 #End Region
 
-        Private Sub UseApplicationFrameworkCheckBox_CheckedChanged(sender As Object, e As System.EventArgs) Handles UseApplicationFrameworkCheckBox.CheckedChanged
+        Private Sub UseApplicationFrameworkCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles UseApplicationFrameworkCheckBox.CheckedChanged
             If m_fInsideInit Then
                 Return
             End If
@@ -1726,7 +1726,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ViewUACSettingsButton_Click(sender As Object, e As System.EventArgs) Handles ViewUACSettingsButton.Click
+        Private Sub ViewUACSettingsButton_Click(sender As Object, e As EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
         End Sub
 

@@ -3,9 +3,7 @@
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -494,15 +492,6 @@ Root (flags: {ProjectRoot})
 Root (flags: {ProjectRoot})
     My Project (flags: {Folder AppDesignerFolder BubbleUp})
         My Project (flags: {Folder VisibleOnlyInShowAllFiles})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    My Project (flags: {Folder})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
-", @"
-Root (flags: {ProjectRoot})
-    My Project (flags: {Folder AppDesignerFolder BubbleUp})
-        AssemblyInfo.cs (flags: {IncludeInProjectCandidate})
 ")]
         [InlineData(@"
 Root (flags: {ProjectRoot})

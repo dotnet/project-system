@@ -2,8 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using static System.Diagnostics.Debug;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -20,16 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AssemblyResource);
-            return "Resources.resx";
-        }
+        protected override string Name => "Resources.resx";
 
-        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AssemblyResource);
-            return "ResourceInternal.zip";
-        }
+        protected override string TemplateName => "ResourceInternal.zip";
     }
 }

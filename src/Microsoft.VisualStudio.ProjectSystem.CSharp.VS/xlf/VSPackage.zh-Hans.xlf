@@ -5,32 +5,47 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>C#</source>
-        <target state="new">C#</target>
-        <note></note>
+        <target state="translated">C#</target>
+        <note />
       </trans-unit>
       <trans-unit id="2">
         <source>C# Project Files (*.csproj);*.csproj</source>
-        <target state="new">C# Project Files (*.csproj);*.csproj</target>
-        <note></note>
+        <target state="translated">C# 项目文件(*.csproj);*.csproj</target>
+        <note />
       </trans-unit>
       <trans-unit id="3">
         <source>Console App (.NET Core)</source>
-        <target state="new">Console App (.NET Core)</target>
-        <note></note>
+        <target state="translated">控制台应用(.NET Core)</target>
+        <note />
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="new">A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</target>
-        <note></note>
+        <target state="translated">用于创建可在 Windows、Linux 和 MacOS 上的 .NET Core 上运行的命令行应用程序的项目。</target>
+        <note />
       </trans-unit>
       <trans-unit id="5">
         <source>Class Library (.NET Standard)</source>
-        <target state="new">Class Library (.NET Standard)</target>
-        <note></note>
+        <target state="translated">类库(.NET Standard)</target>
+        <note />
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="new">A project for creating a class library that targets .NET Standard.</target>
+        <target state="translated">用于创建目标为 .NET Standard 的类库的项目。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Loaded Project File Editor</source>
+        <target state="translated">已加载的项目文件编辑器</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="8">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="translated">.NET Core 2015 项目文件(*.xproj);*.xproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
+        <target state="new">Class Library (.NET Core)</target>
         <note></note>
       </trans-unit>
     </body>

@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AppDesigner.xaml" />
       <trans-unit id="Rule|AppDesigner|DisplayName">
         <source>AppDesigner</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|AppDesigner|Description">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

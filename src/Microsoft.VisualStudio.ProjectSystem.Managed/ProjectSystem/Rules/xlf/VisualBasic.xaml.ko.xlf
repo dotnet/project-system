@@ -5,98 +5,98 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/VisualBasic.xaml" />
       <trans-unit id="Rule|VisualBasic|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">파일 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|VisualBasic|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">파일 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">고급</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">기타</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <target state="new">Build Action</target>
-        <note></note>
+        <target state="translated">빌드 작업</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
         <source>How the file relates to the build and deployment processes.</source>
-        <target state="new">How the file relates to the build and deployment processes.</target>
-        <note></note>
+        <target state="translated">파일이 빌드 및 배포 프로세스와 연결되는 방법입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
         <source>Copy to Output Directory</source>
-        <target state="new">Copy to Output Directory</target>
-        <note></note>
+        <target state="translated">출력 디렉터리에 복사</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="new">Specifies the source file will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">소스 파일을 출력 디렉터리로 복사할 것인지 여부를 지정합니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
-        <target state="new">Do not copy</target>
-        <note></note>
+        <target state="translated">복사 안 함</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
         <source>Copy always</source>
-        <target state="new">Copy always</target>
-        <note></note>
+        <target state="translated">항상 복사</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
         <source>Copy if newer</source>
-        <target state="new">Copy if newer</target>
-        <note></note>
+        <target state="translated">새 버전이면 복사</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
-        <note></note>
+        <target state="translated">Include 특성에 지정된 항목입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">전체 경로</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">파일의 위치입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
         <source>File Name</source>
-        <target state="new">File Name</target>
-        <note></note>
+        <target state="translated">파일 이름</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileNameAndExtension|Description">
         <source>Name of the file or folder.</source>
-        <target state="new">Name of the file or folder.</target>
-        <note></note>
+        <target state="translated">파일 또는 폴더의 이름입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">
         <source>The filename of the last file generated as a result of the SFG.</source>
-        <target state="new">The filename of the last file generated as a result of the SFG.</target>
-        <note></note>
+        <target state="translated">SFG의 결과로 생성된 마지막 파일의 파일 이름입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DesignTime|Description">
         <source>A value indicating whether this file has a designer.</source>
-        <target state="new">A value indicating whether this file has a designer.</target>
-        <note></note>
+        <target state="translated">이 파일에 디자이너가 있는지 여부를 나타내는 값입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGen|Description">
         <source>A value indicating whether this is a generated file.</source>
-        <target state="new">A value indicating whether this is a generated file.</target>
-        <note></note>
+        <target state="translated">생성된 파일인지 여부를 나타내는 값입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

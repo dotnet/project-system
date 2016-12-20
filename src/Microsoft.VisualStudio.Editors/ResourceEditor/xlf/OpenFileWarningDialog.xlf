@@ -5,27 +5,27 @@
       <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx" />
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="messageLabel.Text">
         <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="buttonOK.Text">
         <source>OK</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="buttonCancel.Text">
         <source>Cancel</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="messageLabel2.Text">
         <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Open File</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

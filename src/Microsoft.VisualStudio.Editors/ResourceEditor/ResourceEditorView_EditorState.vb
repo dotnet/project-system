@@ -3,8 +3,6 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
-
-Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports System.Collections.Specialized
 Imports System.Drawing
 

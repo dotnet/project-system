@@ -2,8 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using static System.Diagnostics.Debug;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -20,16 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        protected override string GetFileNameOfSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AppSettings);
-            return "Settings.settings";
-        }
+        protected override string Name => "Settings.settings";
 
-        protected override string GetTemplateForSpecialFile(SpecialFiles fileId)
-        {
-            Assert(fileId == SpecialFiles.AppSettings);
-            return "SettingsInternal.zip";
-        }
+        protected override string TemplateName => "SettingsInternal.zip";
     }
 }

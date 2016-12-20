@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                     {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
                     {"RunWorkingDirectory",  @"bin\"},
                     { "TargetFrameworkIdentifier", @".NetCoreApp" }
-                }; 
+                };
             }
             var delegatePropertiesMock = IProjectPropertiesFactory
                 .MockWithPropertiesAndValues(properties);
@@ -82,12 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(false, exeIn, argsIn, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string finalArguments);
             Assert.True(finalExePath.Equals(exeIn));
             Assert.True(finalArguments.Equals(argsIn));
 
@@ -101,12 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
 
@@ -120,11 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
 
@@ -135,12 +133,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -247,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
         {
             var debugger = GetDebugTargetsProvider();
-            
+
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
@@ -266,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var debugger = GetDebugTargetsProvider();
             var profileName="run";
             try
-            {   
+            {
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
             }
@@ -285,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var debugger = GetDebugTargetsProvider();
             var profileName="run";
             try
-            {   
+            {
                 executable = @"c:\foo\bar.exe";
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
@@ -313,7 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             debugger.ValidateSettings(executable, workingDir, profileName);
 
             try
-            {   
+            {
                 workingDir = @"c:\foo";
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
@@ -325,6 +322,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(true);
             }
+        }
+
+        [Theory]
+        [InlineData("exec \"C:\\temp\\test.dll\"", "exec \"C:\\temp\\test.dll\"")]
+        [InlineData("exec ^<>\"C:\\temp&^\\test.dll\"&", "exec ^^^<^>\"C:\\temp&^\\test.dll\"^&")]
+        public void ConsoleDebugTargetsProvider_EscapeString_WorksCorrectly(string input, string expected)
+        {
+            Assert.Equal(expected, ConsoleDebugTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
         }
     }
 }

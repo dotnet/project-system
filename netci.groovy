@@ -43,24 +43,25 @@ build.cmd /${configuration.toLowerCase()}""")
     }
 }
 
-// Add VSI job.
-// For now, trigger VSI jobs only on explicit request.
-def newVsiJobName = Utilities.getFullJobName(project, "vsi", false /* isPr */)
+// Add VSI jobs.
+// Generate the builds for commit and PRJob
+[true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
+    def newVsiJobName = Utilities.getFullJobName(project, "vsi", isPR)
 
-def newVsiJob = job(newVsiJobName) {
-    description('')
+    def newVsiJob = job(newVsiJobName) {
+        description('')
 
-    // This opens the set of build steps that will be run.
-    steps {
-        // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
-        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+        // This opens the set of build steps that will be run.
+        steps {
+            // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
+            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /release""")
-        
-        // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
-        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\\MSBuild\\Microsoft\\VisualStudio\\Managed
+build.cmd /release /skiptests""")
+
+            // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
+            batchFile("""SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
 
 mkdir backup
 xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
@@ -69,19 +70,29 @@ xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 """)
 
-        // Build sdk repo and install templates into RoslynDev hive.
-        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+            // Sync roslyn-internal upfront as we use the VsixExpInstaller from roslyn-internal repo to install VSIXes built from SDK repo into RoslynDev hive.
+            batchFile("""pushd %WORKSPACE%\\roslyn-internal
+git submodule init
+git submodule sync
+git submodule update --init --recursive
+init.cmd
+popd""")
+
+            // Build sdk repo and install templates into RoslynDev hive.
+            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 
 call "%DeveloperCommandPrompt%" || goto :BuildFailed
 
 pushd %WORKSPACE%\\sdk
-call build.cmd -Configuration release || goto :BuildFailed
+call build.cmd -Configuration release -SkipTests || goto :BuildFailed
 
 pushd %WORKSPACE%\\roslyn-internal\\Closed\\Tools\\Source\\VsixExpInstaller
 msbuild /p:Configuration=Release
 SET VSIXExpInstallerExe=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Release\\Exes\\VsixExpInstaller\\VsixExpInstaller.exe
+%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
 %VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
+%VSIXExpInstallerExe% /u /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
 %VSIXExpInstallerExe% /rootsuffix:RoslynDev %WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
 
 exit /b %ERRORLEVEL%
@@ -91,16 +102,12 @@ echo Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
 """)
 
-        // Build roslyn-internal and run netcore VSI tao tests.
-        batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+            // Build roslyn-internal and run netcore VSI tao tests.
+            batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
 pushd %WORKSPACE%\\roslyn-internal
-git submodule init
-git submodule sync
-git submodule update --init --recursive
-
 set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
@@ -110,13 +117,29 @@ set EchoOn=true
 BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
 popd""")
 
-       // Revert patched targets and rules from backup.
-        batchFile("""SET VS_MSBUILD_MANAGED=%VSINSTALLDIR%\\MSBuild\\Microsoft\\VisualStudio\\Managed
+           // Revert patched targets and rules from backup.
+            batchFile("""SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
 del /SQ "%VS_MSBUILD_MANAGED%\\"
 xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
 rmdir /S /Q backup
 """)
+        }
     }
+
+    addVsiArchive(newVsiJob)
+    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
+    Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
+    // ISSUE: Temporary until a full builder for source control is available.
+    addVsiMultiScm(newVsiJob, project)
+
+    if (isPR) {
+        def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
+        Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
+    } else {
+        Utilities.addGithubPushTrigger(newVsiJob)        
+    }
+
+    Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/Exes/EditorTestApp/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
 }
 
 // Archive VSI artifacts.
@@ -157,7 +180,7 @@ static void addVsiMultiScm(def myJob, def project) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('aca5d1556f7c9b3e2182a38844d66be663ff26fb')
+                branch('c82725bc657ad369ecd4e59bf860acf6205027b6')
             }
             git {
                 remote {
@@ -169,21 +192,20 @@ static void addVsiMultiScm(def myJob, def project) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('a8f887e56a98e173f9049d176f3996f3a6171c27')
+                branch('808de0c5801b309ae3a13f201a1486ff6a91df57')
             }
         }
     }
 }
 // END ISSUE
 
-addVsiArchive(newVsiJob)
-Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
-// For now, trigger VSI jobs only on explicit request.
-Utilities.standardJobSetup(newVsiJob, project, false /* isPr */, "*/${branch}")
-// ISSUE: Temporary until a full builder for source control is available.
-addVsiMultiScm(newVsiJob, project)
-Utilities.addGithubPushTrigger(newVsiJob)
-Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
+static String generateTriggerPhrase(String jobName, String triggerPhraseExtra) {
+    def triggerCore = "all|${jobName}"
+    if (triggerPhraseExtra) {
+        triggerCore = "${triggerCore}|${triggerPhraseExtra}"
+    }
+    return "(?i).*test\\W+(${triggerCore})\\W+please.*";
+}
 
 // Make the call to generate the help job
 Utilities.createHelperJob(this, project, branch,

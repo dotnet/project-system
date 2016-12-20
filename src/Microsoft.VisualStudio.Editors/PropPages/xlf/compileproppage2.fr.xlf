@@ -5,98 +5,98 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/compileproppage2.resx" />
       <trans-unit id="BuildOutputPathButton.AccessibleName">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
-        <note></note>
+        <target state="translated">Parcourir...</target>
+        <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathButton.Text">
         <source>B&amp;rowse...</source>
-        <target state="new">B&amp;rowse...</target>
-        <note></note>
+        <target state="translated">Pa&amp;rcourir...</target>
+        <note />
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <target state="new">Option e&amp;xplicit:</target>
-        <note></note>
+        <target state="translated">Option E&amp;xplicit :</target>
+        <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
         <source>D&amp;isable all warnings</source>
-        <target state="new">D&amp;isable all warnings</target>
-        <note></note>
+        <target state="translated">Désact&amp;iver tous les avertissements</target>
+        <note />
       </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
-        <target state="new">Treat a&amp;ll warnings as errors</target>
-        <note></note>
+        <target state="translated">Considérer tous les a&amp;vertissements comme des erreurs</target>
+        <note />
       </trans-unit>
       <trans-unit id="BuildEventsButton.Text">
         <source>Build Eve&amp;nts...</source>
-        <target state="new">Build Eve&amp;nts...</target>
-        <note></note>
+        <target state="translated">Évé&amp;nements de build...</target>
+        <note />
       </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
-        <target state="new">R&amp;egister for COM interop</target>
-        <note></note>
+        <target state="translated">S'inscrir&amp;e à COM Interop</target>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
         <source>&amp;Generate XML documentation file</source>
-        <target state="new">&amp;Generate XML documentation file</target>
-        <note></note>
+        <target state="translated">Générer le fichier de documentation XML</target>
+        <note />
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="new">Option &amp;strict:</target>
-        <note></note>
+        <target state="translated">Option &amp;Strict :</target>
+        <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <target state="new">Option c&amp;ompare:</target>
-        <note></note>
+        <target state="translated">Option C&amp;ompare :</target>
+        <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <target state="new">Option in&amp;fer:</target>
-        <note></note>
+        <target state="translated">Option In&amp;fer :</target>
+        <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
-        <target state="new">Warning configurations:</target>
-        <note></note>
+        <target state="translated">Configurations des avertissements :</target>
+        <note />
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">
         <source>Condition</source>
-        <target state="new">Condition</target>
-        <note></note>
+        <target state="translated">Condition</target>
+        <note />
       </trans-unit>
       <trans-unit id="NotificationColumn.HeaderText">
         <source>Notification</source>
-        <target state="new">Notification</target>
-        <note></note>
+        <target state="translated">Notification</target>
+        <note />
       </trans-unit>
       <trans-unit id="AdvancedOptionsButton.Text">
         <source>&amp;Advanced Compile Options...</source>
-        <target state="new">&amp;Advanced Compile Options...</target>
-        <note></note>
+        <target state="translated">Options &amp;avancées de compilation...</target>
+        <note />
       </trans-unit>
       <trans-unit id="CompileOptionsGroupBox.Text">
         <source>Compile Options:</source>
-        <target state="new">Compile Options:</target>
-        <note></note>
+        <target state="translated">Options de compilation :</target>
+        <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
-        <target state="new">B&amp;uild output path:</target>
-        <note></note>
+        <target state="translated">&amp;Chemin de sortie de la génération :</target>
+        <note />
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
         <source>&amp;Target CPU:</source>
-        <target state="new">&amp;Target CPU:</target>
-        <note></note>
+        <target state="translated">Uni&amp;té centrale cible :</target>
+        <note />
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="new">&amp;Prefer 32-bit</target>
-        <note></note>
+        <target state="translated">&amp;Préférer 32 bits</target>
+        <note />
       </trans-unit>
     </body>
   </file>
