@@ -19,11 +19,11 @@
   </PropertyGroup>
 
     <ItemGroup>
-     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), VisualBasic.ProjectItemsSchema.xaml));"/>
-     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), VisualBasic.xaml));">
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.xaml;">
       <Context>File</Context>
      </PropertyPageSchema>
-     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), VisualBasic.BrowseObject.xaml));">
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.BrowseObject.xaml;">
       <Context>BrowseObject</Context>
      </PropertyPageSchema>
 
@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <!-- Targets -->
-
+    
     <!-- Returns Vbc command-line arguments for the language service -->
     <Target Name="CompileDesignTime"
             Returns="@(_CompilerCommandLineArgs)"
@@ -42,7 +42,7 @@
       <ItemGroup>
         <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
       </ItemGroup>
-
+        
   </Target>
 
 </Project>
