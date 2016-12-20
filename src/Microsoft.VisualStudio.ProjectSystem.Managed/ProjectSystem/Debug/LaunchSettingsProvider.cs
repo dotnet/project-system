@@ -677,7 +677,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// This function blocks until a snapshot is available. It will return null if the timeout occurs
         /// prior to the snapshot is available
         /// </summary>
-        public async Task<ILaunchSettings> WaitForFirstSnapshotAsync(int timeout)
+        public async Task<ILaunchSettings> WaitForFirstSnapshot(int timeout)
         {
             if (CurrentSnapshot != null)
             {
@@ -696,7 +696,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
         {
-            var currentSettings = await GetSnapshotThrowIfErrorsAsync().ConfigureAwait(false);
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
             ILaunchProfile existingProfile = null;
             int insertionIndex = 0;
             foreach (var p in currentSettings.Profiles)
@@ -739,7 +739,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task RemoveProfileAsync(string profileName)
         {
-            var currentSettings = await GetSnapshotThrowIfErrorsAsync().ConfigureAwait(false);
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
             var existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
             if (existingProfile != null)
             {
@@ -755,7 +755,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
         {
-            var currentSettings = await GetSnapshotThrowIfErrorsAsync().ConfigureAwait(false);
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
             ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
             if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
@@ -775,8 +775,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task RemoveGlobalSettingAsync(string settingName)
         {
-            var currentSettings = await GetSnapshotThrowIfErrorsAsync().ConfigureAwait(false);
-            if(currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
             {
                 var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
@@ -788,9 +788,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Helper retrieves the current snapshot (waiting up to 5s) and if there were errors in the launchsettings.json file
         /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned
         /// </summary>
-        public async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
+        public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
-            var currentSettings = await WaitForFirstSnapshotAsync(WaitForFirstSnapshotDelay).ConfigureAwait(false);
+            var currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, LaunchSettingsProvider.ErrorProfileCommandName, StringComparison.Ordinal)))
             {
                 throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, LaunchSettingsFile));
