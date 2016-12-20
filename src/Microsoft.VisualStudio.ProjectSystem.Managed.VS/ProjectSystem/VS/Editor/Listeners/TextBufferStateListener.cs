@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     [Export(typeof(ITextBufferStateListener))]
     internal class TextBufferStateListener : OnceInitializedOnceDisposedAsync, ITextBufferStateListener
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             }
         }
 
-        private void Buffer_Changed(object sender, Text.TextContentChangedEventArgs e)
+        private void Buffer_Changed(object sender, TextContentChangedEventArgs e)
         {
             UIThreadHelper.VerifyOnUIThread();
             _lastReiteratedVersionNumber = e.AfterVersion.ReiteratedVersionNumber;

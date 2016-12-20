@@ -2,7 +2,9 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -90,12 +92,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IVsShellUtilitiesHelper _shellHelper;
         private readonly ExportFactory<IProjectFileModelWatcher> _projectFileWatcherFactory;
         private readonly ExportFactory<ITextBufferStateListener> _textBufferListenerFactory;
+        private readonly ExportFactory<IFrameOpenCloseListener> _frameEventsListenerFactory;
         private readonly ITextBufferManager _textBufferManager;
+        private readonly IDialogServices _dialogServices;
 
         private EditorState _currentState = EditorState.NoEditor;
         private IVsWindowFrame _windowFrame;
         private IProjectFileModelWatcher _projectFileModelWatcher;
-        private EditProjectFileVsFrameEvents _frameEventsListener;
+        private IFrameOpenCloseListener _frameEventsListener;
         private ITextBufferStateListener _textBufferStateListener;
 
         [ImportingConstructor]
@@ -105,7 +109,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             IVsShellUtilitiesHelper shellHelper,
             ExportFactory<IProjectFileModelWatcher> projectFileModelWatcherFactory,
             ExportFactory<ITextBufferStateListener> textBufferListenerFactory,
-            ITextBufferManager textBufferManager)
+            ExportFactory<IFrameOpenCloseListener> frameEventsListenerFactory,
+            ITextBufferManager textBufferManager,
+            IDialogServices dialogServices)
         {
             _threadingService = threadingService;
             _unconfiguredProject = unconfiguredProject;
@@ -114,6 +120,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _projectFileWatcherFactory = projectFileModelWatcherFactory;
             _textBufferListenerFactory = textBufferListenerFactory;
             _textBufferManager = textBufferManager;
+            _frameEventsListenerFactory = frameEventsListenerFactory;
+            _dialogServices = dialogServices;
         }
 
         #region Initialization/Destruction
@@ -138,31 +146,115 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 _currentState = EditorState.Initializing;
             }
 
-            // First, open the frame
+            // First, open the frame. This performs a long set of callbacks that will set _windowPane when the actual pane is created.
             var loadedProjectEditorGuid = Guid.Parse(LoadedProjectFileEditorFactory.EditorFactoryGuid);
-            _windowFrame = _shellHelper.OpenDocumentWithSpecificEditor(_serviceProvider, _unconfiguredProject.FullPath, loadedProjectEditorGuid, Guid.Empty);
-
-            // Set up the project file watcher, so changes to the project file are detected and the buffer is updated.
-            _projectFileModelWatcher = _projectFileWatcherFactory.CreateExport().Value;
-            _projectFileModelWatcher.Initialize();
-            _frameEventsListener = new EditProjectFileVsFrameEvents(_windowFrame, _serviceProvider, this, _threadingService);
-            await _frameEventsListener.InitializeEvents().ConfigureAwait(true);
+            _shellHelper.OpenDocumentWithSpecificEditor(_serviceProvider, _unconfiguredProject.FullPath, loadedProjectEditorGuid, Guid.Empty);
 
             // Finally, show the frame and move to EditorClean in lockstep
             lock (_lock)
             {
+                Assumes.True(_currentState == EditorState.NoUnsavedChanges);
+                Assumes.NotNull(_windowFrame);
                 _windowFrame.Show();
+            }
+        }
+
+        /// <summary>
+        /// Called from the editor wrapper. This sets up the listener that controls the dirty state and saving commands, and the listener
+        /// that watches for frame creation and destruction events.
+        /// </summary>
+        public async Task InitializeWindowPaneAsync(WindowPane hostPane)
+        {
+            // If we were invoked from the Edit Project File command, we'll already have been set to Initializing. Otherwise, we might
+            // be invoked from someone opening the file in the editor (via open with, or the project file being reopened as the project
+            // is reopened). This method can only be called from either the NoEditor or Initializing states.
+            lock (_lock)
+            {
+                Assumes.True(_currentState == EditorState.NoEditor || _currentState == EditorState.Initializing);
+                _currentState = EditorState.Initializing;
+            }
+
+            _textBufferStateListener = _textBufferListenerFactory.CreateExport().Value;
+            await _textBufferStateListener.InitializeAsync(hostPane).ConfigureAwait(false);
+
+            _frameEventsListener = _frameEventsListenerFactory.CreateExport().Value;
+            await _frameEventsListener.InitializeEventsAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Called from the frame events listener. This will only be called when the IVsWindowFrame hosting the editor has been created, during
+        /// initialization. At this point, we're done initialization.
+        /// </summary>
+        public void InitializeWindowFrame(IVsWindowFrame frame)
+        {
+            lock (_lock)
+            {
+                Assumes.True(_currentState == EditorState.Initializing);
+            }
+
+            _windowFrame = frame;
+
+            // Set up the project file watcher, so changes to the project file are detected and the buffer is updated.
+            _projectFileModelWatcher = _projectFileWatcherFactory.CreateExport().Value;
+            _projectFileModelWatcher.Initialize();
+
+            lock (_lock)
+            {
                 _currentState = EditorState.NoUnsavedChanges;
             }
         }
 
         /// <summary>
-        /// Called from the editor wrapper. This sets up the listener that controls the dirty state and saving commands.
+        /// Notifies the editor that the window may be closing. It is possible for the window close process to be stopped by this method, or for
+        /// another method to cancel the close action. If another method cancels the close, there is no notification that the close was cancelled.
+        /// Therefore, we don't adjust the state.
         /// </summary>
-        public async Task InitializeTextBufferStateListenerAsync(WindowPane hostPane)
+        /// <returns>Whether or not to cancel the window close. True if the window close should continue, false if the window close should be cancelled.</returns>
+        public async Task<bool> NotifyWindowMaybeClosingAsync()
         {
-            _textBufferStateListener = _textBufferListenerFactory.CreateExport().Value;
-            await _textBufferStateListener.InitializeAsync(hostPane).ConfigureAwait(false);
+            lock (_lock)
+            {
+                // If there are no unsaved changes, we just return immediately.
+                if (_currentState != EditorState.UnsavedChanges)
+                {
+                    return true;
+                }
+            }
+
+            await _threadingService.SwitchToUIThread();
+
+            var buttons = new string[]
+            {
+                VSResources.Cancel,
+                VSResources.No,
+                VSResources.Yes,
+            };
+            var msgText = string.Format(VSResources.ProjectFileBufferClosing, _unconfiguredProject.FullPath);
+
+            await _threadingService.SwitchToUIThread();
+            switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ProjectFileClosingTitle, msgText, buttons))
+            {
+                case MultiChoiceMsgBoxResult.Cancel:
+                    // The user cancelled, which is the same as button 3.
+                    goto case MultiChoiceMsgBoxResult.Button1;
+                case MultiChoiceMsgBoxResult.Button1:
+                    // Cancel the window close result.
+                    return false;
+                case MultiChoiceMsgBoxResult.Button2:
+                    // The user doesn't want to save their changes, to just return true
+                    return true;
+                case MultiChoiceMsgBoxResult.Button3:
+                    // Save the file, then return true. We don't need to return to the UI thread here.
+                    await SaveProjectFileAsync().ConfigureAwait(false);
+                    lock (_lock)
+                    {
+                        _currentState = EditorState.NoUnsavedChanges;
+                    }
+                    return true;
+                default:
+                    Assumes.NotReachable();
+                    return false;
+            }
         }
 
         /// <summary>
@@ -174,13 +266,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             {
                 if (_currentState == EditorState.NoEditor) return;
 
-                // If there was no changes, then we just close the editor
-                if (_currentState == EditorState.NoUnsavedChanges || _currentState == EditorState.BufferChangedFromClean)
-                {
-                    _currentState = EditorState.EditorClosing;
-                }
-
-                Requires.Range(_currentState != EditorState.UnsavedChanges && _currentState != EditorState.BufferChangingFromDirty, nameof(_currentState));
+                // Checking for potential dirty state and asking if the user wants to save their changes will have already occurred at this point.
+                // Just go to EditorClosing.
+                _currentState = EditorState.EditorClosing;
             }
 
             _projectFileModelWatcher?.Dispose();

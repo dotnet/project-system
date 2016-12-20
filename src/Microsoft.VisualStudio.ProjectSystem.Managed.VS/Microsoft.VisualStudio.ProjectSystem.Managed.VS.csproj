@@ -35,8 +35,9 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\Listeners\EditProjectFileVsFrameEvents.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\EditorStateModel.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\IFrameOpenCloseListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\IProjectFileModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ITextBufferStateListener.cs" />

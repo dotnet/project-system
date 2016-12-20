@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     [Export(typeof(IProjectFileModelWatcher))]
     class ProjectFileModelWatcher : OnceInitializedOnceDisposed, IProjectFileModelWatcher

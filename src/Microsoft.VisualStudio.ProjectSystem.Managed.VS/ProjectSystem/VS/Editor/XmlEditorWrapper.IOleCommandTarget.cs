@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var context = (IVsBrowseObjectContext)_project;
             var unconfiguredProject = context.UnconfiguredProject;
             _editorState = unconfiguredProject.Services.ExportProvider.GetExportedValue<EditorStateModel>();
-            _threadingService.ExecuteSynchronously(() => _editorState.InitializeTextBufferStateListenerAsync(_delegatePane));
+            _threadingService.ExecuteSynchronously(() => _editorState.InitializeWindowPaneAsync(_delegatePane));
         }
 
         public int Exec(ref Guid cmdGroupGuid, uint cmdId, uint cmdOptions, IntPtr pvaIn, IntPtr pvaOut)

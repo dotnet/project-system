@@ -4,7 +4,7 @@ using System;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     /// <summary>
     /// Manages the state of the text buffer an associated window, updating the dirty *, and handling save events.
