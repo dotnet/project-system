@@ -14,18 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
-        private const string TargetFrameworkProperty = "TargetFramework";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates)
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates, 
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
+            Requires.NotNull(project, nameof(project));
 
-            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
+            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
         }
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
+            Requires.NotNull(project, nameof(project));
 
             // if none of the underlying subscriptions have any changes
             if (!updates.Any(u => u.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges)))
@@ -46,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
                 bool noTargetFramework = 
-                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkProperty, out string targetFramework) &&
-                    !nugetRestoreChanges.After.Properties.TryGetValue(TargetFrameworkProperty, out targetFramework);
+                    !update.Value.ProjectConfiguration.Dimensions.TryGetValue(NuGetRestore.TargetFrameworkProperty, out string targetFramework) &&
+                    !nugetRestoreChanges.After.Properties.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework);
 
                 if (noTargetFramework || string.IsNullOrEmpty(targetFramework))
                 {
@@ -63,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
+                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items, project),
                         PackageReferences = GetReferences(packageReferencesChanges.After.Items),
                         Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
@@ -114,28 +117,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
-        {
+        {            
             return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
-        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        private static IVsReferenceItems GetProjectReferences(
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
+            UnconfiguredProject project)
         {
-            var referenceItems = GetReferences(items);
-            foreach (ReferenceItem item in referenceItems)
-            {
-                var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                string fullPathFromDefining = definingProjectDirectory != null
-                    ? Path.Combine(definingProjectDirectory.Value, item.Name)
-                    : item.Name;
+            var referenceItems = GetReferences(projectReferenceItems);
 
-                string projectFileFullPath = Path.GetFullPath(fullPathFromDefining);
+            // compute project file full path property for each reference
+            foreach (ReferenceItem item in referenceItems)
+            {                
+                var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
+                var projectFileFullPath = definingProjectDirectory != null 
+                    ? MakeRooted(definingProjectDirectory.Value, item.Name)
+                    : project.MakeRooted(item.Name);
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {
                     Name = ProjectFileFullPathProperty, Value = projectFileFullPath
                 });
             }
+
             return referenceItems;
-        }        
+        }
+
+        private static string MakeRooted(string basePath, string path)
+        {
+            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            return PathHelper.MakeRooted(basePath + Path.DirectorySeparatorChar, path);
+        }
     }
 }
