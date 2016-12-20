@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             EnsureInitialized();
 
-            var context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            var context = await CreateProjectContextCoreAsync().ConfigureAwait(false);
             if (context == null)
                 return null;
 
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
-        private async Task<string> GetLanguageServiceName()
+        private async Task<string> GetLanguageServiceNameAsync()
         {
             ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                                 .ConfigureAwait(false);
@@ -220,9 +220,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             }
         }
 
-        private async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsyncCore()
+        private async Task<AggregateWorkspaceProjectContext> CreateProjectContextCoreAsync()
         {
-            string languageName = await GetLanguageServiceName().ConfigureAwait(false);
+            string languageName = await GetLanguageServiceNameAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
                 return null;
             

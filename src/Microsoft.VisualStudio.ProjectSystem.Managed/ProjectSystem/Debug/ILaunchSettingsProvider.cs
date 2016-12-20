@@ -5,7 +5,6 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition for the LaunchSettingsProvider.
     /// </summary>
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task UpdateAndSaveSettingsAsync(ILaunchSettings profiles);
 
         // Blocks until at least one snapshot has been generated.
-        Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
+        Task<ILaunchSettings> WaitForFirstSnapshotAsync(int timeout);
 
         /// <summary>
         /// Adds the given profile to the list and saves to disk. If a profile with the same 
