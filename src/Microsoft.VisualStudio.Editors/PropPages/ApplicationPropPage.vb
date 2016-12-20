@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.Dispose(disposing)
         End Sub
 
-        Private Sub AssemblyInfoButton_Click(sender As Object, e As System.EventArgs) Handles AssemblyInfoButton.Click
+        Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub IconResourceFile_CheckedChanged(sender As Object, e As System.EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
+        Private Sub IconResourceFile_CheckedChanged(sender As Object, e As EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
             If (Me.IconRadioButton.Checked = True) Then
                 EnableControl(Me.ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
@@ -744,7 +744,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OutputType_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles OutputType.SelectionChangeCommitted
+        Private Sub OutputType_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles OutputType.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -782,7 +782,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub Win32ResourceFileBrowse_Click(sender As Object, e As System.EventArgs) Handles Win32ResourceFileBrowse.Click
+        Private Sub Win32ResourceFileBrowse_Click(sender As Object, e As EventArgs) Handles Win32ResourceFileBrowse.Click
 
             SkipValidating(Win32ResourceFile)   ' skip this because we will pop up dialog to edit it...
             ProcessDelayValidationQueue(False)
@@ -818,12 +818,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         'Update the list of available items whenever the start-up object combobox is opened.
-        Private Sub StartupObject_DropDown(sender As Object, e As System.EventArgs) Handles StartupObject.DropDown
+        Private Sub StartupObject_DropDown(sender As Object, e As EventArgs) Handles StartupObject.DropDown
             PopulateStartupObject(StartUpObjectSupported(), PopulateDropdown:=True)
             Common.SetComboBoxDropdownWidth(StartupObject)
         End Sub
 
-        Private Sub StartupObject_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles StartupObject.SelectionChangeCommitted
+        Private Sub StartupObject_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles StartupObject.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -864,7 +864,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub ApplicationIcon_DropDown(sender As Object, e As System.EventArgs) Handles ApplicationIcon.DropDown
+        Private Sub ApplicationIcon_DropDown(sender As Object, e As EventArgs) Handles ApplicationIcon.DropDown
             If GetPropertyControlData(Const_ApplicationIcon).IsDirty() Then
                 UpdateIconImage(True)
                 SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, True)
@@ -881,7 +881,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ApplicationIcon_LostFocus(sender As Object, e As System.EventArgs) Handles ApplicationIcon.LostFocus
+        Private Sub ApplicationIcon_LostFocus(sender As Object, e As EventArgs) Handles ApplicationIcon.LostFocus
             If m_fInsideInit Then
                 Return
             End If
@@ -892,7 +892,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ApplicationIcon_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles ApplicationIcon.SelectionChangeCommitted
+        Private Sub ApplicationIcon_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ApplicationIcon.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -901,7 +901,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, True)
         End Sub
 
-        Private Sub ApplicationIcon_TextChanged(sender As Object, e As System.EventArgs) Handles ApplicationIcon.TextChanged
+        Private Sub ApplicationIcon_TextChanged(sender As Object, e As EventArgs) Handles ApplicationIcon.TextChanged
             If m_fInsideInit Then
                 Return
             End If
@@ -916,7 +916,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AppIconBrowse_Click(sender As Object, e As System.EventArgs) Handles AppIconBrowse.Click
+        Private Sub AppIconBrowse_Click(sender As Object, e As EventArgs) Handles AppIconBrowse.Click
             BrowseForAppIcon(ApplicationIcon, AppIconImage)
         End Sub
 
@@ -934,7 +934,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateManifestList(FindManifestInProject, ApplicationManifest, CType(GetControlValueNative(Const_ApplicationManifest), String))
         End Sub
 
-        Private Sub ApplicationManifest_DropDown(sender As Object, e As System.EventArgs) Handles ApplicationManifest.DropDown
+        Private Sub ApplicationManifest_DropDown(sender As Object, e As EventArgs) Handles ApplicationManifest.DropDown
             If GetPropertyControlData(Const_ApplicationManifest).IsDirty() Then
                 SetDirty(VsProjPropId90.VBPROJPROPID_ApplicationManifest, True)
             End If
@@ -950,7 +950,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '@ <param name="sender"></param>
         '@ <param name="e"></param>
         '@ <remarks></remarks>
-        Private Sub ApplicationManifest_LostFocus(sender As Object, e As System.EventArgs) Handles ApplicationManifest.LostFocus
+        Private Sub ApplicationManifest_LostFocus(sender As Object, e As EventArgs) Handles ApplicationManifest.LostFocus
             If m_fInsideInit Then
                 Return
             End If
@@ -960,7 +960,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ApplicationManifest_SelectionChangeCommitted(sender As Object, e As System.EventArgs) Handles ApplicationManifest.SelectionChangeCommitted
+        Private Sub ApplicationManifest_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ApplicationManifest.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
             End If
@@ -968,7 +968,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(VsProjPropId90.VBPROJPROPID_ApplicationManifest, True)
         End Sub
 
-        Private Sub ApplicationManifest_TextChanged(sender As Object, e As System.EventArgs) Handles ApplicationManifest.TextChanged
+        Private Sub ApplicationManifest_TextChanged(sender As Object, e As EventArgs) Handles ApplicationManifest.TextChanged
             If m_fInsideInit Then
                 Return
             End If

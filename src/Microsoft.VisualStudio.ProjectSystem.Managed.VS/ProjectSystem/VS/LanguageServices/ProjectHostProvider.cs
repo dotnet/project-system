@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public IUnconfiguredProjectHostObject UnconfiguredProjectHostObject { get; }
 
-        public IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, String projectDisplayName)
+        public IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName)
         {
             return new ConfiguredProjectHostObject((UnconfiguredProjectHostObject)unconfiguredProjectHostObject, projectDisplayName);
         }

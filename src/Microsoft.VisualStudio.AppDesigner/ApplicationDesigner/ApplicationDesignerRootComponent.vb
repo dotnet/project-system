@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         'Private cache for important data
         Private _hierarchy As IVsHierarchy
-        Private _itemId As UInt32
+        Private _itemId As UInteger
         Private _rootDesigner As ApplicationDesignerRootDesigner
 
         ''' <summary>
@@ -59,11 +59,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property ItemId() As System.UInt32
+        Public Property ItemId() As UInteger
             Get
                 Return _itemId
             End Get
-            Set(Value As System.UInt32)
+            Set(Value As UInteger)
                 _itemId = Value
             End Set
         End Property

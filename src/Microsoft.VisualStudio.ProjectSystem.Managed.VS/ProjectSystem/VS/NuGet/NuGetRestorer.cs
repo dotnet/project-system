@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
         {
-            IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1);
+            IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1, _projectVsServices.Project);
 
             if (projectRestoreInfo != null)
             {
@@ -151,8 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
-            IProjectChangeDescription projectChange;
-            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out projectChange))
+            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out IProjectChangeDescription projectChange))
             {
                 var changedProperties = projectChange.Difference.ChangedProperties;
                 return changedProperties.Contains(NuGetRestore.TargetFrameworksProperty)

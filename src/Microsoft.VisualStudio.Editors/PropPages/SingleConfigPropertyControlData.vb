@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.New(Config, id, name, control, setter, getter, flags, Nothing)
         End Sub
 
-        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, AssocControls As System.Windows.Forms.Control())
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, AssocControls As Control())
             Me.New(Config, id, name, control, Nothing, Nothing, ControlDataFlags.None, AssocControls)
         End Sub
 
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.New(Config, id, name, control, setter, getter, ControlDataFlags.None, Nothing)
         End Sub
 
-        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As System.Windows.Forms.Control())
+        Public Sub New(Config As Configs, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
             MyBase.New(id, name, control, setter, getter, flags, AssocControls)
             Select Case Config
                 Case Configs.Debug

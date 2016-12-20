@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return System.IO.Directory.Exists(Dir)
         End Function
 
-        Private Sub AddFolder_Click(sender As Object, e As System.EventArgs) Handles AddFolder.Click
+        Private Sub AddFolder_Click(sender As Object, e As EventArgs) Handles AddFolder.Click
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
             If Len(FolderText) > 0 AndAlso ReferencePath.FindStringExact(FolderText) = -1 Then
                 If IsValidFolderPath(FolderText) Then
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub UpdateFolder_Click(sender As Object, e As System.EventArgs) Handles UpdateFolder.Click
+        Private Sub UpdateFolder_Click(sender As Object, e As EventArgs) Handles UpdateFolder.Click
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
             Dim index As Integer = Me.ReferencePath.SelectedIndex
 
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub RemoveFolder_Click(sender As Object, e As System.EventArgs) Handles RemoveFolder.Click
+        Private Sub RemoveFolder_Click(sender As Object, e As EventArgs) Handles RemoveFolder.Click
             '
             RemoveCurrentPath()
         End Sub
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub MoveUp_Click(sender As Object, e As System.EventArgs) Handles MoveUp.Click
+        Private Sub MoveUp_Click(sender As Object, e As EventArgs) Handles MoveUp.Click
             '
             Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
             Dim SelectedItem As Object = ReferencePath.SelectedItem
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub MoveDown_Click(sender As Object, e As System.EventArgs) Handles MoveDown.Click
+        Private Sub MoveDown_Click(sender As Object, e As EventArgs) Handles MoveDown.Click
             '
             Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
             Dim SelectedItem As Object = ReferencePath.SelectedItem
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub ReferencePath_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ReferencePath.SelectedIndexChanged
+        Private Sub ReferencePath_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ReferencePath.SelectedIndexChanged
             If Not m_fInsideInit Then
                 Dim FolderText As String
                 Dim SelectedIndex As Integer = Me.ReferencePath.SelectedIndex
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Private Sub Folder_TextChanged(sender As Object, e As System.EventArgs) Handles Folder.TextChanged
+        Private Sub Folder_TextChanged(sender As Object, e As EventArgs) Handles Folder.TextChanged
             If Not m_fInsideInit Then
                 EnableReferencePathGroup()
             End If
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return FolderText
         End Function
 
-        Private Sub FolderBrowse_Click(sender As Object, e As System.EventArgs) Handles FolderBrowse.Click
+        Private Sub FolderBrowse_Click(sender As Object, e As EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
             If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(SR.PPG_SelectReferencePath), value) Then
                 Folder.Text = GetProjectRelativeDirectoryPath(value)
@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''<summary>
         ''' Handle button Enabled property changing event to reset its image
         '''</summary>
-        Private Sub GraphicButton_OnEnabledChanged(sender As Object, e As System.EventArgs) Handles MoveUp.EnabledChanged, MoveDown.EnabledChanged, RemoveFolder.EnabledChanged
+        Private Sub GraphicButton_OnEnabledChanged(sender As Object, e As EventArgs) Handles MoveUp.EnabledChanged, MoveDown.EnabledChanged, RemoveFolder.EnabledChanged
             UpdateButtonImages()
         End Sub
 

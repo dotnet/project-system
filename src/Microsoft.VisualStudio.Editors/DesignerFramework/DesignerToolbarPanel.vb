@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnHandleCreated(e As System.EventArgs)
+        Protected Overrides Sub OnHandleCreated(e As EventArgs)
             MyBase.OnHandleCreated(e)
             If _associateToolbarOnHandleCreate Then
                 InternalAssociateToolbarWithHandle()
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnHandleDestroyed(e As System.EventArgs)
+        Protected Overrides Sub OnHandleDestroyed(e As EventArgs)
             MyBase.OnHandleDestroyed(e)
             If _toolbarHost IsNot Nothing Then
                 ' We had a toolbar host (which should be associated with the old handle)
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+        Protected Overrides Sub OnSizeChanged(e As EventArgs)
             MyBase.OnSizeChanged(e)
             If _toolbarHost IsNot Nothing Then
                 _toolbarHost.BorderChanged()

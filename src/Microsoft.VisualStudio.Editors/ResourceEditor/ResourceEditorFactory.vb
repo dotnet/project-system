@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Const ResourceEditor_EditorGuid As String = "ff4d6aca-9352-4a5f-821e-f4d6ebdcab11"
 
 
-        Private _vsTrackProjectDocumentsEventsCookie As UInt32
+        Private _vsTrackProjectDocumentsEventsCookie As UInteger
         Private _vsTrackProjectDocuments As IVsTrackProjectDocuments2
 
         ''' <summary>

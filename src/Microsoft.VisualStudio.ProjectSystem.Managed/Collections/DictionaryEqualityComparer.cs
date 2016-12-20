@@ -107,8 +107,7 @@ namespace Microsoft.VisualStudio.Collections
 
             foreach (KeyValuePair<TKey, TValue> pair in dictionary1)
             {
-                TValue value;
-                if (!dictionary2.TryGetValue(pair.Key, out value) || !valueComparer.Equals(value, pair.Value))
+                if (!dictionary2.TryGetValue(pair.Key, out TValue value) || !valueComparer.Equals(value, pair.Value))
                 {
                     return false;
                 }

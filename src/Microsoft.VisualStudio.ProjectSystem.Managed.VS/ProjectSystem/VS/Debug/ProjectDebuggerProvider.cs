@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(true);
+            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshotAsync(5000).ConfigureAwait(true);
             ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             try
             {
-                var shellDebugger = this.ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
+                var shellDebugger = ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(launchResults);

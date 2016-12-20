@@ -28,8 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public async Task<string> GetEvaluatedPropertyValueAsync(string schema, string name)
         {
             var properties = GetPropertiesForRule(schema);
-            object value;
-            properties.TryGetValue(name, out value);
+            properties.TryGetValue(name, out object value);
             if (value is IProperty)
             {
                 value = await ((IProperty)value).GetValueAsync();

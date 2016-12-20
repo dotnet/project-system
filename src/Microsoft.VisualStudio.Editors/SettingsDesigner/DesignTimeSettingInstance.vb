@@ -1141,7 +1141,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Info.AddValue(s_SERIALIZATION_PROVIDER, _provider)
             Info.AddValue(s_SERIALIZATION_TYPE, _settingTypeName)
             Info.AddValue(s_SERIALIZATION_VALUE, _serializedValue)
-            Info.AddValue(s_SERIALIZATION_SCOPE, CType(_settingScope, Int32))
+            Info.AddValue(s_SERIALIZATION_SCOPE, CType(_settingScope, Integer))
         End Sub
 
 #End Region

@@ -292,7 +292,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Friend ReadOnly Property ProjectItemid() As System.UInt32
+        Friend ReadOnly Property ProjectItemid() As UInteger
             Get
                 Return _projectItemid
             End Get
@@ -372,7 +372,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private Function GetDocDataState(BitFlagToTest As TextManager.Interop.BUFFERSTATEFLAGS) As Boolean
             If m_DocData IsNot Nothing AndAlso m_DocData.Buffer IsNot Nothing Then
-                Dim State As System.UInt32
+                Dim State As UInteger
                 VSErrorHandler.ThrowOnFailure(m_DocData.Buffer.GetStateFlags(State))
                 Return (State And BitFlagToTest) <> 0
             End If
@@ -595,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '     Reloading is deferred until the document is later activated, and reload is contingent 
         '     upon IsReloadNeeded returning true.
         '**************************************************************************
-        Private Sub DocData_DataChanged(sender As Object, e As System.EventArgs) Handles m_DocData.DataChanged
+        Private Sub DocData_DataChanged(sender As Object, e As EventArgs) Handles m_DocData.DataChanged
             'The DocData has been changed externally (either outside of VS or from another editor).
             '  We notify ourselves that we need to reload.  The reload doesn't actually happen until we
             '  have focus again and then hit idle time processing.

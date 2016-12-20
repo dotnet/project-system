@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell2 As IVsUIShell2, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             If VsUIShell2 IsNot Nothing Then
-                Dim abgrValue As System.UInt32
+                Dim abgrValue As UInteger
                 Dim Hr As Integer = VsUIShell2.GetVSSysColorEx(VsSysColorIndex, abgrValue)
                 If VSErrorHandler.Succeeded(Hr) Then
                     Return COLORREFToColor(abgrValue)
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="abgrValue">The UInteger COLORREF value</param>
         ''' <returns>The System.Drawing.Color equivalent.</returns>
         ''' <remarks></remarks>
-        Private Shared Function COLORREFToColor(abgrValue As System.UInt32) As Color
+        Private Shared Function COLORREFToColor(abgrValue As UInteger) As Color
             Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
         End Function
 
@@ -659,7 +659,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Inherits BroadcastMessageEventsHelper
 
             ' Control that we are going to set the font on (if any)
-            Private _control As System.Windows.Forms.Control
+            Private _control As Control
 
             Private _serviceProvider As IServiceProvider
 
@@ -670,7 +670,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="ctrl"></param>
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
-            Public Sub New(sp As IServiceProvider, ctrl As System.Windows.Forms.Control, SetFontInitially As Boolean)
+            Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
                 MyBase.new(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
@@ -826,7 +826,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim VsUIShell2 As IVsUIShell2 = DirectCast(Microsoft.VisualStudio.Shell.Package.GetGlobalService(GetType(SVsUIShell)), IVsUIShell2)
 
             If VsUIShell2 IsNot Nothing Then
-                Dim abgrValue As System.UInt32
+                Dim abgrValue As UInteger
                 Dim Hr As Integer = VsUIShell2.GetVSSysColorEx(VsSysColorIndex, abgrValue)
                 If VSErrorHandler.Succeeded(Hr) Then
                     Return ColorTranslator.FromWin32(CType(abgrValue, Integer))

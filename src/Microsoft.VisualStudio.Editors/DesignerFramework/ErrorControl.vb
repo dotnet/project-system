@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ErrorText_GotFocus(sender As Object, e As System.EventArgs) Handles ErrorText.GotFocus
+        Private Sub ErrorText_GotFocus(sender As Object, e As EventArgs) Handles ErrorText.GotFocus
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
                 '  doesn't really make sense in this case, so set it back to no selection.

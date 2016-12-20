@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -42,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             mockProfiles.Setup(m => m.Profiles).Returns(() =>
             {
-                return data.Profiles == null ? null : data.Profiles.ToImmutableList();
+                return data.Profiles?.ToImmutableList();
             });
             
             data.LaunchProfiles = mockProfiles.Object;

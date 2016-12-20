@@ -160,8 +160,7 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllText(string path, string content)
         {
-            FileData curData;
-            if (_files.TryGetValue(path, out curData))
+            if (_files.TryGetValue(path, out FileData curData))
             {
                 // This makes sure each write to the file increases the timestamp
                 curData.FileContents = content;

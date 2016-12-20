@@ -12,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo> collection) : base(collection) { }
 
-        protected override String GetKeyForItem(IVsTargetFrameworkInfo value) => value.TargetFrameworkMoniker;
+        protected override string GetKeyForItem(IVsTargetFrameworkInfo value) => value.TargetFrameworkMoniker;
     }
 }

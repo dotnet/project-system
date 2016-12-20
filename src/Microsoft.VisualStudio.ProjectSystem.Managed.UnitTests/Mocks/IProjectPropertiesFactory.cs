@@ -5,7 +5,6 @@ using Moq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

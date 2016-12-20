@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Property get for file or assembly version.
         ''' </summary>
-        Private Function VersionGet(control As System.Windows.Forms.Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
             If (control Is Me.FileVersionLayoutPanel) Then
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Property set for either file or assembly version.
         ''' </summary>
-        Private Function VersionSet(control As System.Windows.Forms.Control, prop As PropertyDescriptor, value As Object) As Boolean
+        Private Function VersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim Major As String = Nothing, Minor As String = Nothing, Build As String = Nothing, Revision As String = Nothing
             Dim Version As String
             Dim Values As String()
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Occurs when the neutral language combobox is dropped down.  Use this to
         '''   populate it with entries.
         ''' </summary>
-        Private Sub NeutralLanguageComboBox_DropDown(sender As Object, e As System.EventArgs) Handles NeutralLanguageComboBox.DropDown
+        Private Sub NeutralLanguageComboBox_DropDown(sender As Object, e As EventArgs) Handles NeutralLanguageComboBox.DropDown
             PopulateNeutralLanguageComboBox(NeutralLanguageComboBox)
             Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
@@ -177,18 +177,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropAssemblyInfo
         End Function
 
-        Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As System.EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
+        Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
             SetDirty(Me.AssemblyVersionLayoutPanel, False)
         End Sub
 
-        Private Sub FileVersionLayoutPanel_TextChanged(sender As Object, e As System.EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
+        Private Sub FileVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
             SetDirty(Me.FileVersionLayoutPanel, False)
         End Sub
 
         ''' <summary>
         ''' Validation properties
         ''' </summary>
-        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
+        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             If controlData.FormControl Is GuidTextBox Then
                 Try
                     Dim guid As New Guid(Trim(GuidTextBox.Text))

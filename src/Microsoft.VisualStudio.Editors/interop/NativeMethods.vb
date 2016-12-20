@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         <StructLayout(LayoutKind.Sequential)> _
         Friend Structure CRYPTOAPI_BLOB
-            Friend cbData As UInt32
+            Friend cbData As UInteger
             Friend pbData As IntPtr
         End Structure
 
@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Function
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptAcquireCertificatePrivateKey(<[In]> CertContext As IntPtr, <[In]> flags As UInt32, <[In]> reserved As IntPtr, <[In], Out> ByRef CryptProv As IntPtr, <[In], Out> ByRef KeySpec As KeySpec, <[In], Out, MarshalAs(UnmanagedType.Bool)> ByRef CallerFreeProv As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptAcquireCertificatePrivateKey(<[In]> CertContext As IntPtr, <[In]> flags As UInteger, <[In]> reserved As IntPtr, <[In], Out> ByRef CryptProv As IntPtr, <[In], Out> ByRef KeySpec As KeySpec, <[In], Out, MarshalAs(UnmanagedType.Bool)> ByRef CallerFreeProv As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptExportKey(<[In]> Key As IntPtr, <[In]> ExpKey As IntPtr, <[In]> type As BlobType, <[In]> Flags As UInt32, <[In]> Data As IntPtr, <[In], Out> ByRef DataLen As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptExportKey(<[In]> Key As IntPtr, <[In]> ExpKey As IntPtr, <[In]> type As BlobType, <[In]> Flags As UInteger, <[In]> Data As IntPtr, <[In], Out> ByRef DataLen As UInteger) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         Friend Enum BlobType
@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         End Function
 
         <DllImport("advapi32.dll", SetLastError:=True)> _
-        Friend Shared Function CryptReleaseContext(<[In]> Prov As IntPtr, <[In]> Flags As UInt32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        Friend Shared Function CryptReleaseContext(<[In]> Prov As IntPtr, <[In]> Flags As UInteger) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
         <DllImport("crypt32.dll", SetLastError:=True)> _
@@ -494,9 +494,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <TypeLibType(TypeLibTypeFlags.FRestricted)> _
     Friend Interface IMetaDataDispenser
-        Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> dwCreateFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
-        <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]()> dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
-        Function OpenScopeOnMemory(<[In]()> pData As IntPtr, <[In]()> cbData As UInt32, <[In]()> dwOpenFlags As UInt32, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> dwCreateFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
+        Function OpenScopeOnMemory(<[In]()> pData As IntPtr, <[In]()> cbData As UInteger, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
     End Interface
 
     <StructLayout(LayoutKind.Sequential)> _

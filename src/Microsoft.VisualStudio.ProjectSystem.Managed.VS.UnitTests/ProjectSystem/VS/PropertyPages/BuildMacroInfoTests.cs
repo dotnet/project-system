@@ -22,9 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var threadingService = IProjectThreadingServiceFactory.Create();
 
             var buildMacroInfo = new BuildMacroInfo(activeConfiguredProject, threadingService);
-
-            string macroValue;
-            int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out macroValue);
+            int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out string macroValue);
             Assert.Equal(expectedRetVal, retVal);
             Assert.Equal(expectedValue, macroValue);
         }

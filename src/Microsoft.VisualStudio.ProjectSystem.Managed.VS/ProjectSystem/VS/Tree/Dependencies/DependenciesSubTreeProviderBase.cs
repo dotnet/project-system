@@ -575,7 +575,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     var rule = catalogs.GetSchema(PropertyPageContexts.Project, ruleName)
                         ?? catalogs.GetSchema(PropertyPageContexts.File, ruleName);
-                    itemType = rule != null ? rule.DataSource.ItemType : null;
+                    itemType = rule?.DataSource.ItemType;
 
                     if (itemType != null)
                     {
@@ -641,9 +641,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNull(catalogName, nameof(catalogName));
             Requires.NotNullOrEmpty(itemType, nameof(itemType));
-
-            IPropertyPagesCatalog catalog;
-            if (snapshot.NamedCatalogs.TryGetValue(catalogName, out catalog))
+            if (snapshot.NamedCatalogs.TryGetValue(catalogName, out IPropertyPagesCatalog catalog))
             {
                 return catalog.GetPropertyPagesSchemas(itemType).FirstOrDefault();
             }
