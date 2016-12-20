@@ -1561,9 +1561,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Determines whether the project associated with the given hierarchy is targeting .NET 4.5 or above
         ''' </summary>
-        ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' <param name="hierarchy">Hierarchy object.</param>
+        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET 4.5 or above.</returns>
         Friend Function IsTargetingDotNetFramework45OrAbove(hierarchy As IVsHierarchy) As Boolean
 
             Dim frameworkName As FrameworkName = Nothing
@@ -1585,9 +1584,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Determines whether the project associated with the given hierarchy is targeting .NET Core
         ''' </summary>
-        ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' <param name="hierarchy">Hierarchy object.</param>
+        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET Core.</returns>
         Friend Function IsTargetingDotNetCore(hierarchy As IVsHierarchy) As Boolean
 
             Dim frameworkName As FrameworkName = Nothing
@@ -1602,7 +1600,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Determines whether the specified framework is .NET Core
         ''' </summary>
-        ''' <param name="frameworkIdentifier"></param>
+        ''' <param name="frameworkIdentifier">Framework identifier.</param>
         ''' <returns>Value indicating whether the specified framework is .Net Core</returns>
         Friend Function IsTargetingDotNetCore(frameworkIdentifier As String) As Boolean
 
