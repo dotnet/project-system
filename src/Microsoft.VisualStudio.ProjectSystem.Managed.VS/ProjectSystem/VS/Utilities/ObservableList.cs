@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             foreach (T item in list)
             {
-                this.Add(item);
+                Add(item);
             }
 
             foreach (INotifyPropertyChanged item in list)

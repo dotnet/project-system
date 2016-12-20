@@ -83,12 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(false, exeIn, argsIn, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string finalArguments);
             Assert.True(finalExePath.Equals(exeIn));
             Assert.True(finalArguments.Equals(argsIn));
 
@@ -102,12 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
 
@@ -121,11 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
 
@@ -136,12 +133,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            string finalExePath, finalArguments;
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
-            debugger.GetExeAndArguments(true, exeIn, null, out finalExePath, out finalArguments);
+            debugger.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }

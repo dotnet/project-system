@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         internal DebugProfileEnumValuesGenerator(ILaunchSettingsProvider profileProvider)
         {
-            this.listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate 
+            listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate 
             {
                 var curSnapshot = profileProvider.CurrentSnapshot;
                 if (curSnapshot != null )

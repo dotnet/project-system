@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerProjects);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerProjects);
         }
     }
 }

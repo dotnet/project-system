@@ -20,8 +20,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         public int GetBool(string collectionPath, string propertyName, out int value)
         {
-            bool val;
-            if (VSConstants.S_OK != GetWithDefault(collectionPath, propertyName, false, out val))
+            if (VSConstants.S_OK != GetWithDefault(collectionPath, propertyName, false, out bool val))
             {
                 value = 0;
                 return VSConstants.E_FAIL;
@@ -37,8 +36,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public int GetBoolOrDefault(string collectionPath, string propertyName, int defaultValue, out int value)
         {
             GetWithDefault(collectionPath, propertyName, 0, out value);
-            bool val;
-            value = VSConstants.S_OK != GetWithDefault(collectionPath, propertyName, false, out val) ? defaultValue : (val ? 1 : 0);
+            value = VSConstants.S_OK != GetWithDefault(collectionPath, propertyName, false, out bool val) ? defaultValue : (val ? 1 : 0);
             return VSConstants.S_OK;
         }
 

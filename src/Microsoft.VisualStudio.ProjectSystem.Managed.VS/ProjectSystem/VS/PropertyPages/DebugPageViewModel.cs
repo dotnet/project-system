@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class DebugPageViewModel : PropertyPageViewModel
     {
-        private readonly string _executableFilter = String.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
+        private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
         private bool _useTaskFactory = true;
         
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         {
                             if (ExecutablePath == null)
                             {
-                                ExecutablePath = String.Empty;
+                                ExecutablePath = string.Empty;
                             }
                         }
                         else
@@ -669,7 +669,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
                         {
                             var folder = WorkingDirectory;
-                            if (!String.IsNullOrEmpty(folder) && Directory.Exists(folder))
+                            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
                             {
                                 dialog.SelectedPath = folder;
                             }
@@ -798,14 +798,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             for (int i = 1; i < int.MaxValue; i++)
             {
-                string profileName = String.Format("{0}{1}", PropertyPageResources.NewProfileSeedName, i.ToString());
+                string profileName = string.Format("{0}{1}", PropertyPageResources.NewProfileSeedName, i.ToString());
                 if (IsNewProfileNameValid(profileName))
                 {
                     return profileName;
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
         
         private void SetLaunchType()
@@ -872,7 +872,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 
         public class LaunchType
         {
-            public String CommandName { get; set; }
+            public string CommandName { get; set; }
             public string Name { get; set; }
 
             public override bool Equals(object obj)

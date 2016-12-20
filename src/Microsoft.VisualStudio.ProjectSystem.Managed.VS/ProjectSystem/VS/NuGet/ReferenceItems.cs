@@ -12,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public ReferenceItems(IEnumerable<IVsReferenceItem> collection) : base(collection) { }
 
-        protected override String GetKeyForItem(IVsReferenceItem value) => value.Name;
+        protected override string GetKeyForItem(IVsReferenceItem value) => value.Name;
     }
 }

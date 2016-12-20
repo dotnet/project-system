@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         
         protected void SetBooleanProperty(ref bool property, string value, bool defaultValue, bool invert = false)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
                 property = bool.Parse(value);
                 if (invert)

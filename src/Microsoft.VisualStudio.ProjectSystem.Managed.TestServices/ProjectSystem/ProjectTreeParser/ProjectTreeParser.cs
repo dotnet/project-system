@@ -58,9 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
 
             MutableProjectTree parent = current;
-
-            int previousIndentLevel;
-            int indent = ReadIndentLevel(out previousIndentLevel);
+            int indent = ReadIndentLevel(out int previousIndentLevel);
 
             while (indent <= previousIndentLevel)
             {
@@ -324,16 +322,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             string guidAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
-            Guid guid;
-            if (!Guid.TryParseExact(guidAsString, "D", out guid))
+            if (!Guid.TryParseExact(guidAsString, "D", out Guid guid))
                 throw _tokenizer.FormatException(ProjectTreeFormatError.GuidExpected, $"Expected GUID, but encountered '{guidAsString}'");
 
             tokenizer.Skip(TokenType.WhiteSpace);
 
             string idAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
-            int id;
-            if (!int.TryParse(idAsString, out id))
+            if (!int.TryParse(idAsString, out int id))
                 throw _tokenizer.FormatException(ProjectTreeFormatError.IntegerExpected, $"Expected integer, but encountered '{idAsString}'");
 
             return new ProjectImageMoniker(guid, id);

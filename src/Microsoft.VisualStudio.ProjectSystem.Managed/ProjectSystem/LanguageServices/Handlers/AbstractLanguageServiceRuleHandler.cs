@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         public abstract RuleHandlerType HandlerType { get; }
 
-        public abstract String RuleName { get; }
+        public abstract string RuleName { get; }
 
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 

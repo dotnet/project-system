@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
             PROPPAGEINFO[] pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
-            page.Object.Help(String.Empty);
+            page.Object.Help(string.Empty);
 
             PROPPAGEINFO info = pageInfoArray[0];
             Assert.Equal("MyPage", info.pszTitle);
