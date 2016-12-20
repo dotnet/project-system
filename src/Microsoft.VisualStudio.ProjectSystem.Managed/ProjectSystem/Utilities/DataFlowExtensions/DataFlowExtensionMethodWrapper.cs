@@ -6,7 +6,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions
 {
-    public class DataFlowExtensionMethodWrapper : IDataFlowExtensionWrapper
+    internal class DataFlowExtensionMethodWrapper : IDataFlowExtensionWrapper
     {
         public IDisposable LinkTo(
             IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock,

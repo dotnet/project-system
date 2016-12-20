@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// Additionally, it adds:
     /// HasInputtedText
     /// </summary>
-    public class WatermarkTextBox : TextBox
+    internal class WatermarkTextBox : TextBox
     {
         const string c_WatermarkPropertyName = "Watermark";
         const string c_HasInputtedTextPropertyName = "HasInputtedText";
