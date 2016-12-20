@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

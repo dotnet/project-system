@@ -2,7 +2,6 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {

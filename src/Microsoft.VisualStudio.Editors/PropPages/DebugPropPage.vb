@@ -4,7 +4,6 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports System.IO
 Imports VSLangProj80
-Imports Microsoft.VisualStudio.PlatformUI
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
