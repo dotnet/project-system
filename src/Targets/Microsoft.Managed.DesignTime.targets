@@ -16,10 +16,11 @@
     <DefineCommonManagedCapabilities Condition=" '$(DefineCommonManagedCapabilities)' == '' ">true</DefineCommonManagedCapabilities>
     <DefineCommonManagedItemSchemas Condition=" '$(DefineCommonManagedItemSchemas)' == '' ">true</DefineCommonManagedItemSchemas>
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
-    
+
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
     <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+    <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 
@@ -36,9 +37,9 @@
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />
 
-    <!-- 
+    <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
-      We disabled them with the property DefineCommonCapabilities=false to get rid of default 
+      We disabled them with the property DefineCommonCapabilities=false to get rid of default
       References capability, but everything else we want back.
     -->
     <ProjectCapability Include="
@@ -201,7 +202,7 @@
        target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
-  
+
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
