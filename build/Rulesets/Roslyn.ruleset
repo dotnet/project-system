@@ -132,7 +132,7 @@
     <Rule Id="IDE0029WithoutSuggestion" Action="Error" />     
     <Rule Id="IDE0030" Action="Error" />                      <!-- Use null propagation                         string y = x == null ? null : x.ToLower()           string y = x?.ToLower();              -->
     <Rule Id="IDE0030WithoutSuggestion" Action="Error" />
-    <Rule Id="IDE1006" Action="Info" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
+    <Rule Id="IDE1006" Action="Error" />                      <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="Info" />
   </Rules>
  
