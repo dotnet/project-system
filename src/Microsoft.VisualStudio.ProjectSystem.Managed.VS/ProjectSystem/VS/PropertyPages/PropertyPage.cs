@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
+        internal IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
         private const int
@@ -52,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }
-        internal IProjectThreadingService _threadHandling { get; set; }
+        
         
         ///--------------------------------------------------------------------------------------------
         /// <summary>
