@@ -19,11 +19,11 @@
   </PropertyGroup>
 
     <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.xaml;">
+     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), CSharp.ProjectItemsSchema.xaml));"/>
+     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), CSharp.xaml));">
       <Context>File</Context>
      </PropertyPageSchema>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.BrowseObject.xaml;">
+     <PropertyPageSchema Include="$([System.IO.Path]::Combine($(ManagedXamlResourcesDirectory), CSharp.BrowseObject.xaml));">
       <Context>BrowseObject</Context>
      </PropertyPageSchema>
 
@@ -42,7 +42,7 @@
       <ItemGroup>
         <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
       </ItemGroup>
-      
+
     </Target>
 
 </Project>
