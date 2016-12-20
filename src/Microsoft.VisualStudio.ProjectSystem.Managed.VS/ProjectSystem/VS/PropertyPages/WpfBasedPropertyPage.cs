@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             viewModel = CreatePropertyPageViewModel();
-            viewModel.UnconfiguredProject = base._unconfiguredProject;
+            viewModel.UnconfiguredProject = base.UnconfiguredProject;
             await viewModel.Initialize().ConfigureAwait(false);
             control.InitializePropertyPage(viewModel);
         }
@@ -88,10 +88,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             wpfHostPanel.Controls.Add(host);
 
             ResumeLayout(true);
-            control.StatusChanged += _control_OnControlStatusChanged;
+            control.StatusChanged += OnControlStatusChanged;
         }
 
-        private void _control_OnControlStatusChanged(object sender, EventArgs e)
+        private void OnControlStatusChanged(object sender, EventArgs e)
         {
             if (IsDirty != control.IsDirty)
             {

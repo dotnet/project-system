@@ -8,6 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class LaunchSettings : ILaunchSettings
     {
+        private readonly string _activeProfileName;
+
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
@@ -39,9 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             GlobalSettings = ImmutableDictionary<string, object>.Empty;
-        }
-
-        private string  _activeProfileName { get; } 
+        }        
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
 
