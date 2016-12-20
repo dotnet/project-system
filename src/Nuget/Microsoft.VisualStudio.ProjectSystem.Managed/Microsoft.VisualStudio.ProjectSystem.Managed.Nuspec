@@ -12,8 +12,7 @@
     <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
     <dependencies>
       <dependency id="System.Collections.Immutable" version="1.1.36" />
-      <dependency id="Microsoft.Tpl.Dataflow" version="4.5.24" />
-      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.574-pre-g1dd1014f4f" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.661-pre-g3d0c752f96" />
     </dependencies>
   </metadata>
   <files>
