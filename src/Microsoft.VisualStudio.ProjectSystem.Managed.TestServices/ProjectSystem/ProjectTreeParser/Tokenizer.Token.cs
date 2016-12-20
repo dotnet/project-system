@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Microsoft.VisualStudio.ProjectSystem
+﻿namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer
     {

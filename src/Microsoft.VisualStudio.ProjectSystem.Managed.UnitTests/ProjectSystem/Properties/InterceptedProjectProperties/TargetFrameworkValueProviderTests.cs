@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 using System;
 using System.Threading.Tasks;
 using Xunit;

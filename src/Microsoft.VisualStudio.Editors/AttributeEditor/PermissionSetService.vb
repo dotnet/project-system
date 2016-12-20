@@ -7,7 +7,6 @@ Imports System.Security.Permissions
 Imports System.Xml
 Imports System.IO
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
-Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods

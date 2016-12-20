@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem;
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
 namespace Microsoft.VisualStudio.ProjectSystem

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

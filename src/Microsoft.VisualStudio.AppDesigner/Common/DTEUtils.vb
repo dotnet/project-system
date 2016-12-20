@@ -2,7 +2,6 @@
 
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.Threading
 
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
