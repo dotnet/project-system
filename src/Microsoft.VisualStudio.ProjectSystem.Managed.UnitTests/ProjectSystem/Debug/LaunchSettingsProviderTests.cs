@@ -774,7 +774,7 @@ string JsonString1 = @"{
         {
             return FileChangeScheduler == null &&
                    FileWatcher == null &&
-                   _projectRuleSubscriptionLink == null && 
+                   ProjectRuleSubscriptionLink == null && 
                    _broadcastBlock == null;
         }
 

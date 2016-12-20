@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
-        protected IDisposable _projectRuleSubscriptionLink {get; set;}
+        protected IDisposable ProjectRuleSubscriptionLink {get; set;}
 
         /// <summary>
         /// Returns the full path to the launch settings file
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync);
 
-                _projectRuleSubscriptionLink = ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                ProjectRuleSubscriptionLink = ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     projectChangesBlock,
                     ruleNames: ProjectDebugger.SchemaName,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
@@ -650,10 +650,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     _broadcastBlock = null;
                 }
 
-                if(_projectRuleSubscriptionLink != null)
+                if(ProjectRuleSubscriptionLink != null)
                 {
-                    _projectRuleSubscriptionLink.Dispose();
-                    _projectRuleSubscriptionLink = null;
+                    ProjectRuleSubscriptionLink.Dispose();
+                    ProjectRuleSubscriptionLink = null;
                 }
             }
         }
