@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Adds a file change watcher on the project file.
         /// </summary>
-        private async Task ConnectToSolutionEventsAsync()
+        private async Task ConnectToSolutionEvents()
         {
             await _threadHandling.SwitchToUIThread();
 
@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Removes the file change watch on the project file. 
         /// </summary>
-        private async Task DisconnectFromSolutionEventsAsync()
+        private async Task DisconnectFromSolutionEvents()
         {
             await _threadHandling.SwitchToUIThread();
 
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             ReloadDelayScheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(ReloadDelay), _threadHandling, CancellationToken.None);
-            await ConnectToSolutionEventsAsync().ConfigureAwait(false);
+            await ConnectToSolutionEvents().ConfigureAwait(false);
 
         }
 
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ReloadDelayScheduler.Dispose();
                 ReloadDelayScheduler = null;
             }
-            await DisconnectFromSolutionEventsAsync().ConfigureAwait(false);
+            await DisconnectFromSolutionEvents().ConfigureAwait(false);
         }
 
         /// <summary>
