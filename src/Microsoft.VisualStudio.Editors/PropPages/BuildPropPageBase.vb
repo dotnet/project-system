@@ -83,7 +83,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function IsPrefer32BitSupportedForTargetFramework() As Boolean
 
             Return IsTargetingDotNetFramework45OrAbove(Me.ProjectHierarchy) OrElse
-                   IsAppContainerProject(Me.ProjectHierarchy)
+                   IsAppContainerProject(Me.ProjectHierarchy) OrElse
+                   IsTargetingDotNetCore(Me.ProjectHierarchy)
 
         End Function
 

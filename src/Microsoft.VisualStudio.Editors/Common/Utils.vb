@@ -1568,13 +1568,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Dim frameworkName As FrameworkName = Nothing
             If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
-                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) = 0 AndAlso
-                (frameworkName.Version.Major > 4 OrElse (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)) Then
-                    ' Targeting .NET framework 4.5 or higher
-                    Return True
-                ElseIf IsTargetingDotNetCore(frameworkName.Identifier) Then
-                    Return True
+                ' Verify that we are targeting .NET
+                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) <> 0 Then
+                    Return False
                 End If
+
+                ' Verify that the version of the target framework is >= 4.5
+                Return frameworkName.Version.Major > 4 OrElse
+                   (frameworkName.Version.Major = 4 AndAlso frameworkName.Version.Minor >= 5)
             End If
 
             Return False
