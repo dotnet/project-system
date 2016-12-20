@@ -17,7 +17,6 @@
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
-    <DeployExtension Condition="'$(DeployVsixExtension)' == 'false'">false</DeployExtension>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
