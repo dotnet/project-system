@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal void Load()
         {
-            this.EnsureInitialized();
+            EnsureInitialized();
         }
         
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected override void Initialize()
         {
             _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-            _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(this.ProjectTree_ChangedAsync)));
+            _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(ProjectTree_ChangedAsync)));
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             // If tree changed when we are disposing then ignore the change.
-            if (this.IsDisposing)
+            if (IsDisposing)
             {
                 return;
             }

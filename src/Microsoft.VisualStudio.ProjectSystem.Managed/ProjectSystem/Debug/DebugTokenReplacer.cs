@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // If we already have access we can just use it to get an instance of the project
             if(Access == null)
             {
-                Access = await this.ProjectLockService.ReadLockAsync();
+                Access = await ProjectLockService.ReadLockAsync();
 
             }
 
