@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             c_WatermarkPropertyName,
             typeof(string),
             typeof(WatermarkTextBox),
-            new PropertyMetadata(String.Empty));
+            new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// The text to be displayed in the watermark area when there is no text/has no focus
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return;
             }
 
-            bool hasInputtedText = !String.IsNullOrEmpty(source.Text.Trim());
+            bool hasInputtedText = !string.IsNullOrEmpty(source.Text.Trim());
             if (hasInputtedText != source.HasInputtedText)
             {
                 source.SetValue(HasInputtedTextPropertyKey, hasInputtedText);

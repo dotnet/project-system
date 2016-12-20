@@ -13,6 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public IVsProjectProperties Properties { get; set; }
 
-        public String TargetFrameworkMoniker { get; set; }
+        public string TargetFrameworkMoniker { get; set; }
     }
 }

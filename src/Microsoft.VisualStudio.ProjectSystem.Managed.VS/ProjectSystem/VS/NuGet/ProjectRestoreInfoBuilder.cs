@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 : null;
         }
 
-        private static IVsProjectProperties GetProperties(IImmutableDictionary<String, String> items)
+        private static IVsProjectProperties GetProperties(IImmutableDictionary<string, string> items)
         {
             return new ProjectProperties(items.Select(v => new ProjectProperty
             {
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }));
         }
 
-        private static IVsReferenceItem GetReferenceItem(KeyValuePair<String, IImmutableDictionary<String, String>> item)
+        private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
             return new ReferenceItem
             {
@@ -113,12 +113,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             };
         }
 
-        private static IVsReferenceItems GetReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
+        private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {
             return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
-        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<String, IImmutableDictionary<String, String>> items)
+        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {
             var referenceItems = GetReferences(items);
             foreach (ReferenceItem item in referenceItems)

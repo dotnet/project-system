@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private async TPL.Task<String> GetProjectLockFilePathAsync(IProjectTree newTree)
+        private async TPL.Task<string> GetProjectLockFilePathAsync(IProjectTree newTree)
         {
             // First check to see if the project has a project.json. 
             IProjectTree projectJsonNode = FindProjectJsonNode(newTree);

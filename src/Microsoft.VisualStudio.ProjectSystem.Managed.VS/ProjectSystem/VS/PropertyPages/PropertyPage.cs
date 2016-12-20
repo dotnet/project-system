@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         protected abstract Task OnDeactivate();
         protected abstract Task OnSetObjects(bool isClosing);
 
-        public void SetObjects(UInt32 cObjects, Object[] ppunk)
+        public void SetObjects(UInt32 cObjects, object[] ppunk)
         {
             _unconfiguredProject = null;
             if (cObjects == 0)

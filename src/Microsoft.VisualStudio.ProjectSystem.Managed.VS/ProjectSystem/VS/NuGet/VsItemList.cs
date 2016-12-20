@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        public T Item(Object index)
+        public T Item(object index)
         {
             if (index is string)
             {
