@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Moq;
 using Xunit;
 using HandlerCallback = System.EventHandler<Microsoft.Build.Evaluation.ProjectXmlChangedEventArgs>;

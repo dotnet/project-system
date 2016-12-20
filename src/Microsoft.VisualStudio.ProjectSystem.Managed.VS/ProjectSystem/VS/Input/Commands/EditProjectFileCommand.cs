@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -77,9 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return true;
             }
 
-            Tuple<string, string> fileReturns = await SetupFileAsync().ConfigureAwait(true);
-            var tempProjectPath = fileReturns.Item1;
-            var lastWrittenXml = fileReturns.Item2;
+            var (tempProjectPath, lastWrittenXml) = await SetupFileAsync().ConfigureAwait(true);
 
             IMsBuildModelWatcher watcher = _watcherFactory.CreateExport().Value;
             await watcher.InitializeAsync(tempProjectPath, lastWrittenXml).ConfigureAwait(true);
@@ -139,16 +138,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }));
         }
 
-        private async Task<Tuple<string, string>> SetupFileAsync()
+        private async Task<(string tempPath, string lastWrittenXml)> SetupFileAsync()
         {
             var tempProjectPath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
 
             // We don't want to do file IO on the UI thread, so pick up on any old thread and then switch back to the UI thread
             // when we're done the write.
-            var lastWrittenXml = await _msbuildAccessor.GetProjectXmlAsync(_unconfiguredProject).ConfigureAwait(false);
+            var lastWrittenXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
             _fileSystem.WriteAllText(tempProjectPath, lastWrittenXml);
             await _threadingService.SwitchToUIThread();
-            return Tuple.Create(tempProjectPath, lastWrittenXml);
+            return (tempProjectPath, lastWrittenXml);
         }
 
         private string GetTempFileName(string projectFileName)
