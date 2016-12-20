@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public bool HasChanged { get; set; }
     }
 
-    public class ObservableCollectionEventArgs : PropertyChangedEventArgs
+    internal class ObservableCollectionEventArgs : PropertyChangedEventArgs
     {
         public bool ValidationSuccessful { get; set; }
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
     }
 
-    public class ValidationStatusChangedEventArgs : EventArgs
+    internal class ValidationStatusChangedEventArgs : EventArgs
     {
         public bool ValidationStatus { get; set; }
         public ValidationStatusChangedEventArgs(bool validationStatus)

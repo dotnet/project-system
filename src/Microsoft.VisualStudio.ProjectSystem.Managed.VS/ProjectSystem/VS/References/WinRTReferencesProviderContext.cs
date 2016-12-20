@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.PlatformReferenceProvider_string, ReferencePriority.Platform)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class WinRTReferencesProviderContext : BaseReferenceContextProvider
+    internal class WinRTReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WinRTReferencesProviderContext"/> class.

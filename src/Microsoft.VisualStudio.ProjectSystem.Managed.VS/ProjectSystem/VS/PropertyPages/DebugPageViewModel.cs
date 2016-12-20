@@ -870,7 +870,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return UnconfiguredProject.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
         }
                 
-        public class LaunchType
+        internal class LaunchType
         {
             public string CommandName { get; set; }
             public string Name { get; set; }
