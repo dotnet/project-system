@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ProjectFileClosingTitle, msgText, buttons))
             {
                 case MultiChoiceMsgBoxResult.Cancel:
-                    // The user cancelled, which is the same as button 3.
+                    // The user cancelled, which is the same as button 1.
                     goto case MultiChoiceMsgBoxResult.Button1;
                 case MultiChoiceMsgBoxResult.Button1:
                     // Cancel the window close result.
