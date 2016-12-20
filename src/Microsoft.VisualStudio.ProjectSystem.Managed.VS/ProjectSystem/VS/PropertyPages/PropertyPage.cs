@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _useJoinableTaskFactory = useJoinableTaskFactory;
         }
 
-        internal UnconfiguredProject _unconfiguredProject { get; set; }
+        internal UnconfiguredProject UnconfiguredProject { get; set; }
         internal IProjectThreadingService _threadHandling { get; set; }
         
         ///--------------------------------------------------------------------------------------------
@@ -340,7 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public void SetObjects(UInt32 cObjects, Object[] ppunk)
         {
-            _unconfiguredProject = null;
+            UnconfiguredProject = null;
             if (cObjects == 0)
             {
                 // If we have never configured anything (maybe a failure occurred on open so app designer is closing us). In this case
@@ -367,12 +367,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)
                     {
-                        _unconfiguredProject = GetUnconfiguredProject(hier);
+                        UnconfiguredProject = GetUnconfiguredProject(hier);
 
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
 
-                        IUnconfiguredProjectVsServices projectVsServices = _unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                        IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
                         _threadHandling = projectVsServices.ThreadingService;
                     }
                 }
