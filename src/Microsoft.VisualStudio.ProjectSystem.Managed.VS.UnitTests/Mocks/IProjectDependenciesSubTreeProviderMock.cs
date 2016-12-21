@@ -11,6 +11,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class IProjectDependenciesSubTreeProviderMock: IProjectDependenciesSubTreeProvider
     {
+        private string _providerTestType = "MyDefaultTestProvider";
+        public string ProviderTestType
+        {
+            get
+            {
+                return _providerTestType;
+            }
+            set
+            {
+                _providerTestType = value;
+            }
+        }
+
         public string ProviderType
         {
             get

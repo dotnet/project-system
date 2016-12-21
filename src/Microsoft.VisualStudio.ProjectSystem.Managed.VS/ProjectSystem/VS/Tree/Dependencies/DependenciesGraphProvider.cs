@@ -19,8 +19,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    using DependencyNodeInfo = System.Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>;
-
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
     /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
@@ -223,14 +221,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
-                if (nodeInfo == null)
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath)
+                                                        .ConfigureAwait(false);
+                if (node == null || subTreeProvider == null)
                 {
                     continue;
                 }
-
-                var node = nodeInfo.Item1;
-                var subTreeProvider = nodeInfo.Item2;
 
                 // refresh node
                 node = subTreeProvider.GetDependencyNode(node.Id);
@@ -273,14 +269,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
-                if (nodeInfo == null)
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath)
+                                                        .ConfigureAwait(false);
+                if (node == null || subTreeProvider == null)
                 {
                     continue;
                 }
-
-                var node = nodeInfo.Item1;
-                var subTreeProvider = nodeInfo.Item2;
 
                 if (!node.Flags.Contains(DependencyNode.PreFilledFolderNode))
                 {
@@ -293,6 +287,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 var nodeChildren = node.Children.ToArray();
+
+                if (!string.IsNullOrEmpty(node.Id.ContextProject))
+                {
+                    projectPath = node.Id.ContextProject;
+                }
 
                 // get specific providers for child nodes outside of GraphTransactionScope since it does not support 
                 // await and switch to other thread (exception "scope must be completed by the same thread it is created". 
@@ -430,13 +429,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// clicks on "Scope To This" context menu we get GetChildrenAsync call right away and need to be 
         /// able to discover IDependencyNode form the scratch.
         /// </summary>
-        private async Task<DependencyNodeInfo> GetDependencyNodeInfo(IGraphContext graphContext,
-                                                                     GraphNode inputGraphNode,
-                                                                     string projectPath)
+        private async Task<(IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider)> 
+            GetDependencyNodeInfo(IGraphContext graphContext, GraphNode inputGraphNode, string projectPath)
         {
-            IProjectDependenciesSubTreeProvider subTreeProvider;
-            var node = inputGraphNode.GetValue<IDependencyNode>(
-                                DependenciesGraphSchema.DependencyNodeProperty);
+            IDependencyNode node = null;
+            IProjectDependenciesSubTreeProvider subTreeProvider = null;
+
+            node = inputGraphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty);
             if (node == null)
             {
                 // All graph nodes generated here will have this unique node id, root node will have it equal to null
@@ -444,7 +443,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var nodeId = DependencyNodeId.FromString(nodeIdString);
                 if (nodeId == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
 
                 subTreeProvider = await GetSubTreeProviderAsync(graphContext,
@@ -453,13 +452,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 nodeId).ConfigureAwait(false);
                 if (subTreeProvider == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
 
                 node = subTreeProvider.GetDependencyNode(nodeId);
                 if (node == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
             }
             else
@@ -470,11 +469,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 node.Id).ConfigureAwait(false);
                 if (subTreeProvider == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
             }
 
-            return new Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>(node, subTreeProvider);
+            return (node, subTreeProvider);
         }
 
         private void AddNodesToGraphRecursive(IGraphContext graphContext,
@@ -542,10 +541,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
                 bool shouldProcess = !string.IsNullOrEmpty(projectPath) &&
                                      projectPath.Equals(updatedProjectContext.ProjectFilePath, StringComparison.OrdinalIgnoreCase);
+                var contextProject = updatedProjectContext.ProjectFilePath;
                 if (!shouldProcess)
                 {
-                    shouldProcess = !string.IsNullOrEmpty(existingNodeInfo.Id.UniqueToken) &&
-                                     existingNodeInfo.Id.UniqueToken.Equals(updatedProjectContext.ProjectFilePath, 
+                    shouldProcess = !string.IsNullOrEmpty(existingNodeInfo.Id.ContextProject) &&
+                                     existingNodeInfo.Id.ContextProject.Equals(updatedProjectContext.ProjectFilePath, 
                                                                     StringComparison.OrdinalIgnoreCase);
                 }
 
@@ -584,13 +584,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     foreach (var nodeToRemove in nodesToRemove)
                     {
-                        RemoveGraphNode(graphContext, projectPath, nodeToRemove);
+                        RemoveGraphNode(graphContext, contextProject, nodeToRemove);
                         existingNodeInfo.RemoveChild(nodeToRemove);
                     }
 
                     foreach (var nodeToAdd in nodesToAdd)
                     {
-                        AddGraphNode(graphContext, projectPath, subTreeProvider, inputGraphNode, nodeToAdd);
+                        AddGraphNode(graphContext, contextProject, null, inputGraphNode, nodeToAdd);
                         existingNodeInfo.AddChild(nodeToAdd);
                     }
 
@@ -616,7 +616,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (subTreeProvider == null)
             {                
                 var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
-                subTreeProvider = projectContext.GetProvider(nodeId.ProviderType);
+                if (projectContext != null)
+                {
+                    subTreeProvider = projectContext.GetProvider(nodeId.ProviderType);
+                }
             }
 
             if (subTreeProvider != null)

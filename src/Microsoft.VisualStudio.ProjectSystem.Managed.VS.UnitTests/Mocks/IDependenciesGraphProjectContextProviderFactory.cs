@@ -36,6 +36,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
+        public static IDependenciesGraphProjectContextProvider ImplementMultipleProjects(
+                                IDictionary<string, IProjectDependenciesSubTreeProvider> contexts,
+                                MockBehavior? mockBehavior = null)
+        {
+            var behavior = mockBehavior ?? MockBehavior.Default;
+            var mock = new Mock<IDependenciesGraphProjectContextProvider>(behavior);
+            var listOfAllContexts = new List<IDependenciesGraphProjectContext>();
+
+            foreach(var kvp in contexts)
+            {
+                var mockProjectContext = new Mock<IDependenciesGraphProjectContext>();
+                mock.Setup(x => x.GetProjectContext(kvp.Key)).Returns(mockProjectContext.Object);
+                mockProjectContext.Setup(x => x.GetProvider("MyProvider")).Returns(kvp.Value);
+                listOfAllContexts.Add(mockProjectContext.Object);
+            }
+
+            mock.Setup(x => x.GetProjectContexts()).Returns(listOfAllContexts);
+
+            return mock.Object;
+        }
+
         public static IDependenciesGraphProjectContext ImplementProjectContext(
                         string projectPath,
                         MockBehavior? mockBehavior = null)
