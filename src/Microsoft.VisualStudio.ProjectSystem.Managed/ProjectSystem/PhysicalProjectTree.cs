@@ -10,16 +10,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly Lazy<IProjectTreeService> _treeService;
         private readonly Lazy<IProjectTreeProvider> _treeProvider;
+        private readonly Lazy<IPhysicalProjectTreeStorage> _treeStorage;
 
         [ImportingConstructor]
         public PhysicalProjectTree([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService, 
-                                   [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider)
+                                   [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
+                                   Lazy<IPhysicalProjectTreeStorage> treeStorage)
         {
             Requires.NotNull(treeService, nameof(treeService));
             Requires.NotNull(treeProvider, nameof(treeProvider));
+            Requires.NotNull(treeStorage, nameof(treeStorage));
 
             _treeService = treeService;
             _treeProvider = treeProvider;
+            _treeStorage = treeStorage;
         }
 
         public IProjectTree CurrentTree
@@ -35,6 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public IProjectTreeProvider TreeProvider
         {
             get { return _treeProvider.Value; }
+        }
+
+        public IPhysicalProjectTreeStorage TreeStorage
+        {
+            get { return _treeStorage.Value;  }
         }
     }
 }
