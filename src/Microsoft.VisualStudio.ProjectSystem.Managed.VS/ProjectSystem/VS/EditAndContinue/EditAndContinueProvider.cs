@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
 {
 
     [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
-    [AppliesTo(ProjectCapability.ManagedEditAndContinue)]
+    [AppliesTo(ProjectCapability.EditAndContinue)]
     [ComServiceIid(typeof(IVsENCRebuildableProjectCfg))]
     [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg2))]
     [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
