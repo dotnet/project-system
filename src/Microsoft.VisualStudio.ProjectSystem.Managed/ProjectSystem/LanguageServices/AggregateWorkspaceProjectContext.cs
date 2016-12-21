@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IWorkspaceProjectContext ActiveProjectContext => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
-        public object ENCProjectConfig2 => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
+        public object ENCProjectConfig => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
         public bool IsCrossTargeting => _activeTargetFramework.Length > 0;
         

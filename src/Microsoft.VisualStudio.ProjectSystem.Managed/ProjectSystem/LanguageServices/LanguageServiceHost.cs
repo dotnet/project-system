@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IWorkspaceProjectContext ActiveProjectContext => _currentAggregateProjectContext?.ActiveProjectContext;
 
-        public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig2;
+        public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
         [ImportMany]
         public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
