@@ -76,7 +76,6 @@
     <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
     <Compile Include="Mocks\IVsUIShell7Factory.cs" />
     <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
-    <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />

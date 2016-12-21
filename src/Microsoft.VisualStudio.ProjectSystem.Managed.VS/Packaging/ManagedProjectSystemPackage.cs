@@ -1,12 +1,19 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
+    [ProvideEditorFactory(factoryType: typeof(LoadedProjectFileEditorFactory), nameResourceID: 7, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_HasUntrustedLogicalViews)]
+    [ProvideEditorExtension(factoryType: typeof(LoadedProjectFileEditorFactory), extension: ".csproj", priority: 32, NameResourceID = 7)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     internal class ManagedProjectSystemPackage : AsyncPackage
     {
@@ -18,6 +25,12 @@ namespace Microsoft.VisualStudio.Packaging
 
         public ManagedProjectSystemPackage()
         {
+        }
+
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            RegisterEditorFactory(new LoadedProjectFileEditorFactory(this));
         }
     }
 }
