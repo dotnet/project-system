@@ -38,14 +38,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 // Not found, let's find the default path and create it if needed
                 path = await GetDefaultAppDesignerFolderPathAsync().ConfigureAwait(false);
                 
-                if ((flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
+                if (path != null && (flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
                 {
                     await _projectTree.Value.TreeStorage.CreateFolderAsync(path)
                                                         .ConfigureAwait(false);
                 }
             }
 
-            // We always return the default path, regardless of whether we created it or it exists as per contract
+            // We always return the default path, regardless of whether we created it or it exists, as per contract
             return path;
         }
 
@@ -53,18 +53,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             IProjectTree root = _projectTree.Value.CurrentTree;
 
-            IProjectTree folder = root.Children.FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
+            IProjectTree folder = root.GetSelfAndDescendentsBreadthFirst().FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
+            if (folder == null)
+                return null;
 
-            return folder?.FilePath;
+            return _projectTree.Value.TreeProvider.GetRootedAddNewItemDirectory(folder);
         }
 
         private async Task<string> GetDefaultAppDesignerFolderPathAsync()
         {
-            string rootPath = Path.GetDirectoryName(_projectTree.Value.CurrentTree.FilePath);
+            string rootPath = _projectTree.Value.TreeProvider.GetRootedAddNewItemDirectory(_projectTree.Value.CurrentTree);
 
             string folderName = await GetDefaultAppDesignerFolderNameAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(folderName))
-                return rootPath;
+                return null; // Developer has set the AppDesigner path to empty
 
             return Path.Combine(rootPath, folderName);
         }

@@ -75,6 +75,7 @@
     <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
+    <Compile Include="Mocks\ProjectTreeProvider.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceCheckerTests.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
     <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
