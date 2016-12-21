@@ -35,6 +35,7 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
