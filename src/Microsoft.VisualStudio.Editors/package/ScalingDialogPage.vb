@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnClosed(e As System.EventArgs)
+        Protected Overrides Sub OnClosed(e As EventArgs)
             _settingsLoaded = False
             MyBase.OnClosed(e)
         End Sub
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Next
         End Sub
 
-        Private Sub SetDirty(sender As Object, e As System.EventArgs)
+        Private Sub SetDirty(sender As Object, e As EventArgs)
             Debug.WriteLine(String.Format("Control {0} dirtied", DirectCast(sender, Control).Name))
             Me.Dirty = True
         End Sub

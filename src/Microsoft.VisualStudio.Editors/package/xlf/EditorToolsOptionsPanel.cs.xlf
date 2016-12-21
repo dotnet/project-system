@@ -5,53 +5,53 @@
       <group id="src/Microsoft.VisualStudio.Editors/package/EditorToolsOptionsPanel.resx" />
       <trans-unit id="_indentTypeLabel.Text">
         <source>Indent type:</source>
-        <target state="new">Indent type:</target>
-        <note></note>
+        <target state="translated">Typ odsazení:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeNoneRadioButton.Text">
         <source>&amp;None</source>
-        <target state="new">&amp;None</target>
-        <note></note>
+        <target state="translated">Žád&amp;né</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeBlockRadioButton.Text">
         <source>&amp;Block</source>
-        <target state="new">&amp;Block</target>
-        <note></note>
+        <target state="translated">&amp;Blok</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentTypeSmartRadioButton.Text">
         <source>&amp;Smart</source>
-        <target state="new">&amp;Smart</target>
-        <note></note>
+        <target state="translated">&amp;Chytré</target>
+        <note />
       </trans-unit>
       <trans-unit id="_tabSizeLabel.Text">
         <source>&amp;Tab size:</source>
-        <target state="new">&amp;Tab size:</target>
-        <note></note>
+        <target state="translated">Velikos&amp;t tabulátoru:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_indentSizeLabel.Text">
         <source>&amp;Indent size:</source>
-        <target state="new">&amp;Indent size:</target>
-        <note></note>
+        <target state="translated">Vel&amp;ikost odsazení:</target>
+        <note />
       </trans-unit>
       <trans-unit id="_wordWrapCheckBox.Text">
         <source>&amp;Word wrap</source>
-        <target state="new">&amp;Word wrap</target>
-        <note></note>
+        <target state="translated">&amp;Zalamování řádků</target>
+        <note />
       </trans-unit>
       <trans-unit id="_lineNumbersCheckBox.Text">
         <source>Line n&amp;umbers</source>
-        <target state="new">Line n&amp;umbers</target>
-        <note></note>
+        <target state="translated">Číslová&amp;ní řádků</target>
+        <note />
       </trans-unit>
       <trans-unit id="IndentingGroupBox.Text">
         <source>Indenting</source>
-        <target state="new">Indenting</target>
-        <note></note>
+        <target state="translated">Odsazování</target>
+        <note />
       </trans-unit>
       <trans-unit id="InteractionGroupBox.Text">
         <source>Interaction</source>
-        <target state="new">Interaction</target>
-        <note></note>
+        <target state="translated">Interakce</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Private Sub Cancel_Click(sender As System.Object, e As System.EventArgs) Handles Cancel.Click
+        Private Sub Cancel_Click(sender As System.Object, e As EventArgs) Handles Cancel.Click
             _loadAnonymous = True
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         End Sub

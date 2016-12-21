@@ -5,8 +5,8 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx" />
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="new">Class</target>
-        <note></note>
+        <target state="translated">Classe</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
@@ -14,12 +14,12 @@
 Press Reload to load the updated project from disk.
 Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
     </source>
-        <target state="new">The project '{0}' has been modified outside the environment.
+        <target state="translated">O projeto '{0}' foi modificado fora do ambiente.
 
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
+Pressione Recarregar para carregar o projeto atualizado do disco.
+Pressione Ignorar para ignorar as alterações externas. As alterações serão usadas na próxima vez que o projeto for aberto.
     </target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ConflictingModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
@@ -29,227 +29,237 @@ Press Discard to discard the unsaved changes and load the updated project from d
 Press Overwrite to overwrite the external changes with your changes.
 Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
     </source>
-        <target state="new">The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
+        <target state="translated">O projeto '{0}' foi modificado fora do ambiente e há alterações não salvas no projeto.
 
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
+Pressione Salvar Como para salvar as alterações não salvas e carregar o projeto atualizado do disco.
+Pressione Descartar para descartar as alterações não salvas e carregar o projeto atualizado do disco.
+Pressione Substituir para substituir as alterações externas por suas alterações.
+Pressione Ignorar para ignorar as alterações externas. Suas alterações talvez sejam perdidas se o projeto for fechado e reaberto.
     </target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ConflictingProjectModificationTitle">
         <source>Conflicting Project Modification Detected</source>
-        <target state="new">Conflicting Project Modification Detected</target>
-        <note></note>
+        <target state="translated">Modificação de Projeto Conflitante Detectada</target>
+        <note />
       </trans-unit>
       <trans-unit id="Discard">
         <source>_Discard</source>
-        <target state="new">_Discard</target>
-        <note></note>
+        <target state="translated">_Descartar</target>
+        <note />
       </trans-unit>
       <trans-unit id="Ignore">
         <source>_Ignore</source>
-        <target state="new">_Ignore</target>
-        <note></note>
+        <target state="translated">_Ignorar</target>
+        <note />
       </trans-unit>
       <trans-unit id="IgnoreAll">
         <source>Ignore A_ll</source>
-        <target state="new">Ignore A_ll</target>
-        <note></note>
+        <target state="translated">Ignorar T_udo</target>
+        <note />
       </trans-unit>
       <trans-unit id="Overwrite">
         <source>_Overwrite</source>
-        <target state="new">_Overwrite</target>
-        <note></note>
+        <target state="translated">_Substituir</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectModificationDlgTitle">
         <source>Project Modification Detected</source>
-        <target state="new">Project Modification Detected</target>
-        <note></note>
+        <target state="translated">Modificação de Projeto Detectada</target>
+        <note />
       </trans-unit>
       <trans-unit id="Reload">
         <source>_Reload</source>
-        <target state="new">_Reload</target>
-        <note></note>
+        <target state="translated">_Recarregar</target>
+        <note />
       </trans-unit>
       <trans-unit id="ReloadAll">
         <source>Reload A_ll</source>
-        <target state="new">Reload A_ll</target>
-        <note></note>
+        <target state="translated">Recarregar T_udo</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
-        <target state="new">Renaming the code element '{0}' failed.</target>
-        <note></note>
+        <target state="translated">Falha ao renomear o elemento de código '{0}'.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolPrompt">
         <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
-        <target state="new">You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</target>
-        <note></note>
+        <target state="translated">Você está renomeando um arquivo. Gostaria também de realizar a renomeação neste projeto de todas as referências para o elemento de código '{0}'?</target>
+        <note />
       </trans-unit>
       <trans-unit id="SaveAs">
         <source>_Save As</source>
-        <target state="new">_Save As</target>
-        <note></note>
+        <target state="translated">_Salvar Como</target>
+        <note />
       </trans-unit>
       <trans-unit id="FailedToWatchProject">
         <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="new">An unexpected error occurred attempting to watch project file '{0}'</target>
-        <note></note>
+        <target state="translated">Ocorreu um erro inesperado ao tentar inspecionar o arquivo de projeto '{0}'</target>
+        <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="new">Framework Assemblies</target>
-        <note></note>
+        <target state="translated">Assemblies do Framework</target>
+        <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="new">COM</target>
-        <note></note>
+        <target state="translated">COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="new">SDK</target>
-        <note></note>
+        <target state="translated">SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="new">Assemblies</target>
-        <note></note>
+        <target state="translated">Assemblies</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesLoadingPostfix">
         <source> (Loading...)</source>
-        <target state="new"> (Loading...)</target>
-        <note></note>
+        <target state="translated"> (Carregando...)</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeErrorsSuffix">
         <source>(Errors - see Error List)</source>
-        <target state="new">(Errors - see Error List)</target>
-        <note></note>
+        <target state="translated">(Erros – confira a Lista de Erros)</target>
+        <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
-        <note></note>
+        <target state="translated">Dependências</target>
+        <note />
       </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
-        <target state="new">Dependency</target>
-        <note></note>
+        <target state="translated">Dependência</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="new">Expected to find item type for rule {0}. The rule file is either missing or malformed.</target>
-        <note></note>
+        <target state="translated">Era esperado encontrar o tipo de item para a regra {0}. O arquivo de regra está ausente ou malformado.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NuGetPackagesNodeName">
         <source>NuGet</source>
-        <target state="new">NuGet</target>
-        <note></note>
+        <target state="translated">NuGet</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="new">Projects</target>
-        <note></note>
+        <target state="translated">Projetos</target>
+        <note />
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="new">Analyzers</target>
-        <note></note>
+        <target state="translated">Analisadores</target>
+        <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">
         <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="new">.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</target>
-        <note></note>
+        <target state="translated">Os projetos .NET Core não têm suporte nessa versão do Visual Studio. O suporte estará disponível em uma atualização posterior.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
-        <target state="new">There aren't any active launch profiles configured for this project.</target>
-        <note></note>
+        <target state="translated">Não há nenhum perfil de inicialização configurado para esse projeto.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile">
         <source>The project doesn't know how to run the profile {0}.</source>
-        <target state="new">The project doesn't know how to run the profile {0}.</target>
-        <note></note>
+        <target state="translated">O projeto não sabe como executar o perfil {0}.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile">
         <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</source>
-        <target state="new">An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</target>
-        <note></note>
+        <target state="translated">É necessário corrigir um erro no arquivo de configurações de inicialização antes de ser possível executar o projeto '{0}'. Veja a lista de erros para obter detalhes.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile2">
         <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</source>
-        <target state="new">An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</target>
-        <note></note>
+        <target state="translated">É necessário corrigir um erro no arquivo de configurações de inicialização antes de ser possível executar o projeto '{0}'. {1}. Veja a lista de erros para obter detalhes.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectNotRunnableDirectly">
         <source>A project with an Output Type of Class Library cannot be started directly.
 
 In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</source>
-        <target state="new">A project with an Output Type of Class Library cannot be started directly.
+        <target state="translated">Um projeto com um Tipo de Saída de Biblioteca de Classes não pode ser iniciado diretamente.
 
-In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</target>
-        <note></note>
+Para depurar esse projeto, adicione um projeto executável a essa solução que faz referência ao projeto da biblioteca. Defina o projeto executável como o projeto de inicialização.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoUrlSpecified">
         <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="new">The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</target>
-        <note></note>
+        <target state="translated">O perfil de depuração '{0}' solicitou que um navegador da Web seja iniciado, mas uma URL não foi especificada.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InvalidAbsoluteUrlSpecified">
         <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="new">The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</target>
-        <note></note>
+        <target state="translated">O perfil de depuração '{0}' solicitou que um navegador da Web seja iniciado, mas a URL especificada não é uma URL absoluta válida. {1}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">
         <source>The debug profile '{0}' is missing the path to the executable to debug.</source>
-        <target state="new">The debug profile '{0}' is missing the path to the executable to debug.</target>
-        <note></note>
+        <target state="translated">O perfil de depuração '{0}' não tem o caminho para a depuração do executável.</target>
+        <note />
       </trans-unit>
       <trans-unit id="DebugExecutableNotFound">
         <source>The debug executable '{0}' specified in the '{1}' debug profile does not exist.</source>
-        <target state="new">The debug executable '{0}' specified in the '{1}' debug profile does not exist.</target>
-        <note></note>
+        <target state="translated">A depuração executável '{0}' especificada no perfil de depuração '{1}' não existe.</target>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
-        <target state="new">The working directory '{0}' specified in the '{1}' debug profile does not exist.</target>
-        <note></note>
+        <target state="translated">O diretório de trabalho '{0}' especificado no perfil de depuração '{1}' não existe.</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoMigratedCSProjFound">
         <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="new">Expected to find migrated cpsroj in {0}, but did not find any.</target>
-        <note></note>
+        <target state="translated">Era esperada a localização do cpsroj migrado no {0}, mas nenhum foi localizado.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailed">
         <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="new">Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</target>
-        <note></note>
+        <target state="translated">Falha ao migrar o projeto XProj {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' foi encerrado com o código de erro {3}.</target>
+        <note />
       </trans-unit>
       <trans-unit id="MigrationBackupFile">
         <source>Backing up {0} to {1}.</source>
-        <target state="new">Backing up {0} to {1}.</target>
-        <note></note>
+        <target state="translated">Fazendo backup de {0} para {1}.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
         <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="new">Failed to migrate XProj project {0}. Could not find project.json at {1}.</target>
-        <note></note>
+        <target state="translated">Falha o migrar o projeto XProj {0}. Não foi possível encontrar o project.json em {1}.</target>
+        <note />
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}.{1}</source>
-        <target state="new">Edit {0}.{1}</target>
+        <source>Edit {0}</source>
+        <target state="needs-review-translation">Editar {0}</target>
         <note></note>
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="new">Unable to run your project. The "RunCommand" property is not defined.</target>
-        <note></note>
+        <target state="translated">Não foi possível executar seu projeto. A propriedade "RunCommand" não está definida.</target>
+        <note />
       </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
-        <target state="new">Editing of multiple target framework is not supported.</target>
+        <target state="translated">Não há suporte para a edição da estrutura de vários destinos.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackCommand">
+        <source>&amp;Pack</source>
+        <target state="new">&amp;Pack</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="PackSelectedProjectCommand">
+        <source>&amp;Pack {0}</source>
+        <target state="new">&amp;Pack {0}</target>
         <note></note>
       </trans-unit>
     </body>

@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Events"
 
         ' Represents the method that handles the Disposed event of a Component.
-        Private Event Disposed(sender As Object, e As System.EventArgs) Implements IComponent.Disposed
+        Private Event Disposed(sender As Object, e As EventArgs) Implements IComponent.Disposed
 
 #End Region
 

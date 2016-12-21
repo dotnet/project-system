@@ -51,8 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
-            ErrorListDetails details;
-            if (!TryExtractErrorListDetails(error.BuildEventArgs, out details) || string.IsNullOrEmpty(details.Code))
+            if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return await NotHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();

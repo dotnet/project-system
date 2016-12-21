@@ -109,6 +109,10 @@
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropPages\PackagePropPage.resx">
+      <DependentUpon>PackagePropPage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="PropPages\AssemblyInfoPropPage.resx">
       <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AssemblyInfoPropPage.resources</LogicalName>
@@ -271,8 +275,15 @@
     <Compile Include="PropPages\ApplicationPropPageVBBase.Designer.vb">
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
     </Compile>
+    <Compile Include="PropPages\AssemblyInfoUtils.vb" />
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\PackagePropPage.Designer.vb">
+      <DependentUpon>PackagePropPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PropPages\PackagePropPage.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\AssemblyInfoPropPage.Designer.vb">
       <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>

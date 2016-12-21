@@ -5,98 +5,98 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AssemblyInfoPropPage.resx" />
       <trans-unit id="TitleLabel.Text">
         <source>&amp;Title:</source>
-        <target state="new">&amp;Title:</target>
-        <note></note>
+        <target state="translated">标题(&amp;T):</target>
+        <note />
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="new">T&amp;rademark:</target>
-        <note></note>
+        <target state="translated">商标(&amp;R):</target>
+        <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <target state="new">C&amp;opyright:</target>
-        <note></note>
+        <target state="translated">版权(&amp;O):</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="new">&amp;Product:</target>
-        <note></note>
+        <target state="translated">产品(&amp;P):</target>
+        <note />
       </trans-unit>
       <trans-unit id="CompanyLabel.Text">
         <source>&amp;Company:</source>
-        <target state="new">&amp;Company:</target>
-        <note></note>
+        <target state="translated">公司(&amp;C):</target>
+        <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="new">&amp;Description:</target>
-        <note></note>
+        <target state="translated">说明(&amp;D):</target>
+        <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="new">&amp;Make assembly COM-Visible</target>
-        <note></note>
+        <target state="translated">使程序集 COM 可见(&amp;M)</target>
+        <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="new">&amp;Neutral language:</target>
-        <note></note>
+        <target state="translated">非特定语言(&amp;N):</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="new">&amp;Assembly version:</target>
-        <note></note>
+        <target state="translated">程序集版本(&amp;A):</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="new">&amp;File version:</target>
-        <note></note>
+        <target state="translated">文件版本(&amp;F):</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
-        <note></note>
+        <target state="translated">主要</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
-        <note></note>
+        <target state="translated">次要</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
-        <note></note>
+        <target state="translated">生成</target>
+        <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
-        <note></note>
+        <target state="translated">修订</target>
+        <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
         <source>&amp;GUID:</source>
-        <target state="new">&amp;GUID:</target>
-        <note></note>
+        <target state="translated">GUID(&amp;G):</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
-        <note></note>
+        <target state="translated">主要</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
-        <note></note>
+        <target state="translated">次要</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
-        <note></note>
+        <target state="translated">生成</target>
+        <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
-        <note></note>
+        <target state="translated">修订</target>
+        <note />
       </trans-unit>
     </body>
   </file>

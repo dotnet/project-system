@@ -62,20 +62,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.ComVisibleCheckBox = New System.Windows.Forms.CheckBox()
             Me.NeutralLanguageLabel = New System.Windows.Forms.Label()
             Me.AssemblyVersionLabel = New System.Windows.Forms.Label()
+            Me.AssemblyVersionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.AssemblyVersionMajorTextBox = New System.Windows.Forms.TextBox()
             Me.AssemblyVersionMinorTextBox = New System.Windows.Forms.TextBox()
             Me.AssemblyVersionBuildTextBox = New System.Windows.Forms.TextBox()
             Me.AssemblyVersionRevisionTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionLabel = New System.Windows.Forms.Label()
+            Me.FileVersionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.FileVersionMajorTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionMinorTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionBuildTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionRevisionTextBox = New System.Windows.Forms.TextBox()
             Me.GuidTextBox = New System.Windows.Forms.TextBox()
-            Me.GuidLabel = New System.Windows.Forms.Label()
             Me.NeutralLanguageComboBox = New System.Windows.Forms.ComboBox()
-            Me.AssemblyVersionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.FileVersionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.GuidLabel = New System.Windows.Forms.Label()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.AssemblyVersionLayoutPanel.SuspendLayout()
             Me.FileVersionLayoutPanel.SuspendLayout()
@@ -163,8 +163,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.FileVersionLabel, 0, 7)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.FileVersionLayoutPanel, 1, 7)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidTextBox, 1, 8)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidLabel, 0, 8)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.NeutralLanguageComboBox, 1, 9)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.GuidLabel, 0, 8)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
             'ComVisibleCheckBox
@@ -182,6 +182,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.AssemblyVersionLabel, "AssemblyVersionLabel")
             Me.AssemblyVersionLabel.Name = "AssemblyVersionLabel"
+            '
+            'AssemblyVersionLayoutPanel
+            '
+            resources.ApplyResources(Me.AssemblyVersionLayoutPanel, "AssemblyVersionLayoutPanel")
+            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionMajorTextBox, 0, 0)
+            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionMinorTextBox, 1, 0)
+            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionBuildTextBox, 2, 0)
+            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionRevisionTextBox, 3, 0)
+            Me.AssemblyVersionLayoutPanel.Name = "AssemblyVersionLayoutPanel"
             '
             'AssemblyVersionMajorTextBox
             '
@@ -208,6 +217,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.FileVersionLabel, "FileVersionLabel")
             Me.FileVersionLabel.Name = "FileVersionLabel"
             '
+            'FileVersionLayoutPanel
+            '
+            resources.ApplyResources(Me.FileVersionLayoutPanel, "FileVersionLayoutPanel")
+            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionMajorTextBox, 0, 0)
+            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionMinorTextBox, 1, 0)
+            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionBuildTextBox, 2, 0)
+            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionRevisionTextBox, 3, 0)
+            Me.FileVersionLayoutPanel.Name = "FileVersionLayoutPanel"
+            '
             'FileVersionMajorTextBox
             '
             resources.ApplyResources(Me.FileVersionMajorTextBox, "FileVersionMajorTextBox")
@@ -233,11 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.GuidTextBox, "GuidTextBox")
             Me.GuidTextBox.Name = "GuidTextBox"
             '
-            'GuidLabel
-            '
-            resources.ApplyResources(Me.GuidLabel, "GuidLabel")
-            Me.GuidLabel.Name = "GuidLabel"
-            '
             'NeutralLanguageComboBox
             '
             Me.NeutralLanguageComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
@@ -247,23 +260,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.NeutralLanguageComboBox.Name = "NeutralLanguageComboBox"
             Me.NeutralLanguageComboBox.Sorted = True
             '
-            'AssemblyVersionLayoutPanel
+            'GuidLabel
             '
-            resources.ApplyResources(Me.AssemblyVersionLayoutPanel, "AssemblyVersionLayoutPanel")
-            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionMajorTextBox, 0, 0)
-            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionMinorTextBox, 1, 0)
-            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionBuildTextBox, 2, 0)
-            Me.AssemblyVersionLayoutPanel.Controls.Add(Me.AssemblyVersionRevisionTextBox, 3, 0)
-            Me.AssemblyVersionLayoutPanel.Name = "AssemblyVersionLayoutPanel"
-            '
-            'FileVersionLayoutPanel
-            '
-            resources.ApplyResources(Me.FileVersionLayoutPanel, "FileVersionLayoutPanel")
-            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionMajorTextBox, 0, 0)
-            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionMinorTextBox, 1, 0)
-            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionBuildTextBox, 2, 0)
-            Me.FileVersionLayoutPanel.Controls.Add(Me.FileVersionRevisionTextBox, 3, 0)
-            Me.FileVersionLayoutPanel.Name = "FileVersionLayoutPanel"
+            resources.ApplyResources(Me.GuidLabel, "GuidLabel")
+            Me.GuidLabel.Name = "GuidLabel"
             '
             'AssemblyInfoPropPage
             '

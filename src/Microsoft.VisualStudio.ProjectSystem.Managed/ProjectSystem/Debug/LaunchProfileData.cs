@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                             {
                                 case JTokenType.Boolean:
                                     {
-                                        bool value = Boolean.Parse(dataProperty.Value.ToString());
+                                        bool value = bool.Parse(dataProperty.Value.ToString());
                                         customSettings.Add(dataProperty.Name, value);
                                         break;
                                     }

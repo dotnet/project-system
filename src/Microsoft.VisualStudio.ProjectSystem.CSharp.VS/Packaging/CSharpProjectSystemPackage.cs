@@ -42,19 +42,19 @@ namespace Microsoft.VisualStudio.Packaging
 
         private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
         private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
-      
+
         private IVsProjectFactory _factory;
 
         public CSharpProjectSystemPackage()
         {
         }
 
-        protected override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new Win32FileSystem());
             _factory.SetSite(this);
             RegisterProjectFactory(_factory);
-            return Task.CompletedTask;
         }
     }
 }

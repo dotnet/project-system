@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.SharedProjectReferenceProvider_string, ReferencePriority.SharedProject)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class SharedProjectReferencesProviderContext : BaseReferenceContextProvider
+    internal class SharedProjectReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SharedProjectReferencesProviderContext"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerSharedProjects);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerSharedProjects);
         }
     }
 }

@@ -225,10 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Now validate the executable path and working directory exist
             ValidateSettings(executable, workingDir, resolvedProfile.Name);
-
-            // Now get final exe and args. CTtrl-F5 wraps exe in cmd prompt
-            string finalExecutable, finalArguments;
-            GetExeAndArguments(useCmdShell, executable, arguments, out finalExecutable, out finalArguments);
+            GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
 
 
             // Apply environment variables.

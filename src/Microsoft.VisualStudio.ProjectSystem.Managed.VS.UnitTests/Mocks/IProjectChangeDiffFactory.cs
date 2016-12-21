@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                    bool? anyChanges = null,
                                                    MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior.HasValue ? mockBehavior.Value : MockBehavior.Default;
+            var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<IProjectChangeDiff>(behavior);
 
             if (addedItems != null)

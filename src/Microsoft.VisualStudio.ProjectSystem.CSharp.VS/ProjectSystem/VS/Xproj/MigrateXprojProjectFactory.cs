@@ -31,9 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory)
         {
             bool success;
-            uint dummy;
             var projectName = Path.GetFileNameWithoutExtension(bstrFileName);
-            var hr = UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out dummy);
+            var hr = UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out uint dummy);
 
             // This implementation can only return S_OK. Throw if it returned something else.
             Verify.HResult(hr);
@@ -106,10 +105,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"");
-            pInfo.UseShellExecute = false;
-            pInfo.RedirectStandardError = true;
-            pInfo.RedirectStandardOutput = true;
+            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"")
+            {
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
             // Skip it.
@@ -200,8 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public void UpgradeProject_CheckOnly(string pszFileName, IVsUpgradeLogger pLogger, out uint pUpgradeRequired, out Guid pguidNewProjectFactory, out uint pUpgradeProjectCapabilityFlags)
         {
-            int upgradeRequired;
-            UpgradeProject_CheckOnly(pszFileName, pLogger, out upgradeRequired, out pguidNewProjectFactory, out pUpgradeProjectCapabilityFlags);
+            UpgradeProject_CheckOnly(pszFileName, pLogger, out int upgradeRequired, out pguidNewProjectFactory, out pUpgradeProjectCapabilityFlags);
             pUpgradeRequired = unchecked((uint)upgradeRequired);
         }
 

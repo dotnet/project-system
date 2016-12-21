@@ -5,51 +5,51 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/DebuggerGeneral.xaml" />
       <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
         <source>Debugger General Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|DebuggerGeneralProperties|Description">
         <source>General Debugger options</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|DisplayName">
         <source>Symbol Search Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebuggerFlavor|Description">
         <source>The debug rule selected as the active debugger.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImageClrType|Description">
         <source>The 'hidden' property we pass to debuggers to let them know if this is a managed project.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|DisplayName">
         <source>Native Image</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|Description">
         <source>The executable image to debug is a fully native application.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|DisplayName">
         <source>Mixed Image</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|Description">
         <source>The executable image to debug is a mixture of native and managed code.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|DisplayName">
         <source>Managed Image</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|Description">
         <source>The executable image to debug is a fully managed application.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

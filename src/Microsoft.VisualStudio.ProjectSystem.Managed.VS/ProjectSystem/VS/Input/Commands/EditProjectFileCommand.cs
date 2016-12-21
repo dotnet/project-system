@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 GetCommandStatusResult.Handled(GetCommandText(node), CommandStatus.Enabled) :
                 GetCommandStatusResult.Unhandled;
 
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, Int64 commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
             if (!ShouldHandle(node)) return false;
 
@@ -94,18 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             // Ensure that the window is not reopened when the solution is closed
             Verify.HResult(_frame.SetProperty((int)__VSFPROPID5.VSFPROPID_DontAutoOpen, true));
-
             // Set up a save listener, that will overwrite the project file on save.
-            IVsHierarchy unusedHier;
-            uint unusedId;
-            uint unusedCookie;
-            IVsPersistDocData docData;
 
-            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, tempProjectPath, out unusedHier, out unusedId, out docData, out unusedCookie);
+            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, tempProjectPath, out IVsHierarchy unusedHier, out uint unusedId, out IVsPersistDocData docData, out uint unusedCookie);
 
             var textBuffer = _editorFactoryService.GetDocumentBuffer((IVsTextBuffer)docData);
-            ITextDocument textDoc;
-            if (!_textDocumentFactoryService.TryGetTextDocument(textBuffer, out textDoc))
+            if (!_textDocumentFactoryService.TryGetTextDocument(textBuffer, out ITextDocument textDoc))
             {
                 return false;
             }

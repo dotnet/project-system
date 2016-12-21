@@ -5,79 +5,79 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/compileproppage2.resx" />
       <trans-unit id="BuildOutputPathButton.AccessibleName">
         <source>Browse...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathButton.Text">
         <source>B&amp;rowse...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
         <source>D&amp;isable all warnings</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BuildEventsButton.Text">
         <source>Build Eve&amp;nts...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
         <source>&amp;Generate XML documentation file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">
         <source>Condition</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="NotificationColumn.HeaderText">
         <source>Notification</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="AdvancedOptionsButton.Text">
         <source>&amp;Advanced Compile Options...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CompileOptionsGroupBox.Text">
         <source>Compile Options:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
         <source>&amp;Target CPU:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

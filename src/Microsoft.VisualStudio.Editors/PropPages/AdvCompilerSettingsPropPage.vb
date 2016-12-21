@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Format baseaddress value into VB hex notation
         ''' </summary>
         Private Function ToHexAddress(BaseAddress As UInt64) As String
-            Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInt32.MaxValue, "Invalid baseaddress value")
+            Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInteger.MaxValue, "Invalid baseaddress value")
 
             Return "&H" & String.Format("{0:X8}", CUInt(BaseAddress))
         End Function
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Try
                     LongValue = CULng(StringValue)
-                    If LongValue < UInt32.MaxValue Then
+                    If LongValue < UInteger.MaxValue Then
                         Return CUInt(LongValue)
                     End If
                 Catch ex As Exception
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Validation method for BaseAddress
         ''' no cancellation, just normalizes value if not an error condition
         ''' </summary>
-        Private Sub BaseAddress_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles DllBaseTextbox.Validating
+        Private Sub BaseAddress_Validating(sender As Object, e As CancelEventArgs) Handles DllBaseTextbox.Validating
             Dim StringValue As String = Trim(Me.DllBaseTextbox.Text)
 
             Const DEFAULT_DLLBASEADDRESS As String = "&H11000000"
@@ -235,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ElseIf String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Dim LongValue As ULong = CULng(StringValue)
-                If LongValue < UInt32.MaxValue Then
+                If LongValue < UInteger.MaxValue Then
                     'Reformat into clean
                     DllBaseTextbox.Text = ToHexAddress(LongValue)
                 Else
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Validation properties
         ''' </summary>
-        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) As ValidationResult
+        Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             If controlData.FormControl Is DllBaseTextbox Then
                 Try
                     GetBaseAddressFromControl(DllBaseTextbox)

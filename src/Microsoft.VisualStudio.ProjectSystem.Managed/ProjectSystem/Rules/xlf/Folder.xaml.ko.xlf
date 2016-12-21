@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Folder.xaml" />
       <trans-unit id="Rule|Folder|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
-        <note></note>
+        <target state="translated">일반</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Folder|Description">
         <source>Folder Properties</source>
-        <target state="new">Folder Properties</target>
-        <note></note>
+        <target state="translated">폴더 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">전체 경로</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the folder</source>
-        <target state="new">Location of the folder</target>
-        <note></note>
+        <target state="translated">폴더의 위치입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
         <source>Folder Name</source>
-        <target state="new">Folder Name</target>
-        <note></note>
+        <target state="translated">폴더 이름</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
         <source>Name of this folder</source>
-        <target state="new">Name of this folder</target>
-        <note></note>
+        <target state="translated">이 폴더의 이름입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

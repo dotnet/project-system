@@ -142,8 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
         {
-            IProjectTree fileNode;
-            parentNode.TryFindImmediateChild(fileName, out fileNode);
+            parentNode.TryFindImmediateChild(fileName, out IProjectTree fileNode);
 
             // The user has created a folder with this name which means we don't have a special file.
             if (fileNode != null && fileNode.IsFolder)

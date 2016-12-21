@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.Editors/SettingsDesigner/TypeEditorHostControl.resx" />
       <trans-unit id="ShowEditorButton.AccessibleName">
         <source>Show type editor</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <remarks></remarks>
             Public ReadOnly Property ValueDefined() As Boolean
                 Get
-                    Return MyBase.Value <> "" AndAlso CInt(System.Convert.ChangeType(Me.Value, TypeCode.Int32)) <> 0
+                    Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Me.Value, TypeCode.Int32)) <> 0
                 End Get
             End Property
 
@@ -480,7 +480,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' </summary>
             ''' <remarks></remarks>
             Protected Overrides Sub OnValueChanged()
-                SwitchSetting = CInt(System.Convert.ChangeType(Value, TypeCode.Int32))
+                SwitchSetting = CInt(Convert.ChangeType(Value, TypeCode.Int32))
             End Sub
 
         End Class
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Trace.WriteLine("  AffectedComponent=" & DebugToString(e.AffectedComponent))
                 Trace.WriteLine("  AffectedProperty=" & DebugToString(e.AffectedProperty))
                 If PDPerf.TraceVerbose Then
-                    Trace.WriteLine(New System.Diagnostics.StackTrace().ToString)
+                    Trace.WriteLine(New StackTrace().ToString)
                 End If
             End If
         End Sub

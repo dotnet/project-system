@@ -5,55 +5,55 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvCompilerSettingsPropPage.resx" />
       <trans-unit id="OptimizationsLabel.Text">
         <source>Optimizations</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">
         <source>Compilation Constants</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="CompileWithDotNetNative.Text">
         <source>Compile with .NET Native toolchain</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableGatekeeperAudit.Text">
         <source>Enable static analysis for .NET Native</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

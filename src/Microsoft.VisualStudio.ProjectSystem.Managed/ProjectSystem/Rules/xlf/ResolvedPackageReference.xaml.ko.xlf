@@ -5,48 +5,48 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedPackageReference.xaml" />
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">패키지</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">패키지</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">설명</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>Dependency description.</source>
-        <target state="new">Dependency description.</target>
-        <note></note>
+        <target state="translated">종속성 설명입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">버전</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of dependency.</source>
-        <target state="new">Version of dependency.</target>
-        <note></note>
+        <target state="translated">종속성의 버전입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="new">The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</target>
-        <note></note>
+        <target state="translated">확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|DisplayName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
-        <note></note>
+        <target state="translated">종속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Dependencies|Description">
         <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
-        <target state="new">A semicolon-delimited list of direct dependencies of current dependency.</target>
-        <note></note>
+        <target state="translated">세미콜론으로 구분한 현재 종속성의 직접 종속성 목록입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

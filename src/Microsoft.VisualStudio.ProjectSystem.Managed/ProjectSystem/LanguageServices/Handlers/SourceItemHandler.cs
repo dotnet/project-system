@@ -121,8 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
         {
-            HashSet<string> sourceFiles;
-            if (_sourceFilesByContext.TryGetValue(context, out sourceFiles) && sourceFiles.Remove(fullPath))
+            if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
                 context.RemoveSourceFile(fullPath);
             }
@@ -130,8 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
         {
-            HashSet<string> sourceFiles;
-            if (!_sourceFilesByContext.TryGetValue(context, out sourceFiles))
+            if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
             {
                 sourceFiles = new HashSet<string>(StringComparers.Paths);
                 _sourceFilesByContext.Add(context, sourceFiles);

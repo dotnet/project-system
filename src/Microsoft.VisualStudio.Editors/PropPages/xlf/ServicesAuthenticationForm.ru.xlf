@@ -5,44 +5,44 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesAuthenticationForm.resx" />
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="new">&amp;Authentication service location:</target>
-        <note></note>
+        <target state="translated">&amp;Расположение службы проверки подлинности:</target>
+        <note />
       </trans-unit>
       <trans-unit id="UserNameLabel.Text">
         <source>&amp;Username:</source>
-        <target state="new">&amp;Username:</target>
-        <note></note>
+        <target state="translated">&amp;Имя пользователя:</target>
+        <note />
       </trans-unit>
       <trans-unit id="PasswordLabel.Text">
         <source>&amp;Password:</source>
-        <target state="new">&amp;Password:</target>
-        <note></note>
+        <target state="translated">&amp;Пароль:</target>
+        <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">
         <source>&amp;Log In</source>
-        <target state="new">&amp;Log In</target>
-        <note></note>
+        <target state="translated">&amp;Войти</target>
+        <note />
       </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>&amp;Skip Login</source>
-        <target state="new">&amp;Skip Login</target>
-        <note></note>
+        <target state="translated">Пропу&amp;стить вход</target>
+        <note />
       </trans-unit>
       <trans-unit id="InfoLabel.Text">
         <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
  
 You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
 </source>
-        <target state="new">To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+        <target state="translated">Чтобы получить веб-параметры для конкретного пользователя, укажите его учетные данные и щелкните "Войти". Чтобы пропустить проверку подлинности и получить веб-параметры для анонимных пользователей, щелкните "Пропустить вход". 
  
-You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+Изменить расположение служб проверки подлинности и веб-параметров можно на странице "Службы" конструктора проектов. 
 </target>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Login</source>
-        <target state="new">Login</target>
-        <note></note>
+        <target state="translated">Вход</target>
+        <note />
       </trans-unit>
     </body>
   </file>

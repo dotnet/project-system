@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.PlatformReferenceProvider_string, ReferencePriority.Platform)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class WinRTReferencesProviderContext : BaseReferenceContextProvider
+    internal class WinRTReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WinRTReferencesProviderContext"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.WinRTReferences + " & " + ProjectCapabilities.SdkReferences +  " & " + ProjectCapability.ReferenceManagerWinRT);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.WinRTReferences + " & " + ProjectCapabilities.SdkReferences +  " & " + ProjectCapability.ReferenceManagerWinRT);
         }
     }
 }

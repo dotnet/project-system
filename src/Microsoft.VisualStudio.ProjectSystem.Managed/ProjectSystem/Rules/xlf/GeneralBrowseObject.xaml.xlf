@@ -5,258 +5,294 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Application Icon</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
         <source>Target Framework Moniker</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly Name</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Root namespace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefaultNamespace|DisplayName">
         <source>Default namespace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target Frameworks</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputTypeEx|DisplayName">
         <source>Output Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
         <source>0</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
         <source>1</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
         <source>2</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
         <source>3</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
         <source>4</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32ResourceFile|DisplayName">
         <source>Win32 Resource File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Define Constants</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform Target</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning Level</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Supress Warning</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Treat warnings as errors</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>Documentation file</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
         <source>Generate serialization assemblies</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
         <source>Auto</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
         <source>On</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
         <source>Off</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
         <source>Language version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Error report</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugInfo|DisplayName">
         <source>Debug Info</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
         <source>CheckForOverflowUnderflow</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugSymbols|DisplayName">
         <source>Debug symbols</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|DisplayName">
         <source>File Alignment</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseAddress|DisplayName">
         <source>Base address</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>Run Post Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>On successful build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReferencePath|DisplayName">
         <source>Reference Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>Project File</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Title|DisplayName">
-        <source>Assembly Title</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Assembly Description</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Company|DisplayName">
-        <source>Company</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|DisplayName">
         <source>Copyright</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Trademark|DisplayName">
-        <source>Trademark</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly Version</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyFileVersion|DisplayName">
-        <source>Assembly FileVersion</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyGuid|DisplayName">
-        <source>Assembly Guid</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|NeutralResourcesLanguage|DisplayName">
-        <source>Neutral Resources Language</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|ComVisible|DisplayName">
-        <source>ComVisible</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate Package On Build</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package Id</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+        <source>Package Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Package Require License Acceptance</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
+        <source>Package License Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Package Project Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
+        <source>Package Icon Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Package Tags</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release Notes</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository Url</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository Type</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+        <source>Assembly Company</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>Assembly File Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
+        <source>Neutral Resources Language</source>
         <note></note>
       </trans-unit>
     </body>

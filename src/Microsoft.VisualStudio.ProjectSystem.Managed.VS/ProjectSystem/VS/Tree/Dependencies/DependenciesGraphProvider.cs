@@ -19,6 +19,8 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
+    using DependencyNodeInfo = System.Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>;
+
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
     /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
@@ -215,31 +217,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return;
                 }
 
-                // All graph nodes generated here will have this unique node id, root node will have it equal to null
-                var nodeIdString = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.File);
-                var nodeId = DependencyNodeId.FromString(nodeIdString);
-                if (nodeId == null)
-                {
-                    continue;
-                }
-
                 var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
                 if (string.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
 
-                var subTreeProvider = await GetSubTreeProviderAsync(graphContext, 
-                                                                    inputGraphNode, 
-                                                                    projectPath,
-                                                                    nodeId).ConfigureAwait(false);
-                if (subTreeProvider == null)
+                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
+                if (nodeInfo == null)
                 {
                     continue;
                 }
 
-                IDependencyNode nodeInfo = subTreeProvider.GetDependencyNode(nodeId);
-                if (nodeInfo == null)
+                var node = nodeInfo.Item1;
+                var subTreeProvider = nodeInfo.Item2;
+
+                // refresh node
+                node = subTreeProvider.GetDependencyNode(node.Id);
+                if (node == null)
                 {
                     continue;
                 }
@@ -247,9 +242,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 using (var scope = new GraphTransactionScope())
                 {
                     inputGraphNode.SetValue(DependenciesGraphSchema.ProviderProperty, subTreeProvider);
-                    inputGraphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, nodeInfo);
+                    inputGraphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, node);
 
-                    if (nodeInfo.HasChildren)
+                    if (node.HasChildren)
                     {
                         inputGraphNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
                     }
@@ -278,33 +273,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var nodeInfo = inputGraphNode.GetValue<IDependencyNode>(
-                                    DependenciesGraphSchema.DependencyNodeProperty);
+                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
                 if (nodeInfo == null)
                 {
                     continue;
                 }
 
-                var subTreeProvider = await GetSubTreeProviderAsync(graphContext, 
-                                                                    inputGraphNode, 
-                                                                    projectPath,
-                                                                    nodeInfo.Id).ConfigureAwait(false);
-                if (subTreeProvider == null)
-                {
-                    continue;
-                }
+                var node = nodeInfo.Item1;
+                var subTreeProvider = nodeInfo.Item2;
 
-                if (!nodeInfo.Flags.Contains(DependencyNode.PreFilledFolderNode))
+                if (!node.Flags.Contains(DependencyNode.PreFilledFolderNode))
                 {
                     // Refresh reference, projectContext may have been changed since the last time CheckChildren was called
-                    nodeInfo = subTreeProvider.GetDependencyNode(nodeInfo.Id);
-                    if (nodeInfo == null)
+                    node = subTreeProvider.GetDependencyNode(node.Id);
+                    if (node == null)
                     {
                         continue;
                     }
                 }
 
-                var nodeChildren = nodeInfo.Children.ToArray();
+                var nodeChildren = node.Children.ToArray();
 
                 // get specific providers for child nodes outside of GraphTransactionScope since it does not support 
                 // await and switch to other thread (exception "scope must be completed by the same thread it is created". 
@@ -334,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             trackChanges = true;
                         }
 
-                        inputGraphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, nodeInfo);
+                        inputGraphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, node);
                         var newGraphNode = AddGraphNode(graphContext, projectPath,
                                                         childSubTreeProvider, inputGraphNode, childNodeToAdd);
 
@@ -429,6 +417,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             graphContext.OnCompleted();
+        }
+
+        /// <summary>
+        /// Gets IDependencyNode and IProjectDependenciesSubTreeProvider associated with given 
+        /// GraphNode. Depending on the request from progression we might already associate 
+        /// an IDependencyNode with the node, so first try to get it right away. If it is not available,
+        /// try to get node id first, then IProjectDependenciesSubTreeProvider and then get node from 
+        /// provider. 
+        /// Note: in normal situation we first receive CheckChildrenAsync call where we associate node 
+        /// with GraphNode and then when GetChildrenAsync is called we already have it. However when user 
+        /// clicks on "Scope To This" context menu we get GetChildrenAsync call right away and need to be 
+        /// able to discover IDependencyNode form the scratch.
+        /// </summary>
+        private async Task<DependencyNodeInfo> GetDependencyNodeInfo(IGraphContext graphContext,
+                                                                     GraphNode inputGraphNode,
+                                                                     string projectPath)
+        {
+            IProjectDependenciesSubTreeProvider subTreeProvider;
+            var node = inputGraphNode.GetValue<IDependencyNode>(
+                                DependenciesGraphSchema.DependencyNodeProperty);
+            if (node == null)
+            {
+                // All graph nodes generated here will have this unique node id, root node will have it equal to null
+                var nodeIdString = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.File);
+                var nodeId = DependencyNodeId.FromString(nodeIdString);
+                if (nodeId == null)
+                {
+                    return null;
+                }
+
+                subTreeProvider = await GetSubTreeProviderAsync(graphContext,
+                                                                inputGraphNode,
+                                                                projectPath,
+                                                                nodeId).ConfigureAwait(false);
+                if (subTreeProvider == null)
+                {
+                    return null;
+                }
+
+                node = subTreeProvider.GetDependencyNode(nodeId);
+                if (node == null)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                subTreeProvider = await GetSubTreeProviderAsync(graphContext,
+                                                                inputGraphNode,
+                                                                projectPath,
+                                                                node.Id).ConfigureAwait(false);
+                if (subTreeProvider == null)
+                {
+                    return null;
+                }
+            }
+
+            return new Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>(node, subTreeProvider);
         }
 
         private void AddNodesToGraphRecursive(IGraphContext graphContext,

@@ -416,7 +416,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             SetDialogFont()
 
             Dim menuCommands As New Collections.ArrayList()
-            Dim cutCmd As New AppDesDesignerFramework.DesignerMenuCommand(_rootDesigner, Microsoft.VisualStudio.Editors.Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
+            Dim cutCmd As New AppDesDesignerFramework.DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
             cutCmd.Enabled = False
             menuCommands.Add(cutCmd)
 
@@ -1623,7 +1623,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return IntPtr.Zero
             End If
 
-            Return AppDesInterop.NativeMethods.GetWindow(PropertyPagePanel.Handle, AppDesInterop.win.GW_CHILD)
+            Return NativeMethods.GetWindow(PropertyPagePanel.Handle, AppDesInterop.win.GW_CHILD)
         End Function
 
 

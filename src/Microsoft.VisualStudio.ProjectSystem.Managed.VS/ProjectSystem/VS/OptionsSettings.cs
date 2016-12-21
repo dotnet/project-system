@@ -3,6 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
+using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _threadingService.VerifyOnUIThread();
 
-            EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
+            DTE dte = _serviceProvider.GetService<DTE, DTE>();
             var props = dte.Properties[category, page];
             if (props != null)
             {

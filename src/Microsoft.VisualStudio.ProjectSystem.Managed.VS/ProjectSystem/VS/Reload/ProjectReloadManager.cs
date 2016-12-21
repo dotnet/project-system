@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// projects which fail the solution level reload, the next time the project file changes.
     /// </summary>
     [Export(typeof(IProjectReloadManager))]
-    [AppliesTo("HandlesOwnReload")] // Replace with ProjectCapabilities.HandlesOwnReload when new CPS is available
+    [AppliesTo(ProjectCapability.HandlesOwnReload)]
     internal class ProjectReloadManager : OnceInitializedOnceDisposedAsync, IProjectReloadManager, IVsFileChangeEvents, 
                                           IVsSolutionEvents, IVsSolutionEvents4
     {
@@ -163,8 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
                 if (solution != null)
                 {
-                    uint cookie;
-                    int hr = solution.AdviseSolutionEvents(this, out cookie);
+                    int hr = solution.AdviseSolutionEvents(this, out uint cookie);
                     SolutionEventsCookie = cookie;
                     System.Diagnostics.Debug.Assert(ErrorHandler.Succeeded(hr) && SolutionEventsCookie != VSConstants.VSCOOKIE_NIL);
                     ErrorHandler.ThrowOnFailure(hr);
@@ -457,12 +456,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             __VSSLNSAVEOPTIONS saveOpts = __VSSLNSAVEOPTIONS.SLNSAVEOPT_SkipDocs;
-
-            IVsHierarchy hier;
-            uint itemid;
-            IVsPersistDocData docData;
-            uint docCookie;
-            VsShellUtilities.GetRDTDocumentInfo(_serviceProvider, project.ProjectFile, out hier, out itemid, out docData, out docCookie);
+            VsShellUtilities.GetRDTDocumentInfo(_serviceProvider, project.ProjectFile, out IVsHierarchy hier, out uint itemid, out IVsPersistDocData docData, out uint docCookie);
             int hr = solution.SaveSolutionElement((uint)saveOpts, project.VsHierarchy, docCookie);
             return hr;
         }
@@ -475,9 +469,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Save as needs to go through IPersistFileFormat
             var persistFileFmt = project.VsHierarchy as IPersistFileFormat;
             var uishell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
-            string newFile;
-            int canceled;
-            int hr = uishell.SaveDocDataToFile(VSSAVEFLAGS.VSSAVE_SaveCopyAs, persistFileFmt, project.ProjectFile, out newFile, out canceled);
+            int hr = uishell.SaveDocDataToFile(VSSAVEFLAGS.VSSAVE_SaveCopyAs, persistFileFmt, project.ProjectFile, out string newFile, out int canceled);
 
             if (ErrorHandler.Succeeded(hr) && canceled == 1)
             {

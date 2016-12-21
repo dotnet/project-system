@@ -60,10 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             ProjectContextUnloaded?.Invoke(this, new ProjectContextEventArgs(context));
-
             // Remove context for the unloaded project from the cache
-            IDependenciesGraphProjectContext removedContext;
-            ProjectContexts.TryRemove(context.ProjectFilePath, out removedContext);
+            ProjectContexts.TryRemove(context.ProjectFilePath, out IDependenciesGraphProjectContext removedContext);
 
             context.ProjectContextChanged -= OnProjectContextChanged;
             context.ProjectContextUnloaded -= OnProjectContextUnloaded;

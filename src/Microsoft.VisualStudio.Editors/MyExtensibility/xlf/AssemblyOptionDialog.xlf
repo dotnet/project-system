@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.Editors/MyExtensibility/AssemblyOptionDialog.resx" />
       <trans-unit id="buttonYes.Text">
         <source>&amp;Yes</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="buttonNo.Text">
         <source>&amp;No</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

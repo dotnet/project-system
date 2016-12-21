@@ -5,83 +5,83 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectReference.xaml" />
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="new">Project Reference</target>
-        <note></note>
+        <target state="translated">Odwołanie do projektu</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Project reference properties</source>
-        <target state="new">Project reference properties</target>
-        <note></note>
+        <target state="translated">Właściwości odwołania do projektu</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="new">Reference Output Assembly</target>
-        <note></note>
+        <target state="translated">Odwołanie do zestawu wyjściowego</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
-        <note></note>
+        <target state="translated">Wartość wskazująca, czy kompilator powinien uwzględniać odwołanie do głównego zestawu wyjściowego projektu docelowego.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="new">Copy Local Satellite Assemblies</target>
-        <note></note>
+        <target state="translated">Kopiuj lokalne zestawy satelickie</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
-        <note></note>
+        <target state="translated">Wskazuje, czy zestawy satelickie docelowego odwołania powinny być kopiowane do katalogu wyjściowego tego projektu.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Project|Description">
         <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="new">the Guid the solution tracks an individual project reference target with</target>
-        <note></note>
+        <target state="translated">identyfikator Guid rozwiązania śledzi docelowe odwołanie pojedynczego projektu za pomocą</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
         <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="new">The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</target>
-        <note></note>
+        <target state="translated">Stary (VS2010 beta) sposób zapisywania identyfikatora Guid rozwiązania śledzącego odwołanie pojedynczego projektu za pomocą</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
-        <note></note>
+        <target state="translated">Kopia lokalna</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
-        <note></note>
+        <target state="translated">Wskazuje, czy odwołanie będzie kopiowane do katalogu wyjściowego.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>IncludeAssets</source>
-        <target state="new">IncludeAssets</target>
-        <note></note>
+        <target state="translated">IncludeAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="new">Assets to include from this reference</target>
-        <note></note>
+        <target state="translated">Zasoby do zawarcia z tego odwołania</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>ExcludeAssets</source>
-        <target state="new">ExcludeAssets</target>
-        <note></note>
+        <target state="translated">ExcludeAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
-        <target state="new">Assets to exclude from this reference</target>
-        <note></note>
+        <target state="translated">Zasoby do wykluczenia z tego odwołania</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>PrivateAssets</source>
-        <target state="new">PrivateAssets</target>
-        <note></note>
+        <target state="translated">PrivateAssets</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
-        <target state="new">Assets that are private in this reference</target>
-        <note></note>
+        <target state="translated">Prywatne zasoby w tym odwołaniu</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -9,17 +9,17 @@
 1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
  
 2. Restart Visual Studio.</source>
-        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+        <target state="translated">Visual Studio n'a pas pu déterminer les autorisations de sécurité d'accès du code (CAS) applicables à votre projet. La cause la plus probable est que votre projet fait référence à un assembly de nom fort qui définit des autorisations personnalisées, mais qu'il n'est pas correctement installé dans le Global Assembly Cache (GAC). Pour corriger cela, essayez ce qui suit :
  
-1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+1. Vérifiez que les autorisations personnalisées qui définissent les assemblys référencés par votre projet ont été installées dans le GAC. Si ces assemblys ont été régénérés ou que leur numéro de version a été modifié, vous devez installer les nouveaux assemblys dans le GAC.
  
-2. Restart Visual Studio.</target>
-        <note></note>
+2. Redémarrez Visual Studio.</target>
+        <note />
       </trans-unit>
       <trans-unit id="InstallOtherFrameworks">
         <source>Install other frameworks...</source>
-        <target state="new">Install other frameworks...</target>
-        <note></note>
+        <target state="translated">Installer d'autres frameworks...</target>
+        <note />
       </trans-unit>
     </body>
   </file>
