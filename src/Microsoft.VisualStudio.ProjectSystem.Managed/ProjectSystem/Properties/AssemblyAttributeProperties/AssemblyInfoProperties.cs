@@ -13,30 +13,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal class AssemblyInfoProperties : DelegatedProjectPropertiesBase
     {
-        private readonly ProjectProperties _ruleBasedProperties;
         private readonly ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider> _attributeValueProviderMap;
 
-        private static readonly ImmutableDictionary<string, string> s_attributeNameMap = new Dictionary<string, string>
+        // See https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/build/Microsoft.NET.GenerateAssemblyInfo.targets
+        internal static readonly ImmutableDictionary<string, (string AttributeName, string GeneratePropertyInProjectFileName)> s_assemblyPropertyInfoMap = new Dictionary<string, (string AttributeName, string GeneratePropertyInProjectFileName)>
         {
-            { "Description",           "System.Reflection.AssemblyDescriptionAttribute" },
-            { "AssemblyCompany",       "System.Reflection.AssemblyCompanyAttribute" },
-            { "Product",               "System.Reflection.AssemblyProductAttribute" },
-            { "Copyright",             "System.Reflection.AssemblyCopyrightAttribute" },
-            { "AssemblyVersion",       "System.Reflection.AssemblyVersionAttribute" },
-            { "PackageVersion",        "System.Reflection.AssemblyInformationalVersionAttribute" },
-            { "FileVersion",           "System.Reflection.AssemblyFileVersionAttribute" },
-            { "NeutralLanguage",       "System.Resources.NeutralResourcesLanguageAttribute" }
+            { "Description",           ( AttributeName: "System.Reflection.AssemblyDescriptionAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyDescriptionAttribute" ) },
+            { "Company",               ( AttributeName: "System.Reflection.AssemblyCompanyAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyCompanyAttribute" ) },
+            { "Product",               ( AttributeName: "System.Reflection.AssemblyProductAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyProductAttribute" ) },
+            { "Copyright",             ( AttributeName: "System.Reflection.AssemblyCopyrightAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyCopyrightAttribute" ) },
+            { "AssemblyVersion",       ( AttributeName: "System.Reflection.AssemblyVersionAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyVersionAttribute" ) },
+            { "Version",               ( AttributeName: "System.Reflection.AssemblyInformationalVersionAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyInformationalVersionAttribute" ) },
+            { "FileVersion",           ( AttributeName: "System.Reflection.AssemblyFileVersionAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyFileVersionAttribute" ) },
+            { "NeutralLanguage",       ( AttributeName: "System.Resources.NeutralResourcesLanguageAttribute", GeneratePropertyInProjectFileName: "GenerateNeutralResourcesLanguageAttribute" ) },
         }.ToImmutableDictionary();
 
         public AssemblyInfoProperties(
             IProjectProperties delegatedProjectProperties,
-            ProjectProperties ruleBasedProperties,
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
             : base (delegatedProjectProperties)
         {
-            _ruleBasedProperties = ruleBasedProperties;
             _attributeValueProviderMap = CreateAttributeValueProviderMap(getActiveProjectId, workspace, threadingService);
         }
 
@@ -46,9 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService threadingService)
         {
             var builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
-            foreach (var kvp in s_attributeNameMap)
+            foreach (var kvp in s_assemblyPropertyInfoMap)
             {
-                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value, getActiveProjectId, workspace, threadingService);
+                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value.AttributeName, getActiveProjectId, workspace, threadingService);
                 builder.Add(kvp.Key, provider);
             }
 
@@ -61,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async override Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                await SaveAssemblyInfoInSourceAsync().ConfigureAwait(true))
+                await GenerateAssemblyInfoPropertyInSourceAsync(propertyName).ConfigureAwait(true))
             {
                 return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
             }
@@ -75,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async override Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                await SaveAssemblyInfoInSourceAsync().ConfigureAwait(true))
+                await GenerateAssemblyInfoPropertyInSourceAsync(propertyName).ConfigureAwait(true))
             {
                 return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
             }
@@ -102,12 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async override Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                await SaveAssemblyInfoInSourceAsync().ConfigureAwait(true))
+                await GenerateAssemblyInfoPropertyInSourceAsync(propertyName).ConfigureAwait(true))
             {
-                if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
-                {
-                    await provider.SetPropertyValueAsync(unevaluatedPropertyValue).ConfigureAwait(true);
-                }
+                SourceAssemblyAttributePropertyValueProvider provider = _attributeValueProviderMap[propertyName];
+                await provider.SetPropertyValueAsync(unevaluatedPropertyValue).ConfigureAwait(true);
             }
             else
             {
@@ -115,11 +111,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
-        private async Task<bool> SaveAssemblyInfoInSourceAsync()
+        private async Task<bool> GenerateAssemblyInfoPropertyInSourceAsync(string propertyName)
         {
-            var configuration = await _ruleBasedProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            var result = await configuration.SaveAssemblyInfoInSource.GetValueAsync().ConfigureAwait(true);
-            return result != null && (bool)result;
+            if (s_assemblyPropertyInfoMap.TryGetValue(propertyName, out var info))
+            {
+                // Generate property in source file if "GenerateAssemblyInfo" is undefined or is false.
+                var propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo").ConfigureAwait(true);
+                if (!Boolean.TryParse(propertyValue, out bool value) || !value)
+                {
+                    return true;
+                }
+
+                // Generate property in source file if GenerateXXX for this specific property is undefined or is false.
+                propertyValue = await base.GetEvaluatedPropertyValueAsync(info.GeneratePropertyInProjectFileName).ConfigureAwait(true);
+                if (!Boolean.TryParse(propertyValue, out value) || !value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

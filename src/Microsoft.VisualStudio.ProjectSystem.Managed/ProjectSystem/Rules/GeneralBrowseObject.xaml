@@ -129,10 +129,10 @@
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PackageVersion" DisplayName="Package Version">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
+    <StringProperty Name="Version" DisplayName="Package Version">
+      <StringProperty.DataSource>
+        <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Authors" DisplayName="Authors">
     <StringProperty.DataSource>
@@ -154,7 +154,7 @@
       <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="AssemblyCompany" DisplayName="Assembly Company" Visible="True">
+  <StringProperty Name="Company" DisplayName="Assembly Company" Visible="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
