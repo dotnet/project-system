@@ -74,6 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         #endregion
 
         #region IVsENCRebuildableProjectCfg2 Implementation
+
+        // Different methods return different VSConstants(instead of VSConstants.E_FAIL) when HostSpecificEditAndContinueService is null.
+        // The out parameters are assigned some default value in these methods. These are not random values.
+        // These are the same values returned by the language service if its EnC component, to which language service delegate Enc Calls,
+        // is null. We are retaining the same behavior here.
+        // Similarly for implementation of IVsENCRebuildableProjectCfg4 as well
         public int BuildForEnc([In, MarshalAs(UnmanagedType.IUnknown)] object pUpdatePE)
         {
             return ((EncInterop.IVsENCRebuildableProjectCfg2)_host.HostSpecificEditAndContinueService)?.BuildForEnc(pUpdatePE) ?? VSConstants.S_OK;
