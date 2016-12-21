@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -19,8 +20,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    using DependencyNodeInfo = System.Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>;
-
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
     /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider",
                    ProjectCapability = "DependenciesTree")]
-    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider
+    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IGraphNodeBrowsablePropertiesProvider
     {
         private readonly GraphCommand ContainsGraphCommand = new GraphCommand(
                 GraphCommandDefinition.Contains,
@@ -123,7 +122,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         T IGraphProvider.GetExtension<T>(GraphObject graphObject, T previous)
         {
+            var graphNode = graphObject as GraphNode;
+            if (graphNode == null)
+            {
+                return null;
+            }
+
+            if (graphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty) == null)
+            {
+                return null;
+            }
+
+            if (typeof(T) == typeof(IGraphNodeBrowsablePropertiesProvider))
+            {
+                return this as T;
+            }
+
             return null;
+        }
+
+        public PropertyDescriptor[] GetBrowsableProperties(GraphNode node)
+        {
+            return new PropertyDescriptor[]
+                {
+                    new NamePropertyDescriptor(node),
+                }; ;
         }
 
         /// <summary>
@@ -223,14 +246,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
-                if (nodeInfo == null)
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
+                if (node == null || subTreeProvider == null)
                 {
                     continue;
                 }
-
-                var node = nodeInfo.Item1;
-                var subTreeProvider = nodeInfo.Item2;
 
                 // refresh node
                 node = subTreeProvider.GetDependencyNode(node.Id);
@@ -273,14 +293,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var nodeInfo = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
-                if (nodeInfo == null)
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
+                if (node == null || subTreeProvider == null)
                 {
                     continue;
                 }
-
-                var node = nodeInfo.Item1;
-                var subTreeProvider = nodeInfo.Item2;
 
                 if (!node.Flags.Contains(DependencyNode.PreFilledFolderNode))
                 {
@@ -430,12 +447,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// clicks on "Scope To This" context menu we get GetChildrenAsync call right away and need to be 
         /// able to discover IDependencyNode form the scratch.
         /// </summary>
-        private async Task<DependencyNodeInfo> GetDependencyNodeInfo(IGraphContext graphContext,
+        private async Task<(IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider)> GetDependencyNodeInfo(IGraphContext graphContext,
                                                                      GraphNode inputGraphNode,
                                                                      string projectPath)
         {
-            IProjectDependenciesSubTreeProvider subTreeProvider;
-            var node = inputGraphNode.GetValue<IDependencyNode>(
+            (IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider) = (null, null);
+
+            node = inputGraphNode.GetValue<IDependencyNode>(
                                 DependenciesGraphSchema.DependencyNodeProperty);
             if (node == null)
             {
@@ -444,7 +462,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var nodeId = DependencyNodeId.FromString(nodeIdString);
                 if (nodeId == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
 
                 subTreeProvider = await GetSubTreeProviderAsync(graphContext,
@@ -453,13 +471,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 nodeId).ConfigureAwait(false);
                 if (subTreeProvider == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
 
                 node = subTreeProvider.GetDependencyNode(nodeId);
                 if (node == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
             }
             else
@@ -470,11 +488,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 node.Id).ConfigureAwait(false);
                 if (subTreeProvider == null)
                 {
-                    return null;
+                    return (node, subTreeProvider);
                 }
             }
 
-            return new Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>(node, subTreeProvider);
+            return (node, subTreeProvider);
         }
 
         private void AddNodesToGraphRecursive(IGraphContext graphContext,
@@ -712,6 +730,74 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private static string GetIconStringName(ImageMoniker icon)
         {
             return $"{icon.Guid.ToString()};{icon.Id}";
+        }
+
+        /// <summary>
+        /// Property descriptor for the 'Name' property.
+        /// Read-only, displays "Name: (Label)"
+        /// </summary>
+        private class NamePropertyDescriptor : PropertyDescriptor
+        {
+            private GraphNode node;
+
+            internal NamePropertyDescriptor(GraphNode node)
+                : base("MyName", CreateAttributes())
+            {
+                this.node = node;
+            }
+
+            private static Attribute[] CreateAttributes()
+            {
+                return new Attribute[]
+                    {
+                        new BrowsableAttribute(true),
+                        CategoryAttribute.Default,
+                        new DisplayNameAttribute("MyName"),
+                        new DescriptionAttribute("MyDescription"),
+                    };
+            }
+
+            public override Type ComponentType
+            {
+                get { return typeof(NamePropertyDescriptor); }
+            }
+
+            public override object GetValue(object component)
+            {
+                return node.Label + "___xxx";
+            }
+
+            public override bool IsReadOnly
+            {
+                get { return true; }
+            }
+
+            public override Type PropertyType
+            {
+                get { return typeof(string); }
+            }
+
+            #region Trivial/unsupported
+
+            public override void ResetValue(object component)
+            {
+            }
+
+            public override void SetValue(object component, object value)
+            {
+            }
+
+            public override bool ShouldSerializeValue(object component)
+            {
+                return false;
+            }
+
+            public override bool CanResetValue(object component)
+            {
+                return false;
+            }
+
+            #endregion Trivial/unsupported
         }
     }
 }
