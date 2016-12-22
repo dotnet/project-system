@@ -32,7 +32,7 @@
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="EditAndContinue"/>
     <ProjectCapability Include="OpenProjectFile"/>
-    <ProjectCapability Include="GenerateNuGetPackage"/>
+    <ProjectCapability Include="Pack"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />

@@ -1,10 +1,11 @@
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
-Imports System.ComponentModel
+Imports Microsoft.VisualStudio.Shell
+Imports VSLangProj110
 Imports VSLangProj80
 Imports VslangProj90
-Imports VSLangProj110
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -676,6 +677,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Populate the target framework combobox
             PopulateTargetFrameworkComboBox(Me.TargetFramework)
+
+            ' Hide the AssemblyInformation button if project supports "Pack" capability, and hence has a Package property page with assembly info properties.
+            If Me.ProjectHierarchy.IsCapabilityMatch("Pack") Then
+                Me.AssemblyInfoButton.Visible = False
+            End If
         End Sub
 
         ''' <summary>
