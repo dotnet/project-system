@@ -45,7 +45,7 @@
     <Compile Include="Mocks\DispatchThread.cs" />
     <Compile Include="Mocks\IFolderManagerFactory.cs" />
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
-    <Compile Include="Mocks\IActiveConfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\ActiveConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
     <Compile Include="Mocks\IFileSystemMock.cs" />
     <Compile Include="Mocks\IProjectFaultHandlerServiceFactory.cs" />

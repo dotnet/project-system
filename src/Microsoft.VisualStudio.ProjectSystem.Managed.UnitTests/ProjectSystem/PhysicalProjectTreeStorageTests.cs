@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => treeService),
                                                   new Lazy<IProjectTreeProvider>(() => treeProvider),
                                                   new Lazy<IFileSystem>(() => fileSystem),
-                                                  IActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
+                                                  ActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
                                                   unconfiguredProject);
         }
     }
