@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.VisualStudio.ProjectSystem.Managed</id>
+    <summary>"Microsoft VisualStudio Managed Project System</summary>
+    <description>
+      Microsoft VisualStudio ProjectSystem for Managed languages Projects
+    </description>
+    <language>en-US</language>
+    <version>2.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
+    <authors>dotnet</authors>
+    <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
+    <dependencies>
+      <dependency id="System.Collections.Immutable" version="1.1.36" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.661-pre-g3d0c752f96" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.dll" target="lib\net46" />
+  </files>
+</package>

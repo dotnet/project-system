@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpOrVisualBasicOpenProjectFile = "(" + CSharp + " | " + VisualBasic + ") & " + OpenProjectFile;
         public const string AppDesigner = nameof(AppDesigner);
         public const string DependenciesTree = nameof(DependenciesTree);
+        public const string EditAndContinue = nameof(EditAndContinue);
         public const string LaunchProfiles = "LaunchProfiles";
         public const string OpenProjectFile = "OpenProjectFile";
         public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;

@@ -50,8 +50,7 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
         </StringProperty.DataSource>
     </StringProperty>
-    
-    <BoolProperty Name="SaveAssemblyInfoInSource" DisplayName="Save assembly info attribute values in source" />
+
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
     <StringProperty Name="AssemblyName" />

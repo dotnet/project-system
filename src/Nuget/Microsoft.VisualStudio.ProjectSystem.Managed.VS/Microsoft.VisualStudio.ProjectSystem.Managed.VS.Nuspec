@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.VisualStudio.ProjectSystem.Managed.VS</id>
+    <summary>"Microsoft VisualStudio Managed Project System VS Components</summary>
+    <description>
+      Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.
+    </description>
+    <language>en-US</language>
+    <version>2.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
+    <authors>dotnet</authors>
+    <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
+    <dependencies>
+      <dependency id="System.Collections.Immutable" version="1.1.36" />
+      <dependency id="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" version="14.1.24720" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.Managed" version="$version$" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.661-pre-g3d0c752f96" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="10.0.30319" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="11.0.61030" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="10.0.30319" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="12.0.30110" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll" target="lib\net46" />
+  </files>
+</package>

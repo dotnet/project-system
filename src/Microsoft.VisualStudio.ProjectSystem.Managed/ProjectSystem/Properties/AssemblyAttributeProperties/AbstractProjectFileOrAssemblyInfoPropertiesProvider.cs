@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
-        private readonly ProjectProperties _projectProperties;
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
         private readonly Func<ProjectId> _getActiveProjectId;
         private readonly Workspace _workspace;
@@ -23,19 +22,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectInstancePropertiesProvider instanceProvider,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject unconfiguredProject,
-            ProjectProperties projectProperties,
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
             : base (delegatedProvider, instanceProvider, unconfiguredProject)
         {
-            Requires.NotNull(projectProperties, nameof(projectProperties));
             Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
             Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));
             Requires.NotNull(workspace, nameof(workspace));
             Requires.NotNull(threadingService, nameof(threadingService));
             
-            _projectProperties = projectProperties;
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
             _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;
@@ -48,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override IProjectProperties GetProperties(string file, string itemType, string item)
         {
             var delegatedProperties = base.GetProperties(file, itemType, item);
-            IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _projectProperties, _getActiveProjectId, _workspace, _threadingService);
+            IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :
                 new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties);

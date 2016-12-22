@@ -30,6 +30,7 @@
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
+    <ProjectCapability Include="EditAndContinue"/>
     <ProjectCapability Include="OpenProjectFile"/>
     <ProjectCapability Include="GenerateNuGetPackage"/>
 
