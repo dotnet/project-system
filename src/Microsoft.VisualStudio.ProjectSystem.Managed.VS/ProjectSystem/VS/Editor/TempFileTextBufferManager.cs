@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         private IVsTextBuffer _textBuffer;
         private ITextDocument _textDocument;
+        private IVsPersistDocData _docData;
 
         [ImportingConstructor]
         public TempFileTextBufferManager(UnconfiguredProject unconfiguredProject,
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             FilePath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
 
             var projectXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
-            _fileSystem.WriteAllText(FilePath, projectXml);
+            _fileSystem.WriteAllText(FilePath, projectXml, await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false));
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -88,7 +89,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             if (!normalizedExistingText.Equals(normalizedProjectText, StringComparison.InvariantCulture))
             {
-                _fileSystem.WriteAllText(FilePath, projectXml);
+                // If the docdata is not dirty, we just update the buffer to avoid the file reload pop-up. Otherwise,
+                // we write to disk, to force the pop-up.
+                Verify.HResult(_docData.IsDocDataDirty(out int isDirty));
+                if (Convert.ToBoolean(isDirty))
+                {
+                    _fileSystem.WriteAllText(FilePath, projectXml, await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(true));
+                }
+                else
+                {
+                    var textSpan = new Span(0, _textDocument.TextBuffer.CurrentSnapshot.Length);
+
+                    // When the buffer is being reset, it's often been set to ReadOnly. We can't update the buffer when it's readonly, so save
+                    // the currently flags and turn off ReadOnly, restoring after we're done. We're on the UI thread, so this is invisible to
+                    // the user.
+                    Verify.HResult(_textBuffer.GetStateFlags(out uint oldFlags));
+                    _textBuffer.SetStateFlags(oldFlags & ~(uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
+
+                    _textDocument.TextBuffer.Replace(textSpan, projectXml);
+
+                    _textBuffer.SetStateFlags(oldFlags);
+                }
             }
         }
 
@@ -129,9 +150,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             await _threadingService.SwitchToUIThread();
             _shellUtilities.GetRDTDocumentInfo(_serviceProvider, FilePath,
-                out IVsHierarchy unusedHier, out uint unusedId, out IVsPersistDocData docData, out uint unusedCookie);
+                out IVsHierarchy unusedHier, out uint unusedId, out _docData, out uint unusedCookie);
 
-            _textBuffer = (IVsTextBuffer)docData;
+            _textBuffer = (IVsTextBuffer)_docData;
 
             var textBufferAdapter = _editorAdaptersService.GetDocumentBuffer(_textBuffer);
             Assumes.True(_textDocumentService.TryGetTextDocument(textBufferAdapter, out _textDocument));
