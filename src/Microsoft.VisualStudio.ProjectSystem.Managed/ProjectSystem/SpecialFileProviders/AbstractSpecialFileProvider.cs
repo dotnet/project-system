@@ -205,15 +205,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             var parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder : rootNode;
 
-            bool fileCreated = false;
-
             var parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
             var specialFilePath = Path.Combine(parentPath, specialFileName);
 
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName).ConfigureAwait(false);
+                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName).ConfigureAwait(false);
             }
             else
             {
@@ -222,7 +220,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
                 {
-                    fileCreated = true;
                     await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
                 }
             }
