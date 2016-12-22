@@ -121,6 +121,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
         {
+            fullPath = _project.MakeRooted(fullPath);
+
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
                 context.RemoveSourceFile(fullPath);
@@ -129,6 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
         {
+            fullPath = _project.MakeRooted(fullPath);
+
             if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
             {
                 sourceFiles = new HashSet<string>(StringComparers.Paths);
