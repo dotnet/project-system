@@ -2,6 +2,7 @@
 
 using System;
 using System.Text;
+using System.Web;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -28,9 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     public class DependencyNodeId : IEquatable<DependencyNodeId>
     {
-        public DependencyNodeId(string providerType, 
-                                string itemSpec = null, 
-                                string itemType = null, 
+        public DependencyNodeId(string providerType,
+                                string itemSpec = null,
+                                string itemType = null,
                                 string uniqueToken = null)
         {
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
@@ -39,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ItemSpec = itemSpec ?? string.Empty;
             ItemType = itemType ?? string.Empty;
             UniqueToken = uniqueToken ?? string.Empty;
+            ContextProject = string.Empty;
         }
 
         /// <summary>
@@ -57,6 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string ItemType { get; private set; }
 
         /// <summary>
+        /// Returns a path to the project this node originates from. If empty current project is assumed.
+        /// </summary>
+        public string ContextProject { get; internal set; }
+
+        /// <summary>
         /// When providers need to make sure that id is unique and itemSpec + itemType is not enough,
         /// they can provide a unique token.
         /// </summary>
@@ -73,7 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return new DependencyNodeId(ProviderType,
                                         ItemSpec?.Replace('/', '\\'),
                                         ItemType,
-                                        UniqueToken?.Replace('/', '\\'));
+                                        UniqueToken?.Replace('/', '\\'))
+            {
+                ContextProject = string.IsNullOrEmpty(ContextProject)
+                                    ? string.Empty
+                                    : ContextProject.Replace('/', '\\')
+            };
         }
 
         public override string ToString()
@@ -96,9 +108,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             builder.Append(";");
             builder.Append(UniqueToken);
 
+            builder.Append(";");
+            builder.Append(ContextProject);
+
             builder.Append("]");
 
-            return builder.ToString();
+            return HttpUtility.UrlEncode(builder.ToString());
         }
 
         public static DependencyNodeId FromString(string serializedId)
@@ -107,6 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 return null;
             }
+
+            serializedId = HttpUtility.UrlDecode(serializedId);
 
             // Note: Progression and CPS needs IProjectTree.FilePath to be valid absolute Uri.
             // Since we pass node IDs through FilePath, we have to serialize IDs as valid 
@@ -137,12 +154,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var itemSpec = parts.Length > 1 ? parts[1] : string.Empty;
             var itemType = parts.Length > 2 ? parts[2] : string.Empty;
             var uniqueToken = parts.Length > 3 ? parts[3] : string.Empty;
+            var contextProject = parts.Length > 4 ? parts[4] : string.Empty;
 
-            var id = new DependencyNodeId(providerType,
+            return new DependencyNodeId(providerType,
                                           itemSpec,
                                           itemType,
-                                          uniqueToken);
-            return id;
+                                          uniqueToken)
+            {
+                ContextProject = contextProject
+            };
         }
 
         public override int GetHashCode()

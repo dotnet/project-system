@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ///     - dependency sub tree nodes
         ///     - dependency sub tree top level nodes
         /// (deeper levels will be graph nodes with additional info, not direct dependencies
-        /// specified in the project file or project.json)
+        /// specified in the project file)
         /// </summary>
         public override IProjectTree FindByPath(IProjectTree root, string path)
         {
@@ -237,13 +237,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            // Note: all dependency nodes file path starts with file:/// to make sure we have 
-            // valid absolute path everytime.
-            if (!path.StartsWith("file:///"))
-            {
-                // just in case if given path is not in uri format
-                path = "file:///" + path.Trim('/');
-            }
+            // Note: all dependency nodes file path starts with file%3a (encoded 'file:'). 
+            // So if given path is not starting with file%3a, we are not responsible for it.
+            //if (!path.StartsWith("file%3a"))
+            //{
+            //    return null;
+            //}
 
             var node = dependenciesNode.FindNodeByPath(path);
             if (node == null)
