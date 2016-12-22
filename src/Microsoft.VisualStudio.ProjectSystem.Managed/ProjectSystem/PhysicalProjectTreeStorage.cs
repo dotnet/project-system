@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal class PhysicalProjectTreeStorage : IPhysicalProjectTreeStorage
     {
         private readonly Lazy<IFileSystem> _fileSystem;
-        private readonly Lazy<IFolderManager> _folderManager;
+        private readonly ActiveConfiguredProject<IFolderManager> _folderManager;
         private readonly Lazy<IProjectTreeService> _treeService;
         private readonly Lazy<IProjectTreeProvider> _treeProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public PhysicalProjectTreeStorage([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService,
                                           [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
-                                          Lazy<IFileSystem> fileSystem, 
-                                          Lazy<IFolderManager> folderManager, 
+                                          Lazy<IFileSystem> fileSystem,
+                                          ActiveConfiguredProject<IFolderManager> folderManager,
                                           UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(fileSystem, nameof(fileSystem));
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _treeService = treeService;
             _treeProvider = treeProvider;
             _fileSystem = fileSystem;
-            _folderManager = folderManager;            
+            _folderManager = folderManager;
             _unconfiguredProject = unconfiguredProject;
         }
 
