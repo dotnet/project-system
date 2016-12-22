@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    public class EnvironmentDataGridTemplateColumn : DataGridTemplateColumn
+    internal class EnvironmentDataGridTemplateColumn : DataGridTemplateColumn
     {
         protected override object PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
         {

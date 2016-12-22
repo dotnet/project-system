@@ -51,6 +51,7 @@
     <Compile Include="Mocks\IProjectFaultHandlerServiceFactory.cs" />
     <Compile Include="Mocks\IProjectServicesFactory.cs" />
     <Compile Include="Mocks\IProjectServiceFactory.cs" />
+    <Compile Include="Mocks\IPhysicalProjectTreeStorageFactory.cs" />
     <Compile Include="Mocks\ISourceCodeControlIntegrationFactory.cs" />
     <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
     <Compile Include="Mocks\IFileSystemFactory.cs" />

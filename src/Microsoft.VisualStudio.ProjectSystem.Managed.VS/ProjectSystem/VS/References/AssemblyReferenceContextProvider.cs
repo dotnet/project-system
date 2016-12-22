@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.AssemblyReferenceProvider_string, ReferencePriority.Assembly)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class AssemblyReferencesProviderContext : BaseReferenceContextProvider
+    internal class AssemblyReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyReferencesProviderContext"/> class.

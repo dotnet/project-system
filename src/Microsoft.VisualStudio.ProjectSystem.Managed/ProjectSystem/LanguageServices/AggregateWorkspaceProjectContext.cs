@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
@@ -49,6 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectsByTargetFramework.Values;
 
         public IWorkspaceProjectContext ActiveProjectContext => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
+
+        public object ENCProjectConfig => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
         public bool IsCrossTargeting => _activeTargetFramework.Length > 0;
         

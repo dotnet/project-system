@@ -12,19 +12,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IFolderManager> _folderManager;
-        private readonly Lazy<IPhysicalProjectTree> _projectTree;
+        private readonly Lazy<IProjectTreeService> _treeService;
+        private readonly Lazy<IProjectTreeProvider> _treeProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public PhysicalProjectTreeStorage(Lazy<IPhysicalProjectTree> projectTree, Lazy<IFileSystem> fileSystem, Lazy<IFolderManager> folderManager, UnconfiguredProject unconfiguredProject)
+        public PhysicalProjectTreeStorage([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService,
+                                          [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
+                                          Lazy<IFileSystem> fileSystem, 
+                                          Lazy<IFolderManager> folderManager, 
+                                          UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(fileSystem, nameof(fileSystem));
             Requires.NotNull(folderManager, nameof(folderManager));
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(treeService, nameof(treeService));
+            Requires.NotNull(treeProvider, nameof(treeProvider));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
+            _treeService = treeService;
+            _treeProvider = treeProvider;
             _fileSystem = fileSystem;
-            _folderManager = folderManager;
-            _projectTree = projectTree;
+            _folderManager = folderManager;            
             _unconfiguredProject = unconfiguredProject;
         }
 
@@ -32,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            if (_projectTree.Value.CurrentTree == null)
+            if (_treeService.Value.CurrentTree == null)
                 throw new InvalidOperationException("Physical project tree has not yet been published.");
 
             string fullPath = _unconfiguredProject.MakeRooted(path);
@@ -47,11 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false)
                                   .ConfigureAwait(false);
 
-            IPhysicalProjectTree projectTree = _projectTree.Value;
-            await projectTree.TreeService.PublishLatestTreeAsync()
-                                         .ConfigureAwait(false);
+            await _treeService.Value.PublishLatestTreeAsync()
+                                    .ConfigureAwait(false);
 
-            return projectTree.TreeProvider.FindByPath(projectTree.CurrentTree, fullPath);
+            return _treeProvider.Value.FindByPath(_treeService.Value.CurrentTree.Tree, fullPath);
         }
     }
 }
