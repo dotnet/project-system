@@ -1,8 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -31,46 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 projectXml.Save(stringWriter);
                 return stringWriter.ToString();
-            }
-        }
-
-        public async Task SubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler)
-        {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                xmlProject.ProjectCollection.ProjectXmlChanged += handler;
-            }
-        }
-
-        public async Task UnsubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler)
-        {
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                var xmlProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                xmlProject.ProjectCollection.ProjectXmlChanged -= handler;
-            }
-        }
-
-        public async Task RunLockedAsync(bool writeLock, Func<Task> task)
-        {
-            if (writeLock)
-            {
-                using (await _projectLockService.WriteLockAsync())
-                {
-                    await task().ConfigureAwait(true);
-                }
-            }
-            else
-            {
-                using (await _projectLockService.ReadLockAsync())
-                {
-                    await task().ConfigureAwait(true);
-                }
             }
         }
 

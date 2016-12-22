@@ -20,23 +20,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// Saves the given xml to the project file.
         /// </summary>
         Task SaveProjectXmlAsync(string toSave);
-
-        /// <summary>
-        /// Registers an EventHandler for the ProjectXmlChanged event on the msbuild model for the given unconfigured project.
-        /// </summary>
-        Task SubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler);
-
-        /// <summary>
-        /// Removes an EventHandler for the ProjectXmlChanged event on the msbuild model for the given unconfigured project.
-        /// </summary>
-        /// <param name="unconfiguredProject"></param>
-        /// <param name="handler"></param>
-        /// <returns></returns>
-        Task UnsubscribeProjectXmlChangedEventAsync(UnconfiguredProject unconfiguredProject, EventHandler<ProjectXmlChangedEventArgs> handler);
-
-        /// <summary>
-        /// Runs a given task inside either a read lock or a write lock.
-        /// </summary>
-        Task RunLockedAsync(bool writeLock, Func<Task> task);
     }
 }
