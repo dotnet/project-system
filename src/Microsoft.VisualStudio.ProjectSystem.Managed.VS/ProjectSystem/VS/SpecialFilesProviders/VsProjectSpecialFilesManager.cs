@@ -1,0 +1,39 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
+using Microsoft.VisualStudio.Shell.Interop;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
+{
+    /// <summary>
+    ///     Provides an implementation of <see cref="ISpecialFilesManager"/> that wraps <see cref="IVsProjectSpecialFiles"/>
+    /// </summary>
+    internal class VsProjectSpecialFilesManager : ISpecialFilesManager
+    {
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+
+        public VsProjectSpecialFilesManager(IUnconfiguredProjectVsServices projectVsServices)
+        {
+            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+
+            _projectVsServices = projectVsServices;
+        }
+
+        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags)
+        {
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            IVsProjectSpecialFiles files = (IVsProjectSpecialFiles)_projectVsServices.VsHierarchy;
+
+            HResult result = files.GetFile((int)fileId, (uint)flags, out uint itemId, out string fileName);
+            if (result.IsOK)
+                return fileName;
+
+            if (result.IsNotImplemented)
+                return null;    // Not handled
+
+            throw result.Exception;
+        }
+    }
+}
