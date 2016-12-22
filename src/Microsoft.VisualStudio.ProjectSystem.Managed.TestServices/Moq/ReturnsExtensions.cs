@@ -28,11 +28,23 @@ namespace Moq
             return Returns(valueFunction, (object)action);
         }
 
+        public static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn, T1, TOut1, TOut2, TResult>(this IReturns<TMock, TReturn> valueFunction, FuncWithOut<T1, TOut1, TOut2, TResult> action)
+            where TMock : class
+        {
+            return Returns(valueFunction, (object)action);
+        }
+
+        public static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn, T1, T2, TOut1, TOut2, TResult>(this IReturns<TMock, TReturn> valueFunction, FuncWithOut<T1, T2, TOut1, TOut2, TResult> action)
+            where TMock : class
+        {
+            return Returns(valueFunction, (object)action);
+        }
+
         private static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn>(IReturns<TMock, TReturn> valueFunction, object action)
             where TMock : class
         {
             valueFunction.GetType()
-                         .InvokeMember("SetReturnDelegate", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public |  BindingFlags.Instance, (Binder)null, valueFunction, new[] { action });
+                         .InvokeMember("SetReturnDelegate", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, (Binder)null, valueFunction, new[] { action });
 
             return (IReturnsThrows<TMock, TReturn>)valueFunction;
         }
