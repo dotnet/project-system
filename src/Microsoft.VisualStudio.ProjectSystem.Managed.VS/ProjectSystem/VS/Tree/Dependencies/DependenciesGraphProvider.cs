@@ -311,6 +311,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 var nodeChildren = node.Children.ToArray();
 
+                if (!string.IsNullOrEmpty(node.Id.ContextProject))
+                {
+                    projectPath = node.Id.ContextProject;
+                }
+
                 // get specific providers for child nodes outside of GraphTransactionScope since it does not support 
                 // await and switch to other thread (exception "scope must be completed by the same thread it is created". 
                 var childrenSubTreeProviders = new List<IProjectDependenciesSubTreeProvider>();
@@ -560,10 +565,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var projectPath = GetPartialValueFromGraphNodeId(inputGraphNode.Id, CodeGraphNodeIdName.Assembly);
                 bool shouldProcess = !string.IsNullOrEmpty(projectPath) &&
                                      projectPath.Equals(updatedProjectContext.ProjectFilePath, StringComparison.OrdinalIgnoreCase);
+                var contextProject = updatedProjectContext.ProjectFilePath;
                 if (!shouldProcess)
                 {
-                    shouldProcess = !string.IsNullOrEmpty(existingNodeInfo.Id.UniqueToken) &&
-                                     existingNodeInfo.Id.UniqueToken.Equals(updatedProjectContext.ProjectFilePath, 
+                    shouldProcess = !string.IsNullOrEmpty(existingNodeInfo.Id.ContextProject) &&
+                                     existingNodeInfo.Id.ContextProject.Equals(updatedProjectContext.ProjectFilePath, 
                                                                     StringComparison.OrdinalIgnoreCase);
                 }
 
@@ -602,13 +608,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     foreach (var nodeToRemove in nodesToRemove)
                     {
-                        RemoveGraphNode(graphContext, projectPath, nodeToRemove);
+                        RemoveGraphNode(graphContext, contextProject, nodeToRemove);
                         existingNodeInfo.RemoveChild(nodeToRemove);
                     }
 
                     foreach (var nodeToAdd in nodesToAdd)
                     {
-                        AddGraphNode(graphContext, projectPath, subTreeProvider, inputGraphNode, nodeToAdd);
+                        AddGraphNode(graphContext, contextProject, null, inputGraphNode, nodeToAdd);
                         existingNodeInfo.AddChild(nodeToAdd);
                     }
 
@@ -634,7 +640,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (subTreeProvider == null)
             {                
                 var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
-                subTreeProvider = projectContext.GetProvider(nodeId.ProviderType);
+                if (projectContext != null)
+                {
+                    subTreeProvider = projectContext.GetProvider(nodeId.ProviderType);
+                }
             }
 
             if (subTreeProvider != null)
