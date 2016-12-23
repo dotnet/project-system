@@ -74,6 +74,7 @@
     <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
+    <Compile Include="Mocks\IWorkspaceProjectContextFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandlerTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorageTests.cs" />
     <Compile Include="ProjectSystem\Properties\AssemblyInfoPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProviderTests.cs" />
