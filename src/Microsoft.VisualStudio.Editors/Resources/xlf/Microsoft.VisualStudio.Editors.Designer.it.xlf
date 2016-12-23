@@ -857,7 +857,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="PPG_Reference_RemoveImportsFailUnexpected">
         <source>Adding or removing '{0}' as a project import failed because of an unexpected error from the project system.  The error returned was:  '{1}'.</source>
-        <target state="translated">Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto.  Errore restituito: '{1}'.</target>
+        <target state="translated">Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto. Errore restituito: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Reference_AddWebReference">
@@ -1032,7 +1032,7 @@ Errore:</target>
       <trans-unit id="APPDES_ErrorLoading_Msg">
         <source>An error occurred trying to load the project properties window.  Close the window and try again.
 {0}</source>
-        <target state="translated">Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto.  Chiudere la finestra e riprovare.
+        <target state="translated">Si è verificato un errore durante il tentativo di caricamento della finestra delle proprietà del progetto. Chiudere la finestra e riprovare.
 {0}</target>
         <note />
       </trans-unit>
@@ -1063,7 +1063,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <target state="translated">Il file '{0}' è già aperto in un editor.  Chiudere il file e riprovare.</target>
+        <target state="translated">Il file '{0}' è già aperto in un editor. Chiudere il file e riprovare.</target>
         <note />
       </trans-unit>
       <trans-unit id="APPDES_OverflowButton_AccessibilityName">
@@ -1163,7 +1163,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="DFX_DesignerReadOnlyCaption">
         <source>{0} [Read Only]</source>
-        <target state="translated">{0} [Sola lettura]</target>
+        <target state="translated">{0} [Di sola lettura]</target>
         <note>Attach a readonly to the designer caption {0}=Designer caption</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFound">
@@ -1318,7 +1318,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="RSE_Err_CantFindResourceFile_1Arg">
         <source>Cannot find the file '{0}'.  It may have been moved or deleted.</source>
-        <target state="translated">Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</target>
+        <target state="translated">Il file '{0}' non è stato trovato. Potrebbe essere stato spostato o eliminato.</target>
         <note>{0} = file name and path</note>
       </trans-unit>
       <trans-unit id="RSE_Err_LoadingResource_1Arg">
@@ -1368,7 +1368,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'.  Rimuovere o sostituire tali caratteri e riprovare.</target>
+        <target state="translated">Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'. Rimuovere o sostituire tali caratteri e riprovare.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1415,9 +1415,9 @@ Errore:</target>
         <source>You are trying to edit a resource file that is a part of another project item (such as a form or a control).  Editing this item could corrupt the project item, and you will have to recover it by hand.  In addition, changes made to this resource file may be lost if further changes are made to the project item.
 
 Do you really want to edit this file?</source>
-        <target state="translated">Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo.  La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale.  Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perdute se si effettuano altre modifiche all'elemento del progetto.
+        <target state="translated">Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo. La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale. Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perse se si apportano altre modifiche all'elemento del progetto.
 
-Modificare il file?</target>
+Modificare questo file?</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantAddUnsupportedResource_1Arg">
@@ -1437,7 +1437,7 @@ Modificare il file?</target>
       </trans-unit>
       <trans-unit id="RSE_Err_CantSaveResouce_1Arg">
         <source>The resource item(s) {0} cannot be saved correctly.  The item(s) will be discarded.</source>
-        <target state="translated">Non è possibile salvare correttamente gli elementi risorsa {0}.  Gli elementi verranno ignorati.</target>
+        <target state="translated">Non è possibile salvare correttamente gli elementi risorsa {0}. Gli elementi verranno ignorati.</target>
         <note>{0} - name list of the resource</note>
       </trans-unit>
       <trans-unit id="RSE_Err_Name">
@@ -1819,7 +1819,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Dlg_ReplaceExistingFile">
         <source>The file '{0}' already exists.  Do you want to replace it?</source>
-        <target state="translated">Il file '{0}' esiste già.  Sostituirlo?</target>
+        <target state="translated">Il file '{0}' esiste già. Sostituirlo?</target>
         <note>{0} = full file path and name</note>
       </trans-unit>
       <trans-unit id="RSE_Dlg_ReplaceExistingFiles">
@@ -1854,7 +1854,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Task_NonrecommendedName_1Arg">
         <source>Resource '{0}' has a name that is not recommended and that may cause compilation errors in your code.  Please choose another name.</source>
-        <target state="translated">È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice.  Scegliere un altro nome.</target>
+        <target state="translated">È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice. Scegliere un altro nome.</target>
         <note>{0} = resource name that had the error</note>
       </trans-unit>
       <trans-unit id="RSE_Task_CantChangeCustomToolOrNamespace">
@@ -1951,7 +1951,7 @@ CONSIDER: get this from CodeDom</note>
         <source>Unable to add a '{0}' folder to this project.
 
 {1}</source>
-        <target state="translated">Non è possibile aggiungere una cartella '{0}' al progetto.
+        <target state="translated">Non è possibile aggiungere una cartella '{0}' a questo progetto.
 
 {1}</target>
         <note>{0} = name of folder trying to add (by default, this will be "Resources"), {1} = additional error information</note>
@@ -1972,7 +1972,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RFS_QueryReplaceFile_File">
         <source>A file with the name '{0}' already exists.  Do you want to replace it?</source>
-        <target state="translated">Esiste già un file denominato '{0}'.  Sostituirlo?</target>
+        <target state="translated">Esiste già un file denominato '{0}'. Sostituirlo?</target>
         <note>{0} = file name and path</note>
       </trans-unit>
       <trans-unit id="RFS_QueryReplaceFileTitle_Editor">
@@ -1982,7 +1982,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RFS_QueryRemoveLink_Folder_Link">
         <source>There is already a linked file with the name "{0}" in the project folder "{1}".  Do you want to remove it?</source>
-        <target state="translated">Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}".  Rimuoverlo?</target>
+        <target state="translated">Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}". Rimuoverlo?</target>
         <note>{0} = file name (no path), {1} = Path of resource folder</note>
       </trans-unit>
       <trans-unit id="RFS_QueryRemoveLinkTitle_Editor">
@@ -1992,7 +1992,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RFS_FindNotFound_File">
         <source>Cannot find the file '{0}'.  It may have been moved or deleted.</source>
-        <target state="translated">Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</target>
+        <target state="translated">Il file '{0}' non è stato trovato. Potrebbe essere stato spostato o eliminato.</target>
         <note>{0} = file name and path</note>
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_ConnectionStringType">
@@ -2120,10 +2120,10 @@ CONSIDER: get this from CodeDom</note>
 The new value in the app.config file is '{1}'
 
 Do you want to update the value in the .settings file?</source>
-        <target state="translated">Il valore corrente nel file .settings è '{0}'
+        <target state="translated">Il valore corrente nel file con estensione settings è '{0}'
 Il nuovo valore nel file app.config è '{1}'
 
-Aggiornare il valore nel file .settings?</target>
+Aggiornare il valore nel file con estensione settings?</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_FailedToLoadAppConfigValues">
@@ -2346,7 +2346,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="General_MissingService">
         <source>Unable to find service '{0}'.  Ensure that the application is installed correctly.</source>
-        <target state="translated">Il servizio '{0}' non è stato trovato.  Assicurarsi che l'applicazione sia installata correttamente.</target>
+        <target state="translated">Il servizio '{0}' non è stato trovato. Assicurarsi che l'applicazione sia installata correttamente.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
       <trans-unit id="PPG_Application_RootNamespaceJSharp">
@@ -2421,7 +2421,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ErrorControlMessage_1Arg">
         <source>An error occurred trying to load the application definition file for this project.  The file '{0}' could not be parsed.  Please edit the file in the XAML editor to fix the error.</source>
-        <target state="translated">Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto.  Non è stato possibile analizzare il file '{0}'.  Per correggere l'errore, modificare il file nell'editor XAML.</target>
+        <target state="translated">Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto. Non è stato possibile analizzare il file '{0}'. Per correggere l'errore, modificare il file nell'editor XAML.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_CantReadPropertyValue">
@@ -2481,7 +2481,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelText">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services. To enable client application services, you must set the Target Framework for your application to the full version of the .NET Framework 3.5 or later.  </source>
-        <target state="translated">I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Per abilitare i servizi dell'applicazione client, è necessario impostare la versione di .NET Framework di destinazione dell'applicazione sulla versione completa di .NET Framework 3.5 o versione successiva.  </target>
+        <target state="translated">I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Per abilitare i servizi dell'applicazione client, è necessario impostare la versione di .NET Framework di destinazione dell'applicazione sulla versione completa di .NET Framework 3.5 o versione successiva. </target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelLink">
@@ -2556,7 +2556,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="SD_ERR_UnreferencedTypeNameList_1Arg">
         <source>The following type names were not understood: '{0}'.  Make sure you have references to these types.</source>
-        <target state="translated">I nomi di tipi seguenti non sono stati riconosciuti: '{0}'.  Assicurarsi che siano disponibili riferimenti a questi tipi.</target>
+        <target state="translated">I nomi di tipi seguenti non sono stati riconosciuti: '{0}'. Assicurarsi che siano disponibili riferimenti a questi tipi.</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_ERR_DuplicateNameList_1Arg">
@@ -2711,13 +2711,13 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_PackageTitle">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Pacchetto</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Versione del pacchetto</target>
+        <note />
       </trans-unit>
     </body>
   </file>

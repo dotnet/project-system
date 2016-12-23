@@ -2711,13 +2711,13 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_PackageTitle">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Versión de paquete</target>
+        <note />
       </trans-unit>
     </body>
   </file>

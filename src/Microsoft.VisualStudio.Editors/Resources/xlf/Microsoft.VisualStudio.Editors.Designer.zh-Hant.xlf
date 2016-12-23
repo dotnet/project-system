@@ -2711,13 +2711,13 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="PPG_PackageTitle">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">套件</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">套件版本</target>
+        <note />
       </trans-unit>
     </body>
   </file>

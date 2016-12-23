@@ -239,8 +239,8 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">編輯 {0}</target>
-        <note></note>
+        <target state="translated">編輯 {0}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -254,13 +254,13 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="new">&amp;Pack</target>
-        <note></note>
+        <target state="translated">封裝(&amp;P)</target>
+        <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="new">&amp;Pack {0}</target>
-        <note></note>
+        <target state="translated">封裝 {0}(&amp;P)</target>
+        <note />
       </trans-unit>
     </body>
   </file>
