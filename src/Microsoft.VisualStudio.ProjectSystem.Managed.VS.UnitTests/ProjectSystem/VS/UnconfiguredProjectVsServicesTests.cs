@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_NullAsCommonSevices_ThrowsArgumentNull()
         {
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             Assert.Throws<ArgumentNullException>("commonServices", () => {
                 new UnconfiguredProjectVsServices((IUnconfiguredProjectCommonServices)null);
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var project = IUnconfiguredProjectFactory.Create(hostObject:hierarchy);
+            var project = UnconfiguredProjectFactory.Create(hostObject:hierarchy);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var vsServices = CreateInstance(commonServices);
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Constructor_ValueAsUnconfiguedProject_SetsVsProjectToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var project = IUnconfiguredProjectFactory.Create(hostObject: hierarchy);
+            var project = UnconfiguredProjectFactory.Create(hostObject: hierarchy);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var vsServices = CreateInstance(commonServices);
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsProjectToCommonServicesProject()
         {
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var vsServices = CreateInstance(commonServices);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Constructor_ValueAsCommonServices_SetsThreadingServiceToCommonServicesThreadingService()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService: threadingService);
 
             var vsServices = CreateInstance(commonServices);
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectProjectToCommonServicesActiveConfiguredProject()
         {
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(configuredProject: projectProperties.ConfiguredProject);
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectPropertiesToCommonServicesActiveConfiguredProjectProperties()
         {
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 

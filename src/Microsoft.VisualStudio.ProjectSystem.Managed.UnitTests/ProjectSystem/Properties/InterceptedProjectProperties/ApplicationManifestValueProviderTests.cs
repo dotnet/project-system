@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("", null, "DefaultManifest")]
         public async Task GetApplicationManifest(string appManifestPropValue, string noManifestValue, string expectedValue)
         {
-            var provider = new ApplicationManifestValueProvider(IUnconfiguredProjectFactory.Create());
+            var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create());
             var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("NoWin32Manifest", noManifestValue);
 
             var appManifestValue = await provider.OnGetEvaluatedPropertyValueAsync(appManifestPropValue, defaultProperties);
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"C:\projectdir\foo.man", null, null, null, null)]
         public async Task SetApplicationManifest(string appManifestPropValue, string noManifestPropValue, string valueToSet, string expectedAppManifestValue, string expectedNoManifestValue)
         {
-            var provider = new ApplicationManifestValueProvider(IUnconfiguredProjectFactory.Create(filePath:@"C:\projectdir\proj.proj"));
+            var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create(filePath:@"C:\projectdir\proj.proj"));
             var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string>
                                                                                             {
                                                                                                 { "ApplicationManifest", appManifestPropValue },

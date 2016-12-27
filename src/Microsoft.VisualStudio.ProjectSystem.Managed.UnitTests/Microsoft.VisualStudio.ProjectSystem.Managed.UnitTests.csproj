@@ -81,7 +81,7 @@
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
     <Compile Include="Mocks\IProjectImageProviderFactory.cs" />
     <Compile Include="Mocks\IProjectTreeProviderFactory.cs" />
-    <Compile Include="Mocks\IUnconfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\UnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />

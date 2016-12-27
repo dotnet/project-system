@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
-            var project = IUnconfiguredProjectFactory.Create(null, null, _ProjectFile);
+            var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData() {

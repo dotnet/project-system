@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void EditProjectFileCommand_NullModel_Throws()
         {
-            Assert.Throws<ArgumentNullException>("editorState", () => new EditProjectFileCommand(IUnconfiguredProjectFactory.Create(), null));
+            Assert.Throws<ArgumentNullException>("editorState", () => new EditProjectFileCommand(UnconfiguredProjectFactory.Create(), null));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
 
             var command = new EditProjectFileCommand(unconfiguredProject, IEditorStateModelFactory.Create());
 
@@ -56,7 +56,7 @@ Root (flags: {ProjectRoot})
     Properties ()
 ");
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -76,7 +76,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
             var editorStateModel = IEditorStateModelFactory.Create();
 
             var command = new EditProjectFileCommand(unconfiguredProject, editorStateModel);
@@ -94,7 +94,7 @@ Root (flags: {ProjectRoot})
     Properties ()
 ");
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 

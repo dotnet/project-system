@@ -625,7 +625,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 }";
 
         private UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
-            IUnconfiguredProjectFactory.Create(filePath: projectFullPath);        
+            UnconfiguredProjectFactory.Create(filePath: projectFullPath);        
 
         private ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
             params string[] jsonStrings) =>

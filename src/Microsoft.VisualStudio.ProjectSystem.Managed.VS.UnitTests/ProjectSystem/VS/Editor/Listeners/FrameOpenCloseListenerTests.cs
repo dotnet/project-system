@@ -15,21 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         public void FrameOpenCloseListener_NullServiceProvider_Throws()
         {
             Assert.Throws<ArgumentNullException>("helper", () => new FrameOpenCloseListener(null, IEditorStateModelFactory.Create(),
-                IProjectThreadingServiceFactory.Create(), IUnconfiguredProjectFactory.Create()));
+                IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create()));
         }
 
         [Fact]
         public void FrameOpenCloseListener_NullEditorModel_Throws()
         {
             Assert.Throws<ArgumentNullException>("editorModel", () => new FrameOpenCloseListener(IServiceProviderFactory.Create(), null,
-                IProjectThreadingServiceFactory.Create(), IUnconfiguredProjectFactory.Create()));
+                IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create()));
         }
 
         [Fact]
         public void FrameOpenCloseListener_NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new FrameOpenCloseListener(IServiceProviderFactory.Create(),
-                IEditorStateModelFactory.Create(), null, IUnconfiguredProjectFactory.Create()));
+                IEditorStateModelFactory.Create(), null, UnconfiguredProjectFactory.Create()));
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             await Assert.ThrowsAsync<ArgumentNullException>("frame", async () =>
             {
                 var listener = new FrameOpenCloseListener(IServiceProviderFactory.Create(), IEditorStateModelFactory.Create(),
-                    IProjectThreadingServiceFactory.Create(), IUnconfiguredProjectFactory.Create());
+                    IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create());
                 await listener.InitializeEventsAsync(null);
             });
         }
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var listener = new FrameOpenCloseListener(serviceProvider,
                 IEditorStateModelFactory.Create(),
                 new IProjectThreadingServiceMock(),
-                IUnconfiguredProjectFactory.Create());
+                UnconfiguredProjectFactory.Create());
 
             await listener.InitializeEventsAsync(IVsWindowFrameFactory.Create());
             Mock.Get(uiShell).Verify(u => u.AdviseWindowFrameEvents(listener), Times.Once);
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var listener = new FrameOpenCloseListener(serviceProvider,
                 IEditorStateModelFactory.Create(),
                 new IProjectThreadingServiceMock(),
-                IUnconfiguredProjectFactory.Create());
+                UnconfiguredProjectFactory.Create());
 
             await listener.InitializeEventsAsync(IVsWindowFrameFactory.Create());
 
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(true);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projPath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);
             var hierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(unconfiguredProject);
 
             int shouldCancel = -1;
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(false);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projPath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);
             var hierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(unconfiguredProject);
 
             int shouldCancel = -1;
@@ -149,13 +149,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(false);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projPath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);
             var hierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(unconfiguredProject);
 
             int shouldCancel = -1;
 
             var listener = new FrameOpenCloseListener(serviceProvider, editorState, new IProjectThreadingServiceMock(),
-                IUnconfiguredProjectFactory.Create(filePath: @"C:\ConsoleApp\ADifferentProject\ADifferentProject.csproj"));
+                UnconfiguredProjectFactory.Create(filePath: @"C:\ConsoleApp\ADifferentProject\ADifferentProject.csproj"));
             Assert.Equal(VSConstants.S_OK, listener.OnQueryUnloadProject(hierarchy, ref shouldCancel));
             Assert.Equal(0, shouldCancel);
             Mock.Get(editorState).Verify(e => e.CloseWindowAsync(), Times.Never);

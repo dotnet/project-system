@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(IUnconfiguredProjectFactory.Create(), null));
+            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(UnconfiguredProjectFactory.Create(), null));
             Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(null, IPhysicalProjectTreeFactory.Create()));
-            new SourceItemHandler(IUnconfiguredProjectFactory.Create(), IPhysicalProjectTreeFactory.Create());
+            new SourceItemHandler(UnconfiguredProjectFactory.Create(), IPhysicalProjectTreeFactory.Create());
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = IUnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.Create(project, onSourceFileAdded, onSourceFileRemoved);
 
             var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = IUnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.Create(project, onSourceFileAdded, onSourceFileRemoved);
 
             var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
