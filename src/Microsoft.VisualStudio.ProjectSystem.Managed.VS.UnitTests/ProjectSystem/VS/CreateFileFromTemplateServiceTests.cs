@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private ProjectProperties CreateProperties()
         {
-            var properties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(),
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
                         new PropertyPageData()
                         {
                             Category = ConfigurationGeneral.SchemaName,

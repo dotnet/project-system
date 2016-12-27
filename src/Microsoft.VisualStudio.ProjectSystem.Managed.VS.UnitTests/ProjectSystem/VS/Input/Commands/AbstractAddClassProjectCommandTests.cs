@@ -115,7 +115,7 @@ Root (flags: {ProjectRoot})
         public async Task GetCommandStatusAsync_FolderAsNodes_ReturnsHandled()
         {
 
-            var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
+            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
@@ -139,7 +139,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
-            var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
+            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
@@ -177,7 +177,7 @@ Root (flags: {ProjectRoot})
                 return 0;
             }, g, folder, string.Empty, 0);
 
-            var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
+            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
                 });
 
@@ -200,7 +200,7 @@ Root (flags: {ProjectRoot})
 
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
-            var projectProperties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
+            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
                 });
 
