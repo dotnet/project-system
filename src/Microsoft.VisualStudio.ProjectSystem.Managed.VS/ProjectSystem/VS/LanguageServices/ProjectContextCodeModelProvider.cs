@@ -15,15 +15,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class ProjectContextCodeModelProvider : ICodeModelProvider, IProjectCodeModelProvider
     {
+        private readonly IProjectThreadingService _threadingService;
         private readonly ICodeModelFactory _codeModelFactory;
         private readonly ILanguageServiceHost _languageServiceHost;
 
         [ImportingConstructor]
-        public ProjectContextCodeModelProvider(ICodeModelFactory codeModelFactory, ILanguageServiceHost languageServiceHost)
+        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, ILanguageServiceHost languageServiceHost)
         {
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(codeModelFactory, nameof(codeModelFactory));
             Requires.NotNull(languageServiceHost, nameof(languageServiceHost));
 
+            _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
             _languageServiceHost = languageServiceHost;
         }
@@ -36,7 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (projectContext == null)
                 return null;
 
-            return _codeModelFactory.GetCodeModel(projectContext, project);
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
+
+                return _codeModelFactory.GetCodeModel(projectContext, project);
+            });
         }
 
         public FileCodeModel GetFileCodeModel(ProjectItem fileItem)
@@ -47,7 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (projectContext == null)
                 return null;
 
-            return _codeModelFactory.GetFileCodeModel(projectContext, fileItem);
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
+
+                return _codeModelFactory.GetFileCodeModel(projectContext, fileItem);
+            });
         }
     }
 }

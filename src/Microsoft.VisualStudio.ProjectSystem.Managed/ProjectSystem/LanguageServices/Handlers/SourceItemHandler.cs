@@ -75,10 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (string filePath in diff.RemovedItems)
             {
-                // Item includes are always relative to csproj/vbproj
-                string fullPath = _project.MakeRooted(filePath);
-
-                RemoveSourceFile(fullPath, context);
+                RemoveSourceFile(filePath, context);
             }
 
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
@@ -88,27 +85,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 foreach (string filePath in diff.AddedItems)
                 {
-                    string fullPath = _project.MakeRooted(filePath);
-
-                    AddSourceFile(fullPath, context, isActiveContext, treeState);
+                    AddSourceFile(filePath, context, isActiveContext, treeState);
                 }
 
                 foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
                 {
-                    string beforeFullPath = _project.MakeRooted(filePaths.Key);
-                    string afterFullPath = _project.MakeRooted(filePaths.Value);
-
-                    RemoveSourceFile(beforeFullPath, context);
-                    AddSourceFile(afterFullPath, context, isActiveContext, treeState);
+                    RemoveSourceFile(filePaths.Key, context);
+                    AddSourceFile(filePaths.Value, context, isActiveContext, treeState);
                 }
 
                 foreach (string filePath in diff.ChangedItems)
-                {   // We add and then remove ChangedItems to handle Linked metadata changes
-
-                    string fullPath = _project.MakeRooted(filePath);
-
-                    RemoveSourceFile(fullPath, context);
-                    AddSourceFile(fullPath, context, isActiveContext);
+                {
+                    // We add and then remove ChangedItems to handle Linked metadata changes
+                    RemoveSourceFile(filePath, context);
+                    AddSourceFile(filePath, context, isActiveContext);
                 }
             }
         }
@@ -121,6 +111,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
         {
+            fullPath = _project.MakeRooted(fullPath);
+
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
                 context.RemoveSourceFile(fullPath);
@@ -129,6 +121,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
         {
+            fullPath = _project.MakeRooted(fullPath);
+
             if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
             {
                 sourceFiles = new HashSet<string>(StringComparers.Paths);
