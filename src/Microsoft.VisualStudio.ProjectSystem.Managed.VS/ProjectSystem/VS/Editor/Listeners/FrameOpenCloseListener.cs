@@ -26,8 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             IEditorStateModel editorModel,
             IProjectThreadingService threadingService,
             UnconfiguredProject unconfiguredProject) :
-            base(threadingService.JoinableTaskContext)
+#pragma warning disable IDE0030 // Use null propagation https://github.com/dotnet/roslyn/issues/16114
+            base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
+#pragma warning restore IDE0030 // Use null propagation
         {
+            Requires.NotNull(helper, nameof(helper));
+            Requires.NotNull(editorModel, nameof(editorModel));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+
             _serviceProvider = helper;
             _editorModel = editorModel;
             _threadingService = threadingService;
@@ -36,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public Task InitializeEventsAsync(IVsWindowFrame frame)
         {
+            Requires.NotNull(frame, nameof(frame));
             _frame = frame;
             return InitializeAsync();
         }
@@ -68,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 {
                     var uiShellService = _serviceProvider.GetService<IVsUIShell7, SVsUIShell>();
                     uiShellService.UnadviseWindowFrameEvents(_eventCookie);
-               }
+                }
 
                 if (_solutionEventCookie != VSConstants.VSCOOKIE_NIL)
                 {
@@ -89,6 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             if (realUnconfiguredProject == null ||
                 !StringComparers.Paths.Equals(realUnconfiguredProject.FullPath, _unconfiguredProject.FullPath))
             {
+                // Do not block unload of the project
+                shouldCancel = 0;
                 return VSConstants.S_OK;
             }
 

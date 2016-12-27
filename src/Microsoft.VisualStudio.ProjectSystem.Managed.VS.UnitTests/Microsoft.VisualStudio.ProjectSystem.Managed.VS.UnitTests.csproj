@@ -109,6 +109,7 @@
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListenerTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
@@ -162,9 +163,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ProjectSystem\VS\Editor\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
 </Project>
