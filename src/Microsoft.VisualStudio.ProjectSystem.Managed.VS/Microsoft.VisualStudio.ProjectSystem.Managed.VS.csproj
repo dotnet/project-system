@@ -37,6 +37,7 @@
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Build\MsBuildAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Editor\EditorStateModel.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\IEditorStateModel.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\IFrameOpenCloseListener.cs" />

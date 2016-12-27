@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     internal class FrameOpenCloseListener : OnceInitializedOnceDisposedAsync, IFrameOpenCloseListener, IVsWindowFrameEvents, IVsSolutionEvents
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly EditorStateModel _editorModel;
+        private readonly IEditorStateModel _editorModel;
         private readonly IProjectThreadingService _threadingService;
         private readonly UnconfiguredProject _unconfiguredProject;
         private IVsWindowFrame _frame;
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [ImportingConstructor]
         public FrameOpenCloseListener(
             [Import(typeof(SVsServiceProvider))]IServiceProvider helper,
-            EditorStateModel editorModel,
+            IEditorStateModel editorModel,
             IProjectThreadingService threadingService,
             UnconfiguredProject unconfiguredProject) :
             base(threadingService.JoinableTaskContext)

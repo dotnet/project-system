@@ -16,11 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly EditorStateModel _editorState;
+        private readonly IEditorStateModel _editorState;
 
         [ImportingConstructor]
-        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, EditorStateModel editorState)
+        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, IEditorStateModel editorState)
         {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(editorState, nameof(editorState));
+
             _unconfiguredProject = unconfiguredProject;
             _editorState = editorState;
         }

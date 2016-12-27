@@ -8,11 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     [Export(typeof(IProjectFileModelWatcher))]
     class ProjectFileModelWatcher : OnceInitializedOnceDisposed, IProjectFileModelWatcher
     {
-        private readonly EditorStateModel _editorState;
+        private readonly IEditorStateModel _editorState;
         private readonly UnconfiguredProjectAdvanced _unconfiguredProject;
 
         [ImportingConstructor]
-        public ProjectFileModelWatcher(EditorStateModel editorState, UnconfiguredProject unconfiguredProject)
+        public ProjectFileModelWatcher(IEditorStateModel editorState, UnconfiguredProject unconfiguredProject)
         {
             _editorState = editorState;
             _unconfiguredProject = (UnconfiguredProjectAdvanced)unconfiguredProject;
