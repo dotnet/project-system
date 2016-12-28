@@ -37,5 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return unconfiguredProject.Object;
         }
+
+        public static UnconfiguredProject CreateWithUnconfiguredProjectAdvanced()
+        {
+            var mock = new Mock<UnconfiguredProject>();
+            mock.As<UnconfiguredProjectAdvanced>();
+            return mock.Object;
+        }
     }
 }

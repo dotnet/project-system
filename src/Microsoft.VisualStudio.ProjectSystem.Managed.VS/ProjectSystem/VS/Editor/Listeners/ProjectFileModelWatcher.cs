@@ -13,7 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         [ImportingConstructor]
         public ProjectFileModelWatcher(IEditorStateModel editorState, UnconfiguredProject unconfiguredProject)
+            : base(synchronousDisposal: true)
         {
+            Requires.NotNull(editorState, nameof(editorState));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+
             _editorState = editorState;
             _unconfiguredProject = (UnconfiguredProjectAdvanced)unconfiguredProject;
         }
@@ -36,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             _editorState.ScheduleProjectFileUpdate();
         }
 
-        void IProjectFileModelWatcher.Initialize()
+        public void InitializeModelWatcher()
         {
             EnsureInitialized(true);
         }

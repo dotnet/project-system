@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             // Set up the project file watcher, so changes to the project file are detected and the buffer is updated.
             _projectFileModelWatcher = _projectFileWatcherFactory.CreateExport().Value;
-            _projectFileModelWatcher.Initialize();
+            _projectFileModelWatcher.InitializeModelWatcher();
 
             // Finally, move to the editor open state
             lock (_lock)

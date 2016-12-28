@@ -6,6 +6,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     internal interface IProjectFileModelWatcher : IDisposable
     {
-        void Initialize();
+        void InitializeModelWatcher();
     }
 }
