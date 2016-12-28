@@ -44,7 +44,7 @@
     <Compile Include="ProjectSystem\VS\Editor\Listeners\IProjectFileModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ITextBufferStateListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcher.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateStateListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />

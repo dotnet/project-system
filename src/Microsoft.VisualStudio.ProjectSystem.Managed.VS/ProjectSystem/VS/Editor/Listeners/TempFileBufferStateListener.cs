@@ -14,7 +14,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
 {
     [Export(typeof(ITextBufferStateListener))]
-    internal class TempFileBufferStateStateListener : OnceInitializedOnceDisposedAsync, ITextBufferStateListener
+    internal class TempFileBufferStateListener : OnceInitializedOnceDisposedAsync, ITextBufferStateListener
     {
         private readonly IEditorStateModel _editorState;
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;
@@ -27,15 +27,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         private ITextDocument _textDoc;
 
         [ImportingConstructor]
-        public TempFileBufferStateStateListener(
+        public TempFileBufferStateListener(
             IEditorStateModel editorState,
             IVsEditorAdaptersFactoryService editorAdaptersService,
             ITextDocumentFactoryService textDocumentFactoryService,
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) :
-            base(threadingService.JoinableTaskContext)
+#pragma warning disable IDE0030 // Use null propagation https://github.com/dotnet/roslyn/issues/1611
+            base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
+#pragma warning restore IDE0030 // Use null propagation
         {
+            Requires.NotNull(editorState, nameof(editorState));
+            Requires.NotNull(editorAdaptersService, nameof(editorAdaptersService));
+            Requires.NotNull(textDocumentFactoryService, nameof(textDocumentFactoryService));
+            Requires.NotNull(shellUtilities, nameof(shellUtilities));
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+
             _editorState = editorState;
             _editorAdaptersService = editorAdaptersService;
             _textDocumentFactoryService = textDocumentFactoryService;

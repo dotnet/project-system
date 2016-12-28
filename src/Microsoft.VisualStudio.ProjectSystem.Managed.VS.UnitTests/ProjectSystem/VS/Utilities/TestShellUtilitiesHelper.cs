@@ -7,11 +7,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     class TestShellUtilitiesHelper : IVsShellUtilitiesHelper
     {
-        public delegate Tuple<IVsHierarchy, uint, IVsPersistDocData, uint> GetRDTInfoDelegate(IServiceProvider serviceProvider, string fullPath);
+        public delegate (IVsHierarchy hier, uint id, IVsPersistDocData docData, uint cookie) GetRDTInfoDelegate(IServiceProvider serviceProvider, string fullPath);
         public delegate IVsWindowFrame OpenDocumentWithSpecificEditorDelegate(IServiceProvider provider, string fullPath, Guid editorType, Guid logicalView);
 
         private readonly GetRDTInfoDelegate _rdtDelegate;
         private readonly OpenDocumentWithSpecificEditorDelegate _openDocDelegate;
+
+        public TestShellUtilitiesHelper() { }
 
         public TestShellUtilitiesHelper(GetRDTInfoDelegate getRDTInfoImpl, OpenDocumentWithSpecificEditorDelegate openDocumentImpl)
         {
@@ -19,18 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             _openDocDelegate = openDocumentImpl;
         }
 
-        public void GetRDTDocumentInfo(IServiceProvider serviceProvider, string fullPath, out IVsHierarchy hierarchy, out uint itemid, out IVsPersistDocData persistDocData, out uint docCookie)
-        {
-            var res = _rdtDelegate(serviceProvider, fullPath);
-            hierarchy = res.Item1;
-            itemid = res.Item2;
-            persistDocData = res.Item3;
-            docCookie = res.Item4;
-        }
+        public void GetRDTDocumentInfo(IServiceProvider serviceProvider, string fullPath, out IVsHierarchy hierarchy, out uint itemid, out IVsPersistDocData persistDocData, out uint docCookie) =>
+            (hierarchy, itemid, persistDocData, docCookie) = _rdtDelegate(serviceProvider, fullPath);
 
-        public IVsWindowFrame OpenDocumentWithSpecificEditor(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView)
-        {
-            return _openDocDelegate(serviceProvider, fullPath, editorType, logicalView);
-        }
+        public IVsWindowFrame OpenDocumentWithSpecificEditor(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView) =>
+            _openDocDelegate(serviceProvider, fullPath, editorType, logicalView);
     }
 }
