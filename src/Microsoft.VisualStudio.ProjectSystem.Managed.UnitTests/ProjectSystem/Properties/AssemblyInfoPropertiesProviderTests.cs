@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectInstancePropertiesProvider instanceProvider = null,
             Func<ProjectId> getActiveProjectId = null)
             : this(workspace ?? WorkspaceFactory.Create(""),
-                  unconfiguredProject: unconfiguredProject ?? IUnconfiguredProjectFactory.Create(),
+                  unconfiguredProject: unconfiguredProject ?? UnconfiguredProjectFactory.Create(),
                   interceptingProvider: interceptingProvider,
                   threadingService: threadingService,
                   defaultProperties: defaultProperties,
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: false);
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
             additionalProps = additionalProps ?? new Dictionary<string, string>();
             additionalProps[propertyName] = propertyValueInProjectFile;
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void DefaultProjectPath()
         {
-            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(IUnconfiguredProjectFactory.Create(filePath: "D:\\TestFile"));
+            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(UnconfiguredProjectFactory.Create(filePath: "D:\\TestFile"));
             Assert.Equal("D:\\TestFile", provider.DefaultProjectPath);
         }
 

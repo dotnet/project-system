@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ProjectProperties CreateEmpty()
         {
-            return Create(IUnconfiguredProjectFactory.Create());
+            return Create(UnconfiguredProjectFactory.Create());
         }
 
         public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)

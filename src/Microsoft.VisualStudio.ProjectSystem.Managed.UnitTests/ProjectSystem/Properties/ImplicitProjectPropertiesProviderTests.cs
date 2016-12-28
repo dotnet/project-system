@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Constructor_NullDelegatedProvider_ThrowsArgumentNullException()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             Assert.Throws<ArgumentNullException>("provider", () =>
             {
                 new ImplicitProjectPropertiesProvider(null,
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             Assert.Throws<ArgumentNullException>("instanceProvider", () =>
             {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 new ImplicitProjectPropertiesProvider(delegateProvider,
                                                       IProjectInstancePropertiesProviderFactory.Create(),
-                                                      new ImplicitProjectPropertiesStore<string, string>(IUnconfiguredProjectFactory.Create()),
+                                                      new ImplicitProjectPropertiesStore<string, string>(UnconfiguredProjectFactory.Create()),
                                                       null);
             });
         }
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_SetsPropertyIfPresent()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_IgnoresPropertyIfAbsent()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_ReturnsImplicitPropertyProvider()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetItemTypeProperties();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
