@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 Value = configuredTargetFramework.FullName
             };
 
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var properties = ProjectPropertiesFactory.Create(project, data);
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 

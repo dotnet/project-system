@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [Fact]
         public void Constructor_NullAsHost_ThrowsArgumentNull()
         {
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             Assert.Throws<ArgumentNullException>("host", () => {
                 new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
             });
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             host = host ?? ILanguageServiceHostFactory.Create();
 
-            var provider = new LanguageServiceErrorListProvider(IUnconfiguredProjectFactory.Create(), host);
+            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), host);
 
             return provider;
         }

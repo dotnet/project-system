@@ -74,6 +74,7 @@
     <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
+    <Compile Include="Mocks\IWorkspaceProjectContextFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
     <Compile Include="Mocks\ProjectTreeProvider.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
     <Compile Include="Mocks\IProjectImageProviderFactory.cs" />
     <Compile Include="Mocks\IProjectTreeProviderFactory.cs" />
-    <Compile Include="Mocks\IUnconfiguredProjectFactory.cs" />
+    <Compile Include="Mocks\UnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandlerTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorageTests.cs" />
     <Compile Include="ProjectSystem\Properties\AssemblyInfoPropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProviderTests.cs" />
