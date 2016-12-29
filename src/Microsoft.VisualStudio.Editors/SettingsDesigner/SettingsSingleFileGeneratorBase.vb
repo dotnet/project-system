@@ -693,20 +693,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' #End If
             '
             Dim AutoSaveCode As New CodeSnippetTypeMember()
-            AutoSaveCode.Text = _
-                String.Format(s_hideAutoSaveRegionBegin, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SFG_AutoSaveRegionText)) & Environment.NewLine & _
-                s_myTypeWinFormsDefineConstant_If & Environment.NewLine & _
-                "    Private Shared " & s_addedHandlerFieldName & " As Boolean" & Environment.NewLine & _
-                Environment.NewLine & _
-                "    Private Shared " & s_addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine & _
-                Environment.NewLine & _
-                "    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _" & Environment.NewLine & _
-                "    Private Shared Sub " & s_autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine & _
-                "        If My.Application.SaveMySettingsOnExit Then" & Environment.NewLine & _
-                "            " & MyNamespaceName & "." & s_mySettingsPropertyName & ".Save()" & Environment.NewLine & _
-                "        End If" & Environment.NewLine & _
-                "    End Sub" & Environment.NewLine & _
-                s_myTypeWinFormsDefineConstant_EndIf & Environment.NewLine & _
+            AutoSaveCode.Text =
+                String.Format(s_hideAutoSaveRegionBegin, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
+                s_myTypeWinFormsDefineConstant_If & Environment.NewLine &
+                "    Private Shared " & s_addedHandlerFieldName & " As Boolean" & Environment.NewLine &
+                Environment.NewLine &
+                "    Private Shared " & s_addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine &
+                Environment.NewLine &
+                "    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _" & Environment.NewLine &
+                "    Private Shared Sub " & s_autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine &
+                "        If My.Application.SaveMySettingsOnExit Then" & Environment.NewLine &
+                "            " & MyNamespaceName & "." & s_mySettingsPropertyName & ".Save()" & Environment.NewLine &
+                "        End If" & Environment.NewLine &
+                "    End Sub" & Environment.NewLine &
+                s_myTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
                 s_hideAutoSaveRegionEnd
 
             GeneratedType.Members.Add(AutoSaveCode)
@@ -1008,7 +1008,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return NativeMethods.S_OK
             Else
-                Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_RenameNotSupported))
+                Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_RenameNotSupported)
                 ' Always return an error code to disable renaming of generated code
                 Return NativeMethods.E_NOTIMPL
             End If
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
         Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1077,7 +1077,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1092,7 +1092,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         '@ <returns>error code</returns>
         Private Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1109,7 +1109,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1125,7 +1125,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
         Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function

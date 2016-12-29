@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If ExistingDocData Is Nothing Then
                         DocData = New PropPageDesignerDocData(_siteProvider)
                     Else
-                        Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_IncompatibleBuffer), AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                        Throw New COMException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If
 
                     DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)

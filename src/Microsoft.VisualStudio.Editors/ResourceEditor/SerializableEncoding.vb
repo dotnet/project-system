@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
             Else
                 'Default
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DefaultEncoding)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DefaultEncoding
             End If
         End Function
 

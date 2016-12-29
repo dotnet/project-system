@@ -76,13 +76,13 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <remarks>Will show message box if anything is wrong</remarks>
         Private Function ValidateSettings() As Boolean
             If _dialog.TabSize < 1 OrElse _dialog.TabSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidTabSize))
+                ShowDialogBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidTabSize)
                 _dialog._tabSizeTextBox.Focus()
                 Return False
             End If
 
             If _dialog.IndentSize < 1 OrElse _dialog.IndentSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidIndentSize))
+                ShowDialogBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidIndentSize)
                 _dialog._indentSizeTextBox.Focus()
                 Return False
             End If

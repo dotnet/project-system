@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Windows metafile (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overridable Function GetSaveFileDialogFilter(Extension As String) As String
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_All) & " (*.*)|*.*"
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_All & " (*.*)|*.*"
         End Function
 
 

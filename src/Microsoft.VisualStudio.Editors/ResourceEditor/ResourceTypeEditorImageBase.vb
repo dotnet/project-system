@@ -119,21 +119,21 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ImageFormat As ImageFormat = CType(Resource.GetValue(), Image).RawFormat
             If ImageFormat.Equals(ImageFormat.Bmp) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BMP)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BMP
             ElseIf ImageFormat.Equals(ImageFormat.Emf) Then
                 Debug.Fail("How did we get an EMF image?")
             ElseIf ImageFormat.Equals(ImageFormat.Exif) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_EXIF)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_EXIF
             ElseIf ImageFormat.Equals(ImageFormat.Gif) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_GIF)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_GIF
             ElseIf ImageFormat.Equals(ImageFormat.Jpeg) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_JPEG)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_JPEG
             ElseIf ImageFormat.Equals(ImageFormat.MemoryBmp) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_MEMBMP)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_MEMBMP
             ElseIf ImageFormat.Equals(ImageFormat.Png) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_PNG)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_PNG
             ElseIf ImageFormat.Equals(ImageFormat.Tiff) Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_TIFF)
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_TIFF
             ElseIf ImageFormat.Equals(ImageFormat.Wmf) Then
                 Debug.Fail("How did we get a WMF image?")
             Else

@@ -560,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function GetAllFilesDialogFilter() As String
             'We don't use CreateDialogFilter because we don't want *.* to be part of the user-friendly portion.
             '  We only want:  All Files|*.*
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.CMN_AllFilesFilter) & "|*.*"
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.CMN_AllFilesFilter & "|*.*"
         End Function
 
 

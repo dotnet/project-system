@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim CommandLineText As String
             CommandLineText = txtPostBuildEventCommandLine.Text
 
-            LaunchEventBuilder(Me, AddressOf GetTokenValue, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PostBuildCommandLineTitle), CommandLineText)
+            LaunchEventBuilder(Me, AddressOf GetTokenValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PostBuildCommandLineTitle, CommandLineText)
             Dim oldCommandLine As String = txtPostBuildEventCommandLine.Text
             txtPostBuildEventCommandLine.Text = CommandLineText
             If oldCommandLine <> CommandLineText Then
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim CommandLineText As String
             CommandLineText = txtPreBuildEventCommandLine.Text
 
-            LaunchEventBuilder(Me, AddressOf GetTokenValue, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PreBuildCommandLineTitle), CommandLineText)
+            LaunchEventBuilder(Me, AddressOf GetTokenValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PreBuildCommandLineTitle, CommandLineText)
             Dim oldCommandLine As String = txtPreBuildEventCommandLine.Text
             txtPreBuildEventCommandLine.Text = CommandLineText
             If oldCommandLine <> CommandLineText Then

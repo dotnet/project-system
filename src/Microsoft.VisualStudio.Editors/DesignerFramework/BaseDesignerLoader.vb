@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _deferredLoaderService = DirectCast(GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
                 If _deferredLoaderService Is Nothing Then
                     Debug.Fail("Deferred load doc data requires support for IDesignerLoaderService")
-                    Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer))
+                    Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer)
                 End If
 
                 Debug.Assert(_deferredLoadManager Is Nothing)
@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If FileName.Length > 0 Then
                     Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
                 Else
-                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile))
+                    Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile)
                 End If
             End If
 

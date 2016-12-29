@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub AddResource(NewResource As Resource)
             If NewResource.Name = "" Then
                 Debug.Fail("Resource Name is blank - we shouldn't reach here with that condition")
-                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
+                Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
             End If
             If Contains(NewResource.Name) Then
                 Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)

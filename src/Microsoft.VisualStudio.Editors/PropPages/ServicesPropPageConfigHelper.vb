@@ -737,7 +737,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If url = "" Then Return ""
             Dim separatorIndex As Integer = url.LastIndexOf("/")
             If separatorIndex = -1 Or Not url.ToUpperInvariant().EndsWith(".AXD") Then
-                Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrls))
+                Throw New InvalidOperationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrls)
             End If
             Return url.Substring(0, separatorIndex)
         End Function

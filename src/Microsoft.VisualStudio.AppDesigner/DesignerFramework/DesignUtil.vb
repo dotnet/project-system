@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
 
             If uiShell Is Nothing OrElse AppDesInterop.NativeMethods.Failed(uiShell.GetAppName(caption)) Then
-                caption = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_Error_Default_Caption)
+                caption = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_Error_Default_Caption
             End If
 
             Return caption

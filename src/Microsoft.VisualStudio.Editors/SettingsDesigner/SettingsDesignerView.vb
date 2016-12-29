@@ -159,17 +159,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             SettingsTableLayoutPanel.SuspendLayout()
 
-            m_SettingsGridView.Columns(s_nameColumnNo).HeaderText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewNameColumnHeaderText)
+            m_SettingsGridView.Columns(s_nameColumnNo).HeaderText = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewNameColumnHeaderText
             m_SettingsGridView.Columns(s_nameColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewTextBoxCell()
-            m_SettingsGridView.Columns(s_typeColumnNo).HeaderText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewTypeColumnHeaderText)
+            m_SettingsGridView.Columns(s_typeColumnNo).HeaderText = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewTypeColumnHeaderText
             m_SettingsGridView.Columns(s_typeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
-            m_SettingsGridView.Columns(s_scopeColumnNo).HeaderText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewScopeColumnHeaderText)
+            m_SettingsGridView.Columns(s_scopeColumnNo).HeaderText = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewScopeColumnHeaderText
             m_SettingsGridView.Columns(s_scopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
 
             Dim TypeEditorCol As New DataGridViewUITypeEditorColumn
             TypeEditorCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             TypeEditorCol.FillWeight = 100.0!
-            TypeEditorCol.HeaderText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewValueColumnHeaderText)
+            TypeEditorCol.HeaderText = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewValueColumnHeaderText
             TypeEditorCol.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2) ' Add 2 for left/right borders...
             TypeEditorCol.Resizable = DataGridViewTriState.True
             TypeEditorCol.SortMode = DataGridViewColumnSortMode.Automatic
@@ -393,7 +393,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Add the "connection string" pseudo type
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference))
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString))
-            TypeColumn.Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType))
+            TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
             TypeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + s_internalComboBoxPadding)
 
 
@@ -460,8 +460,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetLinkLabelText()
-            Dim fullText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FullDescriptionText)
-            Dim linkText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_LinkPartOfDescriptionText)
+            Dim fullText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FullDescriptionText
+            Dim linkText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_LinkPartOfDescriptionText
 
             ' Adding two spaces and including the first space in the link due to VsWhidbey 482875
             DescriptionLinkLabel.Text = fullText & "  " & linkText
@@ -1051,7 +1051,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Case s_typeColumnNo
                     ' We don't want to commit the "Browse..." value at any time... we also don't want to allow an empty string for type name
                     Debug.Assert(TypeOf FormattedValue Is String, "Unknown type of formatted value for name")
-                    Return Not (TryCast(FormattedValue, String) = "" OrElse String.Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType), TryCast(FormattedValue, String), StringComparison.Ordinal))
+                    Return Not (TryCast(FormattedValue, String) = "" OrElse String.Equals(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType, TryCast(FormattedValue, String), StringComparison.Ordinal))
                 Case s_scopeColumnNo
                     Return TryCast(FormattedValue, String) <> ""
                 Case Else
@@ -1085,7 +1085,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             If NewName = "" Then
                 If Not _suppressValidationUI Then
-                    ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_NameEmpty), HelpIDs.Err_NameBlank)
+                    ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_NameEmpty, HelpIDs.Err_NameBlank)
                 End If
                 Return False
             End If
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Instance.NameProperty.SetValue(Instance, CellText)
                         Case s_typeColumnNo
                             ' Changing the type is a remove/add operation
-                            If Not CellText.Equals(Instance.SettingTypeName, StringComparison.Ordinal) AndAlso Not CellText.Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType), StringComparison.Ordinal) Then
+                            If Not CellText.Equals(Instance.SettingTypeName, StringComparison.Ordinal) AndAlso Not CellText.Equals(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType, StringComparison.Ordinal) Then
                                 ChangeSettingType(Row, CellText)
                             End If
                         Case s_scopeColumnNo
@@ -1359,7 +1359,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Only change type of this setting if the display name of the types are different...
             If addingNewSetting OrElse Not String.Equals(Instance.SettingTypeName, newTypeName, StringComparison.Ordinal) Then
-                Using Transaction As New SettingsDesignerUndoTransaction(Settings.Site, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged))
+                Using Transaction As New SettingsDesignerUndoTransaction(Settings.Site, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged)
                     Debug.WriteLineIf(SettingsDesigner.TraceSwitch.TraceVerbose, "Changing type of setting " & Instance.Name)
                     Instance.TypeNameProperty.SetValue(Instance, newTypeName)
                     If newType IsNot Nothing Then
@@ -1430,7 +1430,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If m_SettingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
                 Dim cell As DataGridViewCell = m_SettingsGridView.CurrentCell
                 If cell IsNot Nothing Then
-                    If SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType).Equals(cell.EditedFormattedValue) Then
+                    If My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType.Equals(cell.EditedFormattedValue) Then
                         TypeComboBoxSelectedIndexChanged()
                     ElseIf TryCast(cell.EditedFormattedValue, String) = "" Then
                         m_SettingsGridView.CancelEdit()
@@ -1482,7 +1482,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim ProjectItem As EnvDTE.ProjectItem = DirectCast(Settings.Site.GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
             Dim VSMDCodeDomProvider As IVSMDCodeDomProvider = DirectCast(Settings.Site.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
             If Hierarchy Is Nothing OrElse ProjectItem Is Nothing OrElse VSMDCodeDomProvider Is Nothing Then
-                ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGEN_FAILEDOPENCREATEEXTENDINGFILE), HelpIDs.Err_ViewCode)
+                ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGEN_FAILEDOPENCREATEEXTENDINGFILE, HelpIDs.Err_ViewCode)
             Else
                 Try
                     If ProjectItem.ProjectItems Is Nothing OrElse ProjectItem.ProjectItems.Count = 0 Then
@@ -1561,9 +1561,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _menuCommands = New ArrayList
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf MenuEditCellEnableHandler,
                     alwayscheckstatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, commandtext:=SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_MNU_AddSettingText)))
+                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, CommandText:=My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_MNU_AddSettingText))
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemove, AddressOf MenuRemoveEnableHandler,
-                    alwayscheckstatus:=True, commandtext:=SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_MNU_RemoveSettingText)))
+                    AlwaysCheckStatus:=True, CommandText:=My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_MNU_RemoveSettingText))
 
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler))
                 _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerSynchronize, AddressOf MenuSynchronizeUserConfig, AddressOf MenuSynchronizeUserConfigEnableHandler))
@@ -1810,7 +1810,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                     If DesignerMessageBox.Show(Settings.Site, SR.GetString(SR.SD_SyncFiles_1Arg, fileList), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OKCancel, MessageBoxIcon.Information, HelpLink:=HelpIDs.Err_SynchronizeUserConfig) = DialogResult.OK Then
                         If Not SettingsDesigner.DeleteFilesAndDirectories(filesToDelete, Nothing) Then
-                            DesignerMessageBox.Show(Settings.Site, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SyncFilesOneOrMoreFailed), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Warning, HelpLink:=HelpIDs.Err_SynchronizeUserConfig)
+                            DesignerMessageBox.Show(Settings.Site, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SyncFilesOneOrMoreFailed, DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Warning, HelpLink:=HelpIDs.Err_SynchronizeUserConfig)
                         End If
                     End If
                 End If
@@ -1856,7 +1856,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                                     Dim badNames As New List(Of String)
                                     Dim unreferencedTypes As New List(Of String)
-                                    Using Transaction As New SettingsDesignerUndoTransaction(Settings.Site, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged))
+                                    Using Transaction As New SettingsDesignerUndoTransaction(Settings.Site, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged)
                                         RemoveAllWebProviderSettings()
 
                                         For Each settingsProp As SettingsProperty In Collection
@@ -1893,12 +1893,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                     'Catch actionNotSupported As System.ServiceModel.ActionNotSupportedException
                                     '    DesignerFramework.DesignerMessageBox.Show(Me.Settings.Site, "", actionNotSupported, DesignerFramework.DesignUtil.GetDefaultCaption(Settings.Site))
                                 Else
-                                    DesignerMessageBox.Show(Settings.Site, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_CantAuthenticate), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                    DesignerMessageBox.Show(Settings.Site, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_CantAuthenticate, DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
                                 End If
                             End Using
                         End If
                     Catch innerException As XmlException
-                        Dim ex As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidAppConfigXml))
+                        Dim ex As New XmlException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidAppConfigXml)
                         DesignerMessageBox.Show(Settings.Site, "", ex, DesignUtil.GetDefaultCaption(Settings.Site))
                     End Try
                 End If
@@ -1928,7 +1928,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub ShowErrorIfThereAreUnreferencedTypes(badNames As List(Of String))
             If badNames.Count > 0 Then
                 Dim displayString As String = String.Join(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator, badNames.ToArray())
-                DesignerMessageBox.Show(Settings.Site, String.Format(CultureInfo.CurrentCulture, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_UnreferencedTypeNameList_1Arg), displayString), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DesignerMessageBox.Show(Settings.Site, String.Format(CultureInfo.CurrentCulture, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_UnreferencedTypeNameList_1Arg, displayString), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
         End Sub
 
@@ -1940,7 +1940,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub ShowErrorIfThereAreDuplicateNames(badNames As List(Of String))
             If badNames.Count > 0 Then
                 Dim displayString As String = String.Join(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator, badNames.ToArray())
-                DesignerMessageBox.Show(Settings.Site, String.Format(CultureInfo.CurrentCulture, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_DuplicateNameList_1Arg), displayString), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DesignerMessageBox.Show(Settings.Site, String.Format(CultureInfo.CurrentCulture, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_DuplicateNameList_1Arg, displayString), DesignUtil.GetDefaultCaption(Settings.Site), MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
         End Sub
 

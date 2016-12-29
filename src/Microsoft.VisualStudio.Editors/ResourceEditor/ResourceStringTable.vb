@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceNameColumn)
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceNameColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_NAME = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_TypeColumn)
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_TypeColumn
                 .ReadOnly = True 'Can't modify the Type column - just for info
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_TYPE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceColumn)
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_VALUE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_CommentColumn)
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_CommentColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_COMMENT = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -1708,10 +1708,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If failedCount > 0 Then
                 If failedCount = cells.Count Then
                     ' throw an exception to abort the transaction...
-                    Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty))
+                    Throw New InvalidOperationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty)
                 End If
 
-                DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             Refresh()

@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Try
                 End If
             End If
-            Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_InvalidBaseAddress))
+            Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_InvalidBaseAddress)
 
         End Function
 

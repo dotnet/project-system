@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebReferenceTypeName)
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebReferenceTypeName
         End Function
 
         Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly Property DisplayValues() As String()
             Get
                 If s_displayValues Is Nothing Then
-                    s_displayValues = New String() {SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Static), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Dynamic)}
+                    s_displayValues = New String() {My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Static, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Dynamic}
                 End If
                 Return s_displayValues
             End Get

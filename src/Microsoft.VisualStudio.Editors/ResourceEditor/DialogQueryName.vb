@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim NewResourceName As String = TextBoxName.Text
                 Dim Exception As Exception = Nothing
                 If String.IsNullOrEmpty(NewResourceName) Then
-                    ResourceView.DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
+                    ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
                 ElseIf Not Resource.ValidateName(ResourceView.ResourceFile, NewResourceName, String.Empty, NewResourceName, Exception) Then
                     ResourceView.DsMsgBox(Exception)
                 Else

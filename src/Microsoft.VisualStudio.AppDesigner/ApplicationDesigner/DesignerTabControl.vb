@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
             _hostingPanel.AutoScroll = True
             _hostingPanel.Text = "HostingPanel" 'For debugging
-            _hostingPanel.AccessibleName = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_HostingPanelName)
+            _hostingPanel.AccessibleName = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_HostingPanelName
 
             'Add any initialization after the InitializeComponent() call
             '
@@ -128,12 +128,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             With OverflowButton
                 .Name = "OverflowButton"
                 .Text = ""
-                .AccessibleName = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_AccessibilityName)
+                .AccessibleName = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_AccessibilityName
                 .FlatAppearance.BorderColor = _defaultOverflowBorderColor
                 .FlatAppearance.MouseOverBackColor = _defaultOverflowHoverColor
                 .Size = New Size(18, 18)
                 .Visible = False 'Don't show it until we need it
-                _overflowTooltip.SetToolTip(OverflowButton, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_Tooltip))
+                _overflowTooltip.SetToolTip(OverflowButton, My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_Tooltip)
 
             End With
             Controls.Add(OverflowButton)
@@ -652,7 +652,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property Description() As String
                 Get
-                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_TabListDescription)
+                    Return My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_TabListDescription
                 End Get
             End Property
 

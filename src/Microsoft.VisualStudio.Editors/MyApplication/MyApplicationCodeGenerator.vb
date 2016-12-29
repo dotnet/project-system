@@ -153,12 +153,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Dim GeneratedType As New CodeTypeDeclaration("MyApplication")
 
                 'Add comments 
-                Dim Comments() As String = { _
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine1), _
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine2), _
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine3), _
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine4), _
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine5) _
+                Dim Comments() As String = {
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine1,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine2,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine3,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine4,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine5
                 }
                 For i As Integer = 0 To Comments.Length - 1
                     GeneratedType.Comments.Add(New CodeCommentStatement(Comments(i)))
@@ -634,7 +634,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <returns>error code</returns>
         Protected Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -668,7 +668,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <returns>error code</returns>
         Protected Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -715,7 +715,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <returns>error code</returns>
         Protected Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
-            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function

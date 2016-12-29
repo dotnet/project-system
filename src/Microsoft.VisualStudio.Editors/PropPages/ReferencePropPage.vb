@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' We should put an error message there if we can not resolve the reference...
             Dim path As String = ref.Path
             If String.IsNullOrEmpty(path) Then
-                path = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ReferenceNotFound)
+                path = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ReferenceNotFound
             End If
 
             lvi.SubItems.Add(path)
@@ -539,8 +539,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ImportedNamespacesTitle),
-                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingReferencedNamespacesMessage),
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ImportedNamespacesTitle,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingReferencedNamespacesMessage,
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -774,8 +774,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_CurrentImportsTitle),
-                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingCurrentImportsMessage),
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_CurrentImportsTitle,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingCurrentImportsMessage,
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -1313,7 +1313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
-            If ShowChildPage(SR.GetString(SR.PropPage_UnusedReferenceTitle), GetType(UnusedReferencePropPage)) = DialogResult.OK Then
+            If ShowChildPage(SR.PropPage_UnusedReferenceTitle, GetType(UnusedReferencePropPage)) = DialogResult.OK Then
                 If SaveImportedNamespaces(TrimUserImports(ImportsSnapshot)) Then
                     'RemoveInvalidEntries=True here because so that we can remove imports
                     '  that correspond to the removed references, instead of just unchecking
@@ -1327,7 +1327,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferencePathsButton_Click(sender As Object, e As EventArgs) Handles ReferencePathsButton.Click
-            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
+            ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePaths_Title, GetType(ReferencePathsPropPage))
         End Sub
 
         Private Sub ImportList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles ImportList.ItemCheck

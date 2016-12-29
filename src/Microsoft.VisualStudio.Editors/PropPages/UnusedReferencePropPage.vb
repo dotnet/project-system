@@ -232,13 +232,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' Get a status string
                     Select Case Status
                         Case ReferenceUsageResult.ReferenceUsageOK
-                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceNoUnusedReferences)
+                            StatusText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceNoUnusedReferences
                         Case ReferenceUsageResult.ReferenceUsageWaiting
-                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileWaiting)
+                            StatusText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileWaiting
                         Case ReferenceUsageResult.ReferenceUsageCompileFailed
-                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileFail)
+                            StatusText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileFail
                         Case ReferenceUsageResult.ReferenceUsageError
-                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceError)
+                            StatusText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceError
                         Case Else
                             Debug.Fail("Unexpected status")
                             StatusText = ""
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance
-                .OK.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceRemoveButton)
+                .OK.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceRemoveButton
 
                 ' Allow dialog to be resized
                 .FormBorderStyle = FormBorderStyle.Sizable

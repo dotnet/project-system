@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             'Add any initialization after the InitializeComponent() call
             _typeTreeView = New TypeTV
-            _typeTreeView.AccessibleName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SelectATypeTreeView_AccessibleName)
+            _typeTreeView.AccessibleName = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SelectATypeTreeView_AccessibleName
             _typeTreeView.Dock = DockStyle.Fill
             AddHandler _typeTreeView.AfterSelect, AddressOf TypeTreeViewAfterSelectHandler
             AddHandler _typeTreeView.BeforeExpand, AddressOf TypeTreeViewBeforeExpandHandler

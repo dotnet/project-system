@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
-            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Icon), _extensions)
+            Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Icon, _extensions)
         End Function
 
 
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Windows metafile (*.wmf)|*.wmf|Windows Enhanced Metafile (*.emf)|*.emf|Windows Bitmap (*.bmp;*.dib)|*.bmp;*.dib"
         ''' </remarks>
         Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
-            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_Icon), New String() {EXT_ICO})
+            Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_Icon, New String() {EXT_ICO})
         End Function
 
 
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource)
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_Icon)
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_Icon
         End Function
 
 

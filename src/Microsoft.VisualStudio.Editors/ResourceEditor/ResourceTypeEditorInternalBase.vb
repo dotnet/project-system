@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             Else
                 Debug.Fail("Unable to find resource from manifest: " & ManifestResourceId)
-                Throw New InternalException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg))
+                Throw New InternalException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg)
             End If
         End Sub
 

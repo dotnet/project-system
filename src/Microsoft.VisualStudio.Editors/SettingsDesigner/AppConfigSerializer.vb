@@ -161,9 +161,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' CONSIDER: Include the name of the settings that were added...
             If ((objectDirty And DirtyState.ValueAdded) = DirtyState.ValueAdded) AndAlso mergeMode = MergeValueMode.Prompt Then
                 If UIService IsNot Nothing Then
-                    UIService.ShowMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
+                    UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
                 Else
-                    Windows.Forms.MessageBox.Show(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
+                    Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
                 End If
             End If
 
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
                 Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED
-                    Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout), ex)
+                    Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout, ex)
                 Catch ex As Exception When Not TypeOf ex Is ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
                     AppConfigItemId = VSITEMID.NIL
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' so we can use DocDataTextReaders/Writers... If we can't get that, we may as well throw
                 ' an exception that tells the user that things are broken here!
                 AppConfigDocData.Dispose()
-                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer))
+                Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer)
             End If
             Return AppConfigDocData
         End Function

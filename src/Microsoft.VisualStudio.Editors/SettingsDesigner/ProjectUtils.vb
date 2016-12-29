@@ -339,11 +339,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 ExtendingType.TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2)
                 ExtendingType.IsPartial = True
 
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON1)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON2)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON3)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON4)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON5)))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON1))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON2))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON3))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON4))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON5))
                 If Not supportsDeclarativeEventHandlers Then
                     GenerateExtendingClassInstructions(ExtendingType, Generator)
                 End If
@@ -681,7 +681,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
             Dim stmts As New CodeStatementCollection()
-            stmts.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS)))
+            stmts.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS))
             stmts.Add(New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)))
             stmts.Add(New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName)))
 
@@ -696,14 +696,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             changingStub.ReturnType = Nothing
             changingStub.Parameters.Add(senderParam)
             changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
-            changingStub.Statements.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_CHANGING)))
+            changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_CHANGING))
 
             Dim savingStub As New CodeMemberMethod()
             savingStub.Name = SettingsSavingEventHandlerName
             savingStub.ReturnType = Nothing
             savingStub.Parameters.Add(senderParam)
             savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
-            savingStub.Statements.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_SAVING)))
+            savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_SAVING))
 
             ct.Members.Add(constr)
             ct.Members.Add(changingStub)

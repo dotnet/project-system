@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.IsLink)
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BinaryFile)
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BinaryFile
         End Function
 
 

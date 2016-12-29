@@ -28,9 +28,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub New()
             MyBase.New()
 
-            m_DefaultIconText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText)
-            m_DefaultManifestText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText)
-            m_NoManifestText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText)
+            m_DefaultIconText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText
+            m_DefaultManifestText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
+            m_NoManifestText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText
             m_DefaultIcon = SystemIcons.Application
         End Sub
 
@@ -169,8 +169,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sInitialDirectory = IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle),
-                        CreateDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddIconFilesFilter), ".ico"),
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
+                        CreateDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddIconFilesFilter, ".ico"),
                         0, False, sFileName)
 
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
@@ -198,8 +198,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim ProjectItem As ProjectItem = Nothing
                     Try
                         ProjectItem = AddIconFileToProject(sFileName)
-                    Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
-                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), ex)
+                    Catch ex As Exception When ReportWithoutCrash(ex, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon, NameOf(ApplicationPropPageBase))
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon, ex)
                     End Try
 
                     If ProjectItem Is Nothing Then
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Verify all the characters in the path are valid 
             If path.IndexOfAny(IO.Path.GetInvalidPathChars()) >= 0 Then
-                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon))
+                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon)
                 Return False
             End If
 
@@ -336,8 +336,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim ProjectItem As ProjectItem = Nothing
                         Try
                             ProjectItem = AddIconFileToProject(path)
-                        Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
-                            ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), ex)
+                        Catch ex As Exception When ReportWithoutCrash(ex, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon, NameOf(ApplicationPropPageBase))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon, ex)
                             Return False
                         End Try
 

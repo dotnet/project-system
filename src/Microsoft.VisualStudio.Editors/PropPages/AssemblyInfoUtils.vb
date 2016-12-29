@@ -118,10 +118,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Select Case Field
                             Case 0, 1
                                 'Wildcards never allowed in this field
-                                Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard))
+                                Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard)
                             Case 2, 3
                                 If Not WildcardsAllowed Then
-                                    Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard))
+                                    Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard)
                                 End If
                             Case Else
                                 Debug.Fail("Unexpected case")
@@ -139,14 +139,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If IsValid Then
                 FormattedVersion = CombinedVersion
             Else
-                Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_InvalidVersion))
+                Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_InvalidVersion)
             End If
         End Sub
 
 
 #Region "Neutral Language Combobox"
 
-        Private _neutralLanguageNoneText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None) 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private _neutralLanguageNoneText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Populate the neutral language combobox with cultures

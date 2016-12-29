@@ -83,8 +83,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourcePersistenceModeEnumConverter
             Inherits EnumConverter
 
-            Private _linkedDisplayValue As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Linked)
-            Private _embeddedDisplayValue As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Embeded)
+            Private _linkedDisplayValue As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Linked
+            Private _embeddedDisplayValue As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Embeded
 
             ''' <summary>
             ''' </summary>
@@ -295,39 +295,39 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  type of the resource (the exception here is the Value property typed as the actual type of the Resource value).
         '  So we create them once and cache them here for all resource editor instances.
 
-        Private Shared ReadOnly s_valueDescriptionAttribute As DescriptionAttribute = New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Value))
+        Private Shared ReadOnly s_valueDescriptionAttribute As DescriptionAttribute = New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Value)
 
         'PropertyDescriptor for "Name" property
         Private Shared ReadOnly s_propertyDescriptor_Name As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_NAME, GetType(String), IsReadOnly:=False, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, s_notMergablePropertyAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Name))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_NAME, GetType(String), IsReadOnly:=False,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute, s_notMergablePropertyAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Name)})
 
         'PropertyDescriptor for "Comment" property
         Private Shared ReadOnly s_propertyDescriptor_Comment As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_COMMENT, GetType(String), IsReadOnly:=False, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Comment))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_COMMENT, GetType(String), IsReadOnly:=False,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Comment)})
 
         'PropertyDescriptor for "Encoding" property
         'Note that we have an attribute to associate our encoding converter with this property so we get a dropdown list to show up
         '  in the properties window
         Private Shared ReadOnly s_propertyDescriptor_Encoding As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_ENCODING, GetType(SerializableEncoding), IsReadOnly:=False, _
-                    CanReset:=True, _
-                    Attributes:=New Attribute() { _
-                        s_categoryAttribute, _
-                        New TypeConverterAttribute(GetType(SerializableEncodingConverter)), _
-                        New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Encoding))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_ENCODING, GetType(SerializableEncoding), IsReadOnly:=False,
+                    CanReset:=True,
+                    Attributes:=New Attribute() {
+                        s_categoryAttribute,
+                        New TypeConverterAttribute(GetType(SerializableEncodingConverter)),
+                        New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Encoding)})
 
         'PropertyDescriptor for "Filename" property (read-only property)
         Private Shared ReadOnly s_propertyDescriptor_Filename_ReadOnly As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILENAME, GetType(String), IsReadOnly:=True, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Filename))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILENAME, GetType(String), IsReadOnly:=True,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Filename)})
 
         'PropertyDescriptor for "Filename" property (read/write - not currently visible publicly - used when changing Persistence mode)
         Private Shared ReadOnly s_propertyDescriptor_Filename_ReadWrite As _
@@ -335,31 +335,31 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'PropertyDescriptor for "FileType" property
         Private Shared ReadOnly s_propertyDescriptor_FileType As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILETYPE, GetType(FileTypes), IsReadOnly:=False, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_FileType))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILETYPE, GetType(FileTypes), IsReadOnly:=False,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_FileType)})
 
         'PropertyDescriptor for "Persistence" property
         Private Shared ReadOnly s_propertyDescriptor_Persistence As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=False, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=False,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence)})
 
         'PropertyDescriptor for "Persistence" property (read/only)
         Private Shared ReadOnly s_propertyDescriptor_Persistence_ReadOnly As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=True, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=True,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence)})
 
         'PropertyDescriptor for "Type" property (read-only property)
         Private Shared ReadOnly s_propertyDescriptor_Type As _
-            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_TYPE, GetType(String), IsReadOnly:=True, _
-                Attributes:=New Attribute() { _
-                    s_categoryAttribute, _
-                    New DescriptionAttribute(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Type))})
+            New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_TYPE, GetType(String), IsReadOnly:=True,
+                Attributes:=New Attribute() {
+                    s_categoryAttribute,
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Type)})
 
         'PropertyDescriptor for "Value" property, typed as Object
         Private Shared ReadOnly s_propertyDescriptor_ValueAsObject As _
@@ -606,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  have an opportunity to commit a change caused via ComponentChangeService.ComponentRename
                     '  because there's only the one event (not a Renaming/Renamed).  So, we need to wrap this 
                     '  in a transaction ourselves for this to work properly.
-                    Using Transaction As DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_ChangeName))
+                    Using Transaction As DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_ChangeName)
                         s_propertyDescriptor_Name.SetValue(Me, Value)
                         Transaction.Commit()
                     End Using
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public WriteOnly Property NameWithoutUndo() As String
             Set(Value As String)
                 If Value = "" Then
-                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
+                    Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
                 End If
 
                 'Validate the value first...
@@ -816,12 +816,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
 
                         'Now add the file to the project
-                        Dim FinalPathAndFileName As String = ResourcesFolderService.AddFileToProject( _
-                            SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor), _
-                            View.GetProject(), _
-                            View.GetResXProjectItem(), _
-                            View.GetDialogOwnerWindow(), _
-                            NewFilePath, _
+                        Dim FinalPathAndFileName As String = ResourcesFolderService.AddFileToProject(
+                            My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor,
+                            View.GetProject(),
+                            View.GetResXProjectItem(),
+                            View.GetDialogOwnerWindow(),
+                            NewFilePath,
                             CopyFileIfExists:=False)
 
                         ' NOTE: We will keep old value in m_SavedFileName for undo/redo support...
@@ -1162,7 +1162,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
-                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_UnknownType)
+                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_UnknownType
                 End Try
             End Get
         End Property
@@ -1303,7 +1303,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 If IsResXNullRef(TypeName) Then
                     'Null/Nothing value
-                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_NothingValue)
+                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_NothingValue
                 End If
 
                 'Cut off the assembly info from the type, leaving just the fully-qualified name of the type
@@ -1463,7 +1463,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If TypeOf ExceptionToRethrow Is ArgumentException Then
-                ExceptionToRethrow = New ApplicationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadData))
+                ExceptionToRethrow = New ApplicationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadData)
             End If
 
             'But first, we'd like to know whether it was because the linked file couldn't be found (we
@@ -1546,7 +1546,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ElseIf NewResourceValue.GetType().Equals(GetType(MemoryStream)) AndAlso GetValueType().Equals(GetType(Byte())) Then
                             NewResourceValue = DirectCast(NewResourceValue, MemoryStream).ToArray()
                         Else
-                            Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType), HelpIDs.Err_UnexpectedResourceType)
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
                         End If
                     End If
 
@@ -2604,7 +2604,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Verify that the Name is not blank
             If TrimmedName = "" Then
-                Exception = NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
                 Return False
             End If
 

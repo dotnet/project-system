@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <remarks>Message defaults to "Unexpected error."</remarks>
         Public Sub New()
-            Me.New(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_InternalException), Nothing)
+            Me.New(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_InternalException, Nothing)
         End Sub
 
 
@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <param name="InnerException">The inner exception, if any (Nothing = none).</param>
         ''' <remarks>Message defaults to "Unexpected error."</remarks>
         Public Sub New(InnerException As Exception)
-            Me.New(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_InternalException), InnerException)
+            Me.New(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_InternalException, InnerException)
         End Sub
 
 
