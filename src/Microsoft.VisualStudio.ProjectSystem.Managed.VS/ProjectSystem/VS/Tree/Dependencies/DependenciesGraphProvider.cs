@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider",
                    ProjectCapability = "DependenciesTree")]
-    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IGraphNodeBrowsablePropertiesProvider
+    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider
     {
         private readonly GraphCommand ContainsGraphCommand = new GraphCommand(
                 GraphCommandDefinition.Contains,
@@ -122,22 +122,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         T IGraphProvider.GetExtension<T>(GraphObject graphObject, T previous)
         {
-            var graphNode = graphObject as GraphNode;
-            if (graphNode == null)
-            {
-                return null;
-            }
-
-            if (graphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty) == null)
-            {
-                return null;
-            }
-
-            if (typeof(T) == typeof(IGraphNodeBrowsablePropertiesProvider))
-            {
-                return this as T;
-            }
-
             return null;
         }
 
@@ -246,7 +230,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath)
+                                                        .ConfigureAwait(false);
                 if (node == null || subTreeProvider == null)
                 {
                     continue;
@@ -293,7 +278,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath).ConfigureAwait(false);
+                var (node, subTreeProvider) = await GetDependencyNodeInfo(graphContext, inputGraphNode, projectPath)
+                                                        .ConfigureAwait(false);
                 if (node == null || subTreeProvider == null)
                 {
                     continue;
@@ -452,14 +438,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// clicks on "Scope To This" context menu we get GetChildrenAsync call right away and need to be 
         /// able to discover IDependencyNode form the scratch.
         /// </summary>
-        private async Task<(IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider)> GetDependencyNodeInfo(IGraphContext graphContext,
-                                                                     GraphNode inputGraphNode,
-                                                                     string projectPath)
+        private async Task<(IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider)> 
+            GetDependencyNodeInfo(IGraphContext graphContext, GraphNode inputGraphNode, string projectPath)
         {
             (IDependencyNode node, IProjectDependenciesSubTreeProvider subTreeProvider) = (null, null);
 
-            node = inputGraphNode.GetValue<IDependencyNode>(
-                                DependenciesGraphSchema.DependencyNodeProperty);
+            node = inputGraphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty);
             if (node == null)
             {
                 // All graph nodes generated here will have this unique node id, root node will have it equal to null
