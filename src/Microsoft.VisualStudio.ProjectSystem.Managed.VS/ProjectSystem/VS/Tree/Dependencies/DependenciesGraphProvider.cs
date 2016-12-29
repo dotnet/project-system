@@ -125,14 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return null;
         }
 
-        public PropertyDescriptor[] GetBrowsableProperties(GraphNode node)
-        {
-            return new PropertyDescriptor[]
-                {
-                    new NamePropertyDescriptor(node),
-                }; ;
-        }
-
         /// <summary>
         /// IGraphProvider.Schema
         /// </summary>
@@ -723,74 +715,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private static string GetIconStringName(ImageMoniker icon)
         {
             return $"{icon.Guid.ToString()};{icon.Id}";
-        }
-
-        /// <summary>
-        /// Property descriptor for the 'Name' property.
-        /// Read-only, displays "Name: (Label)"
-        /// </summary>
-        private class NamePropertyDescriptor : PropertyDescriptor
-        {
-            private GraphNode node;
-
-            internal NamePropertyDescriptor(GraphNode node)
-                : base("MyName", CreateAttributes())
-            {
-                this.node = node;
-            }
-
-            private static Attribute[] CreateAttributes()
-            {
-                return new Attribute[]
-                    {
-                        new BrowsableAttribute(true),
-                        CategoryAttribute.Default,
-                        new DisplayNameAttribute("MyName"),
-                        new DescriptionAttribute("MyDescription"),
-                    };
-            }
-
-            public override Type ComponentType
-            {
-                get { return typeof(NamePropertyDescriptor); }
-            }
-
-            public override object GetValue(object component)
-            {
-                return node.Label + "___xxx";
-            }
-
-            public override bool IsReadOnly
-            {
-                get { return true; }
-            }
-
-            public override Type PropertyType
-            {
-                get { return typeof(string); }
-            }
-
-            #region Trivial/unsupported
-
-            public override void ResetValue(object component)
-            {
-            }
-
-            public override void SetValue(object component, object value)
-            {
-            }
-
-            public override bool ShouldSerializeValue(object component)
-            {
-                return false;
-            }
-
-            public override bool CanResetValue(object component)
-            {
-                return false;
-            }
-
-            #endregion Trivial/unsupported
         }
     }
 }
