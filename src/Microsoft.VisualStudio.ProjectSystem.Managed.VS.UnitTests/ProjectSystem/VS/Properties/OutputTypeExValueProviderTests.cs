@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public async void GetEvaluatedValue(object propertyValue, string expectedPropertyValue)
         {
             var properties = ProjectPropertiesFactory.Create(
-                IUnconfiguredProjectFactory.Create(),
+                UnconfiguredProjectFactory.Create(),
                 new PropertyPageData()
                 {
                     Category = ConfigurationGeneral.SchemaName,
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public async void SetValue(string propertyValue)
         {
             var properties = ProjectPropertiesFactory.Create(
-                IUnconfiguredProjectFactory.Create(),
+                UnconfiguredProjectFactory.Create(),
                 new PropertyPageData()
                 {
                     Category = ConfigurationGeneral.SchemaName,
