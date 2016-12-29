@@ -2,7 +2,6 @@
 
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.Common
 

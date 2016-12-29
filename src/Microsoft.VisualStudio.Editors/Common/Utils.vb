@@ -16,7 +16,6 @@ Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 Imports Microsoft.VSDesigner
 Imports GelUtilities = Microsoft.Internal.VisualStudio.PlatformUI.Utilities
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.Common
 

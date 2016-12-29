@@ -13,7 +13,6 @@ Imports System.ComponentModel.Design
 Imports System.Resources
 Imports System.IO
 Imports System.Windows.Forms
-Imports VB = Microsoft.VisualBasic
 
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor

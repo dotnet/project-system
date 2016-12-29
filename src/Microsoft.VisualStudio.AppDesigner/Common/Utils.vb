@@ -9,7 +9,6 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 

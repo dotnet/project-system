@@ -7,7 +7,6 @@ Option Compare Binary
 Imports Microsoft.VisualStudio.Editors.Common
 Imports System.IO
 Imports System.Windows.Forms
-Imports VB = Microsoft.VisualBasic
 
 'CONSIDER: Only watch files in the current category.  Currently I'm watching all files, regardless
 'CONSIDER: of whether the user is showing that category or not.

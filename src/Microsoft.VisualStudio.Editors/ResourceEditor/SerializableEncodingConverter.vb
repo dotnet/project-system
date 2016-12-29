@@ -6,7 +6,6 @@ Option Compare Binary
 Imports System.ComponentModel
 Imports System.Globalization
 Imports System.Text
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
