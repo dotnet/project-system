@@ -113,7 +113,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
 
         private ProjectProperties CreateProperties(string appDesignerFolderName)
         {
-            return ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(), new[] {
+            return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = AppDesigner.SchemaName, PropertyName = AppDesigner.FolderNameProperty, Value = appDesignerFolderName }
                 });
         }
