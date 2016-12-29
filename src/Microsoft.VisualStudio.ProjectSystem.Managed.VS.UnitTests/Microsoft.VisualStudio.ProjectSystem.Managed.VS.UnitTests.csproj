@@ -57,6 +57,7 @@
     <Compile Include="Mocks\IDteServicesFactory.cs" />
     <Compile Include="Mocks\ExportFactoryFactory.cs" />
     <Compile Include="Mocks\IEditorStateModelFactory.cs" />
+    <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
     <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
@@ -68,7 +69,10 @@
     <Compile Include="Mocks\IJsonModel.cs" />
     <Compile Include="Mocks\IDependencyNodeFactory.cs" />
     <Compile Include="Mocks\IProjectCatalogSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectFileModelWatcherFactory.cs" />
     <Compile Include="Mocks\ITextBufferFactory.cs" />
+    <Compile Include="Mocks\ITextBufferManagerMock.cs" />
+    <Compile Include="Mocks\ITextBufferStateListenerFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
@@ -109,6 +113,7 @@
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EditorStateModelTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListenerTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListenerTests.cs" />

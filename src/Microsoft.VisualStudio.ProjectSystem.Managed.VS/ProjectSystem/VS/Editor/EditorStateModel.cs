@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// <summary>
         /// The different states that the editor can be in.
         /// </summary>
-        private enum EditorState
+        internal enum EditorState
         {
             /// <summary>
             /// There is no open editor. No listeners are subscribed to project events.
@@ -70,7 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly ExportFactory<IFrameOpenCloseListener> _frameEventsListenerFactory;
         private readonly ExportFactory<ITextBufferManager> _textBufferManagerFactory;
 
-        private EditorState _currentState = EditorState.NoEditor;
+        // Protected so tests can access
+        protected EditorState _currentState = EditorState.NoEditor;
         private IVsWindowFrame _windowFrame;
         private ITextBufferManager _textBufferManager;
         private IProjectFileModelWatcher _projectFileModelWatcher;
@@ -87,6 +89,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             ExportFactory<IFrameOpenCloseListener> frameEventsListenerFactory,
             ExportFactory<ITextBufferManager> textBufferManagerFactory)
         {
+            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(shellHelper, nameof(shellHelper));
+            Requires.NotNull(projectFileModelWatcherFactory, nameof(projectFileModelWatcherFactory));
+            Requires.NotNull(textBufferListenerFactory, nameof(textBufferListenerFactory));
+            Requires.NotNull(frameEventsListenerFactory, nameof(frameEventsListenerFactory));
+            Requires.NotNull(textBufferManagerFactory, nameof(textBufferManagerFactory));
+
             _threadingService = threadingService;
             _unconfiguredProject = unconfiguredProject;
             _serviceProvider = serviceProvider;
@@ -155,6 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// <summary>
         /// Tells the editor to call close on the existing window frame.
         /// </summary>
+        /// <returns>True if the close was successful, false if the window is still open</returns>
         public async Task<bool> CloseWindowAsync()
         {
             // We can't switch to editor closing here because there's still the chance that some other action can cancel
@@ -204,15 +216,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// Because of the time-sensitive nature of that lock, instead of updating the file immediately we schedule an update as soon
         /// as the JTF can run our code.
         /// </summary>
-        public void ScheduleProjectFileUpdate()
+        public JoinableTask ScheduleProjectFileUpdate()
         {
             lock (_lock)
             {
                 // If the current state is writing project file, we don't want to update now, as the project will not have been fully
-                // reloaded yet. We'll get called back again after the ProjectReloadManager is finished reloading the project
-                if (_currentState == EditorState.WritingProjectFile) return;
+                // reloaded yet. We'll get called back again after the ProjectReloadManager is finished reloading the project.
+                // Additionally, if there is no editor open, or if the editor is closing, don't schedule an update
+                if (_currentState == EditorState.WritingProjectFile || _currentState == EditorState.NoEditor || _currentState == EditorState.EditorClosing) return null;
                 _currentState = EditorState.BufferUpdateScheduled;
-                _threadingService.JoinableTaskFactory.RunAsync(UpdateProjectFileAsync);
+                return _threadingService.JoinableTaskFactory.RunAsync(UpdateProjectFileAsync);
             }
         }
 
