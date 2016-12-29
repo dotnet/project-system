@@ -21,24 +21,24 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-            Me.alwaysCheckCheckBox.Checked = True
-            Me.messageLabel.Text = String.Format(Me.messageLabel.Text, fileName)
-            Me.messageLabel.PerformLayout()
-            Me.dialogLayoutPanel.PerformLayout()
+            alwaysCheckCheckBox.Checked = True
+            messageLabel.Text = String.Format(messageLabel.Text, fileName)
+            messageLabel.PerformLayout()
+            dialogLayoutPanel.PerformLayout()
 
-            Me.ClientSize = New Size(Me.ClientSize.Width, Me.dialogLayoutPanel.Size.Height + Me.Padding.Top * 2)
-            AddHandler Me.dialogLayoutPanel.SizeChanged, AddressOf TableLayoutPanelSizeChanged
+            ClientSize = New Size(ClientSize.Width, dialogLayoutPanel.Size.Height + Padding.Top * 2)
+            AddHandler dialogLayoutPanel.SizeChanged, AddressOf TableLayoutPanelSizeChanged
             F1Keyword = HelpIDs.Dlg_OpenFileWarning
         End Sub
 
         Private Sub TableLayoutPanelSizeChanged(sender As Object, e As EventArgs)
-            Me.ClientSize = New Size(Me.ClientSize.Width, Me.dialogLayoutPanel.Size.Height + Me.Padding.Top * 2)
+            ClientSize = New Size(ClientSize.Width, dialogLayoutPanel.Size.Height + Padding.Top * 2)
         End Sub
 
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing AndAlso _components IsNot Nothing Then
-                RemoveHandler Me.dialogLayoutPanel.SizeChanged, AddressOf TableLayoutPanelSizeChanged
+                RemoveHandler dialogLayoutPanel.SizeChanged, AddressOf TableLayoutPanelSizeChanged
                 _components.Dispose()
             End If
             MyBase.Dispose(disposing)
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Public ReadOnly Property AlwaysCheckForThisExtension() As Boolean
             Get
-                Return Me.alwaysCheckCheckBox.Checked
+                Return alwaysCheckCheckBox.Checked
             End Get
         End Property
 
@@ -84,79 +84,79 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(OpenFileWarningDialog))
-            Me.dialogLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.alwaysCheckCheckBox = New System.Windows.Forms.CheckBox
-            Me.messageLabel = New System.Windows.Forms.Label
-            Me.buttonOK = New System.Windows.Forms.Button
-            Me.buttonCancel = New System.Windows.Forms.Button
-            Me.messageLabel2 = New System.Windows.Forms.Label
-            Me.dialogLayoutPanel.SuspendLayout()
-            Me.SuspendLayout()
+            dialogLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            alwaysCheckCheckBox = New System.Windows.Forms.CheckBox
+            messageLabel = New System.Windows.Forms.Label
+            buttonOK = New System.Windows.Forms.Button
+            buttonCancel = New System.Windows.Forms.Button
+            messageLabel2 = New System.Windows.Forms.Label
+            dialogLayoutPanel.SuspendLayout()
+            SuspendLayout()
             '
             'dialogLayoutPanel
             '
-            resources.ApplyResources(Me.dialogLayoutPanel, "dialogLayoutPanel")
-            Me.dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.dialogLayoutPanel.Controls.Add(Me.alwaysCheckCheckBox, 0, 2)
-            Me.dialogLayoutPanel.Controls.Add(Me.messageLabel, 0, 0)
-            Me.dialogLayoutPanel.Controls.Add(Me.buttonOK, 0, 3)
-            Me.dialogLayoutPanel.Controls.Add(Me.buttonCancel, 1, 3)
-            Me.dialogLayoutPanel.Controls.Add(Me.messageLabel2, 0, 1)
-            Me.dialogLayoutPanel.Name = "dialogLayoutPanel"
-            Me.dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            resources.ApplyResources(dialogLayoutPanel, "dialogLayoutPanel")
+            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+            dialogLayoutPanel.Controls.Add(alwaysCheckCheckBox, 0, 2)
+            dialogLayoutPanel.Controls.Add(messageLabel, 0, 0)
+            dialogLayoutPanel.Controls.Add(buttonOK, 0, 3)
+            dialogLayoutPanel.Controls.Add(buttonCancel, 1, 3)
+            dialogLayoutPanel.Controls.Add(messageLabel2, 0, 1)
+            dialogLayoutPanel.Name = "dialogLayoutPanel"
+            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
             '
             'alwaysCheckCheckBox
             '
-            resources.ApplyResources(Me.alwaysCheckCheckBox, "alwaysCheckCheckBox")
-            Me.dialogLayoutPanel.SetColumnSpan(Me.alwaysCheckCheckBox, 2)
-            Me.alwaysCheckCheckBox.Name = "alwaysCheckCheckBox"
+            resources.ApplyResources(alwaysCheckCheckBox, "alwaysCheckCheckBox")
+            dialogLayoutPanel.SetColumnSpan(alwaysCheckCheckBox, 2)
+            alwaysCheckCheckBox.Name = "alwaysCheckCheckBox"
             '
             'messageLabel
             '
-            resources.ApplyResources(Me.messageLabel, "messageLabel")
-            Me.dialogLayoutPanel.SetColumnSpan(Me.messageLabel, 2)
-            Me.messageLabel.Name = "messageLabel"
+            resources.ApplyResources(messageLabel, "messageLabel")
+            dialogLayoutPanel.SetColumnSpan(messageLabel, 2)
+            messageLabel.Name = "messageLabel"
             '
             'buttonOK
             '
-            resources.ApplyResources(Me.buttonOK, "buttonOK")
-            Me.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.buttonOK.Name = "buttonOK"
+            resources.ApplyResources(buttonOK, "buttonOK")
+            buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK
+            buttonOK.Name = "buttonOK"
             '
             'buttonCancel
             '
-            resources.ApplyResources(Me.buttonCancel, "buttonCancel")
-            Me.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.buttonCancel.Name = "buttonCancel"
+            resources.ApplyResources(buttonCancel, "buttonCancel")
+            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            buttonCancel.Name = "buttonCancel"
             '
             'messageLabel2
             '
-            resources.ApplyResources(Me.messageLabel2, "messageLabel2")
-            Me.dialogLayoutPanel.SetColumnSpan(Me.messageLabel2, 2)
-            Me.messageLabel2.Name = "messageLabel2"
+            resources.ApplyResources(messageLabel2, "messageLabel2")
+            dialogLayoutPanel.SetColumnSpan(messageLabel2, 2)
+            messageLabel2.Name = "messageLabel2"
             '
             'OpenFileWarningDialog
             '
-            Me.AcceptButton = Me.buttonOK
+            AcceptButton = buttonOK
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.CancelButton = Me.buttonCancel
-            Me.Controls.Add(Me.dialogLayoutPanel)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-            Me.HelpButton = True
-            Me.MaximizeBox = False
-            Me.MinimizeBox = False
-            Me.Name = "OpenFileWarningDialog"
-            Me.ShowIcon = False
-            Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
-            Me.dialogLayoutPanel.ResumeLayout(False)
-            Me.dialogLayoutPanel.PerformLayout()
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            CancelButton = buttonCancel
+            Controls.Add(dialogLayoutPanel)
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+            HelpButton = True
+            MaximizeBox = False
+            MinimizeBox = False
+            Name = "OpenFileWarningDialog"
+            ShowIcon = False
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+            dialogLayoutPanel.ResumeLayout(False)
+            dialogLayoutPanel.PerformLayout()
+            ResumeLayout(False)
+            PerformLayout()
 
         End Sub
         Friend WithEvents dialogLayoutPanel As System.Windows.Forms.TableLayoutPanel

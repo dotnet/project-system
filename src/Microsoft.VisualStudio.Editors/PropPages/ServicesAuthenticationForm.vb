@@ -71,12 +71,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub Cancel_Click(sender As System.Object, e As EventArgs) Handles Cancel.Click
             _loadAnonymous = True
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            DialogResult = System.Windows.Forms.DialogResult.OK
         End Sub
 
         Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
             If keyData = Keys.Escape Then
-                Me.Close()
+                Close()
             End If
 
             Return MyBase.ProcessDialogKey(keyData)

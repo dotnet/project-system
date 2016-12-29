@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
-            Me.IconGlyph.Image = SystemIcons.Error.ToBitmap()
+            IconGlyph.Image = SystemIcons.Error.ToBitmap()
 
             ' A label used for determining the preferred size of the text in the textbox
             _sizingLabel = New Label()
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
             Set(value As String)
                 MyBase.Text = value
-                Me.ErrorText.Text = value
+                ErrorText.Text = value
             End Set
         End Property
 
@@ -94,8 +94,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
                 '  doesn't really make sense in this case, so set it back to no selection.
-                Me.ErrorText.SelectionLength = 0
-                Me.ErrorText.SelectionStart = Me.ErrorText.Text.Length
+                ErrorText.SelectionLength = 0
+                ErrorText.SelectionStart = ErrorText.Text.Length
                 _firstGotFocus = False
             End If
         End Sub
@@ -112,12 +112,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return MyBase.GetPreferredSize(proposedSize)
             End If
 
-            Dim sizeBeyondTheTextbox As Size = Drawing.Size.Subtract(Me.Size, Me.ErrorText.Size)
+            Dim sizeBeyondTheTextbox As Size = Drawing.Size.Subtract(Size, ErrorText.Size)
 
             'Use a label of the same size to determine the preferred size.  We use the
             '  suggested width, and expand the height as needed.
-            _sizingLabel.Font = Me.ErrorText.Font
-            _sizingLabel.Text = Me.ErrorText.Text & Microsoft.VisualBasic.vbCrLf & Microsoft.VisualBasic.vbCrLf & " " 'Add an extra line of buffer
+            _sizingLabel.Font = ErrorText.Font
+            _sizingLabel.Text = ErrorText.Text & Microsoft.VisualBasic.vbCrLf & Microsoft.VisualBasic.vbCrLf & " " 'Add an extra line of buffer
             _sizingLabel.Width = proposedSize.Width - sizeBeyondTheTextbox.Width
             _sizingLabel.AutoSize = False
 

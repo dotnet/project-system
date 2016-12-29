@@ -685,7 +685,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 '   get a pointer and fill it in and we'll leak it. So we need to take care of it by giving them a punk 
                 '   and then releasing it once we get it back on the managed side.
                 '
-                VSErrorHandler.ThrowOnFailure(Me.RunningDocTable.GetDocumentInfo(docCookie, Nothing, Nothing, Nothing, Nothing, hier, itemid, localPunk))
+                VSErrorHandler.ThrowOnFailure(RunningDocTable.GetDocumentInfo(docCookie, Nothing, Nothing, Nothing, Nothing, hier, itemid, localPunk))
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
@@ -752,7 +752,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
                 Debug.Assert(hier IsNot Nothing, "Why didn't we find a IVsHierarchy for the default app.config file?")
                 Dim goc As GlobalObjectCollection = Nothing
-                If Me._globalObjects.TryGetValue(Editors.Common.DTEUtils.EnvDTEProject(hier), _
+                If _globalObjects.TryGetValue(Editors.Common.DTEUtils.EnvDTEProject(hier), _
                                                  goc) _
                 Then
                     For Each go As GlobalObject In goc
@@ -1481,7 +1481,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Dim foundHierarchy As IVsHierarchy = Nothing
             Common.ShellUtil.GetDocumentInfo(fileName, rdt, foundHierarchy, readLocks, editLocks, itemid, docCookie)
 
-            Debug.Assert(Me._hierarchy Is foundHierarchy, "Different hierarchies!?")
+            Debug.Assert(_hierarchy Is foundHierarchy, "Different hierarchies!?")
         End Sub
 
         '/ <devdoc>
@@ -1787,7 +1787,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             If appConfigOrProjectFile <> "" Then
                 filesToCheckOut.Add(appConfigOrProjectFile)
             End If
-            Microsoft.VisualStudio.Editors.DesignerFramework.SourceCodeControlManager.QueryEditableFiles(Me._provider, filesToCheckOut, True, False)
+            Microsoft.VisualStudio.Editors.DesignerFramework.SourceCodeControlManager.QueryEditableFiles(_provider, filesToCheckOut, True, False)
 
             Try
                 _ignoreDocLock = True
@@ -1823,11 +1823,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             Dim settingsToSave As DesignTimeSettings = Settings
                             SettingsSerializer.Serialize(settingsToSave,
                                 SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid),
-                                Me._className,
+                                _className,
                                 settingsWriter,
                                 DesignerFramework.DesignUtil.GetEncoding(docDataTemp))
                             SaveToAppConfig(settingsToSave, SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True),
-                                Me._className)
+                                _className)
                         Finally
                             settingsWriter.Close()
                         End Try
@@ -1853,7 +1853,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         ' If we didn't save the document, we still have to make sure that the single file generator is run 
                         ' (Clients may depend on the new property in TempPE:s - VsWhidbey 449609)
                         If ProjectItem IsNot Nothing AndAlso ProjectItem.Object IsNot Nothing Then
-                            Dim vsProjItem As VSLangProj.VSProjectItem = TryCast(Me.ProjectItem.Object, VSLangProj.VSProjectItem)
+                            Dim vsProjItem As VSLangProj.VSProjectItem = TryCast(ProjectItem.Object, VSLangProj.VSProjectItem)
                             If vsProjItem IsNot Nothing Then
                                 Try
                                     vsProjItem.RunCustomTool()
@@ -2405,7 +2405,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Dim prop As SettingsProperty
                     prop = New SettingsProperty(instance.Name)
                     prop.PropertyType = globalObject.ResolveType(instance.SettingTypeName)
-                    Me.Add(prop)
+                    Add(prop)
                 Next
                 Debug.Assert(globalObject IsNot Nothing, "")
                 _globalObject = globalObject

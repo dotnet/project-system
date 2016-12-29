@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Overrides Sub Apply()
             ServicesPropPageAppConfigHelper.TryWriteXml(_appConfigDocument, CType(ServiceProvider, IServiceProvider), ProjectHierarchy)
-            Me.IsDirty = False
+            IsDirty = False
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub SetDirtyFlag()
-            Me.IsDirty = _appConfigDocument IsNot Nothing AndAlso _appConfigDocument.OuterXml <> _savedXml
+            IsDirty = _appConfigDocument IsNot Nothing AndAlso _appConfigDocument.OuterXml <> _savedXml
         End Sub
     End Class
 End Namespace

@@ -130,8 +130,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Since this component is also added to the designer host, we have to check this as well...
             '
             ' This *shouldn't* happen, so we assert here
-            If Me.Site IsNot Nothing Then
-                If EqualIdentifiers(Me.Site.Name, Name) Then
+            If Site IsNot Nothing Then
+                If EqualIdentifiers(Site.Name, Name) Then
                     Debug.Fail("Why is the setting name equal to the DesignTimeSettings site name?")
                     Return False
                 End If
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return SuggestedName
             End If
 
-            For i As Integer = 1 To Me._settings.Count + 1
+            For i As Integer = 1 To _settings.Count + 1
                 SuggestedName = MakeValidIdentifier(Base & i.ToString())
                 If Not ExistingNames.ContainsKey(SuggestedName) Then
                     Return SuggestedName

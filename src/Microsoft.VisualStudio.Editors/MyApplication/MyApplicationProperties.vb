@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
             End Get
             Set(value As String)
-                Me.MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
+                MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
 
@@ -811,7 +811,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Private ReadOnly Property MyAppData() As MyApplication.MyApplicationData
             Get
-                Return Me._myAppData
+                Return _myAppData
             End Get
         End Property
 
@@ -1137,7 +1137,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             If _myAppDocData IsNot Nothing Then
                 'Make sure the doc data is up to date (in reality in our current model, we shouldn't ever be in a dirty state
                 '  like this).
-                If Me._myAppData.IsDirty Then
+                If _myAppData.IsDirty Then
                     FlushToDocData()
                 End If
 

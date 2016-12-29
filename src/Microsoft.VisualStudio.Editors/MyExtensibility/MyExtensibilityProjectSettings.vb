@@ -62,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             ' Add the template.
-            Me.GetMyExtensionsFolderProjectItem()
-            Dim suggestedName As String = Me.GetProjectItemName(extensionTemplate.BaseName)
+            GetMyExtensionsFolderProjectItem()
+            Dim suggestedName As String = GetProjectItemName(extensionTemplate.BaseName)
             Debug.Assert(_extensionFolderProjectItem IsNot Nothing, "Could not create MyExtensions folder!")
             Try
                 _extensionFolderProjectItem.ProjectItems.AddFromTemplate(extensionTemplate.FilePath, suggestedName)
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         _vsBuildPropertyStorage.SetItemAttribute(extensionProjectItemID, s_MSBUILD_ATTR_ID, extensionTemplate.ID)
                         _vsBuildPropertyStorage.SetItemAttribute(extensionProjectItemID, s_MSBUILD_ATTR_VERSION, extensionTemplate.Version.ToString())
 
-                        Me.AddExtensionProjectFile(extensionTemplate.AssemblyFullName, projectItemAdded,
+                        AddExtensionProjectFile(extensionTemplate.AssemblyFullName, projectItemAdded,
                             extensionTemplate.ID, extensionTemplate.Version, extensionTemplate.DisplayName, extensionTemplate.Description)
 
                         result.Add(projectItemAdded)
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             ' Remove MyExtensions folder if nothing was added.
-            Me.RemoveMyExtensionsFolderIfEmpty()
+            RemoveMyExtensionsFolderIfEmpty()
 
             Return result
         End Function
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             _extProjItemGroups.RemoveItem(extensionProjectItemGroup)
 
-            Me.RemoveMyExtensionsFolderIfEmpty()
+            RemoveMyExtensionsFolderIfEmpty()
 
             ' Reset monitor state
             _monitorState = MonitorState.Normal
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub FindMyExtensionsFolderProjectItem()
             _extensionFolderProjectItem = Nothing
 
-            Dim parentProjectItems As ProjectItems = Me.GetParentProjectItems()
+            Dim parentProjectItems As ProjectItems = GetParentProjectItems()
             Debug.Assert(parentProjectItems IsNot Nothing, "Could not find parent ProjectItems!")
 
             Dim result As ProjectItem = Nothing
@@ -236,10 +236,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub GetMyExtensionsFolderProjectItem()
             If _extensionFolderProjectItem Is Nothing Then
-                Me.FindMyExtensionsFolderProjectItem()
+                FindMyExtensionsFolderProjectItem()
 
                 If _extensionFolderProjectItem Is Nothing Then
-                    Dim parentProjectItems As ProjectItems = Me.GetParentProjectItems()
+                    Dim parentProjectItems As ProjectItems = GetParentProjectItems()
                     Debug.Assert(parentProjectItems IsNot Nothing, "Could not find parent ProjectItems!")
 
                     _extensionFolderProjectItem = parentProjectItems.AddFolder(s_EXTENSION_FOLDER_NAME)
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
 
-            Me.FindMyExtensionsFolderProjectItem()
+            FindMyExtensionsFolderProjectItem()
             If _extensionFolderProjectItem Is Nothing Then
                 Exit Sub
             End If
@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _projectService.GetExtensionTemplateNameAndDescription(templateID, templateVersion, assemblyName,
                     templateName, templateDescription)
 
-                Me.AddExtensionProjectFile(assemblyName, extensionProjectItem,
+                AddExtensionProjectFile(assemblyName, extensionProjectItem,
                     templateID, templateVersion, templateName, templateDescription)
             Next
         End Sub
@@ -394,11 +394,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim trackProjectDocumentsEvents As TrackProjectDocumentsEventsHelper =
                 MyExtensibilitySolutionService.Instance.TrackProjectDocumentsEvents
             If trackProjectDocumentsEvents IsNot Nothing Then
-                AddHandler trackProjectDocumentsEvents.AfterAddFilesEx, AddressOf Me.OnAfterAddFilesEx
-                AddHandler trackProjectDocumentsEvents.AfterRemoveDirectories, AddressOf Me.OnAfterRemoveDirectories
-                AddHandler trackProjectDocumentsEvents.AfterRenameFiles, AddressOf Me.OnAfterRenameFiles
-                AddHandler trackProjectDocumentsEvents.AfterRemoveFiles, AddressOf Me.OnAfterRemoveFiles
-                AddHandler trackProjectDocumentsEvents.AfterRenameDirectories, AddressOf Me.OnAfterRenameDirectories
+                AddHandler trackProjectDocumentsEvents.AfterAddFilesEx, AddressOf OnAfterAddFilesEx
+                AddHandler trackProjectDocumentsEvents.AfterRemoveDirectories, AddressOf OnAfterRemoveDirectories
+                AddHandler trackProjectDocumentsEvents.AfterRenameFiles, AddressOf OnAfterRenameFiles
+                AddHandler trackProjectDocumentsEvents.AfterRemoveFiles, AddressOf OnAfterRemoveFiles
+                AddHandler trackProjectDocumentsEvents.AfterRenameDirectories, AddressOf OnAfterRenameDirectories
             End If
         End Sub
 
@@ -410,11 +410,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim trackProjectDocumentsEvents As TrackProjectDocumentsEventsHelper =
                 MyExtensibilitySolutionService.Instance.TrackProjectDocumentsEvents
             If trackProjectDocumentsEvents IsNot Nothing Then
-                RemoveHandler trackProjectDocumentsEvents.AfterAddFilesEx, AddressOf Me.OnAfterAddFilesEx
-                RemoveHandler trackProjectDocumentsEvents.AfterRemoveDirectories, AddressOf Me.OnAfterRemoveDirectories
-                RemoveHandler trackProjectDocumentsEvents.AfterRenameFiles, AddressOf Me.OnAfterRenameFiles
-                RemoveHandler trackProjectDocumentsEvents.AfterRemoveFiles, AddressOf Me.OnAfterRemoveFiles
-                RemoveHandler trackProjectDocumentsEvents.AfterRenameDirectories, AddressOf Me.OnAfterRenameDirectories
+                RemoveHandler trackProjectDocumentsEvents.AfterAddFilesEx, AddressOf OnAfterAddFilesEx
+                RemoveHandler trackProjectDocumentsEvents.AfterRemoveDirectories, AddressOf OnAfterRemoveDirectories
+                RemoveHandler trackProjectDocumentsEvents.AfterRenameFiles, AddressOf OnAfterRenameFiles
+                RemoveHandler trackProjectDocumentsEvents.AfterRemoveFiles, AddressOf OnAfterRemoveFiles
+                RemoveHandler trackProjectDocumentsEvents.AfterRenameDirectories, AddressOf OnAfterRenameDirectories
             End If
         End Sub
 
@@ -478,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             If subItemChanged Then
-                Me.RaiseChangeEvent()
+                RaiseChangeEvent()
             End If
         End Sub
 
@@ -497,10 +497,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Check if the extension folder was added back / removed by this rename.
             ' If it was, raise event and exit sub.
             Dim extensionFolderExistsBefore As Boolean = _extensionFolderProjectItem IsNot Nothing
-            Me.FindMyExtensionsFolderProjectItem()
+            FindMyExtensionsFolderProjectItem()
             Dim extensionFolderExistsAfter As Boolean = _extensionFolderProjectItem IsNot Nothing
             If extensionFolderExistsBefore <> extensionFolderExistsAfter Then
-                Me.RaiseChangeEvent()
+                RaiseChangeEvent()
                 Exit Sub
             End If
 
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         Dim oldFileUnderMyExtension As Boolean = IsUnderFolder(rgszMkOldNames(i), myExtensionsFolderPath)
                         Dim newFileUnderMyExtension As Boolean = IsUnderFolder(rgszMkNewNames(i), myExtensionsFolderPath)
                         If oldFileUnderMyExtension <> newFileUnderMyExtension Then
-                            Me.RaiseChangeEvent()
+                            RaiseChangeEvent()
                             Exit For
                         End If
                     Next
@@ -538,9 +538,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 For Each dirPath As String In rgpszMkDocuments
                     Dim dirName As String = GetDirectoryName(dirPath)
                     If StringEquals(dirName, s_EXTENSION_FOLDER_NAME) Then
-                        Me.FindMyExtensionsFolderProjectItem()
+                        FindMyExtensionsFolderProjectItem()
                         If _extensionFolderProjectItem Is Nothing Then
-                            Me.RaiseChangeEvent()
+                            RaiseChangeEvent()
                             Exit For
                         End If
                     End If
@@ -563,10 +563,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             For Each dirPath As String In namesToCheck
                 Dim dirName As String = GetDirectoryName(dirPath)
                 If StringEquals(dirName, s_EXTENSION_FOLDER_NAME) Then
-                    Me.FindMyExtensionsFolderProjectItem()
+                    FindMyExtensionsFolderProjectItem()
                     Dim myExtensionsFolderExistsAfter As Boolean = _extensionFolderProjectItem IsNot Nothing
                     If myExtensionsFolderExistsAfter <> myExtensionsFolderExistsBefore Then
-                        Me.RaiseChangeEvent()
+                        RaiseChangeEvent()
                         Exit For
                     End If
                 End If
@@ -602,7 +602,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Function
 
         Private Sub RaiseChangeEvent()
-            Me.LoadExtensionProjectFiles()
+            LoadExtensionProjectFiles()
             RaiseEvent ExtensionChanged()
         End Sub
 
@@ -672,8 +672,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             _projectHierarchy = projectHierarchy
             _vsBuildPropertyStorage = vsBuildPropertyStorage
 
-            Me.LoadExtensionProjectFiles()
-            Me.AdviseTrackProjectDocumentsEvents()
+            LoadExtensionProjectFiles()
+            AdviseTrackProjectDocumentsEvents()
         End Sub
 #End Region
 

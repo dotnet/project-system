@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End If
 
                 Me.LineIndex = lineIndex
-                Me.CharIndex = charOnLineIndex
+                CharIndex = charOnLineIndex
             End Sub
 
 
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Sub
 
             Public Function Shift(charIndexToAdd As Integer) As Location
-                Return New Location(Me.LineIndex, Me.CharIndex + charIndexToAdd)
+                Return New Location(LineIndex, CharIndex + charIndexToAdd)
             End Function
 
         End Class
@@ -241,14 +241,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ''' <param name="value"></param>
             ''' <remarks></remarks>
             Public Overridable Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
-                If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
+                If UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
                 End If
 
                 'Replace just the string in the buffer with the new value.
-                Dim replaceStart As Location = Me.DefinitionStart
-                Dim replaceEnd As Location = Me.DefinitionEndPlusOne
+                Dim replaceStart As Location = DefinitionStart
+                Dim replaceEnd As Location = DefinitionEndPlusOne
                 Dim newText As String = EscapeXmlString(value)
                 If _definitionIncludesQuotes Then
                     newText = """" & newText & """"
@@ -329,15 +329,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Property
 
             Public Overrides Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
-                If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
+                If UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
                 End If
 
                 'Replace the empty tag in the buffer with a start/end element tag
                 '  and the new value
-                Dim replaceStart As Location = Me.DefinitionStart
-                Dim replaceEnd As Location = Me.DefinitionEndPlusOne
+                Dim replaceStart As Location = DefinitionStart
+                Dim replaceEnd As Location = DefinitionEndPlusOne
                 Dim newText As String = _
                     "<" & _fullyQualifiedPropertyName & ">" _
                     & EscapeXmlString(value) _
@@ -378,7 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         ' IDisposable
         Protected Overridable Sub Dispose(disposing As Boolean)
-            If Not Me._isDisposed Then
+            If Not _isDisposed Then
                 If disposing Then
                     Debug.Assert(_debugBufferLockCount = 0, "Missing buffer unlock")
                 End If
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _vsTextLines = Nothing
                 _isDisposed = True
             End If
-            Me._isDisposed = True
+            _isDisposed = True
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose

@@ -26,10 +26,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call 
-            Me._previewPanel.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
-            Me.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
+            _previewPanel.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
+            BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
             _editControls = New Control() {_valueTextBox, _valueComboBox}
-            Me.EditControl = _valueTextBox
+            EditControl = _valueTextBox
         End Sub
 
         'UserControl1 overrides dispose to clean up the component list. 
@@ -55,47 +55,47 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TypeEditorHostControl))
-            Me._valueTextBox = New TypeEditorHostControlTextBox
-            Me._showEditorButton = New ComboBoxDotDotDotButton
-            Me._previewPanel = New System.Windows.Forms.Panel
-            Me._valueComboBox = New System.Windows.Forms.ComboBox
-            Me.SuspendLayout()
+            _valueTextBox = New TypeEditorHostControlTextBox
+            _showEditorButton = New ComboBoxDotDotDotButton
+            _previewPanel = New System.Windows.Forms.Panel
+            _valueComboBox = New System.Windows.Forms.ComboBox
+            SuspendLayout()
             '
             'ValueTextBox
             '
-            resources.ApplyResources(Me._valueTextBox, "ValueTextBox")
-            Me._valueTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-            Me._valueTextBox.Name = "ValueTextBox"
+            resources.ApplyResources(_valueTextBox, "ValueTextBox")
+            _valueTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+            _valueTextBox.Name = "ValueTextBox"
             '
             'ShowEditorButton
             '
-            resources.ApplyResources(Me._showEditorButton, "ShowEditorButton")
-            Me._showEditorButton.BackColor = Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_THREEDFACE,
+            resources.ApplyResources(_showEditorButton, "ShowEditorButton")
+            _showEditorButton.BackColor = Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_THREEDFACE,
                                                                         System.Drawing.SystemColors.ButtonFace, UseVSTheme:=False)
-            Me._showEditorButton.Name = "ShowEditorButton"
-            Me._showEditorButton.UseVisualStyleBackColor = False
+            _showEditorButton.Name = "ShowEditorButton"
+            _showEditorButton.UseVisualStyleBackColor = False
             '
             'PreviewPanel
             '
-            resources.ApplyResources(Me._previewPanel, "PreviewPanel")
-            Me._previewPanel.Name = "PreviewPanel"
+            resources.ApplyResources(_previewPanel, "PreviewPanel")
+            _previewPanel.Name = "PreviewPanel"
             '
             'ValueComboBox
             '
-            Me._valueComboBox.FormattingEnabled = True
-            resources.ApplyResources(Me._valueComboBox, "ValueComboBox")
-            Me._valueComboBox.Name = "ValueComboBox"
+            _valueComboBox.FormattingEnabled = True
+            resources.ApplyResources(_valueComboBox, "ValueComboBox")
+            _valueComboBox.Name = "ValueComboBox"
             '
             'TypeEditorHostControl
             '
-            Me.Controls.Add(Me._valueComboBox)
-            Me.Controls.Add(Me._previewPanel)
-            Me.Controls.Add(Me._showEditorButton)
-            Me.Controls.Add(Me._valueTextBox)
-            Me.Name = "TypeEditorHostControl"
+            Controls.Add(_valueComboBox)
+            Controls.Add(_previewPanel)
+            Controls.Add(_showEditorButton)
+            Controls.Add(_valueTextBox)
+            Name = "TypeEditorHostControl"
             resources.ApplyResources(Me, "$this")
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            ResumeLayout(False)
+            PerformLayout()
 
         End Sub
 
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub PreviewPanel_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles _previewPanel.Paint
             If Not _typeEditor Is Nothing Then
                 If _typeEditor.GetPaintValueSupported Then
-                    Using ForegroundPen As New Pen(Me.ForeColor)
+                    Using ForegroundPen As New Pen(ForeColor)
                         Dim DrawRect As New Rectangle(1, 1, _previewPanel.ClientRectangle.Width - 4, _previewPanel.ClientRectangle.Height - 4)
                         If Value IsNot Nothing Then
                             _typeEditor.PaintValue(Value, e.Graphics, DrawRect)
@@ -276,11 +276,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Width of text box - will be changed if preview panel and/or browse button
             ' is showing. Initially assume the text box is the only control showing
-            Dim TextBoxWidth As Integer = Me.Width
+            Dim TextBoxWidth As Integer = Width
 
             ' All controls have the same height!
-            _previewPanel.Height = Me.Height
-            EditControl.Height = Me.Height
+            _previewPanel.Height = Height
+            EditControl.Height = Height
 
             _showEditorButton.Height = System.Windows.Forms.SystemInformation.VerticalScrollBarThumbHeight + 2 * _showEditorButton.FlatAppearance.BorderSize
             _showEditorButton.Width = System.Windows.Forms.SystemInformation.VerticalScrollBarWidth + 2 * _showEditorButton.FlatAppearance.BorderSize
@@ -301,11 +301,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             ' Position controls
-            Me.EditControl.Left = TextBoxLeft
-            Me.EditControl.Width = TextBoxWidth
+            EditControl.Left = TextBoxLeft
+            EditControl.Width = TextBoxWidth
 
             _showEditorButton.Top = 0
-            Me._showEditorButton.Left = EditControl.Left + EditControl.Width
+            _showEditorButton.Left = EditControl.Left + EditControl.Width
         End Sub
 
 #End Region
@@ -361,7 +361,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Value = editedValue
                     OnValueChanged()
                     Switches.TracePDFocus(TraceLevel.Warning, "SettingsDesignerView.TypeEditorHostControl.ShowUITypeEditor.Me.Focus()")
-                    Me.Focus()
+                    Focus()
                 Catch Ex As Exception When Not TypeOf Ex Is System.Threading.ThreadAbortException _
                     AndAlso Not TypeOf Ex Is AccessViolationException _
                     AndAlso Not TypeOf Ex Is StackOverflowException
@@ -458,12 +458,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 ' Get preferred size & position of control...
                 Dim dialogSize As Size = New Size(control.PreferredSize.Width + 2, control.PreferredSize.Height + 2)
-                Dim UpperLeft As Point = PointToScreen(New Point(Me.Width - dialogSize.Width, Me._showEditorButton.Height))
+                Dim UpperLeft As Point = PointToScreen(New Point(Width - dialogSize.Width, _showEditorButton.Height))
 
                 ' If the dialog gets clipped at the bottom of the screen, let's try to reposition it above the
                 ' edit control...
                 If UpperLeft.Y + dialogSize.Height > currentScreen.WorkingArea.Bottom Then
-                    UpperLeft.Y = UpperLeft.Y - Me.Height - dialogSize.Height
+                    UpperLeft.Y = UpperLeft.Y - Height - dialogSize.Height
                 End If
 
                 ' If the dialog gets clipped at the right of the screen, let's try to move it left...
@@ -497,7 +497,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             AddHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
             _dialog.Editor = control
             _dialog.TopLevel = True
-            _dialog.Owner = Me.ParentForm
+            _dialog.Owner = ParentForm
             _dialog.ShowInTaskbar = False
             _dialog.Show()
             _dialog.Activate()
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Sub New()
                 ' We don't want this guy showing up in the task bar...
-                Me.ShowInTaskbar = False
+                ShowInTaskbar = False
             End Sub
 
             ''' <summary>
@@ -582,10 +582,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Params.ClassStyle = 0
                     Params.Style = Constants.WS_VISIBLE Or Constants.WS_POPUP Or Constants.WS_BORDER
                     Params.ExStyle = Constants.WS_EX_TOPMOST Or Constants.WS_EX_TOOLWINDOW
-                    Params.Height = Me.Height
-                    Params.Width = Me.Width
-                    Params.X = Me.Left
-                    Params.Y = Me.Top
+                    Params.Height = Height
+                    Params.Width = Width
+                    Params.X = Left
+                    Params.Y = Top
                     Return Params
                 End Get
             End Property
@@ -595,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <remarks>Additional common "cleanup" code before closing the window goes here</remarks>
             Protected Sub HideForm()
-                Me.Hide()
+                Hide()
             End Sub
 
             ''' <summary>
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="e"></param>
             ''' <remarks></remarks>
             Protected Overrides Sub OnDeactivate(e As EventArgs)
-                Me.HideForm()
+                HideForm()
             End Sub
 
             ''' <summary>
@@ -614,8 +614,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <remarks></remarks>
             Public Property Editor() As Control
                 Get
-                    If Me.Controls.Count = 1 Then
-                        Return Me.Controls.Item(0)
+                    If Controls.Count = 1 Then
+                        Return Controls.Item(0)
                     Else
                         Return Nothing
                     End If
@@ -637,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Protected Overrides Function ProcessKeyPreview(ByRef m As System.Windows.Forms.Message) As Boolean
                 If m.Msg = Microsoft.VisualStudio.Editors.Interop.NativeMethods.WM_KEYDOWN Then
                     If CType(m.WParam.ToInt32(), Keys) = Keys.Escape Then
-                        Me.HideForm()
+                        HideForm()
                         Return True
                     End If
                 End If
@@ -926,9 +926,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 MyBase.OnPaint(pevent)
                 Select Case PaintStyle
                     Case PaintStyles.DotDotDot
-                        Dim drawRect As Rectangle = Me.ClientRectangle
-                        drawRect.Offset(Me.FlatAppearance.BorderSize, 0)
-                        TextRenderer.DrawText(pevent.Graphics, s_dotDotDotString, Me.Font, drawRect, Me.ForeColor)
+                        Dim drawRect As Rectangle = ClientRectangle
+                        drawRect.Offset(FlatAppearance.BorderSize, 0)
+                        TextRenderer.DrawText(pevent.Graphics, s_dotDotDotString, Font, drawRect, ForeColor)
                     Case PaintStyles.DropDown
                         If ComboBoxRenderer.IsSupported Then
                             Dim drawstyle As VisualStyles.ComboBoxState
@@ -937,9 +937,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Else
                                 drawstyle = VisualStyles.ComboBoxState.Normal
                             End If
-                            ComboBoxRenderer.DrawDropDownButton(pevent.Graphics, Me.ClientRectangle, drawstyle)
+                            ComboBoxRenderer.DrawDropDownButton(pevent.Graphics, ClientRectangle, drawstyle)
                         Else
-                            ControlPaint.DrawComboButton(pevent.Graphics, Me.ClientRectangle, ButtonState.Normal)
+                            ControlPaint.DrawComboButton(pevent.Graphics, ClientRectangle, ButtonState.Normal)
                         End If
                 End Select
             End Sub

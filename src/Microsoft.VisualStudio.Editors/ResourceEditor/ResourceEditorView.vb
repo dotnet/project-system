@@ -372,9 +372,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public ReadOnly Property FileWatcher() As FileWatcher
             Get
                 If _fileWatcher Is Nothing Then
-                    If Me.Handle.Equals(0) Then
+                    If Handle.Equals(0) Then
                         Debug.Fail("Had to manually create control handle - is that okay?")
-                        Me.CreateControl()
+                        CreateControl()
                     End If
                     _fileWatcher = New FileWatcher(Me)
                 End If
@@ -542,30 +542,30 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> 
         Private Sub InitializeComponent()
-            Me.StringTable = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceStringTable
-            Me._resourceListView = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView
+            StringTable = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceStringTable
+            _resourceListView = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView
 
-            Me.SuspendLayout()
+            SuspendLayout()
             '
             'ResourceListView
             '
-            Me._resourceListView.BackColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_WINDOW, SystemColors.Window, UseVSTheme:=False)
-            Me._resourceListView.Text = "ResourceListView"
+            _resourceListView.BackColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_WINDOW, SystemColors.Window, UseVSTheme:=False)
+            _resourceListView.Text = "ResourceListView"
 
-            _cachedResources = New CachedResourcesForView(Me._resourceListView.BackColor)
+            _cachedResources = New CachedResourcesForView(_resourceListView.BackColor)
 
             '
             'StringTable
             '
-            Me.StringTable.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            StringTable.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.StringTable.Location = New System.Drawing.Point(71, 65)
-            Me.StringTable.Name = "StringTable"
-            Me.StringTable.Size = New System.Drawing.Size(690, 429)
-            Me.StringTable.TabIndex = 1
-            Me.StringTable.Text = "StringTable"
-            Me.StringTable.BackgroundColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
+            StringTable.Location = New System.Drawing.Point(71, 65)
+            StringTable.Name = "StringTable"
+            StringTable.Size = New System.Drawing.Size(690, 429)
+            StringTable.TabIndex = 1
+            StringTable.Text = "StringTable"
+            StringTable.BackgroundColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
             '
             ' m_toolbarPanel
             '
@@ -576,16 +576,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             'ResourceEditorView
             '
-            Me.Controls.Add(Me.StringTable)
-            Me.Controls.Add(Me._resourceListView)
-            Me.Controls.Add(_toolbarPanel)
-            Me.Name = "ResourceEditorView"
-            Me.Text = "ResourceEditorView"
-            Me.Size = New System.Drawing.Size(740, 518)
-            Me.Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
-            Me.BackColor = Common.ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
+            Controls.Add(StringTable)
+            Controls.Add(_resourceListView)
+            Controls.Add(_toolbarPanel)
+            Name = "ResourceEditorView"
+            Text = "ResourceEditorView"
+            Size = New System.Drawing.Size(740, 518)
+            Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
+            BackColor = Common.ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
 
-            Me.ResumeLayout(False)
+            ResumeLayout(False)
 
         End Sub
 
@@ -600,7 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub InitializeUI(ServiceProvider As IServiceProvider)
-            Me.AllowDrop = True
+            AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
             _UIInitialized = True
         End Sub
@@ -640,7 +640,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Now set the fonts for only those items which have been overridden.  Controls will automatically
             '  get their font from their parent if we don't set them manually.
             If MainFont IsNot Nothing Then
-                Me.Font = MainFont
+                Font = MainFont
             End If
             If StringTableFont IsNot Nothing Then
                 StringTable.Font = StringTableFont
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Add our menus (can't do that until we know the root designer)
-            Me.RegisterMenuCommands(isEditingResWFile)
+            RegisterMenuCommands(isEditingResWFile)
 
             'Hook up for broadcast messages
             Dim VSShell As IVsShell = DirectCast(RootDesigner.GetService(GetType(IVsShell)), IVsShell)
@@ -742,46 +742,46 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _menuCommands = New ArrayList
 
                 'Play
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
                     AlwaysCheckStatus:=True))
 
                 'Open/Open With...
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
                     AlwaysCheckStatus:=True))
 
                 'Cut/Copy/Paste/Remove/Rename
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
                     CommandVisibleHandler:=AddressOf MenuRemoveVisibleHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf Me.MenuRemoveRow, AddressOf Me.MenuRemoveRowEnabledHandler,
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler, _
                     AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler, _
                     AlwaysCheckStatus:=True))
 
                 'Select All
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler))
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler))
 
                 'Add menu items
                 If isEditingResWFile Then
                     ' Only 'Add Default Resource' is allowed resw files
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf Me.ButtonFixedAdd_Click, AddressOf Me.MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))
                 Else
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddFixedMenuCommand, AddressOf Me.ButtonFixedAdd_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddExistingFile, AddressOf ButtonAdd_ExistingFile_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewString, AddressOf ButtonAdd_NewString_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewTextFile, AddressOf ButtonAdd_NewTextFile_Click, AddressOf Me.MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddFixedMenuCommand, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddExistingFile, AddressOf ButtonAdd_ExistingFile_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewString, AddressOf ButtonAdd_NewString_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewTextFile, AddressOf ButtonAdd_NewTextFile_Click, AddressOf MenuAddEnabledHandler))
 
-                    Dim NewIconCommand As DesignerMenuCommand = New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewIcon, AddressOf ButtonAdd_NewIcon_Click, AddressOf Me.MenuAddEnabledHandler)
+                    Dim NewIconCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewIcon, AddressOf ButtonAdd_NewIcon_Click, AddressOf MenuAddEnabledHandler)
                     If Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsExpress() Then
                         ' NOTE: we disable "Add New Icon" in the express SKU, because the icon editor (a part of native resource designer) does not exist in the express SKUs...
                         ' see vswhidbey 456776
@@ -790,11 +790,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _menuCommands.Add(NewIconCommand)
 
                     'Add.New Image menu items
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImagePNG, AddressOf ButtonAdd_NewImage_PNG_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageBMP, AddressOf ButtonAdd_NewImage_BMP_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageGIF, AddressOf ButtonAdd_NewImage_GIF_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageJPEG, AddressOf ButtonAdd_NewImage_JPEG_Click, AddressOf Me.MenuAddEnabledHandler))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageTIFF, AddressOf ButtonAdd_NewImage_TIFF_Click, AddressOf Me.MenuAddTiffEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImagePNG, AddressOf ButtonAdd_NewImage_PNG_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageBMP, AddressOf ButtonAdd_NewImage_BMP_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageGIF, AddressOf ButtonAdd_NewImage_GIF_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageJPEG, AddressOf ButtonAdd_NewImage_JPEG_Click, AddressOf MenuAddEnabledHandler))
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddNewImageTIFF, AddressOf ButtonAdd_NewImage_TIFF_Click, AddressOf MenuAddTiffEnabledHandler))
 
                     'Resource type menu items
                     _categoryLatchedCommandGroup = New LatchedCommandGroup
@@ -804,20 +804,20 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next Category
 
                     'Views menu items
-                    _buttonViewsCommand = New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXViewsFixedMenuCommand, AddressOf Me.ButtonFixedView_Click)
+                    _buttonViewsCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXViewsFixedMenuCommand, AddressOf ButtonFixedView_Click)
                     _menuCommands.Add(_buttonViewsCommand)
                     _viewsLatchedCommandGroup = New LatchedCommandGroup
-                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.List, New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXViewsList, AddressOf ButtonViews_List_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
-                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Details, New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXViewsDetails, AddressOf ButtonViews_Details_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
-                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Thumbnail, New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXViewsThumbnails, AddressOf ButtonViews_Thumbnail_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
+                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.List, New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXViewsList, AddressOf ButtonViews_List_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
+                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Details, New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXViewsDetails, AddressOf ButtonViews_Details_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
+                    _viewsLatchedCommandGroup.Add(Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Thumbnail, New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXViewsThumbnails, AddressOf ButtonViews_Thumbnail_Click, AddressOf ViewsMenuItemsEnabledHandler, AlwaysCheckStatus:=True))
                     For Each Command As MenuCommand In _viewsLatchedCommandGroup.Commands
                         _menuCommands.Add(Command)
                     Next
 
                     'Import/Export
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDResXImport, AddressOf MenuImport, AddressOf MenuImportEnabledHandler, _
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXImport, AddressOf MenuImport, AddressOf MenuImportEnabledHandler, _
                         AlwaysCheckStatus:=True))
-                    _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDResXExport, AddressOf MenuExport, AddressOf MenuExportEnabledHandler, _
+                    _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXExport, AddressOf MenuExport, AddressOf MenuExportEnabledHandler, _
                         AlwaysCheckStatus:=True))
 
                     'Access modifier combobox
@@ -827,26 +827,26 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Delete
                 '
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidDelete, AddressOf MenuRemove, AddressOf MenuDeleteEnabledHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidDelete, AddressOf MenuRemove, AddressOf MenuDeleteEnabledHandler, _
                     CommandVisibleHandler:=AddressOf MenuDeleteVisibleHandler, _
                     AlwaysCheckStatus:=True))
 
                 'Edit cell -- leave it here because of VB profile...
-                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel)
+                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel)
                 'We don't actually want "Edit" to be visible in the menus.  We simply want to be able to have something to bind the F2 key to
                 '  so that pressing F2 in the string table starts editing (the shell seems to steal this key from the grid).  So make it
                 '  invisible
                 EditCellCommand.Visible = False
                 _menuCommands.Add(EditCellCommand)
 
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDRESXGenericRemove, AddressOf MenuGenericRemove, AddressOf MenuGenericRemoveEnabledHandler, _
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXGenericRemove, AddressOf MenuGenericRemove, AddressOf MenuGenericRemoveEnabledHandler, _
                     AlwaysCheckStatus:=True))
 
                 ' CancelEdit
-                _menuCommands.Add(New DesignerMenuCommand(Me.RootDesigner, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf Me.MenuCancelEdit, AddressOf Me.MenuCancelEditEnableHandler))
+                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf MenuCancelEdit, AddressOf MenuCancelEditEnableHandler))
 
                 'Register them
-                Me.RootDesigner.RegisterMenuCommands(_menuCommands)
+                RootDesigner.RegisterMenuCommands(_menuCommands)
 
                 Dim toolbarID As UInteger = Constants.MenuConstants.IDM_VS_TOOLBAR_Resources
 
@@ -858,7 +858,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _toolbarPanel.SetToolbar(DirectCast(RootDesigner.GetService(GetType(IVsUIShell)), IVsUIShell),
                                           Constants.MenuConstants.GUID_RESX_MenuGroup,
                                           toolbarID)
-                _toolbarPanel.Activate(Me.Handle)
+                _toolbarPanel.Activate(Handle)
 
             Finally
                 InThisMethod = False
@@ -897,7 +897,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _categoryNameIcons, SR.GetString(SR.RSE_Cat_Icons), _
                     Category.Display.ListView, _
                     New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeIcons, AddressOf MenuResourceTypeIcons), _
-                    AddressOf Me.ButtonAdd_ExistingFile_Click, _
+                    AddressOf ButtonAdd_ExistingFile_Click, _
                     ResourceTypeEditors.Icon)
             Else
                 _categoryIcons = New Category( _
@@ -915,7 +915,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _categoryNameAudio, SR.GetString(SR.RSE_Cat_Audio), _
                 Category.Display.ListView, _
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeAudio, AddressOf MenuResourceTypeAudio), _
-                AddressOf Me.ButtonAdd_ExistingFile_Click, _
+                AddressOf ButtonAdd_ExistingFile_Click, _
                 ResourceTypeEditors.Audio)
             _categoryAudio.ResourceView = Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Thumbnail
             _categories.Add(_categoryAudio)
@@ -924,7 +924,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _categoryNameFiles, SR.GetString(SR.RSE_Cat_Files), _
                 Category.Display.ListView, _
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeFiles, AddressOf MenuResourceTypeFiles), _
-                AddressOf Me.ButtonAdd_ExistingFile_Click, _
+                AddressOf ButtonAdd_ExistingFile_Click, _
                 ResourceTypeEditors.TextFile, _
                 ResourceTypeEditors.BinaryFile)
             _categoryFiles.ResourceView = Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView.ResourceView.Thumbnail
@@ -976,7 +976,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'String table and resource listview
                 ' We leave some white space around them
                 StringTable.Location = New Point(s_DESIGNER_PADDING, _toolbarPanel.Bottom + s_DESIGNER_PADDING_TOP)
-                StringTable.Size = New Size(Me.Width - 2 * s_DESIGNER_PADDING, Me.Height - _toolbarPanel.Height - s_DESIGNER_PADDING - s_DESIGNER_PADDING_TOP)
+                StringTable.Size = New Size(Width - 2 * s_DESIGNER_PADDING, Height - _toolbarPanel.Height - s_DESIGNER_PADDING - s_DESIGNER_PADDING_TOP)
                 _resourceListView.Location = StringTable.Location
                 _resourceListView.Size = StringTable.Size
             Finally
@@ -1178,7 +1178,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub UpdateToolbarFocus()
             If _toolbarPanel IsNot Nothing Then
-                _toolbarPanel.Activate(Me.Handle)
+                _toolbarPanel.Activate(Handle)
             End If
         End Sub
 
@@ -1217,7 +1217,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _currentCategory IsNot Nothing Then
                 Select Case _currentCategory.CategoryDisplay
                     Case Category.Display.ListView
-                        Me._resourceListView.InvalidateResource(Resource, InvalidateThumbnail)
+                        _resourceListView.InvalidateResource(Resource, InvalidateThumbnail)
                     Case Category.Display.StringTable
                         StringTable.InvalidateResource(Resource)
                     Case Else
@@ -1242,7 +1242,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Icon As MessageBoxIcon, _
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
                 Optional HelpLink As String = Nothing) As DialogResult
-            Return DesignerFramework.DesignerMessageBox.Show(DirectCast(Me.RootDesigner, IServiceProvider), Message, ResourceEditorView.s_messageBoxCaption, _
+            Return DesignerFramework.DesignerMessageBox.Show(DirectCast(RootDesigner, IServiceProvider), Message, ResourceEditorView.s_messageBoxCaption, _
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ex">The exception whose message we want to display.</param>
         ''' <remarks></remarks>
         Public Overridable Sub DsMsgBox(ex As Exception)
-            DesignerFramework.DesignerMessageBox.Show(DirectCast(Me.RootDesigner, IServiceProvider), ex, ResourceEditorView.s_messageBoxCaption)
+            DesignerFramework.DesignerMessageBox.Show(DirectCast(RootDesigner, IServiceProvider), ex, ResourceEditorView.s_messageBoxCaption)
         End Sub
 
 
@@ -1513,7 +1513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Try
                     ' Select the resources using ISelectionService.
                     Using New WaitCursor
-                        Dim selectionService As ISelectionService = Me.RootDesigner.SelectionService
+                        Dim selectionService As ISelectionService = RootDesigner.SelectionService
 
                         ' For performance reasons, we check whether the selection has changed, otherwise, we don't update it
                         Dim needUpdate As Boolean = True
@@ -1665,7 +1665,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
 
                     'Validate the resource names before we start adding them to the project
-                    Resource.CheckResourceIdentifiers(Me.ResourceFile, NewResources, Fix:=FixInvalidIdentifiers, CheckForDuplicateNames:=False)
+                    Resource.CheckResourceIdentifiers(ResourceFile, NewResources, Fix:=FixInvalidIdentifiers, CheckForDuplicateNames:=False)
 
                     'Then add them to the editor.
                     If AddToProject AndAlso Not CopyFileIfExists AndAlso Not AlwaysAddNew Then
@@ -1776,13 +1776,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             CommitPendingChanges()
 
             'Verify that all the resource names are valid before adding anything to the project.
-            Resource.CheckResourceIdentifiers(Me.ResourceFile, NewResources, Fix:=False, CheckForDuplicateNames:=False)
+            Resource.CheckResourceIdentifiers(ResourceFile, NewResources, Fix:=False, CheckForDuplicateNames:=False)
 
             'Set up the type resolution context for all the resources in the list.  If they came from copy/paste or drag/drop, they
             '  won't have it set up yet, and we'll need that in order to make changes (like the link path)
             For Each Resource As Resource In NewResources
                 Resource.SetTypeResolutionContext(Me)
-                Resource.SetTypeNameConverter(Me.ResourceFile)
+                Resource.SetTypeNameConverter(ResourceFile)
             Next
 
             ' Verify whether the resouce items are supported by current platform
@@ -2609,7 +2609,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  instance of the resource editor.  To do this, we simply append the HashCode of this resource editor's view instance
         '  to the format name.  Other instances of the resource editor will use a different format name because of the
         '  hashcode, and therefore won't see this format.
-        Private ReadOnly _CF_RESOURCES_THIS_INSTANCE As String = _CF_RESOURCES & "," & CStr(Me.GetHashCode())
+        Private ReadOnly _CF_RESOURCES_THIS_INSTANCE As String = _CF_RESOURCES & "," & CStr(GetHashCode())
 
         'Clipboard formats for dragging from the Visual Studio solution explorer
 
@@ -2959,7 +2959,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Protected Overrides Sub OnDragEnter(e As System.Windows.Forms.DragEventArgs)
             MyBase.OnDragEnter(e)
-            Me.RootDesigner.DesignerHost.Activate()
+            RootDesigner.DesignerHost.Activate()
             UnselectAllResources()
             SetDragDropEffect(e)
         End Sub
@@ -3703,7 +3703,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '  the resource from the file, and then setting it into the resource's
                         '  Value property.
                         Try
-                            Dim NewResourceValue As Object = ResourceToImportTo.ResourceTypeEditor.LoadResourceFromFile(FileAndPathToImportFrom, Me._resourceFile)
+                            Dim NewResourceValue As Object = ResourceToImportTo.ResourceTypeEditor.LoadResourceFromFile(FileAndPathToImportFrom, _resourceFile)
 
                             ' We should test whether the resource item is valid first...
                             Using NewResourceItem As New Resource(_resourceFile, "Test", "", NewResourceValue, Me)
@@ -3898,7 +3898,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     FileNames.Add(FileName)
                 Next
 
-                Dim serviceProvider As IServiceProvider = DirectCast(Me.RootDesigner, IServiceProvider)
+                Dim serviceProvider As IServiceProvider = DirectCast(RootDesigner, IServiceProvider)
 
                 'See if any of the files already exist
                 Dim ExistingFiles As New List(Of String)
@@ -4226,8 +4226,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub ButtonFixedAdd_Click(sender As Object, e As EventArgs)
-            If Me.CurrentCategory.AddCommand IsNot Nothing Then
-                Me.CurrentCategory.AddCommand.Invoke(sender, e)
+            If CurrentCategory.AddCommand IsNot Nothing Then
+                CurrentCategory.AddCommand.Invoke(sender, e)
             End If
         End Sub
 
@@ -4262,7 +4262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_BMP)
 
             ' Remember the type of the last added image
-            Me.CurrentCategory.AddCommand = AddressOf Me.ButtonAdd_NewImage_BMP_Click
+            CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_BMP_Click
         End Sub
 
 
@@ -4274,7 +4274,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_GIF)
 
             ' Remember the type of the last added image
-            Me.CurrentCategory.AddCommand = AddressOf Me.ButtonAdd_NewImage_GIF_Click
+            CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_GIF_Click
         End Sub
 
 
@@ -4286,7 +4286,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_JPG)
 
             ' Remember the type of the last added image
-            Me.CurrentCategory.AddCommand = AddressOf Me.ButtonAdd_NewImage_JPEG_Click
+            CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_JPEG_Click
         End Sub
 
 
@@ -4298,7 +4298,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_PNG)
 
             ' Remember the type of the last added image
-            Me.CurrentCategory.AddCommand = AddressOf Me.ButtonAdd_NewImage_PNG_Click
+            CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_PNG_Click
         End Sub
 
 
@@ -4310,7 +4310,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorBitmap.EXT_TIF)
 
             ' Remember the type of the last added image
-            Me.CurrentCategory.AddCommand = AddressOf Me.ButtonAdd_NewImage_TIFF_Click
+            CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_TIFF_Click
         End Sub
 
 
@@ -4455,7 +4455,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  into an editor.  Otherwise it won't be flushed until the next time the resource editor is activated and
                     '  and deactivated again.  
                     Try
-                        Me.RootDesigner.DesignerLoader.RunSingleFileGenerator(True)
+                        RootDesigner.DesignerLoader.RunSingleFileGenerator(True)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(QueryAddNewLinkedResource), NameOf(ResourceEditorView))
                         DsMsgBox(ex)
                     End Try
@@ -4554,7 +4554,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub ShowContextMenu(sender As Object, e As MouseEventArgs)
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Try
-                    Me.RootDesigner.ShowContextMenu(Constants.MenuConstants.ResXContextMenuID, e.X, e.Y)
+                    RootDesigner.ShowContextMenu(Constants.MenuConstants.ResXContextMenuID, e.X, e.Y)
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenu), NameOf(ResourceEditorView))
                 End Try
             Else
@@ -4632,7 +4632,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function ShowOpenFileDialog(ByRef UserCanceled As Boolean, Title As String, Filter As String, FilterIndex As Integer, MultiSelect As Boolean, Optional DefaultPath As String = Nothing) As String()
             Try
                 ' BUGFIX: Dev11#35824: Initialize Open File Dialog on the DefaultPath.  Nothing means devenv location.
-                Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(RootDesigner.DesignerHost, Me.Handle, DefaultPath, Title, Filter, CUInt(FilterIndex), MultiSelect, Nothing, True)
+                Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(RootDesigner.DesignerHost, Handle, DefaultPath, Title, Filter, CUInt(FilterIndex), MultiSelect, Nothing, True)
 
                 If fileNames Is Nothing OrElse fileNames.Count = 0 Then
                     UserCanceled = True
@@ -4666,8 +4666,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             UserCanceled = True
 
-            Dim newFileName As String = Utils.GetNewFileNameViaBrowse(DirectCast(Me.RootDesigner, IServiceProvider), _
-                    Me.Handle, DefaultPath, Title, Filter, CUInt(FilterIndex), DefaultFileName, OverwritePrompt)
+            Dim newFileName As String = Utils.GetNewFileNameViaBrowse(DirectCast(RootDesigner, IServiceProvider), _
+                    Handle, DefaultPath, Title, Filter, CUInt(FilterIndex), DefaultFileName, OverwritePrompt)
 
             If newFileName <> "" Then
                 UserCanceled = False

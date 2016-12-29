@@ -396,7 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not IsResXNullRef Then
                 ' BUGFIX: Dev11#31931: Create a new ResXDataNode with the TypeNameConverter function.
                 If ResXDataNode.FileRef Is Nothing Then
-                    _resXDataNode = NewResXDataNode(ResXDataNode.Name, ResXDataNode.Comment, Me.TryGetValue())
+                    _resXDataNode = NewResXDataNode(ResXDataNode.Name, ResXDataNode.Comment, TryGetValue())
                 Else
                     _resXDataNode = NewResXDataNode(ResXDataNode.Name, ResXDataNode.Comment, ResXDataNode.FileRef.FileName, ResXDataNode.FileRef.TypeName, ResXDataNode.FileRef.TextFileEncoding)
                 End If
@@ -634,7 +634,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Validate the value first...
                 Dim NewParsedName As String = Nothing
                 Dim Exception As Exception = Nothing
-                If Not ValidateName(Me.ParentResourceFile, CStr(Value), Name, NewParsedName, Exception) Then
+                If Not ValidateName(ParentResourceFile, CStr(Value), Name, NewParsedName, Exception) Then
                     Throw Exception
                 Else
                     If _parentResourceFile IsNot Nothing Then
@@ -739,7 +739,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private WriteOnly Property PersistenceWithoutUndo() As ResourcePersistenceMode
             Set(Value As ResourcePersistenceMode)
-                If Me.PersistenceMode = Value Then
+                If PersistenceMode = Value Then
                     'Nothing changed
                     Exit Property
                 End If
@@ -757,7 +757,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Dim needOverwriteFile As Boolean = True
 
                         'Can this resource type be saved to a file?
-                        If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(Me.ParentResourceFile) Then
+                        If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
                             Throw NewException(SR.GetString(SR.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
@@ -786,7 +786,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             End If
                         Else
                             NewFilePath = View.GetSaveLocationForNewProjectFile( _
-                                Me.ResourceTypeEditor, _
+                                ResourceTypeEditor, _
                                 ResourceEditorView.GetSuggestedFileNameForResource(Me), _
                                 UserCancel)
                             If UserCancel Then
@@ -825,17 +825,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             CopyFileIfExists:=False)
 
                         ' NOTE: We will keep old value in m_SavedFileName for undo/redo support...
-                        Me.FileNameWithoutUndo = FinalPathAndFileName
+                        FileNameWithoutUndo = FinalPathAndFileName
 
                     Case ResourcePersistenceMode.Embedded
                         'Can this resource type be saved to a file?  We don't want to allow changing
                         '  to non-linked if the user couldn't change it back again.
-                        If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(Me.ParentResourceFile) Then
+                        If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
                             Throw NewException(SR.GetString(SR.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
                         'Changed linked to non-linked
-                        Me.FileNameWithoutUndo = ""
+                        FileNameWithoutUndo = ""
 
                     Case Else
                         Debug.Fail("Unexpected persistence mode")
@@ -899,7 +899,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             _originalFileTimeStamp = DateTime.UtcNow
                         End Try
 
-                        _resXDataNode = NewResXDataNode(Me.Name, Me.Comment, GetValue())
+                        _resXDataNode = NewResXDataNode(Name, Comment, GetValue())
                         PersistenceChanged = True
                     Else
                         'Change the file the link is pointing to
@@ -958,7 +958,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Set(Value As Encoding)
                 Debug.Assert(IsLink AndAlso ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile))
                 If _resXDataNode.FileRef IsNot Nothing Then
-                    _resXDataNode = NewResXDataNode(Me.Name, Me.Comment, Me.AbsoluteLinkPathAndFileName, Me.ValueTypeName, Value)
+                    _resXDataNode = NewResXDataNode(Name, Comment, AbsoluteLinkPathAndFileName, ValueTypeName, Value)
                 End If
             End Set
         End Property
@@ -1042,13 +1042,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _resourceTypeEditor = NewResourceTypeEditor
 
                 'Change the value type.  Must be done by creating a new ResXFileRef.
-                Dim NewTextFileEncoding As Encoding = Me.Encoding
+                Dim NewTextFileEncoding As Encoding = Encoding
                 If Value <> FileTypes.Text Then
                     'Encoding doesn't make any sense for non-text files, so let's clear it here.  If they change it back to
                     '  binary again later, we will re-guess the encoding automatically.
                     NewTextFileEncoding = Nothing
                 End If
-                _resXDataNode = NewResXDataNode(Me.Name, Me.Comment, Me.AbsoluteLinkPathAndFileName, NewResourceValueType.AssemblyQualifiedName, NewTextFileEncoding)
+                _resXDataNode = NewResXDataNode(Name, Comment, AbsoluteLinkPathAndFileName, NewResourceValueType.AssemblyQualifiedName, NewTextFileEncoding)
 
                 'If we changed from a binary file to a text file and the encoding isn't still set from previously, make a guess
                 '  at it now.
@@ -1069,7 +1069,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ParentResourceFile.View.DelayedPropertyGridUpdate()
                 End If
 
-                Debug.Assert(Me.FileType = Value)
+                Debug.Assert(FileType = Value)
             End Set
         End Property
 
@@ -1204,7 +1204,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public ReadOnly Property IsResXNullRef() As Boolean
             Get
-                Return IsResXNullRef(Me.ValueTypeName)
+                Return IsResXNullRef(ValueTypeName)
             End Get
         End Property
 
@@ -1299,7 +1299,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Friend ReadOnly Property ValueTypeNameWithoutAssemblyInfo() As String
             Get
-                Dim TypeName As String = Me.ValueTypeName
+                Dim TypeName As String = ValueTypeName
 
                 If IsResXNullRef(TypeName) Then
                     'Null/Nothing value
@@ -1418,7 +1418,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' Resources can be stored as byte arrays in the resource file.  See if the resource type editor
                 ' can understand the byte array.
                 If TypeOf Value Is Byte() AndAlso _resourceTypeEditor IsNot Nothing Then
-                    Dim ConvertedValue As Object = Me.ResourceTypeEditor.ConvertByteArrayToResourceValue(DirectCast(Value, Byte()))
+                    Dim ConvertedValue As Object = ResourceTypeEditor.ConvertByteArrayToResourceValue(DirectCast(Value, Byte()))
                     If ConvertedValue IsNot Nothing Then
                         Value = ConvertedValue
                     End If
@@ -1556,7 +1556,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         _cachedValue = New WeakReference(NewResourceValue)
                     Else
                         'Not a link.  Change the actual persisted value.  Current cache will be invalidated below in InvalidateCachedInfoAndThumbnail()
-                        _resXDataNode = NewResXDataNode(Me.Name, Me.Comment, NewResourceValue)
+                        _resXDataNode = NewResXDataNode(Name, Comment, NewResourceValue)
 
                         'If the user just assigned (through import) a new value into the resource that has an extension that
                         '  doesn't match our saved filename, it doesn't make sense to remember the old saved name, because if we
@@ -1587,7 +1587,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  2) There was an error in the resx file
         '  3) There's an exception trying to load the type
         Public Function GetValueType() As Type Implements ResourceTypeEditor.IResource.GetValueType
-            Return GetValueTypeHelper(Me.ValueTypeName, ThrowOnError:=True)
+            Return GetValueTypeHelper(ValueTypeName, ThrowOnError:=True)
         End Function
 
         Public Shared Function GetValueType(ValueTypeName As String) As Type
@@ -1604,7 +1604,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
         Public Function TryGetValueType() As Type
-            Return GetValueTypeHelper(Me.ValueTypeName, ThrowOnError:=False)
+            Return GetValueTypeHelper(ValueTypeName, ThrowOnError:=False)
         End Function
 
         Public Shared Function TryGetValueType(ValueTypeName As String) As Type
@@ -1727,7 +1727,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         ' Bitmap and icons may be stored as a linked resource with byte array as the type.
                         ' Select the resource type editor using the extension of the file name in the link.
-                        Dim Extension As String = Path.GetExtension(Me.AbsoluteLinkPathAndFileName)
+                        Dim Extension As String = Path.GetExtension(AbsoluteLinkPathAndFileName)
 
                         If ResourceTypeEditors.Bitmap.GetExtensionPriority(Extension) > 0 Then
                             TypeEditor = ResourceTypeEditors.Bitmap
@@ -2220,7 +2220,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 '"Persistence" property -  read/write or read/only, depending on the resource type
-                If ResourceTypeEditor.CanChangePersistenceProperty(Me.ParentResourceFile) Then
+                If ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
                     PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence)
                 Else
                     PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence_ReadOnly)
@@ -2255,26 +2255,26 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Function GetPropertyValue(PropertyName As String) As Object
             Select Case PropertyName
                 Case ResourcePropertyDescriptor.PROPERTY_COMMENT
-                    Return Me.Comment
+                    Return Comment
                 Case ResourcePropertyDescriptor.PROPERTY_ENCODING
                     Debug.Assert(ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile))
                     'Have to use SerializableEncoding as the public type of this property because the Undo engine requires
                     '  it to be serializable (and Encoding is not)
-                    Return New SerializableEncoding(Me.Encoding)
+                    Return New SerializableEncoding(Encoding)
                 Case ResourcePropertyDescriptor.PROPERTY_FILENAME
-                    If Me.AbsoluteLinkPathAndFileName <> "" Then
-                        Return Common.Utils.GetFullPathTolerant(Me.AbsoluteLinkPathAndFileName)
+                    If AbsoluteLinkPathAndFileName <> "" Then
+                        Return Common.Utils.GetFullPathTolerant(AbsoluteLinkPathAndFileName)
                     Else
                         Return ""
                     End If
                 Case ResourcePropertyDescriptor.PROPERTY_FILETYPE
-                    Return Me.FileType
+                    Return FileType
                 Case ResourcePropertyDescriptor.PROPERTY_NAME
-                    Return Me.Name
+                    Return Name
                 Case ResourcePropertyDescriptor.PROPERTY_PERSISTENCE
-                    Return Me.PersistenceMode
+                    Return PersistenceMode
                 Case ResourcePropertyDescriptor.PROPERTY_TYPE
-                    Return Me.ValueTypeName
+                    Return ValueTypeName
                 Case ResourcePropertyDescriptor.PROPERTY_VALUE
                     'If this throws an exception, the exception text will be displayed in the properties window
                     Return GetValue()
@@ -2437,7 +2437,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>True if the name is okay.</returns>
         ''' <remarks></remarks>
         Public Function ValidateName(NewName As String, OldName As String, Optional ByRef NewFormattedName As String = Nothing, Optional ByRef Exception As Exception = Nothing) As Boolean
-            Return ValidateName(Me.ParentResourceFile, NewName, OldName, NewFormattedName, Exception)
+            Return ValidateName(ParentResourceFile, NewName, OldName, NewFormattedName, Exception)
         End Function
 
 
@@ -2703,7 +2703,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function ValidateValueAsString(NewFormattedValue As String, Optional ByRef NewParsedValue As Object = Nothing, Optional ByRef Exception As Exception = Nothing) As Boolean
             'Use the Resource Type Editor (specifically, the methods derived inherited from ResourceTypeEditorStringBase)
             '  to try and get the formatted value for the cell.
-            Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Me.ResourceTypeEditor, ResourceTypeEditorStringBase)
+            Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(ResourceTypeEditor, ResourceTypeEditorStringBase)
             Dim FailureException As Exception = Nothing 'If we failed in the conversion, this will be set to the exception at the failure
             Dim ConvertedValue As Object = Nothing
             Try
@@ -2729,13 +2729,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If FailureException IsNot Nothing Then
                 'We failed the validation somewhere along the way.  Return a friendly error message, in case
                 '  it's needed, and return failure.
-                Exception = NewException(SR.GetString(SR.RSE_Err_CantConvertFromString_2Args, Me.FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(SR.GetString(SR.RSE_Err_CantConvertFromString_2Args, FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If
 
             If ConvertedValue Is Nothing Then
-                Exception = NewException(SR.GetString(SR.RSE_Err_CantUseEmptyValue, Me.FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(SR.GetString(SR.RSE_Err_CantUseEmptyValue, FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If
@@ -2899,7 +2899,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Value As String
                 If ParentResourceFile IsNot Nothing Then
                     Try
-                        Value = DirectCast(ResourceTypeEditor, ResourceTypeEditorStringBase).StringGetFormattedCellValue(Me, Me.GetValue)
+                        Value = DirectCast(ResourceTypeEditor, ResourceTypeEditorStringBase).StringGetFormattedCellValue(Me, GetValue)
                     Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ToString), NameOf(Resource))
                         Value = ex.Message
                     End Try
@@ -2929,7 +2929,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub TryGuessFileEncoding()
             If IsLink AndAlso _resXDataNode.FileRef.TextFileEncoding Is Nothing AndAlso ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile) Then
                 Try
-                    Me.EncodingWithoutUndo = Utility.GuessFileEncoding(Me.AbsoluteLinkPathAndFileName)
+                    EncodingWithoutUndo = Utility.GuessFileEncoding(AbsoluteLinkPathAndFileName)
                 Catch ex As IOException
                     'Ignore
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected failure in GuessFileEncoding", NameOf(Resource))

@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
                 DirectCast(_serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
             If dynamicTypeService IsNot Nothing Then
-                typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(Me.VsHierarchy, Me.ProjectItemid)
+                typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
             End If
 
             Dim cm As EnvDTE.CodeModel = Nothing
@@ -90,18 +90,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Add settings type cache...
             If cm IsNot Nothing Then
-                LoaderHost.AddService(GetType(SettingsTypeCache), New SettingsTypeCache(Me.VsHierarchy, Me.ProjectItemid, dynamicTypeService.GetTypeResolutionService(VsHierarchy, ProjectItemid), cm.IsCaseSensitive))
+                LoaderHost.AddService(GetType(SettingsTypeCache), New SettingsTypeCache(VsHierarchy, ProjectItemid, dynamicTypeService.GetTypeResolutionService(VsHierarchy, ProjectItemid), cm.IsCaseSensitive))
             Else
-                LoaderHost.AddService(GetType(SettingsTypeCache), New SettingsTypeCache(Me.VsHierarchy, Me.ProjectItemid, dynamicTypeService.GetTypeResolutionService(VsHierarchy, ProjectItemid), True))
+                LoaderHost.AddService(GetType(SettingsTypeCache), New SettingsTypeCache(VsHierarchy, ProjectItemid, dynamicTypeService.GetTypeResolutionService(VsHierarchy, ProjectItemid), True))
             End If
             LoaderHost.AddService(GetType(SettingsValueCache), New SettingsValueCache(System.Globalization.CultureInfo.InvariantCulture))
 
             ' Listen for change notifications
             Dim ComponentChangeService As IComponentChangeService = CType(GetService(GetType(IComponentChangeService)), IComponentChangeService)
-            AddHandler ComponentChangeService.ComponentAdded, AddressOf Me.ComponentAddedHandler
-            AddHandler ComponentChangeService.ComponentChanging, AddressOf Me.ComponentChangingHandler
-            AddHandler ComponentChangeService.ComponentChanged, AddressOf Me.ComponentChangedHandler
-            AddHandler ComponentChangeService.ComponentRemoved, AddressOf Me.ComponentRemovedHandler
+            AddHandler ComponentChangeService.ComponentAdded, AddressOf ComponentAddedHandler
+            AddHandler ComponentChangeService.ComponentChanging, AddressOf ComponentChangingHandler
+            AddHandler ComponentChangeService.ComponentChanged, AddressOf ComponentChangedHandler
+            AddHandler ComponentChangeService.ComponentRemoved, AddressOf ComponentRemovedHandler
 
         End Sub
 
@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If _appConfigDocData Is Nothing Then
                 _appConfigDocData = AppConfigSerializer.GetAppConfigDocData(VBPackage.Instance, VsHierarchy, CreateIfNotExist, False, m_DocDataService)
                 If _appConfigDocData IsNot Nothing Then
-                    AddHandler _appConfigDocData.DataChanged, AddressOf Me.ExternalChange
+                    AddHandler _appConfigDocData.DataChanged, AddressOf ExternalChange
                 End If
             End If
             Return _appConfigDocData IsNot Nothing
@@ -362,13 +362,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 AndAlso String.Equals(instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) _
             Then
                 If _serviceProvider IsNot Nothing _
-                    AndAlso Me.ProjectItem IsNot Nothing _
-                    AndAlso Me.ProjectItem.ContainingProject IsNot Nothing _
-                    AndAlso Me.ProjectItem.ContainingProject.FullName <> "" _
+                    AndAlso ProjectItem IsNot Nothing _
+                    AndAlso ProjectItem.ContainingProject IsNot Nothing _
+                    AndAlso ProjectItem.ContainingProject.FullName <> "" _
                 Then
                     ' Check out the project file...
                     Dim filesToCheckOut As New List(Of String)(1)
-                    filesToCheckOut.Add(Me.ProjectItem.ContainingProject.FullName)
+                    filesToCheckOut.Add(ProjectItem.ContainingProject.FullName)
                     DesignerFramework.SourceCodeControlManager.QueryEditableFiles(_serviceProvider, filesToCheckOut, True, False)
                 End If
             End If
@@ -462,7 +462,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub ComponentRemovedHandler(sender As Object, e As ComponentEventArgs)
-            If Me.LoaderHost IsNot Nothing AndAlso Me.LoaderHost.Loading Then
+            If LoaderHost IsNot Nothing AndAlso LoaderHost.Loading Then
                 ' If we are currently (re)loading the design surface, we don't want to force-run the custom tool
                 ' (Loading is set to true during reload as well as during load)
                 Return
@@ -551,8 +551,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
             If _modifiedDuringLoad AndAlso InDesignMode() Then
                 Try
-                    Me.OnModifying()
-                    Me.Modified = True
+                    OnModifying()
+                    Modified = True
                 Catch ex As CheckoutException
                     ' What should we do here???
                 End Try
@@ -618,15 +618,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim ComponentChangeService As IComponentChangeService = CType(GetService(GetType(IComponentChangeService)), IComponentChangeService)
 
                 If ComponentChangeService IsNot Nothing Then
-                    RemoveHandler ComponentChangeService.ComponentAdded, AddressOf Me.ComponentAddedHandler
-                    RemoveHandler ComponentChangeService.ComponentChanging, AddressOf Me.ComponentChangingHandler
-                    RemoveHandler ComponentChangeService.ComponentChanged, AddressOf Me.ComponentChangedHandler
-                    RemoveHandler ComponentChangeService.ComponentRemoved, AddressOf Me.ComponentRemovedHandler
+                    RemoveHandler ComponentChangeService.ComponentAdded, AddressOf ComponentAddedHandler
+                    RemoveHandler ComponentChangeService.ComponentChanging, AddressOf ComponentChangingHandler
+                    RemoveHandler ComponentChangeService.ComponentChanged, AddressOf ComponentChangedHandler
+                    RemoveHandler ComponentChangeService.ComponentRemoved, AddressOf ComponentRemovedHandler
                 End If
 
                 ' Unregister any change handlers that we've associated with the app.config file
                 If _appConfigDocData IsNot Nothing Then
-                    RemoveHandler _appConfigDocData.DataChanged, AddressOf Me.ExternalChange
+                    RemoveHandler _appConfigDocData.DataChanged, AddressOf ExternalChange
 
                     ' 
                     ' DevDiv 79301:
@@ -696,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Friend Overrides ReadOnly Property FilesToCheckOut() As System.Collections.Generic.List(Of String)
             Get
                 Dim result As List(Of String) = MyBase.FilesToCheckOut
-                Dim projectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, Me.ProjectItemid)
+                Dim projectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
                 Dim appConfigOrProjectName As String = ProjectUtils.AppConfigOrProjectFileNameForCheckout(projectItem, VsHierarchy)
                 If appConfigOrProjectName <> "" Then
                     result.Add(appConfigOrProjectName)

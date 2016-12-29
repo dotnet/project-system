@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim extensionTemplate As MyExtensionTemplate = TryCast(obj, MyExtensionTemplate)
 
             If extensionTemplate IsNot Nothing Then
-                Return StringEquals(Me.FilePath, extensionTemplate.FilePath)
+                Return StringEquals(FilePath, extensionTemplate.FilePath)
             End If
 
             Return MyBase.Equals(obj)

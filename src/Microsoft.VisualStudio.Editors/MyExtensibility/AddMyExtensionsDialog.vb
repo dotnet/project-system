@@ -36,24 +36,24 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Sub New(serviceProvider As IServiceProvider, _
                 extensionTemplates As List(Of MyExtensionTemplate))
             MyBase.New(serviceProvider)
-            Me.InitializeComponent()
+            InitializeComponent()
 
-            Me.F1Keyword = HelpIDs.Dlg_AddMyNamespaceExtensions
+            F1Keyword = HelpIDs.Dlg_AddMyNamespaceExtensions
 
             _extensionTemplates = extensionTemplates
 
             If _extensionTemplates IsNot Nothing Then
                 For Each extensionTemplate As MyExtensionTemplate In _extensionTemplates
-                    Me.listViewExtensions.Items.Add(ExtensionTemplateToListViewItem(extensionTemplate))
+                    listViewExtensions.Items.Add(ExtensionTemplateToListViewItem(extensionTemplate))
                 Next
             End If
 
             _comparer = New ListViewComparer()
             _comparer.SortColumn = 0
             _comparer.Sorting = SortOrder.Ascending
-            Me.listViewExtensions.ListViewItemSorter = _comparer
-            Me.listViewExtensions.Sorting = _comparer.Sorting
-            Me.listViewExtensions.Sort()
+            listViewExtensions.ListViewItemSorter = _comparer
+            listViewExtensions.Sorting = _comparer.Sorting
+            listViewExtensions.Sort()
 
             EnableButtonOK()
         End Sub
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #Region "Event handlers"
         Private Sub listViewExtensions_ColumnClick(sender As Object, e As ColumnClickEventArgs) _
                 Handles listViewExtensions.ColumnClick
-            ListViewComparer.HandleColumnClick(Me.listViewExtensions, _comparer, e)
+            ListViewComparer.HandleColumnClick(listViewExtensions, _comparer, e)
         End Sub
 
         Private Sub listViewExtensions_DoubleClick(sender As Object, e As EventArgs) _
@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub buttonOK_Click(sender As Object, e As EventArgs) _
                 Handles buttonOK.Click
-            Debug.Assert(Me.listViewExtensions.SelectedItems.Count > 0)
+            Debug.Assert(listViewExtensions.SelectedItems.Count > 0)
             AddExtensions()
         End Sub
 
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True
-            Me.ShowHelp()
+            ShowHelp()
         End Sub
 #End Region
 
@@ -108,18 +108,18 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' and close the dialog.
         ''' </summary>
         Private Sub AddExtensions()
-            If Me.listViewExtensions.SelectedItems.Count > 0 Then
+            If listViewExtensions.SelectedItems.Count > 0 Then
                 _extensionTemplatesToAdd = New List(Of MyExtensionTemplate)
 
-                For Each item As ListViewItem In Me.listViewExtensions.SelectedItems
+                For Each item As ListViewItem In listViewExtensions.SelectedItems
                     Dim extensionTemplate As MyExtensionTemplate = TryCast(item.Tag, MyExtensionTemplate)
                     If extensionTemplate IsNot Nothing Then
                         _extensionTemplatesToAdd.Add(extensionTemplate)
                     End If
                 Next
 
-                Me.DialogResult = Windows.Forms.DialogResult.OK
-                Me.Close()
+                DialogResult = Windows.Forms.DialogResult.OK
+                Close()
             End If
         End Sub
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Enable/disable buttonOK depending on the selected items on the list view.
         ''' </summary>
         Private Sub EnableButtonOK()
-            Me.buttonOK.Enabled = Me.listViewExtensions.SelectedItems.Count > 0
+            buttonOK.Enabled = listViewExtensions.SelectedItems.Count > 0
         End Sub
 
         ''' ;ExtensionTemplateToListViewItem
@@ -163,85 +163,85 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AddMyExtensionsDialog))
-            Me.tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            Me.tableLayoutOKCancelButtons = New System.Windows.Forms.TableLayoutPanel
-            Me.buttonOK = New System.Windows.Forms.Button
-            Me.buttonCancel = New System.Windows.Forms.Button
-            Me.listViewExtensions = New System.Windows.Forms.ListView
-            Me.colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
-            Me.colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
-            Me.colHeaderExensionDescription = New System.Windows.Forms.ColumnHeader
-            Me.tableLayoutOverarching.SuspendLayout()
-            Me.tableLayoutOKCancelButtons.SuspendLayout()
-            Me.SuspendLayout()
+            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
+            tableLayoutOKCancelButtons = New System.Windows.Forms.TableLayoutPanel
+            buttonOK = New System.Windows.Forms.Button
+            buttonCancel = New System.Windows.Forms.Button
+            listViewExtensions = New System.Windows.Forms.ListView
+            colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
+            colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
+            colHeaderExensionDescription = New System.Windows.Forms.ColumnHeader
+            tableLayoutOverarching.SuspendLayout()
+            tableLayoutOKCancelButtons.SuspendLayout()
+            SuspendLayout()
             '
             'tableLayoutOverarching
             '
-            resources.ApplyResources(Me.tableLayoutOverarching, "tableLayoutOverarching")
-            Me.tableLayoutOverarching.Controls.Add(Me.tableLayoutOKCancelButtons, 0, 1)
-            Me.tableLayoutOverarching.Controls.Add(Me.listViewExtensions, 0, 0)
-            Me.tableLayoutOverarching.Name = "tableLayoutOverarching"
+            resources.ApplyResources(tableLayoutOverarching, "tableLayoutOverarching")
+            tableLayoutOverarching.Controls.Add(tableLayoutOKCancelButtons, 0, 1)
+            tableLayoutOverarching.Controls.Add(listViewExtensions, 0, 0)
+            tableLayoutOverarching.Name = "tableLayoutOverarching"
             '
             'tableLayoutOKCancelButtons
             '
-            resources.ApplyResources(Me.tableLayoutOKCancelButtons, "tableLayoutOKCancelButtons")
-            Me.tableLayoutOKCancelButtons.Controls.Add(Me.buttonOK, 0, 0)
-            Me.tableLayoutOKCancelButtons.Controls.Add(Me.buttonCancel, 1, 0)
-            Me.tableLayoutOKCancelButtons.Name = "tableLayoutOKCancelButtons"
+            resources.ApplyResources(tableLayoutOKCancelButtons, "tableLayoutOKCancelButtons")
+            tableLayoutOKCancelButtons.Controls.Add(buttonOK, 0, 0)
+            tableLayoutOKCancelButtons.Controls.Add(buttonCancel, 1, 0)
+            tableLayoutOKCancelButtons.Name = "tableLayoutOKCancelButtons"
             '
             'buttonOK
             '
-            resources.ApplyResources(Me.buttonOK, "buttonOK")
-            Me.buttonOK.Name = "buttonOK"
-            Me.buttonOK.UseVisualStyleBackColor = True
+            resources.ApplyResources(buttonOK, "buttonOK")
+            buttonOK.Name = "buttonOK"
+            buttonOK.UseVisualStyleBackColor = True
             '
             'buttonCancel
             '
-            resources.ApplyResources(Me.buttonCancel, "buttonCancel")
-            Me.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.buttonCancel.Name = "buttonCancel"
-            Me.buttonCancel.UseVisualStyleBackColor = True
+            resources.ApplyResources(buttonCancel, "buttonCancel")
+            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            buttonCancel.Name = "buttonCancel"
+            buttonCancel.UseVisualStyleBackColor = True
             '
             'listViewExtensions
             '
-            Me.listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colHeaderExtensionName, Me.colHeaderExtensionVersion, Me.colHeaderExensionDescription})
-            resources.ApplyResources(Me.listViewExtensions, "listViewExtensions")
-            Me.listViewExtensions.FullRowSelect = True
-            Me.listViewExtensions.HideSelection = False
-            Me.listViewExtensions.Name = "listViewExtensions"
-            Me.listViewExtensions.ShowItemToolTips = True
-            Me.listViewExtensions.UseCompatibleStateImageBehavior = False
-            Me.listViewExtensions.View = System.Windows.Forms.View.Details
+            listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExensionDescription})
+            resources.ApplyResources(listViewExtensions, "listViewExtensions")
+            listViewExtensions.FullRowSelect = True
+            listViewExtensions.HideSelection = False
+            listViewExtensions.Name = "listViewExtensions"
+            listViewExtensions.ShowItemToolTips = True
+            listViewExtensions.UseCompatibleStateImageBehavior = False
+            listViewExtensions.View = System.Windows.Forms.View.Details
             '
             'colHeaderExtensionName
             '
-            resources.ApplyResources(Me.colHeaderExtensionName, "colHeaderExtensionName")
+            resources.ApplyResources(colHeaderExtensionName, "colHeaderExtensionName")
             '
             'colHeaderExtensionVersion
             '
-            resources.ApplyResources(Me.colHeaderExtensionVersion, "colHeaderExtensionVersion")
+            resources.ApplyResources(colHeaderExtensionVersion, "colHeaderExtensionVersion")
             '
             'colHeaderExensionDescription
             '
-            resources.ApplyResources(Me.colHeaderExensionDescription, "colHeaderExensionDescription")
+            resources.ApplyResources(colHeaderExensionDescription, "colHeaderExensionDescription")
             '
             'AddMyExtensionsDialog
             '
-            Me.AcceptButton = Me.buttonOK
-            Me.CancelButton = Me.buttonCancel
+            AcceptButton = buttonOK
+            CancelButton = buttonCancel
             resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.tableLayoutOverarching)
-            Me.HelpButton = True
-            Me.MaximizeBox = False
-            Me.MinimizeBox = False
-            Me.Name = "AddMyExtensionsDialog"
-            Me.ShowIcon = False
-            Me.ShowInTaskbar = False
-            Me.tableLayoutOverarching.ResumeLayout(False)
-            Me.tableLayoutOverarching.PerformLayout()
-            Me.tableLayoutOKCancelButtons.ResumeLayout(False)
-            Me.tableLayoutOKCancelButtons.PerformLayout()
-            Me.ResumeLayout(False)
+            Controls.Add(tableLayoutOverarching)
+            HelpButton = True
+            MaximizeBox = False
+            MinimizeBox = False
+            Name = "AddMyExtensionsDialog"
+            ShowIcon = False
+            ShowInTaskbar = False
+            tableLayoutOverarching.ResumeLayout(False)
+            tableLayoutOverarching.PerformLayout()
+            tableLayoutOKCancelButtons.ResumeLayout(False)
+            tableLayoutOKCancelButtons.PerformLayout()
+            ResumeLayout(False)
 
         End Sub
 

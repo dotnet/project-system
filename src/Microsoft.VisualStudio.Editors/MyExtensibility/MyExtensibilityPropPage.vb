@@ -41,9 +41,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   selected configuration, it is called again. 
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
-            Debug.Assert(Me.ProjectHierarchy IsNot Nothing)
+            Debug.Assert(ProjectHierarchy IsNot Nothing)
 
-            _projectService = MyExtensibilitySolutionService.Instance.GetProjectService(Me.ProjectHierarchy)
+            _projectService = MyExtensibilitySolutionService.Instance.GetProjectService(ProjectHierarchy)
             Debug.Assert(_projectService IsNot Nothing)
 
             Dim vsMenuService As IMenuCommandService = _
@@ -51,14 +51,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 MyExtensibilitySolutionService.Instance.GetService(GetType(IMenuCommandService)), _
                 IMenuCommandService)
             Debug.Assert(vsMenuService IsNot Nothing, "Could not get vsMenuService!")
-            Me.listViewExtensions.MenuCommandService = vsMenuService
+            listViewExtensions.MenuCommandService = vsMenuService
 
-            Me.RefreshExtensionsList()
+            RefreshExtensionsList()
 
             ' Resize each columns based on its content.
-            If Me.listViewExtensions.Items.Count > 0 Then
-                For i As Integer = 0 To Me.listViewExtensions.Columns.Count - 1
-                    Me.listViewExtensions.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent)
+            If listViewExtensions.Items.Count > 0 Then
+                For i As Integer = 0 To listViewExtensions.Columns.Count - 1
+                    listViewExtensions.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent)
                 Next
             End If
         End Sub
@@ -92,40 +92,40 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _comparer = New ListViewComparer()
             _comparer.SortColumn = 0
             _comparer.Sorting = SortOrder.Ascending
-            Me.listViewExtensions.ListViewItemSorter = _comparer
-            Me.listViewExtensions.Sorting = SortOrder.Ascending
+            listViewExtensions.ListViewItemSorter = _comparer
+            listViewExtensions.Sorting = SortOrder.Ascending
 
             'Opt out of page scaling since we're using AutoScaleMode
             PageRequiresScaling = False
 
-            Me.linkLabelHelp.SetThemedColor(VsUIShell5Service)
+            linkLabelHelp.SetThemedColor(VsUIShell5Service)
         End Sub
 
 #Region "Event handlers"
 
         Private Sub buttonAdd_Click(sender As Object, e As EventArgs) _
                 Handles buttonAdd.Click
-            Me.AddExtension()
+            AddExtension()
         End Sub
 
         Private Sub buttonRemove_Click(sender As Object, e As EventArgs) _
                 Handles buttonRemove.Click
-            Me.RemoveExtension()
+            RemoveExtension()
         End Sub
 
         Private Sub listViewExtensions_AddExtension(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.AddExtension
-            Me.AddExtension()
+            AddExtension()
         End Sub
 
         Private Sub listViewExtensions_ColumnClick(sender As Object, e As ColumnClickEventArgs) _
                 Handles listViewExtensions.ColumnClick
-            ListViewComparer.HandleColumnClick(Me.listViewExtensions, _comparer, e)
+            ListViewComparer.HandleColumnClick(listViewExtensions, _comparer, e)
         End Sub
 
         Private Sub listViewExtensions_RemoveExtension(sender As Object, e As EventArgs) _
                 Handles listViewExtensions.RemoveExtension
-            Me.RemoveExtension()
+            RemoveExtension()
         End Sub
 
         Private Sub listViewExtensions_SelectedIndexChanged(sender As Object, e As EventArgs) _
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub m_ProjectService_ExtensionChanged() Handles _projectService.ExtensionChanged
-            Me.RefreshExtensionsList()
+            RefreshExtensionsList()
         End Sub
 
         Private Sub linklabelHelp_LinkClicked( _
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enable / disalbe buttonRemove depending on the selected items in the list view.
         ''' </summary>
         Private Sub EnableButtonRemove()
-            Me.buttonRemove.Enabled = Me.listViewExtensions.SelectedItems.Count > 0
+            buttonRemove.Enabled = listViewExtensions.SelectedItems.Count > 0
         End Sub
 
         ''' ;ExtensionProjectItemGroupToListViewItem
@@ -182,14 +182,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Refresh the extensions list view.
         ''' </summary>
         Private Sub RefreshExtensionsList()
-            Me.listViewExtensions.Items.Clear()
+            listViewExtensions.Items.Clear()
             Dim extProjItemGroups As List(Of MyExtensionProjectItemGroup) = _
                 _projectService.GetExtensionProjectItemGroups()
             If extProjItemGroups IsNot Nothing Then
                 For Each extProjItemGroup As MyExtensionProjectItemGroup In extProjItemGroups
-                    Me.listViewExtensions.Items.Add(ExtensionProjectItemGroupToListViewItem(extProjItemGroup))
+                    listViewExtensions.Items.Add(ExtensionProjectItemGroupToListViewItem(extProjItemGroup))
                 Next
-                Me.listViewExtensions.Sort()
+                listViewExtensions.Sort()
             End If
             EnableButtonRemove()
         End Sub
@@ -199,10 +199,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Remove the selected extensions.
         ''' </summary>
         Private Sub RemoveExtension()
-            Debug.Assert(Me.listViewExtensions.SelectedItems.Count > 0)
+            Debug.Assert(listViewExtensions.SelectedItems.Count > 0)
 
             Dim extProjItemGroups As New List(Of MyExtensionProjectItemGroup)
-            For Each item As ListViewItem In Me.listViewExtensions.SelectedItems
+            For Each item As ListViewItem In listViewExtensions.SelectedItems
                 Dim extProjItemGroup As MyExtensionProjectItemGroup = TryCast(item.Tag, MyExtensionProjectItemGroup)
                 If extProjItemGroup IsNot Nothing Then
                     extProjItemGroups.Add(extProjItemGroup)
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(_projectService IsNot Nothing)
             _projectService.RemoveExtensionsFromPropPage(extProjItemGroups)
 
-            Me.RefreshExtensionsList()
+            RefreshExtensionsList()
         End Sub
 
         Private WithEvents _projectService As MyExtensibilityProjectService = Nothing
@@ -233,95 +233,95 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyExtensibilityPropPage))
-            Me.tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            Me.labelDescription = New System.Windows.Forms.Label
-            Me.linkLabelHelp = New VSThemedLinkLabel
-            Me.listViewExtensions = New MyExtensionListView
-            Me.colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
-            Me.colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
-            Me.colHeaderExtensionDescription = New System.Windows.Forms.ColumnHeader
-            Me.tableLayoutAddRemoveButtons = New System.Windows.Forms.TableLayoutPanel
-            Me.buttonRemove = New System.Windows.Forms.Button
-            Me.buttonAdd = New System.Windows.Forms.Button
-            Me.tableLayoutOverarching.SuspendLayout()
-            Me.tableLayoutAddRemoveButtons.SuspendLayout()
-            Me.SuspendLayout()
+            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
+            labelDescription = New System.Windows.Forms.Label
+            linkLabelHelp = New VSThemedLinkLabel
+            listViewExtensions = New MyExtensionListView
+            colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
+            colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
+            colHeaderExtensionDescription = New System.Windows.Forms.ColumnHeader
+            tableLayoutAddRemoveButtons = New System.Windows.Forms.TableLayoutPanel
+            buttonRemove = New System.Windows.Forms.Button
+            buttonAdd = New System.Windows.Forms.Button
+            tableLayoutOverarching.SuspendLayout()
+            tableLayoutAddRemoveButtons.SuspendLayout()
+            SuspendLayout()
             '
             'tableLayoutOverarching
             '
-            resources.ApplyResources(Me.tableLayoutOverarching, "tableLayoutOverarching")
-            Me.tableLayoutOverarching.Controls.Add(Me.labelDescription, 0, 0)
-            Me.tableLayoutOverarching.Controls.Add(Me.linkLabelHelp, 0, 1)
-            Me.tableLayoutOverarching.Controls.Add(Me.listViewExtensions, 0, 2)
-            Me.tableLayoutOverarching.Controls.Add(Me.tableLayoutAddRemoveButtons, 0, 3)
-            Me.tableLayoutOverarching.Name = "tableLayoutOverarching"
+            resources.ApplyResources(tableLayoutOverarching, "tableLayoutOverarching")
+            tableLayoutOverarching.Controls.Add(labelDescription, 0, 0)
+            tableLayoutOverarching.Controls.Add(linkLabelHelp, 0, 1)
+            tableLayoutOverarching.Controls.Add(listViewExtensions, 0, 2)
+            tableLayoutOverarching.Controls.Add(tableLayoutAddRemoveButtons, 0, 3)
+            tableLayoutOverarching.Name = "tableLayoutOverarching"
             '
             'labelDescription
             '
-            resources.ApplyResources(Me.labelDescription, "labelDescription")
-            Me.labelDescription.Name = "labelDescription"
+            resources.ApplyResources(labelDescription, "labelDescription")
+            labelDescription.Name = "labelDescription"
             '
             'linkLabelHelp
             '
-            resources.ApplyResources(Me.linkLabelHelp, "linkLabelHelp")
-            Me.linkLabelHelp.Name = "linkLabelHelp"
-            Me.linkLabelHelp.TabStop = True
+            resources.ApplyResources(linkLabelHelp, "linkLabelHelp")
+            linkLabelHelp.Name = "linkLabelHelp"
+            linkLabelHelp.TabStop = True
             '
             'listViewExtensions
             '
-            Me.listViewExtensions.AutoArrange = False
-            Me.listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colHeaderExtensionName, Me.colHeaderExtensionVersion, Me.colHeaderExtensionDescription})
-            resources.ApplyResources(Me.listViewExtensions, "listViewExtensions")
-            Me.listViewExtensions.FullRowSelect = True
-            Me.listViewExtensions.HideSelection = False
-            Me.listViewExtensions.Name = "listViewExtensions"
-            Me.listViewExtensions.ShowItemToolTips = True
-            Me.listViewExtensions.UseCompatibleStateImageBehavior = False
-            Me.listViewExtensions.View = System.Windows.Forms.View.Details
+            listViewExtensions.AutoArrange = False
+            listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
+            resources.ApplyResources(listViewExtensions, "listViewExtensions")
+            listViewExtensions.FullRowSelect = True
+            listViewExtensions.HideSelection = False
+            listViewExtensions.Name = "listViewExtensions"
+            listViewExtensions.ShowItemToolTips = True
+            listViewExtensions.UseCompatibleStateImageBehavior = False
+            listViewExtensions.View = System.Windows.Forms.View.Details
             '
             'colHeaderExtensionName
             '
-            resources.ApplyResources(Me.colHeaderExtensionName, "colHeaderExtensionName")
+            resources.ApplyResources(colHeaderExtensionName, "colHeaderExtensionName")
             '
             'colHeaderExtensionVersion
             '
-            resources.ApplyResources(Me.colHeaderExtensionVersion, "colHeaderExtensionVersion")
+            resources.ApplyResources(colHeaderExtensionVersion, "colHeaderExtensionVersion")
             '
             'colHeaderExtensionDescription
             '
-            resources.ApplyResources(Me.colHeaderExtensionDescription, "colHeaderExtensionDescription")
+            resources.ApplyResources(colHeaderExtensionDescription, "colHeaderExtensionDescription")
             '
             'tableLayoutAddRemoveButtons
             '
-            resources.ApplyResources(Me.tableLayoutAddRemoveButtons, "tableLayoutAddRemoveButtons")
-            Me.tableLayoutAddRemoveButtons.Controls.Add(Me.buttonRemove, 1, 0)
-            Me.tableLayoutAddRemoveButtons.Controls.Add(Me.buttonAdd, 0, 0)
-            Me.tableLayoutAddRemoveButtons.Name = "tableLayoutAddRemoveButtons"
+            resources.ApplyResources(tableLayoutAddRemoveButtons, "tableLayoutAddRemoveButtons")
+            tableLayoutAddRemoveButtons.Controls.Add(buttonRemove, 1, 0)
+            tableLayoutAddRemoveButtons.Controls.Add(buttonAdd, 0, 0)
+            tableLayoutAddRemoveButtons.Name = "tableLayoutAddRemoveButtons"
             '
             'buttonRemove
             '
-            resources.ApplyResources(Me.buttonRemove, "buttonRemove")
-            Me.buttonRemove.Name = "buttonRemove"
-            Me.buttonRemove.UseVisualStyleBackColor = True
+            resources.ApplyResources(buttonRemove, "buttonRemove")
+            buttonRemove.Name = "buttonRemove"
+            buttonRemove.UseVisualStyleBackColor = True
             '
             'buttonAdd
             '
-            resources.ApplyResources(Me.buttonAdd, "buttonAdd")
-            Me.buttonAdd.Name = "buttonAdd"
-            Me.buttonAdd.UseVisualStyleBackColor = True
+            resources.ApplyResources(buttonAdd, "buttonAdd")
+            buttonAdd.Name = "buttonAdd"
+            buttonAdd.UseVisualStyleBackColor = True
             '
             'MyExtensibilityPropPage
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.tableLayoutOverarching)
-            Me.Name = "MyExtensibilityPropPage"
-            Me.tableLayoutOverarching.ResumeLayout(False)
-            Me.tableLayoutOverarching.PerformLayout()
-            Me.tableLayoutAddRemoveButtons.ResumeLayout(False)
-            Me.tableLayoutAddRemoveButtons.PerformLayout()
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Controls.Add(tableLayoutOverarching)
+            Name = "MyExtensibilityPropPage"
+            tableLayoutOverarching.ResumeLayout(False)
+            tableLayoutOverarching.PerformLayout()
+            tableLayoutAddRemoveButtons.ResumeLayout(False)
+            tableLayoutAddRemoveButtons.PerformLayout()
+            ResumeLayout(False)
+            PerformLayout()
 
         End Sub
         Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel

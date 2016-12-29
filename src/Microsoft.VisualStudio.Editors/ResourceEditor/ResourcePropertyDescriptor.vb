@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetValue(Component As Object) As Object
             Debug.Assert(Component IsNot Nothing, "component is Nothing!!!")
             Debug.Assert(TypeOf Component Is Resource, "component is not a Resource!!!")
-            Return DirectCast(Component, Resource).GetPropertyValue(Me.Name)
+            Return DirectCast(Component, Resource).GetPropertyValue(Name)
         End Function
 
 
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ChangeService.OnComponentChanging(Component, Me)
                         End If
 
-                        Resource.SetPropertyValueWithoutUndo(Me.Name, Value)
+                        Resource.SetPropertyValueWithoutUndo(Name, Value)
 
                         ' Notify the change service that the change was successful.
                         If ChangeService IsNot Nothing AndAlso NotifyComponentChange Then
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.ResetValue: Component is not a Resource")
                 If TypeOf Component Is Resource Then
                     Dim Resource As Resource = DirectCast(Component, Resource)
-                    Resource.ResetPropertyValue(Me.Name)
+                    Resource.ResetPropertyValue(Name)
                 End If
             End If
         End Sub

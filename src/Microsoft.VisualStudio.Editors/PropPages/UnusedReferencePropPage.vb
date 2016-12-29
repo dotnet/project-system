@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks>Called by ApplyPageChanges so project is in batch edit mode.</remarks>
         Protected Overrides Sub OnParentChanged(e As EventArgs)
-            m_HostDialog = TryCast(Me.ParentForm, PropPageHostDialog)
+            m_HostDialog = TryCast(ParentForm, PropPageHostDialog)
             If m_HostDialog IsNot Nothing Then
                 With m_HostDialog
                     AddHandler .FormClosed, AddressOf dialog_Close
@@ -140,8 +140,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _refUsageProvider.StopGetUnusedReferences(_hier)
 
             ' Reset mouse cursor
-            Debug.Assert(Me.ParentForm IsNot Nothing)
-            Me.ParentForm.Cursor = Cursors.Default
+            Debug.Assert(ParentForm IsNot Nothing)
+            ParentForm.Cursor = Cursors.Default
         End Sub
 
         ''' <summary>
@@ -181,10 +181,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>Use when proppage is on a PropPageHostDialog</remarks>
         Private Sub EnableRemoveRefs(_enabled As Boolean)
 
-            If Me.ParentForm IsNot Nothing Then
-                Debug.Assert(TypeOf Me.ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
+            If ParentForm IsNot Nothing Then
+                Debug.Assert(TypeOf ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
 
-                Dim RemoveButton As Button = CType(Me.ParentForm, PropPageHostDialog).OK
+                Dim RemoveButton As Button = CType(ParentForm, PropPageHostDialog).OK
 
                 ' Enable/Disable group
                 RemoveButton.Enabled = _enabled
@@ -214,11 +214,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _lastStatus = Status
 
                 ' Use a arrow and hourglass cursor if waiting
-                Debug.Assert(Me.ParentForm IsNot Nothing)
+                Debug.Assert(ParentForm IsNot Nothing)
                 If Status = ReferenceUsageResult.ReferenceUsageWaiting Then
-                    Me.ParentForm.Cursor = Cursors.AppStarting
+                    ParentForm.Cursor = Cursors.AppStarting
                 Else
-                    Me.ParentForm.Cursor = Cursors.Default
+                    ParentForm.Cursor = Cursors.Default
                 End If
 
                 ' Are there any unused references?
@@ -485,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             UnusedReferenceList.View = View.Details
 
             ' Use ReferencePropPage's helper function for the common columns.
-            ReferencePropPage.SetReferenceListColumnWidths(Me, Me.UnusedReferenceList, 0)
+            ReferencePropPage.SetReferenceListColumnWidths(Me, UnusedReferenceList, 0)
 
         End Sub
 
@@ -544,7 +544,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub dialog_Close(sender As Object, e As FormClosedEventArgs)
 
             ' Stop getting unused references list
-            Me.Abort()
+            Abort()
 
             ' Clean up the list
             UnusedReferenceList.Items.Clear()

@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            Me.BeginInvoke(New QueueUpdateOptionStrictComboBoxDelegate(AddressOf Me.UpdateOptionStrictComboBox))
+            BeginInvoke(New QueueUpdateOptionStrictComboBoxDelegate(AddressOf UpdateOptionStrictComboBox))
             _optionStrictComboBoxUpdateQueued = True
         End Sub
 
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.EnableAllControls(_enabled)
 
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile).EnableControls(_enabled)
-            Me.AdvancedOptionsButton.Enabled = _enabled
+            AdvancedOptionsButton.Enabled = _enabled
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).EnableControls(_enabled)
             GetPropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop).EnableControls(_enabled AndAlso RegisterForComInteropSupported())
 
@@ -196,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _enabled = False
             End If
 
-            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(Me.WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
+            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
             If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso Me.WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 WarningsGridView.Enabled = True
             Else
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
-                    column.DefaultCellStyle.BackColor = Me.BackColor
+                    column.DefaultCellStyle.BackColor = BackColor
                 Next
                 WarningsGridView.Enabled = False
             End If
@@ -230,21 +230,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _objectCache = New FakeAllConfigurationsPropertyControlData.ConfigurationObjectCache(ProjectHierarchy, ServiceProvider)
 
                     m_ControlData = New PropertyControlData() {
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Nothing, AddressOf Me.NoWarnSet, AddressOf Me.NoWarnGet, ControlDataFlags.UserHandledEvents, Nothing),
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Nothing, AddressOf Me.SpecWarnAsErrorSet, AddressOf Me.SpecWarnAsErrorGet, ControlDataFlags.UserHandledEvents, Nothing),
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionExplicit, "OptionExplicit", Me.OptionExplicitComboBox, New Control() {Me.OptionExplicitLabel}),
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionStrict, "OptionStrict", Me.OptionStrictComboBox, AddressOf Me.OptionStrictSet, AddressOf Me.OptionStrictGet, ControlDataFlags.UserHandledEvents, New Control() {Me.OptionStrictLabel}),
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionCompare, "OptionCompare", Me.OptionCompareComboBox, New Control() {Me.OptionCompareLabel}),
-                        New PropertyControlData(VBProjPropId90.VBPROJPROPID_OptionInfer, "OptionInfer", Me.OptionInferComboBox, New Control() {Me.OptionInferLabel}),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Nothing, AddressOf NoWarnSet, AddressOf NoWarnGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Nothing, AddressOf SpecWarnAsErrorSet, AddressOf SpecWarnAsErrorGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionExplicit, "OptionExplicit", OptionExplicitComboBox, New Control() {OptionExplicitLabel}),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionStrict, "OptionStrict", OptionStrictComboBox, AddressOf OptionStrictSet, AddressOf OptionStrictGet, ControlDataFlags.UserHandledEvents, New Control() {OptionStrictLabel}),
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_OptionCompare, "OptionCompare", OptionCompareComboBox, New Control() {OptionCompareLabel}),
+                        New PropertyControlData(VBProjPropId90.VBPROJPROPID_OptionInfer, "OptionInfer", OptionInferComboBox, New Control() {OptionInferLabel}),
                         New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                            VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.BuildOutputPathTextBox, Nothing, AddressOf Me.OutputPathGet, ControlDataFlags.None, New Control() {Me.BuildOutputPathLabel}),
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Nothing, AddressOf Me.DocumentationFileNameSet, AddressOf Me.DocumentationFileNameGet, ControlDataFlags.UserHandledEvents, New Control() {Me.GenerateXMLCheckBox}),
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.DisableAllWarningsCheckBox, AddressOf Me.WarningLevelSet, AddressOf Me.WarningLevelGet, ControlDataFlags.UserHandledEvents, Nothing),
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.WarningsAsErrorCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
-                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.RegisterForComInteropCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
-                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Nothing, AddressOf Me.ComVisibleSet, AddressOf Me.ComVisibleGet, ControlDataFlags.Hidden Or ControlDataFlags.PersistedInAssemblyInfoFile),
-                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.TargetCPUComboBox, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {TargetCPULabel}),
-                        New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.Prefer32BitCheckBox, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
+                            VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", BuildOutputPathTextBox, Nothing, AddressOf OutputPathGet, ControlDataFlags.None, New Control() {BuildOutputPathLabel}),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Nothing, AddressOf DocumentationFileNameSet, AddressOf DocumentationFileNameGet, ControlDataFlags.UserHandledEvents, New Control() {GenerateXMLCheckBox}),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", DisableAllWarningsCheckBox, AddressOf WarningLevelSet, AddressOf WarningLevelGet, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", WarningsAsErrorCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
+                        New FakeAllConfigurationsPropertyControlData(_objectCache, VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", RegisterForComInteropCheckBox, Nothing, Nothing, ControlDataFlags.UserHandledEvents, Nothing),
+                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Nothing, AddressOf ComVisibleSet, AddressOf ComVisibleGet, ControlDataFlags.Hidden Or ControlDataFlags.PersistedInAssemblyInfoFile),
+                        New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", TargetCPUComboBox, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {TargetCPULabel}),
+                        New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Prefer32BitCheckBox, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
                     }
                 End If
                 Return m_ControlData
@@ -396,7 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function WarningLevelGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            Select Case Me.DisableAllWarningsCheckBox.CheckState
+            Select Case DisableAllWarningsCheckBox.CheckState
                 Case CheckState.Checked
                     value = VSLangProj.prjWarningLevel.prjWarningLevel0 'Warning Level 0 = off
                     Return True
@@ -466,7 +466,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "OutputPath getter"
         Private Function OutputPathGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = GetProjectRelativeDirectoryPath(Trim(Me.BuildOutputPathTextBox.Text))
+            value = GetProjectRelativeDirectoryPath(Trim(BuildOutputPathTextBox.Text))
             Return True
         End Function
 #End Region
@@ -505,7 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
             'Add any special init code here
-            Me.Dock = DockStyle.Fill
+            Dock = DockStyle.Fill
 
             Dim data As PropertyControlData = GetPropertyControlData("OptionStrict")
             Dim _TypeConverter As TypeConverter = data.PropDesc.Converter
@@ -531,7 +531,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Let's try to sniff the supported platforms from our hiearchy (if any)
             TargetCPUComboBox.Items.Clear()
-            If Me.ProjectHierarchy IsNot Nothing Then
+            If ProjectHierarchy IsNot Nothing Then
                 Dim oCfgProv As Object = Nothing
                 Dim hr As Integer
                 hr = ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, oCfgProv)
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' ... Finally, add the entries to the combobox
-            Me.TargetCPUComboBox.Items.AddRange(PlatformEntries.ToArray())
+            TargetCPUComboBox.Items.AddRange(PlatformEntries.ToArray())
 
         End Sub
 
@@ -586,17 +586,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PostInitPage()
 
             'OutputPath browse button should only be enabled when the text box is enabled and Not ReadOnly
-            Me.BuildOutputPathButton.Enabled = (Me.BuildOutputPathTextBox.Enabled AndAlso Not Me.BuildOutputPathTextBox.ReadOnly)
+            BuildOutputPathButton.Enabled = (BuildOutputPathTextBox.Enabled AndAlso Not BuildOutputPathTextBox.ReadOnly)
             EnableControl(RegisterForComInteropCheckBox, RegisterForComInteropSupported())
 
             'Populate Error/Warnings list
             PopulateErrorList()
             QueueUpdateOptionStrictComboBox()
-            EnableAllControls(Me.Enabled)
+            EnableAllControls(Enabled)
 
             'Hide all non-Express controls
             If VSProductSKU.IsExpress Then
-                Me.BuildEventsButton.Visible = False
+                BuildEventsButton.Visible = False
             End If
 
             ' Only show the separator/all configurations label if we have the
@@ -609,9 +609,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 SimplifiedConfigMode = ConfigurationState.IsSimplifiedConfigMode
             End If
 
-            RefreshEnabledStatusForPrefer32Bit(Me.Prefer32BitCheckBox)
+            RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
 
-            Me.MinimumSize = Me.GetPreferredSize(System.Drawing.Size.Empty)
+            MinimumSize = GetPreferredSize(System.Drawing.Size.Empty)
         End Sub
 #End Region
 
@@ -651,12 +651,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             New ErrorInfo(SR.GetString(SR.PPG_Compile_42029), "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
-            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(Me.WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
-            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(Me.WarningsGridView.Columns.Item(s_conditionColumnIndex), DataGridViewTextBoxColumn)
+            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
+            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(WarningsGridView.Columns.Item(s_conditionColumnIndex), DataGridViewTextBoxColumn)
             Dim Index As Integer
             Dim row As DataGridViewRow
 
-            With Me.WarningsGridView
+            With WarningsGridView
                 .Rows.Clear()
                 .ScrollBars = ScrollBars.Vertical
 
@@ -680,15 +680,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Helper methods to map UI values to properties"
 
         Private Function IsOptionStrictOn() As Boolean
-            Return (Me._optionStrictOnText.Equals(CStr(Me.OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
         End Function
 
         Private Function IsOptionStrictOff() As Boolean
-            Return (Me._optionStrictOffText.Equals(CStr(Me.OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
         End Function
 
         Private Function IsOptionStrictCustom() As Boolean
-            Return (Me._optionStrictCustomText.Equals(CStr(Me.OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
@@ -736,7 +736,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub DisableAllWarningsCheckBox_Checked(sender As Object, e As EventArgs) Handles DisableAllWarningsCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
-                EnableDisableWarningControls(Me.Enabled)
+                EnableDisableWarningControls(Enabled)
                 SetDirty(DisableAllWarningsCheckBox, True)
             End If
         End Sub
@@ -775,7 +775,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub WarningsAsErrorCheckBox_Checked(sender As Object, e As EventArgs) Handles WarningsAsErrorCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not WarningsAsErrorCheckBox.CheckState = CheckState.Indeterminate Then
                 UpdateWarningList()
-                EnableDisableWarningControls(Me.Enabled)
+                EnableDisableWarningControls(Enabled)
                 SetDirty(WarningsAsErrorCheckBox, True)
             End If
         End Sub
@@ -824,7 +824,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(RegisterForComInteropCheckBox, RegisterForComInteropSupported())
 
                 ' Changes to the OutputType may affect whether 'Prefer32Bit' is enabled
-                RefreshEnabledStatusForPrefer32Bit(Me.Prefer32BitCheckBox)
+                RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
             End If
         End Sub
 
@@ -855,7 +855,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     WarningsGridView.CurrentCell = Nothing
                 End If
 
-                Dim rows As DataGridViewRowCollection = Me.WarningsGridView.Rows
+                Dim rows As DataGridViewRowCollection = WarningsGridView.Rows
                 Dim ComboboxCell As DataGridViewComboBoxCell
 
                 For Each ErrorInfo As ErrorInfo In _errorInfos
@@ -1083,15 +1083,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub BuildOutputPathButton_Click(sender As Object, e As EventArgs) Handles BuildOutputPathButton.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(Me.BuildOutputPathTextBox.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), value) Then
-                Me.BuildOutputPathTextBox.Text = value
+            If GetDirectoryViaBrowseRelativeToProject(BuildOutputPathTextBox.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), value) Then
+                BuildOutputPathTextBox.Text = value
                 SetDirty(BuildOutputPathTextBox, True)
             End If
         End Sub
 
         Private Sub GenerateXMLCheckBox_CheckStateChanged(sender As Object, e As EventArgs) Handles GenerateXMLCheckBox.CheckStateChanged
             If Not m_fInsideInit AndAlso Not _settingGenerateXmlDocumentation Then
-                Me.SetDirty(VsProjPropId.VBPROJPROPID_DocumentationFile, True)
+                SetDirty(VsProjPropId.VBPROJPROPID_DocumentationFile, True)
             End If
         End Sub
 
@@ -1101,12 +1101,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function PlatformTargetSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
-                Me.TargetCPUComboBox.SelectedIndex = -1
+                TargetCPUComboBox.SelectedIndex = -1
             Else
                 If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
-                    Me.TargetCPUComboBox.SelectedItem = s_anyCPUPropertyValue
+                    TargetCPUComboBox.SelectedItem = s_anyCPUPropertyValue
                 Else
-                    Me.TargetCPUComboBox.SelectedItem = TryCast(value, String)
+                    TargetCPUComboBox.SelectedItem = TryCast(value, String)
                 End If
             End If
 
@@ -1114,7 +1114,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function PlatformTargetGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = Me.TargetCPUComboBox.SelectedItem
+            value = TargetCPUComboBox.SelectedItem
             Return True
         End Function
 
@@ -1171,10 +1171,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim ErrorsList As New List(Of Integer)
                 Dim NoNotifyList As New List(Of Integer)
 
-                cell = Me.WarningsGridView.CurrentCell
+                cell = WarningsGridView.CurrentCell
 
                 For Index As Integer = 0 To WarningsGridView.Rows.Count - 1
-                    cell = Me.WarningsGridView.Rows.Item(Index).Cells.Item(1)
+                    cell = WarningsGridView.Rows.Item(Index).Cells.Item(1)
                     CellValue = DirectCast(cell.EditedFormattedValue, String)
                     Dim Numbers As String = _errorInfos(Index).Numbers
                     If Numbers <> "" Then
@@ -1280,7 +1280,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' Changes to the TargetCPU may affect whether 'Prefer32Bit' is enabled
-            RefreshEnabledStatusForPrefer32Bit(Me.Prefer32BitCheckBox)
+            RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
         End Sub
 
         ''' <summary>
@@ -1288,7 +1288,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' path.
         ''' </summary>
         Protected Overrides Sub PreApplyPageChanges()
-            If Me.GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).IsDirty Then
+            If GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).IsDirty Then
                 Try
                     Dim absPath As String = Path.Combine(GetProjectPath(), GetProjectRelativeDirectoryPath(Trim(BuildOutputPathTextBox.Text)))
                     If Not CheckPath(absPath) Then
@@ -1433,7 +1433,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 MyBase.NotifyCurrentCellDirty(dirty)
 
                 If dirty Then
-                    Me.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                    CommitEdit(DataGridViewDataErrorContexts.Commit)
                 End If
             End Sub
 

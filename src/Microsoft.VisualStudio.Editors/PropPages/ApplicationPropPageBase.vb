@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_fInsideInit = True
             Try
                 ApplicationIconCombobox.Items.Clear()
-                ApplicationIconCombobox.Items.Add(Me.m_DefaultIconText)
+                ApplicationIconCombobox.Items.Add(m_DefaultIconText)
                 If FindIconsInProject Then
                     For Each ProjectItem As EnvDTE.ProjectItem In DTEProject.ProjectItems
                         AddIconsFromProjectItem(ProjectItem, ApplicationIconCombobox)
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddExistingFilesTitle),
+            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(SR.PPG_AddExistingFilesTitle),
                         Common.CreateDialogFilter(SR.GetString(SR.PPG_AddIconFilesFilter), ".ico"),
                         0, False, sFileName)
 
@@ -476,8 +476,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_fInsideInit = True
             Try
                 ApplicationManifestCombobox.Items.Clear()
-                ApplicationManifestCombobox.Items.Add(Me.m_DefaultManifestText)
-                ApplicationManifestCombobox.Items.Add(Me.m_NoManifestText)
+                ApplicationManifestCombobox.Items.Add(m_DefaultManifestText)
+                ApplicationManifestCombobox.Items.Add(m_NoManifestText)
                 If FindManifestInProject Then
                     For Each ProjectItem As EnvDTE.ProjectItem In DTEProject.ProjectItems
                         AddManifestsFromProjectItem(ProjectItem, ApplicationManifestCombobox)

@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _view Is Nothing Then
                 'Need to create a view
 
-                If Me.RootComponent.IsTearingDown Then
+                If RootComponent.IsTearingDown Then
                     Debug.Fail("Creating new View while component is being disposed")
                     Throw New Package.InternalException
                 End If

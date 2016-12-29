@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If PropertyName = "RootNamespace" Then
                 'The root namespace has changed.  We have changes to make to app.config files.
                 Dim NewRootNamespace As String = CurrentRootNamespace()
-                OnRootNamespaceChanged(DTEProject, Me.ServiceProvider, DirectCast(OldValue, String), DirectCast(NewValue, String))
+                OnRootNamespaceChanged(DTEProject, ServiceProvider, DirectCast(OldValue, String), DirectCast(NewValue, String))
             End If
         End Sub
 
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim isExpressSKU As Boolean = VSProductSKU.IsExpress
 
             Dim objSupportedMyAppTypes As Object = Nothing
-            VSErrorHandler.ThrowOnFailure(Me.ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID2.VSHPROPID_SupportedMyApplicationTypes, objSupportedMyAppTypes))
+            VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID2.VSHPROPID_SupportedMyApplicationTypes, objSupportedMyAppTypes))
             Dim supportedMyAppTypes As String = TryCast(objSupportedMyAppTypes, String)
             Debug.Assert(supportedMyAppTypes IsNot Nothing, "Failed to get supported MyApplicationTypes")
             ApplicationTypeComboBox.Items.Clear()
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <returns></returns>
             ''' <remarks>The current (localized) display name for the application type</remarks>
             Public Overrides Function ToString() As String
-                Return Me.DisplayName
+                Return DisplayName
             End Function
 
 #Region "Match predicates to get properties - used in IList(of ApplicationTypeInfo).Find() and FindAll"
@@ -688,7 +688,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
-                    If Not Me.ProjectReloadedDuringCheckout Then
+                    If Not ProjectReloadedDuringCheckout Then
                         ShowErrorMessage(ex)
                     End If
                 End Try

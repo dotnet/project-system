@@ -482,7 +482,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Private Sub SetSiteInternal(Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
+            If _site Is Site Then
                 Debug.Fail("Why is this EditorFactory site:ed twice?")
                 Exit Sub
             End If
@@ -493,12 +493,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider.Dispose()
                 _serviceProvider = Nothing
             End If
-            Me._site = Site
+            _site = Site
             If TypeOf Site Is OLE.Interop.IServiceProvider Then
                 _serviceProvider = New Shell.ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
             End If
 
-            Me.OnSited()
+            OnSited()
         End Sub
 
 

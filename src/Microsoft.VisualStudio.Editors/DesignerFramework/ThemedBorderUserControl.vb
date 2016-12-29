@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 cp.Style = cp.Style And Not s_WS_BORDER
                 If Not UseVisualStyles Then
 
-                    Select Case Me.BorderStyle
+                    Select Case BorderStyle
                         Case System.Windows.Forms.BorderStyle.Fixed3D
                             cp.ExStyle = cp.ExStyle Or s_WS_EX_CLIENTEDGE
                         Case System.Windows.Forms.BorderStyle.FixedSingle

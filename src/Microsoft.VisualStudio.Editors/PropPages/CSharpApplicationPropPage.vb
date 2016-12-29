@@ -45,8 +45,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End With
 
                     If StartupObjectPropertyControlData.IsMissing Then
-                        Me.StartupObject.Enabled = False
-                        Me.StartupObjectLabel.Enabled = False
+                        StartupObject.Enabled = False
+                        StartupObjectLabel.Enabled = False
                     End If
                 Else
                     Dim prop As PropertyDescriptor = StartupObjectPropertyControlData.PropDesc

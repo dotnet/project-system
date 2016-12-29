@@ -38,12 +38,12 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Private _serviceProvider As IServiceProvider
 
         Protected Sub New()
-            Me.HelpButton = True
+            HelpButton = True
         End Sub
 
         Protected Sub New(serviceProvider As IServiceProvider)
             _serviceProvider = serviceProvider
-            Me.HelpButton = True
+            HelpButton = True
         End Sub
 
         Public Property ServiceProvider() As IServiceProvider
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Protected Overrides Sub OnLoad(e As EventArgs)
             Debug.Assert(_serviceProvider IsNot Nothing)
             If _serviceProvider IsNot Nothing Then
-                Me.Font = Me.DialogFont
+                Font = DialogFont
             End If
             MyBase.OnLoad(e)
         End Sub

@@ -38,8 +38,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
-            Me.Margin = New Padding(0)
-            Me.Dock = DockStyle.Top
+            Margin = New Padding(0)
+            Dock = DockStyle.Top
         End Sub
 
         ''' <summary>
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _id = id
             _uiShell = uiShell
 
-            If Me.IsHandleCreated Then
+            If IsHandleCreated Then
                 ' Fine - handle was already created, let's associate the toolbar with the handle
                 InternalAssociateToolbarWithHandle()
             Else
@@ -116,9 +116,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub InternalAssociateToolbarWithHandle()
-            Debug.Assert(Me.IsHandleCreated, "No handle created when calling InternaleAssociateToolbarWithHandle")
+            Debug.Assert(IsHandleCreated, "No handle created when calling InternaleAssociateToolbarWithHandle")
             If _uiShell IsNot Nothing Then
-                _uiShell.SetupToolbar(Me.Handle, Me, _toolbarHost)
+                _uiShell.SetupToolbar(Handle, Me, _toolbarHost)
             End If
 
             _toolbarHost.AddToolbar(VSTWT_LOCATION.VSTWT_TOP, _guid, _id)
@@ -152,8 +152,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '  it before.  Go up the parent chain until we find a ContainerControl,
                 '  and set WM_FOCUS to it - this causes it to respond by setting focus
                 '  back to the last child control which had it.
-                If Me.Parent IsNot Nothing Then
-                    Dim c As Control = Me.Parent
+                If Parent IsNot Nothing Then
+                    Dim c As Control = Parent
                     While c IsNot Nothing AndAlso Not TypeOf c Is ContainerControl
                         c = c.Parent
                     End While
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetBorder(borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
-            Dim rect As Drawing.Rectangle = Me.Bounds
+            Dim rect As Drawing.Rectangle = Bounds
 
             Debug.Assert(borders.Length = 1)
             borders(0).left = ClientRectangle.Left
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Debug.Assert(borders IsNot Nothing)
             Debug.Assert(borders.Length = 1)
 
-            Me.Height = borders(0).top - borders(0).bottom
+            Height = borders(0).top - borders(0).bottom
 
             Return NativeMethods.S_OK
         End Function

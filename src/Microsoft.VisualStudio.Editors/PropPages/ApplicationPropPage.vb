@@ -79,29 +79,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             TargetFramework,
                             AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
                             ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
-                            New Control() {Me.TargetFrameworkLabel})
+                            New Control() {TargetFrameworkLabel})
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
                     'm_ControlData = New PropertyControlData()
                     m_ControlData = New PropertyControlData() {}
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
-                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", Me.AssemblyName, New Control() {Me.AssemblyNameLabel})
+                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyName)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, Me.RootNameSpace, New Control() {Me.RootNamespaceLabel})
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNameSpace, New Control() {RootNamespaceLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_RootNamespace)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", Me.ApplicationIcon, AddressOf Me.ApplicationIconSet, AddressOf Me.ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {Me.AppIconImage, Me.AppIconBrowse, Me.IconRadioButton, Me.ApplicationIconLabel})
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_ApplicationIcon)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Me.OutputType, AddressOf Me.OutputTypeSet, AddressOf Me.OutputTypeGet, ControlDataFlags.UserHandledEvents, New Control() {Me.OutputTypeLabel})
+                    data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, OutputType, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.UserHandledEvents, New Control() {OutputTypeLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", Me.StartupObject, AddressOf Me.StartupObjectSet, AddressOf Me.StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {Me.StartupObjectLabel})
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartupObject)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile, "Win32ResourceFile", Me.Win32ResourceFile, AddressOf Me.Win32ResourceSet, AddressOf Me.Win32ResourceGet, ControlDataFlags.None, New Control() {Me.Win32ResourceFileBrowse, Me.Win32ResourceRadioButton})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile, "Win32ResourceFile", Win32ResourceFile, AddressOf Win32ResourceSet, AddressOf Win32ResourceGet, ControlDataFlags.None, New Control() {Win32ResourceFileBrowse, Win32ResourceRadioButton})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Me.ApplicationManifest, AddressOf Me.ApplicationManifestSet, AddressOf Me.ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {Me.ApplicationManifest, Me.ApplicationManifestLabel})
+                    data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", ApplicationManifest, AddressOf ApplicationManifestSet, AddressOf ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {ApplicationManifest, ApplicationManifestLabel})
                     datalist.Add(data)
                     datalist.Add(m_TargetFrameworkPropertyControlData)
                     m_ControlData = datalist.ToArray()
@@ -156,8 +156,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End With
 
                     If StartupObjectPropertyControlData.IsMissing Then
-                        Me.StartupObject.Enabled = False
-                        Me.StartupObjectLabel.Enabled = False
+                        StartupObject.Enabled = False
+                        StartupObjectLabel.Enabled = False
                     End If
                 Else
 
@@ -222,12 +222,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overridable Function OutputTypeGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
-            If Me.OutputType.SelectedIndex = -1 Then
+            If OutputType.SelectedIndex = -1 Then
                 ' We're indeterminate. Just let the architecture handle it
                 Return False
             End If
 
-            Dim currentValue As OutputTypeComboBoxValue = TryCast(Me.OutputType.SelectedItem, OutputTypeComboBoxValue)
+            Dim currentValue As OutputTypeComboBoxValue = TryCast(OutputType.SelectedItem, OutputTypeComboBoxValue)
 
             If currentValue Is Nothing Then
                 Return False
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Catch ex As Exception
                 End Try
 
-                didSelectItem = SelectItemInOutputTypeComboBox(Me.OutputType, uIntValue)
+                didSelectItem = SelectItemInOutputTypeComboBox(OutputType, uIntValue)
 
                 If didSelectItem Then
                     PopulateControlSet(uIntValue)
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If Not didSelectItem Then
                 '// We're indeterminate 
-                Me.OutputType.SelectedIndex = -1
+                OutputType.SelectedIndex = -1
 
                 '// Set the startup object to indeterminate as well
                 StartupObject.SelectedIndex = -1
@@ -338,64 +338,64 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If stApplicationIcon Is Nothing AndAlso stWin32ResourceFile Is Nothing Then
                 '// indeterminate
-                If Not IconEntryIsDefault(Me.ApplicationIcon.Text) Then
-                    Me.ApplicationIcon.Text = ""
+                If Not IconEntryIsDefault(ApplicationIcon.Text) Then
+                    ApplicationIcon.Text = ""
                 End If
-                EnableControl(Me.AppIconBrowse, ApplicationIconSupported())
-                EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
-                EnableControl(Me.ApplicationIconLabel, ApplicationIconSupported())
-                Me.IconRadioButton.Checked = False
-                If Not ApplicationManifestEntryIsDefault(Me.ApplicationManifest.Text) Then
-                    Me.ApplicationManifest.Text = String.Empty
+                EnableControl(AppIconBrowse, ApplicationIconSupported())
+                EnableControl(ApplicationIcon, ApplicationIconSupported())
+                EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+                IconRadioButton.Checked = False
+                If Not ApplicationManifestEntryIsDefault(ApplicationManifest.Text) Then
+                    ApplicationManifest.Text = String.Empty
                 End If
                 If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                    EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
-                    EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
+                    EnableControl(ApplicationManifestLabel, ApplicationManifestSupported())
+                    EnableControl(ApplicationManifest, ApplicationManifestSupported())
                 Else
-                    Me.ApplicationManifestLabel.Enabled = False
-                    Me.ApplicationManifest.Enabled = False
+                    ApplicationManifestLabel.Enabled = False
+                    ApplicationManifest.Enabled = False
                 End If
-                Me.Win32ResourceFile.Text = ""
-                EnableControl(Me.Win32ResourceFile, Win32ResourceFileSupported())
-                EnableControl(Me.Win32ResourceFileBrowse, Win32ResourceFileSupported())
-                Me.Win32ResourceRadioButton.Checked = False
+                Win32ResourceFile.Text = ""
+                EnableControl(Win32ResourceFile, Win32ResourceFileSupported())
+                EnableControl(Win32ResourceFileBrowse, Win32ResourceFileSupported())
+                Win32ResourceRadioButton.Checked = False
 
             ElseIf (Not (IsNothing(stWin32ResourceFile)) AndAlso stWin32ResourceFile <> "") Then
 
-                Me.Win32ResourceFile.Text = stWin32ResourceFile
-                EnableControl(Me.Win32ResourceFile, Win32ResourceFileSupported())
-                EnableControl(Me.Win32ResourceFileBrowse, Win32ResourceFileSupported())
-                Me.Win32ResourceRadioButton.Checked = True
+                Win32ResourceFile.Text = stWin32ResourceFile
+                EnableControl(Win32ResourceFile, Win32ResourceFileSupported())
+                EnableControl(Win32ResourceFileBrowse, Win32ResourceFileSupported())
+                Win32ResourceRadioButton.Checked = True
 
-                Me.ApplicationIcon.Text = ""
-                Me.AppIconBrowse.Enabled = False
-                Me.ApplicationIcon.Enabled = False
-                Me.ApplicationIconLabel.Enabled = False
-                Me.IconRadioButton.Checked = False
-                Me.ApplicationManifest.Text = String.Empty
-                Me.ApplicationManifestLabel.Enabled = False
-                Me.ApplicationManifest.Enabled = False
+                ApplicationIcon.Text = ""
+                AppIconBrowse.Enabled = False
+                ApplicationIcon.Enabled = False
+                ApplicationIconLabel.Enabled = False
+                IconRadioButton.Checked = False
+                ApplicationManifest.Text = String.Empty
+                ApplicationManifestLabel.Enabled = False
+                ApplicationManifest.Enabled = False
 
             Else
 
-                Me.ApplicationIcon.Text = stApplicationIcon
-                EnableControl(Me.ApplicationIconLabel, ApplicationIconSupported())
-                EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
-                EnableControl(Me.AppIconBrowse, ApplicationIconSupported())
-                Me.IconRadioButton.Checked = True
+                ApplicationIcon.Text = stApplicationIcon
+                EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+                EnableControl(ApplicationIcon, ApplicationIconSupported())
+                EnableControl(AppIconBrowse, ApplicationIconSupported())
+                IconRadioButton.Checked = True
                 If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                    Me.ApplicationManifest.Text = stApplicationManifest
-                    EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
-                    EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
+                    ApplicationManifest.Text = stApplicationManifest
+                    EnableControl(ApplicationManifestLabel, ApplicationManifestSupported())
+                    EnableControl(ApplicationManifest, ApplicationManifestSupported())
                 Else
-                    Me.ApplicationManifest.Text = String.Empty
-                    Me.ApplicationManifestLabel.Enabled = False
-                    Me.ApplicationManifest.Enabled = False
+                    ApplicationManifest.Text = String.Empty
+                    ApplicationManifestLabel.Enabled = False
+                    ApplicationManifest.Enabled = False
                 End If
-                Me.Win32ResourceFile.Text = ""
-                Me.Win32ResourceFile.Enabled = False
-                Me.Win32ResourceFileBrowse.Enabled = False
-                Me.Win32ResourceRadioButton.Checked = False
+                Win32ResourceFile.Text = ""
+                Win32ResourceFile.Enabled = False
+                Win32ResourceFileBrowse.Enabled = False
+                Win32ResourceRadioButton.Checked = False
 
             End If
             Return True
@@ -411,14 +411,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Shadows Function ApplicationIconGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (Me.IconRadioButton.Checked = True) Then
-                If (Me.ApplicationIcon.Text.Equals(SR.GetString(SR.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase)) Then
+            If (IconRadioButton.Checked = True) Then
+                If (ApplicationIcon.Text.Equals(SR.GetString(SR.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase)) Then
                     value = ""
                 Else
-                    value = Me.ApplicationIcon.Text
+                    value = ApplicationIcon.Text
                 End If
                 Return True
-            ElseIf (Me.Win32ResourceRadioButton.Checked = True) Then
+            ElseIf (Win32ResourceRadioButton.Checked = True) Then
                 value = ""
                 Return True
             Else
@@ -447,16 +447,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Shadows Function ApplicationManifestGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (Me.IconRadioButton.Checked = True) Then
-                If (Me.ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_DefaultManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
+            If (IconRadioButton.Checked = True) Then
+                If (ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_DefaultManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
                     value = prjApplicationManifestValues.prjApplicationManifest_Default
-                ElseIf (Me.ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_NoManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
+                ElseIf (ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_NoManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
                     value = prjApplicationManifestValues.prjApplicationManifest_NoManifest
                 Else
-                    value = Me.ApplicationManifest.Text.Trim()
+                    value = ApplicationManifest.Text.Trim()
                 End If
                 Return True
-            ElseIf (Me.Win32ResourceRadioButton.Checked = True) Then
+            ElseIf (Win32ResourceRadioButton.Checked = True) Then
                 ' Reset it to default.
                 value = String.Empty
                 Return True
@@ -486,10 +486,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function Win32ResourceGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (Me.Win32ResourceRadioButton.Checked = True) Then
-                value = Me.Win32ResourceFile.Text
+            If (Win32ResourceRadioButton.Checked = True) Then
+                value = Win32ResourceFile.Text
                 Return True
-            ElseIf (Me.IconRadioButton.Checked = True) Then
+            ElseIf (IconRadioButton.Checked = True) Then
                 value = ""
                 Return True
             Else
@@ -516,27 +516,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub IconResourceFile_CheckedChanged(sender As Object, e As EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
-            If (Me.IconRadioButton.Checked = True) Then
-                EnableControl(Me.ApplicationIconLabel, ApplicationIconSupported())
-                EnableControl(Me.ApplicationIcon, ApplicationIconSupported())
-                EnableControl(Me.AppIconBrowse, ApplicationIconSupported())
+            If (IconRadioButton.Checked = True) Then
+                EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+                EnableControl(ApplicationIcon, ApplicationIconSupported())
+                EnableControl(AppIconBrowse, ApplicationIconSupported())
                 If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                    EnableControl(Me.ApplicationManifestLabel, ApplicationManifestSupported())
-                    EnableControl(Me.ApplicationManifest, ApplicationManifestSupported())
+                    EnableControl(ApplicationManifestLabel, ApplicationManifestSupported())
+                    EnableControl(ApplicationManifest, ApplicationManifestSupported())
                 Else
-                    Me.ApplicationManifestLabel.Enabled = False
-                    Me.ApplicationManifest.Enabled = False
+                    ApplicationManifestLabel.Enabled = False
+                    ApplicationManifest.Enabled = False
                 End If
-                Me.Win32ResourceFile.Enabled = False
-                Me.Win32ResourceFileBrowse.Enabled = False
-            ElseIf (Me.Win32ResourceRadioButton.Checked = True) Then
-                Me.ApplicationIconLabel.Enabled = False
-                Me.ApplicationIcon.Enabled = False
-                Me.AppIconBrowse.Enabled = False
-                Me.ApplicationManifestLabel.Enabled = False
-                Me.ApplicationManifest.Enabled = False
-                EnableControl(Me.Win32ResourceFile, Win32ResourceFileSupported())
-                EnableControl(Me.Win32ResourceFileBrowse, Win32ResourceFileSupported())
+                Win32ResourceFile.Enabled = False
+                Win32ResourceFileBrowse.Enabled = False
+            ElseIf (Win32ResourceRadioButton.Checked = True) Then
+                ApplicationIconLabel.Enabled = False
+                ApplicationIcon.Enabled = False
+                AppIconBrowse.Enabled = False
+                ApplicationManifestLabel.Enabled = False
+                ApplicationManifest.Enabled = False
+                EnableControl(Win32ResourceFile, Win32ResourceFileSupported())
+                EnableControl(Win32ResourceFileBrowse, Win32ResourceFileSupported())
             End If
 
             UpdateIconImage(False)
@@ -630,8 +630,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If OutputTypeControlData.IsMissing OrElse Not SupportsOutputTypeProperty() Then
                 'Property is not supported by this project type
                 ' hide associated fields
-                Me.OutputType.Enabled = False
-                Me.OutputTypeLabel.Enabled = False
+                OutputType.Enabled = False
+                OutputTypeLabel.Enabled = False
 
                 'Populate
                 PopulateStartupObject(True, False)
@@ -642,8 +642,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     outputType = CUInt(OutputTypeControlData.InitialValue)
                 Catch ex As Exception
                 End Try
-                Me.PopulateControlSet(outputType)
-                Me.EnableControlSet()
+                PopulateControlSet(outputType)
+                EnableControlSet()
                 Return True
             End If
             Return True
@@ -661,21 +661,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
 
-            Me.OutputType.Items.Clear()
+            OutputType.Items.Clear()
 
             If Not SupportsOutputTypeProperty() Then
 
-                Me.OutputType.Enabled = False
-                Me.OutputTypeLabel.Enabled = False
+                OutputType.Enabled = False
+                OutputTypeLabel.Enabled = False
 
-            ElseIf Not PopulateOutputTypeComboBoxFromProjectProperty(Me.OutputType) Then
+            ElseIf Not PopulateOutputTypeComboBoxFromProjectProperty(OutputType) Then
 
-                Me.OutputType.Items.AddRange(m_OutputTypeDefaultValues)
+                OutputType.Items.AddRange(m_OutputTypeDefaultValues)
 
             End If
 
             'Populate the target framework combobox
-            PopulateTargetFrameworkComboBox(Me.TargetFramework)
+            PopulateTargetFrameworkComboBox(TargetFramework)
         End Sub
 
         ''' <summary>
@@ -751,7 +751,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim OutputType As UInteger = CUInt(GetControlValueNative(Const_OutputTypeEx))
 
-            Me.EnableControlSet()
+            EnableControlSet()
 
             SetDirty(VsProjPropId110.VBPROJPROPID_OutputTypeEx, False)
             SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, False)
@@ -762,7 +762,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            Me.PopulateControlSet(OutputType)
+            PopulateControlSet(OutputType)
 
             SetIconAndWin32ResourceFile()
         End Sub
@@ -798,7 +798,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, sInitialDirectory, SR.GetString(SR.PPG_AddWin32ResourceTitle),
+            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(SR.PPG_AddWin32ResourceTitle),
                     Common.CombineDialogFilters(
                         Common.CreateDialogFilter(SR.GetString(SR.PPG_AddWin32ResourceFilter), "res"),
                         Common.Utils.GetAllFilesDialogFilter()
@@ -807,7 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = CStr(fileNames(0))
                 If System.IO.File.Exists(sFileName) Then
-                    Me.Win32ResourceFile.Text = sFileName
+                    Win32ResourceFile.Text = sFileName
                     SetDirty(Win32ResourceFile, True)
                 Else
                     DelayValidate(Win32ResourceFile)

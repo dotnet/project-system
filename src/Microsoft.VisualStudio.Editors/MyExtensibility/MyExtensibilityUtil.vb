@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim assemblyName As String = Nothing
             Dim assemblyVersion As Version = Nothing
-            Me.ParseAssemblyFullName(assemblyFullName, assemblyName, assemblyVersion)
+            ParseAssemblyFullName(assemblyFullName, assemblyName, assemblyVersion)
 
             If assemblyName Is Nothing Then
                 If _assemblyIndependentList Is Nothing Then
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Function GetItems(assemblyFullName As String) As List(Of T)
             Dim assemblyName As String = Nothing
             Dim assemblyVersion As Version = Nothing
-            Me.ParseAssemblyFullName(assemblyFullName, assemblyName, assemblyVersion)
+            ParseAssemblyFullName(assemblyFullName, assemblyName, assemblyVersion)
 
             If assemblyName Is Nothing Then
                 Return _assemblyIndependentList

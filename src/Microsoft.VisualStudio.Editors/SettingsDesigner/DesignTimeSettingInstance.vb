@@ -101,11 +101,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         Private Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
-            Return Me.GetType().FullName
+            Return [GetType]().FullName
         End Function
 
         Private Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
-            Return Me.Name
+            Return Name
         End Function
 
         Private Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
@@ -874,7 +874,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property SerializedValueProperty() As PropertyDescriptor
             Get
-                Return Me._serializedValuePropertyDescriptor
+                Return _serializedValuePropertyDescriptor
             End Get
         End Property
 

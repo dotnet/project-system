@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
         Public NotOverridable Overrides Function Equals([Object] As Object) As Boolean
-            Return [Object].GetType Is Me.GetType
+            Return [Object].GetType Is [GetType]
         End Function
 
 
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>True if and only if both instances are of the same type.</returns>
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         Public Overloads Function Equals(Editor As ResourceTypeEditor) As Boolean
-            Return Me.Equals(CObj(Editor))
+            Return Equals(CObj(Editor))
         End Function
 
         ''' <summary>
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  somewhat expensive, so we cache it (it cannot change).
             If Not _isHashCodeCached Then
                 _isHashCodeCached = True
-                _hashCodeCache = Me.GetType.AssemblyQualifiedName.GetHashCode
+                _hashCodeCache = [GetType].AssemblyQualifiedName.GetHashCode
             End If
             Return _hashCodeCache
         End Function

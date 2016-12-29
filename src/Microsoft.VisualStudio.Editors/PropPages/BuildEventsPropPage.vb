@@ -70,9 +70,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PreBuildEvent, "PreBuildEvent", Me.txtPreBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPreBuildBuilder, lblPreBuildEventCommandLine}),
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PostBuildEvent, "PostBuildEvent", Me.txtPostBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPostBuildBuilder, lblPostBuildEventCommandLine}),
-                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_RunPostBuildEvent, "RunPostBuildEvent", Me.cboRunPostBuildEvent, New Control() {Me.lblRunPostBuildEvent})
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PreBuildEvent, "PreBuildEvent", txtPreBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPreBuildBuilder, lblPreBuildEventCommandLine}),
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_PostBuildEvent, "PostBuildEvent", txtPostBuildEventCommandLine, ControlDataFlags.None, New Control() {btnPostBuildBuilder, lblPostBuildEventCommandLine}),
+                    New PropertyControlData(VsProjPropId2.VBPROJPROPID_RunPostBuildEvent, "RunPostBuildEvent", cboRunPostBuildEvent, New Control() {lblRunPostBuildEvent})
                     }
                 End If
 
@@ -90,11 +90,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub PostBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
-            CommandLineText = Me.txtPostBuildEventCommandLine.Text
+            CommandLineText = txtPostBuildEventCommandLine.Text
 
-            LaunchEventBuilder(Me, AddressOf Me.GetTokenValue, SR.GetString(SR.PPG_PostBuildCommandLineTitle), CommandLineText)
-            Dim oldCommandLine As String = Me.txtPostBuildEventCommandLine.Text
-            Me.txtPostBuildEventCommandLine.Text = CommandLineText
+            LaunchEventBuilder(Me, AddressOf GetTokenValue, SR.GetString(SR.PPG_PostBuildCommandLineTitle), CommandLineText)
+            Dim oldCommandLine As String = txtPostBuildEventCommandLine.Text
+            txtPostBuildEventCommandLine.Text = CommandLineText
             If oldCommandLine <> CommandLineText Then
                 SetDirty(txtPostBuildEventCommandLine, True)
             End If
@@ -102,11 +102,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub PreBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPreBuildBuilder.Click
             Dim CommandLineText As String
-            CommandLineText = Me.txtPreBuildEventCommandLine.Text
+            CommandLineText = txtPreBuildEventCommandLine.Text
 
-            LaunchEventBuilder(Me, AddressOf Me.GetTokenValue, SR.GetString(SR.PPG_PreBuildCommandLineTitle), CommandLineText)
-            Dim oldCommandLine As String = Me.txtPreBuildEventCommandLine.Text
-            Me.txtPreBuildEventCommandLine.Text = CommandLineText
+            LaunchEventBuilder(Me, AddressOf GetTokenValue, SR.GetString(SR.PPG_PreBuildCommandLineTitle), CommandLineText)
+            Dim oldCommandLine As String = txtPreBuildEventCommandLine.Text
+            txtPreBuildEventCommandLine.Text = CommandLineText
             If oldCommandLine <> CommandLineText Then
                 SetDirty(txtPreBuildEventCommandLine, True)
             End If

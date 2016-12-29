@@ -154,10 +154,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub SetWaitCursor(waiting As Boolean)
             If waiting Then
-                Me.Cursor = Cursors.WaitCursor
+                Cursor = Cursors.WaitCursor
                 Cursor.Current = Cursors.WaitCursor
             Else
-                Me.Cursor = Cursors.Default
+                Cursor = Cursors.Default
                 Cursor.Current = Cursors.Default
             End If
         End Sub
@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'We get extra Leave events in property pages.  If we don't reset the text, we can get caught in an infinite loop of Leaves and Validating.
                 textBox.Text = ""
                 'Showing a messagebox in the middle of canceling validation is bad mojo
-                Me.BeginInvoke(New MethodInvoker(AddressOf ShowInvalidUrlError))
+                BeginInvoke(New MethodInvoker(AddressOf ShowInvalidUrlError))
                 e.Cancel = True
             End If
         End Sub
@@ -340,13 +340,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ValidateWhenHidden(sender As System.Object, e As EventArgs) Handles Me.VisibleChanged
-            If Not Me.Visible Then
-                Me.Validate()
+            If Not Visible Then
+                Validate()
             End If
         End Sub
 
         Private Sub ValidateWhenLostFocus(sender As System.Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
-            Me.Validate()
+            Validate()
         End Sub
 
         Private Sub UpdateXmlDocWhenLostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus

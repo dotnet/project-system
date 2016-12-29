@@ -49,9 +49,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PageRequiresScaling = False
 
             _fileVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
-                Me.FileVersionMajorTextBox, Me.FileVersionMinorTextBox, Me.FileVersionBuildTextBox, Me.FileVersionRevisionTextBox}
+                FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
             _assemblyVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
-                Me.AssemblyVersionMajorTextBox, Me.AssemblyVersionMinorTextBox, Me.AssemblyVersionBuildTextBox, Me.AssemblyVersionRevisionTextBox}
+                AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
             _neutralLanguageNoneText = SR.GetString(SR.PPG_NeutralLanguage_None)
         End Sub
 
@@ -60,30 +60,30 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If m_ControlData Is Nothing Then
 
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
-                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyTitle, "Title", Me.Title, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.TitleLabel})
+                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyTitle, "Title", Title, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {TitleLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyDescription, "Description", Me.Description, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.DescriptionLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyDescription, "Description", Description, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {DescriptionLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyCompany, "Company", Me.Company, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.CompanyLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyCompany, "Company", Company, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {CompanyLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyProduct, "Product", Me.Product, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.ProductLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyProduct, "Product", Product, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {ProductLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyCopyright, "Copyright", Me.Copyright, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.CopyrightLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyCopyright, "Copyright", Copyright, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {CopyrightLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyTrademark, "Trademark", Me.Trademark, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.TrademarkLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyTrademark, "Trademark", Trademark, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {TrademarkLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyVersion, "AssemblyVersion", Me.AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.AssemblyVersionLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyVersion, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {AssemblyVersionLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyVersion)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyFileVersion, "AssemblyFileVersion", Me.FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.FileVersionLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyFileVersion, "AssemblyFileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {FileVersionLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyFileVersion)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Me.ComVisibleCheckBox, ControlDataFlags.PersistedInAssemblyInfoFile)
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", ComVisibleCheckBox, ControlDataFlags.PersistedInAssemblyInfoFile)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyGuid, "AssemblyGuid", Me.GuidTextBox, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.GuidLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyGuid, "AssemblyGuid", GuidTextBox, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {GuidLabel})
                     data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyGuid)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_NeutralResourcesLanguage, "NeutralResourcesLanguage", Me.NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {Me.NeutralLanguageLabel})
+                    data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_NeutralResourcesLanguage, "NeutralResourcesLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
 
                     m_ControlData = datalist.ToArray()
@@ -99,10 +99,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
-            If (control Is Me.FileVersionLayoutPanel) Then
+            If (control Is FileVersionLayoutPanel) Then
                 ValidateAssemblyFileVersion(Version)
             Else
-                Debug.Assert(control Is Me.AssemblyVersionLayoutPanel)
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 ValidateAssemblyVersion(Version)
             End If
 
@@ -133,11 +133,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ReDim Preserve Values(3)
 
             Dim Textboxes As System.Windows.Forms.TextBox()
-            If (control Is Me.FileVersionLayoutPanel) Then
-                Textboxes = Me._fileVersionTextBoxes
+            If (control Is FileVersionLayoutPanel) Then
+                Textboxes = _fileVersionTextBoxes
             Else
-                Debug.Assert(control Is Me.AssemblyVersionLayoutPanel)
-                Textboxes = Me._assemblyVersionTextBoxes
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                Textboxes = _assemblyVersionTextBoxes
             End If
             For index As Integer = 0 To 3
                 Textboxes(index).Text = Values(index)
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyVersion(ByRef Version As String)
-            ValidateVersion(Me._assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyVersion), True, Version)
+            ValidateVersion(_assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyVersion), True, Version)
         End Sub
 
 
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyFileVersion(ByRef Version As String)
-            ValidateVersion(Me._fileVersionTextBoxes, s_maxFileVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyFileVersion), False, Version)
+            ValidateVersion(_fileVersionTextBoxes, s_maxFileVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyFileVersion), False, Version)
         End Sub
 
         ''' <summary>
@@ -178,11 +178,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
-            SetDirty(Me.AssemblyVersionLayoutPanel, False)
+            SetDirty(AssemblyVersionLayoutPanel, False)
         End Sub
 
         Private Sub FileVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
-            SetDirty(Me.FileVersionLayoutPanel, False)
+            SetDirty(FileVersionLayoutPanel, False)
         End Sub
 
         ''' <summary>

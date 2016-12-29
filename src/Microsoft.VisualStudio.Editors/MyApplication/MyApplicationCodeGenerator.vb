@@ -521,14 +521,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Dim changesRequired As Boolean = False
 
-            Dim designerPrjItem As ProjectItem = Me.GetDesignerProjectItem(phier, itemId)
+            Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Dim applicationData As MyApplicationData = Nothing
                 Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.Utils.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
-                    applicationData = Me.GetApplicationData(dd)
+                    applicationData = GetApplicationData(dd)
                 End Using
                 If (applicationData IsNot Nothing) Then
-                    Dim oldSymbolName As String = Me.GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
+                    Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
                     If (oldSymbolName IsNot Nothing) Then
                         ' if the old class name matches the MainForm name or the SplashScreen name modify it.
                         Dim comparisonType As StringComparison = StringComparison.OrdinalIgnoreCase
@@ -574,13 +574,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Protected Function OnGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
             Debug.Assert(cRQNames = 1, String.Format("Why Do we get {0} symbols to rename?", cRQNames))
 
-            Dim designerPrjItem As ProjectItem = Me.GetDesignerProjectItem(phier, itemId)
+            Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Try
                     Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.Utils.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
-                        Dim data As MyApplicationData = Me.GetApplicationData(dd)
+                        Dim data As MyApplicationData = GetApplicationData(dd)
                         If (data IsNot Nothing) Then
-                            Dim oldSymbolName As String = Me.GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
+                            Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
                             If (oldSymbolName IsNot Nothing) Then
                                 Dim namespaceNoClass As String = String.Empty
                                 Dim i As Integer = oldSymbolName.LastIndexOf(".")

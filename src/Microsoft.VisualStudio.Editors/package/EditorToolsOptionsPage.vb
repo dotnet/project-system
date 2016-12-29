@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <remarks></remarks>
         Private Function GetLanguagePrefs() As LANGPREFERENCES
             Dim myPrefs As New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES
-            Dim textMgr As IVsTextManager = DirectCast(Me.GetService(GetType(SVsTextManager)), IVsTextManager)
+            Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 myPrefs.guidLang = s_VBLangGUID
                 Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub Apply(prefs As LANGPREFERENCES)
-            Dim textMgr As IVsTextManager = DirectCast(Me.GetService(GetType(SVsTextManager)), IVsTextManager)
+            Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 prefs.guidLang = s_VBLangGUID
                 Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}

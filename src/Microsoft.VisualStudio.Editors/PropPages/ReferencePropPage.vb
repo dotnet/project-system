@@ -94,10 +94,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overrides Sub CleanupCOMReferences()
 
-            Me.UnadviseReferencesEvents()
-            Me.UnadviseWebReferencesEvents()
-            Me.UnadviseServiceReferencesEvents()
-            Me.UnadviseImportsEvents()
+            UnadviseReferencesEvents()
+            UnadviseWebReferencesEvents()
+            UnadviseServiceReferencesEvents()
+            UnadviseImportsEvents()
 
             MyBase.CleanupCOMReferences()
         End Sub
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                        New PropertyControlData(1, "ImportList", Me.ImportList, AddressOf Me.ImportListSet, AddressOf Me.ImportListGet, ControlDataFlags.UserPersisted)
+                        New PropertyControlData(1, "ImportList", ImportList, AddressOf ImportListSet, AddressOf ImportListGet, ControlDataFlags.UserPersisted)
                         }
                 End If
                 Return m_ControlData
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ProcessDelayUpdateItems()
                         processedDelayRefreshMessage = True
                     Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTCHANGED
-                        SetDirty(Me.ImportList)
+                        SetDirty(ImportList)
                         processedDelayRefreshMessage = True
                     Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTS_REFRESH
                         Try
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
 
             If Not _columnWidthUpdated Then
-                SetReferenceListColumnWidths(Me, Me.ReferenceList, 0)
+                SetReferenceListColumnWidths(Me, ReferenceList, 0)
                 _columnWidthUpdated = True
             End If
 
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private ReadOnly _cancellationTokenSource As CancellationTokenSource
 
             Public Sub New(cancellationTokenSource As CancellationTokenSource)
-                Me._cancellationTokenSource = cancellationTokenSource
+                _cancellationTokenSource = cancellationTokenSource
             End Sub
 
             Public Sub OnCanceled() Implements IVsThreadedWaitDialogCallback.OnCanceled
@@ -755,13 +755,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
 
-            Me.PopulateReferenceList()
-            Me.PopulateImportsList(False)
+            PopulateReferenceList()
+            PopulateImportsList(False)
 
-            Me.AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
-            Me.AdviseWebReferencesEvents()
-            Me.AdviseServiceReferencesEvents()
-            Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            AdviseWebReferencesEvents()
+            AdviseServiceReferencesEvents()
+            AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
         End Sub
 
         Private Function GetCurrentImports() As String()
@@ -1021,7 +1021,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  the list, which might be a minor surprise to the user, but shouldn't be
                     '  too bad, and is the safest fix at this point in the schedule.
                     PopulateImportsList(InitSelections:=True, RemoveInvalidEntries:=True)
-                    SetDirty(Me.ImportList)
+                    SetDirty(ImportList)
                 End If
             End Using
 
@@ -1097,8 +1097,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If String.Compare(item.Name, newName, StringComparison.Ordinal) <> 0 Then
                         item.Name = newName
                     End If
-                    Me.PopulateReferenceList()
-                    Me.PopulateImportsList(True)
+                    PopulateReferenceList()
+                    PopulateImportsList(True)
                 End If
             Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                 If Not Common.IsCheckoutCanceledException(ex) Then
@@ -1139,8 +1139,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             _updatingReferences = False
                         End Try
 
-                        Me.PopulateReferenceList()
-                        Me.PopulateImportsList(True)
+                        PopulateReferenceList()
+                        PopulateImportsList(True)
 
                         Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(Microsoft.Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
                     End If
@@ -1154,7 +1154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub EnableReferenceGroup()
-            Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+            Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
 
             Dim removeReferencesButtonEnabled As Boolean = (items.Count > 0)
 
@@ -1167,7 +1167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             'Enable/Disable Remove button
-            Me.RemoveReference.Enabled = removeReferencesButtonEnabled
+            RemoveReference.Enabled = removeReferencesButtonEnabled
 
             'Enable/Disable Update button (valid for Web references only)
             For i As Integer = 0 To items.Count - 1
@@ -1256,7 +1256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferenceList_ItemActivate(sender As Object, e As EventArgs) Handles ReferenceList.ItemActivate
-            Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+            Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
             If items.Count > 0 Then
                 DTE.ExecuteCommand("View.PropertiesWindow", String.Empty)
             End If
@@ -1264,7 +1264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub ReferenceList_KeyDown(sender As Object, e As KeyEventArgs) Handles ReferenceList.KeyDown
             If e.KeyCode = Keys.Delete Then
-                Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+                Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
                 If items.Count > 0 Then
                     RemoveSelectedReference()
                 End If
@@ -1272,7 +1272,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferenceList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ReferenceList.SelectedIndexChanged
-            Me.EnableReferenceGroup()
+            EnableReferenceGroup()
 
             PushSelection()
         End Sub
@@ -1292,7 +1292,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub UpdateReferences_Click(sender As Object, e As EventArgs) Handles UpdateReferences.Click
             Using New WaitCursor
-                Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+                Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
                 For Each item As ListViewItem In items
                     Dim referenceComponent As IUpdatableReferenceComponent = TryCast(item.Tag, IUpdatableReferenceComponent)
                     If referenceComponent IsNot Nothing Then
@@ -1321,7 +1321,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  the list, which might be a minor surprise to the user, but shouldn't be
                     '  too bad, and is the safest fix at this point in the schedule.
                     PopulateImportsList(InitSelections:=True, RemoveInvalidEntries:=True)
-                    SetDirty(Me.ImportList)
+                    SetDirty(ImportList)
                 End If
             End If
         End Sub
@@ -1391,7 +1391,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub ImportPanel_Leave(sender As Object, e As EventArgs) Handles addUserImportTableLayoutPanel.Leave
             _hidingImportListSelectedItem = True
             Try
-                _importListSelectedItem = DirectCast(Me.ImportList.SelectedItem, String)
+                _importListSelectedItem = DirectCast(ImportList.SelectedItem, String)
                 ImportList.SelectedItem = Nothing
             Finally
                 _hidingImportListSelectedItem = False
@@ -1566,8 +1566,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Refress the lists
             m_fInsideInit = True
             Try
-                Me.PopulateReferenceList()
-                Me.PopulateImportsList(True)
+                PopulateReferenceList()
+                PopulateImportsList(True)
             Finally
                 m_fInsideInit = False
             End Try
@@ -1617,7 +1617,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If Me.ImportList.Focused Then
+            If ImportList.Focused Then
                 Return HelpKeywords.VBProjPropImports
             End If
             Return HelpKeywords.VBProjPropReference
@@ -1656,7 +1656,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 PopulateImportsList(True)
-                SetDirty(Me.ImportList)
+                SetDirty(ImportList)
 
                 ' Let's make sure the new item is visible & selected!
                 Dim newIndex As Integer = ImportList.Items.IndexOf(ScrubbedUserImport)
@@ -1723,7 +1723,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 PopulateImportsList(True)
-                SetDirty(Me.ImportList)
+                SetDirty(ImportList)
             End If
 
             ' Let's make sure the updated item is still selected...

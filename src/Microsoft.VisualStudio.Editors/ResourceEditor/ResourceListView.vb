@@ -177,12 +177,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             View = ResourceView.List
 
             'Allow editing the Name by clicking on it.
-            Me.LabelEdit = True
+            LabelEdit = True
 
             'We want to use tooltips to show error messages
-            Me.ShowItemToolTips = True
+            ShowItemToolTips = True
 
-            Common.DTEUtils.ApplyListViewThemeStyles(Me.Handle)
+            Common.DTEUtils.ApplyListViewThemeStyles(Handle)
         End Sub
 
 
@@ -282,8 +282,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private ReadOnly Property ParentView() As ResourceEditorView
             Get
-                If TypeOf Me.Parent Is ResourceEditorView Then
-                    Return DirectCast(Me.Parent, ResourceEditorView)
+                If TypeOf Parent Is ResourceEditorView Then
+                    Return DirectCast(Parent, ResourceEditorView)
                 Else
                     Debug.Fail("Not parented to a ResourceEditorView?")
                     Throw New System.InvalidOperationException()
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ItemIndex As Integer = IndexOf(Resource)
             Dim itemRectangle As Rectangle = MyBase.GetItemRect(ItemIndex)
-            If itemRectangle.IntersectsWith(Me.ClientRectangle) Then
+            If itemRectangle.IntersectsWith(ClientRectangle) Then
                 'Reload the image...
                 RequireCacheImage(ItemIndex, ItemIndex)
                 Invalidate(itemRectangle)
@@ -564,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub BeginLabelEdit(Resource As Resource)
-            If Me.LabelEdit AndAlso Resource IsNot Nothing Then
+            If LabelEdit AndAlso Resource IsNot Nothing Then
                 Dim Index As Integer = IndexOf(Resource)
                 SelectResource(Index, True)
 
@@ -646,9 +646,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     ' we save the information about current selection, so we can restore it later
                     selectedResources = GetSelectedResources()
-                    If Me.FocusedItem IsNot Nothing Then
-                        currentResource = GetResourceFromVirtualIndex(Me.FocusedItem.Index)
-                        Me.FocusedItem = Nothing
+                    If FocusedItem IsNot Nothing Then
+                        currentResource = GetResourceFromVirtualIndex(FocusedItem.Index)
+                        FocusedItem = Nothing
                     ElseIf selectedResources IsNot Nothing AndAlso selectedResources.Length > 0 Then
                         currentResource = selectedResources(0)
                     End If
@@ -675,8 +675,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' Restore current position...
                 If currentResource IsNot Nothing Then
                     Dim currentIndex As Integer = IndexOf(currentResource)
-                    Me.FocusedItem = Items(currentIndex)
-                    Me.EnsureVisible(currentIndex)
+                    FocusedItem = Items(currentIndex)
+                    EnsureVisible(currentIndex)
                 End If
 
                 ' Restore selection
@@ -695,7 +695,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub SetColumnSortImage(columnIndex As Integer, inReverseOrder As Boolean)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to set the image to the column header object
                 Dim headItem As New Interop.HDITEM2
@@ -727,7 +727,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub ClearColumnSortImage(columnIndex As Integer)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to remove the image to the column header object
                 Dim headItem As New Interop.HDITEM2
@@ -929,7 +929,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                             ' We skip items out of the View Port...
                             Dim itemRectangle As Rectangle = MyBase.GetItemRect(i)
-                            If itemRectangle.IntersectsWith(Me.ClientRectangle) Then
+                            If itemRectangle.IntersectsWith(ClientRectangle) Then
                                 Dim Resource As Resource = GetResourceFromVirtualIndex(i)
                                 If Resource IsNot Nothing AndAlso Not _thumbnailCache.IsThumbnailInCache(Resource) Then
                                     If GetThumbnailIndex(Resource, False) <> s_IMAGELIST_INDEX_NEED_LOAD Then
@@ -1135,7 +1135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return s_IMAGELIST_INDEX_NEED_LOAD
             Else
                 Try
-                    ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, Me.BackColor)
+                    ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, BackColor)
                 Catch ex As Exception
                     'For some reason, we could not get a value for this resource.  So, we use an error glyph for the
                     '  source of the thumbnail image instead.  Note that an alternative would be to have a single
@@ -1262,8 +1262,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     SelectResource(IndexOfResource, True)
                     If firstOne Then
                         MyBase.Items(IndexOfResource).EnsureVisible()
-                        If Me.FocusedItem Is Nothing OrElse Not Me.FocusedItem.Selected Then
-                            Me.FocusedItem = MyBase.Items(IndexOfResource)
+                        If FocusedItem Is Nothing OrElse Not FocusedItem.Selected Then
+                            FocusedItem = MyBase.Items(IndexOfResource)
                         End If
                         firstOne = False
                     End If
@@ -1342,8 +1342,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             For i As Integer = 0 To MyBase.VirtualListSize - 1
                 SelectedIndices.Add(i)
             Next
-            If Me.FocusedItem Is Nothing Then
-                Me.FocusedItem = Items(0)
+            If FocusedItem Is Nothing Then
+                FocusedItem = Items(0)
             End If
         End Sub
 
@@ -1367,7 +1367,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ' Select the last item, or the list view could scroll a lot when we add a new item to it.
             If _virtualResourceList.Count > 0 Then
-                Me.FocusedItem = Items(_virtualResourceList.Count - 1)
+                FocusedItem = Items(_virtualResourceList.Count - 1)
             End If
 
             'Alphabetize

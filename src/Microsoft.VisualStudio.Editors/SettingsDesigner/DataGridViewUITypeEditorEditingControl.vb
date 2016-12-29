@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Sub DisconnectDataGridViewEventHandlers()
             If DataGridView IsNot Nothing Then
-                RemoveHandler DataGridView.CellValidating, AddressOf Me.CellValidatingHandler
+                RemoveHandler DataGridView.CellValidating, AddressOf CellValidatingHandler
             End If
         End Sub
 
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Sub ConnectDataGridViewEventHandlers()
             If DataGridView IsNot Nothing Then
-                AddHandler DataGridView.CellValidating, AddressOf Me.CellValidatingHandler
+                AddHandler DataGridView.CellValidating, AddressOf CellValidatingHandler
             End If
         End Sub
 #End Region
@@ -118,8 +118,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Property
 
         Public Function GetFormattedValue(context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object Implements System.Windows.Forms.IDataGridViewEditingControl.GetEditingControlFormattedValue
-            If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso Me.ValueType.Equals(GetType(SerializableConnectionString)) Then
-                Dim scs As SerializableConnectionString = TryCast(Me.Value, SerializableConnectionString)
+            If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso ValueType.Equals(GetType(SerializableConnectionString)) Then
+                Dim scs As SerializableConnectionString = TryCast(Value, SerializableConnectionString)
                 If scs Is Nothing Then
                     scs = New SerializableConnectionString
                 End If
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     If TypeOf EditControl Is ComboBox AndAlso DirectCast(EditControl, ComboBox).DroppedDown Then
                         Return True
                     Else
-                        If Me.ValueChanged Then
+                        If ValueChanged Then
                             Return True
                         End If
                     End If
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Return True
                     End If
             End Select
-            If Me.IsInputKey(keyData) Then
+            If IsInputKey(keyData) Then
                 Return True
             End If
             Return Not dataGridViewWantsInputKey
@@ -221,9 +221,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         Public Sub UseCellStyle(dataGridViewCellStyle As System.Windows.Forms.DataGridViewCellStyle) Implements System.Windows.Forms.IDataGridViewEditingControl.ApplyCellStyleToEditingControl
-            Me.Font = dataGridViewCellStyle.Font
-            Me.BackColor = dataGridViewCellStyle.BackColor
-            Me.ForeColor = dataGridViewCellStyle.ForeColor
+            Font = dataGridViewCellStyle.Font
+            BackColor = dataGridViewCellStyle.BackColor
+            ForeColor = dataGridViewCellStyle.ForeColor
         End Sub
 
         Public Property ValueChanged() As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlValueChanged
@@ -280,8 +280,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Protected Overrides Function ParseValue(SerializedRepresentation As String, ValueType As Type) As Object
             If ValueType Is GetType(SerializableConnectionString) Then
                 Dim retVal As SerializableConnectionString
-                If Me.InnerValue IsNot Nothing Then
-                    retVal = DirectCast(Me.InnerValue, SerializableConnectionString)
+                If InnerValue IsNot Nothing Then
+                    retVal = DirectCast(InnerValue, SerializableConnectionString)
                 Else
                     retVal = New SerializableConnectionString
                 End If
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Public Overrides ReadOnly Property Context() As System.ComponentModel.ITypeDescriptorContext
             Get
-                Return New EditContext(TryCast(Me.DataGridView.CurrentRow.Tag, DesignTimeSettingInstance))
+                Return New EditContext(TryCast(DataGridView.CurrentRow.Tag, DesignTimeSettingInstance))
             End Get
         End Property
 

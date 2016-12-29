@@ -115,13 +115,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             MyBase.New(CommandHandler, CommandID)
 
-            Me._rootDesigner = RootDesigner
-            Me._commandEnabledHandler = CommandEnabledHandler
-            Me._commandCheckedHandler = CommandCheckedHandler
-            Me._commandVisibleHandler = CommandVisibleHandler
-            Me._alwaysCheckStatus = AlwaysCheckStatus
+            _rootDesigner = RootDesigner
+            _commandEnabledHandler = CommandEnabledHandler
+            _commandCheckedHandler = CommandCheckedHandler
+            _commandVisibleHandler = CommandVisibleHandler
+            _alwaysCheckStatus = AlwaysCheckStatus
             If CommandText <> "" Then
-                Me.Text = CommandText
+                Text = CommandText
             End If
             Visible = True
             Enabled = True
@@ -154,13 +154,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   Calls the command status handlers (if any) to set the status of the command.
         '**************************************************************************
         Private Sub UpdateStatus()
-            If Not (Me._commandEnabledHandler Is Nothing) Then
+            If Not (_commandEnabledHandler Is Nothing) Then
                 Enabled = _commandEnabledHandler(Me)
             End If
-            If Not (Me._commandCheckedHandler Is Nothing) Then
+            If Not (_commandCheckedHandler Is Nothing) Then
                 Checked = _commandCheckedHandler(Me)
             End If
-            If Not (Me._commandVisibleHandler Is Nothing) Then
+            If Not (_commandVisibleHandler Is Nothing) Then
                 Visible = _commandVisibleHandler(Me)
             End If
             _statusValid = True
@@ -204,8 +204,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Debug.Fail("You must specify a getter for this to work...")
                 Throw New ArgumentNullException()
             End If
-            Me.Visible = True
-            Me.Enabled = True
+            Visible = True
+            Enabled = True
             _getter = getter
         End Sub
 
@@ -274,8 +274,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Debug.Fail("You must specify a getter and setter method")
                 Throw New ArgumentNullException()
             End If
-            Me.Visible = True
-            Me.Enabled = True
+            Visible = True
+            Enabled = True
             _currentTextGetter = currentTextGetter
             _currentTextSetter = currentTextSetter
         End Sub
@@ -336,8 +336,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>Sets the command invisible and disabled.</remarks>
         Public Sub New(commandId As CommandID)
             MyBase.New(Nothing, commandId, AddressOf CommandHandler)
-            Me.Visible = False
-            Me.Enabled = False
+            Visible = False
+            Enabled = False
         End Sub
 
         ''' <summary>        

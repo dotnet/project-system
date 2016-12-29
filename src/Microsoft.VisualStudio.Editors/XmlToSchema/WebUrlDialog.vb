@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
             If Me.DialogResult = DialogResult.OK Then
                 Try
-                    Me.UseWaitCursor = True
+                    UseWaitCursor = True
                     _url = _urlComboBox.Text
                     _xml = XElement.Load(_url)
                 Catch ex As Exception
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                         Throw
                     End If
                 Finally
-                    Me.UseWaitCursor = False
+                    UseWaitCursor = False
                 End Try
             End If
             MyBase.OnClosing(e)

@@ -1765,8 +1765,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub DelayFlushAndRunCustomTool()
             If Not _delayFlushAndRunCustomToolQueued Then
-                If Me.View IsNot Nothing AndAlso Me.View.IsHandleCreated Then
-                    Me.View.BeginInvoke(New MethodInvoker(AddressOf Me.DelayFlushAndRunCustomToolImpl))
+                If View IsNot Nothing AndAlso View.IsHandleCreated Then
+                    View.BeginInvoke(New MethodInvoker(AddressOf DelayFlushAndRunCustomToolImpl))
                     _delayFlushAndRunCustomToolQueued = True
                 End If
             End If

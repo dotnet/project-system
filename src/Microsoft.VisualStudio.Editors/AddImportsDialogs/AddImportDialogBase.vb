@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
         Protected Overrides Sub OnLoad(e As EventArgs)
             ' Set the Font according to the system settings.
-            Me.Font = DialogFont
+            Font = DialogFont
             MyBase.OnLoad(e)
         End Sub
 

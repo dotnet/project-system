@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '// events from the shell and royaly screw things up.
                 '//
                 _view = New TopLevelControl()
-                AddHandler _view.GotFocus, AddressOf Me.OnViewFocus
+                AddHandler _view.GotFocus, AddressOf OnViewFocus
                 _view.BackColor = SystemColors.Window
 
                 'For debugging purposes
@@ -95,9 +95,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     PopulateView()
                 End If
 
-                AddHandler surface.Loaded, AddressOf Me.OnLoaded
-                AddHandler surface.Unloading, AddressOf Me.OnSurfaceUnloading
-                AddHandler surface.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                AddHandler surface.Loaded, AddressOf OnLoaded
+                AddHandler surface.Unloading, AddressOf OnSurfaceUnloading
+                AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded
 
             End Sub
 
@@ -170,8 +170,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
 
                     _undoEngine.Dispose()
-                    RemoveHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
-                    RemoveHandler _undoEngine.Undone, AddressOf Me.OnUndone
+                    RemoveHandler _undoEngine.Undoing, AddressOf OnUndoing
+                    RemoveHandler _undoEngine.Undone, AddressOf OnUndone
                     _undoEngine = Nothing
                 End If
             End Sub
@@ -200,16 +200,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         DisableUndo()
                         Dim ds As DesignSurface = Surface
                         If (ds IsNot Nothing) Then
-                            RemoveHandler ds.Loaded, AddressOf Me.OnLoaded
-                            RemoveHandler ds.Unloading, AddressOf Me.OnSurfaceUnloading
-                            RemoveHandler ds.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                            RemoveHandler ds.Loaded, AddressOf OnLoaded
+                            RemoveHandler ds.Unloading, AddressOf OnSurfaceUnloading
+                            RemoveHandler ds.Unloaded, AddressOf OnSurfaceUnloaded
                         End If
                     End If
 
                     MyBase.Dispose(disposing)
                 Finally
                     If (disposing AndAlso disposedView IsNot Nothing) Then
-                        RemoveHandler disposedView.GotFocus, AddressOf Me.OnViewFocus
+                        RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                         disposedView.Dispose()
                     End If
                 End Try
@@ -230,8 +230,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '
                 If (GetService(GetType(ComponentSerializationService)) IsNot Nothing) Then
                     _undoEngine = New OleUndoEngine(Surface)
-                    AddHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
-                    AddHandler _undoEngine.Undone, AddressOf Me.OnUndone
+                    AddHandler _undoEngine.Undoing, AddressOf OnUndoing
+                    AddHandler _undoEngine.Undone, AddressOf OnUndone
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
                     If (c IsNot Nothing) Then
                         c.AddService(GetType(UndoEngine), _undoEngine)

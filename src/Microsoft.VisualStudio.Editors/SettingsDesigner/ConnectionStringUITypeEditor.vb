@@ -333,11 +333,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Private _targetProject As EnvDTE.Project
 
             Public Sub New(project As EnvDTE.Project)
-                Me._targetProject = project
+                _targetProject = project
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                Return Microsoft.VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, Me._targetProject)
+                Return Microsoft.VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
             End Function
         End Class
 

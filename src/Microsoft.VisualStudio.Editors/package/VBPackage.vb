@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors
 
         Public ReadOnly Property MenuCommandService() As IMenuCommandService Implements IVBPackage.MenuCommandService
             Get
-                Return TryCast(Me.GetService(GetType(IMenuCommandService)), IMenuCommandService)
+                Return TryCast(GetService(GetType(IMenuCommandService)), IMenuCommandService)
             End Get
         End Property
 
@@ -498,13 +498,13 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)
-                If Not Me._disposed Then
+                If Not _disposed Then
                     If disposing Then
                         UnadviseSolutionEvents()
                     End If
                 End If
                 Debug.Assert(_cookie = 0, "We didn't unadvise solution events")
-                Me._disposed = True
+                _disposed = True
             End Sub
 
 #Region " IDisposable Support "

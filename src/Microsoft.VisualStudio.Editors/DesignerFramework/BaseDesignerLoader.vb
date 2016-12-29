@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overridable Function GetWindowPaneProviderService() As Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService
             Try
                 If _paneProviderService Is Nothing Then
-                    _paneProviderService = New DeferrableWindowPaneProviderServiceBase(LoaderHost, Me.SupportToolbox)
+                    _paneProviderService = New DeferrableWindowPaneProviderServiceBase(LoaderHost, SupportToolbox)
                 End If
             Catch Ex As ObjectDisposedException
                 ' There is a slight possibility that the loader host is killed before we get a chance to try 
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Friend ReadOnly Property ProjectItem() As EnvDTE.ProjectItem
             Get
-                Return Common.DTEUtils.ProjectItemFromItemId(Me.VsHierarchy, Me.ProjectItemid)
+                Return Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             End Get
         End Property
 
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '  still be available after the reload.
 
             ' NoFlush: Causes the designer loader to anbandon any changes before reloading.
-            Me.Reload(ReloadOptions.NoFlush)
+            Reload(ReloadOptions.NoFlush)
         End Sub
 
 

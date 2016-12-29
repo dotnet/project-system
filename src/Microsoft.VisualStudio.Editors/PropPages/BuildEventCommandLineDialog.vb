@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Public Function SetFormTitleText(TitleText As String) As Boolean
-            Me.Text = TitleText
+            Text = TitleText
             Return True
         End Function
 
@@ -67,12 +67,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
             Set(Value As String)
                 m_CommandLine = Value
-                Me.CommandLine.Text = m_CommandLine
+                CommandLine.Text = m_CommandLine
 
-                Me.CommandLine.Focus()
-                Me.CommandLine.SelectedText = ""
-                Me.CommandLine.SelectionStart = Len(m_CommandLine)
-                Me.CommandLine.SelectionLength = 0
+                CommandLine.Focus()
+                CommandLine.SelectedText = ""
+                CommandLine.SelectionStart = Len(m_CommandLine)
+                CommandLine.SelectionLength = 0
             End Set
         End Property
 
@@ -110,13 +110,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub OKButton_Click(sender As System.Object, e As EventArgs) Handles OKButton.Click
             '// Store the command line
-            m_CommandLine = Me.CommandLine.Text
+            m_CommandLine = CommandLine.Text
 
-            Me.Close()
+            Close()
         End Sub
 
         Private Sub CancelButton_Click(sender As System.Object, e As EventArgs) Handles Cancel_Button.Click
-            Me.Close()
+            Close()
         End Sub
 
         Private Sub UpdateDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 NameItem = New ListViewItem(m_Tokens(i))
 
                 NameItem.SubItems.Add(m_Values(i))
-                Me.TokenList.Items.Add(NameItem)
+                TokenList.Items.Add(NameItem)
             Next
 
             Return True
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeControlLocations()
 
             '// Never let them resize to something smaller than the default form size
-            Me.MinimumSize = Me.Size
+            MinimumSize = Size
         End Sub
 
         Private Function InitializeControlLocations() As Boolean
@@ -160,11 +160,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function ShowCollapsedForm() As Boolean
             '// Show the ShowMacros button
-            Me.ShowMacrosButton.Visible = True
+            ShowMacrosButton.Visible = True
 
-            Me.MacrosPanel.Visible = False
+            MacrosPanel.Visible = False
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.AutoSize
-            Me.Height = Me.Height - MacrosPanel.Height
+            Height = Height - MacrosPanel.Height
 
             '// Disable and hide the Insert button
             SetInsertButtonState(False)
@@ -174,11 +174,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function ShowExpandedForm() As Boolean
             '// Hide this button
-            Me.ShowMacrosButton.Visible = False
+            ShowMacrosButton.Visible = False
 
-            Me.MacrosPanel.Visible = True
+            MacrosPanel.Visible = True
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.Percent
-            Me.Height = Me.Height + MacrosPanel.Height
+            Height = Height + MacrosPanel.Height
 
             '// Show the Insert button
             SetInsertButtonState(True)
@@ -204,12 +204,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim selectedItem As ListViewItem
             Dim textToInsertStringBuilder As StringBuilder = New StringBuilder()
 
-            selectedRowsCollection = Me.TokenList.SelectedItems
+            selectedRowsCollection = TokenList.SelectedItems
             For Each selectedItem In selectedRowsCollection
                 textToInsertStringBuilder.Append("$(" + selectedItem.Text + ")")
             Next
 
-            Me.CommandLine.SelectedText = textToInsertStringBuilder.ToString()
+            CommandLine.SelectedText = textToInsertStringBuilder.ToString()
 
             Return True
         End Function
@@ -240,11 +240,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function SetInsertButtonEnableState() As Boolean
             Dim selectedRowsCollection As ListView.SelectedListViewItemCollection
 
-            selectedRowsCollection = Me.TokenList.SelectedItems
+            selectedRowsCollection = TokenList.SelectedItems
             If selectedRowsCollection.Count > 0 Then
-                Me.InsertButton.Enabled = True
+                InsertButton.Enabled = True
             Else
-                Me.InsertButton.Enabled = False
+                InsertButton.Enabled = False
             End If
         End Function
 
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Me.InsertButton.Enabled = bEnable
             SetInsertButtonEnableState()
 
-            Me.InsertButton.Visible = bEnable
+            InsertButton.Visible = bEnable
             Return True
         End Function
 

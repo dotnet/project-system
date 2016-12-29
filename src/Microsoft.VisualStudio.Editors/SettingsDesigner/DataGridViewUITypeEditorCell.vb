@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
             Dim StrFormattedValue As String = DirectCast(FormattedValue, String)
             Dim parsedValue As Object = Nothing
-            Dim sgv As SettingsDesignerView.SettingsGridView = TryCast(Me.DataGridView, SettingsDesignerView.SettingsGridView)
+            Dim sgv As SettingsDesignerView.SettingsGridView = TryCast(DataGridView, SettingsDesignerView.SettingsGridView)
             Dim oldCommittingChanges As Boolean
             If sgv IsNot Nothing Then
                 ' Deserializing the setting may pop UI, which in turn may cause an active designer change (if hosted in the
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Consider: consider using a "(null)" value string....
             End If
 
-            Dim IsCurrentCell As Boolean = DataGridView.CurrentCellAddress.X = Me.ColumnIndex AndAlso DataGridView.CurrentCellAddress.Y = Me.RowIndex
+            Dim IsCurrentCell As Boolean = DataGridView.CurrentCellAddress.X = ColumnIndex AndAlso DataGridView.CurrentCellAddress.Y = Me.RowIndex
             If IsCurrentCell Then
                 ControlPaint.DrawFocusRectangle(graphics, cellBounds, DrawForeColor, DrawBackColor)
             End If
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If _ignoreNextMouseClick Then
                     _ignoreNextMouseClick = False
                 ElseIf (Control.ModifierKeys And (Keys.Control Or Keys.Shift)) = 0 Then
-                    Me.DataGridView.BeginEdit(True)
+                    DataGridView.BeginEdit(True)
                 End If
             End If
         End Sub
@@ -241,9 +241,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Debug.Assert(DataGridView IsNot Nothing AndAlso DataGridView.EditingControl IsNot Nothing AndAlso TypeOf DataGridView.EditingControl Is DataGridViewUITypeEditorEditingControl)
             MyBase.InitializeEditingControl(RowIndex, InitialFormattedValue, CellStyle)
             Dim Ctrl As DataGridViewUITypeEditorEditingControl = DirectCast(DataGridView.EditingControl, DataGridViewUITypeEditorEditingControl)
-            Ctrl.ServiceProvider = Me.ServiceProvider
-            Ctrl.ValueType = Me.ValueType
-            Ctrl.Value = Me.Value
+            Ctrl.ServiceProvider = ServiceProvider
+            Ctrl.ValueType = ValueType
+            Ctrl.Value = Value
             Ctrl.Font = CellStyle.Font
         End Sub
 
@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
             MyBase.OnEnter(rowIndex, throughMouseClick)
             If throughMouseClick Then
-                Dim dfxdgv As DesignerFramework.DesignerDataGridView = TryCast(Me.DataGridView, DesignerFramework.DesignerDataGridView)
+                Dim dfxdgv As DesignerFramework.DesignerDataGridView = TryCast(DataGridView, DesignerFramework.DesignerDataGridView)
                 Dim ec As New CancelEventArgs(False)
 
                 If dfxdgv IsNot Nothing Then
@@ -296,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private ReadOnly Property UITypeEditor() As UITypeEditor
             Get
-                If Me.ValueType IsNot Nothing Then
+                If ValueType IsNot Nothing Then
                     Return DirectCast(TypeDescriptor.GetEditor(ValueType, GetType(UITypeEditor)), UITypeEditor)
                 End If
                 Return Nothing

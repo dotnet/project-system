@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' all other functions are implemented in its default way...
 
         Public Function GetAttributes() As System.ComponentModel.AttributeCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetAttributes
-            Return TypeDescriptor.GetAttributes(Me.GetType())
+            Return TypeDescriptor.GetAttributes([GetType]())
         End Function
 
         Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
@@ -162,35 +162,35 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
-            Return TypeDescriptor.GetConverter(Me.GetType())
+            Return TypeDescriptor.GetConverter([GetType]())
         End Function
 
         Public Function GetDefaultEvent() As System.ComponentModel.EventDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultEvent
-            Return TypeDescriptor.GetDefaultEvent(Me.GetType())
+            Return TypeDescriptor.GetDefaultEvent([GetType]())
         End Function
 
         Public Function GetDefaultProperty() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty
-            Return TypeDescriptor.GetDefaultProperty(Me.GetType())
+            Return TypeDescriptor.GetDefaultProperty([GetType]())
         End Function
 
         Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
-            Return TypeDescriptor.GetEditor(Me.GetType(), editorBaseType)
+            Return TypeDescriptor.GetEditor([GetType](), editorBaseType)
         End Function
 
         Public Function GetEvents() As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
-            Return TypeDescriptor.GetEvents(Me.GetType())
+            Return TypeDescriptor.GetEvents([GetType]())
         End Function
 
         Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
-            Return TypeDescriptor.GetEvents(Me.GetType(), attributes)
+            Return TypeDescriptor.GetEvents([GetType](), attributes)
         End Function
 
         Public Function GetProperties() As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
-            Return TypeDescriptor.GetProperties(Me.GetType())
+            Return TypeDescriptor.GetProperties([GetType]())
         End Function
 
         Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
-            Return TypeDescriptor.GetProperties(Me.GetType(), attributes)
+            Return TypeDescriptor.GetProperties([GetType](), attributes)
         End Function
 
         Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner

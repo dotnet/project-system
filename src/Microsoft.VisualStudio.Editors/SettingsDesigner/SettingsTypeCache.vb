@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Public Function GetSettingType(typeName As String) As System.Type
             ' First, check our list of well known types...
-            For Each wellKnownType As System.Type In Me.GetWellKnownTypes()
+            For Each wellKnownType As System.Type In GetWellKnownTypes()
                 If String.Equals(wellKnownType.FullName, typeName) Then
                     Return wellKnownType
                 End If

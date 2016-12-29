@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <remarks></remarks>
             Friend Sub OnFileChanged()
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & Me.ToString & ", Thread = " & Microsoft.VisualBasic.Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & VB.Now.Millisecond)
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString & ", Thread = " & Microsoft.VisualBasic.Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & VB.Now.Millisecond)
 
                 'It is common to get several notifications about the same file while it's
                 '  being written.  We want to let things settle down a bit before we

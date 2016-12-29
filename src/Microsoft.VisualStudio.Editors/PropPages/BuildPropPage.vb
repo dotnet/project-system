@@ -40,8 +40,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             'Scale horizontally
-            Me.cboPlatformTarget.Width = DpiHelper.LogicalToDeviceUnitsX(Me.cboPlatformTarget.Width)
-            Me.overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(Me.overarchingTableLayoutPanel.Width)
+            cboPlatformTarget.Width = DpiHelper.LogicalToDeviceUnitsX(cboPlatformTarget.Width)
+            overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
@@ -62,23 +62,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", Me.txtConditionalCompilationSymbols, AddressOf ConditionalCompilationSet, AddressOf ConditionalCompilationGet, ControlDataFlags.None, New Control() {Me.txtConditionalCompilationSymbols, Me.chkDefineDebug, Me.chkDefineTrace, Me.lblConditionalCompilationSymbols}),
-                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", Me.cboPlatformTarget, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {Me.lblPlatformTarget}),
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_AllowUnsafeBlocks, "AllowUnsafeBlocks", Me.chkAllowUnsafeCode),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", txtConditionalCompilationSymbols, AddressOf ConditionalCompilationSet, AddressOf ConditionalCompilationGet, ControlDataFlags.None, New Control() {txtConditionalCompilationSymbols, chkDefineDebug, chkDefineTrace, lblConditionalCompilationSymbols}),
+                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", cboPlatformTarget, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {lblPlatformTarget}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_AllowUnsafeBlocks, "AllowUnsafeBlocks", chkAllowUnsafeCode),
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", Me.chkOptimizeCode),
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", Me.cboWarningLevel, AddressOf WarningLevelSet, AddressOf WarningLevelGet, ControlDataFlags.None, New Control() {lblWarningLevel}),
-                     New PropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", Me.txtSupressWarnings, New Control() {Me.lblSupressWarnings}),
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", Me.rbWarningAll, AddressOf TreatWarningsInit, AddressOf TreatWarningsGet),
-                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", Me.txtSpecificWarnings, AddressOf TreatSpecificWarningsInit, AddressOf TreatSpecificWarningsGet),
+                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", chkOptimizeCode),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel, "WarningLevel", cboWarningLevel, AddressOf WarningLevelSet, AddressOf WarningLevelGet, ControlDataFlags.None, New Control() {lblWarningLevel}),
+                     New PropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn, "NoWarn", txtSupressWarnings, New Control() {lblSupressWarnings}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors, "TreatWarningsAsErrors", rbWarningAll, AddressOf TreatWarningsInit, AddressOf TreatWarningsGet),
+                     New PropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors, "TreatSpecificWarningsAsErrors", txtSpecificWarnings, AddressOf TreatSpecificWarningsInit, AddressOf TreatSpecificWarningsGet),
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", Me.txtOutputPath, New Control() {Me.lblOutputPath}),
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", Me.txtXMLDocumentationFile, AddressOf Me.XMLDocumentationFileInit, AddressOf Me.XMLDocumentationFileGet, ControlDataFlags.None, New Control() {Me.txtXMLDocumentationFile, Me.chkXMLDocumentationFile}),
-                     New PropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", Me.chkRegisterForCOM, AddressOf Me.RegisterForCOMInteropSet, AddressOf Me.RegisterForCOMInteropGet),
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf Me.OutputTypeSet, Nothing),
+                        VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", txtOutputPath, New Control() {lblOutputPath}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", txtXMLDocumentationFile, AddressOf XMLDocumentationFileInit, AddressOf XMLDocumentationFileGet, ControlDataFlags.None, New Control() {txtXMLDocumentationFile, chkXMLDocumentationFile}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", chkRegisterForCOM, AddressOf RegisterForCOMInteropSet, AddressOf RegisterForCOMInteropGet),
+                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf OutputTypeSet, Nothing),
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", Me.cboSGenOption, New Control() {Me.lblSGenOption}),
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Me.chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
+                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", cboSGenOption, New Control() {lblSGenOption}),
+                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
                      }
                 End If
                 Return m_ControlData
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim PlatformEntries As New List(Of String)
 
             ' Let's try to sniff the supported platforms from our hiearchy (if any)
-            If Me.ProjectHierarchy IsNot Nothing Then
+            If ProjectHierarchy IsNot Nothing Then
                 Dim oCfgProv As Object = Nothing
                 Dim hr As Integer
                 hr = ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ConfigurationProvider, oCfgProv)
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' ... Finally, add the entries to the combobox
-            Me.cboPlatformTarget.Items.AddRange(PlatformEntries.ToArray())
+            cboPlatformTarget.Items.AddRange(PlatformEntries.ToArray())
         End Sub
 
         ''' <summary>
@@ -152,12 +152,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PostInitPage()
 
             'OutputPath browse button should only be enabled when the text box is enabled and Not ReadOnly
-            Me.btnOutputPathBrowse.Enabled = (Me.txtOutputPath.Enabled AndAlso Not Me.txtOutputPath.ReadOnly)
+            btnOutputPathBrowse.Enabled = (txtOutputPath.Enabled AndAlso Not txtOutputPath.ReadOnly)
 
-            Me.rbWarningNone.Enabled = Me.rbWarningAll.Enabled
-            Me.rbWarningSpecific.Enabled = Me.rbWarningAll.Enabled
+            rbWarningNone.Enabled = rbWarningAll.Enabled
+            rbWarningSpecific.Enabled = rbWarningAll.Enabled
 
-            RefreshEnabledStatusForPrefer32Bit(Me.chkPrefer32Bit)
+            RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
 
         End Sub
 
@@ -191,14 +191,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function OutputTypeSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not ShouldEnableRegisterForCOM() Then
-                Me.chkRegisterForCOM.Enabled = False
+                chkRegisterForCOM.Enabled = False
             Else
-                EnableControl(Me.chkRegisterForCOM, True)
+                EnableControl(chkRegisterForCOM, True)
             End If
 
             If Not m_fInsideInit AndAlso Not m_bInsideInternalUpdate Then
                 ' Changes to the OutputType may affect whether Prefer32Bit is enabled
-                RefreshEnabledStatusForPrefer32Bit(Me.chkPrefer32Bit)
+                RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
             End If
 
             Return True
@@ -218,30 +218,30 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         bRegisterForCOM = CType(obj, Boolean)
                     End If
 
-                    Me.chkRegisterForCOM.Checked = bRegisterForCOM
+                    chkRegisterForCOM.Checked = bRegisterForCOM
 
                     '// Checkbox is only enabled for DLL projects
                     If Not ShouldEnableRegisterForCOM() Then
-                        Me.chkRegisterForCOM.Enabled = False
+                        chkRegisterForCOM.Enabled = False
                     Else
-                        EnableControl(Me.chkRegisterForCOM, True)
+                        EnableControl(chkRegisterForCOM, True)
                     End If
 
                     Return True
                 Else
-                    Me.chkRegisterForCOM.Enabled = False
-                    Me.chkRegisterForCOM.CheckState = CheckState.Indeterminate
+                    chkRegisterForCOM.Enabled = False
+                    chkRegisterForCOM.CheckState = CheckState.Indeterminate
                     Return True
                 End If
             Else
-                Me.chkRegisterForCOM.CheckState = CheckState.Indeterminate
+                chkRegisterForCOM.CheckState = CheckState.Indeterminate
                 Return True
             End If
         End Function
 
         Private Function RegisterForCOMInteropGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (Me.chkRegisterForCOM.CheckState <> CheckState.Indeterminate) Then
-                value = Me.chkRegisterForCOM.Checked
+            If (chkRegisterForCOM.CheckState <> CheckState.Indeterminate) Then
+                value = chkRegisterForCOM.Checked
                 Return True
             Else
                 Return False   '// Let the framework handle it since its indeterminate
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub OutputPathBrowse_Click(sender As Object, e As EventArgs) Handles btnOutputPathBrowse.Click
             Dim DirName As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(Me.txtOutputPath.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), DirName) Then
+            If GetDirectoryViaBrowseRelativeToProject(txtOutputPath.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), DirName) Then
                 txtOutputPath.Text = DirName
                 SetDirty(True) ' vswhidbey 276000 - textchanged events do not commit, lostfocus does
                 ' this code path should commit the change if the user selected a new outputpath via the picker
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     stSpecificWarnings = CType(value, String)
                     If (stSpecificWarnings <> "") Then
                         warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
-                        Me.txtSpecificWarnings.Text = stSpecificWarnings
+                        txtSpecificWarnings.Text = stSpecificWarnings
 
                         bIndeterminateState = False
                     Else
@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         obj = TryGetNonCommonPropertyValue(propTreatAllWarnings)
 
                         If Not (PropertyControlData.IsSpecialValue(obj)) Then
-                            Me.txtSpecificWarnings.Text = ""
+                            txtSpecificWarnings.Text = ""
                             bTreatAllWarningsAsErrors = CType(obj, Boolean)
                             If (bTreatAllWarningsAsErrors) Then
                                 warnings = TreatWarningsSetting.WARNINGS_ALL
@@ -306,16 +306,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 If (Not bIndeterminateState) Then
-                    Me.rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
-                    Me.rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                    Me.txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                    Me.rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
+                    rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
+                    rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
+                    txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
+                    rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
                 Else
-                    Me.rbWarningAll.Checked = False
-                    Me.rbWarningSpecific.Checked = False
-                    Me.txtSpecificWarnings.Enabled = False
-                    Me.txtSpecificWarnings.Text = ""
-                    Me.rbWarningNone.Checked = False
+                    rbWarningAll.Checked = False
+                    rbWarningSpecific.Checked = False
+                    txtSpecificWarnings.Enabled = False
+                    txtSpecificWarnings.Text = ""
+                    rbWarningNone.Checked = False
                 End If
             Finally
                 m_bInsideInternalUpdate = False
@@ -327,11 +327,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function TreatSpecificWarningsGetValue() As TreatWarningsSetting
             Dim warnings As TreatWarningsSetting
 
-            If Me.rbWarningAll.Checked Then
+            If rbWarningAll.Checked Then
                 warnings = TreatWarningsSetting.WARNINGS_ALL
-            ElseIf Me.rbWarningSpecific.Checked Then
+            ElseIf rbWarningSpecific.Checked Then
                 warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
-            ElseIf Me.rbWarningNone.Checked Then
+            ElseIf rbWarningNone.Checked Then
                 warnings = TreatWarningsSetting.WARNINGS_NONE
             Else
                 warnings = TreatWarningsSetting.WARNINGS_NONE
@@ -343,13 +343,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function TreatSpecificWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim bRetVal As Boolean = True
 
-            If Me.rbWarningAll.Checked Then
+            If rbWarningAll.Checked Then
                 value = ""
                 bRetVal = True
-            ElseIf Me.rbWarningSpecific.Checked Then
-                value = Me.txtSpecificWarnings.Text
+            ElseIf rbWarningSpecific.Checked Then
+                value = txtSpecificWarnings.Text
                 bRetVal = True
-            ElseIf Me.rbWarningNone.Checked Then
+            ElseIf rbWarningNone.Checked Then
                 value = ""
                 bRetVal = True
             Else
@@ -368,14 +368,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function TreatWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim bRetVal As Boolean = True
 
-            If Me.rbWarningAll.Checked Then
-                value = Me.rbWarningAll.Checked
+            If rbWarningAll.Checked Then
+                value = rbWarningAll.Checked
                 bRetVal = True
-            ElseIf Me.rbWarningSpecific.Checked Then
+            ElseIf rbWarningSpecific.Checked Then
                 value = False
                 bRetVal = True
-            ElseIf Me.rbWarningNone.Checked Then
-                value = Not (Me.rbWarningNone.Checked)    '// If none is checked we want value to be false
+            ElseIf rbWarningNone.Checked Then
+                value = Not (rbWarningNone.Checked)    '// If none is checked we want value to be false
                 bRetVal = True
             Else
                 '// We're in the indeterminate state. Let the architecture handle it.
@@ -388,15 +388,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
             If (Not m_bInsideInternalUpdate) Then
                 Dim warnings As TreatWarningsSetting = TreatSpecificWarningsGetValue()
-                Me.rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
-                Me.rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                Me.txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                Me.rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
+                rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
+                rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
+                txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
+                rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
                 IsDirty = True
 
                 '// Dirty both of the properties since either one could have changed
-                SetDirty(Me.rbWarningAll)
-                SetDirty(Me.txtSpecificWarnings)
+                SetDirty(rbWarningAll)
+                SetDirty(txtSpecificWarnings)
             End If
         End Sub
 
@@ -412,18 +412,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
                 If (Trim(TryCast(objDocumentationFile, String)) <> "") Then
-                    Me.txtXMLDocumentationFile.Text = Trim(TryCast(objDocumentationFile, String))
-                    Me.chkXMLDocumentationFile.Checked = True
-                    Me.txtXMLDocumentationFile.Enabled = True
+                    txtXMLDocumentationFile.Text = Trim(TryCast(objDocumentationFile, String))
+                    chkXMLDocumentationFile.Checked = True
+                    txtXMLDocumentationFile.Enabled = True
                 Else
-                    Me.chkXMLDocumentationFile.Checked = False
-                    Me.txtXMLDocumentationFile.Enabled = False
-                    Me.txtXMLDocumentationFile.Text = ""
+                    chkXMLDocumentationFile.Checked = False
+                    txtXMLDocumentationFile.Enabled = False
+                    txtXMLDocumentationFile.Text = ""
                 End If
             Else
-                Me.chkXMLDocumentationFile.CheckState = CheckState.Indeterminate
-                Me.txtXMLDocumentationFile.Text = ""
-                Me.txtXMLDocumentationFile.Enabled = False
+                chkXMLDocumentationFile.CheckState = CheckState.Indeterminate
+                txtXMLDocumentationFile.Text = ""
+                txtXMLDocumentationFile.Enabled = False
             End If
 
             '// Reset value
@@ -449,24 +449,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
-                Me.cboWarningLevel.SelectedIndex = CType(value, Integer)
+                cboWarningLevel.SelectedIndex = CType(value, Integer)
                 Return True
             Else
                 '// Indeterminate. Let the architecture handle
-                Me.cboWarningLevel.SelectedIndex = -1
+                cboWarningLevel.SelectedIndex = -1
                 Return True
             End If
         End Function
 
         Private Function WarningLevelGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = CType(Me.cboWarningLevel.SelectedIndex, Integer)
+            value = CType(cboWarningLevel.SelectedIndex, Integer)
             Return True
         End Function
 
         Private Function PlatformTargetSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
-                    Me.cboPlatformTarget.SelectedIndex = 0     '// AnyCPU
+                    cboPlatformTarget.SelectedIndex = 0     '// AnyCPU
                 Else
                     Dim strPlatform As String = TryCast(value, String)
 
@@ -479,9 +479,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         strPlatform = "Any CPU"
                     End If
 
-                    Me.cboPlatformTarget.SelectedItem = strPlatform
+                    cboPlatformTarget.SelectedItem = strPlatform
 
-                    If (Me.cboPlatformTarget.SelectedIndex = -1) Then   '// If we can't find a match
+                    If (cboPlatformTarget.SelectedIndex = -1) Then   '// If we can't find a match
                         If (VSProductSKU.IsStandard) Then
                             '// For the standard SKU, we do not include Itanium in the list. However,
                             '// if the property is already set to Itanium (most likely from the project file set from
@@ -490,15 +490,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                             Dim stValue As String = TryCast(value, String)
                             If (String.Compare(Trim(stValue), "Itanium", StringComparison.Ordinal) = 0) Then
-                                Me.cboPlatformTarget.Items.Add("Itanium")
-                                Me.cboPlatformTarget.SelectedItem = stValue
+                                cboPlatformTarget.Items.Add("Itanium")
+                                cboPlatformTarget.SelectedItem = stValue
                             Else
                                 '// Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
-                                Me.cboPlatformTarget.SelectedItem = "Any CPU"
+                                cboPlatformTarget.SelectedItem = "Any CPU"
                             End If
                         Else
                             '// Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
-                            Me.cboPlatformTarget.SelectedItem = "Any CPU"
+                            cboPlatformTarget.SelectedItem = "Any CPU"
                         End If
                     End If
                 End If
@@ -512,12 +512,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function PlatformTargetGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             ' SelectedItem may be Nothing if the PlatformTarget property isn't supported
-            If Me.cboPlatformTarget.SelectedItem Is Nothing Then
+            If cboPlatformTarget.SelectedItem Is Nothing Then
                 Return False
             End If
 
-            If (Me.cboPlatformTarget.SelectedItem.ToString() <> "AnyCPU") And (Me.cboPlatformTarget.SelectedItem.ToString() <> "Any CPU") Then
-                value = Me.cboPlatformTarget.SelectedItem
+            If (cboPlatformTarget.SelectedItem.ToString() <> "AnyCPU") And (cboPlatformTarget.SelectedItem.ToString() <> "Any CPU") Then
+                value = cboPlatformTarget.SelectedItem
             Else
                 '// Return to the project system the one without a space
                 value = "AnyCPU"
@@ -529,12 +529,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub XMLDocumentationEnable_CheckStateChanged(sender As Object, e As EventArgs) Handles chkXMLDocumentationFile.CheckStateChanged
             Const XML_FILE_EXTENSION As String = ".xml"
 
-            If Me.chkXMLDocumentationFile.Checked Then
+            If chkXMLDocumentationFile.Checked Then
 
                 '// Enable the textbox
-                Me.txtXMLDocumentationFile.Enabled = True
+                txtXMLDocumentationFile.Enabled = True
 
-                If Trim(Me.txtXMLDocumentationFile.Text) = "" Then
+                If Trim(txtXMLDocumentationFile.Text) = "" Then
                     '// The textbox is empty so initialize it
                     Dim stOutputPath As String
                     Dim stAssemblyName As String
@@ -614,16 +614,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(m_stDocumentationFile)
 
                         If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
-                            Me.txtXMLDocumentationFile.Text = TryCast(objDocumentationFile, String)
+                            txtXMLDocumentationFile.Text = TryCast(objDocumentationFile, String)
                         End If
                     End If
                 End If
 
-                Me.txtXMLDocumentationFile.Focus()
+                txtXMLDocumentationFile.Focus()
             Else
                 '// Disable the checkbox
-                Me.txtXMLDocumentationFile.Enabled = False
-                Me.txtXMLDocumentationFile.Text = ""
+                txtXMLDocumentationFile.Enabled = False
+                txtXMLDocumentationFile.Text = ""
 
                 '// Clear the values
                 Dim i As Integer
@@ -633,7 +633,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If Not m_bInsideInternalUpdate Then
-                SetDirty(Me.txtXMLDocumentationFile)
+                SetDirty(txtXMLDocumentationFile)
             End If
         End Sub
 
@@ -661,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' Changes to the PlatformTarget may affect whether Prefer32Bit is enabled
-            RefreshEnabledStatusForPrefer32Bit(Me.chkPrefer32Bit)
+            RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
         End Sub
 
 #Region "Special handling of the conditional compilation constants textbox and the Define DEBUG/TRACE checkboxes"

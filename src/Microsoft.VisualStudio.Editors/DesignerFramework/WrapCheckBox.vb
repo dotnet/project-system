@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Friend Sub New()
             MyBase.New()
-            Me.AutoSize = True
+            AutoSize = True
         End Sub
 
         Protected Overrides Sub OnTextChanged(e As EventArgs)
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim prefSize As Size = MyBase.GetPreferredSize(proposedsize)
             If (proposedsize.Width > 1) AndAlso _
                     (prefSize.Width > proposedsize.Width) AndAlso _
-                    (Not String.IsNullOrEmpty(Me.Text) AndAlso _
+                    (Not String.IsNullOrEmpty(Text) AndAlso _
                     Not proposedsize.Width.Equals(Int32.MaxValue) OrElse _
                     Not proposedsize.Height.Equals(Int32.MaxValue)) Then
                 ' we have the possiblility of wrapping... back out the single line of text
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If (Not _preferredSizeHash.ContainsKey(newConstraints)) Then
-                    prefSize = bordersAndPadding + TextRenderer.MeasureText(Me.Text, Me.Font, _
+                    prefSize = bordersAndPadding + TextRenderer.MeasureText(Text, Font, _
                         newConstraints, TextFormatFlags.WordBreak)
                     _preferredSizeHash(newConstraints) = prefSize
                 Else
@@ -68,10 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             'When the text has changed, the preferredSizeHash is invalid...
             _preferredSizeHash.Clear()
 
-            If String.IsNullOrEmpty(Me.Text) Then
+            If String.IsNullOrEmpty(Text) Then
                 _cachedSizeOfOneLineOfText = System.Drawing.Size.Empty
             Else
-                _cachedSizeOfOneLineOfText = TextRenderer.MeasureText(Me.Text, Me.Font, _
+                _cachedSizeOfOneLineOfText = TextRenderer.MeasureText(Text, Font, _
                     New Size(Int32.MaxValue, Int32.MaxValue), TextFormatFlags.WordBreak)
             End If
         End Sub

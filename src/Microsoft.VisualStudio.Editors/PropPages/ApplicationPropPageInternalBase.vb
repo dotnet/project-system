@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim propertyValue As Object = Nothing
 
             ' See if the project wants to override the defaults
-            If Me.ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID5.VSHPROPID_SupportedOutputTypes, propertyValue) = NativeMethods.S_OK Then
+            If ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID5.VSHPROPID_SupportedOutputTypes, propertyValue) = NativeMethods.S_OK Then
 
                 ' Verify that the value is of the expected type and add the output types to the combo box
                 Dim arrayValue As UInteger() = TryCast(propertyValue, UInteger())

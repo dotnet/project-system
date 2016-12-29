@@ -64,8 +64,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim tds As System.ComponentModel.Design.ITypeDiscoveryService = Nothing
 
             If dynamicTypeService IsNot Nothing Then
-                tds = dynamicTypeService.GetTypeDiscoveryService(Me._hierarchy, VSITEMID.ROOT)
-                trs = dynamicTypeService.GetTypeResolutionService(Me._hierarchy, VSITEMID.ROOT)
+                tds = dynamicTypeService.GetTypeDiscoveryService(_hierarchy, VSITEMID.ROOT)
+                trs = dynamicTypeService.GetTypeResolutionService(_hierarchy, VSITEMID.ROOT)
             End If
             Dim result As New List(Of System.Type)
 

@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             _lastFocus = Me
             _helpCallBack = callBack
             InitializeComponent()
-            Me.SuspendLayout()
+            SuspendLayout()
             Try
                 SetNavigationInfo(m_okButton, m_cancelButton, m_rbQualifyCurrentLine)
                 SetNavigationInfo(m_cancelButton, m_rbImportsAnyways, m_okButton)
@@ -36,10 +36,10 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                 m_lblQualifyCurrentLine.AutoSize = True
 
                 m_layoutPanel.AutoSize = True
-                Me.AutoSize = True
-                Me.ActiveControl = m_okButton
+                AutoSize = True
+                ActiveControl = m_okButton
             Finally
-                Me.ResumeLayout()
+                ResumeLayout()
             End Try
         End Sub
 
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
 
         Private Sub ButtonClick(sender As Object, e As EventArgs) Handles m_cancelButton.Click, m_okButton.Click
-            Me.Close()
+            Close()
         End Sub
 
         Private Sub ClickHelpButton(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked

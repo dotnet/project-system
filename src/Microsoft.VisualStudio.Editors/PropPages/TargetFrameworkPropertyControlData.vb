@@ -16,14 +16,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Sub New(id As Integer, name As String, comboBox As ComboBox, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
             MyBase.New(id, name, comboBox, setter, getter, flags, AssocControls)
-            Me._comboBox = comboBox
+            _comboBox = comboBox
 
-            AddHandler Me._comboBox.DropDownClosed, AddressOf ComboBox_DropDownClosed
+            AddHandler _comboBox.DropDownClosed, AddressOf ComboBox_DropDownClosed
         End Sub
 
         Private Function IsInstallOtherFrameworksSelected() As Boolean
-            Return Me._comboBox.SelectedIndex >= 0 AndAlso
-                   TypeOf Me._comboBox.Items(Me._comboBox.SelectedIndex) Is InstallOtherFrameworksComboBoxValue
+            Return _comboBox.SelectedIndex >= 0 AndAlso
+                   TypeOf _comboBox.Items(_comboBox.SelectedIndex) Is InstallOtherFrameworksComboBoxValue
         End Function
 
         Private Sub NativageToInstallOtherFrameworksFWLink()
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' If the drop down is closed and the selection is still on the 'Install other frameworks...' value,
                 ' move the selection back to the last target framework value.  This can happen if arrowing when the drop
                 ' down is open (no commit) and pressing escape
-                Me._comboBox.SelectedIndex = IndexOfLastCommittedValue
+                _comboBox.SelectedIndex = IndexOfLastCommittedValue
 
             End If
 
@@ -76,16 +76,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' If the user chooses 'Install other frameworks...', move the selection back to the last target
                 ' framework value and navigate to the fwlink
-                Me._comboBox.SelectedIndex = IndexOfLastCommittedValue
+                _comboBox.SelectedIndex = IndexOfLastCommittedValue
                 NativageToInstallOtherFrameworksFWLink()
 
-            ElseIf Me._comboBox.SelectedIndex <> IndexOfLastCommittedValue Then
+            ElseIf _comboBox.SelectedIndex <> IndexOfLastCommittedValue Then
 
                 MyBase.ComboBox_SelectionChangeCommitted(sender, e)
 
                 ' Keep track of what the user chose in case 'Install other frameworks...' is chosen later,
                 ' which allows us to revert back to this value
-                IndexOfLastCommittedValue = Me._comboBox.SelectedIndex
+                IndexOfLastCommittedValue = _comboBox.SelectedIndex
 
             End If
 
@@ -97,10 +97,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub Cleanup()
 
             ' Clear the reference to the COM service provider
-            Me.Site = Nothing
+            Site = Nothing
 
             ' Clear the handler added in the constructor
-            RemoveHandler Me._comboBox.DropDownClosed, AddressOf ComboBox_DropDownClosed
+            RemoveHandler _comboBox.DropDownClosed, AddressOf ComboBox_DropDownClosed
         End Sub
 
         ''' <summary>

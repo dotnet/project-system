@@ -72,8 +72,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         Protected Overrides Sub OnSited()
-            If _vsTrackProjectDocuments Is Nothing AndAlso Not Me.ServiceProvider Is Nothing Then
-                _vsTrackProjectDocuments = TryCast(Me.ServiceProvider.GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
+            If _vsTrackProjectDocuments Is Nothing AndAlso Not ServiceProvider Is Nothing Then
+                _vsTrackProjectDocuments = TryCast(ServiceProvider.GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
                 If Not (_vsTrackProjectDocuments Is Nothing) Then
                     ErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.AdviseTrackProjectDocumentsEvents(Me, _vsTrackProjectDocumentsEventsCookie))
                     Debug.Assert(_vsTrackProjectDocumentsEventsCookie <> 0)
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             For i As Integer = 0 To cFiles - 1
                 If Utility.HasResourceFileExtension(rgszMkNewNames(i)) Then
-                    Dim designerEventService As IDesignerEventService = TryCast(Me.ServiceProvider.GetService(GetType(IDesignerEventService)), IDesignerEventService)
+                    Dim designerEventService As IDesignerEventService = TryCast(ServiceProvider.GetService(GetType(IDesignerEventService)), IDesignerEventService)
                     Debug.Assert(Not designerEventService Is Nothing)
                     If (Not designerEventService Is Nothing) Then
                         For Each host As IDesignerHost In designerEventService.Designers

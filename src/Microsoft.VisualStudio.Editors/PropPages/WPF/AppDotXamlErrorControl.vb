@@ -28,16 +28,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Public Property ErrorText() As String
             Get
-                Return Me.ErrorControl.Text
+                Return ErrorControl.Text
             End Get
             Set(value As String)
-                Me.ErrorControl.Text = value
+                ErrorControl.Text = value
             End Set
         End Property
 
         Private Sub AppDotXamlErrorControl_Load(sender As Object, e As EventArgs) Handles Me.Load
-            Me.TableLayoutPanel1.Width = System.Math.Max(Me.Width, 400)
-            Me.TableLayoutPanel1.Height = ErrorControl.Height + Me.EditXamlButton.Height + 100
+            TableLayoutPanel1.Width = System.Math.Max(Width, 400)
+            TableLayoutPanel1.Height = ErrorControl.Height + EditXamlButton.Height + 100
         End Sub
     End Class
 

@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             MyBase.ScaleControl(factor, specified)
 
             'Prevent the dialog from getting too big
-            Me.MaximumSize = Screen.FromHandle(Me.Handle).WorkingArea.Size
+            MaximumSize = Screen.FromHandle(Handle).WorkingArea.Size
         End Sub
 
         Private Function ContainsFile(filePath As String) As Boolean
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Dim anyInvalid = False
                 Try
                     For Each fileName In _xmlFileDialog.FileNames
-                        Me.UseWaitCursor = True
+                        UseWaitCursor = True
                         XElement.Load(fileName)
                     Next
                 Catch ex As Exception
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                         Throw
                     End If
                 Finally
-                    Me.UseWaitCursor = False
+                    UseWaitCursor = False
                 End Try
 
                 If Not anyInvalid Then
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Return
             End If
             Try
-                Me.UseWaitCursor = True
+                UseWaitCursor = True
                 Application.DoEvents()
 
                 ' Infer schemas from XML sources.
@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     Throw
                 End If
             Finally
-                Me.UseWaitCursor = False
+                UseWaitCursor = False
             End Try
         End Sub
 

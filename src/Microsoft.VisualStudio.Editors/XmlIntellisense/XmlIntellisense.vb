@@ -1037,7 +1037,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Public Function IEnumerable_GetEnumerator() As IEnumerator _
             Implements IEnumerable.GetEnumerator
 
-            Return Me.GetEnumerator()
+            Return GetEnumerator()
         End Function
 
         '--------------------------------------------------------------------------
@@ -1164,7 +1164,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Public Function IXmlIntellisenseMemberList_GetEnumerator() As IXmlIntellisenseMemberEnumerator _
             Implements IXmlIntellisenseMemberList.GetEnumerator
 
-            Return New XmlIntellisenseMemberEnumerator(Me.GetEnumerator())
+            Return New XmlIntellisenseMemberEnumerator(GetEnumerator())
         End Function
 
 

@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim mtSvr As MultiTargetService
 
                     Try
-                        mtSvr = New MultiTargetService(Me.VsHierarchy, Me.ProjectItemid, isGlobalDTAR:=False)
+                        mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
                     Catch ex As ArgumentException
                         ' Can happen if there is no supported TargetFrameworkMoniker
                         mtSvr = Nothing

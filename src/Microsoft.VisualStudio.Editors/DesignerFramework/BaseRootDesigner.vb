@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' Clear the list of menu commands if specified.
             If Not KeepRegisteredMenuCommands Then
                 For Each MenuCommand As MenuCommand In Me.MenuCommands
-                    Me.MenuCommandService.RemoveCommand(MenuCommand)
+                    MenuCommandService.RemoveCommand(MenuCommand)
                 Next
                 Me.MenuCommands.Clear()
             End If
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             ' Register the new ones
             For Each MenuCommand As MenuCommand In MenuCommands
-                Me.MenuCommandService.AddCommand(MenuCommand)
+                MenuCommandService.AddCommand(MenuCommand)
                 Me.MenuCommands.Add(MenuCommand)
             Next
         End Sub
@@ -113,11 +113,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Sub RemoveMenuCommands()
             'Iterate backwards to avoid problems removing while iterating
             For i As Integer = MenuCommands.Count - 1 To 0 Step -1
-                Dim MenuCommand As MenuCommand = DirectCast(Me.MenuCommands(i), MenuCommand)
-                Me.MenuCommandService.RemoveCommand(MenuCommand)
-                Me.MenuCommands.RemoveAt(i)
+                Dim MenuCommand As MenuCommand = DirectCast(MenuCommands(i), MenuCommand)
+                MenuCommandService.RemoveCommand(MenuCommand)
+                MenuCommands.RemoveAt(i)
             Next
-            Debug.Assert(Me.MenuCommands.Count = 0)
+            Debug.Assert(MenuCommands.Count = 0)
         End Sub
 
         ''' <summary>
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>We don't expose the menu command service so other classes would not call 
         '''      AddCommand, RemoveCommand, etc... easily.</remarks>
         Friend Sub ShowContextMenu(ContextMenuID As CommandID, X As Integer, Y As Integer)
-            Me.MenuCommandService.ShowContextMenu(ContextMenuID, X, Y)
+            MenuCommandService.ShowContextMenu(ContextMenuID, X, Y)
         End Sub
 
         ''' <summary>
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If _menuCommandService Is Nothing Then
                     SyncLock _syncLockObject
                         If _menuCommandService Is Nothing Then
-                            _menuCommandService = CType(Me.GetService(GetType(IMenuCommandService)), IMenuCommandService)
+                            _menuCommandService = CType(GetService(GetType(IMenuCommandService)), IMenuCommandService)
                             Debug.Assert(Not _menuCommandService Is Nothing, "Cannot get menu command service!")
                         End If
                     End SyncLock

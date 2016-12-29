@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 currentValue = SR.GetString(SR.RSE_AccessModifier_Custom)
             End If
 
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & Me.GetType.Name & ": " & currentValue)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & [GetType].Name & ": " & currentValue)
             Return currentValue
         End Function
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="value"></param>
         Private Sub SetCurrentValue(value As String)
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & Me.GetType.Name & ": " & value)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & [GetType].Name & ": " & value)
 
             For Each entry As CodeGenerator In _codeGeneratorEntries
                 If entry.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
@@ -523,7 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Function EnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Try
                 Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
-                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
+                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & [GetType].Name & ": Enabled=" & shouldBeEnabled)
             Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try

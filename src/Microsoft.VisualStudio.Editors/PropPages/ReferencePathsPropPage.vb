@@ -37,12 +37,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RemoveFolder.Size = DpiHelper.LogicalToDeviceUnits(RemoveFolder.Size)
 
             'Add any initialization after the InitializeComponent() call
-            Me.MinimumSize = Me.Size
+            MinimumSize = Size
 
             ' Recalculate all images for the button from the default image we put in the resource file
-            _moveUpImageOriginal = Me.MoveUp.Image
-            _moveDownImageOriginal = Me.MoveDown.Image
-            _removeFolderImageOriginal = Me.RemoveFolder.Image
+            _moveUpImageOriginal = MoveUp.Image
+            _moveDownImageOriginal = MoveDown.Image
+            _removeFolderImageOriginal = RemoveFolder.Image
 
             ' Rescale images
             DpiHelper.LogicalToDeviceUnits(_moveUpImageOriginal)
@@ -55,14 +55,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             AddChangeHandlers()
             EnableReferencePathGroup()
 
-            AddHandler SystemEvents.UserPreferenceChanged, AddressOf Me.SystemEvents_UserPreferenceChanged
+            AddHandler SystemEvents.UserPreferenceChanged, AddressOf SystemEvents_UserPreferenceChanged
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                        New PropertyControlData(VsProjPropId.VBPROJPROPID_ReferencePath, "ReferencePath", Nothing, AddressOf Me.ReferencePathSet, AddressOf Me.ReferencePathGet, ControlDataFlags.PersistedInProjectUserFile)}
+                        New PropertyControlData(VsProjPropId.VBPROJPROPID_ReferencePath, "ReferencePath", Nothing, AddressOf ReferencePathSet, AddressOf ReferencePathGet, ControlDataFlags.PersistedInProjectUserFile)}
                 End If
                 Return m_ControlData
             End Get
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
             If Len(FolderText) > 0 AndAlso ReferencePath.FindStringExact(FolderText) = -1 Then
                 If IsValidFolderPath(FolderText) Then
-                    Me.ReferencePath.SelectedIndex = Me.ReferencePath.Items.Add(FolderText)
+                    ReferencePath.SelectedIndex = ReferencePath.Items.Add(FolderText)
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                 Else
                     ShowErrorMessage(SR.GetString(SR.PPG_InvalidFolderPath))
@@ -149,11 +149,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub UpdateFolder_Click(sender As Object, e As EventArgs) Handles UpdateFolder.Click
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
-            Dim index As Integer = Me.ReferencePath.SelectedIndex
+            Dim index As Integer = ReferencePath.SelectedIndex
 
             If index >= 0 AndAlso Len(FolderText) > 0 Then
                 If IsValidFolderPath(FolderText) Then
-                    Me.ReferencePath.Items(index) = FolderText
+                    ReferencePath.Items(index) = FolderText
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                     UpdateFolder.Enabled = False
                 Else
@@ -219,22 +219,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub ReferencePath_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ReferencePath.SelectedIndexChanged
             If Not m_fInsideInit Then
                 Dim FolderText As String
-                Dim SelectedIndex As Integer = Me.ReferencePath.SelectedIndex
+                Dim SelectedIndex As Integer = ReferencePath.SelectedIndex
 
                 If SelectedIndex = -1 Then
                     FolderText = ""
                 Else
-                    FolderText = DirectCast(Me.ReferencePath.Items(SelectedIndex), String)
+                    FolderText = DirectCast(ReferencePath.Items(SelectedIndex), String)
                 End If
-                If Me.Folder.Text <> FolderText Then
-                    Me.Folder.Text = FolderText
-                    If Me.Folder.Focused Then
+                If Folder.Text <> FolderText Then
+                    Folder.Text = FolderText
+                    If Folder.Focused Then
                         'Set caret at end of text
-                        Me.Folder.SelectionLength = 0
-                        Me.Folder.SelectionStart = FolderText.Length
+                        Folder.SelectionLength = 0
+                        Folder.SelectionStart = FolderText.Length
                     End If
                 End If
-                Me.EnableReferencePathGroup()
+                EnableReferencePathGroup()
             End If
         End Sub
 
@@ -257,21 +257,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub EnableReferencePathGroup()
-            Dim ItemIndices As ListBox.SelectedIndexCollection = Me.ReferencePath.SelectedIndices
+            Dim ItemIndices As ListBox.SelectedIndexCollection = ReferencePath.SelectedIndices
             Dim SelectedCount As Integer = ItemIndices.Count
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
 
             'Enable/Disable RemoveFolder button
-            Me.RemoveFolder.Enabled = (SelectedCount > 0)
+            RemoveFolder.Enabled = (SelectedCount > 0)
 
             'Enable/Disable Add/UpdateFolder buttons
             Dim HasFolderEntry As Boolean = (Len(FolderText) > 0)
-            Me.AddFolder.Enabled = HasFolderEntry
-            Me.UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso String.Compare(FolderText, DirectCast(Me.ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase) <> 0
+            AddFolder.Enabled = HasFolderEntry
+            UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso String.Compare(FolderText, DirectCast(ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase) <> 0
 
             'Enable/Disable MoveUp/MoveDown buttons
-            Me.MoveUp.Enabled = (SelectedCount = 1) AndAlso (ItemIndices.Item(0) > 0)
-            Me.MoveDown.Enabled = (SelectedCount = 1) AndAlso (ItemIndices.Item(0) < (ReferencePath.Items.Count - 1))
+            MoveUp.Enabled = (SelectedCount = 1) AndAlso (ItemIndices.Item(0) > 0)
+            MoveDown.Enabled = (SelectedCount = 1) AndAlso (ItemIndices.Item(0) < (ReferencePath.Items.Count - 1))
         End Sub
 
 
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function ProcessEnterKey() As Boolean
             'If the focus is on the Folder textbox, and the AddFolder button is enabled, then 
             '  we interpret ENTER as meaning, "Add this folder", i.e., click on the AddFolder button.
-            If ActiveControl Is Me.Folder AndAlso AddFolder.Enabled Then
+            If ActiveControl Is Folder AndAlso AddFolder.Enabled Then
                 AddFolder.PerformClick()
                 Return True
             End If
