@@ -13,10 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public static IMsBuildAccessor Create() => Mock.Of<IMsBuildAccessor>();
 
-        public static IMsBuildAccessor ImplementGetProjectXml(string xml, Func<bool, Func<Task>, Task> callback)
+        public static IMsBuildAccessor ImplementGetProjectXml(string xml) => ImplementGetProjectXml(() => xml);
+
+        public static IMsBuildAccessor ImplementGetProjectXml(Func<string> xmlFunc)
         {
             var mock = new Mock<IMsBuildAccessor>();
-            mock.Setup(m => m.GetProjectXmlAsync()).Returns(Task.FromResult(xml));
+            mock.Setup(m => m.GetProjectXmlAsync()).Returns(() => Task.FromResult(xmlFunc()));
             return mock.Object;
         }
     }

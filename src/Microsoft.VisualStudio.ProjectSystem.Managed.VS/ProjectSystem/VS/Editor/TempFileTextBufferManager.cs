@@ -45,8 +45,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             IFileSystem fileSystem,
             IProjectThreadingService threadingService,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) :
-            base(threadingService.JoinableTaskContext)
+#pragma warning disable IDE0030 // Use null propagation https://github.com/dotnet/roslyn/issues/161
+            base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
+#pragma warning restore IDE0030 // Use null propagation
         {
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(msbuildAccessor, nameof(msbuildAccessor));
+            Requires.NotNull(editorAdaptersService, nameof(editorAdaptersService));
+            Requires.NotNull(textDocumentService, nameof(textDocumentService));
+            Requires.NotNull(shellUtilities, nameof(shellUtilities));
+            Requires.NotNull(fileSystem, nameof(fileSystem));
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+
             _unconfiguredProject = unconfiguredProject;
             _msbuildAccessor = msbuildAccessor;
             _editorAdaptersService = editorAdaptersService;
@@ -80,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
 
             await _threadingService.SwitchToUIThread();
-            var rdt = new RunningDocumentTable();
 
             // We compare the text we want to write with the text currently in the buffer, ignoring whitespace. If they're
             // the same, then we don't write anything.

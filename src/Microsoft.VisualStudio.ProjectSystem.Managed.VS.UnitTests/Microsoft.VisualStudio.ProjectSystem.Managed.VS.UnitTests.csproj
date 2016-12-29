@@ -112,6 +112,7 @@
     <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListenerTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListenerTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
