@@ -132,12 +132,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     Case s_cmdidPaneNextTab 'Window.NextTab (CTRL+PGDN by default) - move to the next tab in the project designer
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPaneNextTab")
-                        Me._windowPane.NextTab()
+                        _windowPane.NextTab()
                         Return NativeMethods.S_OK
 
                     Case s_cmdidPanePrevTab 'Window.PrevTab (CTRL+PGUP by default) - move to the previous tab in the project designer
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPanePrevTab")
-                        Me._windowPane.PrevTab()
+                        _windowPane.PrevTab()
                         Return NativeMethods.S_OK
 
                         'Are any of these possibly needed?

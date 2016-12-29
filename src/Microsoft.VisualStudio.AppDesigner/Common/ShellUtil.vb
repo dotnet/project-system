@@ -645,12 +645,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)
-                If Not Me._disposed Then
+                If Not _disposed Then
                     If disposing Then
                         DisconnectBroadcastMessages()
                     End If
                 End If
-                Me._disposed = True
+                _disposed = True
             End Sub
 
 

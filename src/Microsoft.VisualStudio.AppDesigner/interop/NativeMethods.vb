@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
 #If DEBUG Then
                 _callStack = Environment.StackTrace
-                Me._eventInterface = eventInterface
+                _eventInterface = eventInterface
 #End If
             End Sub 'New
 

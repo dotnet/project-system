@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <remarks></remarks>
             Public ReadOnly Property ValueDefined() As Boolean
                 Get
-                    Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Me.Value, TypeCode.Int32)) <> 0
+                    Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Value, TypeCode.Int32)) <> 0
                 End Get
             End Property
 

@@ -240,11 +240,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Function SetSite(Site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
+            If _site Is Site Then
                 Exit Function
             End If
             'Site is different - set it
-            Me._site = Site
+            _site = Site
             If TypeOf Site Is OLE.Interop.IServiceProvider Then
                 _siteProvider = New ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
             Else

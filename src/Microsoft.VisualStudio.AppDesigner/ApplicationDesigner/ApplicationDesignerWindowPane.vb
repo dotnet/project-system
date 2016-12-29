@@ -42,12 +42,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '   events from the shell and royaly screw things up.
             '
             _view = New ApplicationDesignerWindowPaneControl()
-            AddHandler _view.GotFocus, AddressOf Me.OnViewFocus
+            AddHandler _view.GotFocus, AddressOf OnViewFocus
             _view.BackColor = PropertyPages.PropPageUserControlBase.PropPageBackColor
 
             _host = TryCast(GetService(GetType(IDesignerHost)), IDesignerHost)
 
-            AddHandler surface.Unloaded, AddressOf Me.OnSurfaceUnloaded
+            AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded
 
         End Sub
 
@@ -533,13 +533,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _view = Nothing
                     Dim DesSurface As DesignSurface = Surface
                     If (DesSurface IsNot Nothing) Then
-                        RemoveHandler DesSurface.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                        RemoveHandler DesSurface.Unloaded, AddressOf OnSurfaceUnloaded
                     End If
                 End If
 
             Finally
                 If (disposing AndAlso disposedView IsNot Nothing) Then
-                    RemoveHandler disposedView.GotFocus, AddressOf Me.OnViewFocus
+                    RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                     disposedView.Dispose()
                 End If
             End Try

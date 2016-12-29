@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overridable ReadOnly Property ControlTypeForResources() As Type
             Get
-                Return Me.ControlType
+                Return ControlType
             End Get
         End Property
 
@@ -366,12 +366,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
-            pPageInfo(0).dwHelpContext = Me.HelpContext
-            pPageInfo(0).pszDocString = Me.DocString
-            pPageInfo(0).pszHelpFile = Me.HelpFile
-            pPageInfo(0).pszTitle = Me.Title
-            pPageInfo(0).SIZE.cx = Me.DefaultSize.Width
-            pPageInfo(0).SIZE.cy = Me.DefaultSize.Height
+            pPageInfo(0).dwHelpContext = HelpContext
+            pPageInfo(0).pszDocString = DocString
+            pPageInfo(0).pszHelpFile = HelpFile
+            pPageInfo(0).pszTitle = Title
+            pPageInfo(0).SIZE.cx = DefaultSize.Width
+            pPageInfo(0).SIZE.cy = DefaultSize.Height
 
         End Sub
 
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetHelpContext()
-            If Me._pageSite IsNot Nothing Then
+            If _pageSite IsNot Nothing Then
                 Dim sp As System.IServiceProvider = TryCast(_pageSite, System.IServiceProvider)
                 'Note: we have to get the right help service - GetService through the property page's
                 '  accomplishes this (it goes through the PropPageDesignerRootDesigner).  There is a
@@ -844,8 +844,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  property page will NOT show the help button. The F1 keyword is the real 
             '  help context
             MyBase.New()
-            Me.HelpContext = 1
-            Me.HelpFile = "VBREF.CHM"
+            HelpContext = 1
+            HelpFile = "VBREF.CHM"
         End Sub
 
     End Class

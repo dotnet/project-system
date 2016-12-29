@@ -33,8 +33,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Function GetPropPageDesignerView() As PropPageDesignerView
             Dim PPDView As PropPageDesignerView = Nothing
-            If Me.View IsNot Nothing AndAlso Me.View.Controls IsNot Nothing AndAlso Me.View.Controls.Count > 0 Then
-                Return TryCast(Me.View.Controls(0), PropPageDesignerView)
+            If View IsNot Nothing AndAlso View.Controls IsNot Nothing AndAlso View.Controls.Count > 0 Then
+                Return TryCast(View.Controls(0), PropPageDesignerView)
             End If
 
             Return Nothing
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Protected Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerWindowPane.PreProcessMessage", m)
 
-            If Me.View Is Nothing Then
+            If View Is Nothing Then
                 Return False
             End If
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If DesignerView IsNot Nothing Then
                 Dim KeyCode As Keys = DirectCast(m.WParam.ToInt32(), Keys) And Keys.KeyCode
                 'Is the message intended for a window or control in the property page?
-                If DesignerView.IsNativeHostedPropertyPageActivated AndAlso NativeMethods.IsChild(Me.View.Handle, m.HWnd) Then
+                If DesignerView.IsNativeHostedPropertyPageActivated AndAlso NativeMethods.IsChild(View.Handle, m.HWnd) Then
                     Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ... Message is for a child of the property page.  Calling MyBase.PreProcessMessage", m)
 
                     'First crack goes to the child page, since the HWND for the message belongs to it.
@@ -126,10 +126,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                                     'We hit the last tabbable control in the property page designer, set focus to the first (or last)
                                     '  control in the property page itself.
-                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(Me.View.Handle, win.GW_CHILD)
+                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(View.Handle, win.GW_CHILD)
                                     'Dim NextTabStop As IntPtr
 
-                                    Dim PPDView As PropPageDesignerView = Me.GetPropPageDesignerView()
+                                    Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
                                     If PPDView Is Nothing Then
                                         Debug.Fail("Couldn't find the property page designer view")
                                         Return False
@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Case win.WM_SYSCHAR
                                 'The property page didn't handle the message.  Allow the property page designer to check if
                                 '  it's one of its accelerators.
-                                Dim PPDView As PropPageDesignerView = Me.GetPropPageDesignerView()
+                                Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
                                 If PPDView Is Nothing Then
                                     Debug.Fail("Couldn't find the property page designer view")
                                     Return False

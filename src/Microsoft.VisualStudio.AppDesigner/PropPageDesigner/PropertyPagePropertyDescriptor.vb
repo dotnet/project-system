@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If TypeOf Component Is PropPageDesignerRootComponent Then
                 Dim View As PropPageDesignerView = DirectCast(Component, PropPageDesignerRootComponent).RootDesigner.GetView()
                 Debug.Assert(View IsNot Nothing)
-                Return View.GetProperty(Me.Name)
+                Return View.GetProperty(Name)
             Else
                 Debug.Fail("PropertyPagePropertyDescriptor.GetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
                 Throw AppDesCommon.CreateArgumentException("Component")
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 View = DirectCast(Component, PropPageDesignerRootComponent).RootDesigner.GetView()
                 PropPageUndo = TryCast(View.PropPage, IVsProjectDesignerPage)
                 Debug.Assert(PropPageUndo IsNot Nothing, "How could this happen?")
-                View.SetProperty(Me.Name, Value)
+                View.SetProperty(Name, Value)
             Else
                 Debug.Fail("PropertyPagePropertyDescriptor.SetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
                 Throw AppDesCommon.CreateArgumentException("Component")

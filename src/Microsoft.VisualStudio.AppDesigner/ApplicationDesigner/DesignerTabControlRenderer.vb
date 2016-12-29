@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Dim Index As Integer
             Dim Button As ProjectDesignerTabButton
-            Dim PreferredButton As ProjectDesignerTabButton = Me.PreferredButtonForSwitchableSlot
+            Dim PreferredButton As ProjectDesignerTabButton = PreferredButtonForSwitchableSlot
             Dim PreferredButtonIndex As Integer 'Index of the button referred to by PreferredButtonForSwitchableSlot, or else -1
 #If DEBUG Then
             Dim SwitchableSlotShown As Boolean = False 'Whether we have shown a button in the switchable slot

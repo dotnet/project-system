@@ -81,13 +81,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' using the code editor.
         '<System.Diagnostics.DebuggerNonUserCode()> 
         Private Sub InitializeComponent()
-            Me.SuspendLayout()
-            Me._components = New System.ComponentModel.Container
+            SuspendLayout()
+            _components = New System.ComponentModel.Container
 
             'No scrollbars
-            Me.AutoScroll = False
+            AutoScroll = False
 
-            Me.ResumeLayout()
+            ResumeLayout()
         End Sub
 
 #End Region
@@ -107,12 +107,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             'Add any initialization after the InitializeComponent() call
             '
-            Me.Name = "DesignerTabControl"
-            Me.Padding = New Padding(0)
-            Me.Size = New Size(144, 754)
-            Me.TabIndex = 0
-            Me.DoubleBuffered = True
-            Me.Controls.Add(_hostingPanel)
+            Name = "DesignerTabControl"
+            Padding = New Padding(0)
+            Size = New Size(144, 754)
+            TabIndex = 0
+            DoubleBuffered = True
+            Controls.Add(_hostingPanel)
 
             SetUpOverflowButton()
         End Sub 'InitTabInfo

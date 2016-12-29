@@ -150,43 +150,43 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'It may having something to do with it being defined in an interop assembly.
 
         Public Function Close() As Integer Implements IVsPersistDocData.Close
-            Return Me.Close2()
+            Return Close2()
         End Function
 
         Public Function GetGuidEditorType(ByRef pClassID As Guid) As Integer Implements IVsPersistDocData.GetGuidEditorType
-            Return Me.GetGuidEditorType2(pClassID)
+            Return GetGuidEditorType2(pClassID)
         End Function
 
         Public Function IsDocDataDirty(ByRef pfDirty As Integer) As Integer Implements IVsPersistDocData.IsDocDataDirty
-            Return Me.IsDocDataDirty2(pfDirty)
+            Return IsDocDataDirty2(pfDirty)
         End Function
 
         Public Function IsDocDataReloadable(ByRef pfReloadable As Integer) As Integer Implements IVsPersistDocData.IsDocDataReloadable
-            Return Me.IsDocDataReloadable2(pfReloadable)
+            Return IsDocDataReloadable2(pfReloadable)
         End Function
 
         Public Function LoadDocData(pszMkDocument As String) As Integer Implements IVsPersistDocData.LoadDocData
-            Return Me.LoadDocData2(pszMkDocument)
+            Return LoadDocData2(pszMkDocument)
         End Function
 
         Public Function OnRegisterDocData(docCookie As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger) As Integer Implements IVsPersistDocData.OnRegisterDocData
-            Return Me.OnRegisterDocData2(docCookie, pHierNew, itemidNew)
+            Return OnRegisterDocData2(docCookie, pHierNew, itemidNew)
         End Function
 
         Public Function ReloadDocData(grfFlags As UInteger) As Integer Implements IVsPersistDocData.ReloadDocData
-            Return Me.ReloadDocData2(grfFlags)
+            Return ReloadDocData2(grfFlags)
         End Function
 
         Public Function RenameDocData(grfAttribs As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) As Integer Implements IVsPersistDocData.RenameDocData
-            Return Me.RenameDocData2(grfAttribs, pHierNew, itemidNew, pszMkDocumentNew)
+            Return RenameDocData2(grfAttribs, pHierNew, itemidNew, pszMkDocumentNew)
         End Function
 
         Public Function SaveDocData(dwSave As VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements IVsPersistDocData.SaveDocData
-            Return Me.SaveDocData2(dwSave, pbstrMkDocumentNew, pfSaveCanceled)
+            Return SaveDocData2(dwSave, pbstrMkDocumentNew, pfSaveCanceled)
         End Function
 
         Public Function SetUntitledDocPath(pszDocDataPath As String) As Integer Implements IVsPersistDocData.SetUntitledDocPath
-            Return Me.SetUntitledDocPath2(pszDocDataPath)
+            Return SetUntitledDocPath2(pszDocDataPath)
         End Function
 #End Region
         Public Function Close2() As Integer Implements IVsPersistDocData2.Close

@@ -39,9 +39,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Sub New(ParentView As ApplicationDesignerView, Guid As Guid, IsConfigurationDependentPage As Boolean)
             Debug.Assert(Not Guid.Equals(Guid.Empty), "Empty guid?")
             Debug.Assert(ParentView IsNot Nothing)
-            Me._parentView = ParentView
-            Me._guid = Guid
-            Me._isConfigPage = IsConfigurationDependentPage
+            _parentView = ParentView
+            _guid = Guid
+            _isConfigPage = IsConfigurationDependentPage
         End Sub
 
 

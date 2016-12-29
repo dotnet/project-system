@@ -22,12 +22,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '   of mouse messages (keeps Control's WmMouseDown from calling into DefWndProc)
             SetStyle(ControlStyles.UserMouse Or ControlStyles.UserPaint, True)
 
-            Me.FlatStyle = FlatStyle.Flat
+            FlatStyle = FlatStyle.Flat
 
             'We need the tab buttons to be able to receive focus, so that we can 
             '  redirect focus back to the selected page when the shell is activated.
             SetStyle(ControlStyles.Selectable, True)
-            Me.TabStop = True
+            TabStop = True
         End Sub 'New
 
 
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public ReadOnly Property TextWithDirtyIndicator() As String
             Get
                 'If the dirty indicator is on, append "*" to the text
-                Dim ButtonText As String = Me.Text
+                Dim ButtonText As String = Text
                 If DirtyIndicator Then
                     ButtonText &= "*"
                 End If
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private ReadOnly Property ParentTabControl() As ProjectDesignerTabControl
             Get
-                Return DirectCast(Me.Parent, ProjectDesignerTabControl)
+                Return DirectCast(Parent, ProjectDesignerTabControl)
             End Get
         End Property
 
