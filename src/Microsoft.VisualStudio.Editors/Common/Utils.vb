@@ -1684,25 +1684,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
-        ''' <summary>
-        ''' Gets a value indicating whether the project associated with the given hierarchy contains the specified capability.
-        ''' </summary>
-        ''' <param name="hierarchy">Hierarchy object.</param>
-        ''' <returns>Value indicating whether the specified capability is present</returns>
-        Friend Function ContainsCapability(hierarchy As IVsHierarchy, capability As String) As Boolean
-
-            Dim capabilitiesObj As Object = Nothing
-            If VSErrorHandler.Succeeded(hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID5.VSHPROPID_ProjectCapabilities, capabilitiesObj)) Then
-                If TypeOf capabilitiesObj Is String Then
-                    Dim capabilitiesStr As String = CStr(capabilitiesObj)
-                    Dim capabilities As String() = capabilitiesStr.Split(New String() {" "c}, StringSplitOptions.RemoveEmptyEntries)
-                    Return capabilities.Contains(capability)
-                End If
-            End If
-
-            Return False
-        End Function
-
 #Region "Telemetry"
         Public Class TelemetryLogger
 

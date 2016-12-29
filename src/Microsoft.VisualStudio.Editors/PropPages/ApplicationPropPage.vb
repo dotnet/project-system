@@ -676,8 +676,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Populate the target framework combobox
             PopulateTargetFrameworkComboBox(Me.TargetFramework)
-
-            Me.AssemblyInfoButton.Visible = Not Utils.ContainsCapability(Me.ProjectHierarchy, "PackagePage")
         End Sub
 
         ''' <summary>
