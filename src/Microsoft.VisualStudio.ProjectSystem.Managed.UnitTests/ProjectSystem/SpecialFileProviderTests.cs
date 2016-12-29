@@ -81,7 +81,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
 
@@ -108,7 +108,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
 
@@ -129,7 +129,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
 
@@ -156,7 +156,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk);
 
@@ -180,7 +180,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo\Properties");
+            var projectTree = IPhysicalProjectTreeFactory.Create(provider: projectTreeProvider, currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
             var fileSystem = IFileSystemFactory.Create(path => false,
                                                        path =>
@@ -211,7 +212,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo");
+            var projectTree = IPhysicalProjectTreeFactory.Create(provider: projectTreeProvider, currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
             var fileSystem = IFileSystemFactory.Create(path => false,
                                                        path =>
@@ -254,10 +256,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo\Properties");
+            var projectTree = IPhysicalProjectTreeFactory.Create(provider: projectTreeProvider, currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
-            var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk, 
-                                                       path => 
+            var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk,
+                                                       path =>
                                                        {
                                                            // Verify that file is created on disk.
                                                            Assert.False(fileExistsOnDisk);
@@ -288,7 +291,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree:inputTree);
+            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo\Properties");
+            var projectTree = IPhysicalProjectTreeFactory.Create(provider: projectTreeProvider, currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
             var fileSystem = IFileSystemFactory.Create(path => false,
                                                        path =>
