@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
                 'This is the expected exception if the key could not be found.
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils))
                 'Any other error - shouldn't be the case, but it might depend on the project implementation
             End Try
 
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
         Public Shared Function FileNameFromProjectItem(ProjectItem As ProjectItem) As String
             If ProjectItem Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
+                Debug.Fail("Can't get file name for NULL project item!")
                 Throw New ArgumentNullException()
             End If
 
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 'If there are no configurations defined in the project, this call can fail.  In that case, just return
                 '  the first config (there should be a single Debug configuration automatically defined and available).
                 Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function

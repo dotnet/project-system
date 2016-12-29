@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '   of mouse messages (keeps Control's WmMouseDown from calling into DefWndProc)
             SetStyle(ControlStyles.UserMouse Or ControlStyles.UserPaint, True)
 
-            Me.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.FlatStyle = FlatStyle.Flat
 
             'We need the tab buttons to be able to receive focus, so that we can 
             '  redirect focus back to the selected page when the shell is activated.
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property DefaultAction() As String
                 Get
-                    Return SR.GetString(SR.APPDES_TabButtonDefaultAction)
+                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_TabButtonDefaultAction)
                 End Get
             End Property
 

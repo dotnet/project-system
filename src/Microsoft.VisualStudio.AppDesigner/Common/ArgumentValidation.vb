@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function CreateArgumentException(argumentName As String) As Exception
-            Return New ArgumentException(String.Format(My.Resources.Designer.General_InvalidArgument_1Arg, argumentName))
+            Return New ArgumentException(String.Format(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.General_InvalidArgument_1Arg, argumentName))
         End Function
     End Module
 End Namespace

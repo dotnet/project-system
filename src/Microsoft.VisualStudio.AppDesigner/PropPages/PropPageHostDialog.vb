@@ -48,19 +48,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If _propPage IsNot Nothing Then
                     'm_propPage.SuspendLayout()
                     Me.BackColor = Value.BackColor
-                    Me.MinimumSize = System.Drawing.Size.Empty
+                    Me.MinimumSize = Drawing.Size.Empty
                     Me.AutoSize = True
 
                     If (_propPage.PageResizable) Then
-                        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
+                        Me.FormBorderStyle = FormBorderStyle.Sizable
                     Else
-                        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+                        Me.FormBorderStyle = FormBorderStyle.FixedDialog
                     End If
 
                     _propPage.Margin = New Padding(0, 0, 0, 0)
-                    _propPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), AnchorStyles)
+                    _propPage.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
+                        Or AnchorStyles.Left) _
+                        Or AnchorStyles.Right), AnchorStyles)
                     _propPage.TabIndex = 0
                     'overArchingTableLayoutPanel.SuspendLayout()
                     overArchingTableLayoutPanel.Controls.Add(_propPage, 0, 0)
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'OK
             '
             resources.ApplyResources(Me.OK, "OK")
-            Me.OK.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.OK.DialogResult = DialogResult.OK
             Me.OK.Margin = New Padding(0, 0, 3, 0)
             Me.OK.Name = "OK"
             '
@@ -113,15 +113,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.Cancel, "Cancel")
             Me.Cancel.CausesValidation = False
-            Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Cancel.DialogResult = DialogResult.Cancel
             Me.Cancel.Margin = New Padding(3, 0, 0, 0)
             Me.Cancel.Name = "Cancel"
             '
             'okCancelTableLayoutPanel
             '
             resources.ApplyResources(Me.okCancelTableLayoutPanel, "okCancelTableLayoutPanel")
-            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0!))
+            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0!))
             Me.okCancelTableLayoutPanel.Controls.Add(Me.Cancel, 1, 0)
             Me.okCancelTableLayoutPanel.Controls.Add(Me.OK, 0, 0)
             Me.okCancelTableLayoutPanel.Margin = New Padding(0, 6, 0, 0)
@@ -131,10 +131,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overArchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overArchingTableLayoutPanel, "overArchingTableLayoutPanel")
-            Me.overArchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.overArchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
             Me.overArchingTableLayoutPanel.Controls.Add(Me.okCancelTableLayoutPanel, 0, 1)
             Me.overArchingTableLayoutPanel.Name = "overArchingTableLayoutPanel"
-            Me.overArchingTableLayoutPanel.RowStyles.Add(New RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.overArchingTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
             Me.overArchingTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'PropPageHostDialog
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.overArchingTableLayoutPanel)
             Me.Padding = New Padding(12, 12, 12, 12)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+            Me.FormBorderStyle = FormBorderStyle.FixedDialog
             Me.HelpButton = True
             Me.MaximizeBox = False
             Me.MinimizeBox = False
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' That happens when the user clicks the OK button, but validation failed
                 ' That is how we block the user leave when something wrong.
                 e.Cancel = True
-            ElseIf Me.DialogResult <> System.Windows.Forms.DialogResult.OK Then
+            ElseIf Me.DialogResult <> DialogResult.OK Then
                 ' If the user cancelled the edit, we should restore the initial values...
                 PropPage.RestoreInitialValues()
             End If

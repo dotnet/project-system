@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             Me.SuspendLayout()
             Me.AutoScroll = False
-            Me.BackColor = System.Drawing.SystemColors.ControlLight
+            Me.BackColor = Drawing.SystemColors.ControlLight
             Me.Name = "ApplicationDesignerView"
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Sub New(serviceProvider As IServiceProvider)
             MyBase.New()
             Me.SuspendLayout()
-            MyBase.HostingPanel.SuspendLayout()
+            HostingPanel.SuspendLayout()
 
             SetSite(serviceProvider)
 
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Debug.Assert(ApplicationDesignerViewCount = 1, "Multiple ApplicationDesigners created!")
 #End If
 
-            MyBase.HostingPanel.ResumeLayout(False)
+            HostingPanel.ResumeLayout(False)
             Me.ResumeLayout(False) 'Don't need to lay out yet - we'll do that at the end of AddTabs
         End Sub
 
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.TelemetryLogger.LogAppDesignerDefaultPageOpened()
 
             ' Store the vbpackage instance in utils to share within the assembly
-            Common.Utils.VBPackageInstance = Package
+            Common.VBPackageInstance = Package
             WindowFrame = Me.WindowFrame
             Debug.Assert(WindowFrame IsNot Nothing, "WindowFrame is nothing")
             If WindowFrame IsNot Nothing Then
@@ -735,13 +735,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 With DesignerPanel
                     .SuspendLayout()
-                    .Dock = System.Windows.Forms.DockStyle.Fill
+                    .Dock = DockStyle.Fill
                     .Location = New Drawing.Point(0, 0)
                     .Name = "DesignerPanel" & Index
                     .Size = New Drawing.Size(555, 392)
                     .TabIndex = 1
                     .Dock = DockStyle.Fill
-                    .Font = MyBase.HostingPanel.Font 'PERF: Prepopulating with the font means you reduce the number of OnFontChanged that occur when child panels are added/removed from the parent
+                    .Font = HostingPanel.Font 'PERF: Prepopulating with the font means you reduce the number of OnFontChanged that occur when child panels are added/removed from the parent
                     .Visible = False 'Don't make visible until that particular tab is selected
 
                     'Note: 
@@ -767,10 +767,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
-                        If System.String.Compare(Microsoft.VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        If System.String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID)
-                            .EditorCaption = SR.GetString(SR.APPDES_ResourceTabTitle)
+                            .EditorCaption = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ResourceTabTitle)
                             .TabAutomationName = s_RESOURCES_AUTOMATION_TAB_NAME
 
                             'If the resx file doesn't actually exist yet, we have to display the "Click here
@@ -782,12 +782,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 '  SpecialFileCustomDocumentMonikerProvider).
                                 .CustomMkDocumentProvider = New SpecialFileCustomDocumentMonikerProvider(Me, __PSFFILEID2.PSFFILEID_AssemblyResource)
                             Else
-                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, SR.GetString(SR.APPDES_ClickHereCreateResx))
+                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ClickHereCreateResx))
                             End If
-                        ElseIf System.String.Compare(Microsoft.VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        ElseIf System.String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID)
-                            .EditorCaption = SR.GetString(SR.APPDES_SettingsTabTitle)
+                            .EditorCaption = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_SettingsTabTitle)
                             .TabAutomationName = s_SETTINGS_AUTOMATION_TAB_NAME
 
                             'If the settings file doesn't actually exist yet, we have to display the "Click here
@@ -799,7 +799,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 '  SpecialFileCustomDocumentMonikerProvider).
                                 .CustomMkDocumentProvider = New SpecialFileCustomDocumentMonikerProvider(Me, __PSFFILEID2.PSFFILEID_AppSettings)
                             Else
-                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, SR.GetString(SR.APPDES_ClickHereCreateSettings))
+                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ClickHereCreateSettings))
                             End If
                         Else
                             Debug.Fail("Unexpected file in list of intended tabs")
@@ -825,8 +825,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '  adding the AppicationDesignerPanels, so that the final size of the HostingPanel is
             '  known.
             For i As Integer = 0 To _designerPanels.GetUpperBound(0)
-                Dim iTab As Integer = MyBase.AddTab(_designerPanels(i).TabTitle, _designerPanels(i).TabAutomationName)
-                MyBase.GetTabButton(iTab).TabStop = False 'Keep from setting focus to the tabs when they're clicked so we don't fire OnItemGotFocus
+                Dim iTab As Integer = AddTab(_designerPanels(i).TabTitle, _designerPanels(i).TabAutomationName)
+                GetTabButton(iTab).TabStop = False 'Keep from setting focus to the tabs when they're clicked so we don't fire OnItemGotFocus
             Next
 
             'Now that all the tab titles have been figured out, we can go ahead and add all the 
@@ -835,7 +835,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '  size of the HostingPanel.  Now we should have a stable size for the hosting panel.
             For Index As Integer = 0 To TabCount - 1
                 Dim DesignerPanel As ApplicationDesignerPanel = _designerPanels(Index)
-                MyBase.HostingPanel.Controls.Add(DesignerPanel)
+                HostingPanel.Controls.Add(DesignerPanel)
             Next
 
             HostingPanel.ResumeLayout(False)
@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDPerfBegin("ApplicationDesignerView.ShowTab")
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabBegin")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabBegin")
-                Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabBegin)
+                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabBegin)
 
                 Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(Index)
                 Dim ErrorMessage As String = Nothing
@@ -1061,10 +1061,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                                 If .PropertyPageInfo.LoadException IsNot Nothing Then
                                     Common.Switches.TracePDFocus(TraceLevel.Error, "  ... LoadException: " & .PropertyPageInfo.LoadException.Message)
-                                    ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.LoadException.Message
+                                    ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.LoadException.Message
                                 ElseIf .PropertyPageInfo.ComPropPageInstance Is Nothing OrElse .PropertyPageInfo.Site Is Nothing Then
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... ComPropPageInstance or the site is Nothing")
-                                    ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.Guid.ToString()
+                                    ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.Guid.ToString()
                                 Else
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling CreateDesigner")
                                     HostingPanel.SuspendLayout()
@@ -1135,7 +1135,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     If ErrorMessage = "" Then
-                        ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex)
+                        ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex)
                     End If
                 End Try
 
@@ -1155,7 +1155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'We may have opened a new page, need to verify all dirty states
                 DelayRefreshDirtyIndicators()
 
-                Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabEnd)
+                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabEnd)
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerfEnd("ApplicationDesignerView.ShowTab")
@@ -1165,7 +1165,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'Standard title for messageboxes, etc.
-        Private ReadOnly _messageBoxCaption As String = SR.GetString(SR.APPDES_Title)
+        Private ReadOnly _messageBoxCaption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
 
         ''' <summary>
         ''' Displays a message box using the Visual Studio-approved manner.
@@ -1246,7 +1246,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="m"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = AppDesInterop.win.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
+            If m.Msg = win.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
                 'We need to intercept WM_SETFOCUS on the project designer to keep WinForms from setting focus to the
                 '  current control (one of the tab buttons).  Instead, we want to keep the tab buttons from getting
                 '  focus (unless they're clicked on directly), and instead activate the current page directly.
@@ -1680,7 +1680,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim panel As ApplicationDesignerPanel
                         panel = Me._designerPanels(Index)
                         Debug.Assert(panel IsNot Nothing, "m_DesignerPanels(Index) should not be Nothing")
-                        If Object.ReferenceEquals(panel.VsWindowFrame, pFrame) Then
+                        If ReferenceEquals(panel.VsWindowFrame, pFrame) Then
                             ShowTab(Index)
                             Exit For
                         End If
@@ -1772,7 +1772,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             'Fallback
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetUserDefaultLCID()
+            Return NativeMethods.GetUserDefaultLCID()
         End Function
 
 

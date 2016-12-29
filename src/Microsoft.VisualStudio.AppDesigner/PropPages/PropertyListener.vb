@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Shared Function TryCreate(PropPage As PropPageUserControlBase, EventSource As Object, DebugSourceName As String, ProjectHierarchy As IVsHierarchy, ListenToInactiveConfigs As Boolean) As PropertyListener
             Debug.Assert(ProjectHierarchy IsNot Nothing)
-            Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & VB.TypeName(EventSource))
+            Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & TypeName(EventSource))
 
             If TypeOf EventSource Is IVsCfg Then
                 'We need to get an IDispatch for the configuration, which we can do through IVsExtensibleObject off

@@ -9,7 +9,7 @@ Namespace My.Resources
     '  or else change the project's root namespace which I don't want to do at this point.
     '  But then the class name gets generated as "Microsoft_VisualStudio_AppDesigner_Designer".
     'So hide that one and introduce a "Designer" class instead.
-    <ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
     Partial Friend Class Microsoft_VisualStudio_AppDesigner_Designer
     End Class
 
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors
     '''   arguments passed in, in which case String.Format() is called.
     ''' 
     ''' </remarks>
-    <ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)> _
     Friend Class SR
         Inherits My.Resources.Microsoft_VisualStudio_AppDesigner_Designer
 
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="s"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+        <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)> _
         Public Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then
                 Return s

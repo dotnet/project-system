@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits Exception
 
         Public Sub New()
-            MyBase.New(SR.GetString(SR.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
+            MyBase.New(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
         End Sub
 
         ''' <summary>

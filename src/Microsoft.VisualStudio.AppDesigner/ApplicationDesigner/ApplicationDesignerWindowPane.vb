@@ -165,12 +165,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
 
                     childView = New ErrorControl()
-                    childView.Text = SR.GetString(SR.APPDES_ErrorLoading_Msg, message)
+                    childView.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, message)
                 End Try
 
                 If (childView Is Nothing) Then
                     childView = New ErrorControl()
-                    childView.Text = SR.GetString(SR.APPDES_ErrorLoading_Msg, "")
+                    childView.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, "")
                 End If
 
                 'If we haven't added the viewChild to m_View yet, do so now.
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Function ActivateLogicalView(ByRef rguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.ActivateLogicalView
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
-            Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
+            CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
                 PopulateView(rguidLogicalView)
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
+            CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
         End Function
@@ -450,8 +450,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
             Get
                 If (_UIShell2Service Is Nothing) Then
-                    If (Common.Utils.VBPackageInstance IsNot Nothing) Then
-                        Dim VsUiShell As IVsUIShell = CType(Common.Utils.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    If (Common.VBPackageInstance IsNot Nothing) Then
+                        Dim VsUiShell As IVsUIShell = CType(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                         If VsUiShell IsNot Nothing Then
                             _UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
                         End If

@@ -669,7 +669,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'The property supports multiple values, but does not have a current set of them, which indicates
                     '  either they were all the same value, or there was an error in obtaining them.  Either way, 
                     '  we just propagate the current (single) initial value into all fields 
-                    Debug.Assert(Not PropertyControlData.IsSpecialValue(Me.InitialValue))
+                    Debug.Assert(Not IsSpecialValue(Me.InitialValue))
                     Dim RawObjects() As Object = RawPropertiesObjects
                     Values = New Object(RawObjects.Length - 1) {}
                     For i As Integer = 0 To RawObjects.Length - 1
@@ -814,17 +814,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Try
                         Handled = Me.ReadUserDefinedProperty(Me.PropertyName, Value)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception reading user-defined property for initial value", NameOf(PropertyControlData))
-                        Value = PropertyControlData.MissingProperty
+                        Value = MissingProperty
                     End Try
 
                 ElseIf prop Is Nothing Then
-                    Value = PropertyControlData.MissingProperty
+                    Value = MissingProperty
 
                 ElseIf Me.IsCommonProperty Then
                     Try
                         Value = GetCommonPropertyValueNative()
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(InitPropertyValue), NameOf(PropertyControlData))
-                        Value = PropertyControlData.MissingProperty
+                        Value = MissingProperty
                     End Try
 
                 Else
@@ -863,7 +863,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 value = Me.InitialValue
 
-                If value IsNot PropertyControlData.MissingProperty Then
+                If value IsNot MissingProperty Then
                     If Me.MultiValueSetCallback IsNot Nothing Then
                         'Multi-value set - we need to pass in all the values, not just the single one
                         Dim Values() As Object = Me.AllInitialValuesExpanded
@@ -896,7 +896,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
 
-                If Me.IsHidden OrElse (value Is PropertyControlData.MissingProperty) Then
+                If Me.IsHidden OrElse (value Is MissingProperty) Then
                     _controlsCanBeEnabled = False
 
                     'Unsupported property for this project type, hide property and associated controls
@@ -1105,7 +1105,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(control IsNot Nothing, "Unexpected null argument")
 
             If TypeOf control Is TextBox Then
-                If value Is PropertyControlData.Indeterminate Then
+                If value Is Indeterminate Then
                     value = ""
                 Else
                     If (_TypeConverter IsNot Nothing) Then 'AndAlso _TypeConverter.GetStandardValuesSupported Then
@@ -1118,7 +1118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim cbx As ComboBox = DirectCast(control, ComboBox)
                 Dim StringValue As String = ""
 
-                If value Is PropertyControlData.Indeterminate Then
+                If value Is Indeterminate Then
                     StringValue = ""
                 ElseIf (_TypeConverter IsNot Nothing) Then
                     StringValue = _TypeConverter.ConvertToString(value)
@@ -1136,7 +1136,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Next
                 End If
 
-                If value IsNot PropertyControlData.Indeterminate Then
+                If value IsNot Indeterminate Then
                     'Select the item in the list
                     cbx.SelectedItem = StringValue
                     If cbx.DropDownStyle = ComboBoxStyle.DropDownList Then
@@ -1159,7 +1159,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ElseIf TypeOf control Is CheckBox Then
 
                 Dim chk As CheckBox = DirectCast(control, CheckBox)
-                If value Is PropertyControlData.Indeterminate Then
+                If value Is Indeterminate Then
                     chk.CheckState = CheckState.Indeterminate
                 Else
                     'If the checkbox is indeterminate, "Checked" is already considered to be true, so
@@ -1179,7 +1179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
             ElseIf TypeOf control Is Label Then
-                If value Is PropertyControlData.Indeterminate Then
+                If value Is Indeterminate Then
                     DirectCast(control, Label).Text = ""
                 Else
                     DirectCast(control, Label).Text = CType(value, String)
@@ -1267,7 +1267,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Then
                         'We are showing multiple configurations, and the text has not been changed by the user 
                         '  - return indeterminate value
-                        value = PropertyControlData.Indeterminate
+                        value = Indeterminate
                     Else
                         value = StringText
                     End If
@@ -1281,7 +1281,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If cbx.DropDownStyle = ComboBoxStyle.DropDownList Then
                     If cbx.SelectedIndex = -1 Then
-                        value = PropertyControlData.Indeterminate
+                        value = Indeterminate
                     Else
                         value = cbx.SelectedItem
                     End If
@@ -1296,7 +1296,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Then
                             'We are showing multiple configurations, and the text has not been changed by the user 
                             '  - return indeterminate value
-                            value = PropertyControlData.Indeterminate
+                            value = Indeterminate
                         Else
                             value = StringText
                         End If
@@ -1310,7 +1310,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim chk As CheckBox = DirectCast(control, CheckBox)
 
                 If chk.CheckState = CheckState.Indeterminate Then
-                    value = PropertyControlData.Indeterminate
+                    value = Indeterminate
                 Else
                     value = chk.Checked
                 End If
@@ -1324,7 +1324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End If
 
-            If (value IsNot Nothing) And (Not value Is PropertyControlData.Indeterminate) Then
+            If (value IsNot Nothing) And (Not value Is Indeterminate) Then
                 If (_TypeConverter IsNot Nothing) Then
                     If _TypeConverter.CanConvertFrom(Nothing, value.GetType()) Then
                         'If Not _TypeConverter.IsValid(value) AndAlso _
@@ -1366,7 +1366,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     Return GetCommonPropertyValueNative(Me.PropDesc, CommonPropertiesObject)
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryGetPropertyValueNative), NameOf(PropertyControlData))
-                    Return PropertyControlData.MissingProperty
+                    Return MissingProperty
                 End Try
             Else
                 Return TryGetNonCommonPropertyValueNative(Me.PropDesc, Extenders)
@@ -1395,7 +1395,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     Value = GetNonCommonPropertyValueNative(Descriptor, Extenders(0))
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryGetNonCommonPropertyValueNative), NameOf(PropertyControlData))
-                    Value = PropertyControlData.MissingProperty
+                    Value = MissingProperty
                 End Try
             Else
                 Dim AllValues() As Object = Nothing
@@ -1461,7 +1461,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
             Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetAllPropertyValuesNative), NameOf(PropertyControlData))
                 Values = New Object(Extenders.Length - 1) {}
-                ValueOrIndeterminate = PropertyControlData.MissingProperty
+                ValueOrIndeterminate = MissingProperty
                 Return
             End Try
 
@@ -1490,10 +1490,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Perform object comparison
                 If (Value Is Nothing OrElse Values(i) Is Nothing) Then
                     If Value IsNot Values(i) Then
-                        Return PropertyControlData.Indeterminate
+                        Return Indeterminate
                     End If
                 ElseIf Not Value.Equals(Values(i)) Then
-                    Return PropertyControlData.Indeterminate
+                    Return Indeterminate
                 End If
             Next
 
@@ -1552,7 +1552,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_PropPage.SuspendPropertyChangeListening(Me.DispId)
             Try
 
-                If Value Is PropertyControlData.Indeterminate Then
+                If Value Is Indeterminate Then
                     'Don't set any values
                     Return
                 End If
@@ -1599,7 +1599,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_PropPage.SuspendPropertyChangeListening(Me.DispId)
 
             Try
-                If Value Is PropertyControlData.Indeterminate Then
+                If Value Is Indeterminate Then
                     'Nothing to do here
                     'Indeterminate values are when the multiple configs are being edited
                     'and the values are different for each config

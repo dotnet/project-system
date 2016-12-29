@@ -44,8 +44,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New()
             Me.SuspendLayout()
 
-            Me.Text = SR.GetString(SR.PPG_PropertyPageControlName)
-            Me.AccessibleRole = System.Windows.Forms.AccessibleRole.PropertyPage
+            Me.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_PropertyPageControlName)
+            Me.AccessibleRole = AccessibleRole.PropertyPage
             Me._serviceProvider = serviceProvider
 
             'This call is required by the Windows Form Designer.
@@ -251,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _manualPageScaling As Boolean = False
 
         'Backcolor for all property pages
-        Public Shared ReadOnly PropPageBackColor As Color = System.Drawing.SystemColors.Control
+        Public Shared ReadOnly PropPageBackColor As Color = SystemColors.Control
 
         Private _activated As Boolean = True
         Private _inDelayValidation As Boolean
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The property name and DISPIDs must both refer to the same property.
         ''' </remarks>
         Protected Function GetCurrentProperty(dispid As Integer, PropertyName As String, ByRef obj As Object) As Boolean
-            PropertyName = Common.Utils.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
+            PropertyName = Common.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
 
             'Check current property pages
             If GetPropertyFromRunningPages(Me, dispid, obj) Then
@@ -1136,7 +1136,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Trace.WriteLine("PDExtenders: " & DebugMessage)
                 Trace.Indent()
                 For Each Prop As PropertyDescriptor In Properties
-                    Trace.WriteLine(Prop.Name & " [" & VB.TypeName(Prop) & "]" & ": " & Prop.PropertyType.Name)
+                    Trace.WriteLine(Prop.Name & " [" & TypeName(Prop) & "]" & ": " & Prop.PropertyType.Name)
                 Next
                 Trace.Unindent()
             End If
@@ -1328,7 +1328,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'This must done after getting the DTE so that ServiceProvider can be obtained
 
                 Dim aem As AutomationExtenderManager =
-                    Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager.GetAutomationExtenderManager(ServiceProvider)
+                    AutomationExtenderManager.GetAutomationExtenderManager(ServiceProvider)
 
                 '... First for the actual objects passed in to SetObjects
                 Try
@@ -1349,7 +1349,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             TraceTypeDescriptorCollection("*** Extended properties collection for objects #" & i, m_ObjectsPropertyDescriptorsArray(i))
                         Else
                             'No extenders
-                            m_ObjectsPropertyDescriptorsArray(i) = System.ComponentModel.TypeDescriptor.GetProperties(objects(i))
+                            m_ObjectsPropertyDescriptorsArray(i) = TypeDescriptor.GetProperties(objects(i))
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Properties collection #" & i & " does not contain extended properties.")
                         End If
                     Next i
@@ -1378,7 +1378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             TraceTypeDescriptorCollection("*** Extended common properties collection", m_CommonPropertyDescriptors)
                         Else
                             'No extenders
-                            m_CommonPropertyDescriptors = System.ComponentModel.TypeDescriptor.GetProperties(CommonPropertiesObject)
+                            m_CommonPropertyDescriptors = TypeDescriptor.GetProperties(CommonPropertiesObject)
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Common properties collection does not contain extended properties.")
                         End If
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the common properties", NameOf(PropPageUserControlBase))
@@ -1685,7 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If canThrow Then
                         Throw New ValidationException(finalResult, finalMessage, firstControl)
                     Else
-                        Dim caption As String = SR.GetString(SR.APPDES_Title)
+                        Dim caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
                         Dim dialogResult As DialogResult = AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, finalMessage, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         If firstControl IsNot Nothing Then
                             firstControl.Focus()
@@ -1739,7 +1739,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub PostValidation()
             ' NOTE: We always post the message, but start validation only the focus is really out.
             ' We delay check this, so we don't get into the problem when winForm hasn't sync status correctly, which IS a problem in some cases (tab).
-            Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.AppDesCommon.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
+            Interop.NativeMethods.PostMessage(Handle, Common.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
         End Sub
 
 #End Region
@@ -2069,7 +2069,7 @@ NextControl:
                             '  project reload).
                             For Each cd As PropertyControlData In ControlData
                                 If cd IsNot _controlData AndAlso cd.IsDirty Then
-                                    ShowErrorMessage(SR.GetString(SR.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
+                                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
                                     Exit For
                                 End If
                             Next
@@ -2249,12 +2249,12 @@ NextControl:
                     End If
 #If DEBUG Then
                     If Common.Switches.PDUndo.TraceWarning Then
-                        PropertyNames &= " [OldValue=" & Common.Utils.DebugToString(_controlData.InitialValue) & "] "
+                        PropertyNames &= " [OldValue=" & Common.DebugToString(_controlData.InitialValue) & "] "
                     End If
 #End If
                 End If
             Next _controlData
-            Description = SR.GetString(SR.PPG_UndoTransaction, New String() {PropertyNames})
+            Description = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_UndoTransaction, New String() {PropertyNames})
             Return Description
         End Function
 
@@ -2930,7 +2930,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(ex As Exception, HelpLink As String)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, "", ex, Caption, HelpLink)
         End Sub
 
@@ -2950,7 +2950,7 @@ NextControl:
         ''' <param name="ex">The exception to include in the message.  The exception's message will be on a second line after errorMessage.</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, ex As Exception)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, ex, Caption)
         End Sub
 
@@ -2961,7 +2961,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, HelpLink As String)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, HelpLink)
         End Sub
 
@@ -2992,8 +2992,8 @@ NextControl:
             Get
                 If (_UIShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
-                    If Common.Utils.VBPackageInstance IsNot Nothing Then
-                        VsUiShell = TryCast(Common.Utils.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
@@ -3014,8 +3014,8 @@ NextControl:
             Get
                 If (_UIShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
-                    If Common.Utils.VBPackageInstance IsNot Nothing Then
-                        VsUiShell = TryCast(Common.Utils.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
@@ -3055,10 +3055,10 @@ NextControl:
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <remarks>Will throw an exception on failure.</remarks>
         Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
-            Debug.Assert(IO.Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
+            Debug.Assert(Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
 
             'Canonicalize the file name
-            FileName = IO.Path.GetFullPath(FileName)
+            FileName = Path.GetFullPath(FileName)
 
 
             'First see if it is already in the project
@@ -3139,14 +3139,14 @@ NextControl:
                 '  can be an issue)
                 Try
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
-                    ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             Else
                 'Not yet created, create, site and initialize
                 Try
-                    Page = CType(System.Activator.CreateInstance(PageType), PropPageUserControlBase)
+                    Page = CType(Activator.CreateInstance(PageType), PropPageUserControlBase)
                     _childPages.Add(PageType, Page)
                     Dim ChildPageSite As New ChildPageSite(Page, _site, _propPageUndoSite)
                     Page.SetPageSite(ChildPageSite)
@@ -3154,9 +3154,9 @@ NextControl:
                         DirectCast(Page, IVsProjectDesignerPage).SetSite(ChildPageSite)
                     End If
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
                     _childPages.Remove(PageType)
-                    ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             End If
@@ -3230,7 +3230,7 @@ NextControl:
                     NewRelativePath = GetRelativeDirectoryPath(BasePath, NewRelativePath)
                 End If
 
-                NewRelativePath = Common.Utils.AppendBackslash(NewRelativePath)
+                NewRelativePath = Common.AppendBackslash(NewRelativePath)
                 Return True
             End If
 
@@ -3279,7 +3279,7 @@ NextControl:
             Else
                 Try
                     'Path needs a backslash at the end, or it will be interpreted as a directory + filename
-                    InitialDirectory = Path.GetFullPath(Common.Utils.AppendBackslash(InitialDirectory))
+                    InitialDirectory = Path.GetFullPath(Common.AppendBackslash(InitialDirectory))
                 Catch ex As Exception
                     InitialDirectory = ""
                 End Try
@@ -3287,10 +3287,10 @@ NextControl:
 
             Const MAX_DIR_NAME As Integer = 512
             Dim browseinfo As VSBROWSEINFOW()
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MAX_DIR_NAME * 2 + 2)
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MAX_DIR_NAME * 2 + 2)
             Try
                 browseinfo = New VSBROWSEINFOW(0) {}
-                browseinfo(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(browseinfo(0)))
+                browseinfo(0).lStructSize = CUInt(Marshal.SizeOf(browseinfo(0)))
                 browseinfo(0).hwndOwner = Me.Handle
                 browseinfo(0).pwzInitialDir = InitialDirectory
                 browseinfo(0).pwzDlgTitle = DialogTitle
@@ -3300,9 +3300,9 @@ NextControl:
 
                 Dim hr As Integer = uishell.GetDirectoryViaBrowseDlg(browseinfo)
                 If VSErrorHandler.Succeeded(hr) Then
-                    DirName = System.Runtime.InteropServices.Marshal.PtrToStringUni(stringMemPtr)
-                    If Microsoft.VisualBasic.Right(DirName, 1) <> System.IO.Path.DirectorySeparatorChar Then
-                        DirName &= System.IO.Path.DirectorySeparatorChar
+                    DirName = Marshal.PtrToStringUni(stringMemPtr)
+                    If VB.Right(DirName, 1) <> Path.DirectorySeparatorChar Then
+                        DirName &= Path.DirectorySeparatorChar
                     End If
                     NewValue = DirName
                     Success = True
@@ -3310,7 +3310,7 @@ NextControl:
                     'User cancelled out of dialog
                 End If
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return Success
@@ -3326,7 +3326,7 @@ NextControl:
         ''' <returns>True if the user selected a file, otherwise False.</returns>
         ''' <remarks></remarks>
         Protected Function GetFileViaBrowse(InitialDirectory As String, ByRef NewValue As String, Filter As String) As Boolean
-            Dim fileNames As ArrayList = Common.Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, InitialDirectory, SR.GetString(SR.PPG_SelectFileTitle), Filter, 0, False)
+            Dim fileNames As ArrayList = Common.GetFilesViaBrowse(ServiceProvider, Me.Handle, InitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_SelectFileTitle), Filter, 0, False)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 NewValue = CStr(fileNames(0))
                 Return True
@@ -3389,8 +3389,8 @@ NextControl:
         Protected Function GetRelativeDirectoryPath(BasePath As String, DirectoryPath As String) As String
             Dim RelativePath As String = ""
 
-            BasePath = Common.Utils.AppendBackslash(BasePath)
-            DirectoryPath = Common.Utils.AppendBackslash(DirectoryPath)
+            BasePath = Common.AppendBackslash(BasePath)
+            DirectoryPath = Common.AppendBackslash(DirectoryPath)
 
             If DirectoryPath = "" Then
                 DirectoryPath = ""
@@ -3401,9 +3401,9 @@ NextControl:
             End If
 
             ' Remove the project directory path
-            If String.Compare(BasePath, Microsoft.VisualBasic.Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) = 0 Then
+            If String.Compare(BasePath, Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) = 0 Then
                 Dim ch As Char = CChar(Mid(DirectoryPath, Len(BasePath), 1))
-                If ch = System.IO.Path.DirectorySeparatorChar OrElse ch = System.IO.Path.AltDirectorySeparatorChar Then
+                If ch = Path.DirectorySeparatorChar OrElse ch = Path.AltDirectorySeparatorChar Then
                     RelativePath = Mid(DirectoryPath, Len(BasePath) + 1)
                 ElseIf ch = ChrW(0) Then
                     RelativePath = ""
@@ -3428,7 +3428,7 @@ NextControl:
             Debug.Assert(VB.Right(FilePath, 1) <> Path.DirectorySeparatorChar AndAlso VB.Right(FilePath, 1) <> Path.AltDirectorySeparatorChar, "Passed in a directory instead of a file to RelativeFilePath")
 
             If Len(FilePath) > 0 Then
-                Dim FileDirectory As String = System.IO.Path.GetDirectoryName(FilePath)
+                Dim FileDirectory As String = Path.GetDirectoryName(FilePath)
                 Return Path.Combine(GetRelativeDirectoryPath(BasePath, FileDirectory), Path.GetFileName(FilePath))
             Else
                 Return ""
@@ -3806,7 +3806,7 @@ NextControl:
 
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
 
@@ -3900,7 +3900,7 @@ NextControl:
                         Dim maxSize As Size = MaximumSize
 
                         If Me.AutoSize Then
-                            MinimumSize = GetPreferredSize(System.Drawing.Size.Empty)
+                            MinimumSize = GetPreferredSize(Size.Empty)
                         Else
                             MinimumSize = ScaleSize(MinimumSize, dx, dy)
                         End If
@@ -3993,7 +3993,7 @@ NextControl:
                     If TypeOf ExtendedObjects(i) Is ICustomTypeDescriptor Then
                         ObjectsPropertyDescriptorsArray(i) = CType(ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(New Attribute() {})
                     Else
-                        ObjectsPropertyDescriptorsArray(i) = System.ComponentModel.TypeDescriptor.GetProperties(ExtendedObjects(i))
+                        ObjectsPropertyDescriptorsArray(i) = TypeDescriptor.GetProperties(ExtendedObjects(i))
                     End If
 
                     'We don't actually need to do anything with the properties that we got, we can throw them away.
@@ -4054,7 +4054,7 @@ NextControl:
 
         <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = Microsoft.VisualStudio.Editors.AppDesCommon.WmUserConstants.WM_PAGE_POSTVALIDATION Then
+            If m.Msg = Common.WmUserConstants.WM_PAGE_POSTVALIDATION Then
 
                 If _delayValidationGroup >= 0 AndAlso _activated AndAlso Not _inDelayValidation AndAlso Not IsFocusInControlGroup(_delayValidationGroup) Then
                     ProcessDelayValidationQueue(False)
@@ -4354,7 +4354,7 @@ NextControl:
             Dim SuspendAllChanges As Boolean = _suspendPropertyChangeListeningDispIds.Contains(DISPID_UNKNOWN)
             Dim ChangeIsDirect As Boolean = SuspendAllChanges _
                 OrElse (DISPID <> DISPID_UNKNOWN AndAlso _suspendPropertyChangeListeningDispIds.Contains(DISPID))
-            Debug.Assert(Common.Utils.Implies(_fIsApplying, PropertyOnPageBeingChanged()), "If we're applying, the change should have come through a PropertyControlData")
+            Debug.Assert(Common.Implies(_fIsApplying, PropertyOnPageBeingChanged()), "If we're applying, the change should have come through a PropertyControlData")
 
             Dim Source As PropertyChangeSource = PropertyChangeSource.External
 

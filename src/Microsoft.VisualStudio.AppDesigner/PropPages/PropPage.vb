@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub IPropertyPage2_Activate(hWndParent As IntPtr, pRect() As RECT, bModal As Integer) Implements IPropertyPage2.Activate, IPropertyPage.Activate
 
             If _propPage IsNot Nothing Then
-                Debug.Assert(Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle).Equals(hWndParent), "Property page already Activated with different parent")
+                Debug.Assert(NativeMethods.GetParent(_propPage.Handle).Equals(hWndParent), "Property page already Activated with different parent")
                 Return
             End If
 
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function IPropertyPage_Apply() As Integer Implements IPropertyPage.Apply
             Apply()
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Return NativeMethods.S_OK
         End Function
 
         Private Sub IPropertyPage2_Apply() Implements IPropertyPage2.Apply
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _propPage.Parent = Nothing
                 ElseIf _wasSetParentCalled Then
                     'We sited ourselves via a native SetParent call
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetParent(_propPage.Handle, _prevParent)
+                    NativeMethods.SetParent(_propPage.Handle, _prevParent)
                 End If
 
                 _propPage.Dispose()
@@ -398,18 +398,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable Function IsPageDirty() As Integer
 
             If _propPage Is Nothing Then
-                Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+                Return NativeMethods.S_FALSE
             End If
 
             Try
                 If CType(_propPage, IPropertyPageInternal).IsPageDirty() Then
-                    Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
             Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsPageDirty), NameOf(PropPageBase))
-                Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.E_FAIL
+                Return NativeMethods.E_FAIL
             End Try
 
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+            Return NativeMethods.S_FALSE
 
         End Function
 
@@ -586,12 +586,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     pMsg(0).wParam = m.WParam
                     pMsg(0).lParam = m.LParam
                     'Returning S_OK indicates we handled the message ourselves
-                    Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
             End If
 
             'Returning S_FALSE indicates we have not handled the message
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+            Return NativeMethods.S_FALSE
         End Function
 
 
@@ -600,7 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function EditProperty(dispid As Integer) As Integer
-            Dim retVal As Integer = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Dim retVal As Integer = NativeMethods.S_OK
 
             _dispidFocus = dispid
 
@@ -627,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Not (TypeOf _propPage Is IPropertyPageInternal) Then
                     Throw New InvalidOperationException("Control must implement IPropertyPageInternal")
                 End If
-                _prevParent = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle)
+                _prevParent = NativeMethods.GetParent(_propPage.Handle)
 
                 Common.Switches.TracePDPerf("PropPage.Create: Setting the property page's parent")
 
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     sizingParent.AutoScroll = True
                     sizingParent.Text = "SizingParent" 'For debugging purposes (Spy++)
                     _propPage.Parent = sizingParent
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetParent(sizingParent.Handle, hWndParent)
+                    NativeMethods.SetParent(sizingParent.Handle, hWndParent)
                     _wasSetParentCalled = True
                     Debug.Assert(_propPage.Parent Is Nothing OrElse AlwaysUseSetParent, "Huh?  Deactivate() logic depends on this.")
                 End If

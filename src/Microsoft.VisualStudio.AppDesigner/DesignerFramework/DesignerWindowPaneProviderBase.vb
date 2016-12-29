@@ -327,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndoing(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
+                    NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
                     Cursor.Current = Cursors.WaitCursor
                 End If
@@ -342,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndone(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
+                    NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
                     _view.Invalidate(True)
                     Cursor.Current = _undoCursor
                     _undoCursor = Nothing
@@ -373,7 +373,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     If Not DesignerRootView.CanFocus Then
                         Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... root view isn't currently focusable.")
                     End If
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Microsoft.VisualBasic.Hex(h.ToInt32))
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Hex(h.ToInt32))
 #End If
                 End If
             End Sub
@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 End Try
 
                 If (viewChild Is Nothing) Then
-                    Dim er As String = SR.GetString(SR.DFX_WindowPane_UnknownError)
+                    Dim er As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_WindowPane_UnknownError)
                     Dim errors As ArrayList = New ArrayList()
                     errors.Add(er)
                     viewChild = New ErrorControl(errors)
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                    Return Form.DefaultFont
+                    Return Control.DefaultFont
                 End Get
             End Property
 

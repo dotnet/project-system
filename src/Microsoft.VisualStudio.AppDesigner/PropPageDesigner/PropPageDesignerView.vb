@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             'Add any initialization after the InitializeComponent() call
 
-            Me.BackColor = PropertyPages.PropPageUserControlBase.PropPageBackColor
+            Me.BackColor = PropPageUserControlBase.PropPageBackColor
 
             ' Scale the width of the Configuration/Platform combo boxes
             Me.ConfigurationComboBox.Width = DpiHelper.LogicalToDeviceUnitsX(ConfigurationComboBox.Width)
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'ConfigurationComboBox
             '
             resources.ApplyResources(Me.ConfigurationComboBox, "ConfigurationComboBox")
-            Me.ConfigurationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.ConfigurationComboBox.DropDownStyle = ComboBoxStyle.DropDownList
             Me.ConfigurationComboBox.FormattingEnabled = True
             Me.ConfigurationComboBox.Name = "ConfigurationComboBox"
             '
@@ -116,14 +116,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'PlatformComboBox
             '
             resources.ApplyResources(Me.PlatformComboBox, "PlatformComboBox")
-            Me.PlatformComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.PlatformComboBox.DropDownStyle = ComboBoxStyle.DropDownList
             Me.PlatformComboBox.FormattingEnabled = True
             Me.PlatformComboBox.Name = "PlatformComboBox"
             '
             'ConfigDividerLine
             '
             resources.ApplyResources(Me.ConfigDividerLine, "ConfigDividerLine")
-            Me.ConfigDividerLine.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.ConfigDividerLine.BorderStyle = BorderStyle.Fixed3D
             Me.ConfigDividerLine.Name = "ConfigDividerLine"
             '
             'ConfigurationLabel
@@ -139,17 +139,17 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'PropPageDesignerViewLayoutPanel
             '
             resources.ApplyResources(Me.PropPageDesignerViewLayoutPanel, "PropPageDesignerViewLayoutPanel")
-            Me.PropPageDesignerViewLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.PropPageDesignerViewLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
             Me.PropPageDesignerViewLayoutPanel.Controls.Add(Me.ConfigurationPanel, 0, 0)
             Me.PropPageDesignerViewLayoutPanel.Controls.Add(Me.PropertyPagePanel, 0, 1)
             Me.PropPageDesignerViewLayoutPanel.Name = "PropPageDesignerViewLayoutPanel"
             Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New RowStyle)
-            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
             '
             'ConfigurationPanel
             '
             resources.ApplyResources(Me.ConfigurationPanel, "ConfigurationPanel")
-            Me.ConfigurationPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.ConfigurationPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
             Me.ConfigurationPanel.Controls.Add(Me.ConfigDividerLine, 1, 1)
             Me.ConfigurationPanel.Controls.Add(Me.ConfigurationFlowLayoutPanel, 0, 0)
             Me.ConfigurationPanel.Name = "ConfigurationPanel"
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             resources.ApplyResources(Me.ConfigurationTableLayoutPanel, "ConfigurationTableLayoutPanel")
             Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
             Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
-            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 10.0!))
             Me.ConfigurationTableLayoutPanel.Controls.Add(Me.ConfigurationComboBox, 1, 0)
             Me.ConfigurationTableLayoutPanel.Controls.Add(Me.ConfigurationLabel, 0, 0)
             Me.ConfigurationTableLayoutPanel.Name = "ConfigurationTableLayoutPanel"
@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         _components.Dispose()
                     End If
                     _configurationState = Nothing
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
 #If DEBUG Then
@@ -519,7 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="PropPage"></param>
         ''' <remarks></remarks>
         Public Sub ActivatePage(PropPage As OleInterop.IPropertyPage)
-            Common.Switches.TracePDPerfBegin("PropPageDesignerView.ActivatePage")
+            Switches.TracePDPerfBegin("PropPageDesignerView.ActivatePage")
             If PropPage Is Nothing Then
                 'Property page failed to load - just give empty page
             Else
@@ -581,12 +581,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     SetUndoRedoCleanState()
 
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
                     'There was a problem displaying the property page.  Show the error control.
                     DisplayErrorControl(ex)
                 End Try
             End If
-            Common.Switches.TracePDPerfEnd("PropPageDesignerView.ActivatePage")
+            Switches.TracePDPerfEnd("PropPageDesignerView.ActivatePage")
         End Sub
 
         ''' <summary>
@@ -602,7 +602,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If TypeOf (ex) Is PropertyPageException AndAlso Not DirectCast(ex, PropertyPageException).ShowHeaderAndFooterInErrorControl Then
                 _errorControl = New ErrorControl(ex.Message)
             Else
-                _errorControl = New ErrorControl(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & AppDesCommon.DebugMessageFromException(ex))
+                _errorControl = New ErrorControl(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & DebugMessageFromException(ex))
             End If
             _errorControl.Dock = DockStyle.Fill
             _errorControl.Visible = True
@@ -616,22 +616,22 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Hwnd"></param>
         ''' <remarks></remarks>
         Private Sub UpdateWindowStyles(Hwnd As IntPtr)
-            Dim HwndPage As IntPtr = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetTopWindow(Hwnd)
+            Dim HwndPage As IntPtr = NativeMethods.GetTopWindow(Hwnd)
             Dim StyleValue, PreviousStyle As IntPtr
             Dim PreviousExStyle As IntPtr
             Dim ExStyleValue As Long
 
             If (Not HwndPage.Equals(IntPtr.Zero)) Then
-                PreviousStyle = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetWindowLong(HwndPage, Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GWL_STYLE)
-                StyleValue = New IntPtr(PreviousStyle.ToInt64() And (Not (Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.DS_CONTROL Or Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.WS_TABSTOP)))
+                PreviousStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_STYLE)
+                StyleValue = New IntPtr(PreviousStyle.ToInt64() And (Not (NativeMethods.DS_CONTROL Or NativeMethods.WS_TABSTOP)))
 
-                Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetWindowLong(HwndPage, Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GWL_STYLE, StyleValue)
+                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_STYLE, StyleValue)
 
-                PreviousExStyle = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetWindowLong(HwndPage, Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GWL_EXSTYLE)
+                PreviousExStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE)
                 '// if WS_EX_CONTROLPARENT isn't on, then mnemonics for buttons on the frame
                 '// won't work if your focus is inside the sheet
-                ExStyleValue = PreviousExStyle.ToInt64() Or Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.WS_EX_CONTROLPARENT
-                Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetWindowLong(HwndPage, Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GWL_EXSTYLE, New IntPtr(ExStyleValue))
+                ExStyleValue = PreviousExStyle.ToInt64() Or NativeMethods.WS_EX_CONTROLPARENT
+                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE, New IntPtr(ExStyleValue))
             End If
         End Sub
 
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Try
                     Page.SetObjects(0, Nothing)
                     Page.Deactivate()
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(UnLoadPage), NameOf(PropPageDesignerView))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UnLoadPage), NameOf(PropPageDesignerView))
                 End Try
             End If
             If _errorControl IsNot Nothing Then
@@ -722,15 +722,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Protected Sub UpdatePageSize()
             If _loadedPage IsNot Nothing Then
                 Dim RectArray As OleInterop.RECT() = New OleInterop.RECT() {GetPageRect()}
-                Common.Switches.TracePDPerfBegin("PropPageDesignerView.UpdatePageSize (" _
+                Switches.TracePDPerfBegin("PropPageDesignerView.UpdatePageSize (" _
                     & RectArray(0).right - RectArray(0).left & ", " & RectArray(0).bottom - RectArray(0).top & ")")
                 _loadedPage.Move(RectArray)
-                Common.Switches.TracePDPerfEnd("PropPageDesignerView.UpdatePageSize")
+                Switches.TracePDPerfEnd("PropPageDesignerView.UpdatePageSize")
             End If
         End Sub
 
         Protected Overrides Sub OnLayout(e As LayoutEventArgs)
-            Common.Switches.TracePDPerfBegin(e, "PropPageDesignerView.OnLayout()")
+            Switches.TracePDPerfBegin(e, "PropPageDesignerView.OnLayout()")
             MyBase.OnLayout(e)
 
             ' Hard coded to change the size of the LayoutPanel to fit our clientSize. Otherwise, it will pick its own size...
@@ -738,7 +738,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 PropPageDesignerViewLayoutPanel.Size = Me.ClientSize
                 UpdatePageSize()
             End If
-            Common.Switches.TracePDPerfEnd("PropPageDesignerView.OnLayout()")
+            Switches.TracePDPerfEnd("PropPageDesignerView.OnLayout()")
         End Sub
 
 
@@ -845,13 +845,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
 
 
         'Standard title for messageboxes, etc.
-        Private ReadOnly _messageBoxCaption As String = SR.GetString(SR.APPDES_Title)
+        Private ReadOnly _messageBoxCaption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
 
 
         ''' <summary>
@@ -870,7 +870,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
                 Optional HelpLink As String = Nothing) As DialogResult
 
-            Return AppDesDesignerFramework.DesignerMessageBox.Show(_rootDesigner, Message, Me._messageBoxCaption, _
+            Return DesignerMessageBox.Show(_rootDesigner, Message, Me._messageBoxCaption, _
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
@@ -900,9 +900,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Non-configuration pages should have the configuration panel visible but disabled, and the text should be "N/A"
                 Me.ConfigurationPanel.Enabled = False
 
-                Me.ConfigurationComboBox.Items.Add(SR.GetString(SR.PPG_NotApplicable))
+                Me.ConfigurationComboBox.Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_NotApplicable))
                 Me.ConfigurationComboBox.SelectedIndex = 0
-                Me.PlatformComboBox.Items.Add(SR.GetString(SR.PPG_NotApplicable))
+                Me.PlatformComboBox.Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_NotApplicable))
                 Me.PlatformComboBox.SelectedIndex = 0
             End If
 
@@ -1001,7 +1001,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   undo/redo story.
         ''' </summary>
         Private Sub ConfigurationState_ClearConfigPageUndoRedoStacks()
-            Common.Switches.TracePDUndo("Clearing undo/redo stack for page """ & GetPageTitle() & """")
+            Switches.TracePDUndo("Clearing undo/redo stack for page """ & GetPageTitle() & """")
             ClearUndoStackForPage()
         End Sub
 
@@ -1148,7 +1148,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(SelectedConfigItem.Name, SelectedPlatformItem.Name, Cfg)) Then
                         ConfigObjects = New Object() {Cfg}
                     Else
-                        ShowErrorMessage(SR.GetString(SR.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                     End If
                 Else
                     'Use the DTE to find all the configs with a certain config name or platform name, then
@@ -1172,7 +1172,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(DTEConfig.ConfigurationName, DTEConfig.PlatformName, Cfg)) Then
                             ConfigObjects(i) = Cfg
                         Else
-                            ShowErrorMessage(SR.GetString(SR.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                            ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                             ConfigObjects = Nothing
                             Exit For
                         End If
@@ -1223,7 +1223,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Sub ConfigurationComboBox_DropDown(sender As Object, e As EventArgs) Handles ConfigurationComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
-            AppDesCommon.SetComboBoxDropdownWidth(ConfigurationComboBox)
+            SetComboBoxDropdownWidth(ConfigurationComboBox)
         End Sub
 
 
@@ -1235,7 +1235,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Sub PlatformComboBox_DropDown(sender As Object, e As EventArgs) Handles PlatformComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
-            AppDesCommon.SetComboBoxDropdownWidth(PlatformComboBox)
+            SetComboBoxDropdownWidth(PlatformComboBox)
         End Sub
 
 
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw New ArgumentException
             End If
 
-            Common.Switches.TracePDUndo("PropPageDesignerView.GetProperty(" & PropertyName & ")")
+            Switches.TracePDUndo("PropPageDesignerView.GetProperty(" & PropertyName & ")")
 
             Dim PropPageUndo As IVsProjectDesignerPage = TryCast(_loadedPage, IVsProjectDesignerPage)
             Debug.Assert(PropPageUndo IsNot Nothing)
@@ -1266,7 +1266,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Dim Objects As Object() = Nothing
                         Dim Values As Object() = Nothing
 
-                        Common.Switches.TracePDUndo("  Multi-value undo/redo supported by property.")
+                        Switches.TracePDUndo("  Multi-value undo/redo supported by property.")
                         Try
                             'This page supports multiple-value undo/redo for this property (i.e., restoring different
                             '  values for each config), so attempt to get those values.
@@ -1279,7 +1279,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Else
                                 'GetPropertyMultipleValues returned Nothing.  Try for a single value later.
                             End If
-                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Prop page said it supported multiple value undo, but then failed with not supported", NameOf(PropPageDesignerView))
+                        Catch ex As NotSupportedException When ReportWithoutCrash(ex, "Prop page said it supported multiple value undo, but then failed with not supported", NameOf(PropPageDesignerView))
                             'Ignore error and try single value instead
                         Catch ex As ArgumentException
                             'Most likely this indicates that Objects were not IVsCfg (this could be the case for non-config-dependent pages).  We shouldn't 
@@ -1290,10 +1290,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                 "Unexpected exception in MultipleValues constructor.  Reverting to single-value undo/redo.")
                         End Try
                     Else
-                        Common.Switches.TracePDUndo("  Multi-value undo/redo not supported.")
+                        Switches.TracePDUndo("  Multi-value undo/redo not supported.")
                     End If
                 Else
-                    Common.Switches.TracePDUndo("  Not a Config page, no multi-value undo.")
+                    Switches.TracePDUndo("  Not a Config page, no multi-value undo.")
                     Debug.Assert(Not PropPageUndo.SupportsMultipleValueUndo(PropertyName), _
                         "A property on a config-independent page supports multiple-value undo/redo.  That means the page contains a config-dependent property.  And that doesn't seem right, does it?" _
                         & vbCrLf & "PropertyName = " & PropertyName)
@@ -1317,7 +1317,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 End If
 
                 'Done.
-                Common.Switches.TracePDUndo("  Value=" & AppDesCommon.DebugToString(Value))
+                Switches.TracePDUndo("  Value=" & DebugToString(Value))
                 Return Value
             Else
                 Debug.Fail("PropertyPagePropertyDescriptor.GetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
@@ -1339,7 +1339,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw CreateArgumentException("PropertyName")
             End If
 
-            Common.Switches.TracePDUndo("PropPageDesignerView.SetProperty(""" & PropertyName & """, " & AppDesCommon.DebugToString(Value) & ")")
+            Switches.TracePDUndo("PropPageDesignerView.SetProperty(""" & PropertyName & """, " & DebugToString(Value) & ")")
 
             Dim PropPageUndo As IVsProjectDesignerPage = TryCast(_loadedPage, IVsProjectDesignerPage)
             Debug.Assert(PropPageUndo IsNot Nothing)
@@ -1348,7 +1348,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Dim MultiValues As MultipleValuesStore = TryCast(Value, MultipleValuesStore)
                 If MultiValues IsNot Nothing Then
                     'Yes - multiple values need to be undone.
-                    Common.Switches.TracePDUndo("  Multi-value undo/redo.")
+                    Switches.TracePDUndo("  Multi-value undo/redo.")
 
                     Debug.Assert(IsConfigPage, "How did we get multiple properties values for undo/redo for a non-config-dependent page?")
                     If Not PropPageUndo.SupportsMultipleValueUndo(PropertyName) Then
@@ -1363,7 +1363,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Dim Objects As Object() = MultiValues.GetObjects(VsCfgProvider)
                         Try
                             PropPageUndo.SetPropertyMultipleValues(PropertyName, Objects, MultiValues.Values)
-                        Catch ex As NotSupportedException When AppDesCommon.ReportWithoutCrash(ex, "Property page threw not supported exception trying to undo/redo multi-value change", NameOf(PropPageDesignerView))
+                        Catch ex As NotSupportedException When ReportWithoutCrash(ex, "Property page threw not supported exception trying to undo/redo multi-value change", NameOf(PropPageDesignerView))
                         End Try
                     End If
                 Else
@@ -1382,7 +1382,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Sub ConvertEnumToUnderlyingType(ByRef Value As Object)
             If Value IsNot Nothing AndAlso Value.GetType().IsEnum Then
-                Value = Convert.ChangeType(Value, System.Type.GetTypeCode(Value.GetType().UnderlyingSystemType))
+                Value = Convert.ChangeType(Value, Type.GetTypeCode(Value.GetType().UnderlyingSystemType))
             End If
         End Sub
 
@@ -1466,7 +1466,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns>return False if it failed</returns>
         ''' <remarks></remarks>
         Private Function CommitPendingChanges() As Boolean
-            Common.Switches.TracePDPerfBegin("PropPageDesignerView.CommitPendingChanges")
+            Switches.TracePDPerfBegin("PropPageDesignerView.CommitPendingChanges")
             Try
                 If _loadedPageSite IsNot Nothing Then
                     If Not _loadedPageSite.CommitPendingChanges() Then
@@ -1484,7 +1484,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 Return True
             Finally
-                Common.Switches.TracePDPerfEnd("PropPageDesignerView.CommitPendingChanges")
+                Switches.TracePDPerfEnd("PropPageDesignerView.CommitPendingChanges")
             End Try
         End Function
 
@@ -1518,19 +1518,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overrides Function ProcessTabKey(forward As Boolean) As Boolean
-            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.ProcessTabKey")
+            Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.ProcessTabKey")
 
             If _isNativeHostedPropertyPage Then
                 'Try tabbing to another control in the property page designer view
                 If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
-                    Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ...PropPageDesignerView.SelectNextControl handled it")
+                    Switches.TracePDMessageRouting(TraceLevel.Info, "  ...PropPageDesignerView.SelectNextControl handled it")
                     Return True
                 End If
 
                 If _loadedPage IsNot Nothing Then
                     'We hit the last tabbable control in the property page designer, set focus to the first (or last)
                     '  control in the property page itself.
-                    Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "  ...Setting focus to " & IIf(forward, "first", "last") & " control on the page")
+                    Switches.TracePDMessageRouting(TraceLevel.Warning, "  ...Setting focus to " & IIf(forward, "first", "last") & " control on the page")
                     If Not FocusFirstOrLastPropertyPageControl(forward) Then
                         'No focusable controls in the property page (could be disabled), set focus to the
                         '  property page designer again
@@ -1551,7 +1551,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'For debug tracing
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Function PreProcessMessage(ByRef msg As Message) As Boolean
-            Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
+            Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
             Return MyBase.PreProcessMessage(msg)
         End Function
 
@@ -1579,7 +1579,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     '  if it's not an input key for the currently-active control, and there's
                     '  no way to get that info without late binding, so we'll just only
                     '  accept ALT accelerators.
-                    If (Control.ModifierKeys And Keys.Alt) <> 0 Then
+                    If (ModifierKeys And Keys.Alt) <> 0 Then
                         Dim PropertyPageHwnd As IntPtr = GetPropertyPageTopHwnd()
                         Dim msg As OleInterop.MSG() = {New OleInterop.MSG}
                         With msg(0)
@@ -1608,7 +1608,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'Make sure to set the active control as well as doing SetFocus(), or else when
             '  devenv gets focus the focus will not go back to the correct control. 
             Me.ActiveControl = PropertyPagePanel
-            Return Utils.FocusFirstOrLastTabItem(GetPropertyPageTopHwnd(), First)
+            Return FocusFirstOrLastTabItem(GetPropertyPageTopHwnd(), First)
         End Function
 
 #End Region
@@ -1623,12 +1623,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return IntPtr.Zero
             End If
 
-            Return NativeMethods.GetWindow(PropertyPagePanel.Handle, AppDesInterop.win.GW_CHILD)
+            Return NativeMethods.GetWindow(PropertyPagePanel.Handle, win.GW_CHILD)
         End Function
 
 
         Public Sub OnActivated(activated As Boolean) Implements IVsEditWindowNotify.OnActivated
-            Common.Switches.TracePDPerfBegin("PropPageDesignerView.OnActivated")
+            Switches.TracePDPerfBegin("PropPageDesignerView.OnActivated")
             ' It is time to do all pending validations...
             Dim vbPropertyPage As IVsProjectDesignerPage = TryCast(_loadedPage, IVsProjectDesignerPage)
             If vbPropertyPage IsNot Nothing Then
@@ -1645,7 +1645,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 _rootDesigner.RefreshMenuStatus()
             End If
 
-            Common.Switches.TracePDPerfEnd("PropPageDesignerView.OnActivated")
+            Switches.TracePDPerfEnd("PropPageDesignerView.OnActivated")
         End Sub
 
 
@@ -1665,7 +1665,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If UndoManager IsNot Nothing Then
                         Try
                             UndoManager.DiscardFrom(Nothing) 'Causes it to clear all entries in the undo and redo stacks
-                        Catch ex As COMException When AppDesCommon.ReportWithoutCrash(ex, "Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?", NameOf(PropPageDesignerView))
+                        Catch ex As COMException When ReportWithoutCrash(ex, "Unable to clear the undo stack, perhaps a unit was open or in progress, or it is disabled?", NameOf(PropPageDesignerView))
                         End Try
                     End If
                 End If
@@ -1680,7 +1680,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Dim isSetFocusMessage As Boolean = False
-            If m.Msg = AppDesInterop.win.WM_SETFOCUS Then
+            If m.Msg = win.WM_SETFOCUS Then
                 isSetFocusMessage = True
             End If
 
@@ -1767,12 +1767,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Return UndoUnitsAvailable <> _undoUnitsOnStackAtCleanState
                 Else
                     'This can happen if the property page didn't load properly, etc.
-                    Common.Switches.TracePDUndo("*** ShouldShowDirtyIndicator: Returning FALSE because GetUndoUnitsAvailable failed (possibly couldn't get UndoEngine)")
+                    Switches.TracePDUndo("*** ShouldShowDirtyIndicator: Returning FALSE because GetUndoUnitsAvailable failed (possibly couldn't get UndoEngine)")
                     Return False
                 End If
             Else
                 'Pages which do not support undo/redo simply show the asterisk if they are dirty
-                If Me.PropPage.IsPageDirty() = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK Then
+                If Me.PropPage.IsPageDirty() = NativeMethods.S_OK Then
                     'Page is dirty
                     Return True
                 End If
@@ -1854,7 +1854,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 #If DEBUG Then
         Private Sub ConfigurationPanel_SizeChanged(sender As Object, e As EventArgs) Handles ConfigurationPanel.SizeChanged
-            Common.Switches.TracePDFocus(TraceLevel.Info, "ConfigurationPanel_SizeChanged: " & ConfigurationPanel.Size.ToString())
+            Switches.TracePDFocus(TraceLevel.Info, "ConfigurationPanel_SizeChanged: " & ConfigurationPanel.Size.ToString())
         End Sub
 #End If
 

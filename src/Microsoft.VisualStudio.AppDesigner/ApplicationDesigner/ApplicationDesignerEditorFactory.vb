@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ByRef CmdUIGuid As Guid,
                 ByRef pgrfCDW As Integer) As Integer
             pgrfCDW = 0
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As ApplicationDesignerLoader = Nothing
 
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(SR.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     If ExistingDocData Is Nothing Then
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New Exception(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Function
 
@@ -230,7 +230,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             'Debug.Assert(rguidLogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary), "NYI: Project Designer does not yet support choosing the initial property page thru the logical-view passed to our editor factory.")
 
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Return NativeMethods.S_OK
         End Function
 
         ''' <summary>

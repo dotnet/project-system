@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return Bitmap
             Else
                 Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(SR.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
+                Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
         End Function
 
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 BitmapStream = assembly.GetManifestResourceStream(ImageID)
             End If
             If Not BitmapStream Is Nothing Then
-                Dim Image As Image = Drawing.Image.FromStream(BitmapStream)
+                Dim Image As Image = Image.FromStream(BitmapStream)
                 If Not Image Is Nothing Then
                     Return Image
                 End If
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Else
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             End If
-            Throw New Package.InternalException(String.Format(SR.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
+            Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
 
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 
-            Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+            Debug.Fail(exceptionEventDescription & vbCrLf & $"Exception: {ex.ToString}")
             Return True
         End Function
 
@@ -381,7 +381,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             If vsUIShell IsNot Nothing Then
                 vsUIShell.SetErrorInfo(hr, errorMessage, 0, Nothing, Nothing)
             Else
-                System.Diagnostics.Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
+                Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
             End If
         End Sub
 
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function AppendBackslash(Path As String) As String
-            If Path <> "" AndAlso VB.Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso VB.Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
+            If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
             Else
                 Return Path
@@ -496,12 +496,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
             End If
 
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MaxPathName * 2 + 2)
-            System.Runtime.InteropServices.Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MaxPathName * 2 + 2)
+            Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
                 vsOpenFileName = New Interop.VSOPENFILENAMEW(0) {}
-                vsOpenFileName(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(vsOpenFileName(0)))
+                vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
                 vsOpenFileName(0).nMaxFileName = CUInt(MaxPathName)
@@ -522,7 +522,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Dim hr As Integer = uishell.GetOpenFileNameViaDlg(vsOpenFileName)
                 If VSErrorHandler.Succeeded(hr) Then
                     Dim buffer(MaxPathName) As Char
-                    System.Runtime.InteropServices.Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
+                    Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
                     Dim path As String = Nothing
                     Dim i As Integer = 0
                     For j As Integer = 0 To buffer.Length - 1
@@ -550,7 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     End If
                 End If
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return fileNames

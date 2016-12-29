@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                         Return False
                                     End If
 
-                                    If Not Common.Utils.FocusFirstOrLastTabItem(PPDView.ConfigurationPanel.Handle, Forward) Then
+                                    If Not Common.FocusFirstOrLastTabItem(PPDView.ConfigurationPanel.Handle, Forward) Then
                                         'No focusable controls in the property page designer (could be disabled or invisible), set focus to the
                                         '  property page again
                                         If Not PPDView.FocusFirstOrLastPropertyPageControl(Forward) Then

@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
             _hostingPanel.AutoScroll = True
             _hostingPanel.Text = "HostingPanel" 'For debugging
-            _hostingPanel.AccessibleName = SR.GetString(SR.APPDES_HostingPanelName)
+            _hostingPanel.AccessibleName = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_HostingPanelName)
 
             'Add any initialization after the InitializeComponent() call
             '
@@ -128,15 +128,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             With OverflowButton
                 .Name = "OverflowButton"
                 .Text = ""
-                .AccessibleName = SR.GetString(SR.APPDES_OverflowButton_AccessibilityName)
+                .AccessibleName = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_AccessibilityName)
                 .FlatAppearance.BorderColor = _defaultOverflowBorderColor
                 .FlatAppearance.MouseOverBackColor = _defaultOverflowHoverColor
                 .Size = New Size(18, 18)
                 .Visible = False 'Don't show it until we need it
-                _overflowTooltip.SetToolTip(OverflowButton, SR.GetString(SR.APPDES_OverflowButton_Tooltip))
+                _overflowTooltip.SetToolTip(OverflowButton, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_OverflowButton_Tooltip))
 
             End With
-            MyBase.Controls.Add(OverflowButton)
+            Controls.Add(OverflowButton)
         End Sub
 
 
@@ -179,8 +179,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
-            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
+            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
+            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
 
             If _broadcastMessageEventsHelper IsNot Nothing Then
                 _broadcastMessageEventsHelper.Dispose()
@@ -590,10 +590,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  Setting TabStop=False itsn't enough.
                 SetStyle(ControlStyles.Selectable, False)
 
-                MyBase.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-                MyBase.FlatAppearance.BorderSize = 0 'No border until the mouse is over it
-                MyBase.TabStop = True
-                MyBase.BackColor = Color.Transparent 'Need to let gradients show through the image when not hovered over
+                FlatStyle = FlatStyle.Flat
+                FlatAppearance.BorderSize = 0 'No border until the mouse is over it
+                TabStop = True
+                BackColor = Color.Transparent 'Need to let gradients show through the image when not hovered over
             End Sub
 
             Public Sub New(ImageResourceId As String, TransparentColor As Color)
@@ -652,7 +652,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property Description() As String
                 Get
-                    Return SR.GetString(SR.APPDES_TabListDescription)
+                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_TabListDescription)
                 End Get
             End Property
 

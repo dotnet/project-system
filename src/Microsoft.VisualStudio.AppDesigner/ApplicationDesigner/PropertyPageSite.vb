@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             'Fallback
-            pLocaleID = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetUserDefaultLCID()
+            pLocaleID = NativeMethods.GetUserDefaultLCID()
         End Sub
 
         Public Sub GetPageContainer(ByRef ppunk As Object) Implements OleInterop.IPropertyPageSite.GetPageContainer
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ' If the page is dirty and 
                 If _isImmediateApply AndAlso _
                     (dwFlags And PROPPAGESTATUS_VALIDATE) <> 0 Then
-                    If _propPage.IsPageDirty() = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK Then
+                    If _propPage.IsPageDirty() = NativeMethods.S_OK Then
                         Try
                             _propPage.Apply()
                         Catch ex As Exception
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDMessageRouting(TraceLevel.Error, "PropertyPageSite.TranslateAccelerator")
 
             'We're not currently interested in any message filtering from the property pages.
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+            Return NativeMethods.S_FALSE
         End Function
 #End Region
 

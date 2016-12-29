@@ -286,16 +286,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Dim flags As __VSRDTSAVEOPTIONS
             Select Case pgrfSaveOptions
-                Case CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave)
+                Case CUInt(__FRAMECLOSE.FRAMECLOSE_NoSave)
                     'We hit this in the File.Close/CTRL+F4 case, because we have already saved any files the user wanted to save, and then
                     '  passed in NoSave to CloseFrame.  Nothing to do except notify the project designer that we're shutting down.
                     If _windowPane.AppDesignerView IsNot Nothing Then
                         _windowPane.AppDesignerView.NotifyShuttingDown()
                     End If
                     Return NativeMethods.S_OK
-                Case CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_PromptSave)
+                Case CUInt(__FRAMECLOSE.FRAMECLOSE_PromptSave)
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave
-                Case CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_SaveIfDirty)
+                Case CUInt(__FRAMECLOSE.FRAMECLOSE_SaveIfDirty)
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty
                 Case Else
                     Debug.Fail("Unexpected save option in IVsWindowFrameNotify3.OnClose")
@@ -311,7 +311,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             'Set the options to NoSave so the caller knows all necessary saves have already been done
-            pgrfSaveOptions = CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave)
+            pgrfSaveOptions = CUInt(__FRAMECLOSE.FRAMECLOSE_NoSave)
 
             'Let the project designer know it's shutting down
             If _windowPane.AppDesignerView IsNot Nothing Then
@@ -363,9 +363,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
             If fShow <= __FRAMESHOW.FRAMESHOW_AutoHideSlideBegin Then
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & System.Enum.GetName(GetType(__FRAMESHOW), fShow) & ")")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & [Enum].GetName(GetType(__FRAMESHOW), fShow) & ")")
             ElseIf fShow <= __FRAMESHOW2.FRAMESHOW_BeforeWinHidden Then
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & System.Enum.GetName(GetType(__FRAMESHOW2), fShow) & ")")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "CmdTargetHelper.OnShow(" & [Enum].GetName(GetType(__FRAMESHOW2), fShow) & ")")
             Else
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CmdTargetHelper.OnShow - unrecognized fShow option")
             End If

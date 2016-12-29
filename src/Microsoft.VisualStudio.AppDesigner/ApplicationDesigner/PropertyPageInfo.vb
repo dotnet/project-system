@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="IsConfigurationDependentPage">Whether or not the page has different values for each configuration (e.g. the Debug page)</param>
         ''' <remarks></remarks>
         Public Sub New(ParentView As ApplicationDesignerView, Guid As Guid, IsConfigurationDependentPage As Boolean)
-            Debug.Assert(Not Guid.Equals(System.Guid.Empty), "Empty guid?")
+            Debug.Assert(Not Guid.Equals(Guid.Empty), "Empty guid?")
             Debug.Assert(ParentView IsNot Nothing)
             Me._parentView = ParentView
             Me._guid = Guid

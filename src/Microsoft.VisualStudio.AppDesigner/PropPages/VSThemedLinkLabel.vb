@@ -14,8 +14,8 @@ Public Class VSThemedLinkLabel
     Public Sub New()
         MyBase.New()
 
-        _vsThemedLinkColor = MyBase.LinkColor
-        _vsThemedLinkColorHover = MyBase.LinkColor
+        _vsThemedLinkColor = LinkColor
+        _vsThemedLinkColorHover = LinkColor
 
     End Sub
 

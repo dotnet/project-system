@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & Hex(DefaultColor.ToArgb))
             Return DefaultColor
         End Function
 
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & VB.Hex(defaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & Hex(defaultColor.ToArgb))
             Return defaultColor
         End Function
 
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         Return CanHideConfigurationsForProject(ProjectHierarchy) AndAlso Not ToolsOptionsShowAdvancedBuildConfigurations(Project.DTE)
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
             End Try
 
             Return False 'Default to advanced configs
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
                 Return True 'default to showing advanced
             End Try
 
@@ -325,10 +325,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Return False
                 End If
 
-                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then
+                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, StringComparison.OrdinalIgnoreCase) Then
                     Return True
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                                 If SLPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -382,7 +382,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         Return True
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                                 If WAPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -435,11 +435,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     '  Should not happen, but if they decide to make this project type non-flavored.
                     Dim typeGuid As Guid = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If Guid.Equals(WAPGuid, typeGuid) Then
+                    If Equals(WAPGuid, typeGuid) Then
                         Return True
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -538,8 +538,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
                             ' Make sure that the filename matches what we expect.
                             If String.Equals( _
-                                System.IO.Path.GetFileNameWithoutExtension(childItemName), _
-                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix, _
+                                IO.Path.GetFileNameWithoutExtension(childItemName), _
+                                IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix, _
                                 StringComparison.OrdinalIgnoreCase) _
                             Then
                                 ' If we've got a filter predicate, we remove anything that we've been
@@ -743,7 +743,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                    Return System.Windows.Forms.Form.DefaultFont
+                    Return Control.DefaultFont
                 End Get
             End Property
         End Class
