@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If TypeOf LoadedImage Is Bitmap Then
                 Return LoadedImage
             Else
-                Throw NewException(SR.GetString(SR.RSE_Err_UnexpectedResourceType), HelpIDs.Err_UnexpectedResourceType)
+                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType), HelpIDs.Err_UnexpectedResourceType)
             End If
         End Function
 
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim ManifestResourceId As String = Nothing
 
             Dim resourceDictionary As ListDictionary = GetManifestResourceList()
-            Dim extension As String = IO.Path.GetExtension(FilePath)
+            Dim extension As String = Path.GetExtension(FilePath)
             If extension IsNot Nothing Then
                 ManifestResourceId = CType(resourceDictionary.Item(extension), String)
             End If
@@ -151,9 +151,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
             If ResourceContentFile.IsInsideDeviceProject() Then
-                Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Bitmap), _extensionsForDevice)
+                Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Bitmap), _extensionsForDevice)
             Else
-                Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Bitmap), _extensions)
+                Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Bitmap), _extensions)
             End If
         End Function
 
@@ -188,15 +188,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If MatchAgainstListOfExtensions(Extension, _extensions, ExtensionIndex) Then
                 Select Case _extensions(ExtensionIndex)
                     Case EXT_BMP
-                        FilterText = SR.GetString(SR.RSE_FilterSave_BMP)
+                        FilterText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_BMP)
                     Case EXT_PNG
-                        FilterText = SR.GetString(SR.RSE_FilterSave_PNG)
+                        FilterText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_PNG)
                     Case EXT_GIF
-                        FilterText = SR.GetString(SR.RSE_FilterSave_GIF)
+                        FilterText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_GIF)
                     Case EXT_JPG, EXT_JPEG
-                        FilterText = SR.GetString(SR.RSE_FilterSave_JPEG)
+                        FilterText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_JPEG)
                     Case EXT_TIF, EXT_TIFF
-                        FilterText = SR.GetString(SR.RSE_FilterSave_TIFF)
+                        FilterText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_TIFF)
                     Case Else
                         Debug.Fail("Unexpected extension " & _extensions(ExtensionIndex))
                 End Select

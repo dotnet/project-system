@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Catch argEx As ArgumentException
                     ' We have an invalid identifier here...
                     If pGenerateProgress IsNot Nothing Then
-                        VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(SR.SingleFileGenerator_FailedToGenerateFile_1Arg, argEx.Message), 0, 0))
+                        VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, argEx.Message), 0, 0))
                         Return NativeMethods.E_FAIL
                     Else
                         Throw
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return NativeMethods.S_OK
             Catch e As Exception
                 If pGenerateProgress IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(SR.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
+                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
                 End If
             Finally
                 If Not BufPtr.Equals(IntPtr.Zero) Then
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 CodeProperty.CustomAttributes.Add(attr)
 
                 CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryStart, True))
-                CodeProperty.Comments.Add(New CodeCommentStatement(System.Security.SecurityElement.Escape(Instance.Description), True))
+                CodeProperty.Comments.Add(New CodeCommentStatement(Security.SecurityElement.Escape(Instance.Description), True))
                 CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryEnd, True))
             End If
 
@@ -510,14 +510,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If String.Equals(Instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 ' Add connection string attribute if this is a connection string...
                 Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSetting)))
-                Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, System.Configuration.SpecialSetting.ConnectionString.ToString())
+                Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, Configuration.SpecialSetting.ConnectionString.ToString())
                 Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
                 Dim ConnectionStringAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSettingAttribute)), Parameters)
                 CodeProperty.CustomAttributes.Add(ConnectionStringAttribute)
             ElseIf String.Equals(Instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
                 ' Add web reference attribute if this is a web reference...
                 Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSetting)))
-                Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, System.Configuration.SpecialSetting.WebServiceUrl.ToString())
+                Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, Configuration.SpecialSetting.WebServiceUrl.ToString())
                 Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
                 Dim WebReferenceAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSettingAttribute)), Parameters)
                 CodeProperty.CustomAttributes.Add(WebReferenceAttribute)
@@ -694,7 +694,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             Dim AutoSaveCode As New CodeSnippetTypeMember()
             AutoSaveCode.Text = _
-                String.Format(s_hideAutoSaveRegionBegin, SR.GetString(SR.SD_SFG_AutoSaveRegionText)) & Environment.NewLine & _
+                String.Format(s_hideAutoSaveRegionBegin, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_SFG_AutoSaveRegionText)) & Environment.NewLine & _
                 s_myTypeWinFormsDefineConstant_If & Environment.NewLine & _
                 "    Private Shared " & s_addedHandlerFieldName & " As Boolean" & Environment.NewLine & _
                 Environment.NewLine & _
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Marshal.Release(punkVsBrowseObject)
                     End If
                 End Try
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get the DefaultNamespace", NameOf(SettingsSingleFileGenerator))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get the DefaultNamespace", NameOf(SettingsSingleFileGenerator))
             End Try
 
             Return rootNamespace
@@ -1008,7 +1008,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return NativeMethods.S_OK
             Else
-                Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_RenameNotSupported))
+                Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_RenameNotSupported))
                 ' Always return an error code to disable renaming of generated code
                 Return NativeMethods.E_NOTIMPL
             End If
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
         Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1077,7 +1077,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1092,7 +1092,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         '@ <returns>error code</returns>
         Private Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1109,7 +1109,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns>error code</returns>
         Private Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -1125,7 +1125,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
         Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function

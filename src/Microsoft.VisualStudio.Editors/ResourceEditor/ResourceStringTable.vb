@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return True
                 End If
 
-                Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+                Dim cells As DataGridViewSelectedCellCollection = SelectedCells
 
                 If cells.Count > 0 Then
                     Dim rows As New Generic.Dictionary(Of Integer, Integer)
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_ResourceNameColumn)
+                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceNameColumn)
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_NAME = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_TypeColumn)
+                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_TypeColumn)
                 .ReadOnly = True 'Can't modify the Type column - just for info
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_TYPE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_ResourceColumn)
+                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceColumn)
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_VALUE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_CommentColumn)
+                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_CommentColumn)
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_COMMENT = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -327,11 +327,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' restore sort UI
             For i As Integer = 0 To Columns.Count - 1
                 If i <> _sorter.ColumnIndex Then
-                    Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.None
                 ElseIf _sorter.InReverseOrder Then
-                    Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.Descending
                 Else
-                    Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.Ascending
                 End If
             Next
 
@@ -717,7 +717,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             AddResourcesHelper(Resources)
 
-            MyBase.Invalidate()
+            Invalidate()
         End Sub
 
 
@@ -854,7 +854,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _removingRow = Nothing
             End Try
 
-            MyBase.Invalidate()
+            Invalidate()
         End Sub
 
 #End Region
@@ -977,7 +977,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Resource Is Nothing Then
                 Return String.Empty
             End If
-            Return ResourceStringTable.GetResourceCellStringValue(Resource, ColumnIndex)
+            Return GetResourceCellStringValue(Resource, ColumnIndex)
         End Function
 
         ''' <summary>
@@ -1005,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
                     Try
                         Value = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceCellStringValue), NameOf(ResourceStringTable))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetResourceCellStringValue), NameOf(ResourceStringTable))
                     End Try
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellValueNeeded: Value: " & Value)
 
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Select Case e.ColumnIndex
 
                 Case COLUMN_NAME
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.BadName)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.BadName)
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Name: " & CStr(e.ErrorText))
 
                 Case COLUMN_TYPE
@@ -1051,10 +1051,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Case COLUMN_VALUE
                     'Get the string-formatted value.
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CantInstantiateResource)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
                         Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.
                             e.ErrorText = ex.Message
@@ -1063,7 +1063,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Value: " & CStr(e.ErrorText))
 
                 Case COLUMN_COMMENT
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CommentsNotSupportedInThisFile)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CommentsNotSupportedInThisFile)
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Comment: " & CStr(e.ErrorText))
 
                 Case Else
@@ -1406,7 +1406,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If MyBase.SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
 
                 'Add all rows which are selected in their entirety
-                Dim rows As DataGridViewSelectedRowCollection = MyBase.SelectedRows
+                Dim rows As DataGridViewSelectedRowCollection = SelectedRows
                 If rows.Count > 0 Then
                     ReDim indexArray(rows.Count - 1)
                     For Each Row As DataGridViewRow In rows
@@ -1418,7 +1418,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
                 End If
             Else
-                Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+                Dim cells As DataGridViewSelectedCellCollection = SelectedCells
 
                 If cells.Count > 0 Then
                     ReDim indexArray(cells.Count - 1)
@@ -1570,16 +1570,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
                 If columnIndex <> _sorter.ColumnIndex Then
-                    Columns(_sorter.ColumnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None
+                    Columns(_sorter.ColumnIndex).HeaderCell.SortGlyphDirection = SortOrder.None
                     _sorter.ColumnIndex = columnIndex
                 End If
 
                 _sorter.InReverseOrder = inReverseOrder
 
                 If _sorter.InReverseOrder Then
-                    Columns(columnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending
+                    Columns(columnIndex).HeaderCell.SortGlyphDirection = SortOrder.Descending
                 Else
-                    Columns(columnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending
+                    Columns(columnIndex).HeaderCell.SortGlyphDirection = SortOrder.Ascending
                 End If
 
                 ' Sort the virtual list...ReferenceList.Sort()
@@ -1663,7 +1663,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
                     Dim value As String = Nothing
-                    value = ResourceStringTable.GetResourceCellStringValue(DirectCast(obj, Resource), column)
+                    value = GetResourceCellStringValue(DirectCast(obj, Resource), column)
                     If value IsNot Nothing Then
                         Return value
                     End If
@@ -1683,7 +1683,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub ClearSelectedCells()
-            Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+            Dim cells As DataGridViewSelectedCellCollection = SelectedCells
             If cells.Count = 0 Then
                 Return
             End If
@@ -1708,10 +1708,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If failedCount > 0 Then
                 If failedCount = cells.Count Then
                     ' throw an exception to abort the transaction...
-                    Throw New InvalidOperationException(SR.GetString(SR.RSE_Err_CantBeEmpty))
+                    Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty))
                 End If
 
-                DsMsgBox(SR.GetString(SR.RSE_Err_CantBeEmpty), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty), MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             Refresh()
@@ -1774,7 +1774,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             If m.Msg = Interop.win.WM_KEYDOWN AndAlso CInt(m.WParam) = Keys.F2 Then
-                Return MyBase.ProcessF2Key(Keys.F2 Or ModifierKeys)
+                Return ProcessF2Key(Keys.F2 Or ModifierKeys)
             End If
             Return MyBase.PreProcessMessage(m)
         End Function
@@ -1858,7 +1858,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             If pasteString <> "" Then
                                 ' We want to trim the white space out. However, when the user is pasting in a middle of a exisiting string, we don't want to trim the space out.
                                 pasteString = TrimPastedString(pasteString, SelectionStart = 0, SelectionStart + SelectionLength >= Text.Length)
-                                MyBase.Paste(pasteString)
+                                Paste(pasteString)
                             End If
                             Return
                         End If

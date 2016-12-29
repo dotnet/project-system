@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return False
             End If
 
-            If System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(Name) Then
+            If CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(Name) Then
                 If CodeProvider IsNot Nothing Then
                     Return CodeProvider.IsValidIdentifier(Name)
                 Else
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Friend Function CreateUniqueName(Optional Base As String = Nothing) As String
             If String.IsNullOrEmpty(Base) Then
-                Base = SR.SD_DefaultSettingName
+                Base = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DefaultSettingName
             End If
 
             Dim ExistingNames As New System.Collections.Hashtable

@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Break up the path into directory and file.
             Dim DirectoryPath As String = Path.GetDirectoryName(PathAndFileName)
             Dim FileName As String = Path.GetFileName(PathAndFileName)
-            Debug.Assert(Common.GetFullPathTolerant(Path.Combine(DirectoryPath, FileName)) = Common.GetFullPathTolerant(PathAndFileName))
+            Debug.Assert(GetFullPathTolerant(Path.Combine(DirectoryPath, FileName)) = GetFullPathTolerant(PathAndFileName))
 
             'Look for a (or create a new) DirectoryWatcher for this file's directory.
             Dim DirectoryWatcher As DirectoryWatcher = GetWatcherForDirectory(DirectoryPath, CreateIfNotFound:=True)
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Break up the path into directory and file.
             Dim DirectoryPath As String = Path.GetDirectoryName(PathAndFileName)
             Dim FileName As String = Path.GetFileName(PathAndFileName)
-            Debug.Assert(Common.GetFullPathTolerant(Path.Combine(DirectoryPath, FileName)) = Common.GetFullPathTolerant(PathAndFileName))
+            Debug.Assert(GetFullPathTolerant(Path.Combine(DirectoryPath, FileName)) = GetFullPathTolerant(PathAndFileName))
 
             'Look for a (or create a new) DirectoryWatcher for this file's directory.
             Dim DirectoryWatcher As DirectoryWatcher = GetWatcherForDirectory(DirectoryPath, CreateIfNotFound:=False)
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Function NormalizeDirectoryPath(DirectoryPath As String) As String
             Debug.Assert(DirectoryPath <> "")
-            DirectoryPath = Common.GetFullPathTolerant(DirectoryPath)
+            DirectoryPath = GetFullPathTolerant(DirectoryPath)
             DirectoryPath = DirectoryPath.ToUpperInvariant()
             Debug.Assert(DirectoryPath.IndexOf(Path.AltDirectorySeparatorChar) = -1, "Normalized path shouldn't contain alternate directory separators - these should have been removed by the Path methods")
 
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Throw
                 Catch ex As StackOverflowException
                     Throw
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(FileWatcher.New), NameOf(FileWatcher))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(FileWatcher.New), NameOf(FileWatcher))
                     'CONSIDER: The directory does not exist.  Find a parent directory that
                     '  does exist.  What if drive doesn't exist?
                     Debug.WriteLineIf(Switches.RSEFileWatcher.TraceInfo, "FileWatcher: Unable to create FileSystemWatcher: directory does not exist: " & DirectoryPath)
@@ -414,7 +414,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="e"></param>
             ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Changed(sender As Object, e As System.IO.FileSystemEventArgs) Handles _fileSystemWatcher.Changed
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw changed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & VB.Hex(System.Threading.Thread.CurrentThread.GetHashCode))
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw changed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
 
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="e"></param>
             ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Renamed(sender As Object, e As System.IO.RenamedEventArgs) Handles _fileSystemWatcher.Renamed
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & VB.Hex(System.Threading.Thread.CurrentThread.GetHashCode))
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
 
                 'Both the old file and the new file might be interesting events.
                 OnFileChanged(e.FullPath, e.Name)
@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <remarks></remarks>
             Friend Sub OnFileChanged()
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString & ", Thread = " & Microsoft.VisualBasic.Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & VB.Now.Millisecond)
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & Now.Millisecond)
 
                 'It is common to get several notifications about the same file while it's
                 '  being written.  We want to let things settle down a bit before we
@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''   in the thread from which it was created.  So no synchronization issues.
             ''' </remarks>
             Private Sub Timer_Elapsed(sender As Object, e As EventArgs) Handles _timer.Tick
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Raising delayed FileChanged event: " & ToString() & ", Thread = " & Microsoft.VisualBasic.Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & VB.Now.Millisecond)
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Raising delayed FileChanged event: " & ToString() & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & Now.Millisecond)
 
                 'First thing to do is get rid of the timer - we don't need it anymore.
                 _timer.Dispose()

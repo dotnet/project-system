@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             For Each er As Object In errors
                 TextBuilder.Append(er.ToString())
-                TextBuilder.Append(Microsoft.VisualBasic.vbCrLf)
+                TextBuilder.Append(vbCrLf)
             Next
 
             Text = TextBuilder.ToString()
@@ -112,17 +112,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return MyBase.GetPreferredSize(proposedSize)
             End If
 
-            Dim sizeBeyondTheTextbox As Size = Drawing.Size.Subtract(Size, ErrorText.Size)
+            Dim sizeBeyondTheTextbox As Size = Size.Subtract(Size, ErrorText.Size)
 
             'Use a label of the same size to determine the preferred size.  We use the
             '  suggested width, and expand the height as needed.
             _sizingLabel.Font = ErrorText.Font
-            _sizingLabel.Text = ErrorText.Text & Microsoft.VisualBasic.vbCrLf & Microsoft.VisualBasic.vbCrLf & " " 'Add an extra line of buffer
+            _sizingLabel.Text = ErrorText.Text & vbCrLf & vbCrLf & " " 'Add an extra line of buffer
             _sizingLabel.Width = proposedSize.Width - sizeBeyondTheTextbox.Width
             _sizingLabel.AutoSize = False
 
             Dim textPreferredSize As Size = _sizingLabel.GetPreferredSize(New Size(_sizingLabel.Width, 0))
-            Return Drawing.Size.Add(textPreferredSize, sizeBeyondTheTextbox)
+            Return Size.Add(textPreferredSize, sizeBeyondTheTextbox)
         End Function
 
     End Class

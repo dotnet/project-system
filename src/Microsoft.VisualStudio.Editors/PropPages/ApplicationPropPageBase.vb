@@ -28,10 +28,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub New()
             MyBase.New()
 
-            m_DefaultIconText = SR.GetString(SR.PPG_Application_DefaultIconText)
-            m_DefaultManifestText = SR.GetString(SR.PPG_Application_DefaultManifestText)
-            m_NoManifestText = SR.GetString(SR.PPG_Application_NoManifestText)
-            m_DefaultIcon = System.Drawing.SystemIcons.Application
+            m_DefaultIconText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText)
+            m_DefaultManifestText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText)
+            m_NoManifestText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText)
+            m_DefaultIcon = SystemIcons.Application
         End Sub
 
 
@@ -165,18 +165,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sFileName = ""
                 sInitialDirectory = ""
             Else
-                sFileName = System.IO.Path.GetFileName(sInitialDirectory)
-                sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
+                sFileName = IO.Path.GetFileName(sInitialDirectory)
+                sInitialDirectory = IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(SR.PPG_AddExistingFilesTitle),
-                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddIconFilesFilter), ".ico"),
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle),
+                        CreateDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddIconFilesFilter), ".ico"),
                         0, False, sFileName)
 
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = CStr(fileNames(0))
 
-                If System.IO.File.Exists(sFileName) Then
+                If IO.File.Exists(sFileName) Then
                     'Verify it's actually a usable .ico before adding it to the project
                     Dim ValidIcon As Boolean = False
                     Try
@@ -184,8 +184,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ValidIcon = True
                         Icon.Dispose()
                     Catch ex As ArgumentException
-                        ShowErrorMessage(SR.GetString(SR.PPG_Application_BadIcon_1Arg, sFileName))
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(BrowseForAppIcon), NameOf(ApplicationPropPageBase))
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadIcon_1Arg, sFileName))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(BrowseForAppIcon), NameOf(ApplicationPropPageBase))
                         ShowErrorMessage(ex)
                     End Try
                     If Not ValidIcon Then
@@ -198,8 +198,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim ProjectItem As EnvDTE.ProjectItem = Nothing
                     Try
                         ProjectItem = AddIconFileToProject(sFileName)
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, SR.GetString(SR.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
-                        ShowErrorMessage(SR.GetString(SR.PPG_Application_CantAddIcon), ex)
+                    Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), ex)
                     End Try
 
                     If ProjectItem Is Nothing Then
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Verify all the characters in the path are valid 
             If path.IndexOfAny(IO.Path.GetInvalidPathChars()) >= 0 Then
-                ShowErrorMessage(SR.GetString(SR.PPG_Application_CantAddIcon))
+                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon))
                 Return False
             End If
 
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 path = IO.Path.Combine(GetProjectPath(), path)
             End If
 
-            If System.IO.File.Exists(path) Then
+            If IO.File.Exists(path) Then
                 'System.Drawing.Image will hold on to any file that we give it, so that it can
                 '  be lazy about getting the bits out of it.  This means the file will be locked, 
                 '  which we don't want.  Make a copy of the file as a memory stream and use that to
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim IconContents As Byte() = IO.File.ReadAllBytes(path)
                     Dim IconStream As New IO.MemoryStream(IconContents, 0, IconContents.Length)
                     ApplicationIconPictureBox.Image = IconToImage(New Icon(IconStream), ApplicationIconPictureBox.ClientSize)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase))
                     'This could mean a bad icon file, I/O problems, etc.  At any rate, it doesn't make sense to
                     '  display an error message (doesn't necessarily mean the user just selected it, it might have
                     '  been in the project file), so we'll just show a blank image
@@ -336,8 +336,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim ProjectItem As EnvDTE.ProjectItem = Nothing
                         Try
                             ProjectItem = AddIconFileToProject(path)
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, SR.GetString(SR.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
-                            ShowErrorMessage(SR.GetString(SR.PPG_Application_CantAddIcon), ex)
+                        Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
+                            ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), ex)
                             Return False
                         End Try
 
@@ -407,7 +407,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub AddIconsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationIconCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
-                Dim ext As String = System.IO.Path.GetExtension(FileName)
+                Dim ext As String = IO.Path.GetExtension(FileName)
                 If ext.Equals(".ico", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationIconCombobox.Items.Add(GetProjectRelativeFilePath(FileName))
                 End If
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub AddManifestsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationManifestCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
-                Dim ext As String = System.IO.Path.GetExtension(FileName)
+                Dim ext As String = IO.Path.GetExtension(FileName)
                 If ext.Equals(".manifest", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationManifestCombobox.Items.Add(GetProjectRelativeFilePath(FileName))
                 End If

@@ -41,9 +41,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Reader.HasFieldsEnclosedInQuotes = True
 
                 Select Case EncodingType
-                    Case CsvEncoder.EncodingType.Csv
+                    Case EncodingType.Csv
                         Reader.Delimiters = New String() {","}
-                    Case CsvEncoder.EncodingType.TabDelimited
+                    Case EncodingType.TabDelimited
                         Reader.Delimiters = New String() {vbTab}
                     Case Else
                         Debug.Fail("Unrecognized encodingtype")
@@ -86,9 +86,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Reader.TrimWhiteSpace = False
 
                 Select Case EncodingType
-                    Case CsvEncoder.EncodingType.Csv
+                    Case EncodingType.Csv
                         Reader.Delimiters = New String() {","}
-                    Case CsvEncoder.EncodingType.TabDelimited
+                    Case EncodingType.TabDelimited
                         Reader.Delimiters = New String() {vbTab}
                     Case Else
                         Debug.Fail("Unrecognized encodingtype")
@@ -183,9 +183,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Delimiter As Char
 
             Select Case EncodingType
-                Case CsvEncoder.EncodingType.Csv
+                Case EncodingType.Csv
                     Delimiter = ","c
-                Case CsvEncoder.EncodingType.TabDelimited
+                Case EncodingType.TabDelimited
                     Delimiter = CChar(vbTab)
                 Case Else
                     Debug.Fail("Unrecognized encoding type")
@@ -224,14 +224,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             Select Case EncodingType
-                Case CsvEncoder.EncodingType.Csv
+                Case EncodingType.Csv
                     'Escape quotes
                     Field = Field.Replace("""", """""")
 
                     'Place the entire string in quotes
                     Field = """" & Field & """"
 
-                Case CsvEncoder.EncodingType.TabDelimited
+                Case EncodingType.TabDelimited
                     'If the field contains tabs, enclose the entire field in quotes
                     ' Tab, Return, NewLine...
                     If Field.IndexOfAny(New Char() {Chr(9), Chr(10), Chr(13)}) > 0 Then

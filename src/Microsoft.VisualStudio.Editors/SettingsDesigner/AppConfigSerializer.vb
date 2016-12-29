@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' We already know about this guy - let's see if the values are different...
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
-                    Dim serializedValueInAppConfig As String = valueSerializer.Serialize(scs, System.Globalization.CultureInfo.InvariantCulture)
+                    Dim serializedValueInAppConfig As String = valueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
                     Dim valueChanged As Boolean = String.Compare(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal) <> 0
                     If valueChanged Then
                         ' Yep! Ask the user what (s)he wants to do...
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             newValue.ProviderName = cs.ProviderName
                         End If
                         newValue.ConnectionString = cs.ConnectionString
-                        Instance.SetSerializedValue(valueSerializer.Serialize(newValue, System.Globalization.CultureInfo.InvariantCulture))
+                        Instance.SetSerializedValue(valueSerializer.Serialize(newValue, Globalization.CultureInfo.InvariantCulture))
                         Instance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
                         Instance.SetName(cs.Name)
                         Instance.SetSettingTypeName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString)
@@ -161,9 +161,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' CONSIDER: Include the name of the settings that were added...
             If ((objectDirty And DirtyState.ValueAdded) = DirtyState.ValueAdded) AndAlso mergeMode = MergeValueMode.Prompt Then
                 If UIService IsNot Nothing Then
-                    UIService.ShowMessage(SR.GetString(SR.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.OK)
+                    UIService.ShowMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
                 Else
-                    System.Windows.Forms.MessageBox.Show(SR.GetString(SR.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.OK)
+                    Windows.Forms.MessageBox.Show(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
                 End If
             End If
 
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
                 Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED
-                    Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(SR.DFX_UnableToCheckout), ex)
+                    Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout), ex)
                 Catch ex As Exception When Not TypeOf ex Is System.ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
                     AppConfigItemId = VSITEMID.NIL
@@ -218,13 +218,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             AppConfigDocData = DocDataService.GetFileDocData(AppConfigFileName, Access, Nothing)
                         Catch ex As System.ComponentModel.Design.CheckoutException
                             Throw
-                        Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
+                        Catch Ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
                             Throw
                         End Try
                     Else
                         Try
                             AppConfigDocData = New DocData(ServiceProvider, AppConfigFileName)
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
                             Throw
                         End Try
                     End If
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' so we can use DocDataTextReaders/Writers... If we can't get that, we may as well throw
                 ' an exception that tells the user that things are broken here!
                 AppConfigDocData.Dispose()
-                Throw New NotSupportedException(SR.GetString(SR.DFX_IncompatibleBuffer))
+                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer))
             End If
             Return AppConfigDocData
         End Function
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
             Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(NamespaceName, ClassName)
-            AppConfigSerializer.Serialize(Settings, typeCache, valueCache, ConfigHelperService.GetSectionName(FullyQualifiedClassName, String.Empty), AppConfigDocData, Hierarchy, SynchronizeUserConfig)
+            Serialize(Settings, typeCache, valueCache, ConfigHelperService.GetSectionName(FullyQualifiedClassName, String.Empty), AppConfigDocData, Hierarchy, SynchronizeUserConfig)
         End Sub
 
 
@@ -389,7 +389,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
         Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), AppConfigDocData As DocData)
-            Dim hierSp As IServiceProvider = Common.Utils.ServiceProviderFromHierarchy(Hierarchy)
+            Dim hierSp As IServiceProvider = Common.ServiceProviderFromHierarchy(Hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
 
             For Each BuildConfig As EnvDTE.Configuration In project.ConfigurationManager
@@ -399,7 +399,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     map.ExeConfigFilename = AppConfigDocData.Name
                     map.LocalUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoamingAndLocal, underHostingProcess:=False, buildConfiguration:=BuildConfig)
                     map.RoamingUserConfigFilename = ConfigHelperService.GetUserConfigurationPath(hierSp, project, ConfigurationUserLevel.PerUserRoaming, underHostingProcess:=False, buildConfiguration:=BuildConfig)
-                Catch ex As Exception When Not Common.Utils.ReportWithoutCrash(ex, NameOf(SynchronizeUserConfig), NameOf(AppConfigSerializer))
+                Catch ex As Exception When Not Common.ReportWithoutCrash(ex, NameOf(SynchronizeUserConfig), NameOf(AppConfigSerializer))
                     ' Can't really do anything - synchronize will fail...
                     Return
                 End Try
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Dim serializer As New SettingsValueSerializer
                 Dim serializedAppConfigValue As String = serializer.Normalize(DirectCast(DeserializedPropertyValue.SerializedValue, String), DeserializedPropertyValue.Property.PropertyType)
-                If Instance.Scope <> Scope OrElse Not String.Equals(Instance.SerializedValue, serializedAppConfigValue, System.StringComparison.Ordinal) Then
+                If Instance.Scope <> Scope OrElse Not String.Equals(Instance.SerializedValue, serializedAppConfigValue, StringComparison.Ordinal) Then
                     ' We have new mismatch between what's in the app.config file and what's in the .settings file - 
                     ' prompt the user!
                     Return QueryReplaceValue(Settings, Instance, serializedAppConfigValue, Scope, mergeMode, UIService)

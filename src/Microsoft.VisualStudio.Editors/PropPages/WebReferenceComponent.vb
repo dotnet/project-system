@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 Try
                     Return _projectItem.Name
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Name), NameOf(WebReferenceComponent))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Name), NameOf(WebReferenceComponent))
                     Return String.Empty
                 End Try
             End Get
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If properties IsNot Nothing Then
                     Return properties.Item(propertyName)
                 End If
-            Catch e As System.ArgumentException When Common.Utils.ReportWithoutCrash(e, NameOf(GetItemProperty), NameOf(WebReferenceComponent))
+            Catch e As System.ArgumentException When Common.ReportWithoutCrash(e, NameOf(GetItemProperty), NameOf(WebReferenceComponent))
             End Try
             Return Nothing
         End Function
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
-            Return SR.GetString(SR.PPG_WebReferenceTypeName)
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebReferenceTypeName)
         End Function
 
         Public Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly Property DisplayValues() As String()
             Get
                 If s_displayValues Is Nothing Then
-                    s_displayValues = New String() {SR.GetString(SR.PPG_UrlBehavior_Static), SR.GetString(SR.PPG_UrlBehavior_Dynamic)}
+                    s_displayValues = New String() {SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Static), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Dynamic)}
                 End If
                 Return s_displayValues
             End Get

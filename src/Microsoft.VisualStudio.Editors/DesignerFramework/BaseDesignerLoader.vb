@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         ProjectReloaded = View.ProjectReloadedDuringCheckout
                     End If
                 End Try
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader))
                 Switches.TraceSCC("Checkout failed: " & ex.Message)
 
                 'Check-out has failed.  We need to handle this gracefully at all places in the UI where this could happen.
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Overridable ReadOnly Property FilesToCheckOut() As System.Collections.Generic.List(Of String)
             Get
                 Dim projItem As EnvDTE.ProjectItem = ProjectItem
-                Return Common.ShellUtil.FileNameAndGeneratedFileName(projItem)
+                Return ShellUtil.FileNameAndGeneratedFileName(projItem)
             End Get
         End Property
 
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _deferredLoaderService = DirectCast(GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
                 If _deferredLoaderService Is Nothing Then
                     Debug.Fail("Deferred load doc data requires support for IDesignerLoaderService")
-                    Throw New NotSupportedException(SR.GetString(SR.DFX_IncompatibleBuffer))
+                    Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer))
                 End If
 
                 Debug.Assert(_deferredLoadManager Is Nothing)
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Friend ReadOnly Property ProjectItem() As EnvDTE.ProjectItem
             Get
-                Return Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
+                Return DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             End Get
         End Property
 
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If Status = EditorCaptionState.ReadOnly Then
                 'Append "[Read Only]" to the caption so far
-                Caption = SR.GetString(SR.DFX_DesignerReadOnlyCaption, Caption)
+                Caption = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerReadOnlyCaption, Caption)
             End If
 
             Return Caption
@@ -500,9 +500,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If FileName.Length > 0 Then
-                    Throw New Exception(SR.GetString(SR.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
+                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
                 Else
-                    Throw New Exception(SR.GetString(SR.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile))
+                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile))
                 End If
             End If
 
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         vsProj.RunCustomTool()
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
             End Try
         End Sub
 
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim GotFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     GotFocusProjectItem = GotFocus.ProjectItem
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
                 End Try
 
                 If GotFocusProjectItem Is ThisProjectItem Then

@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks>Will set my value to the deserialized value - nothing if deserialization fails</remarks>
         Public Property FormattedValue() As Object Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlFormattedValue
             Get
-                Return GetFormattedValue(System.Windows.Forms.DataGridViewDataErrorContexts.Formatting)
+                Return GetFormattedValue(DataGridViewDataErrorContexts.Formatting)
             End Get
             Set(Value As Object)
                 Debug.Assert(TypeOf Value Is String, String.Format("Why did someone try to set my formatted value to an object of type {0}? Expected type string!", Value.GetType().ToString()))
@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If _dataGridView IsNot Nothing Then
                     Return _dataGridView.Cursor
                 Else
-                    Return System.Windows.Forms.Cursor.Current
+                    Return Cursor.Current
                 End If
             End Get
         End Property

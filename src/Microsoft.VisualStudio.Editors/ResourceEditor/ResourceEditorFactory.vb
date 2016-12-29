@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
 
             For i As Integer = 0 To cFiles - 1
-                If Utility.HasResourceFileExtension(rgszMkNewNames(i)) Then
+                If HasResourceFileExtension(rgszMkNewNames(i)) Then
                     Dim designerEventService As IDesignerEventService = TryCast(ServiceProvider.GetService(GetType(IDesignerEventService)), IDesignerEventService)
                     Debug.Assert(Not designerEventService Is Nothing)
                     If (Not designerEventService Is Nothing) Then
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 ' anything else should return E_NOTIMPL
                 '
-                Return Microsoft.VisualStudio.Editors.Interop.NativeMethods.E_NOTIMPL
+                Return NativeMethods.E_NOTIMPL
             End If
         End Function
 

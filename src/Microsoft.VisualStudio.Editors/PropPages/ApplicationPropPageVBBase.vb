@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            m_IconBrowseText = SR.GetString(SR.PPG_BrowseText)
+            m_IconBrowseText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BrowseText)
         End Sub
 
 #Region "Icon combobox"
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'When the icon combobox is dropped down, update it with all current entries from the project
             PopulateIconList(True)
-            Common.SetComboBoxDropdownWidth(CType(sender, ComboBox))
+            SetComboBoxDropdownWidth(CType(sender, ComboBox))
         End Sub
 
         ''' <summary>
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
             End Try
         End Sub
 
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Public Sub New(ApplicationType As MyApplication.ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
                 _applicationType = ApplicationType
                 _displayName = DisplayName
-                _name = System.Enum.GetName(GetType(MyApplication.ApplicationTypes), ApplicationType)
+                _name = [Enum].GetName(GetType(MyApplication.ApplicationTypes), ApplicationType)
                 _supportedInExpress = SupportedInExpress
             End Sub
 
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Protected Function UACSettingsButtonSupported(appType As MyApplication.ApplicationTypes) As Boolean
-            Return UACSettingsButtonSupported(CType(MyApplication.MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
+            Return UACSettingsButtonSupported(CType(MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
         End Function
 
         Private Function AddApplicationManifestToProjectFromTemplate(SpecialProjectItems As IVsProjectSpecialFiles, ByRef ItemId As UInteger, ByRef MkDocument As String) As Boolean
@@ -556,7 +556,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     Debug.Assert(ProjectHierarchy IsNot Nothing, "Hierarchy is nothing...")
-                    Dim SpecialProjectItems As Global.Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles = TryCast(MyBase.ProjectHierarchy, IVsProjectSpecialFiles)
+                    Dim SpecialProjectItems As Global.Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles = TryCast(ProjectHierarchy, IVsProjectSpecialFiles)
                     If SpecialProjectItems Is Nothing Then
                         Debug.Fail("Failed to get IVsProjectSpecialFiles from project")
                         Throw New InvalidOperationException()
@@ -597,7 +597,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ' It is ported from wizard\vsdesigner\designer\microsoft\vsdesigner\ProjectWizard\AppManifestTemplateWizard.cs
                         Dim appManifestPath As String = Nothing
 
-                        If ((Not String.IsNullOrEmpty(MkDocument)) AndAlso (System.IO.Path.IsPathRooted(MkDocument))) Then
+                        If ((Not String.IsNullOrEmpty(MkDocument)) AndAlso (IO.Path.IsPathRooted(MkDocument))) Then
 
                             Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                             If fullPathProperty IsNot Nothing AndAlso fullPathProperty.Value IsNot Nothing Then
@@ -605,7 +605,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim projectFullPath As String = CType(fullPathProperty.Value, String)
                                 If Not String.IsNullOrEmpty(projectFullPath) Then
 
-                                    If MkDocument.StartsWith(projectFullPath, True, System.Globalization.CultureInfo.InvariantCulture) Then
+                                    If MkDocument.StartsWith(projectFullPath, True, Globalization.CultureInfo.InvariantCulture) Then
                                         ' we really only expect app.manifest to be added somewhere under the root of the project, so the project's full-path
                                         ' should always be in the first part of the app.manifest file-path. However, if it's not, we don't want to suddenly
                                         ' strip some random part of the app.manifest full-path out, so we first check to see that the two paths overlap
@@ -659,7 +659,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim OleServiceProvider As OLE.Interop.IServiceProvider = CType(GetServiceFromPropertyPageSite(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                     Debug.Assert(VsUIShellOpenDocument IsNot Nothing, "Unable to get IVsUIShellOpenDocument")
 
-                    If Not System.IO.Path.IsPathRooted(MkDocument) Then
+                    If Not IO.Path.IsPathRooted(MkDocument) Then
                         Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                         Dim projectFullPath As String = CType(fullPathProperty.Value, String)
                         If Not String.IsNullOrEmpty(projectFullPath) Then
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
                     End If
 
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
                     If Not ProjectReloadedDuringCheckout Then
                         ShowErrorMessage(ex)
                     End If

@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.IsLink)
             If s_thumbnailForBinaryFile Is Nothing Then
-                s_thumbnailForBinaryFile = Common.Utils.GetImageFromImageService(KnownMonikers.BinaryFile, 48, 48, background)
+                s_thumbnailForBinaryFile = Common.GetImageFromImageService(KnownMonikers.BinaryFile, 48, 48, background)
             End If
             Return s_thumbnailForBinaryFile
         End Function
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, BinaryFileValueType)
             Debug.Assert(Resource.IsLink)
-            Return SR.GetString(SR.RSE_Type_BinaryFile)
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BinaryFile)
         End Function
 
 

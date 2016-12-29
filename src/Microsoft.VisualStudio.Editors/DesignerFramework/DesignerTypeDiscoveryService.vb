@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 If activeConfig2 IsNot Nothing Then
                     Dim outputgroup As IVsOutputGroup = Nothing
-                    activeConfig2.OpenOutputGroup(Microsoft.VisualStudio.Shell.Interop.BuildOutputGroup.Built, outputgroup)
+                    activeConfig2.OpenOutputGroup(BuildOutputGroup.Built, outputgroup)
                     Dim outputgroup2 As IVsOutputGroup2 = TryCast(outputgroup, IVsOutputGroup2)
                     If outputgroup2 IsNot Nothing Then
                         Dim output As IVsOutput2 = Nothing
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If typeResolutionService IsNot Nothing Then
                 Try
-                    If System.IO.File.Exists(projectOutput) Then
+                    If IO.File.Exists(projectOutput) Then
                         Dim an As System.Reflection.AssemblyName = System.Reflection.AssemblyName.GetAssemblyName(projectOutput)
                         Dim a As System.Reflection.Assembly = typeResolutionService.GetAssembly(an)
                         Return a
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' We didn't have permissions to load the file...
                 End Try
             Else
-                System.Diagnostics.Debug.Fail("Huh!?")
+                Debug.Fail("Huh!?")
             End If
             Return Nothing
         End Function
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' we need to append the fragment to the end of the path.
         ''' </devdoc>
         Protected Shared Function GetLocalPath(fileName As String) As String
-            System.Diagnostics.Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
+            Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
 
             Dim uri As New Uri(fileName)
             Return uri.LocalPath & uri.Fragment

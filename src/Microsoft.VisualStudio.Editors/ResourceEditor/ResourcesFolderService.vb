@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Verify the file exists
             If Not File.Exists(FullSourceFilePath) Then
-                Throw New IO.FileNotFoundException(SR.GetString(SR.RFS_FindNotFound_File, FullSourceFilePath))
+                Throw New IO.FileNotFoundException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_FindNotFound_File, FullSourceFilePath))
             End If
 
             'Determine the behavior for this project.  This handles the case of Project = Nothing and the Miscellaneous Files project.
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         SetBuildAction(NewProjectItem)
                         FinalFilePath = GetFileNameFromProjectItem(NewProjectItem, Path.GetExtension(FullSourceFilePath))
                     Catch ex As Exception
-                        Throw New Exception(SR.GetString(SR.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, ex.Message), ex)
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, ex.Message), ex)
                     End Try
                 End If
             Else
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Get the full path of the new project item
             If Not File.Exists(FinalFilePath) Then
                 Debug.Fail("We added the file to the project, but the file can't be found at the location it's supposed to be at: " & FinalFilePath)
-                Throw New Exception(SR.GetString(SR.RFS_CantAddFileToProject_File, FinalFilePath))
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File, FinalFilePath))
             End If
 
             'We're done.
@@ -393,7 +393,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 SetBuildAction(NewItem)
                 Return GetFileNameFromProjectItem(NewItem, Path.GetExtension(CopiedFilePath))
             Catch ex As Exception
-                Throw New Exception(SR.GetString(SR.RFS_CantAddFileToProject_File_ExMsg, SourceFilePath, ex.Message), ex)
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, SourceFilePath, ex.Message), ex)
             End Try
         End Function
 
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return GetFileNameFromProjectItem(NewItem, Path.GetExtension(FilePathToTryAgain))
                 Catch exFinalFailure As Exception
                     'Okay, we've hit an exception in our corrective measures.  Time to give up and report the exception.
-                    Throw New Exception(SR.GetString(SR.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, exFinalFailure.Message), exFinalFailure)
+                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, exFinalFailure.Message), exFinalFailure)
                 End Try
             End Try
         End Function
@@ -557,7 +557,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Try
                         FoundProjectItem = Project.ProjectItems.AddFromDirectory(ResourcesFolderPath)
                     Catch ex As Exception
-                        Throw New Exception(SR.GetString(SR.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
                     End Try
 
                     'We didn't really want all those other files added to the project, so we try to remove them (but ignore
@@ -585,7 +585,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Trace("Project doesn't implement ProjectItems.AddFolder().  Adding to top-level node instead.")
                         AddToProjectRoot = True
                     Catch ex As Exception
-                        Throw New Exception(SR.GetString(SR.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
                     End Try
                 End If
             End If
@@ -659,7 +659,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Dim DesiredResourcesFolderName As String = DirectCast(VsProjectsKey.GetValue(s_KEYNAME_RESOURCESFOLDERNAME, ResourcesFolderName), String)
 
                         'Validate the behavior from the registry
-                        If System.Enum.IsDefined(GetType(ResourcesFolderBehavior), DesiredBehavior) Then
+                        If [Enum].IsDefined(GetType(ResourcesFolderBehavior), DesiredBehavior) Then
                             Behavior = DesiredBehavior
                         Else
                             Trace("ResourcesFolderBehavior in registry ({0}) is invalid - using default", CStr(DesiredBehavior))
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         VsProjectsKey.Close()
                     End Try
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception thrown trying to get ResourcesFolderBehavior value from local registry", NameOf(ResourcesFolderService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception thrown trying to get ResourcesFolderBehavior value from local registry", NameOf(ResourcesFolderService))
                 'Ignore any other exceptions - perhaps the key was the wrong data type, etc.  It will simply be treated as
                 '  if the behavior is AddNone.
             End Try
@@ -696,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Static ProjectGuid_ASPDotNet As New Guid("E24C65DC-7377-472b-9ABA-BC803B73C61A")
 #End If
 
-            Trace("ResourcesFolderBehavior = " & System.Enum.GetName(GetType(ResourcesFolderBehavior), Behavior))
+            Trace("ResourcesFolderBehavior = " & [Enum].GetName(GetType(ResourcesFolderBehavior), Behavior))
             Trace("ResourcesFolderName= " & ResourcesFolderName)
         End Sub
 
@@ -768,7 +768,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
                 'This is the expected exception if the key could not be found.
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(ResourcesFolderService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(ResourcesFolderService))
                 'Any other error - shouldn't be the case, but it might depend on the project implementation
             End Try
 

@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         If extensionsAddedSB.Length = 0 Then
                             extensionsAddedSB.Append(extensionTemplate.DisplayName)
                         Else
-                            extensionsAddedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionTemplate.DisplayName)
+                            extensionsAddedSB.Append(Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionTemplate.DisplayName)
                         End If
                     End If
                 Next
@@ -478,9 +478,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         If projectFilesRemovedSB.Length = 0 Then
                             projectFilesRemovedSB.Append(extensionProjectItemGroup.DisplayName)
                         Else
-                            projectFilesRemovedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
+                            projectFilesRemovedSB.Append(Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
                         ' Ignore exceptions.
                     End Try
                 Next

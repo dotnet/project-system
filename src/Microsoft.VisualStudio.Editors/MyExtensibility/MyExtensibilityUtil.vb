@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Else
                 If _assemblyDictionary Is Nothing Then
                     _assemblyDictionary = New Dictionary(Of String, AssemblyVersionDictionary(Of T))(
-                        System.StringComparer.OrdinalIgnoreCase)
+                        StringComparer.OrdinalIgnoreCase)
                 End If
                 Dim asmVersionDictionary As AssemblyVersionDictionary(Of T) = Nothing
                 If _assemblyDictionary.ContainsKey(assemblyName) Then

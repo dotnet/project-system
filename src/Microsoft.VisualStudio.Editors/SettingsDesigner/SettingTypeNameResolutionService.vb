@@ -52,9 +52,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim comparer As System.Collections.Generic.IEqualityComparer(Of String)
             If caseSensitive Then
-                comparer = System.StringComparer.Ordinal
+                comparer = StringComparer.Ordinal
             Else
-                comparer = System.StringComparer.OrdinalIgnoreCase
+                comparer = StringComparer.OrdinalIgnoreCase
             End If
 
             _languageSpecificToFxTypeName = New System.Collections.Generic.Dictionary(Of String, String)(16, comparer)
@@ -149,14 +149,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Localized name of virtual types"
         Private Shared ReadOnly Property DisplayTypeNameConnectionString() As String
             Get
-                Static VirtualTypeNameConnectionString As String = "(" & SR.GetString(SR.SD_ComboBoxItem_ConnectionStringType) & ")"
+                Static VirtualTypeNameConnectionString As String = "(" & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ConnectionStringType) & ")"
                 Return VirtualTypeNameConnectionString
             End Get
         End Property
 
         Private Shared ReadOnly Property DisplayTypeNameWebReference() As String
             Get
-                Static VirtualTypeNameWebReference As String = "(" & SR.GetString(SR.SD_ComboBoxItem_WebReferenceType) & ")"
+                Static VirtualTypeNameWebReference As String = "(" & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_WebReferenceType) & ")"
                 Return VirtualTypeNameWebReference
             End Get
         End Property

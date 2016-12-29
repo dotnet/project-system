@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     If Not _isReadOnly Then
                         Dim NotifyComponentChange As Boolean = True
-                        If MyBase.Name = PROPERTY_NAME Then
+                        If Name = PROPERTY_NAME Then
                             'We must special-case the "Name" property.  In this case, we want the Undo engine
                             '  to pick up on the ComponentRename event only.  If we fire a component change
                             '  event here, too, it tends to complicate matters (there's confusion on Redo

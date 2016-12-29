@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim templatesWithCustomData As Templates = Nothing
             Try
                 templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, s_CUSTOM_DATA_SIGNATURE)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
                 ' Ignore exceptions.
             End Try
             If templatesWithCustomData Is Nothing OrElse templatesWithCustomData.Count = 0 Then
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
                 xmlWriter.WriteEndElement()
                 xmlWriter.WriteEndDocument()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings))
                 ' Ignore write exceptions.
             Finally
                 If xmlWriter IsNot Nothing Then
@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If Not StringIsNullEmptyOrBlank(attributeValue) Then
                 Try
                     result = DirectCast(AssemblyOptionConverter.ConvertFromInvariantString(attributeValue), AssemblyOption)
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ReadAssemblyOptionAttribute), NameOf(MyExtensibilitySettings))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ReadAssemblyOptionAttribute), NameOf(MyExtensibilitySettings))
                 End Try
             End If
             Return result
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim text As String = Nothing
             Try
                 text = AssemblyOptionConverter.ConvertToInvariantString(value)
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Could not convert to invariant string", NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Could not convert to invariant string", NameOf(MyExtensibilitySettings))
             End Try
             If text Is Nothing Then
                 text = CInt(value).ToString()
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ' The auto options dictionary:
         ' - key is assembly full name without culture / public key - case insensitive.
         ' - value is AssemblyAutoOption.
-        Private _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(System.StringComparer.OrdinalIgnoreCase)
+        Private _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(StringComparer.OrdinalIgnoreCase)
 
         ' Assembly settings file path
         Private _settingsFilePath As String

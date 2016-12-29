@@ -40,13 +40,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim newDoc As XmlDocument = ServicesPropPageAppConfigHelper.AppConfigXmlDocument(PropertyPageSite, ProjectHierarchy, False)
                 'We want to change the document & properties if stuff has changed.  If both documents are null, Object.Equals will return true and
                 'we don't need to update.  Other than that, we want to update if one of the documents are null or if neither is and their xml differs.
-                If Not _alreadyLoaded OrElse (Not Object.Equals(newDoc, CurrentAppConfigDocument) AndAlso (newDoc Is Nothing OrElse CurrentAppConfigDocument Is Nothing OrElse
+                If Not _alreadyLoaded OrElse (Not Equals(newDoc, CurrentAppConfigDocument) AndAlso (newDoc Is Nothing OrElse CurrentAppConfigDocument Is Nothing OrElse
                         newDoc.OuterXml <> CurrentAppConfigDocument.OuterXml)) Then
                     _alreadyLoaded = True
                     CurrentAppConfigDocument = newDoc
                     If Not _appConfigError Then
                         'If the application is targetting earlier than .NET Framework 3.5 or a client subset of .NET Framework, then disable this tab.
-                        If _frameworkVersionNumber < s_requiredFrameworkVersion OrElse Utils.IsClientFrameworkSubset(ProjectHierarchy) Then
+                        If _frameworkVersionNumber < s_requiredFrameworkVersion OrElse IsClientFrameworkSubset(ProjectHierarchy) Then
                             SetControlsEnabledProperty(False)
                             EnableApplicationServices.Enabled = False
                         Else
@@ -72,8 +72,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Private Sub SetLocalizedProperties()
-            Dim nonlabelText As String = SR.GetString(SR.PPG_Services_HelpLabelText)
-            Dim labelText As String = SR.GetString(SR.PPG_Services_HelpLabelLink)
+            Dim nonlabelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelText)
+            Dim labelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelLink)
             HelpLabel.Text = nonlabelText & labelText
             HelpLabel.LinkArea = New System.Windows.Forms.LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
@@ -90,12 +90,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'an error stating that the functionality is only available for 3.5 or greater.
             'Also, uncheck the checkbox
             If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < s_requiredFrameworkVersion Then
-                DesignerFramework.DesignerMessageBox.Show(ServiceProvider, SR.GetString(SR.PPG_Services_VersionWarning), Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                DesignerFramework.DesignerMessageBox.Show(ServiceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_VersionWarning), Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 _ignoreCheckedChanged = True
                 EnableApplicationServices.Checked = False
             ElseIf Not EnableApplicationServices.Checked Then
                 Dim result As DialogResult = DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
-                    SR.GetString(SR.PPG_Services_ConfirmRemoveServices), SR.GetString(SR.PPG_Services_ConfirmRemoveServices_Caption),
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_ConfirmRemoveServices), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_ConfirmRemoveServices_Caption),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2)
                 If result = DialogResult.Cancel Then
                     _ignoreCheckedChanged = True
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'NOTE: when the messagebox returns, we'll re-read app config and see if it's better.
                     'If we didn't want to do this, we'd set ignoreCheckedChanged to true before the call
                     'and false afterward.
-                    Dim ex As New XmlException(SR.GetString(SR.PPG_Services_InvalidAppConfigXml))
+                    Dim ex As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidAppConfigXml))
                     DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                 Else
                     ServicesPropPageAppConfigHelper.EnsureApplicationServicesEnabled(CurrentAppConfigDocument, enable, ProjectHierarchy)
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Catch ex As InvalidOperationException
                     _appConfigError = True
                     SetControlsProperties(False)
-                    Dim xmlException As New XmlException(SR.GetString(SR.PPG_Services_InvalidUrls))
+                    Dim xmlException As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrls))
                     DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", xmlException, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                     Exit Sub
                 End Try
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub AdvancedSettings_Click(sender As Object, e As EventArgs) Handles AdvancedSettings.Click
-            ShowChildPage(SR.GetString(SR.PPG_ServicesAdvancedPage_Title), GetType(AdvancedServicesDialog))
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServicesAdvancedPage_Title), GetType(AdvancedServicesDialog))
         End Sub
 
         Private Sub UrlTextBox_Validating(sender As Object, e As CancelEventArgs) Handles RolesServiceUrl.Validating, AuthenticationServiceUrl.Validating, WebSettingsUrl.Validating
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Sub ShowInvalidUrlError()
             _ignoreLostFocus = True
-            Dim ex As New XmlException(SR.GetString(SR.PPG_Services_InvalidUrl))
+            Dim ex As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrl))
             DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
             _ignoreLostFocus = False
         End Sub
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub Loaded(sender As System.Object, e As EventArgs) Handles Me.Load
-            _frameworkVersionNumber = Utils.GetProjectTargetFrameworkVersion(ProjectHierarchy)
+            _frameworkVersionNumber = GetProjectTargetFrameworkVersion(ProjectHierarchy)
             EnsureXmlUpToDate()
         End Sub
 
@@ -328,10 +328,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim vshelp As VSHelp.Help = CType(sp.GetService(GetType(VSHelp.Help)), VSHelp.Help)
                     vshelp.DisplayTopicFromF1Keyword(GetF1HelpKeyword)
                 Else
-                    System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
+                    Debug.Fail("Can not find ServiceProvider")
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage))
+            Catch ex As System.Exception When ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage))
             End Try
         End Sub
 

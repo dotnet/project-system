@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MinimumSize = PreferredSize()
 
             AddChangeHandlers()
-            MyBase.PageRequiresScaling = False
+            PageRequiresScaling = False
         End Sub
 
         Public Enum TreatWarningsSetting
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let throw below
                 End Try
             End If
-            Throw New FormatException(SR.GetString(SR.PPG_InvalidHexString))
+            Throw New FormatException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString))
         End Function
 
         ''' <summary>

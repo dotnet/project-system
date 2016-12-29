@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If (dts Is Nothing) Then
-                Throw New NotSupportedException(SR.GetString(SR.General_MissingService, GetType(DynamicTypeService).Name))
+                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
             End If
 
             Dim hierarchy As IVsHierarchy = ProjectUtilities.GetVsHierarchy(Me, project)
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         ' now we need to map this hierarchy/itemid to a ProjectItem
                         '
                         Dim o As Object = Nothing
-                        Dim hr As Integer = hierarchy.GetProperty(itemid, Microsoft.VisualStudio.Shell.Interop.__VSHPROPID.VSHPROPID_ExtObject, o)
+                        Dim hr As Integer = hierarchy.GetProperty(itemid, __VSHPROPID.VSHPROPID_ExtObject, o)
 
                         Debug.Assert(NativeMethods.Succeeded(hr), "GetProperty(ExtObject) failed?")
                         Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
             For Each item As ProjectItem In project.ProjectItems
 
-                If item.Name.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
+                If item.Name.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
 
                     ' See if we already have an existing global object with this value.
                     ' If so, we will use it (because the global object itself tracks changes to its
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         If itemid <> VSITEMID.NIL Then
                             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
                             If (dts Is Nothing) Then
-                                Throw New NotSupportedException(SR.GetString(SR.General_MissingService, GetType(DynamicTypeService).Name))
+                                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
                             End If
 
                             Dim typeResolver As ITypeResolutionService = dts.GetTypeResolutionService(hierarchy, itemid)
@@ -613,7 +613,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnProjectItemAdded(" & DebugGetId(projectItem) & ")...")
 #End If
 
-            If (projectItem.Name.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
+            If (projectItem.Name.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
 
                 If (_globalObjects IsNot Nothing) Then
 
@@ -752,7 +752,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
                 Debug.Assert(hier IsNot Nothing, "Why didn't we find a IVsHierarchy for the default app.config file?")
                 Dim goc As GlobalObjectCollection = Nothing
-                If _globalObjects.TryGetValue(Editors.Common.DTEUtils.EnvDTEProject(hier), _
+                If _globalObjects.TryGetValue(Common.DTEUtils.EnvDTEProject(hier), _
                                                  goc) _
                 Then
                     For Each go As GlobalObject In goc
@@ -771,9 +771,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     If (GlobalSettings.TraceVerbose) Then
                         Try
-                            Dim attrs As __VSRDTATTRIB = CType(System.Enum.ToObject(GetType(__VSRDTATTRIB), attributes), __VSRDTATTRIB)
+                            Dim attrs As __VSRDTATTRIB = CType([Enum].ToObject(GetType(__VSRDTATTRIB), attributes), __VSRDTATTRIB)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterAttributeChange(" & attrs.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterAttributeChange), NameOf(SettingsGlobalObjectProvider))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnAfterAttributeChange), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -805,9 +805,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     If (GlobalSettings.TraceVerbose) Then
                         Try
-                            Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
+                            Dim flags As _VSRDTFLAGS = CType([Enum].ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterFirstDocumentLock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterFirstDocumentLock), NameOf(SettingsGlobalObjectProvider))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnAfterFirstDocumentLock), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -843,9 +843,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     If (GlobalSettings.TraceVerbose) Then
                         Try
-                            Dim flags As _VSRDTFLAGS = CType(System.Enum.ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
+                            Dim flags As _VSRDTFLAGS = CType([Enum].ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnBeforeLastDocumentUnlock(" & flags.ToString("G") & ")...")
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLastDocumentUnlock), NameOf(SettingsGlobalObjectProvider))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnBeforeLastDocumentUnlock), NameOf(SettingsGlobalObjectProvider))
                         End Try
                     End If
 #End If
@@ -1070,7 +1070,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Sub RemoveItem(hierarchy As IVsHierarchy, fileName As String)
             ' Search for this project item
             If (_globalObjects IsNot Nothing) Then
-                If (fileName.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
+                If (fileName.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
                     Dim targetObject As SettingsFileGlobalObject = Nothing
                     Dim ProjectObj As Object = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ProjectObj))
@@ -1112,10 +1112,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         Private Sub AddItem(project As IVsHierarchy, fileName As String)
             ' Only care about files with names that end with .settings
-            If fileName.EndsWith(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
+            If fileName.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
                 Try
                     Try
-                        If Not System.IO.File.Exists(fileName) Then
+                        If Not IO.File.Exists(fileName) Then
                             Return
                         End If
                     Catch ex As ArgumentException
@@ -1126,7 +1126,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     VSErrorHandler.ThrowOnFailure(project.ParseCanonicalName(fileName, itemId))
 
                     Dim o As Object = Nothing
-                    VSErrorHandler.ThrowOnFailure(project.GetProperty(itemId, Microsoft.VisualStudio.Shell.Interop.__VSHPROPID.VSHPROPID_ExtObject, o))
+                    VSErrorHandler.ThrowOnFailure(project.GetProperty(itemId, __VSHPROPID.VSHPROPID_ExtObject, o))
 
                     Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
 
@@ -1134,7 +1134,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If (projItem IsNot Nothing) Then
                         OnProjectItemAdded(projItem)
                     End If
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider))
+                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider))
                     ' Dunno what kind of exceptions ParseCanonicalName or GetProperty may throw....
                 End Try
             End If
@@ -1217,7 +1217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             _className = name
             _typeResolver = typeResolver
             _fileName = SettingsGlobalObjectProvider.GetFileNameForProjectItem(item)
-            _valueCache = New SettingsValueCache(System.Globalization.CultureInfo.InvariantCulture)
+            _valueCache = New SettingsValueCache(Globalization.CultureInfo.InvariantCulture)
             _typeCache = New SettingsTypeCache(hierarchy, Common.DTEUtils.ItemIdOfProjectItem(hierarchy, item), typeResolver, True)
 
         End Sub 'New
@@ -1362,7 +1362,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.Assert(_itemid <> 0, "LoadSettings should have retrieved the itemid")
 
             Try
-                _namespace = SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True)
+                _namespace = ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True)
 
             Catch ex As COMException
                 Debug.Fail("GetProperty(DefaultNamespace) failed?")
@@ -1370,7 +1370,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             Dim isDesignTime As Boolean = True
 
-            Dim ccu As CodeCompileUnit = SettingsSingleFileGenerator.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, Nothing, TypeAttributes.Public Or TypeAttributes.Sealed)
+            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, Nothing, TypeAttributes.Public Or TypeAttributes.Sealed)
             Debug.Assert(ccu.Namespaces.Count = 1, "Expected a single namespace from SettingsSingleFileGenerator")
 
             ' Remove structure from the compile unit that virtual types can't handle.  
@@ -1394,11 +1394,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '   b/c a VirtualType can't have a property of its own type. So we add a hacked property
             '   by the same name with type Object instead.
             '
-            builder.Properties.Add(SettingsSingleFileGenerator.DefaultInstancePropertyName,
+            builder.Properties.Add(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName,
                                 GetType(Object),
                                 True,
                                 New Attribute() {},
-                                System.Reflection.MethodAttributes.Public Or System.Reflection.MethodAttributes.Static)
+                                MethodAttributes.Public Or MethodAttributes.Static)
 
             Return builder.CreateType()
 
@@ -1457,7 +1457,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Catch argEx As System.ArgumentException
                 ' venus throws this since they don't support the CustomTool property, and all we
                 '   can do is catch it and ignore it
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(EnsureGeneratingSettingClass), NameOf(SettingsGlobalObjectProvider))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(EnsureGeneratingSettingClass), NameOf(SettingsGlobalObjectProvider))
                 ' we don't expect to fail randomly, but we also don't really want to propagate
                 '   failures from project systems we don't know about out to the user through
                 '   the global-object-service since users won't really know that we're setting
@@ -1578,7 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- editLocks=" & editLocks & ", readLocks=" & readLocks & "...")
 #End If
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
+                Catch Ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
                     Throw
                 End Try
 
@@ -1760,7 +1760,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                 Save()
             End If
-            _namespace = SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True)
+            _namespace = ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True)
 
             ' Since we have changed the root namespace, we have to rebuild the type!
             PerformChange()
@@ -1787,7 +1787,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             If appConfigOrProjectFile <> "" Then
                 filesToCheckOut.Add(appConfigOrProjectFile)
             End If
-            Microsoft.VisualStudio.Editors.DesignerFramework.SourceCodeControlManager.QueryEditableFiles(_provider, filesToCheckOut, True, False)
+            DesignerFramework.SourceCodeControlManager.QueryEditableFiles(_provider, filesToCheckOut, True, False)
 
             Try
                 _ignoreDocLock = True
@@ -1822,11 +1822,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             ' out of sync...
                             Dim settingsToSave As DesignTimeSettings = Settings
                             SettingsSerializer.Serialize(settingsToSave,
-                                SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid),
+                                ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid),
                                 _className,
                                 settingsWriter,
                                 DesignerFramework.DesignUtil.GetEncoding(docDataTemp))
-                            SaveToAppConfig(settingsToSave, SettingsDesigner.ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True),
+                            SaveToAppConfig(settingsToSave, ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True),
                                 _className)
                         Finally
                             settingsWriter.Close()
@@ -1857,7 +1857,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             If vsProjItem IsNot Nothing Then
                                 Try
                                     vsProjItem.RunCustomTool()
-                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider))
+                                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider))
                                 End Try
                             End If
                         End If
@@ -1977,7 +1977,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/ </devdoc>
         Private Sub ScrubCompileUnit(ccu As CodeCompileUnit)
 
-            Dim allowed As MemberAttributes = SettingsSingleFileGenerator.SettingsPropertyVisibility
+            Dim allowed As MemberAttributes = SettingsSingleFileGeneratorBase.SettingsPropertyVisibility
 
             For Each ns As System.CodeDom.CodeNamespace In ccu.Namespaces
 
@@ -2076,7 +2076,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 End If
                 Dim globalObjectTypeRef As New CodeTypeReference(fullyQualifiedName, CodeTypeReferenceOptions.GlobalReference)
                 Dim globalObjectClassRef As New CodeTypeReferenceExpression(globalObjectTypeRef)
-                Dim defaultInstancePropertyRef As New CodePropertyReferenceExpression(globalObjectClassRef, SettingsSingleFileGenerator.DefaultInstancePropertyName)
+                Dim defaultInstancePropertyRef As New CodePropertyReferenceExpression(globalObjectClassRef, SettingsSingleFileGeneratorBase.DefaultInstancePropertyName)
                 Dim propertyExpression As CodePropertyReferenceExpression
 
                 If attr.PropertyName Is Nothing Then
@@ -2155,7 +2155,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' DefaultInstance should return the GlobalObject that this represents since DefaultInstance
                 '   returns an instance of itself
                 '
-                If (prop.Name.Equals(SettingsSingleFileGenerator.DefaultInstancePropertyName, StringComparison.Ordinal)) Then
+                If (prop.Name.Equals(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName, StringComparison.Ordinal)) Then
                     Return (_globalObject.Instance)
                 End If
 
@@ -2259,7 +2259,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileTypeImplementor.SetPropertyValue(" & CStr(_globalObject._className) & " -- " & CStr(prop.Name) & ")...")
 #End If
 
-                Debug.Assert(Not prop.Name.Equals(SettingsSingleFileGenerator.DefaultInstancePropertyName, StringComparison.Ordinal), "DefaultInstance is read-only, we can't set it")
+                Debug.Assert(Not prop.Name.Equals(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName, StringComparison.Ordinal), "DefaultInstance is read-only, we can't set it")
                 Debug.Assert(Not prop.Name.Equals("Properties", StringComparison.Ordinal), "Properties collection is read-only")
 
                 ' a DesignTimeSettings class implements IList but does not support fetching settings
@@ -2286,7 +2286,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                 '   the currently selected profile)
                                 '
                                 Dim serializer As New SettingsValueSerializer
-                                setting.SetSerializedValue(serializer.Serialize(value, System.Globalization.CultureInfo.InvariantCulture))
+                                setting.SetSerializedValue(serializer.Serialize(value, Globalization.CultureInfo.InvariantCulture))
 
                                 ' now ask the file to persist the change
                                 '

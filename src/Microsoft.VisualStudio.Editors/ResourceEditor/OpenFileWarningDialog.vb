@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'dialogLayoutPanel
             '
             resources.ApplyResources(dialogLayoutPanel, "dialogLayoutPanel")
-            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(Windows.Forms.SizeType.Percent, 100.0!))
             dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
             dialogLayoutPanel.Controls.Add(alwaysCheckCheckBox, 0, 2)
             dialogLayoutPanel.Controls.Add(messageLabel, 0, 0)
@@ -124,13 +124,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'buttonOK
             '
             resources.ApplyResources(buttonOK, "buttonOK")
-            buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK
+            buttonOK.DialogResult = Windows.Forms.DialogResult.OK
             buttonOK.Name = "buttonOK"
             '
             'buttonCancel
             '
             resources.ApplyResources(buttonCancel, "buttonCancel")
-            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            buttonCancel.DialogResult = Windows.Forms.DialogResult.Cancel
             buttonCancel.Name = "buttonCancel"
             '
             'messageLabel2
@@ -143,16 +143,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             AcceptButton = buttonOK
             resources.ApplyResources(Me, "$this")
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            AutoScaleMode = Windows.Forms.AutoScaleMode.Font
             CancelButton = buttonCancel
             Controls.Add(dialogLayoutPanel)
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+            FormBorderStyle = Windows.Forms.FormBorderStyle.FixedDialog
             HelpButton = True
             MaximizeBox = False
             MinimizeBox = False
             Name = "OpenFileWarningDialog"
             ShowIcon = False
-            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+            SizeGripStyle = Windows.Forms.SizeGripStyle.Hide
             dialogLayoutPanel.ResumeLayout(False)
             dialogLayoutPanel.PerformLayout()
             ResumeLayout(False)

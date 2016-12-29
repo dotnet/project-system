@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub buttonYes_Click(sender As Object, e As EventArgs) Handles buttonYes.Click
             Close()
-            DialogResult = System.Windows.Forms.DialogResult.Yes
+            DialogResult = Windows.Forms.DialogResult.Yes
         End Sub
 
 #Region "Windows Form Designer generated code"
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             'buttonNo
             '
-            buttonNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            buttonNo.DialogResult = Windows.Forms.DialogResult.Cancel
             resources.ApplyResources(buttonNo, "buttonNo")
             buttonNo.Name = "buttonNo"
             buttonNo.UseVisualStyleBackColor = True

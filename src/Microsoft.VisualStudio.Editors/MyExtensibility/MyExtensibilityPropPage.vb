@@ -277,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             listViewExtensions.Name = "listViewExtensions"
             listViewExtensions.ShowItemToolTips = True
             listViewExtensions.UseCompatibleStateImageBehavior = False
-            listViewExtensions.View = System.Windows.Forms.View.Details
+            listViewExtensions.View = View.Details
             '
             'colHeaderExtensionName
             '
@@ -313,7 +313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'MyExtensibilityPropPage
             '
             resources.ApplyResources(Me, "$this")
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            AutoScaleMode = AutoScaleMode.Font
             Controls.Add(tableLayoutOverarching)
             Name = "MyExtensibilityPropPage"
             tableLayoutOverarching.ResumeLayout(False)

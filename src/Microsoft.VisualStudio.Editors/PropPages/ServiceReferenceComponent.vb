@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If _referenceGroup.GetReferenceCount() = 1 Then
                     Return _referenceGroup.GetReferenceUrl(0)
                 ElseIf _referenceGroup.GetReferenceCount() > 1 Then
-                    Return SR.GetString(SR.CSRDlg_MultipleURL)
+                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.CSRDlg_MultipleURL)
                 Else
                     Return ""
                 End If
@@ -68,10 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Throw ex
                         End Try
                     Else
-                        Throw New ArgumentException(SR.PPG_ServiceReferenceProperty_SetReferenceUrlEmpty)
+                        Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceProperty_SetReferenceUrlEmpty)
                     End If
                 ElseIf currentCount > 1 Then
-                    Throw New NotSupportedException(SR.PPG_ServiceReferenceProperty_MultipleUrlNotSupported)
+                    Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceProperty_MultipleUrlNotSupported)
                 Else
                     If value <> "" Then
                         _referenceGroup.AddReference(Nothing, value)
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
-            Return SR.GetString(SR.PPG_ServiceReferenceTypeName)
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceTypeName)
         End Function
 
         Public Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName

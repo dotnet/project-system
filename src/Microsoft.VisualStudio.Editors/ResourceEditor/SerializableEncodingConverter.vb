@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 'Try as a codepage (in case they try typing in a codepage manually)
-                If VB.IsNumeric(Value) Then
+                If IsNumeric(Value) Then
                     Return New SerializableEncoding(Encoding.GetEncoding(CInt(Value)))
                 End If
 
@@ -177,10 +177,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function IsUnicodeEncoding(Encoding As Encoding) As Boolean
-            Return Encoding.Equals(System.Text.Encoding.BigEndianUnicode) _
-                OrElse Encoding.Equals(System.Text.Encoding.Unicode) _
-                OrElse Encoding.Equals(System.Text.Encoding.UTF7) _
-                OrElse Encoding.Equals(System.Text.Encoding.UTF8)
+            Return Encoding.Equals(Encoding.BigEndianUnicode) _
+                OrElse Encoding.Equals(Encoding.Unicode) _
+                OrElse Encoding.Equals(Encoding.UTF7) _
+                OrElse Encoding.Equals(Encoding.UTF8)
         End Function
 
 
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'A few exceptions that we consider valid
-            If IsUnicodeEncoding(Encoding) OrElse Encoding.Equals(System.Text.Encoding.ASCII) Then
+            If IsUnicodeEncoding(Encoding) OrElse Encoding.Equals(Encoding.ASCII) Then
                 Return True
             End If
 

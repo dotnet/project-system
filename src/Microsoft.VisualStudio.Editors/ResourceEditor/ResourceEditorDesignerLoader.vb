@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("m_RootComponent is Nothing")
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader))
                 Throw
             End Try
         End Sub
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Now that we know the load succeeded, we can try registering our view helper
                         NewResourceEditorRoot.RootDesigner.RegisterViewHelper()
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(HandleLoad), NameOf(ResourceEditorDesignerLoader))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(HandleLoad), NameOf(ResourceEditorDesignerLoader))
                         _rootComponent = Nothing
 
                         'No need to dispose the resource editor root, the host will do this for us.

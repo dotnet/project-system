@@ -64,23 +64,23 @@ Namespace Microsoft.VisualStudio.Editors
 
             'Register editor factories
             Try
-                MyBase.RegisterEditorFactory(New SettingsDesigner.SettingsDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering settings designer editor factory", NameOf(VBPackage))
+                RegisterEditorFactory(New SettingsDesigner.SettingsDesignerEditorFactory)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering settings designer editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
-                MyBase.RegisterEditorFactory(New ResourceEditor.ResourceEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage))
+                RegisterEditorFactory(New ResourceEditor.ResourceEditorFactory)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
-                MyBase.RegisterEditorFactory(New Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage))
+                RegisterEditorFactory(New Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
-                MyBase.RegisterEditorFactory(New PropPageDesigner.PropPageDesignerEditorFactory)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception registering property page designer editor factory", NameOf(VBPackage))
+                RegisterEditorFactory(New PropPageDesigner.PropPageDesignerEditorFactory)
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering property page designer editor factory", NameOf(VBPackage))
                 Throw
             End Try
 
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors
                         End If
                         _lastViewedProjectDesignerTab(projGuid) = tab
                     End While
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to read settings", NameOf(VBPackage))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to read settings", NameOf(VBPackage))
                 End Try
             Else
                 MyBase.OnLoadOptions(key, stream)
@@ -277,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors
                     If sol IsNot Nothing Then
                         For Each projectGuid As Guid In _lastViewedProjectDesignerTab.Keys
                             ' We check all current projects to see what the last active tab was
-                            If Editors.Interop.NativeMethods.Succeeded(sol.GetProjectOfGuid(projectGuid, hier)) Then
+                            If Interop.NativeMethods.Succeeded(sol.GetProjectOfGuid(projectGuid, hier)) Then
                                 Dim tab As Byte = _lastViewedProjectDesignerTab(projectGuid)
                                 If tab <> 0 Then
                                     ' We only need to persist this if the last tab was different than the 
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors
                 If hierarchy IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ProjectIDGuid, projGuid))
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get project guid", NameOf(VBPackage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get project guid", NameOf(VBPackage))
                 ' This is a non-vital function - ignore if we fail to get the GUID...
             End Try
             Return projGuid
@@ -381,9 +381,9 @@ Namespace Microsoft.VisualStudio.Editors
                 If _solution IsNot Nothing Then
                     Dim hr As Integer = _solution.AdviseSolutionEvents(Me, _cookie)
 #If DEBUG Then
-                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to advise solution events - we won't clean up user config files in ZIP projects...")
+                    Debug.Assert(Interop.NativeMethods.Succeeded(hr), "Failed to advise solution events - we won't clean up user config files in ZIP projects...")
 #End If
-                    If Not Editors.Interop.NativeMethods.Succeeded(hr) Then
+                    If Not Interop.NativeMethods.Succeeded(hr) Then
                         _cookie = 0
                     End If
                 End If
@@ -397,9 +397,9 @@ Namespace Microsoft.VisualStudio.Editors
                 If _cookie <> 0 AndAlso _solution IsNot Nothing Then
                     Dim hr As Integer = _solution.UnadviseSolutionEvents(_cookie)
 #If DEBUG Then
-                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to unadvise solution events - we may leak..")
+                    Debug.Assert(Interop.NativeMethods.Succeeded(hr), "Failed to unadvise solution events - we may leak..")
 #End If
-                    If Editors.Interop.NativeMethods.Succeeded(hr) Then
+                    If Interop.NativeMethods.Succeeded(hr) Then
                         _cookie = 0
                     End If
                 End If
@@ -415,7 +415,7 @@ Namespace Microsoft.VisualStudio.Editors
             Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             ''' <summary>
@@ -432,9 +432,9 @@ Namespace Microsoft.VisualStudio.Editors
                     Dim hr As Integer
                     ' Check if this is a deferred save project & there is only one project in the solution
                     Dim oBool As Object = Nothing
-                    hr = _solution.GetProperty(Microsoft.VisualStudio.Shell.Interop.__VSPROPID2.VSPROPID_DeferredSaveSolution, oBool)
+                    hr = _solution.GetProperty(__VSPROPID2.VSPROPID_DeferredSaveSolution, oBool)
 #If DEBUG Then
-                    Debug.Assert(Editors.Interop.NativeMethods.Succeeded(hr), "Failed to get VSPROPID_DeferredSaveSolution - we will not clean up user.config files...")
+                    Debug.Assert(Interop.NativeMethods.Succeeded(hr), "Failed to get VSPROPID_DeferredSaveSolution - we will not clean up user.config files...")
 #End If
                     ErrorHandler.ThrowOnFailure(hr)
 
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors
                         Dim hiers(0) As IVsHierarchy
                         Dim fetched As UInteger
 
-                        Do While projEnum.Next(CUInt(hiers.Length), hiers, fetched) = Editors.Interop.NativeMethods.S_OK AndAlso fetched > 0
+                        Do While projEnum.Next(CUInt(hiers.Length), hiers, fetched) = Interop.NativeMethods.S_OK AndAlso fetched > 0
                             If hiers(0) IsNot Nothing Then
                                 Dim dirs As Collections.Generic.List(Of String) = SettingsDesigner.SettingsDesigner.FindUserConfigDirectories(hiers(0))
                                 _filesToCleanUp.AddRange(SettingsDesigner.SettingsDesigner.FindUserConfigFiles(dirs))
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors
                     End If
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed when trying to clean up user.config files", NameOf(VBPackage))
                 End Try
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
 
@@ -462,35 +462,35 @@ Namespace Microsoft.VisualStudio.Editors
 #Region "IVsSolutionEvents methods that simply return S_OK"
 
             Public Function OnAfterLoadProject(pStubHierarchy As Shell.Interop.IVsHierarchy, pRealHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterLoadProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnAfterOpenProject(pHierarchy As Shell.Interop.IVsHierarchy, fAdded As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnAfterOpenSolution(pUnkReserved As Object, fNewSolution As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnAfterOpenSolution
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnBeforeCloseProject(pHierarchy As Shell.Interop.IVsHierarchy, fRemoved As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeCloseProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnBeforeUnloadProject(pRealHierarchy As Shell.Interop.IVsHierarchy, pStubHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsSolutionEvents.OnBeforeUnloadProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnQueryCloseProject(pHierarchy As Shell.Interop.IVsHierarchy, fRemoving As Integer, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnQueryCloseSolution(pUnkReserved As Object, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryCloseSolution
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnQueryUnloadProject(pRealHierarchy As Shell.Interop.IVsHierarchy, ByRef pfCancel As Integer) As Integer Implements Shell.Interop.IVsSolutionEvents.OnQueryUnloadProject
-                Return Editors.Interop.NativeMethods.S_OK
+                Return Interop.NativeMethods.S_OK
             End Function
 #End Region
 

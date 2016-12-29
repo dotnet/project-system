@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Shared Function CreateSingleDialogFilter(FilterText As String, Extensions() As String) As String
-            Return Common.Utils.CreateDialogFilter(FilterText, Extensions)
+            Return Common.CreateDialogFilter(FilterText, Extensions)
         End Function
 
 
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             Else
                 Debug.Fail("Unable to find resource from manifest: " & ManifestResourceId)
-                Throw New Package.InternalException(SR.GetString(SR.RSE_Err_Unexpected_NoResource_1Arg))
+                Throw New Package.InternalException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg))
             End If
         End Sub
 
@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim typeName As String = CType(NewResource, Resource).ValueTypeNameWithoutAssemblyInfo
                 'CONSIDER: We should consider a general way to check whether the type is supported or not.
                 If String.Equals(typeName, GetType(MemoryStream).FullName, StringComparison.Ordinal) Then
-                    Message = SR.GetString(SR.RSE_Err_TypeIsNotSupported_1Arg, GetType(UnmanagedMemoryStream).Name)
+                    Message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_TypeIsNotSupported_1Arg, GetType(UnmanagedMemoryStream).Name)
                     HelpID = HelpIDs.Err_TypeIsNotSupported
                     Return False
                 End If

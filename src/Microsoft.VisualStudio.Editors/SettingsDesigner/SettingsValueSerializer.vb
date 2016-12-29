@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                     ' For some reason, enumerations' deserialization works even when the integer value is out of range...
                     ' Well, we know better - let's check for this funky case and return nothing :)
-                    If val IsNot Nothing AndAlso GetType(System.Enum).IsAssignableFrom(ValueType) AndAlso Not System.Enum.IsDefined(ValueType, val) Then
+                    If val IsNot Nothing AndAlso GetType(System.Enum).IsAssignableFrom(ValueType) AndAlso Not [Enum].IsDefined(ValueType, val) Then
                         ' If this is a flags attribute, we can't assume that the enum is defined
                         If ValueType.GetCustomAttributes(GetType(System.FlagsAttribute), False).Length = 0 Then
                             Return Nothing
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to serialize value", NameOf(SettingsValueSerializer))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to serialize value", NameOf(SettingsValueSerializer))
             End Try
 
             ' Make sure we always return a valid string...

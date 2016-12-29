@@ -22,9 +22,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If Not UseVisualStyles Then
 
                     Select Case BorderStyle
-                        Case System.Windows.Forms.BorderStyle.Fixed3D
+                        Case BorderStyle.Fixed3D
                             cp.ExStyle = cp.ExStyle Or s_WS_EX_CLIENTEDGE
-                        Case System.Windows.Forms.BorderStyle.FixedSingle
+                        Case BorderStyle.FixedSingle
                             cp.Style = cp.Style Or s_WS_BORDER
                     End Select
                 End If
@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private ReadOnly Property UseVisualStyles() As Boolean
             Get
-                Return VisualStyles.VisualStyleRenderer.IsSupported
+                Return VisualStyleRenderer.IsSupported
             End Get
         End Property
 

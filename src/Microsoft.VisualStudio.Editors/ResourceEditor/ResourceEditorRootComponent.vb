@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If kindGuid.Equals(New Guid(EnvDTE.Constants.vsProjectItemKindPhysicalFile)) Then
                             Return True
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsDependentItem), NameOf(ResourceEditorRootComponent))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsDependentItem), NameOf(ResourceEditorRootComponent))
                     End Try
                 End If
             End If
@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End While
             Catch ex As FormatException
                 ' Ignore this ...
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsInGlobalResourceFolderInASP), NameOf(ResourceEditorRootComponent))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsInGlobalResourceFolderInASP), NameOf(ResourceEditorRootComponent))
             End Try
             Return False
         End Function

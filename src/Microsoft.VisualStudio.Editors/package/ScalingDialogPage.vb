@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
 
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                Return Form.DefaultFont
+                Return Control.DefaultFont
             End Get
         End Property
 

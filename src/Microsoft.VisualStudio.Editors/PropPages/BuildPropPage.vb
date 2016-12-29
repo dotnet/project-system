@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click
-            ShowChildPage(SR.GetString(SR.PPG_AdvancedBuildSettings_Title), GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_Title), GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
 
             ' Only supported for libraries
-            Return outputType = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_Library
+            Return outputType = prjOutputTypeEx.prjOutputTypeEx_Library
 
         End Function
 
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub OutputPathBrowse_Click(sender As Object, e As EventArgs) Handles btnOutputPathBrowse.Click
             Dim DirName As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(txtOutputPath.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), DirName) Then
+            If GetDirectoryViaBrowseRelativeToProject(txtOutputPath.Text, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectOutputPathTitle), DirName) Then
                 txtOutputPath.Text = DirName
                 SetDirty(True) ' vswhidbey 276000 - textchanged events do not commit, lostfocus does
                 ' this code path should commit the change if the user selected a new outputpath via the picker
@@ -559,7 +559,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     GetCurrentProperty(VsProjPropId.VBPROJPROPID_AbsoluteProjectDirectory, "AbsoluteProjectDirectory", obj)
                     Dim stProjectDirectory As String = TryCast(obj, String)
-                    If Microsoft.VisualBasic.Right(stProjectDirectory, 1) <> "\" Then
+                    If VisualBasic.Right(stProjectDirectory, 1) <> "\" Then
                         stProjectDirectory &= "\"
                     End If
 
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             End If
 
                             If (Not IsNothing(stOutputPath)) Then
-                                If Microsoft.VisualBasic.Right(stOutputPath, 1) <> "\" Then
+                                If VisualBasic.Right(stOutputPath, 1) <> "\" Then
                                     stOutputPath &= "\"
                                 End If
 
@@ -585,7 +585,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                     '// stOutputPath is an Absolute path so check to see if its within the project path
 
                                     If (String.Compare(Path.GetFullPath(stProjectDirectory),
-                                                       Microsoft.VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
+                                                       VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
                                                        StringComparison.Ordinal) = 0) Then
 
                                         '// The output path is within the project so suggest the output directory (or suggest just the filename
@@ -829,7 +829,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Switches.PDProperties.TraceInfo Then
                 Switches.TracePDProperties(TraceLevel.Info, "ConditionalCompilationSet: Initial Values:")
                 For i As Integer = 0 To values.Length - 1
-                    Switches.TracePDProperties(TraceLevel.Info, "  Value #" & i & ": " & Common.DebugToString(values(i)))
+                    Switches.TracePDProperties(TraceLevel.Info, "  Value #" & i & ": " & DebugToString(values(i)))
                 Next
             End If
 #End If
@@ -935,7 +935,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Config IsNot Nothing Then
                     Dim ConfigName As String = Nothing
                     Dim PlatformName As String = Nothing
-                    Common.ShellUtil.GetConfigAndPlatformFromIVsCfg(Config, ConfigName, PlatformName)
+                    ShellUtil.GetConfigAndPlatformFromIVsCfg(Config, ConfigName, PlatformName)
                     If ConfigurationName.Equals(ConfigName, StringComparison.CurrentCultureIgnoreCase) Then
                         'Found it - return the index to it
                         Return Index
@@ -954,7 +954,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   we hide the configuration/platform comboboxes.
         ''' </summary>
         Public Function IsSimplifiedConfigs() As Boolean
-            Return Common.ShellUtil.GetIsSimplifiedConfigMode(ProjectHierarchy)
+            Return ShellUtil.GetIsSimplifiedConfigMode(ProjectHierarchy)
         End Function
 
 

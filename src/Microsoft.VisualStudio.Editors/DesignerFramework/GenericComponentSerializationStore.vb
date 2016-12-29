@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="info">Serialization info</param>
         ''' <param name="context">Serialization context</param>
         ''' <remarks></remarks>
-        <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
+        <System.Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
         Public Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
             info.AddValue(s_KEY_STATE, _serializedState)
         End Sub

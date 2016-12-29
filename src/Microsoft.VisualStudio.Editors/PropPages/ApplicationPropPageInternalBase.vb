@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Try
                 Dim siteServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
-                VSErrorHandler.ThrowOnFailure(MyBase.ProjectHierarchy.GetSite(siteServiceProvider))
+                VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetSite(siteServiceProvider))
                 Dim sp As New Microsoft.VisualStudio.Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     targetFrameworkSupported = True
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
                 Switches.TracePDProperties(TraceLevel.Warning, ": {0}", ex.ToString())
                 targetFrameworkSupported = False
                 targetFrameworkComboBox.Items.Clear()

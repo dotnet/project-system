@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 Dim DataConnectionProperties As IVsDataConnectionProperties = GetConnectionStringProperties(ProviderManager, DataProvider, ConnectionString)
                 Return ContainsSensitiveData(DataConnectionProperties)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ContainsSensitiveData), NameOf(ConnectionStringUITypeEditor))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ContainsSensitiveData), NameOf(ConnectionStringUITypeEditor))
             End Try
             ' The secure & safe assumption is that it does contain sensitive data
             Return True
@@ -337,7 +337,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                Return Microsoft.VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
+                Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
             End Function
         End Class
 

@@ -225,10 +225,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim vshelp As VSHelp.Help = CType(sp.GetService(GetType(VSHelp.Help)), VSHelp.Help)
                         vshelp.DisplayTopicFromF1Keyword(HelpTopic)
                     Else
-                        System.Diagnostics.Debug.Fail("Can not find ServiceProvider")
+                        Debug.Fail("Can not find ServiceProvider")
                     End If
 
-                Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(BuildEventCommandLineDialog))
+                Catch ex As System.Exception When Common.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(BuildEventCommandLineDialog))
                 End Try
             End If
         End Sub

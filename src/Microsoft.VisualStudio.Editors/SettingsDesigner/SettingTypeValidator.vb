@@ -18,11 +18,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function IsTypeObsolete(type As System.Type) As Boolean
-            Dim typeInLoadedAssembly As System.Type = System.Type.GetType(type.AssemblyQualifiedName)
+            Dim typeInLoadedAssembly As System.Type = Type.GetType(type.AssemblyQualifiedName)
 
             ' If the type we get from System.Type.GetType(<assembly qualified type name>) is not the same
             ' as the type provided, something has changed in the defining assembly
-            Return Object.ReferenceEquals(type, typeInLoadedAssembly) = False
+            Return ReferenceEquals(type, typeInLoadedAssembly) = False
         End Function
 
         Public Shared Function IsValidSettingType(type As System.Type) As Boolean
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If tc.CanConvertFrom(GetType(String)) AndAlso tc.CanConvertTo(GetType(String)) Then
                     Return True
                 End If
-                If type.GetConstructor(BindingFlags.Instance Or BindingFlags.Public, Nothing, System.Reflection.CallingConventions.HasThis, System.Type.EmptyTypes, Nothing) IsNot Nothing Then
+                If type.GetConstructor(BindingFlags.Instance Or BindingFlags.Public, Nothing, CallingConventions.HasThis, Type.EmptyTypes, Nothing) IsNot Nothing Then
                     Return True
                 End If
             Catch ex As Exception

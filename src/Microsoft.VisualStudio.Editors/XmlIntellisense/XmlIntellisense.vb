@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 Try
                     ' Get 'ns' even if 'element' is found. Testhook wants
                     ' to know if namespace can be found
-                    ns = System.Xml.Linq.XNamespace.Get(NamespaceName)
+                    ns = Linq.XNamespace.Get(NamespaceName)
                     NamespaceFound = ns IsNot Nothing
                 Catch
                     ' ignore any exception coming from there

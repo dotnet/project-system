@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     End If
                 Next
 
-                DialogResult = Windows.Forms.DialogResult.OK
+                DialogResult = DialogResult.OK
                 Close()
             End If
         End Sub
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             'buttonCancel
             '
             resources.ApplyResources(buttonCancel, "buttonCancel")
-            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            buttonCancel.DialogResult = DialogResult.Cancel
             buttonCancel.Name = "buttonCancel"
             buttonCancel.UseVisualStyleBackColor = True
             '
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             listViewExtensions.Name = "listViewExtensions"
             listViewExtensions.ShowItemToolTips = True
             listViewExtensions.UseCompatibleStateImageBehavior = False
-            listViewExtensions.View = System.Windows.Forms.View.Details
+            listViewExtensions.View = View.Details
             '
             'colHeaderExtensionName
             '

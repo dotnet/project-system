@@ -101,10 +101,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If LocalRegistry Is Nothing Then
                 Debug.Fail("Shell did not offer local registry, so we can't create a text buffer.")
-                Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), Interop.NativeMethods.E_FAIL)
+                Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_NoLocalRegistry), Interop.NativeMethods.E_FAIL)
             End If
 
-            Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(System.Guid.Empty), "EE has munched on text buffer guid.")
+            Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(Guid.Empty), "EE has munched on text buffer guid.")
 
             Try
                 Dim GuidTemp As System.Guid = GetType(IVsTextStream).GUID
@@ -120,8 +120,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Marshal.Release(ObjPtr)
                     ObjPtr = IntPtr.Zero
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
-                Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
+                Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
             End Try
 
             Return TextStreamInstance
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     'Existing data is not a IVSTextStream.  Throw VS_E_INCOMPATIBLEDOCDATA to have the shell
                     '  ask if it should close the existing editor.
-                    Throw New COMException(SR.GetString(SR.DFX_IncompatibleBuffer), Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                    Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer), Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                 End If
             End If
 
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ByRef CmdUIGuid As System.Guid, _
                 ByRef Canceled As Boolean)
             Canceled = False
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As BaseDesignerLoader = Nothing
 
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' perform parameter validation and initialization.
                     '
                     If (VsCreateEditorFlags And CType(__VSCREATEEDITORFLAGS.CEF_OPENFILE Or __VSCREATEEDITORFLAGS.CEF_SILENT, UInteger)) = 0 Then
-                        Throw Common.CreateArgumentException("vscreateeditorflags")
+                        Throw CreateArgumentException("vscreateeditorflags")
                     End If
 
                     DocView = Nothing
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     Dim DesignerService As IVSMDDesignerService = CType(_serviceProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(SR.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     ' Create our doc data if we don't have an existing one.
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If Not TypeOf (DesignerLoaderObject) Is BaseDesignerLoader Then
                         Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
-                            & VB.vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
+                            & vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
                     End If
                     DesignerLoader = CType(DesignerLoaderObject, BaseDesignerLoader)
 
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         If ((New IO.FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
+                    Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
                     End Try
                     Caption = DesignerLoader.GetEditorCaption(CaptionReadOnlyStatus)
 
@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New COMException(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex))
+                Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
             End Try
         End Sub
 

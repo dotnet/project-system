@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             AddChangeHandlers()
 
             AutoScaleMode = AutoScaleMode.Font
-            MyBase.PageRequiresScaling = False
+            PageRequiresScaling = False
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'DLL Baseaddress must be 0xNNNNNNNN format
             If String.Compare(VBStrings.Left(StringValue, 2), "0x", StringComparison.OrdinalIgnoreCase) = 0 Then
-                StringValue = "&h" + VBStrings.Mid(StringValue, 3)
+                StringValue = "&h" + Mid(StringValue, 3)
                 If IsNumeric(StringValue) Then
                     Dim LongValue As ULong
                     Try
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Try
                 End If
             End If
-            Throw New Exception(SR.GetString(SR.PPG_AdvancedBuildSettings_InvalidBaseAddress))
+            Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_InvalidBaseAddress))
 
         End Function
 

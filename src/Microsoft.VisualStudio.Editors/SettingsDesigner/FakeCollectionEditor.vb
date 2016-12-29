@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            _parent = DirectCast(System.ComponentModel.TypeDescriptor.GetEditor(GetType(String()), GetType(UITypeEditor)), UITypeEditor)
+            _parent = DirectCast(ComponentModel.TypeDescriptor.GetEditor(GetType(String()), GetType(UITypeEditor)), UITypeEditor)
         End Sub
 
         ''' <summary>

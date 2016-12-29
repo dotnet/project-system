@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Overrides Function KeyEntersEditMode(e As System.Windows.Forms.KeyEventArgs) As Boolean
             ' This code was copied from the DataGridViewTextBoxCell 
-            If (((Char.IsLetterOrDigit(Microsoft.VisualBasic.ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse _
+            If (((Char.IsLetterOrDigit(ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse _
                  (e.KeyCode >= Keys.NumPad0 AndAlso e.KeyCode <= Keys.Divide) OrElse _
                  (e.KeyCode >= Keys.OemSemicolon AndAlso e.KeyCode <= Keys.Oem102) OrElse _
                  (e.KeyCode = Keys.Space AndAlso Not e.Shift)) AndAlso _

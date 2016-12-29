@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         End Property
 
         Private Sub AppDotXamlErrorControl_Load(sender As Object, e As EventArgs) Handles Me.Load
-            TableLayoutPanel1.Width = System.Math.Max(Width, 400)
+            TableLayoutPanel1.Width = Math.Max(Width, 400)
             TableLayoutPanel1.Height = ErrorControl.Height + EditXamlButton.Height + 100
         End Sub
     End Class

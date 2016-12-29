@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     Next
                 Catch ex As Exception
                     If FilterException(ex) Then
-                        ShowWarning(String.Format(SR.XmlToSchema_ErrorLoadingXml, ex.Message))
+                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
                         anyInvalid = True
                     Else
                         Throw
@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Catch ex As Exception
                 Common.TelemetryLogger.LogInputXmlFormException(ex)
                 If FilterException(ex) Then
-                    ShowWarning(String.Format(SR.XmlToSchema_ErrorInXmlInference, ex.Message))
+                    ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_ErrorInXmlInference, ex.Message))
                 Else
                     Throw
                 End If

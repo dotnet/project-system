@@ -26,8 +26,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call 
-            _previewPanel.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
-            BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, System.Drawing.SystemColors.Window, UseVSTheme:=False)
+            _previewPanel.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, SystemColors.Window, UseVSTheme:=False)
+            BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_WINDOW, SystemColors.Window, UseVSTheme:=False)
             _editControls = New Control() {_valueTextBox, _valueComboBox}
             EditControl = _valueTextBox
         End Sub
@@ -64,14 +64,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             'ValueTextBox
             '
             resources.ApplyResources(_valueTextBox, "ValueTextBox")
-            _valueTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+            _valueTextBox.BorderStyle = BorderStyle.None
             _valueTextBox.Name = "ValueTextBox"
             '
             'ShowEditorButton
             '
             resources.ApplyResources(_showEditorButton, "ShowEditorButton")
-            _showEditorButton.BackColor = Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_THREEDFACE,
-                                                                        System.Drawing.SystemColors.ButtonFace, UseVSTheme:=False)
+            _showEditorButton.BackColor = ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_THREEDFACE,
+                                                                        SystemColors.ButtonFace, UseVSTheme:=False)
             _showEditorButton.Name = "ShowEditorButton"
             _showEditorButton.UseVisualStyleBackColor = False
             '
@@ -282,8 +282,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _previewPanel.Height = Height
             EditControl.Height = Height
 
-            _showEditorButton.Height = System.Windows.Forms.SystemInformation.VerticalScrollBarThumbHeight + 2 * _showEditorButton.FlatAppearance.BorderSize
-            _showEditorButton.Width = System.Windows.Forms.SystemInformation.VerticalScrollBarWidth + 2 * _showEditorButton.FlatAppearance.BorderSize
+            _showEditorButton.Height = SystemInformation.VerticalScrollBarThumbHeight + 2 * _showEditorButton.FlatAppearance.BorderSize
+            _showEditorButton.Width = SystemInformation.VerticalScrollBarWidth + 2 * _showEditorButton.FlatAppearance.BorderSize
 
             ' Let's make the preview panel nice and square...
             _previewPanel.Width = _previewPanel.Height
@@ -343,9 +343,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Dim existingValue As Object = Value
                     If Value Is Nothing AndAlso GetType(Collections.IList).IsAssignableFrom(ValueType) Then
                         Try
-                            existingValue = System.Activator.CreateInstance(ValueType)
+                            existingValue = Activator.CreateInstance(ValueType)
                             passedNewInstanceToEditor = True
-                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowUITypeEditor), NameOf(TypeEditorHostControl))
+                        Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ShowUITypeEditor), NameOf(TypeEditorHostControl))
                         End Try
                     End If
                     Dim editedValue As Object = _typeEditor.EditValue(Context, Me, existingValue)
@@ -366,12 +366,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     AndAlso Not TypeOf Ex Is AccessViolationException _
                     AndAlso Not TypeOf Ex Is StackOverflowException
 
-                    Dim sp As IServiceProvider = Microsoft.VisualStudio.Editors.VBPackage.Instance
-                    Microsoft.VisualStudio.Editors.DesignerFramework.DesignerMessageBox.Show( _
+                    Dim sp As IServiceProvider = VBPackage.Instance
+                    DesignerFramework.DesignerMessageBox.Show( _
                                        sp, _
                                        "", _
                                        Ex, _
-                                       Microsoft.VisualStudio.Editors.DesignerFramework.DesignUtil.GetDefaultCaption(sp))
+                                       DesignerFramework.DesignUtil.GetDefaultCaption(sp))
                 Finally
                     _isShowingUITypeEditor = False
                 End Try
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If _dialog IsNot Nothing AndAlso control IsNot Nothing Then
 
                 ' Calculate size & position
-                Dim currentScreen As System.Windows.Forms.Screen = System.Windows.Forms.Screen.FromControl(Me)
+                Dim currentScreen As System.Windows.Forms.Screen = Screen.FromControl(Me)
 
                 ' Get preferred size & position of control...
                 Dim dialogSize As Size = New Size(control.PreferredSize.Width + 2, control.PreferredSize.Height + 2)
@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _dialog.Activate()
             While _dialog.Visible
                 Application.DoEvents()
-                Microsoft.VisualStudio.Editors.Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Microsoft.VisualStudio.Editors.Interop.win.QS_ALLINPUT)
+                Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Interop.win.QS_ALLINPUT)
             End While
             RemoveHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
         End Sub
@@ -635,7 +635,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="m"></param>
             ''' <remarks></remarks>
             Protected Overrides Function ProcessKeyPreview(ByRef m As System.Windows.Forms.Message) As Boolean
-                If m.Msg = Microsoft.VisualStudio.Editors.Interop.NativeMethods.WM_KEYDOWN Then
+                If m.Msg = Interop.NativeMethods.WM_KEYDOWN Then
                     If CType(m.WParam.ToInt32(), Keys) = Keys.Escape Then
                         HideForm()
                         Return True
@@ -825,7 +825,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="m"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.LinkDemand, Flags:=System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
+            <System.Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
             Protected Overrides Function ProcessKeyEventArgs(ByRef m As Message) As Boolean
                 Select Case CType(CInt(m.WParam), Keys)
                     Case Keys.Enter
@@ -888,7 +888,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Case PaintStyles.DotDotDot, PaintStyles.DropDown
                             ' Everything is cool
                         Case Else
-                            Throw Common.CreateArgumentException("value")
+                            Throw CreateArgumentException("value")
                     End Select
                     _paintStyle = value
                     Invalidate()

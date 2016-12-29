@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function IsValidFolderPath(ByRef Dir As String) As Boolean
-            Return System.IO.Directory.Exists(Dir)
+            Return IO.Directory.Exists(Dir)
         End Function
 
         Private Sub AddFolder_Click(sender As Object, e As EventArgs) Handles AddFolder.Click
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ReferencePath.SelectedIndex = ReferencePath.Items.Add(FolderText)
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                 Else
-                    ShowErrorMessage(SR.GetString(SR.PPG_InvalidFolderPath))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath))
                 End If
             End If
         End Sub
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                     UpdateFolder.Enabled = False
                 Else
-                    ShowErrorMessage(SR.GetString(SR.PPG_InvalidFolderPath))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath))
                 End If
             End If
         End Sub
@@ -342,8 +342,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     'Interpret as relative to the project path, and make it absolute
                     FolderText = IO.Path.Combine(GetProjectPath(), FolderText)
-                    FolderText = Utils.AppendBackslash(FolderText)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetCurrentFolderPathAbsolute), NameOf(ReferencePathsPropPage))
+                    FolderText = AppendBackslash(FolderText)
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetCurrentFolderPathAbsolute), NameOf(ReferencePathsPropPage))
                 End Try
             End If
 
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub FolderBrowse_Click(sender As Object, e As EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(SR.PPG_SelectReferencePath), value) Then
+            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectReferencePath), value) Then
                 Folder.Text = GetProjectRelativeDirectoryPath(value)
             End If
         End Sub
@@ -414,16 +414,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             Dim originalImage As Image = _moveUpImageOriginal
-            _moveUpImage = Utils.MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
-            _moveUpGreyImage = Utils.MapBitmapColor(originalImage, Color.Black, greyColor)
+            _moveUpImage = MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
+            _moveUpGreyImage = MapBitmapColor(originalImage, Color.Black, greyColor)
 
             originalImage = _moveDownImageOriginal
-            _moveDownImage = Utils.MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
-            _moveDownGreyImage = Utils.MapBitmapColor(originalImage, Color.Black, greyColor)
+            _moveDownImage = MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
+            _moveDownGreyImage = MapBitmapColor(originalImage, Color.Black, greyColor)
 
             originalImage = _removeFolderImageOriginal
-            _removeFolderImage = Utils.MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
-            _removeFolderGreyImage = Utils.MapBitmapColor(originalImage, Color.Black, greyColor)
+            _removeFolderImage = MapBitmapColor(originalImage, Color.Black, SystemColors.ControlText)
+            _removeFolderGreyImage = MapBitmapColor(originalImage, Color.Black, greyColor)
         End Sub
 
         ''' <summary>

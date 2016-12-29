@@ -74,11 +74,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Shared Sub New()
             ' Populate shared list of all known application types allowed on this page
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, SR.GetString(SR.PPG_WindowsFormsApp), True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, SR.GetString(SR.PPG_WindowsClassLib), True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, SR.GetString(SR.PPG_CommandLineApp), True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsService, SR.GetString(SR.PPG_WindowsService), False))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WebControl, SR.GetString(SR.PPG_WebControlLib), False))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsFormsApp), True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsClassLib), True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CommandLineApp), True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsService, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsService), False))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WebControl, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebControlLib), False))
         End Sub
 
         Public Sub New()
@@ -95,14 +95,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _startupObjectLabelText = StartupObjectLabel.Text
 
             'Get text for the forms case from resources
-            _startupFormLabelText = SR.GetString(SR.PPG_Application_StartupFormLabelText)
+            _startupFormLabelText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupFormLabelText)
 
-            _noneText = SR.GetString(SR.PPG_ComboBoxSelect_None)
+            _noneText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ComboBoxSelect_None)
 
             'Ordering of strings here determines value stored in MyApplication.myapp
-            _shutdownModeStringValues = New String() {SR.GetString(SR.PPG_MyApplication_StartupMode_FormCloses), SR.GetString(SR.PPG_MyApplication_StartupMode_AppExits)}
-            _authenticationModeStringValues = New String() {SR.GetString(SR.PPG_MyApplication_AuthenMode_Windows), SR.GetString(SR.PPG_MyApplication_AuthenMode_ApplicationDefined)}
-            MyBase.PageRequiresScaling = False
+            _shutdownModeStringValues = New String() {SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_StartupMode_FormCloses), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_StartupMode_AppExits)}
+            _authenticationModeStringValues = New String() {SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_AuthenMode_Windows), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_AuthenMode_ApplicationDefined)}
+            PageRequiresScaling = False
         End Sub
 
         ''' <summary>
@@ -142,20 +142,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_RootNamespace)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Nothing, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.None, ControlsThatDependOnOutputTypeProperty)
                     datalist.Add(data)
                     data = New PropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty)
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartupObject)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyName)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyName)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf MyBase.ApplicationIconSet, AddressOf MyBase.ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_ApplicationIcon)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox})
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_ApplicationIcon)
                     datalist.Add(data)
                     data = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyType, Const_MyType, Nothing, AddressOf MyTypeSet, AddressOf MyTypeGet)
                     datalist.Add(data)
@@ -251,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If MyApplicationProperties IsNot Nothing Then
                 Try
                     MyApplicationProperties.RunCustomTool()
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryRunCustomToolForMyApplication), NameOf(ApplicationPropPageInternalBase))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(TryRunCustomToolForMyApplication), NameOf(ApplicationPropPageInternalBase))
                     ShowErrorMessage(ex)
                 End Try
             End If
@@ -351,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If ApplicationTypeComboBox.SelectedItem IsNot Nothing Then
                     value = DirectCast(ApplicationTypeComboBox.SelectedItem, OutputTypeComboBoxValue).Value
                 Else
-                    value = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_WinExe
+                    value = prjOutputTypeEx.prjOutputTypeEx_WinExe
                 End If
             End If
 
@@ -446,7 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If PropertyControlData.IsSpecialValue(value) Then
                 UseApplicationFrameworkCheckBox.CheckState = CheckState.Indeterminate
             Else
-                UseApplicationFrameworkCheckBox.CheckState = Common.IIf(Not CBool(value), CheckState.Checked, CheckState.Unchecked) 'reversed
+                UseApplicationFrameworkCheckBox.CheckState = IIf(Not CBool(value), CheckState.Checked, CheckState.Unchecked) 'reversed
             End If
 
             'Toggle whether the application framework properties are enabled
@@ -525,13 +525,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Not IsAForm Then
                     If StringValue <> "" AndAlso StringValue.Equals(MyApplicationProperties.SplashScreenNoRootNS, StringComparison.OrdinalIgnoreCase) Then
                         'We couldn't find it because it's the same as the splash screen.  That's not allowed.
-                        ShowErrorMessage(SR.GetString(SR.PPG_Application_SplashSameAsStart))
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_SplashSameAsStart))
                     Else
                         'When the application framework is enabled, there must be a start-up form selected (MainForm) or there will
                         '  be a compile error or run-time error.  We avoid this when possible by picking the first available
                         '  form.  Also show a messagebox to let the user know about the problem (but don't throw an exception, because
                         '  that would cause problems in applying the other properties on the page).
-                        ShowErrorMessage(SR.GetString(SR.PPG_Application_InvalidSubMainStartup))
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidSubMainStartup))
                     End If
 
                     If FormEntryPoints IsNot Nothing AndAlso FormEntryPoints.Length() > 0 Then
@@ -795,7 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Fail("Failed to get IVBEntryPointProvider")
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
+            Catch ex As System.Exception When ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
             End Try
 
             Return New String() {}
@@ -979,7 +979,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _usingMyApplicationTypes = Not PopulateOutputTypeComboBoxFromProjectProperty(ApplicationTypeComboBox)
 
                 If _usingMyApplicationTypes Then
-                    MyBase.PopulateApplicationTypes(ApplicationTypeComboBox, s_applicationTypes)
+                    PopulateApplicationTypes(ApplicationTypeComboBox, s_applicationTypes)
                 End If
             End If
 
@@ -1012,7 +1012,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Try
                         MyApplicationProperties.CustomSubMain = True
                         UseApplicationFrameworkCheckBox.CheckState = CheckState.Unchecked
-                    Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(PostInitPage), NameOf(ApplicationPropPageVBWinForms))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(PostInitPage), NameOf(ApplicationPropPageVBWinForms))
                     End Try
                 End If
             End If
@@ -1132,9 +1132,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Value = PropertyControlData.MissingProperty
                 Else
                     Dim Index As Integer = MyApplicationProperties.AuthenticationMode
-                    If Not System.Enum.IsDefined(GetType(ApplicationServices.AuthenticationMode), Index) Then
+                    If Not [Enum].IsDefined(GetType(ApplicationServices.AuthenticationMode), Index) Then
                         'If user horked the values, default to Windows authentication
-                        Index = ApplicationServices.AuthenticationMode.Windows
+                        Index = AuthenticationMode.Windows
                     End If
 
                     Value = _authenticationModeStringValues(Index)
@@ -1403,7 +1403,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
-            ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
         ''' <summary>
@@ -1413,7 +1413,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub ComboBoxes_DropDown(sender As Object, e As EventArgs) Handles ApplicationTypeComboBox.DropDown
-            Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
+            SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
         ''' <summary>
@@ -1471,8 +1471,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' add necessary references...
                     Try
                         AddRequiredReferences()
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms)) AndAlso
-                        Not Common.Utils.IsCheckoutCanceledException(ex)
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms)) AndAlso
+                        Not IsCheckoutCanceledException(ex)
 
                         ShowErrorMessage(ex)
                     End Try
@@ -1499,7 +1499,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 PopulateControlSet(outputType)
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ApplicationTypeComboBox_SelectionChangeCommitted), NameOf(ApplicationPropPageVBWinForms))
                 ' There are lots of issues with check-out... I leave it to vswhidbey 475879
                 Dim appTypeValue As Object = Nothing
                 Dim CurrentAppType As ApplicationTypes = CType(appTypeValue, ApplicationTypes)
@@ -1547,7 +1547,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnterProjectCheckoutSection()
             Try
                 MyApplicationProperties.NavigateToEvents()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewCodeButton_Click), NameOf(ApplicationPropPageVBWinForms))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ViewCodeButton_Click), NameOf(ApplicationPropPageVBWinForms))
                 If Not ProjectReloadedDuringCheckout Then
                     ShowErrorMessage(ex)
                 End If
@@ -1567,7 +1567,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub SplashScreenComboBox_DropDown(sender As Object, e As EventArgs) Handles SplashScreenComboBox.DropDown
             PopulateSplashScreenList(True)
-            Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
+            SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
 
@@ -1580,7 +1580,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub StartupObjectComboBox_DropDown(sender As Object, e As EventArgs) Handles StartupObjectComboBox.DropDown
             PopulateStartupObject(StartUpObjectSupported(), True)
-            Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
+            SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
         ''' <summary>
@@ -1611,15 +1611,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Application icon"
 
         Private Sub IconCombobox_DropDown(sender As Object, e As EventArgs) Handles IconCombobox.DropDown
-            MyBase.HandleIconComboboxDropDown(sender)
+            HandleIconComboboxDropDown(sender)
         End Sub
 
         Private Sub IconCombobox_DropDownClosed(sender As Object, e As EventArgs) Handles IconCombobox.DropDownClosed
-            MyBase.HandleIconComboboxDropDown(sender)
+            HandleIconComboboxDropDown(sender)
         End Sub
 
         Private Sub IconCombobox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles IconCombobox.SelectionChangeCommitted
-            MyBase.HandleIconComboboxSelectionChangeCommitted(sender)
+            HandleIconComboboxSelectionChangeCommitted(sender)
         End Sub
 
 #End Region
@@ -1636,7 +1636,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  be confusing to the user.  So if there is no start-up form available in the project, then disable
                 '  the application framework again and tell the user why.
                 If GetFormEntryPoints(IncludeSplashScreen:=False).Length = 0 Then
-                    ShowErrorMessage(SR.GetString(SR.PPG_Application_InvalidSubMainStartup))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidSubMainStartup))
                     Try
                         Debug.Assert(Not m_fInsideInit, "This should have been checked at the beginning of this method")
                         m_fInsideInit = True 'Keep this routine from getting called recursively
@@ -1702,7 +1702,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If Data IsNot Nothing Then
                 'Let the base class take care of it in the usual way for external property changes...
-                MyBase.OnExternalPropertyChanged(Data.DispId, "MyApplicationProperties")
+                OnExternalPropertyChanged(Data.DispId, "MyApplicationProperties")
             Else
                 Debug.Fail("Couldn't find property control data for property changed in MyApplicationProperties")
             End If

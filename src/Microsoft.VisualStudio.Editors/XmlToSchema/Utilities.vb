@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Public Sub ShowWarning(ex As Exception)
-            ShowWarning(String.Format(SR.XmlToSchema_Error, ex.Message))
+            ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_Error, ex.Message))
         End Sub
 
         Public Function FilterException(ex As Exception) As Boolean
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     End If
                 End If
                 Debug.Fail("Couldn't get a IUIHostLocale2 ... cheating instead :)")
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
 

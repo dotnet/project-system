@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function SimplifiedConfigsMode() As Boolean
-            Return Common.ShellUtil.GetIsSimplifiedConfigMode(PropPage.ProjectHierarchy)
+            Return ShellUtil.GetIsSimplifiedConfigMode(PropPage.ProjectHierarchy)
         End Function
 
     End Class

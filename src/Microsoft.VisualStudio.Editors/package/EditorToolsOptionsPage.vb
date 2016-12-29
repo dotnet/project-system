@@ -76,13 +76,13 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <remarks>Will show message box if anything is wrong</remarks>
         Private Function ValidateSettings() As Boolean
             If _dialog.TabSize < 1 OrElse _dialog.TabSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(SR.OptionPage_Editor_InvalidTabSize))
+                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidTabSize))
                 _dialog._tabSizeTextBox.Focus()
                 Return False
             End If
 
             If _dialog.IndentSize < 1 OrElse _dialog.IndentSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(SR.OptionPage_Editor_InvalidIndentSize))
+                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidIndentSize))
                 _dialog._indentSizeTextBox.Focus()
                 Return False
             End If
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                 _dialog.LineNumbers = CBool(textEditorProperties.Item(s_showLineNumbersItem).Value)
 
                 _dialog.Enabled = True
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage))
                 _dialog.Enabled = False
             Finally
                 fontsAndColorsProperties = Nothing
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                 prefs.uTabSize = CUInt(_dialog.TabSize)
                 prefs.fWordWrap = CUInt(_dialog.WordWrap)
                 Apply(prefs)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage))
             End Try
             textEditorProperties = Nothing
             dte = Nothing

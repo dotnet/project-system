@@ -69,14 +69,14 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _preferredSizeHash.Clear()
 
             If String.IsNullOrEmpty(Text) Then
-                _cachedSizeOfOneLineOfText = System.Drawing.Size.Empty
+                _cachedSizeOfOneLineOfText = Size.Empty
             Else
                 _cachedSizeOfOneLineOfText = TextRenderer.MeasureText(Text, Font, _
                     New Size(Int32.MaxValue, Int32.MaxValue), TextFormatFlags.WordBreak)
             End If
         End Sub
 
-        Private _cachedSizeOfOneLineOfText As System.Drawing.Size = System.Drawing.Size.Empty
+        Private _cachedSizeOfOneLineOfText As System.Drawing.Size = Size.Empty
         Private _preferredSizeHash As New Dictionary(Of Size, Size)()
 
     End Class

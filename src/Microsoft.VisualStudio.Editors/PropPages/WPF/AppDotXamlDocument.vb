@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         End If
                         _isDisposed = True
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument))
                     Throw
                 End Try
             End Sub
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim sb As New StringBuilder()
             Dim settings As New XmlWriterSettings
             settings.ConformanceLevel = ConformanceLevel.Fragment
-            Dim xmlWriter As XmlWriter = XmlTextWriter.Create(sb, settings)
+            Dim xmlWriter As XmlWriter = XmlWriter.Create(sb, settings)
             xmlWriter.WriteString(value)
             xmlWriter.Close()
             Dim escapedString As String = sb.ToString()
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim stringReader As New StringReader(xml)
             Dim settings As New XmlReaderSettings
             settings.ConformanceLevel = ConformanceLevel.Fragment
-            Dim xmlReader As XmlReader = XmlTextReader.Create(stringReader, settings)
+            Dim xmlReader As XmlReader = XmlReader.Create(stringReader, settings)
             xmlReader.ReadToFollowing("a")
 
             Dim content As String = xmlReader.ReadElementContentAsString()
@@ -522,7 +522,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return
             End If
 
-            Throw New XamlReadWriteException(SR.GetString(SR.PPG_WPFApp_Xaml_CouldntFindRootElement, s_ELEMENT_APPLICATION))
+            Throw New XamlReadWriteException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, s_ELEMENT_APPLICATION))
         End Sub
 
 #Region "CreateXmlTextReader"
@@ -925,7 +925,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim newPropertyValue As String = "(error)"
                 Try
                     newPropertyValue = GetApplicationPropertyValue(propertyName)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
                 End Try
 
                 If (Not value.Equals(newPropertyValue, StringComparison.Ordinal)) Then
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException( _
-                SR.GetString(SR.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
+                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))
         End Sub
 

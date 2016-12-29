@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
 
             If uiShell Is Nothing OrElse Interop.NativeMethods.Failed(uiShell.GetAppName(caption)) Then
-                caption = SR.GetString(SR.DFX_Error_Default_Caption)
+                caption = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_Error_Default_Caption)
             End If
 
             Return caption
@@ -132,19 +132,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Friend Shared Sub DisplayTopicFromF1Keyword(ServiceProvider As IServiceProvider, keyword As String)
             If ServiceProvider Is Nothing Then
-                System.Diagnostics.Debug.Fail("NULL serviceprovider - can't show help!")
+                Debug.Fail("NULL serviceprovider - can't show help!")
                 Return
             End If
 
             If keyword Is Nothing Then
-                System.Diagnostics.Debug.Fail("NULL help keyword - can't show help!")
+                Debug.Fail("NULL help keyword - can't show help!")
                 Return
             End If
 
             Dim vshelp As VSHelp.Help = CType(ServiceProvider.GetService(GetType(VSHelp.Help)), VSHelp.Help)
 
             If vshelp Is Nothing Then
-                System.Diagnostics.Debug.Fail("Failed to get VSHelp.Help service from given service provider - can't show help!")
+                Debug.Fail("Failed to get VSHelp.Help service from given service provider - can't show help!")
                 Return
             End If
 
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 vshelp.DisplayTopicFromF1Keyword(keyword)
             Catch ex As System.Runtime.InteropServices.COMException
                 ' DisplayTopicFromF1Keyword may throw COM exceptions even though dexplore shows the appropriate error message
-                System.Diagnostics.Debug.Assert(System.Runtime.InteropServices.Marshal.GetHRForException(ex) = &H80040305, String.Format("Unknown COM Exception {0} when trying to show help topic {1}", ex, keyword))
+                Debug.Assert(Marshal.GetHRForException(ex) = &H80040305, String.Format("Unknown COM Exception {0} when trying to show help topic {1}", ex, keyword))
             End Try
         End Sub
 
@@ -227,8 +227,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns>The context event args to use for raising the event.</returns>
         ''' <remarks></remarks>
         Public Shared Function GetContextMenuMouseEventArgs(Control As Control, ByRef m As Message) As MouseEventArgs
-            Dim x As Integer = DesignUtil.SignedLoWord(m.LParam)
-            Dim y As Integer = DesignUtil.SignedHiWord(m.LParam)
+            Dim x As Integer = SignedLoWord(m.LParam)
+            Dim y As Integer = SignedHiWord(m.LParam)
 
             ' Shift-F10 or Context Menu keyboard key will result in LParam being -1.
             If m.LParam.ToInt64 = -1 Then
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
 
             'CONSIDER: If mouse is not in client area, don't show the context menu. 
-            Return New MouseEventArgs(System.Windows.Forms.MouseButtons.Right, 1, x, y, 0)
+            Return New MouseEventArgs(MouseButtons.Right, 1, x, y, 0)
         End Function
 
         ''' <summary>
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Shared Function GenerateValidLanguageIndependentIdentifier(value As String) As String
             Const replacementChar As Char = "_"c
 
-            If System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(value) Then
+            If CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(value) Then
                 Return value
             End If
 
@@ -291,15 +291,15 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             For Each ch As Char In chars
                 Dim uc As System.Globalization.UnicodeCategory = Char.GetUnicodeCategory(ch)
                 Select Case uc
-                    Case System.Globalization.UnicodeCategory.UppercaseLetter, _
-                        System.Globalization.UnicodeCategory.LowercaseLetter, _
-                        System.Globalization.UnicodeCategory.TitlecaseLetter, _
-                        System.Globalization.UnicodeCategory.ModifierLetter, _
-                        System.Globalization.UnicodeCategory.OtherLetter, _
-                        System.Globalization.UnicodeCategory.DecimalDigitNumber, _
-                        System.Globalization.UnicodeCategory.NonSpacingMark, _
-                        System.Globalization.UnicodeCategory.SpacingCombiningMark, _
-                        System.Globalization.UnicodeCategory.ConnectorPunctuation
+                    Case Globalization.UnicodeCategory.UppercaseLetter, _
+                        Globalization.UnicodeCategory.LowercaseLetter, _
+                        Globalization.UnicodeCategory.TitlecaseLetter, _
+                        Globalization.UnicodeCategory.ModifierLetter, _
+                        Globalization.UnicodeCategory.OtherLetter, _
+                        Globalization.UnicodeCategory.DecimalDigitNumber, _
+                        Globalization.UnicodeCategory.NonSpacingMark, _
+                        Globalization.UnicodeCategory.SpacingCombiningMark, _
+                        Globalization.UnicodeCategory.ConnectorPunctuation
                         result.Append(ch)
                     Case Else
                         result.Append(replacementChar)
@@ -307,8 +307,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Next ch
 
             Dim cleanIdentifier As String = result.ToString()
-            If Not System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
-                System.Diagnostics.Debug.Fail(String.Format("Failed to clean up identifier '{0}'", cleanIdentifier))
+            If Not CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
+                Debug.Fail(String.Format("Failed to clean up identifier '{0}'", cleanIdentifier))
                 Throw Common.CreateArgumentException("value")
             End If
 

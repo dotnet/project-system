@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Debug.Assert(_extensionFolderProjectItem IsNot Nothing, "Could not create MyExtensions folder!")
             Try
                 _extensionFolderProjectItem.ProjectItems.AddFromTemplate(extensionTemplate.FilePath, suggestedName)
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(AddExtensionTemplate), NameOf(MyExtensibilityProjectSettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(AddExtensionTemplate), NameOf(MyExtensibilityProjectSettings))
                 DesignerMessageBox.Show(_serviceProvider, ex, Nothing)
             End Try
 
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                             extensionTemplate.ID, extensionTemplate.Version, extensionTemplate.DisplayName, extensionTemplate.Description)
 
                         result.Add(projectItemAdded)
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(AddExtensionTemplate), NameOf(MyExtensibilityProjectSettings)) ' Ignore recoverable exceptions
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(AddExtensionTemplate), NameOf(MyExtensibilityProjectSettings)) ' Ignore recoverable exceptions
                         DesignerMessageBox.Show(_serviceProvider,
                             String.Format(Res.CouldNotSetExtensionAttributes_Message,
                                 projectItemAdded.Name, extensionTemplate.DisplayName),
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 For i As Integer = 0 To extensionProjectItemGroup.ExtensionProjectItems.Count - 1
                     Try
                         extensionProjectItemGroup.ExtensionProjectItems(i).Delete()
-                    Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroup), NameOf(MyExtensibilityProjectSettings))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroup), NameOf(MyExtensibilityProjectSettings))
                     End Try
                 Next
             End If

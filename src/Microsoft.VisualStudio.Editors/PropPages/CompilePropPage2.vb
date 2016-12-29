@@ -68,11 +68,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-            _notifyError = SR.GetString(SR.PPG_Compile_Notification_Error)
-            _notifyNone = SR.GetString(SR.PPG_Compile_Notification_None)
-            _notifyWarning = SR.GetString(SR.PPG_Compile_Notification_Warning)
-            MyBase.PageRequiresScaling = False
-            MyBase.AutoScaleMode = AutoScaleMode.Font
+            _notifyError = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_Error)
+            _notifyNone = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_None)
+            _notifyWarning = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_Warning)
+            PageRequiresScaling = False
+            AutoScaleMode = AutoScaleMode.Font
 
             AddChangeHandlers()
 
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
             ReDim _optionStrictIDs(optionStrictErrors.Count - 1)
             optionStrictErrors.CopyTo(_optionStrictIDs)
-            System.Array.Sort(_optionStrictIDs)
+            Array.Sort(_optionStrictIDs)
 
             NotificationColumn.Items.Add(_notifyNone)
             NotificationColumn.Items.Add(_notifyWarning)
@@ -161,9 +161,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return False
                 End If
 
-                Return CUInt(value) = VSLangProj110.prjOutputTypeEx.prjOutputTypeEx_Library _
+                Return CUInt(value) = prjOutputTypeEx.prjOutputTypeEx_Library _
                     AndAlso Not GetPropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop).IsMissing
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterForComInteropSupported), NameOf(CompilePropPage2))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(RegisterForComInteropSupported), NameOf(CompilePropPage2))
                 'If the project doesn't support this property, the answer is no.
                 Return False
             End Try
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "OptionStrict getter and setter"
         Private Function OptionStrictGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim strValue As String = CStr(OptionStrictComboBox.SelectedItem)
-            If _optionStrictCustomText.Equals(strValue, System.StringComparison.Ordinal) Then
+            If _optionStrictCustomText.Equals(strValue, StringComparison.Ordinal) Then
                 value = VSLangProj.prjOptionStrict.prjOptionStrictOff
             Else
                 value = prop.Converter.ConvertFrom(strValue)
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         UpdateWarningList()
                     End If
                     Return True
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Failed to convert {value} to string", NameOf(CompilePropPage2))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, $"Failed to convert {value} to string", NameOf(CompilePropPage2))
                 End Try
             Else
                 Debug.Fail("Why did we get a NULL value for option strict?")
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
 
-            _optionStrictCustomText = SR.GetString(SR.PPG_Compile_OptionStrict_Custom)
+            _optionStrictCustomText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_OptionStrict_Custom)
 
             Dim PlatformEntries As New List(Of String)
 
@@ -611,7 +611,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
 
-            MinimumSize = GetPreferredSize(System.Drawing.Size.Empty)
+            MinimumSize = GetPreferredSize(Drawing.Size.Empty)
         End Sub
 #End Region
 
@@ -634,21 +634,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.Notification = Notification
                 Me.ErrorOnOptionStrict = ErrorOnOptionStrict
                 Me.ErrList = ErrList
-                System.Array.Sort(Me.ErrList)
+                Array.Sort(Me.ErrList)
             End Sub
         End Class
 
         Private _errorInfos As ErrorInfo() = {
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42016), "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42017_42018_42019), "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42020), "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42104), "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42105_42106_42107), "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42353_42354_42355), "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42024), "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42025), "42025", ErrorNotification.None, False, New Integer() {42025}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42004), "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}),
-            New ErrorInfo(SR.GetString(SR.PPG_Compile_42029), "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42016), "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42017_42018_42019), "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42020), "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42104), "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42105_42106_42107), "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42353_42354_42355), "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42024), "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42025), "42025", ErrorNotification.None, False, New Integer() {42025}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42004), "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}),
+            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42029), "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
             Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
@@ -680,15 +680,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Helper methods to map UI values to properties"
 
         Private Function IsOptionStrictOn() As Boolean
-            Return (_optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
         End Function
 
         Private Function IsOptionStrictOff() As Boolean
-            Return (_optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
         End Function
 
         Private Function IsOptionStrictCustom() As Boolean
-            Return (_optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), System.StringComparison.Ordinal))
+            Return (_optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
@@ -899,7 +899,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ElseIf IsNoWarn = TriState.False AndAlso IsWarnAsError = TriState.False Then
                             ComboboxCell.Value = _notifyWarning
                         Else
-                            ComboboxCell.Value = System.DBNull.Value
+                            ComboboxCell.Value = DBNull.Value
                         End If
                     End If
                 Next
@@ -1074,16 +1074,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
         Private Sub AdvancedOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedOptionsButton.Click
-            ShowChildPage(SR.GetString(SR.PPG_AdvancedCompilerSettings_Title), GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedCompilerSettings_Title), GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
         End Sub
 
         Private Sub BuildEventsButton_Click(sender As Object, e As EventArgs) Handles BuildEventsButton.Click
-            ShowChildPage(SR.GetString(SR.PPG_BuildEventsTitle), GetType(BuildEventsPropPage))
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildEventsTitle), GetType(BuildEventsPropPage))
         End Sub
 
         Private Sub BuildOutputPathButton_Click(sender As Object, e As EventArgs) Handles BuildOutputPathButton.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(BuildOutputPathTextBox.Text, SR.GetString(SR.PPG_SelectOutputPathTitle), value) Then
+            If GetDirectoryViaBrowseRelativeToProject(BuildOutputPathTextBox.Text, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectOutputPathTitle), value) Then
                 BuildOutputPathTextBox.Text = value
                 SetDirty(BuildOutputPathTextBox, True)
             End If
@@ -1210,8 +1210,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _noWarn = NoNotifyList.ToArray()
                 _specWarnAsError = ErrorsList.ToArray()
 
-                System.Array.Sort(_noWarn)
-                System.Array.Sort(_specWarnAsError)
+                Array.Sort(_noWarn)
+                Array.Sort(_specWarnAsError)
 
                 ' Update option strict combobox...
                 Dim optionStrictChanged As Boolean = False
@@ -1326,12 +1326,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
 
-            If Not System.IO.Path.IsPathRooted(path) Then
+            If Not IO.Path.IsPathRooted(path) Then
                 Throw Common.CreateArgumentException("path")
             End If
 
             ' Some additional verification is done by Path.GetFullPath...
-            Dim absPath As String = System.IO.Path.GetFullPath(path)
+            Dim absPath As String = IO.Path.GetFullPath(path)
 
             Dim internetSecurityManager As Interop.IInternetSecurityManager = Nothing
 
@@ -1368,14 +1368,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim folderEvidence As System.Security.Policy.Evidence = New System.Security.Policy.Evidence()
             folderEvidence.AddHostEvidence(New System.Security.Policy.Url("file:///" & absPath))
             folderEvidence.AddHostEvidence(New System.Security.Policy.Zone(CType(zone, System.Security.SecurityZone)))
-            Dim folderPSet As System.Security.PermissionSet = System.Security.SecurityManager.GetStandardSandbox(folderEvidence)
+            Dim folderPSet As System.Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
 
             ' Get permission set that is granted to local code running on the local machine.
             Dim localEvidence As New System.Security.Policy.Evidence()
-            localEvidence.AddHostEvidence(New System.Security.Policy.Zone(System.Security.SecurityZone.MyComputer))
+            localEvidence.AddHostEvidence(New System.Security.Policy.Zone(Security.SecurityZone.MyComputer))
 
-            Dim localPSet As System.Security.PermissionSet = System.Security.SecurityManager.GetStandardSandbox(localEvidence)
-            localPSet.RemovePermission((New System.Security.Permissions.ZoneIdentityPermission(System.Security.SecurityZone.MyComputer)).GetType())
+            Dim localPSet As System.Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(localEvidence)
+            localPSet.RemovePermission((New System.Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer)).GetType())
 
             ' Return true if permission set that would be granted to code in
             ' target folder is equal (or greater than) that granted to local code.
@@ -1532,7 +1532,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Get
                         If _extendedObjects Is Nothing Then
                             Dim aem As Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager
-                            aem = Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager.GetAutomationExtenderManager(_serviceProvider)
+                            aem = AutomationExtenderManager.GetAutomationExtenderManager(_serviceProvider)
                             _extendedObjects = aem.GetExtendedObjects(ConfigRawPropertiesObjects)
                             Debug.Assert(_extendedObjects IsNot Nothing, "Extended objects unavailable")
                         End If

@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
-            Dim projectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
+            Dim projectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
 
             ' Add my services
             LoaderHost.AddService(GetType(INameCreationService), Me)
@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Else
                 LoaderHost.AddService(GetType(SettingsTypeCache), New SettingsTypeCache(VsHierarchy, ProjectItemid, dynamicTypeService.GetTypeResolutionService(VsHierarchy, ProjectItemid), True))
             End If
-            LoaderHost.AddService(GetType(SettingsValueCache), New SettingsValueCache(System.Globalization.CultureInfo.InvariantCulture))
+            LoaderHost.AddService(GetType(SettingsValueCache), New SettingsValueCache(Globalization.CultureInfo.InvariantCulture))
 
             ' Listen for change notifications
             Dim ComponentChangeService As IComponentChangeService = CType(GetService(GetType(IComponentChangeService)), IComponentChangeService)
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="SerializationManager">My serialization manager</param>
         ''' <remarks></remarks>
         Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
-            Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "SettingsDesignerLoader: Start loading settings")
+            Switches.TraceSDSerializeSettings(TraceLevel.Info, "SettingsDesignerLoader: Start loading settings")
             Debug.Assert(LoaderHost IsNot Nothing, "Asked to load settings designer without a LoaderHost!?")
             LoaderHost.CreateComponent(GetType(DesignTimeSettings))
             Debug.Assert(RootComponent IsNot Nothing, "Failed to create DesignTimeSettings root component - failure should throw exception!?")
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ex.HelpLink = HelpIDs.Err_LoadingSettingsFile
                         SerializationManager.ReportError(ex)
                     End If
-                    Throw New InvalidOperationException(SR.GetString(SR.SD_Err_CantLoadSettingsFile), ex)
+                    Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile), ex)
                 Finally
                     If SettingsReader IsNot Nothing Then
                         SettingsReader.Close()
@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
             If _appConfigDocData IsNot Nothing Then
-                Common.Switches.TraceSDSerializeSettings(TraceLevel.Verbose, "Loading app.config")
+                Switches.TraceSDSerializeSettings(TraceLevel.Verbose, "Loading app.config")
                 LoadAppConfig()
             End If
         End Sub
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property EnvDTEProject() As EnvDTE.Project
             Get
-                Return Common.DTEUtils.EnvDTEProject(VsHierarchy)
+                Return DTEUtils.EnvDTEProject(VsHierarchy)
             End Get
         End Property
 
@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub SetSingleFileGenerator()
-            Dim ProjectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
+            Dim ProjectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             If ProjectItem IsNot Nothing AndAlso ProjectItem.Properties IsNot Nothing Then
                 Debug.Assert(ProjectItemid = ProjectUtils.ItemId(VsHierarchy, ProjectItem))
                 Try
@@ -388,7 +388,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 AndAlso e.Member.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) _
                 AndAlso Not String.Equals(TryCast(e.OldValue, String), TryCast(e.NewValue, String), StringComparison.Ordinal) _
             Then
-                Dim SettingsFileProjectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
+                Dim SettingsFileProjectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
 
                 If SettingsFileProjectItem IsNot Nothing AndAlso SettingsFileProjectItem.Properties IsNot Nothing Then
                     Dim CurrentCustomTool As String
@@ -438,12 +438,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Try
                                 SettingsSingleFileGeneratorBase.AllowSymbolRename = True
                                 pce2.RenameSymbol(DirectCast(e.NewValue, String))
-                            Catch ex As COMException When ex.ErrorCode = Common.CodeModelUtils.HR_E_CSHARP_USER_CANCEL _
+                            Catch ex As COMException When ex.ErrorCode = CodeModelUtils.HR_E_CSHARP_USER_CANCEL _
                                                           OrElse ex.ErrorCode = NativeMethods.E_ABORT _
                                                           OrElse ex.ErrorCode = NativeMethods.OLECMDERR_E_CANCELED _
                                                           OrElse ex.ErrorCode = NativeMethods.E_FAIL
                                 ' We should ignore if the customer cancels this or we can not build the project...
-                            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to rename symbol", NameOf(SettingsDesignerLoader))
+                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to rename symbol", NameOf(SettingsDesignerLoader))
                                 DesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, DesignerFramework.DesignUtil.GetDefaultCaption(_serviceProvider))
                             Finally
                                 SettingsSingleFileGeneratorBase.AllowSymbolRename = False
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub ExternalChange(sender As Object, e As EventArgs)
             If Not _flushing Then
                 Debug.Assert(_appConfigDocData IsNot Nothing, "Why did we get a change notification for a NULL App.Config DocData?")
-                Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Queueing a reload due to an external change of the app.config DocData")
+                Switches.TraceSDSerializeSettings(TraceLevel.Info, "Queueing a reload due to an external change of the app.config DocData")
                 Reload(ReloadOptions.NoFlush)
             End If
         End Sub
@@ -525,8 +525,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Catch ex As System.Configuration.ConfigurationErrorsException
                 ' We failed to load the app config xml document....
-                DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(SR.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
-            Catch Ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
+                DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
+            Catch Ex As Exception When ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
                 Throw
             End Try
         End Sub
@@ -576,9 +576,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 _appConfigDocData,
                                 VsHierarchy,
                                 True)
-                Catch Ex As Exception When Common.Utils.ReportWithoutCrash(Ex, "Failed to flush values to the app config document", NameOf(SettingsDesignerLoader))
+                Catch Ex As Exception When ReportWithoutCrash(Ex, "Failed to flush values to the app config document", NameOf(SettingsDesignerLoader))
                     ' We failed to flush values to the app config document....
-                    DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(SR.SD_FailedToSaveAppConfigValues), HelpIDs.Err_SavingAppConfigFile)
+                    DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FailedToSaveAppConfigValues), HelpIDs.Err_SavingAppConfigFile)
                 End Try
             End If
         End Sub
@@ -696,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Friend Overrides ReadOnly Property FilesToCheckOut() As System.Collections.Generic.List(Of String)
             Get
                 Dim result As List(Of String) = MyBase.FilesToCheckOut
-                Dim projectItem As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
+                Dim projectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
                 Dim appConfigOrProjectName As String = ProjectUtils.AppConfigOrProjectFileNameForCheckout(projectItem, VsHierarchy)
                 If appConfigOrProjectName <> "" Then
                     result.Add(appConfigOrProjectName)
@@ -750,7 +750,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Sub ValidateName(name As String) Implements System.ComponentModel.Design.Serialization.INameCreationService.ValidateName
             If Not IsValidName(name) Then
-                Throw Common.CreateArgumentException("name")
+                Throw CreateArgumentException("name")
             End If
         End Sub
 #End Region
@@ -840,7 +840,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     _vsDebuggerEventsCookie = 0
                     _vsDebugger = Nothing
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DisconnectDebuggerEvents), NameOf(SettingsDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(DisconnectDebuggerEvents), NameOf(SettingsDesignerLoader))
             End Try
         End Sub
 
@@ -853,7 +853,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If dbgmodeNew = DBGMODE.DBGMODE_Design Then
                     SetReadOnlyMode(False, String.Empty)
                 ElseIf _currentDebugMode = DBGMODE.DBGMODE_Design Then
-                    SetReadOnlyMode(True, SR.GetString(SR.SD_ERR_CantEditInDebugMode))
+                    SetReadOnlyMode(True, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_CantEditInDebugMode))
                 End If
             Finally
                 _currentDebugMode = dbgmodeNew

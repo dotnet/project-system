@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If ContextMenuStrip Is Nothing OrElse Not ContextMenuStrip.Visible Then
                 SetButtonDrawState()
                 If Bounds.Contains(Parent.PointToClient(Cursor.Position)) And Not (_dropDownRectangle.Contains(mevent.Location) AndAlso ContextMenuStrip IsNot Nothing) Then
-                    MyBase.OnClick(New EventArgs())
+                    OnClick(New EventArgs())
                 End If
             End If
         End Sub
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Dim e As New ShowCustomContextMenuEventArgs
                 Try
                     RaiseEvent ShowCustomContextMenu(e)
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenuOrContextMenuStrip), NameOf(SplitButton))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ShowContextMenuOrContextMenuStrip), NameOf(SplitButton))
                 End Try
 
                 If e.Handled Then

@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Else
                 ' anything else should return E_NOTIMPL
                 '
-                Return Microsoft.VisualStudio.Editors.Interop.NativeMethods.E_NOTIMPL
+                Return NativeMethods.E_NOTIMPL
             End If
         End Function
 

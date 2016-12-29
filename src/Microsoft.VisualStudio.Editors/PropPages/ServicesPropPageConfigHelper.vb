@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     contents = textReader.ReadToEnd()
                 End Using
             End Using
-            Return ServicesPropPageAppConfigHelper.XmlDocumentFromText(contents)
+            Return XmlDocumentFromText(contents)
         End Function
 
         Friend Shared Function AppConfigXmlDocument(propertyPageSite As OLE.Interop.IPropertyPageSite, projectHierarchy As IVsHierarchy, Optional createIfNotPresent As Boolean = False) As XmlDocument
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not String.IsNullOrEmpty(contents) Then
                 doc = New XmlDocument()
                 Try
-                    Using reader As System.Xml.XmlReader = System.Xml.XmlReader.Create(New System.IO.StringReader(contents))
+                    Using reader As System.Xml.XmlReader = XmlReader.Create(New System.IO.StringReader(contents))
                         doc.Load(reader)
                     End Using
                 Catch ex As XmlException
@@ -737,7 +737,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If url = "" Then Return ""
             Dim separatorIndex As Integer = url.LastIndexOf("/")
             If separatorIndex = -1 Or Not url.ToUpperInvariant().EndsWith(".AXD") Then
-                Throw New InvalidOperationException(SR.GetString(SR.PPG_Services_InvalidUrls))
+                Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrls))
             End If
             Return url.Substring(0, separatorIndex)
         End Function
@@ -902,7 +902,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 SetAttributeIfNull(doc, node, s_connectionStringName, connectionStringNameToUse)
                 SetAttributeIfNull(doc, node, s_credentialsProvider, s_credentialsProviderDefault)
             End If
-            Return Not String.Equals(changeToWindows, initialValue)
+            Return Not Equals(changeToWindows, initialValue)
         End Function
 
         Friend Shared Sub SetConnectionStringText(doc As XmlDocument, newConnectionString As String, Optional projectHierarchy As IVsHierarchy = Nothing)

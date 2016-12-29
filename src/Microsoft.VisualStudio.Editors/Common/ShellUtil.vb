@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & Hex(DefaultColor.ToArgb))
             Return DefaultColor
         End Function
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         Return CanHideConfigurationsForProject(ProjectHierarchy) AndAlso Not ToolsOptionsShowAdvancedBuildConfigurations(Project.DTE)
                     End If
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
             End Try
 
             Return False 'Default to advanced configs
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
                 Return True 'default to showing advanced
             End Try
 
@@ -303,10 +303,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Return False
                 End If
 
-                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then
+                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, StringComparison.OrdinalIgnoreCase) Then
                     Return True
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -348,7 +348,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                                 If SLPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -360,7 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         Return True
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                                 If WAPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When Utils.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -413,11 +413,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     '  Should not happen, but if they decide to make this project type non-flavored.
                     Dim typeGuid As Guid = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If Guid.Equals(WAPGuid, typeGuid) Then
+                    If Equals(WAPGuid, typeGuid) Then
                         Return True
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -493,9 +493,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' The list of items that are to be checked out
         ''' </returns>
         ''' <remarks></remarks>
-        Friend Shared Function FileNameAndGeneratedFileName(projectitem As EnvDTE.ProjectItem, _
-                                                            Optional suffix As String = ".Designer", _
-                                                            Optional requireExactlyOneChild As Boolean = True, _
+        Friend Shared Function FileNameAndGeneratedFileName(projectitem As EnvDTE.ProjectItem,
+                                                            Optional suffix As String = ".Designer",
+                                                            Optional requireExactlyOneChild As Boolean = True,
                                                             Optional exclude As Predicate(Of String) = Nothing) _
                                As Collections.Generic.List(Of String)
 
@@ -516,8 +516,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                             ' Make sure that the filename matches what we expect.
                             If String.Equals(
-                                System.IO.Path.GetFileNameWithoutExtension(childItemName),
-                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix,
+                                IO.Path.GetFileNameWithoutExtension(childItemName),
+                                IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix,
                                 StringComparison.OrdinalIgnoreCase) _
                             Then
                                 ' If we've got a filter predicate, we remove anything that we've been
@@ -543,7 +543,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''<summary>
         ''' a fake IVSDProjectProperties definition. We only use this to check whether the project supports this interface, but don't pay attention to the detail.
         '''</summary>
-        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)> _
+        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
         Private Interface IVSDProjectProperties
         End Interface
 
@@ -671,7 +671,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
             Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
-                MyBase.new(sp)
+                MyBase.New(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
                 Debug.Assert(ctrl IsNot Nothing, "Why didn't we get a control to provide the dialog font for!?")
@@ -721,7 +721,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                    Return System.Windows.Forms.Form.DefaultFont
+                    Return Control.DefaultFont
                 End Get
             End Property
         End Class
@@ -795,9 +795,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function CreateTypeResolutionService(serviceProvider As IServiceProvider, hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
-                    TryCast(serviceProvider.GetService( _
-                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), _
+            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService =
+                    TryCast(serviceProvider.GetService(
+                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)),
                     Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
 
             Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing
@@ -823,7 +823,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return DefaultColor
             End If
             ' VBPackage.Instance cannot be Nothing
-            Dim VsUIShell2 As IVsUIShell2 = DirectCast(Microsoft.VisualStudio.Shell.Package.GetGlobalService(GetType(SVsUIShell)), IVsUIShell2)
+            Dim VsUIShell2 As IVsUIShell2 = DirectCast(Shell.Package.GetGlobalService(GetType(SVsUIShell)), IVsUIShell2)
 
             If VsUIShell2 IsNot Nothing Then
                 Dim abgrValue As UInteger
@@ -833,7 +833,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & Hex(DefaultColor.ToArgb))
             Return DefaultColor
         End Function
 

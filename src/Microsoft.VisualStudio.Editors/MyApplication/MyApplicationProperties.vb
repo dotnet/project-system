@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             'BEGIN Beta 1 Backwards compatibility
             If Not File.Exists(MyAppFileNameWithPath) Then
-                Dim FileNameCompat As String = IO.Path.Combine(ProjectDesignerProjectItem.FileNames(1), s_const_MyApplicationFileName_B1Compat)
+                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.FileNames(1), s_const_MyApplicationFileName_B1Compat)
                 If File.Exists(FileNameCompat) Then
                     'The new version of the filename does not exist, but the old one does - use it instead
                     _myAppFileName = s_const_MyApplicationFileName_B1Compat
@@ -349,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The .myapp file exists - try to read it in
                 PrepareMyAppDocData()
                 Using Reader As TextReader = GetMyAppTextReader()
-                    _myAppData = MyApplication.MyApplicationSerializer.Deserialize(Reader)
+                    _myAppData = MyApplicationSerializer.Deserialize(Reader)
                     Reader.Close()
                 End Using
                 _myAppData.IsDirty = False
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(_myAppDocData IsNot Nothing, "m_MyAppDocData is nothing")
             If _myAppDocData IsNot Nothing Then
                 Using Writer As TextWriter = GetMyAppTextWriter()
-                    MyApplication.MyApplicationSerializer.Serialize(_myAppData, Writer)
+                    MyApplicationSerializer.Serialize(_myAppData, Writer)
                     Writer.Close()
                 End Using
 
@@ -558,8 +558,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses, _
-                    Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterAllFormsClose
+                    ApplicationServices.ShutdownMode.AfterMainFormCloses, _
+                    ApplicationServices.ShutdownMode.AfterAllFormsClose
                         'Valid - continue
                     Case Else
                         Throw New ArgumentOutOfRangeException("value")
@@ -615,8 +615,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows, _
-                    Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.ApplicationDefined
+                    ApplicationServices.AuthenticationMode.Windows, _
+                    ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
                         Throw New ArgumentOutOfRangeException("value")
@@ -706,7 +706,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     stream = File.Create(FullPath)
                     writer = New StreamWriter(stream)
                     'Initialize the file with a default MyApplicationData
-                    MyApplication.MyApplicationSerializer.Serialize(New MyApplication.MyApplicationData(), writer)
+                    MyApplicationSerializer.Serialize(New MyApplication.MyApplicationData(), writer)
                     stream = Nothing 'Writer will now close
 
                     _myAppDocData = Nothing
@@ -732,7 +732,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 SetCustomTool(Item, s_MYAPPCUSTOMTOOL)
 
                 'BuildAction should be None so the file doesn't get published
-                Common.DTEUtils.SetBuildAction(Item, VSLangProj.prjBuildAction.prjBuildActionNone)
+                SetBuildAction(Item, VSLangProj.prjBuildAction.prjBuildActionNone)
             End If
 
             'Create the DocData for the file
@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Debug.Assert(_docDataService Is Nothing)
                 _myAppDocData = New DocData(ServiceProvider, Item.FileNames(1))
 
-                Dim ItemId As UInteger = DTEUtils.ItemIdOfProjectItem(_projectHierarchy, Item)
+                Dim ItemId As UInteger = ItemIdOfProjectItem(_projectHierarchy, Item)
                 _docDataService = New DesignerDocDataService(ServiceProvider, _projectHierarchy, ItemId, MyAppDocData)
             End If
         End Sub
@@ -764,7 +764,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MyAppFileNameWithPath() As String
-            Return IO.Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
+            Return Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
         End Function
 
 
@@ -889,11 +889,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The COM exception don't give us much to go on.  In the SCC case, for instance, if 
                 '  project check-out fails, the message is simply "Exception occurred".  We'd rather
                 '  simply throw a general exception of our own text than propagate this to the user.
-                Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), ex)
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace), ex)
 
             Catch ex As Exception
                 'For anything else, combine our error messages.
-                Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace & Microsoft.VisualBasic.vbCrLf & ex.Message))
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message))
             End Try
         End Sub
 
@@ -907,11 +907,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function CreateNewMyEventsFile(DestinationProjectItems As EnvDTE.ProjectItems, MyEventsFileName As String, MyEventsNamespaceName As String, MyEventsClassName As String) As EnvDTE.ProjectItem
-            Debug.Assert(IO.Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
+            Debug.Assert(Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
 
             'Create the new file
-            Dim NewFilePath As String = IO.Path.Combine(Common.DTEUtils.GetFolderNameFromProjectItems(DestinationProjectItems), MyEventsFileName)
-            Dim filestream As IO.FileStream = IO.File.Create(NewFilePath)
+            Dim NewFilePath As String = Path.Combine(GetFolderNameFromProjectItems(DestinationProjectItems), MyEventsFileName)
+            Dim filestream As IO.FileStream = File.Create(NewFilePath)
 
             'Write out the UTF-8 BOM so that the code model will treat it as a UTF-8 file.
             Dim BOM() As Byte = System.Text.Encoding.UTF8.GetPreamble()
@@ -945,8 +945,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 For iIteration As Integer = 1 To MaxSleepIterations
                     Try
                         'DoEvents for 500 milliseconds
-                        Dim Start As Double = Microsoft.VisualBasic.Timer
-                        While Microsoft.VisualBasic.Timer < Start + 0.5
+                        Dim Start As Double = Timer
+                        While Timer < Start + 0.5
                             System.Windows.Forms.Application.DoEvents()
                         End While
 
@@ -970,13 +970,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     'Add comments
                     Dim Comments As String = _
-                        SR.GetString(SR.PPG_Application_AppEventsCommentLine1) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine2) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine3) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine4) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine5) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine6) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine7)
+                        SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine1) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine2) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine3) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine4) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine5) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine6) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine7)
                     MyEventsClass.Comment = Comments
                 End If
             End If
@@ -1228,7 +1228,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Sub MyAppDocDataChanged(sender As Object, e As EventArgs) Handles _myAppDocData.DataChanged
             'Now read the data 
             Using Reader As TextReader = GetMyAppTextReader()
-                Dim NewValues As MyApplicationData = MyApplication.MyApplicationSerializer.Deserialize(Reader)
+                Dim NewValues As MyApplicationData = MyApplicationSerializer.Deserialize(Reader)
                 Reader.Close()
 
                 'Remember the old values
@@ -1300,7 +1300,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
-            Return Utils.NothingToEmptyString(String1).Equals(Utils.NothingToEmptyString(String2), StringComparison.Ordinal)
+            Return NothingToEmptyString(String1).Equals(NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
 
 
@@ -1477,7 +1477,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                                 CUInt(props3.OutputType),
                                 props3.MyType) = ApplicationTypes.WindowsApp
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
             End Try
             Return False
         End Function

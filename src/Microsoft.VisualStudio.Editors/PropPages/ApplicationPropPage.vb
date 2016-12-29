@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
-            ShowChildPage(SR.GetString(SR.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title), GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
         ''' <summary>
@@ -86,18 +86,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     m_ControlData = New PropertyControlData() {}
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
                     Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyName)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyName)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNameSpace, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_RootNamespace)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_ApplicationIcon)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_ApplicationIcon)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, OutputType, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.UserHandledEvents, New Control() {OutputTypeLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartupObject)
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile, "Win32ResourceFile", Win32ResourceFile, AddressOf Win32ResourceSet, AddressOf Win32ResourceGet, ControlDataFlags.None, New Control() {Win32ResourceFileBrowse, Win32ResourceRadioButton})
                     datalist.Add(data)
@@ -150,8 +150,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     With StartupObject
                         .DropDownStyle = ComboBoxStyle.DropDownList
                         .Items.Clear()
-                        .SelectedItem = .Items.Add(SR.GetString(SR.PPG_Application_StartupObjectNotSet))
-                        .Text = SR.GetString(SR.PPG_Application_StartupObjectNotSet)
+                        .SelectedItem = .Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet))
+                        .Text = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
                         .SelectedIndex = 0  '// Set it to NotSet
                     End With
 
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         .Items.Clear()
 
                         ' (Not Set) should always be available in the list
-                        .Items.Add(SR.GetString(SR.PPG_Application_StartupObjectNotSet))
+                        .Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet))
 
                         If PopulateDropdown Then
                             RefreshPropertyStandardValues()
@@ -305,7 +305,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If (Trim(stApplicationIcon) = "") Then
                     If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                        stApplicationIcon = SR.GetString(SR.PPG_Application_DefaultIconText)
+                        stApplicationIcon = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText)
                     Else
                         '// ApplicationIcon can be empty for dlls
                     End If
@@ -319,12 +319,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 stApplicationManifest = Trim(stApplicationManifest)
 
                 If String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_Default, StringComparison.OrdinalIgnoreCase) Then
-                    stApplicationManifest = SR.GetString(SR.PPG_Application_DefaultManifestText)
+                    stApplicationManifest = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText)
                 ElseIf String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_NoManifest, StringComparison.OrdinalIgnoreCase) Then
-                    stApplicationManifest = SR.GetString(SR.PPG_Application_NoManifestText)
+                    stApplicationManifest = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText)
                 ElseIf String.IsNullOrEmpty(stApplicationManifest) Then
                     If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                        stApplicationManifest = SR.GetString(SR.PPG_Application_DefaultManifestText)
+                        stApplicationManifest = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText)
                     Else
                         '// ApplicationManifest can be empty for dlls
                     End If
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Shadows Function ApplicationIconGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (IconRadioButton.Checked = True) Then
-                If (ApplicationIcon.Text.Equals(SR.GetString(SR.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase)) Then
+                If (ApplicationIcon.Text.Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase)) Then
                     value = ""
                 Else
                     value = ApplicationIcon.Text
@@ -448,9 +448,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Shadows Function ApplicationManifestGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (IconRadioButton.Checked = True) Then
-                If (ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_DefaultManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
+                If (ApplicationManifest.Text.Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
                     value = prjApplicationManifestValues.prjApplicationManifest_Default
-                ElseIf (ApplicationManifest.Text.Equals(SR.GetString(SR.PPG_Application_NoManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
+                ElseIf (ApplicationManifest.Text.Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText), StringComparison.CurrentCultureIgnoreCase)) Then
                     value = prjApplicationManifestValues.prjApplicationManifest_NoManifest
                 Else
                     value = ApplicationManifest.Text.Trim()
@@ -560,9 +560,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If IconRadioButton.Checked Then
                         If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                             If Trim(ApplicationIcon.Text).Length = 0 Then
-                                message = SR.GetString(SR.PPG_Application_BadIcon)
+                                message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadIcon)
                                 Return ValidationResult.Warning
-                            ElseIf Trim(ApplicationIcon.Text).Equals(SR.GetString(SR.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase) Then
+                            ElseIf Trim(ApplicationIcon.Text).Equals(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText), StringComparison.OrdinalIgnoreCase) Then
                                 '// This is valid
                                 Return ValidationResult.Succeeded
                             End If
@@ -574,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If IconRadioButton.Checked Then
                         If (OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                             If String.IsNullOrEmpty(Trim(ApplicationManifest.Text)) Then
-                                message = SR.GetString(SR.PPG_Application_BadManifest)
+                                message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadManifest)
                                 Return ValidationResult.Warning
                             Else
                                 '// This is valid
@@ -587,10 +587,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Case VsProjPropId80.VBPROJPROPID_Win32ResourceFile
                     If Win32ResourceRadioButton.Checked Then
                         If Trim(Win32ResourceFile.Text).Length = 0 Then
-                            message = SR.GetString(SR.PropPage_NeedResFile)
+                            message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedResFile)
                             Return ValidationResult.Warning
                         ElseIf Not File.Exists(Win32ResourceFile.Text) Then
-                            message = SR.GetString(SR.PropPage_ResourceFileNotExist)
+                            message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ResourceFileNotExist)
                             Return ValidationResult.Warning
                         End If
                     End If
@@ -699,7 +699,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'VSWhidbey 206085
             'In J#, this should be Default package
             If IsJSProject() Then
-                RootNamespaceLabel.Text = SR.GetString(SR.PPG_Application_RootNamespaceJSharp)
+                RootNamespaceLabel.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_RootNamespaceJSharp)
             End If
         End Sub
 
@@ -794,19 +794,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sFileName = ""
                 sInitialDirectory = ""
             Else
-                sFileName = System.IO.Path.GetFileName(sInitialDirectory)
-                sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
+                sFileName = Path.GetFileName(sInitialDirectory)
+                sInitialDirectory = Path.GetDirectoryName(sInitialDirectory)
             End If
 
-            Dim fileNames As ArrayList = Utils.GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(SR.PPG_AddWin32ResourceTitle),
-                    Common.CombineDialogFilters(
-                        Common.CreateDialogFilter(SR.GetString(SR.PPG_AddWin32ResourceFilter), "res"),
-                        Common.Utils.GetAllFilesDialogFilter()
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddWin32ResourceTitle),
+                    CombineDialogFilters(
+                        CreateDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddWin32ResourceFilter), "res"),
+                        GetAllFilesDialogFilter()
                         ),
                         0, False, sFileName)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = CStr(fileNames(0))
-                If System.IO.File.Exists(sFileName) Then
+                If File.Exists(sFileName) Then
                     Win32ResourceFile.Text = sFileName
                     SetDirty(Win32ResourceFile, True)
                 Else
@@ -820,7 +820,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Update the list of available items whenever the start-up object combobox is opened.
         Private Sub StartupObject_DropDown(sender As Object, e As EventArgs) Handles StartupObject.DropDown
             PopulateStartupObject(StartUpObjectSupported(), PopulateDropdown:=True)
-            Common.SetComboBoxDropdownWidth(StartupObject)
+            SetComboBoxDropdownWidth(StartupObject)
         End Sub
 
         Private Sub StartupObject_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles StartupObject.SelectionChangeCommitted
@@ -838,7 +838,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub ComboBoxes_DropDown(sender As Object, e As EventArgs) Handles OutputType.DropDown
-            Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
+            SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
 
@@ -872,7 +872,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'When the icon combobox is dropped down, update it with all current entries from the project
             PopulateIconList(True)
-            Common.SetComboBoxDropdownWidth(ApplicationIcon)
+            SetComboBoxDropdownWidth(ApplicationIcon)
         End Sub
 
         ''' <summary>
@@ -941,7 +941,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'When the icon combobox is dropped down, update it with all current entries from the project
             PopulateManifestList(True)
-            Common.SetComboBoxDropdownWidth(ApplicationManifest)
+            SetComboBoxDropdownWidth(ApplicationManifest)
         End Sub
 
         '@ <summary>

@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             BackColor = SystemColors.Window
             ForeColor = SystemColors.WindowText
             ' Make sure the row headers have enough space to display the glyphs in HDPI
-            RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(MyBase.RowHeadersWidth)
+            RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(RowHeadersWidth)
         End Sub
 
         ''' <summary>
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             Dim ht As HitTestInfo = HitTest(e.X, e.Y)
 
-            If (Control.ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
+            If (ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
                 _inMultiSelectionMode = True
             End If
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <System.Security.Permissions.UIPermission(System.Security.Permissions.SecurityAction.LinkDemand, Window:=System.Security.Permissions.UIPermissionWindow.AllWindows)> _
+        <System.Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)> _
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 

@@ -85,22 +85,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'ButtonCancel
             '
             resources.ApplyResources(ButtonCancel, "ButtonCancel")
-            ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            ButtonCancel.DialogResult = DialogResult.Cancel
             ButtonCancel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             ButtonCancel.Name = "ButtonCancel"
             '
             'ButtonAdd
             '
             resources.ApplyResources(ButtonAdd, "ButtonAdd")
-            ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.OK
+            ButtonCancel.DialogResult = DialogResult.OK
             ButtonAdd.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             ButtonAdd.Name = "ButtonAdd"
             '
             'addCancelTableLayoutPanel
             '
             resources.ApplyResources(addCancelTableLayoutPanel, "addCancelTableLayoutPanel")
-            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 100.0!))
+            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 100.0!))
             addCancelTableLayoutPanel.Controls.Add(ButtonAdd, 0, 0)
             addCancelTableLayoutPanel.Controls.Add(ButtonCancel, 1, 0)
             addCancelTableLayoutPanel.Name = "addCancelTableLayoutPanel"
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 280.0!))
+            overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Absolute, 280.0!))
             overarchingTableLayoutPanel.Controls.Add(LabelDescription, 0, 0)
             overarchingTableLayoutPanel.Controls.Add(addCancelTableLayoutPanel, 0, 2)
             overarchingTableLayoutPanel.Controls.Add(TextBoxName, 0, 1)
@@ -123,13 +123,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             resources.ApplyResources(Me, "$this")
             Controls.Add(overarchingTableLayoutPanel)
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+            FormBorderStyle = FormBorderStyle.FixedDialog
             Padding = New System.Windows.Forms.Padding(9, 9, 9, 0)
             HelpButton = True
             MaximizeBox = False
             MinimizeBox = False
             Name = "DialogQueryName"
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            AutoScaleMode = AutoScaleMode.Font
             ShowIcon = False
             addCancelTableLayoutPanel.ResumeLayout(False)
             addCancelTableLayoutPanel.PerformLayout()
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim NewResourceName As String = TextBoxName.Text
                 Dim Exception As Exception = Nothing
                 If String.IsNullOrEmpty(NewResourceName) Then
-                    ResourceView.DsMsgBox(SR.GetString(SR.RSE_Err_NameBlank), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
+                    ResourceView.DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
                 ElseIf Not Resource.ValidateName(ResourceView.ResourceFile, NewResourceName, String.Empty, NewResourceName, Exception) Then
                     ResourceView.DsMsgBox(Exception)
                 Else

@@ -355,7 +355,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResXFileNameAndPath), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetResXFileNameAndPath), NameOf(ResourceEditorRootDesigner))
                 Return String.Empty
             End Try
 
@@ -369,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IsEditingResWFile() As Boolean
-            Return Utility.HasResWExtension(GetResXFileNameAndPath())
+            Return HasResWExtension(GetResXFileNameAndPath())
         End Function
 
 #End Region
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '
                         'So, nothing for us to do.
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner))
+                Catch ex As Exception When ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner))
                     'Ignore error
                 End Try
             End If
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If EditorState IsNot Nothing AndAlso EditorState.StatePersisted Then
                         EditorState.DepersistStateInto(_view)
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner))
+                Catch ex As Exception When ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner))
                     'Now ignore the exception
                 End Try
             End If
@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsWindowFrame IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(VsWindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Nothing)))
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 
@@ -663,11 +663,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Handled As Boolean = False
                 View.HandleViewHelperCommandExec(pguidCmdGroup, nCmdID, Handled)
                 If Handled Then
-                    Return Interop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
             End If
 
-            Return Interop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
 
 
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As System.IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.QueryStatus
             'We don't implement this.
-            Return Interop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
         '
         ''' <summary>
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' it is already too late to hook up the event, and we lost the first UNDO start event. Here, we check whether the transaction
                 '  is caused by UNDO, and simulate the first UNDO start event.
                 If _undoEngine IsNot Nothing AndAlso _undoEngine.UndoInProgress Then
-                    UndoEngine_Undoing(Me, System.EventArgs.Empty)
+                    UndoEngine_Undoing(Me, EventArgs.Empty)
                 End If
             End If
         End Sub
@@ -812,7 +812,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     ElseIf _currentDebugMode = DBGMODE.DBGMODE_Design Then
                         _isReadOnlyInDesignMode = _view.ReadOnlyMode
-                        DesignerLoader.SetReadOnlyMode(True, SR.GetString(SR.RSE_Err_CantEditInDebugMode))
+                        DesignerLoader.SetReadOnlyMode(True, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantEditInDebugMode))
                         _view.ReadOnlyMode = True
                     End If
                 End If

@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
 
                 If pGenerateProgress IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(SR.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
+                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
                 End If
             End Try
             Return NativeMethods.E_FAIL
@@ -154,11 +154,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                 'Add comments 
                 Dim Comments() As String = { _
-                    SR.GetString(SR.PPG_Application_MyAppCommentLine1), _
-                    SR.GetString(SR.PPG_Application_MyAppCommentLine2), _
-                    SR.GetString(SR.PPG_Application_MyAppCommentLine3), _
-                    SR.GetString(SR.PPG_Application_MyAppCommentLine4), _
-                    SR.GetString(SR.PPG_Application_MyAppCommentLine5) _
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine1), _
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine2), _
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine3), _
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine4), _
+                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_MyAppCommentLine5) _
                 }
                 For i As Integer = 0 To Comments.Length - 1
                     GeneratedType.Comments.Add(New CodeCommentStatement(Comments(i)))
@@ -209,9 +209,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '
                 Dim EnumType As Type
                 EnumType = GetType(Microsoft.VisualBasic.ApplicationServices.ShutdownMode)
-                If MyApplication.ShutdownMode = Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterAllFormsClose Then
+                If MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterAllFormsClose Then
                     AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterAllFormsClose")
-                ElseIf MyApplication.ShutdownMode = Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses Then
+                ElseIf MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterMainFormCloses Then
                     AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterMainFormCloses")
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
@@ -243,11 +243,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Next
 
                     If invalidIdentifier Then
-                        Dim errorMsg As String = SR.GetString(SR.PPG_Application_InvalidIdentifierStartupForm_1Arg, MyApplication.MainFormNoRootNS)
+                        Dim errorMsg As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierStartupForm_1Arg, MyApplication.MainFormNoRootNS)
                         If Not pGenerateProgress Is Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, _
                                                                                            1, _
-                                                                                           SR.GetString(SR.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg), _
+                                                                                           SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg), _
                                                                                            0, _
                                                                                            0))
                         Else
@@ -275,11 +275,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     '
 
                     If Not CodeDomProvider.IsValidIdentifier(MyApplication.SplashScreenNoRootNS) Then
-                        Dim errorMsg As String = SR.GetString(SR.PPG_Application_InvalidIdentifierSplashScreenForm_1Arg, MyApplication.SplashScreenNoRootNS)
+                        Dim errorMsg As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierSplashScreenForm_1Arg, MyApplication.SplashScreenNoRootNS)
                         If Not pGenerateProgress Is Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, _
                                                                                            1, _
-                                                                                           SR.GetString(SR.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg), _
+                                                                                           SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg), _
                                                                                            0, _
                                                                                            0))
                         Else
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Dim applicationData As MyApplicationData = Nothing
-                Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.Utils.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                     applicationData = GetApplicationData(dd)
                 End Using
                 If (applicationData IsNot Nothing) Then
@@ -554,7 +554,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                 VSErrorHandler.ThrowOnFailure(project.IsDocumentInProject(fileFullPath, iFound, pdwPriority, schemaItemId))
                 If (schemaItemId <> 0) Then
-                    prgAdditionalCheckoutVSITEMIDS = System.Array.CreateInstance(GetType(UInteger), 1)
+                    prgAdditionalCheckoutVSITEMIDS = Array.CreateInstance(GetType(UInteger), 1)
                     prgAdditionalCheckoutVSITEMIDS.SetValue(schemaItemId, prgAdditionalCheckoutVSITEMIDS.GetLowerBound(0))
                 End If
             End If
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Try
-                    Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.Utils.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                    Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                         Dim data As MyApplicationData = GetApplicationData(dd)
                         If (data IsNot Nothing) Then
                             Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
@@ -613,7 +613,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             End If
                         End If
                     End Using
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to save changes to myapp file", NameOf(MyApplicationCodeGenerator))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to save changes to myapp file", NameOf(MyApplicationCodeGenerator))
                 End Try
             End If
 
@@ -634,7 +634,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <returns>error code</returns>
         Protected Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -668,7 +668,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
         ''' <returns>error code</returns>
         Protected Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>error code</returns>
         Protected Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -715,7 +715,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
         ''' <returns>error code</returns>
         Protected Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
-            Common.Utils.SetErrorInfo(Common.Utils.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(SR.SD_ERR_ModifyParamsNotSupported))
+            Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -730,7 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Function GetDesignerProjectItem(phier As IVsHierarchy, itemId As UInteger) As ProjectItem
             ' retrieve the ProjectItem corresponding to the itemId; it's the generated code file
             Dim o As Object = Nothing
-            VSErrorHandler.ThrowOnFailure(phier.GetProperty(itemId, Microsoft.VisualStudio.Shell.Interop.__VSHPROPID.VSHPROPID_ExtObject, o))
+            VSErrorHandler.ThrowOnFailure(phier.GetProperty(itemId, __VSHPROPID.VSHPROPID_ExtObject, o))
             Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
             Dim projItem As ProjectItem = TryCast(o, ProjectItem)
 

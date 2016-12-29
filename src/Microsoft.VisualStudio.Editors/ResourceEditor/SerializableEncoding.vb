@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
             Dim EncodingName As String = info.GetString(s_KEY_NAME)
             If EncodingName <> "" Then
-                _encoding = System.Text.Encoding.GetEncoding(EncodingName)
+                _encoding = Encoding.GetEncoding(EncodingName)
             End If
         End Sub
 
@@ -73,10 +73,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Function DisplayName() As String
             If _encoding IsNot Nothing Then
-                Return SR.GetString(SR.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
+                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
             Else
                 'Default
-                Return SR.GetString(SR.RSE_DefaultEncoding)
+                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DefaultEncoding)
             End If
         End Function
 
