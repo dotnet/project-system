@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 Value = configuredTargetFramework.FullName
             };
 
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var properties = ProjectPropertiesFactory.Create(project, data);
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 

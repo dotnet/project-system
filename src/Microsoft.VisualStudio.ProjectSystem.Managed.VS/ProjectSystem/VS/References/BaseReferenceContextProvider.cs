@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// <summary>
     /// Base reference context provider which abstract CPS overrides
     /// </summary>
-    public class BaseReferenceContextProvider : IVsReferenceManagerUserAsync
+    internal class BaseReferenceContextProvider : IVsReferenceManagerUserAsync
     {
         /// <summary>
         /// Value used to override the CPS provider

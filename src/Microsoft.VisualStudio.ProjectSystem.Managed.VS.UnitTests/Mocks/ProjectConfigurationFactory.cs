@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         public IImmutableDictionary<string, string> Dimensions { get; set; }
 
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         public override ProjectConfiguration ToActualModel()
         {
@@ -58,9 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private class ActualModel : ProjectConfiguration
         {
-            public IImmutableDictionary<String, String> Dimensions { get; set; }
+            public IImmutableDictionary<string, string> Dimensions { get; set; }
 
-            public String Name { get; set; }
+            public string Name { get; set; }
 
             public bool Equals(ProjectConfiguration other)
             {

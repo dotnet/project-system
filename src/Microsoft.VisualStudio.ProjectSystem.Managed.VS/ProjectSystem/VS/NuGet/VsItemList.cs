@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        public T Item(Object index)
+        public T Item(object index)
         {
             if (index is string)
             {
@@ -34,28 +34,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return this[(int)index];
         }
 
-    public bool TryGetValue(string key, out T value)
-    {
-        // Until we have https://github.com/dotnet/corefx/issues/4690
-
-        Requires.NotNull(key, nameof(key));
-
-        if (Dictionary != null)
+        public bool TryGetValue(string key, out T value)
         {
-            return Dictionary.TryGetValue(key, out value);
-        }
+            // Until we have https://github.com/dotnet/corefx/issues/4690
 
-        foreach (T item in Items)
-        {
-            if (Comparer.Equals(GetKeyForItem(item), key))
+            Requires.NotNull(key, nameof(key));
+
+            if (Dictionary != null)
             {
-                value = item;
-                return true;
+                return Dictionary.TryGetValue(key, out value);
             }
-        }
 
-        value = default(T);
-        return false;
+            foreach (T item in Items)
+            {
+                if (Comparer.Equals(GetKeyForItem(item), key))
+                {
+                    value = item;
+                    return true;
+                }
+            }
+
+            value = default(T);
+            return false;
+        }
     }
-}
 }

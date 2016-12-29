@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.FileReferenceProvider_string, ReferencePriority.File)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class AddFileContextProvider : BaseReferenceContextProvider
+    internal class AddFileContextProvider : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddFileContextProvider"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerBrowse);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerBrowse);
         }
     }
 }

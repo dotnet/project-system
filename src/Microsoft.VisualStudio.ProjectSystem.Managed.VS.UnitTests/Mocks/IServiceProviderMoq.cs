@@ -15,8 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         // Returns null if it can't get it
         public object GetService(Type serviceType)
         {
-            object retVal;
-            Services.TryGetValue(serviceType, out retVal);
+            Services.TryGetValue(serviceType, out object retVal);
 
             return retVal;
         }

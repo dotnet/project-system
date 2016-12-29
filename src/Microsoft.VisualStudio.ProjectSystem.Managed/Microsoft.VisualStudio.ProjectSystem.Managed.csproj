@@ -79,19 +79,14 @@
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorage.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeProviderExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesStore.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\DefaultToAnotherPropertyProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AssemblyCompanyValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\ProductValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\PackageVersionValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AssemblyVersionValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\BaseVersionValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\FileVersionValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\PackageIdValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AuthorsValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
     <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
@@ -141,6 +136,8 @@
     </Compile>
     <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="Collections\DictionaryEqualityComparer.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProvider.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviders\ISpecialFilesManager.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />

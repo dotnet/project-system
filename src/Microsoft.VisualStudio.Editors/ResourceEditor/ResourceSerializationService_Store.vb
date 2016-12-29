@@ -3,8 +3,6 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
-
-Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.Serialization

@@ -35,6 +35,7 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="ProjectSystem\VS\Rename\IRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
+    <Compile Include="ProjectSystem\VS\SpecialFilesProviders\VsProjectSpecialFilesManager.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeResolvedStateComparer.cs" />

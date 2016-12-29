@@ -140,8 +140,8 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
         <source>Save assembly info attribute values in source</source>
-        <target state="new">Save assembly info attribute values in source</target>
-        <note></note>
+        <target state="translated">Enregistrer les valeurs d'attributs des informations de l'assembly dans la source</target>
+        <note />
       </trans-unit>
     </body>
   </file>

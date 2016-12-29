@@ -5,7 +5,6 @@ Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
-Imports System.Threading
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 

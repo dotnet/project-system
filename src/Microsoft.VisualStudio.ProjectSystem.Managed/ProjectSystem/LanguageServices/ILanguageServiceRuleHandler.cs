@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Gets the rule this handler handles.
         /// </summary>
         /// <value>
-        ///     A <see cref="String"/> containing the rule that this <see cref="ILanguageServiceRuleHandler"/> 
+        ///     A <see cref="string"/> containing the rule that this <see cref="ILanguageServiceRuleHandler"/> 
         ///     handles.
         /// </value>
         string RuleName

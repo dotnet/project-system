@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.ComReferenceProvider_string, ReferencePriority.Com)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class ComReferencesProviderContext : BaseReferenceContextProvider
+    internal class ComReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ComReferencesProviderContext"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerCOM);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerCOM);
         }
     }
 }

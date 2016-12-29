@@ -20,14 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             foreach (T item in list)
             {
-                this.Add(item);
+                Add(item);
             }
 
             foreach (INotifyPropertyChanged item in list)
-                item.PropertyChanged += item_PropertyChanged;
+                item.PropertyChanged += OnItemPropertyChanged;
         }
 
-        void item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(new PropertyChangedEventArgs("Items"));
         }
@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 if (e.OldItems != null)
                     foreach (INotifyPropertyChanged item in e.OldItems)
-                        item.PropertyChanged -= item_PropertyChanged;
+                        item.PropertyChanged -= OnItemPropertyChanged;
 
                 if (e.NewItems != null)
                     foreach (INotifyPropertyChanged item in e.NewItems)
-                        item.PropertyChanged += item_PropertyChanged;
+                        item.PropertyChanged += OnItemPropertyChanged;
             }
 
             base.OnCollectionChanged(e);
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public bool HasChanged { get; set; }
     }
 
-    public class ObservableCollectionEventArgs : PropertyChangedEventArgs
+    internal class ObservableCollectionEventArgs : PropertyChangedEventArgs
     {
         public bool ValidationSuccessful { get; set; }
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
     }
 
-    public class ValidationStatusChangedEventArgs : EventArgs
+    internal class ValidationStatusChangedEventArgs : EventArgs
     {
         public bool ValidationStatus { get; set; }
         public ValidationStatusChangedEventArgs(bool validationStatus)

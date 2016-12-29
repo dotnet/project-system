@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             HandlerCallback subscription = null;
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents("", newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
 
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create(filePath: file);
+            var project = UnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => unsubscription = sub);
-            var project = IUnconfiguredProjectFactory.Create(filePath: file);
+            var project = UnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create(filePath: file);
+            var project = UnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var file = @"C:\Test\Test.proj";
             var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXmlAndXmlChangedEvents(xml, newSub => subscription = newSub,
                 sub => Assert.False(true, "Should not have called Unsubscribe in this test, as dispose isn't called."));
-            var project = IUnconfiguredProjectFactory.Create(filePath: file);
+            var project = UnconfiguredProjectFactory.Create(filePath: file);
 
             var watcher = new MsBuildModelWatcher(threadingService, fileSystem, msbuildAccessor, project);
             await watcher.InitializeAsync(file, "");

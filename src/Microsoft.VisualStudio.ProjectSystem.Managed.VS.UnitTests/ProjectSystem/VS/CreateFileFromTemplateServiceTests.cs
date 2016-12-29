@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
@@ -147,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private ProjectProperties CreateProperties()
         {
-            var properties = ProjectPropertiesFactory.Create(IUnconfiguredProjectFactory.Create(),
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
                         new PropertyPageData()
                         {
                             Category = ConfigurationGeneral.SchemaName,

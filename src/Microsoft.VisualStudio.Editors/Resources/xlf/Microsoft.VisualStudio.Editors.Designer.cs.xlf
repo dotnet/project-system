@@ -2711,13 +2711,13 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_PackageTitle">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Balíček</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Verze balíčku</target>
+        <note />
       </trans-unit>
     </body>
   </file>

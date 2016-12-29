@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 onGetEvaluatedPropertyValue: (v, p) => { getEvaluatedInvoked = true; return v; },
                 onGetUnevaluatedPropertyValue: (v, p) => { getUnevaluatedInvoked = true; return v; },
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, new[] { mockPropertyProvider });

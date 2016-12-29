@@ -57,8 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             var numTimesCreateKeyCalled = 0;
             var createdKey = "";
-            Guid parsedGeneratorGuid;
-            Guid.TryParse(generatorGuid, out parsedGeneratorGuid);
+            Guid.TryParse(generatorGuid, out Guid parsedGeneratorGuid);
 
             var setValueCallCounts = new Dictionary<string, int>();
             var setValueValues = new Dictionary<string, object>();

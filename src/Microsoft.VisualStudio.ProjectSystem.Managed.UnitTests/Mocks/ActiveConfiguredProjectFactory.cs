@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class IActiveConfiguredProjectFactory
+    internal static class ActiveConfiguredProjectFactory
     {
         public static ActiveConfiguredProject<T> ImplementValue<T>(Func<T> action)
         {

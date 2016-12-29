@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return InnerHierarchy.Close();
         }
 
-        public virtual int GetCanonicalName(uint itemid, out String pbstrName)
+        public virtual int GetCanonicalName(uint itemid, out string pbstrName)
         {
             return InnerHierarchy.GetCanonicalName(itemid, out pbstrName);
         }
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return InnerHierarchy.GetNestedHierarchy(itemid, ref iidHierarchyNested, out ppHierarchyNested, out pitemidNested);
         }
 
-        public virtual int GetProperty(uint itemid, int propid, out Object pvar)
+        public virtual int GetProperty(uint itemid, int propid, out object pvar)
         {
             return InnerHierarchy.GetProperty(itemid, propid, out pvar);
         }
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return InnerHierarchy.GetSite(out ppSP);
         }
 
-        public virtual int ParseCanonicalName(String pszName, out uint pitemid)
+        public virtual int ParseCanonicalName(string pszName, out uint pitemid)
         {
             return InnerHierarchy.ParseCanonicalName(pszName, out pitemid);
         }
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return InnerHierarchy.SetGuidProperty(itemid, propid, ref rguid);
         }
 
-        public virtual int SetProperty(uint itemid, int propid, Object var)
+        public virtual int SetProperty(uint itemid, int propid, object var)
         {
             return InnerHierarchy.SetProperty(itemid, propid, var);
         }
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         #region IVsContainedLanguageProjectNameProvider members
 
-        public int GetProjectName(uint itemid, out String pbstrProjectName)
+        public int GetProjectName(uint itemid, out string pbstrProjectName)
         {
             pbstrProjectName = ActiveIntellisenseProjectDisplayName;
             return VSConstants.S_OK;

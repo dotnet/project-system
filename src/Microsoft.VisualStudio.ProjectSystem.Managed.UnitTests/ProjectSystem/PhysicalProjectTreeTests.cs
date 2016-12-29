@@ -12,9 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_NullAsTreeService_ThrowsArgumentNull()
         {
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
 
             Assert.Throws<ArgumentNullException>("treeService", () => {
-                new PhysicalProjectTree((Lazy<IProjectTreeService>)null, projectTreeProvider);
+                new PhysicalProjectTree((Lazy<IProjectTreeService>)null, projectTreeProvider, projectTreeStorage);
             });
         }
 
@@ -22,9 +23,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_NullAsTreeProvider_ThrowsArgumentNull()
         {
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
 
             Assert.Throws<ArgumentNullException>("treeProvider", () => {
-                new PhysicalProjectTree(projectTreeService, (Lazy<IProjectTreeProvider>)null);
+                new PhysicalProjectTree(projectTreeService, (Lazy<IProjectTreeProvider>)null, projectTreeStorage);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsTreeStorage_ThrowsArgumentNull()
+        {
+            var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
+            var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+
+            Assert.Throws<ArgumentNullException>("treeStorage", () => {
+                new PhysicalProjectTree(projectTreeService, projectTreeProvider, (Lazy<IPhysicalProjectTreeStorage>)null);
             });
         }
 
@@ -33,8 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
 
-            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider);
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
 
             Assert.Same(projectTreeService.Value, projectTree.TreeService);
         }
@@ -44,10 +58,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
-            
-            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider);
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
+
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
 
             Assert.Same(projectTreeProvider.Value, projectTree.TreeProvider);
+        }
+
+        [Fact]
+        public void Constructor_ValueAsTreeStorage_SetTreeStorageProperty()
+        {
+            var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
+            var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
+
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
+
+            Assert.Same(projectTreeStorage.Value, projectTree.TreeStorage);
         }
 
         [Fact]
@@ -55,8 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.ImplementCurrentTree(() => null));
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
-            
-            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider);
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
+
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
 
             Assert.Null(projectTree.CurrentTree);
         }
@@ -67,8 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectTreeServiceState = IProjectTreeServiceStateFactory.ImplementTree(() => null);
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.ImplementCurrentTree(() => projectTreeServiceState));
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
 
-            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider);
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
 
             Assert.Null(projectTree.CurrentTree);
         }
@@ -83,8 +112,9 @@ Root (flags: {ProjectRoot})
             var projectTreeServiceState = IProjectTreeServiceStateFactory.ImplementTree(() => tree);
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.ImplementCurrentTree(() => projectTreeServiceState));
             var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
+            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
 
-            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider);
+            var projectTree = new PhysicalProjectTree(projectTreeService, projectTreeProvider, projectTreeStorage);
 
             Assert.Same(tree, projectTree.CurrentTree);
         }

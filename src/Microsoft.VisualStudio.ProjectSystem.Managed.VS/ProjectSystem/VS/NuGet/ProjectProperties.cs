@@ -12,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public ProjectProperties(IEnumerable<IVsProjectProperty> collection) : base(collection) { }
 
-        protected override String GetKeyForItem(IVsProjectProperty value) => value.Name;
+        protected override string GetKeyForItem(IVsProjectProperty value) => value.Name;
     }
 }

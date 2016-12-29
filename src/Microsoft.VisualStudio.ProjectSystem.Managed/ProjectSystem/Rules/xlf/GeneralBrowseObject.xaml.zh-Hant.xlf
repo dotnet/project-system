@@ -290,83 +290,83 @@
       </trans-unit>
       <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
         <source>Treat specific warnings as errors</source>
-        <target state="new">Treat specific warnings as errors</target>
-        <note></note>
+        <target state="translated">將特定警告視為錯誤</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate Package On Build</source>
-        <target state="new">Generate Package On Build</target>
-        <note></note>
+        <target state="translated">建置時產生套件</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package Id</source>
-        <target state="new">Package Id</target>
-        <note></note>
+        <target state="translated">套件識別碼</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageVersion|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">套件版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
-        <note></note>
+        <target state="translated">作者</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Package Require License Acceptance</source>
-        <target state="new">Package Require License Acceptance</target>
-        <note></note>
+        <target state="translated">套件要求接受授權</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
         <source>Package License Url</source>
-        <target state="new">Package License Url</target>
-        <note></note>
+        <target state="translated">套件授權 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Package Project Url</source>
-        <target state="new">Package Project Url</target>
-        <note></note>
+        <target state="translated">套件專案 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
         <source>Package Icon Url</source>
-        <target state="new">Package Icon Url</target>
-        <note></note>
+        <target state="translated">套件圖示 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
-        <note></note>
+        <target state="translated">套件標記</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release Notes</source>
-        <target state="new">Release Notes</target>
-        <note></note>
+        <target state="translated">版本資訊</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository Url</source>
-        <target state="new">Repository Url</target>
-        <note></note>
+        <target state="translated">存放庫 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository Type</source>
-        <target state="new">Repository Type</target>
-        <note></note>
+        <target state="translated">存放庫類型</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
         <source>Assembly Company</source>
-        <target state="new">Assembly Company</target>
-        <note></note>
+        <target state="translated">組件公司</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>Assembly File Version</source>
-        <target state="new">Assembly File Version</target>
-        <note></note>
+        <target state="translated">組件檔版本</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
-        <target state="new">Neutral Resources Language</target>
-        <note></note>
+        <target state="translated">中性資源語言</target>
+        <note />
       </trans-unit>
     </body>
   </file>

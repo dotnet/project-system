@@ -7,7 +7,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Xml
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop ' CONSIDER: (HuyN) replace EnvDTE90Interop with EnvDTE90 once the PIA is built.
+Imports EnvDTE90
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 

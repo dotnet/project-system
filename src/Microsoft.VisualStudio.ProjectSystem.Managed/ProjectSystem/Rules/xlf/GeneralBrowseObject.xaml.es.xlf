@@ -290,83 +290,83 @@
       </trans-unit>
       <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
         <source>Treat specific warnings as errors</source>
-        <target state="new">Treat specific warnings as errors</target>
-        <note></note>
+        <target state="translated">Tratar advertencias específicas como errores</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate Package On Build</source>
-        <target state="new">Generate Package On Build</target>
-        <note></note>
+        <target state="translated">Generar paquete en la compilación</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package Id</source>
-        <target state="new">Package Id</target>
-        <note></note>
+        <target state="translated">Id. de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageVersion|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Versión de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
-        <note></note>
+        <target state="translated">Autores</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Package Require License Acceptance</source>
-        <target state="new">Package Require License Acceptance</target>
-        <note></note>
+        <target state="translated">El paquete requiere aceptar la licencia</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
         <source>Package License Url</source>
-        <target state="new">Package License Url</target>
-        <note></note>
+        <target state="translated">Dirección URL de licencia de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Package Project Url</source>
-        <target state="new">Package Project Url</target>
-        <note></note>
+        <target state="translated">Dirección URL de proyecto de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
         <source>Package Icon Url</source>
-        <target state="new">Package Icon Url</target>
-        <note></note>
+        <target state="translated">Dirección URL de ícono de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
-        <note></note>
+        <target state="translated">Etiquetas de paquete</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release Notes</source>
-        <target state="new">Release Notes</target>
-        <note></note>
+        <target state="translated">Notas de la versión</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository Url</source>
-        <target state="new">Repository Url</target>
-        <note></note>
+        <target state="translated">Dirección URL de repositorio</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository Type</source>
-        <target state="new">Repository Type</target>
-        <note></note>
+        <target state="translated">Tipo de repositorio</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
         <source>Assembly Company</source>
-        <target state="new">Assembly Company</target>
-        <note></note>
+        <target state="translated">Compañía de ensamblado</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>Assembly File Version</source>
-        <target state="new">Assembly File Version</target>
-        <note></note>
+        <target state="translated">Versión del archivo de ensamblado</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
-        <target state="new">Neutral Resources Language</target>
-        <note></note>
+        <target state="translated">Idioma de recursos neutros</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -1,11 +1,7 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
-Imports System.Globalization
-Imports VSLangProj80
 Imports System.Windows.Forms
-
-Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -183,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(101, "PackageId", Me.PackageId, ControlDataFlags.None, New Control() {Me.PackageIdLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(102, "PackageVersion", Me.PackageVersion, ControlDataFlags.None, New Control() {Me.PackageVersionLabel})
+                    data = New PropertyControlData(102, "Version", Me.PackageVersion, ControlDataFlags.None, New Control() {Me.PackageVersionLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(103, "Authors", Me.Authors, ControlDataFlags.None, New Control() {Me.AuthorsLabel})
                     datalist.Add(data)
@@ -209,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(115, "PackageReleaseNotes", Me.PackageReleaseNotes, ControlDataFlags.None, New Control() {Me.PackageReleaseNotesLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(116, "AssemblyCompany", Me.AssemblyCompany, ControlDataFlags.None, New Control() {Me.AssemblyCompanyLabel})
+                    data = New PropertyControlData(116, "Company", Me.AssemblyCompany, ControlDataFlags.None, New Control() {Me.AssemblyCompanyLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(117, "Product", Me.Product, ControlDataFlags.None, New Control() {Me.ProductLabel})
                     datalist.Add(data)

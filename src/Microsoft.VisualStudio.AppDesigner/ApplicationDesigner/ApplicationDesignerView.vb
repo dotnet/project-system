@@ -652,15 +652,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Determines if the given tab should be added to the designer, and if so, returns
         '''   the ProjectItem corresponding to it.
         ''' </summary>
-        ''' <param name="FileId">The FileId to use as a parameter to IVsProjectSpecialFiles</param>
-        ''' <param name="TabSupported">[Out] True if the given tab is supported by the project</param>
-        ''' <param name="FileExists">[Out] True if the given tab's file actually exists currently.  Always false if Not TabSupported.</param>
-        ''' <param name="FullPathToProjectItem">[Out] The full path to the given tab's file.  If TabSupported is True but FileExists is False, this value indicates the preferred file and location for the project for this special file.</param>
+        ''' <param name="fileId">The FileId to use as a parameter to IVsProjectSpecialFiles</param>
+        ''' <param name="tabSupported">[Out] True if the given tab is supported by the project</param>
+        ''' <param name="fileExists">[Out] True if the given tab's file actually exists currently.  Always false if Not TabSupported.</param>
+        ''' <param name="fullPathToProjectItem">[Out] The full path to the given tab's file.  If TabSupported is True but FileExists is False, this value indicates the preferred file and location for the project for this special file.</param>
         ''' <remarks></remarks>
-        Private Sub CheckIfTabSupported(FileId As Integer, ByRef TabSupported As Boolean, ByRef FileExists As Boolean, ByRef FullPathToProjectItem As String)
-            TabSupported = False
-            FileExists = False
-            FullPathToProjectItem = Nothing
+        Private Sub CheckIfTabSupported(fileId As Integer, ByRef tabSupported As Boolean, ByRef fileExists As Boolean, ByRef fullPathToProjectItem As String)
+            tabSupported = False
+            fileExists = False
+            fullPathToProjectItem = Nothing
 
             If _specialFiles Is Nothing Then
                 Debug.Fail("IVsProjectSpecialFiles is Nothing - can't look for the given tab's file - tab will be hidden")
@@ -669,16 +669,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Dim ItemId As UInteger
             Dim SpecialFilePath As String = Nothing
-            Dim hr As Integer = _specialFiles.GetFile(FileId, CUInt(__PSFFLAGS.PSFF_FullPath), ItemId, SpecialFilePath)
+            Dim hr As Integer = _specialFiles.GetFile(fileId, CUInt(__PSFFLAGS.PSFF_FullPath), ItemId, SpecialFilePath)
             If VSErrorHandler.Succeeded(hr) Then
                 'Yes, the tab is supported
-                TabSupported = True
-                FullPathToProjectItem = SpecialFilePath
+                tabSupported = True
+                fullPathToProjectItem = SpecialFilePath
 
                 'Does the file actually exist (both in the project and on disk)?
                 If ItemId <> VSITEMID.NIL AndAlso SpecialFilePath <> "" AndAlso IO.File.Exists(SpecialFilePath) Then
                     'Yes, the file exists
-                    FileExists = True
+                    fileExists = True
                 End If
             End If
         End Sub
@@ -697,32 +697,32 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ClearTabs()
 
             'Categories are Common property pages + Config Property pages + Resources + Settings
-            Dim TabCount As Integer
+            Dim tabCount As Integer
             Dim AppDesignerItems As New ArrayList '(Of String [path + filename]) 'Resources, Settings, etc (not property pages)
 
             'Add the resources tab
-            Dim ResourcesTabSupported, DefaultResourcesExist As Boolean
-            Dim DefaultResourcesPath As String = Nothing
-            CheckIfTabSupported(__PSFFILEID2.PSFFILEID_AssemblyResource, ResourcesTabSupported, DefaultResourcesExist, DefaultResourcesPath)
-            If ResourcesTabSupported Then
-                AppDesignerItems.Add(DefaultResourcesPath)
+            Dim resourcesTabSupported, defaultResourcesExist As Boolean
+            Dim defaultResourcesPath As String = Nothing
+            CheckIfTabSupported(__PSFFILEID2.PSFFILEID_AssemblyResource, resourcesTabSupported, defaultResourcesExist, defaultResourcesPath)
+            If resourcesTabSupported Then
+                AppDesignerItems.Add(defaultResourcesPath)
             End If
 
             'Add the settings tab
-            Dim DefaultSettingsSupported, DefaultSettingsExist As Boolean
-            Dim DefaultSettingsPath As String = Nothing
-            CheckIfTabSupported(__PSFFILEID2.PSFFILEID_AppSettings, DefaultSettingsSupported, DefaultSettingsExist, DefaultSettingsPath)
-            If DefaultSettingsSupported Then
-                AppDesignerItems.Add(DefaultSettingsPath)
+            Dim defaultSettingsSupported, defaultSettingsExist As Boolean
+            Dim defaultSettingsPath As String = Nothing
+            CheckIfTabSupported(__PSFFILEID2.PSFFILEID_AppSettings, defaultSettingsSupported, defaultSettingsExist, defaultSettingsPath)
+            If defaultSettingsSupported Then
+                AppDesignerItems.Add(defaultSettingsPath)
             End If
 
             'Total tab count
-            TabCount = PropertyPages.Length + AppDesignerItems.Count 'Resource Designer + Settings Designer + property pages
+            tabCount = PropertyPages.Length + AppDesignerItems.Count 'Resource Designer + Settings Designer + property pages
 
-            _designerPanels = New ApplicationDesignerPanel(TabCount - 1) {}
+            _designerPanels = New ApplicationDesignerPanel(tabCount - 1) {}
 
             'Create the designer panels
-            For Index As Integer = 0 To TabCount - 1
+            For Index As Integer = 0 To tabCount - 1
 
                 Dim DesignerPanel As ApplicationDesignerPanel
                 If Index < PropertyPages.Length Then
@@ -775,7 +775,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'If the resx file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.
-                            If DefaultResourcesExist Then
+                            If defaultResourcesExist Then
                                 'We can't set .MkDocument directly from FileName, because the FileName returned by 
                                 '  IVsProjectSpecialFile might change before we try to open it (e.g., when a ZIP
                                 '  project is saved).  Instead, delay fetching of the filename via 
@@ -792,7 +792,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'If the settings file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.
-                            If DefaultSettingsExist Then
+                            If defaultSettingsExist Then
                                 'We can't set .MkDocument directly from FileName, because the FileName returned by 
                                 '  IVsProjectSpecialFile might change before we try to open it (e.g., when a ZIP
                                 '  project is saved).  Instead, delay fetching of the filename via 
@@ -833,7 +833,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '  panels to the HostingPanel's control array.  This will cause PerformLayout on all
             '  the panels.  We couldn't do it before adding the tab titles because they affect the 
             '  size of the HostingPanel.  Now we should have a stable size for the hosting panel.
-            For Index As Integer = 0 To TabCount - 1
+            For Index As Integer = 0 To tabCount - 1
                 Dim DesignerPanel As ApplicationDesignerPanel = _designerPanels(Index)
                 MyBase.HostingPanel.Controls.Add(DesignerPanel)
             Next

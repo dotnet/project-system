@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             try
             {
-                var shellDebugger = this.ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
+                var shellDebugger = ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(launchResults);

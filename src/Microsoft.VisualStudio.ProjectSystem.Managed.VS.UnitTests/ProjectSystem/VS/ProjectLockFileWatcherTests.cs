@@ -31,7 +31,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                 PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
                 Value = "obj\\"
             };
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
@@ -91,7 +91,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                 PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
                 Value = "obj\\"
             };
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
