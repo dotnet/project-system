@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Me.InitializeComponent()
         End Sub
 #Else
-        Inherits Microsoft.VisualStudio.Editors.DesignerFramework.BaseDialog
+        Inherits DesignerFramework.BaseDialog
 
         Private Sub New()
         End Sub
@@ -152,25 +152,25 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
 #Region "Windows Forms Designer generated code"
 
-        Friend WithEvents listViewExtensions As System.Windows.Forms.ListView
-        Friend WithEvents buttonCancel As System.Windows.Forms.Button
-        Friend WithEvents buttonOK As System.Windows.Forms.Button
-        Friend WithEvents tableLayoutOKCancelButtons As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents colHeaderExtensionName As System.Windows.Forms.ColumnHeader
-        Friend WithEvents colHeaderExensionDescription As System.Windows.Forms.ColumnHeader
-        Friend WithEvents colHeaderExtensionVersion As System.Windows.Forms.ColumnHeader
-        Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents listViewExtensions As ListView
+        Friend WithEvents buttonCancel As Button
+        Friend WithEvents buttonOK As Button
+        Friend WithEvents tableLayoutOKCancelButtons As TableLayoutPanel
+        Friend WithEvents colHeaderExtensionName As ColumnHeader
+        Friend WithEvents colHeaderExensionDescription As ColumnHeader
+        Friend WithEvents colHeaderExtensionVersion As ColumnHeader
+        Friend WithEvents tableLayoutOverarching As TableLayoutPanel
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AddMyExtensionsDialog))
-            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            tableLayoutOKCancelButtons = New System.Windows.Forms.TableLayoutPanel
-            buttonOK = New System.Windows.Forms.Button
-            buttonCancel = New System.Windows.Forms.Button
-            listViewExtensions = New System.Windows.Forms.ListView
-            colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
-            colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
-            colHeaderExensionDescription = New System.Windows.Forms.ColumnHeader
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(AddMyExtensionsDialog))
+            tableLayoutOverarching = New TableLayoutPanel
+            tableLayoutOKCancelButtons = New TableLayoutPanel
+            buttonOK = New Button
+            buttonCancel = New Button
+            listViewExtensions = New ListView
+            colHeaderExtensionName = New ColumnHeader
+            colHeaderExtensionVersion = New ColumnHeader
+            colHeaderExensionDescription = New ColumnHeader
             tableLayoutOverarching.SuspendLayout()
             tableLayoutOKCancelButtons.SuspendLayout()
             SuspendLayout()
@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             'listViewExtensions
             '
-            listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExensionDescription})
+            listViewExtensions.Columns.AddRange(New ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExensionDescription})
             resources.ApplyResources(listViewExtensions, "listViewExtensions")
             listViewExtensions.FullRowSelect = True
             listViewExtensions.HideSelection = False

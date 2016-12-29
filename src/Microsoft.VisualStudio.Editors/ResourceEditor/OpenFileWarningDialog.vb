@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub ButtonOk_Click(sender As Object, e As EventArgs) Handles buttonOK.Click
             Close()
         End Sub
-        Friend WithEvents messageLabel2 As System.Windows.Forms.Label
+        Friend WithEvents messageLabel2 As Windows.Forms.Label
 
         ''' <summary>
         ''' Click handler for the Help button
@@ -70,44 +70,44 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub DialogQueryName_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub DialogQueryName_HelpButtonClicked(sender As System.Object, e As ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private _components As ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(OpenFileWarningDialog))
-            dialogLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            alwaysCheckCheckBox = New System.Windows.Forms.CheckBox
-            messageLabel = New System.Windows.Forms.Label
-            buttonOK = New System.Windows.Forms.Button
-            buttonCancel = New System.Windows.Forms.Button
-            messageLabel2 = New System.Windows.Forms.Label
+            Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(OpenFileWarningDialog))
+            dialogLayoutPanel = New Windows.Forms.TableLayoutPanel
+            alwaysCheckCheckBox = New Windows.Forms.CheckBox
+            messageLabel = New Windows.Forms.Label
+            buttonOK = New Windows.Forms.Button
+            buttonCancel = New Windows.Forms.Button
+            messageLabel2 = New Windows.Forms.Label
             dialogLayoutPanel.SuspendLayout()
             SuspendLayout()
             '
             'dialogLayoutPanel
             '
             resources.ApplyResources(dialogLayoutPanel, "dialogLayoutPanel")
-            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(Windows.Forms.SizeType.Percent, 100.0!))
-            dialogLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+            dialogLayoutPanel.ColumnStyles.Add(New Windows.Forms.ColumnStyle(Windows.Forms.SizeType.Percent, 100.0!))
+            dialogLayoutPanel.ColumnStyles.Add(New Windows.Forms.ColumnStyle)
             dialogLayoutPanel.Controls.Add(alwaysCheckCheckBox, 0, 2)
             dialogLayoutPanel.Controls.Add(messageLabel, 0, 0)
             dialogLayoutPanel.Controls.Add(buttonOK, 0, 3)
             dialogLayoutPanel.Controls.Add(buttonCancel, 1, 3)
             dialogLayoutPanel.Controls.Add(messageLabel2, 0, 1)
             dialogLayoutPanel.Name = "dialogLayoutPanel"
-            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            dialogLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New Windows.Forms.RowStyle)
+            dialogLayoutPanel.RowStyles.Add(New Windows.Forms.RowStyle)
             '
             'alwaysCheckCheckBox
             '
@@ -159,11 +159,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             PerformLayout()
 
         End Sub
-        Friend WithEvents dialogLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents messageLabel As System.Windows.Forms.Label
-        Friend WithEvents alwaysCheckCheckBox As System.Windows.Forms.CheckBox
-        Friend WithEvents buttonOK As System.Windows.Forms.Button
-        Friend WithEvents buttonCancel As System.Windows.Forms.Button
+        Friend WithEvents dialogLayoutPanel As Windows.Forms.TableLayoutPanel
+        Friend WithEvents messageLabel As Windows.Forms.Label
+        Friend WithEvents alwaysCheckCheckBox As Windows.Forms.CheckBox
+        Friend WithEvents buttonOK As Windows.Forms.Button
+        Friend WithEvents buttonCancel As Windows.Forms.Button
 
     End Class
 End Namespace

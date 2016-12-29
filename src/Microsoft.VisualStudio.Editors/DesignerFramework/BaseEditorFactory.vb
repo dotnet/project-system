@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(Guid.Empty), "EE has munched on text buffer guid.")
 
             Try
-                Dim GuidTemp As System.Guid = GetType(IVsTextStream).GUID
+                Dim GuidTemp As Guid = GetType(IVsTextStream).GUID
                 Dim ObjPtr As IntPtr = IntPtr.Zero
                 VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, GuidTemp, Interop.win.CLSCTX_INPROC_SERVER, ObjPtr))
 
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Must be overridden.  Be sure to use the same GUID on the GUID attribute
         '''   attached to the inheriting class.
         ''' </remarks>
-        Protected MustOverride ReadOnly Property EditorGuid() As System.Guid
+        Protected MustOverride ReadOnly Property EditorGuid() As Guid
 
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.  This is the guid used in the
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Protected MustOverride ReadOnly Property CommandUIGuid() As System.Guid
+        Protected MustOverride ReadOnly Property CommandUIGuid() As Guid
 
 
 #Region "Private implementation"
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ByRef DocViewPtr As IntPtr, _
                 ByRef DocDataPtr As IntPtr, _
                 ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+                ByRef CmdUIGuid As Guid, _
                 ByRef FCanceled As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -318,7 +318,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ByRef DocView As Object, _
                 ByRef DocData As Object, _
                 ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+                ByRef CmdUIGuid As Guid, _
                 ByRef Canceled As Boolean)
             Canceled = False
             CmdUIGuid = Guid.Empty
@@ -379,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     'Now slam the two together and make a designer
 
                     '... Get a managed Designer (this will expose an IVsWindowPane to the shell)
-                    Dim OleProvider As OLE.Interop.IServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
+                    Dim OleProvider As IServiceProvider = CType(_serviceProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
                     Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
 
@@ -391,7 +391,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '  read only or not)
                     Dim CaptionReadOnlyStatus As BaseDesignerLoader.EditorCaptionState = BaseDesignerLoader.EditorCaptionState.NotReadOnly
                     Try
-                        If ((New IO.FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
+                        If ((New FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
                     Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
@@ -447,11 +447,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' {...LOGVIEWID_Debugging...} = s ''
         ''' {...LOGVIEWID_Designer...} = s 'Form'
         ''' </summary>
-        Private Function IVsEditorFactory_MapLogicalView(ByRef LogicalView As System.Guid, ByRef PhysicalViewOut As String) As Integer Implements IVsEditorFactory.MapLogicalView
+        Private Function IVsEditorFactory_MapLogicalView(ByRef LogicalView As Guid, ByRef PhysicalViewOut As String) As Integer Implements IVsEditorFactory.MapLogicalView
             Return MapLogicalView(LogicalView, PhysicalViewOut)
         End Function
 
-        Protected MustOverride Function MapLogicalView(ByRef LogicalView As System.Guid, ByRef PhysicalViewOut As String) As Integer
+        Protected MustOverride Function MapLogicalView(ByRef LogicalView As Guid, ByRef PhysicalViewOut As String) As Integer
 
         ''' <summary>
         ''' Returns the ServiceProvider
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         '''     Called by the VS shell when it first initializes us.
         ''' </summary>
-        Private Function IVsEditorFactory_SetSite(site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
+        Private Function IVsEditorFactory_SetSite(site As IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             SetSiteInternal(site)
         End Function
 
@@ -494,8 +494,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider = Nothing
             End If
             _site = Site
-            If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _serviceProvider = New Shell.ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
+            If TypeOf Site Is IServiceProvider Then
+                _serviceProvider = New Shell.ServiceProvider(CType(Site, IServiceProvider))
             End If
 
             OnSited()
@@ -507,7 +507,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Dispose my resources
         ''' </summary>
         ''' <remarks>Standard implementation pattern for IDisposable</remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub

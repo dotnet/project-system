@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _typeConverter As TypeConverter
         Private _displayName As String
         Private _name As String
-        Private _propertyType As System.Type
+        Private _propertyType As Type
         Private _isReadOnly As Boolean
 
         ''' <summary>
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <value>The component type.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property ComponentType() As System.Type
+        Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return GetType(PropPageDesignerRootComponent)
             End Get
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property PropertyType() As System.Type
+        Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType
             End Get

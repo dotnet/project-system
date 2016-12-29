@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits Panel
         Implements IVsToolWindowToolbar
 
-        Private _toolbarHost As Microsoft.VisualStudio.Shell.Interop.IVsToolWindowToolbarHost
+        Private _toolbarHost As IVsToolWindowToolbarHost
 
         ' GUID for hosted toolbar as specified in CTC file
         Private _guid As Guid
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="m"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = win.WM_SETFOCUS Then
                 'The DesignerToolbarPanel should never get focus, but the hosted
                 '  toolbar tries to get it to us in certain situations.  
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="borders"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetBorder(borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
+        Public Function GetBorder(borders() As OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
             Dim rect As Drawing.Rectangle = Bounds
 
             Debug.Assert(borders.Length = 1)
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="borders"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function SetBorderSpace(borders() As Microsoft.VisualStudio.OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.SetBorderSpace
+        Public Function SetBorderSpace(borders() As OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.SetBorderSpace
             Debug.Assert(borders IsNot Nothing)
             Debug.Assert(borders.Length = 1)
 

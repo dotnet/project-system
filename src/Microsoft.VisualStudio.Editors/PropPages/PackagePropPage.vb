@@ -8,8 +8,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class PackagePropPage
         Inherits PropPageUserControlBase
 
-        Private _fileVersionTextBoxes As System.Windows.Forms.TextBox()
-        Private _assemblyVersionTextBoxes As System.Windows.Forms.TextBox()
+        Private _fileVersionTextBoxes As TextBox()
+        Private _assemblyVersionTextBoxes As TextBox()
 
         'After 65535, the project system doesn't complain, and in theory any value is allowed as
         '  the string version of this, but after this value the numeric version of the file version
@@ -44,9 +44,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             PageRequiresScaling = False
 
-            _fileVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
+            _fileVersionTextBoxes = New TextBox(3) {
                 FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
-            _assemblyVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
+            _assemblyVersionTextBoxes = New TextBox(3) {
                 AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
         End Sub
 
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Enforce 4 values 1.2.3.4
             ReDim Preserve Values(3)
 
-            Dim Textboxes As System.Windows.Forms.TextBox()
+            Dim Textboxes As TextBox()
             If (control Is FileVersionLayoutPanel) Then
                 Textboxes = _fileVersionTextBoxes
             Else

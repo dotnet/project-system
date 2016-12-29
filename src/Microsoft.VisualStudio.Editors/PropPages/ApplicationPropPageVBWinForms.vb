@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New Generic.List(Of ApplicationTypeInfo)
+        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         Private _settingApplicationType As Boolean
 
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If GetProperty(VBProjPropId.VBPROJPROPID_MyType, oMyType) AndAlso oMyType IsNot Nothing AndAlso Not PropertyControlData.IsSpecialValue(oMyType) _
                 AndAlso GetProperty(VsProjPropId110.VBPROJPROPID_OutputTypeEx, oOutputType) AndAlso oOutputType IsNot Nothing AndAlso Not PropertyControlData.IsSpecialValue(oOutputType) _
             Then
-                Dim AppType As MyApplication.ApplicationTypes = MyApplication.MyApplicationProperties.ApplicationTypeFromOutputType(CUInt(oOutputType), CStr(oMyType))
+                Dim AppType As ApplicationTypes = MyApplication.MyApplicationProperties.ApplicationTypeFromOutputType(CUInt(oOutputType), CStr(oMyType))
                 ApplicationTypeComboBox.SelectedItem = s_applicationTypes.Find(ApplicationTypeInfo.ApplicationTypePredicate(AppType))
                 EnableControlSet(AppType)
                 PopulateControlSet(AppType)
@@ -795,7 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Fail("Failed to get IVBEntryPointProvider")
                 End If
 
-            Catch ex As System.Exception When ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
+            Catch ex As Exception When ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
             End Try
 
             Return New String() {}
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Value = PropertyControlData.MissingProperty
                 Else
                     Dim Index As Integer = MyApplicationProperties.AuthenticationMode
-                    If Not [Enum].IsDefined(GetType(ApplicationServices.AuthenticationMode), Index) Then
+                    If Not [Enum].IsDefined(GetType(AuthenticationMode), Index) Then
                         'If user horked the values, default to Windows authentication
                         Index = AuthenticationMode.Windows
                     End If
@@ -1694,7 +1694,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub MyApplicationProperties_PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Handles _myApplicationPropertiesNotifyPropertyChanged.PropertyChanged
+        Private Sub MyApplicationProperties_PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Handles _myApplicationPropertiesNotifyPropertyChanged.PropertyChanged
             Debug.Assert(e.PropertyName <> "")
             Switches.TracePDProperties(TraceLevel.Info, "MyApplicationProperties_PropertyChanged(""" & e.PropertyName & """)")
 

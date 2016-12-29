@@ -10,10 +10,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Inherits Form
 
         Private _propPage As PropPageUserControlBase
-        Public WithEvents Cancel As System.Windows.Forms.Button
-        Public WithEvents OK As System.Windows.Forms.Button
-        Public WithEvents okCancelTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Public WithEvents overArchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Public WithEvents Cancel As Button
+        Public WithEvents OK As Button
+        Public WithEvents okCancelTableLayoutPanel As TableLayoutPanel
+        Public WithEvents overArchingTableLayoutPanel As TableLayoutPanel
         Private _firstFocusHandled As Boolean
 
         ''' <summary>
@@ -57,10 +57,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
                     End If
 
-                    _propPage.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+                    _propPage.Margin = New Padding(0, 0, 0, 0)
                     _propPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                        Or System.Windows.Forms.AnchorStyles.Right), AnchorStyles)
                     _propPage.TabIndex = 0
                     'overArchingTableLayoutPanel.SuspendLayout()
                     overArchingTableLayoutPanel.Controls.Add(_propPage, 0, 0)
@@ -92,12 +92,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PropPageHostDialog))
-            Me.OK = New System.Windows.Forms.Button
-            Me.Cancel = New System.Windows.Forms.Button
-            Me.okCancelTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.overArchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            Me.OK = New Button
+            Me.Cancel = New Button
+            Me.okCancelTableLayoutPanel = New TableLayoutPanel
+            Me.overArchingTableLayoutPanel = New TableLayoutPanel
             Me.okCancelTableLayoutPanel.SuspendLayout()
             Me.overArchingTableLayoutPanel.SuspendLayout()
             Me.SuspendLayout()
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.OK, "OK")
             Me.OK.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.OK.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+            Me.OK.Margin = New Padding(0, 0, 3, 0)
             Me.OK.Name = "OK"
             '
             'Cancel
@@ -114,34 +114,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.Cancel, "Cancel")
             Me.Cancel.CausesValidation = False
             Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Cancel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            Me.Cancel.Margin = New Padding(3, 0, 0, 0)
             Me.Cancel.Name = "Cancel"
             '
             'okCancelTableLayoutPanel
             '
             resources.ApplyResources(Me.okCancelTableLayoutPanel, "okCancelTableLayoutPanel")
-            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.okCancelTableLayoutPanel.Controls.Add(Me.Cancel, 1, 0)
             Me.okCancelTableLayoutPanel.Controls.Add(Me.OK, 0, 0)
-            Me.okCancelTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0, 6, 0, 0)
+            Me.okCancelTableLayoutPanel.Margin = New Padding(0, 6, 0, 0)
             Me.okCancelTableLayoutPanel.Name = "okCancelTableLayoutPanel"
-            Me.okCancelTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.okCancelTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'overArchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overArchingTableLayoutPanel, "overArchingTableLayoutPanel")
-            Me.overArchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.overArchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.overArchingTableLayoutPanel.Controls.Add(Me.okCancelTableLayoutPanel, 0, 1)
             Me.overArchingTableLayoutPanel.Name = "overArchingTableLayoutPanel"
-            Me.overArchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.overArchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.overArchingTableLayoutPanel.RowStyles.Add(New RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.overArchingTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'PropPageHostDialog
             '
             resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.overArchingTableLayoutPanel)
-            Me.Padding = New System.Windows.Forms.Padding(12, 12, 12, 12)
+            Me.Padding = New Padding(12, 12, 12, 12)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.HelpButton = True
             Me.MaximizeBox = False
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
-        Public Sub New(ServiceProvider As System.IServiceProvider, F1Keyword As String)
+        Public Sub New(ServiceProvider As IServiceProvider, F1Keyword As String)
             MyBase.New(ServiceProvider)
 
             'This call is required by the Windows Form Designer.
@@ -189,12 +189,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub Cancel_Click(sender As Object, e As System.EventArgs) Handles Cancel.Click
+        Private Sub Cancel_Click(sender As Object, e As EventArgs) Handles Cancel.Click
             PropPage.RestoreInitialValues()
             Me.Close()
         End Sub
 
-        Private Sub OK_Click(sender As Object, e As System.EventArgs) Handles OK.Click
+        Private Sub OK_Click(sender As Object, e As EventArgs) Handles OK.Click
             'Save the changes if current values
             Try
                 'No errors in the values, apply & close the dialog

@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
 
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
             '
             'ApplicationDesignerView
             '
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         '*** Project Property related data
         Private _projectObject As Object 'Project's browse object
-        Private _DTEProject As EnvDTE.Project 'Project's DTE object
+        Private _DTEProject As Project 'Project's DTE object
         Private _specialFiles As IVsProjectSpecialFiles
 
         'Set to true when the application designer window pane has completely initialized the application designer view
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim Hierarchy As IVsHierarchy = CType(Value, IVsHierarchy)
                     Dim ItemId As UInteger
                     hr = WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_ItemID, Value)
-                    ItemId = AppDesCommon.NoOverflowCUInt(Value)
+                    ItemId = Common.NoOverflowCUInt(Value)
 
                     'We now have the Hierarchy/ItemId that were stored in the windowframe.
                     '  But this hierarchy is not necessarily that of the project - in fact
@@ -230,10 +230,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Dim ExtObject As Object = Nothing
                 hr = _projectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ExtObject)
                 If NativeMethods.Succeeded(hr) Then
-                    Dim DTE As EnvDTE.DTE
+                    Dim DTE As DTE
 
-                    If TypeOf ExtObject Is EnvDTE.Project Then
-                        _DTEProject = CType(ExtObject, EnvDTE.Project)
+                    If TypeOf ExtObject Is Project Then
+                        _DTEProject = CType(ExtObject, Project)
                         DTE = DTEProject.DTE
                     End If
 
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public ReadOnly Property DTEProject() As EnvDTE.Project
+        Public ReadOnly Property DTEProject() As Project
             Get
                 Return _DTEProject
             End Get
@@ -488,7 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Dim Panel As ApplicationDesignerPanel = _designerPanels(Index)
                                 _designerPanels(Index) = Nothing
                                 Panel.Dispose()
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception trying to dispose ApplicationDesignerPanel", NameOf(ApplicationDesignerView))
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception trying to dispose ApplicationDesignerPanel", NameOf(ApplicationDesignerView))
                             End Try
                         End If
                     Next
@@ -615,7 +615,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <returns>The browse object for the currently selected configuration.</returns>
         ''' <remarks></remarks>
         Private Function GetActiveConfigBrowseObject() As Object
-            Return AppDesCommon.DTEUtils.GetActiveConfiguration(DTEProject, VsCfgProvider)
+            Return Common.DTEUtils.GetActiveConfiguration(DTEProject, VsCfgProvider)
         End Function
 
 
@@ -736,9 +736,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 With DesignerPanel
                     .SuspendLayout()
                     .Dock = System.Windows.Forms.DockStyle.Fill
-                    .Location = New System.Drawing.Point(0, 0)
+                    .Location = New Drawing.Point(0, 0)
                     .Name = "DesignerPanel" & Index
-                    .Size = New System.Drawing.Size(555, 392)
+                    .Size = New Drawing.Size(555, 392)
                     .TabIndex = 1
                     .Dock = DockStyle.Fill
                     .Font = MyBase.HostingPanel.Font 'PERF: Prepopulating with the font means you reduce the number of OnFontChanged that occur when child panels are added/removed from the parent
@@ -855,23 +855,23 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'A default list of known editor guids and the order we want when they appear.  We only
             '  use this list if we can't get the order from the IVsHierarchy for some reason.
             Dim DefaultDesiredOrder() As Guid = {
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_VB,
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_CS,
-                AppDesCommon.KnownPropertyPageGuids.GuidApplicationPage_JS,
-                AppDesCommon.KnownPropertyPageGuids.GuidCompilePage_VB,
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_CS,
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildPage_JS,
-                AppDesCommon.KnownPropertyPageGuids.GuidBuildEventsPage,
-                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage,
-                AppDesCommon.KnownPropertyPageGuids.GuidDebugPage_VSD,
-                AppDesCommon.KnownPropertyPageGuids.GuidReferencesPage_VB,
+                Common.KnownPropertyPageGuids.GuidApplicationPage_VB,
+                Common.KnownPropertyPageGuids.GuidApplicationPage_CS,
+                Common.KnownPropertyPageGuids.GuidApplicationPage_JS,
+                Common.KnownPropertyPageGuids.GuidCompilePage_VB,
+                Common.KnownPropertyPageGuids.GuidBuildPage_CS,
+                Common.KnownPropertyPageGuids.GuidBuildPage_JS,
+                Common.KnownPropertyPageGuids.GuidBuildEventsPage,
+                Common.KnownPropertyPageGuids.GuidDebugPage,
+                Common.KnownPropertyPageGuids.GuidDebugPage_VSD,
+                Common.KnownPropertyPageGuids.GuidReferencesPage_VB,
                 New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID),
-                AppDesCommon.KnownPropertyPageGuids.GuidServicesPropPage,
+                Common.KnownPropertyPageGuids.GuidServicesPropPage,
                 New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID),
-                AppDesCommon.KnownPropertyPageGuids.GuidReferencePathsPage,
-                AppDesCommon.KnownPropertyPageGuids.GuidSigningPage,
-                AppDesCommon.KnownPropertyPageGuids.GuidSecurityPage,
-                AppDesCommon.KnownPropertyPageGuids.GuidPublishPage
+                Common.KnownPropertyPageGuids.GuidReferencePathsPage,
+                Common.KnownPropertyPageGuids.GuidSigningPage,
+                Common.KnownPropertyPageGuids.GuidSecurityPage,
+                Common.KnownPropertyPageGuids.GuidPublishPage
             }
             Dim DesiredOrder() As Guid = DefaultDesiredOrder
 
@@ -887,7 +887,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Try
                             Dim Guid As New Guid(CLSID)
                             CLSIDList.Add(Guid)
-                        Catch ex As System.FormatException When AppDesCommon.ReportWithoutCrash(ex, "VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format", NameOf(ApplicationDesignerView))
+                        Catch ex As FormatException When Common.ReportWithoutCrash(ex, "VSHPROPID_PriorityPropertyPagesCLSIDList returned a string in a bad format", NameOf(ApplicationDesignerView))
                         End Try
                     End If
                 Next
@@ -959,7 +959,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             MyBase.ServiceProvider = _serviceProvider
         End Sub
 
-        Public Shadows Function GetService(ServiceType As Type) As Object Implements System.IServiceProvider.GetService, IPropertyPageSiteOwner.GetService
+        Public Shadows Function GetService(ServiceType As Type) As Object Implements IServiceProvider.GetService, IPropertyPageSiteOwner.GetService
             Dim Service As Object
 
             If ServiceType Is GetType(PropPageDesigner.ConfigurationState) Then
@@ -1102,8 +1102,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                         End With
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
-                    ErrorMessage = AppDesCommon.DebugMessageFromException(ex)
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
+                    ErrorMessage = Common.DebugMessageFromException(ex)
                 End Try
 
                 'Now make the selected design panel visible
@@ -1133,7 +1133,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameBoundsUpdated <= 1, "PERFORMANCE/FLICKER WARNING: Window frame bounds were updated more than once")
 #End If
 
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     If ErrorMessage = "" Then
                         ErrorMessage = SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex)
                     End If
@@ -1147,7 +1147,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         NewCurrentPanel.CloseFrame()
                         NewCurrentPanel.CustomViewProvider = New ErrorControlCustomViewProvider(ErrorMessage)
                         NewCurrentPanel.ShowDesigner()
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                         'If there's an error showing the error control, it's time to give up
                     End Try
                 End If
@@ -1245,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="m"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = AppDesInterop.win.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
                 'We need to intercept WM_SETFOCUS on the project designer to keep WinForms from setting focus to the
                 '  current control (one of the tab buttons).  Instead, we want to keep the tab buttons from getting
@@ -1373,7 +1373,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Update the project designer's dirty status
                 SetFrameDirtyIndicator(ProjectDesignerIsDirty)
 
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(RefreshDirtyIndicatorsHelper), NameOf(ApplicationDesignerView))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(RefreshDirtyIndicatorsHelper), NameOf(ApplicationDesignerView))
                 ' VsVhidbey 446720 - if we have messed up the UNDO stack, the m_designerPanels.IsDirty call may 
                 ' throw an exception (when trying to enumerate the UNDO units)
             Finally
@@ -1489,7 +1489,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnCmdUIContextChanged(dwCmdUICookie As UInteger, fActive As Integer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnCmdUIContextChanged
+        Public Function OnCmdUIContextChanged(dwCmdUICookie As UInteger, fActive As Integer) As Integer Implements IVsSelectionEvents.OnCmdUIContextChanged
             Return NativeMethods.S_OK
         End Function
 
@@ -1508,7 +1508,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnElementValueChanged(elementid As UInteger, varValueOld As Object, varValueNew As Object) As Integer Implements Shell.Interop.IVsSelectionEvents.OnElementValueChanged
+        Public Function OnElementValueChanged(elementid As UInteger, varValueOld As Object, varValueNew As Object) As Integer Implements IVsSelectionEvents.OnElementValueChanged
             If elementid = 1 AndAlso _designerPanels IsNot Nothing AndAlso varValueOld IsNot varValueNew Then ' WindowFrame changed
                 For Each panel As ApplicationDesignerPanel In _designerPanels
                     If panel.VsWindowFrame Is varValueOld Then
@@ -1557,7 +1557,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' </param>
         ''' <seealso cref='IVsSelectionEvents'/>
-        Public Function OnSelectionChanged(pHierOld As Shell.Interop.IVsHierarchy, itemidOld As UInteger, pMISOld As Shell.Interop.IVsMultiItemSelect, pSCOld As Shell.Interop.ISelectionContainer, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger, pMISNew As Shell.Interop.IVsMultiItemSelect, pSCNew As Shell.Interop.ISelectionContainer) As Integer Implements Shell.Interop.IVsSelectionEvents.OnSelectionChanged
+        Public Function OnSelectionChanged(pHierOld As IVsHierarchy, itemidOld As UInteger, pMISOld As IVsMultiItemSelect, pSCOld As ISelectionContainer, pHierNew As IVsHierarchy, itemidNew As UInteger, pMISNew As IVsMultiItemSelect, pSCNew As ISelectionContainer) As Integer Implements IVsSelectionEvents.OnSelectionChanged
             Return NativeMethods.S_OK
         End Function
 
@@ -1625,7 +1625,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pFrame"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
+        Public Function OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
             Return NativeMethods.S_OK
         End Function
 
@@ -1670,7 +1670,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pFrame"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As Shell.Interop.IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
+        Public Function OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
             Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
             If _designerPanels IsNot Nothing Then
                 If Not _inShowTab Then
@@ -1765,7 +1765,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Function GetLocaleID() As UInteger Implements IPropertyPageSiteOwner.GetLocaleID
             Dim LocaleId As UInteger
-            Dim UIHostLocale As Shell.Interop.IUIHostLocale = DirectCast(GetService(GetType(Shell.Interop.IUIHostLocale)), Shell.Interop.IUIHostLocale)
+            Dim UIHostLocale As IUIHostLocale = DirectCast(GetService(GetType(IUIHostLocale)), IUIHostLocale)
             If UIHostLocale IsNot Nothing Then
                 UIHostLocale.GetUILocale(LocaleId)
                 Return LocaleId
@@ -1778,7 +1778,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #Region "Debug tracing for OnLayout/Size events..."
 
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerView.OnLayout()")
             MyBase.OnLayout(levent)
             Common.Switches.TracePDPerfEnd("ApplicationDesignerView.OnLayout()")
@@ -1792,7 +1792,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDPerf("ApplicationDesignerView.HostingPanel_SizeChanged: " & HostingPanel.Size.ToString())
         End Sub
 
-        Private Sub ApplicationDesignerView_SizeChanged(sender As Object, e As System.EventArgs) Handles Me.SizeChanged
+        Private Sub ApplicationDesignerView_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
             Common.Switches.TracePDPerf("ApplicationDesignerView.SizeChanged: " & Me.Size.ToString())
         End Sub
 

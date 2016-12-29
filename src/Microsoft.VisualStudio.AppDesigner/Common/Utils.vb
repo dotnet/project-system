@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage(ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
-            Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.AppDesCommon.Utils).Assembly.GetManifestResourceStream(ImageID)
+            Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
             If Not assembly Is Nothing Then
                 BitmapStream = assembly.GetManifestResourceStream(ImageID)
             End If
@@ -367,15 +367,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '@ <param name="hr">error code</param>
         '@ <param name="error message">error message</param>
         '@ <returns></returns>
-        Public Sub SetErrorInfo(sp As Microsoft.VisualStudio.Shell.ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
+        Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
+            Dim vsUIShell As Interop.IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(VBPackageInstance.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
@@ -472,8 +472,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Optional DefaultFileName As String = Nothing, _
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = _
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell As Interop.IVsUIShell = _
+                CType(ServiceProvider.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -489,7 +489,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 MaxPathName = (AppDesInterop.win.MAX_PATH + 1) * s_VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Shell.Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             System.Runtime.InteropServices.Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Shell.Interop.VSOPENFILENAMEW(0) {}
+                vsOpenFileName = New Interop.VSOPENFILENAMEW(0) {}
                 vsOpenFileName(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle

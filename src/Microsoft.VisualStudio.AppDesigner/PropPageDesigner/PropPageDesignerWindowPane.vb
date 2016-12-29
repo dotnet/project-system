@@ -51,14 +51,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="m"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function PreProcessMessage(ByRef m As System.Windows.Forms.Message) As Boolean
+        Protected Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerWindowPane.PreProcessMessage", m)
 
             If Me.View Is Nothing Then
                 Return False
             End If
 
-            Dim DesignerView As PropPageDesigner.PropPageDesignerView = GetPropPageDesignerView()
+            Dim DesignerView As PropPageDesignerView = GetPropPageDesignerView()
             If DesignerView IsNot Nothing Then
                 Dim KeyCode As Keys = DirectCast(m.WParam.ToInt32(), Keys) And Keys.KeyCode
                 'Is the message intended for a window or control in the property page?
@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                                         End If
                                                         WantsTab = DirectCast(Method.Invoke(c, New Object() {KeyData}), Boolean)
                                                     End If
-                                                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception calling IsInputKey late-bound", NameOf(PropPageDesignerWindowPane))
+                                                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception calling IsInputKey late-bound", NameOf(PropPageDesignerWindowPane))
                                                 End Try
                                             End If
                                         End If
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 End If
 
                 Dim PropPageHwnd As IntPtr = DesignerView.Handle()
-                Dim msg As Microsoft.VisualStudio.OLE.Interop.MSG
+                Dim msg As OLE.Interop.MSG
                 With msg
                     .hwnd = m.HWnd
                     .message = CType(m.Msg, UInteger)

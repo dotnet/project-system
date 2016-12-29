@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If sInitialDirectory = "" Then
                 Try
                     sInitialDirectory = Path.Combine(GetProjectPath(), GetSelectedConfigOutputPath())
-                Catch ex As IO.IOException
+                Catch ex As IOException
                     'Ignore
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception getting project output path for selected config", NameOf(DebugPropPage))
                 End Try
@@ -398,7 +398,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Using
         End Sub
 
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             SetStartArgumentsHeight()
             MyBase.OnLayout(levent)
         End Sub

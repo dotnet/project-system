@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim nonlabelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelText)
             Dim labelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelLink)
             HelpLabel.Text = nonlabelText & labelText
-            HelpLabel.LinkArea = New System.Windows.Forms.LinkArea(nonlabelText.Length, labelText.Length)
+            HelpLabel.LinkArea = New LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
 
         Private Sub EnableApplicationServices_CheckedChanged(sender As System.Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
@@ -331,11 +331,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Fail("Can not find ServiceProvider")
                 End If
 
-            Catch ex As System.Exception When ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(ServicesPropPage))
             End Try
         End Sub
 
-        Private Sub HelpLabel_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
+        Private Sub HelpLabel_LinkClicked(sender As System.Object, e As LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
             InvokeHelp()
         End Sub
 

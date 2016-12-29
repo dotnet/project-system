@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     '       owned by the root designer after each Invoke.
     '**************************************************************************
     Public Class DesignerMenuCommand
-        Inherits Microsoft.VisualStudio.Shell.OleMenuCommand
+        Inherits Shell.OleMenuCommand
 
         '= PUBLIC =============================================================
         ';Properties
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
         End Sub 'Invoke
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overrides Sub Invoke(inArg As Object, outArg As System.IntPtr)
+        Public Overrides Sub Invoke(inArg As Object, outArg As IntPtr)
             MyBase.Invoke(inArg, outArg)
 
             If Not (_rootDesigner Is Nothing) Then

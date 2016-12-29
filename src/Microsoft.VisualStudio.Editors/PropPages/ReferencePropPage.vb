@@ -34,9 +34,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_REFCOLUMN_PATH As Integer = 4
         Private Const s_REFCOLUMN_MAX As Integer = 4
 
-        Friend WithEvents AddUserImportButton As System.Windows.Forms.Button
-        Friend WithEvents UpdateUserImportButton As System.Windows.Forms.Button
-        Friend WithEvents UserImportTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AddUserImportButton As Button
+        Friend WithEvents UpdateUserImportButton As Button
+        Friend WithEvents UserImportTextBox As TextBox
         'To contain list of VSLangProj.Reference objects
         Private _refreshListsAfterApply As Boolean
 
@@ -53,10 +53,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _columnWidthUpdated As Boolean
 
         Private _ignoreImportEvent As Boolean
-        Friend WithEvents addRemoveButtonsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents referenceButtonsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents ReferencePageSplitContainer As System.Windows.Forms.SplitContainer
-        Friend WithEvents addUserImportTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents addRemoveButtonsTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents referenceButtonsTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents ReferencePageSplitContainer As SplitContainer
+        Friend WithEvents addUserImportTableLayoutPanel As TableLayoutPanel
         Private _needRefreshImportList As Boolean
         Private _importListSelectedItem As String = Nothing
         Private _hidingImportListSelectedItem As Boolean
@@ -213,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="proposedSize"></param>
         ''' <remarks>We need implement this, because split panel doesn't support AutoSize well</remarks>
-        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             Dim preferredSize As Size = MyBase.GetPreferredSize(proposedSize)
             Dim referenceAreaPreferredSize As Size = Size.Empty
             Dim importsAreaPreferredSize As Size = Size.Empty
@@ -460,7 +460,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             HoldSelectionChange(True)
             Try
-                Dim ReferenceListData As New System.Collections.ArrayList(ReferenceCount)
+                Dim ReferenceListData As New ArrayList(ReferenceCount)
 
                 For refIndex As Integer = 0 To ReferenceCount - 1
                     ref = theVSProject.References.Item(refIndex + 1) '1-based
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Gotta make a copy of the currently selected items so I can re-select 'em after
             ' I have repopulated the list...
-            Dim currentlySelectedItems As New System.Collections.Specialized.StringCollection
+            Dim currentlySelectedItems As New Specialized.StringCollection
             For Each SelectedItem As String In ImportList.SelectedItems
                 currentlySelectedItems.Add(SelectedItem)
             Next
@@ -1049,7 +1049,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     cmd(0).cmdID = ECMD_ADDREFERENCE
                     cmd(0).cmdf = 0
-                    Dim guidVSStd2k As New System.Guid(&H1496A755, &H94DE, &H11D0, &H8C, &H3F, &H0, &HC0, &H4F, &HC2, &HAA, &HE2)
+                    Dim guidVSStd2k As New Guid(&H1496A755, &H94DE, &H11D0, &H8C, &H3F, &H0, &HC0, &H4F, &HC2, &HAA, &HE2)
 
                     VSErrorHandler.ThrowOnFailure(UIHier.QueryStatusCommand(VSITEMID.ROOT, guidVSStd2k, CmdCount, cmd, Nothing))
 
@@ -1330,7 +1330,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
         End Sub
 
-        Private Sub ImportList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles ImportList.ItemCheck
+        Private Sub ImportList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles ImportList.ItemCheck
             'Don't apply yet, this event is fired before the actual value has been updated
             If Not _updatingImportList Then
                 NativeMethods.PostMessage(Handle, WmUserConstants.WM_REFPAGE_IMPORTCHANGED, e.Index, 0)
@@ -1513,7 +1513,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_fInsideInit = True
             Try
                 'Uncheck previously checked
-                Dim selectedItem As New System.Collections.Specialized.StringCollection
+                Dim selectedItem As New Specialized.StringCollection
                 Try
                     _updatingImportList = True
                     For Each Index As Integer In ImportList.CheckedIndices

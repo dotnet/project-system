@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _vsDebuggerEventsCookie As UInteger
 
         ' Current Debug mode
-        Private _currentDebugMode As Shell.Interop.DBGMODE = DBGMODE.DBGMODE_Design
+        Private _currentDebugMode As DBGMODE = DBGMODE.DBGMODE_Design
 
         ' BUGFIX: Dev11#45255 
         ' Hook up to build events so we can enable/disable the property 
@@ -70,8 +70,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Add our dynamic type service...
             Dim typeDiscoveryService As ITypeDiscoveryService = Nothing
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
-                DirectCast(_serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
+            Dim dynamicTypeService As DynamicTypeService = _
+                DirectCast(_serviceProvider.GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If dynamicTypeService IsNot Nothing Then
                 typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
             End If
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ItemId">ItemId in Hierarchy to load</param>
         ''' <param name="punkDocData">Document data to load</param>
         ''' <remarks></remarks>
-        Friend Overrides Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
+        Friend Overrides Sub InitializeEx(ServiceProvider As ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
             MyBase.InitializeEx(ServiceProvider, moniker, Hierarchy, ItemId, punkDocData)
 
             _serviceProvider = ServiceProvider
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="SerializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub HandleFlush(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleFlush(SerializationManager As IDesignerSerializationManager)
             Try
                 _flushing = True
                 Dim Designer As SettingsDesigner = DirectCast(LoaderHost.GetDesigner(RootComponent), SettingsDesigner)
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="SerializationManager">My serialization manager</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
             Switches.TraceSDSerializeSettings(TraceLevel.Info, "SettingsDesignerLoader: Start loading settings")
             Debug.Assert(LoaderHost IsNot Nothing, "Asked to load settings designer without a LoaderHost!?")
             LoaderHost.CreateComponent(GetType(DesignTimeSettings))
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             CustomToolProperty.Value = SettingsSingleFileGenerator.SingleFileGeneratorName
                         End If
                     End If
-                Catch ex As System.ArgumentException
+                Catch ex As ArgumentException
                     ' Venus doesn't like people looking for the "CustomTool" property of the project item...
                     ' Well, if that's the case we can't very well the the property either.... no big deal!
                 End Try
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                     cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
                                                     _appConfigDocData,
                                                     AppConfigSerializer.MergeValueMode.Prompt,
-                                                    CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService))
+                                                    CType(GetService(GetType(Windows.Forms.Design.IUIService)), Windows.Forms.Design.IUIService))
                 If objectDirty <> AppConfigSerializer.DirtyState.NoChange Then
                     ' Set flag if we make changes to the settings object during load that should
                     ' set the docdata to dirty immediately after we have loaded.
@@ -523,7 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' we have to do this after the load is completed....
                     _modifiedDuringLoad = True
                 End If
-            Catch ex As System.Configuration.ConfigurationErrorsException
+            Catch ex As Configuration.ConfigurationErrorsException
                 ' We failed to load the app config xml document....
                 DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
             Catch Ex As Exception When ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
@@ -537,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="successful"></param>
         ''' <param name="errors"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnEndLoad(successful As Boolean, errors As System.Collections.ICollection)
+        Protected Overrides Sub OnEndLoad(successful As Boolean, errors As ICollection)
             MyBase.OnEndLoad(successful, errors)
             ConnectDebuggerEvents()
             ConnectBuildEvents()
@@ -667,7 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Switches.TracePDFocus(TraceLevel.Warning, "[disabled] SettingsDesignerLoader EnsureCheckedOut hack: Me.LoaderHost.Activate()")
 
                 Return True
-            Catch ex As System.ComponentModel.Design.CheckoutException
+            Catch ex As CheckoutException
                 ' We failed to checkout the file (s)...
                 Return False
             End Try
@@ -693,7 +693,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Overrides ReadOnly Property FilesToCheckOut() As System.Collections.Generic.List(Of String)
+        Friend Overrides ReadOnly Property FilesToCheckOut() As List(Of String)
             Get
                 Dim result As List(Of String) = MyBase.FilesToCheckOut
                 Dim projectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
 #Region "INameCreationService"
-        Public Function CreateName(container As System.ComponentModel.IContainer, dataType As System.Type) As String Implements System.ComponentModel.Design.Serialization.INameCreationService.CreateName
+        Public Function CreateName(container As ComponentModel.IContainer, dataType As Type) As String Implements INameCreationService.CreateName
             If dataType IsNot Nothing AndAlso String.Equals(dataType.AssemblyQualifiedName, GetType(DesignTimeSettings).AssemblyQualifiedName, StringComparison.OrdinalIgnoreCase) Then
                 Return ""
             End If
@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return ""
         End Function
 
-        Public Function IsValidName(name As String) As Boolean Implements System.ComponentModel.Design.Serialization.INameCreationService.IsValidName
+        Public Function IsValidName(name As String) As Boolean Implements INameCreationService.IsValidName
             If RootComponent IsNot Nothing Then
                 Return RootComponent.IsValidName(name)
             Else
@@ -748,7 +748,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Public Sub ValidateName(name As String) Implements System.ComponentModel.Design.Serialization.INameCreationService.ValidateName
+        Public Sub ValidateName(name As String) Implements INameCreationService.ValidateName
             If Not IsValidName(name) Then
                 Throw CreateArgumentException("name")
             End If
@@ -848,7 +848,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' handle DebugMode change event, disable the designer when in debug mode...
         ''' </summary>
         ''' <param name="dbgmodeNew"></param>
-        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
+        Private Function OnModeChange(dbgmodeNew As DBGMODE) As Integer Implements IVsDebuggerEvents.OnModeChange
             Try
                 If dbgmodeNew = DBGMODE.DBGMODE_Design Then
                     SetReadOnlyMode(False, String.Empty)

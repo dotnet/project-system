@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
             ' Load the XML
             Dim document As New XmlDocument
-            Using xmlReader As System.Xml.XmlReader = XmlReader.Create(New System.IO.StringReader(strPermissionSet))
+            Using xmlReader As XmlReader = XmlReader.Create(New StringReader(strPermissionSet))
                 document.Load(xmlReader)
             End Using
 

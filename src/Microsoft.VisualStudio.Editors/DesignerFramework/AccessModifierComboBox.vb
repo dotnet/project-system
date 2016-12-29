@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="accessibility"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ConvertToString(accessibility As AccessModifierConverter.Access) As String
+        Public Function ConvertToString(accessibility As Access) As String
             Select Case accessibility
                 Case Access.Friend
                     If _converter IsNot Nothing Then
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' The states are True (registered), False (not registerd) or Missing (we haven't 
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
-        Private _customToolsRegistered As Nullable(Of Boolean)
+        Private _customToolsRegistered As Boolean?
 
         Public Enum Access
             [Public]
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _recognizedCustomToolValues.Add(customToolValue)
                 ' We also make sure to reset the cached value for if the custom tool(s)
                 ' is/are registered...
-                _customToolsRegistered = New Nullable(Of Boolean)
+                _customToolsRegistered = New Boolean?
             End If
         End Sub
 

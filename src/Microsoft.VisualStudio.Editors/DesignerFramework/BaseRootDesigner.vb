@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' 4.    In case it is a context menu, use BaseRootDesigner.ShowContextMenu to show it from the designer view.
     ''' </remarks>
     Friend MustInherit Class BaseRootDesigner
-        Inherits System.ComponentModel.Design.ComponentDesigner
+        Inherits ComponentDesigner
         Implements IServiceProvider
 
         '= PUBLIC =============================================================

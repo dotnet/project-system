@@ -128,13 +128,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim hierarchy As IVsHierarchy = DirectCast(ServiceProvider.GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If hierarchy IsNot Nothing Then
                 Dim project As IVsProject = DirectCast(hierarchy, IVsProject)
-                Dim sp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                Dim sp As OLE.Interop.IServiceProvider = Nothing
 
                 Dim hr As Integer = project.GetItemContext(VSITEMID.ROOT, sp) '0xFFFFFFFE VSITEMID_ROOT
                 If Interop.NativeMethods.Succeeded(hr) Then
-                    Dim pUnk As System.IntPtr
-                    Dim g As System.Guid = GetType(IResXResourceService).GUID
-                    Dim g2 As System.Guid = New System.Guid("00000000-0000-0000-C000-000000000046") 'IUnKnown
+                    Dim pUnk As IntPtr
+                    Dim g As Guid = GetType(IResXResourceService).GUID
+                    Dim g2 As Guid = New Guid("00000000-0000-0000-C000-000000000046") 'IUnKnown
                     hr = sp.QueryService(g, g2, pUnk)
                     If Interop.NativeMethods.Succeeded(hr) AndAlso Not pUnk = IntPtr.Zero Then
                         _resxService = DirectCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(pUnk), IResXResourceService)
@@ -573,7 +573,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' Here we do the actual adding of the resource to our list.
         ''' </remarks>
-        Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentAdded
+        Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentAdded
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Fail("How could we be adding a component that's not a Resource?")
@@ -641,7 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
+        Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Assert(TypeOf ResourceObject Is ResourceEditorRootComponent, "How could we be removing a component that's not a Resource?")
@@ -760,7 +760,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRename(sender As Object, e As System.ComponentModel.Design.ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
+        Private Sub ComponentChangeService_ComponentRename(sender As Object, e As ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -822,7 +822,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As System.ComponentModel.Design.ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
+        Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -844,7 +844,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetEnumerator() As Collections.IDictionaryEnumerator
+        Public Function GetEnumerator() As IDictionaryEnumerator
             Return _resourcesHash.GetEnumerator
         End Function
 
@@ -868,7 +868,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ResXReader.Close()
         End Sub
 
-        Public Function TypeNameConverter(runtimeType As System.Type) As String
+        Public Function TypeNameConverter(runtimeType As Type) As String
             Debug.Assert(runtimeType IsNot Nothing, "runtimeType cannot be Nothing!")
             If _multiTargetService Is Nothing Then
                 Return runtimeType.AssemblyQualifiedName
@@ -1640,8 +1640,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Dim vsLangProj As VSLangProj.VSProject = Nothing
 
-                Dim typeNameCollection As New System.Collections.Specialized.StringCollection
-                Dim assemblyCollection As New System.Collections.Specialized.StringCollection
+                Dim typeNameCollection As New Specialized.StringCollection
+                Dim assemblyCollection As New Specialized.StringCollection
 
                 For Each Resource As Resource In Resources
                     Dim resourceType As Type = Nothing
@@ -1741,12 +1741,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If RootComponent IsNot Nothing AndAlso RootComponent.IsGlobalResourceInASP() Then
                 ' Venus project always use C# CodeDomProvider to generate StrongType code for the resource file.
-                Return New Microsoft.CSharp.CSharpCodeProvider()
+                Return New CSharp.CSharpCodeProvider()
             End If
 
             If ServiceProvider IsNot Nothing Then
                 Try
-                    Dim VsmdCodeDomProvider As Designer.Interfaces.IVSMDCodeDomProvider = TryCast(ServiceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
+                    Dim VsmdCodeDomProvider As IVSMDCodeDomProvider = TryCast(ServiceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
                     If VsmdCodeDomProvider IsNot Nothing Then
                         Return TryCast(VsmdCodeDomProvider.CodeDomProvider, CodeDomProvider)
                     End If

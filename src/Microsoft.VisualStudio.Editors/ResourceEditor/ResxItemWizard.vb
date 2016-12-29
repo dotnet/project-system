@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="projectItem"></param>
         ''' <remarks></remarks>
-        Public Sub BeforeOpeningFile(projectItem As EnvDTE.ProjectItem) Implements IWizard.BeforeOpeningFile
+        Public Sub BeforeOpeningFile(projectItem As ProjectItem) Implements IWizard.BeforeOpeningFile
         End Sub
 
         ''' <summary>
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="project"></param>
         ''' <remarks></remarks>
-        Public Sub ProjectFinishedGenerating(project As EnvDTE.Project) Implements IWizard.ProjectFinishedGenerating
+        Public Sub ProjectFinishedGenerating(project As Project) Implements IWizard.ProjectFinishedGenerating
         End Sub
 
         ''' <summary>
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="projectItem"></param>
         ''' <remarks></remarks>
-        Public Sub ProjectItemFinishedGenerating(projectItem As EnvDTE.ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
+        Public Sub ProjectItemFinishedGenerating(projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
 
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
             If (projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing) Then
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(itemProperties IsNot Nothing, "null projectItem.Properties?")
                 If (itemProperties IsNot Nothing) Then
 
-                    For Each propertyEntry As System.Collections.DictionaryEntry In _propertiesToSet
+                    For Each propertyEntry As DictionaryEntry In _propertiesToSet
 
                         Dim name As String = TryCast(propertyEntry.Key, String)
                         Dim value As String = TryCast(propertyEntry.Value, String)
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="runKind"></param>
         ''' <param name="customParams"></param>
         ''' <remarks></remarks>
-        Public Sub RunStarted(automationObject As Object, replacementsDictionary As System.Collections.Generic.Dictionary(Of String, String), runKind As WizardRunKind, customParams() As Object) Implements IWizard.RunStarted
+        Public Sub RunStarted(automationObject As Object, replacementsDictionary As Dictionary(Of String, String), runKind As WizardRunKind, customParams() As Object) Implements IWizard.RunStarted
 
             ' we can't do any work if the dictionary is nothing...
             '

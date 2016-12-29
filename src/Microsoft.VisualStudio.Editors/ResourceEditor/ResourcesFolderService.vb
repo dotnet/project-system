@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Verify the file exists
             If Not File.Exists(FullSourceFilePath) Then
-                Throw New IO.FileNotFoundException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_FindNotFound_File, FullSourceFilePath))
+                Throw New FileNotFoundException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_FindNotFound_File, FullSourceFilePath))
             End If
 
             'Determine the behavior for this project.  This handles the case of Project = Nothing and the Miscellaneous Files project.

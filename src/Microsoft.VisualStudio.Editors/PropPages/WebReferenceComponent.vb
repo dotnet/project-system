@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)>
-        <MergablePropertyAttribute(False)>
+        <MergableProperty(False)>
         <HelpKeyword("Folder Properties.FileName")>
         Public Property Name() As String
             Get
@@ -48,8 +48,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
-        <VBDescriptionAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
+        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
         <HelpKeyword("Folder Properties.UrlBehavior")>
         Public Property UrlBehavior() As UrlBehaviorType
             Get
@@ -77,10 +77,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)>
+        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)>
         <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)>
         <HelpKeyword("Folder Properties.WebReference")>
-        <MergablePropertyAttribute(False)>
+        <MergableProperty(False)>
         Public Property WebReferenceURL() As String
             Get
                 Dim prop As EnvDTE.[Property] = GetItemProperty("WebReference")
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If properties IsNot Nothing Then
                     Return properties.Item(propertyName)
                 End If
-            Catch e As System.ArgumentException When Common.ReportWithoutCrash(e, NameOf(GetItemProperty), NameOf(WebReferenceComponent))
+            Catch e As ArgumentException When Common.ReportWithoutCrash(e, NameOf(GetItemProperty), NameOf(WebReferenceComponent))
             End Try
             Return Nothing
         End Function
@@ -149,51 +149,51 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' we overrite the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
         ' all other functions are implemented in its default way...
 
-        Public Function GetAttributes() As System.ComponentModel.AttributeCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetAttributes
+        Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
             Return TypeDescriptor.GetAttributes([GetType]())
         End Function
 
-        Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
+        Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
             Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebReferenceTypeName)
         End Function
 
-        Public Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
+        Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
             Return Name
         End Function
 
-        Public Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
+        Public Function GetConverter() As TypeConverter Implements ICustomTypeDescriptor.GetConverter
             Return TypeDescriptor.GetConverter([GetType]())
         End Function
 
-        Public Function GetDefaultEvent() As System.ComponentModel.EventDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultEvent
+        Public Function GetDefaultEvent() As EventDescriptor Implements ICustomTypeDescriptor.GetDefaultEvent
             Return TypeDescriptor.GetDefaultEvent([GetType]())
         End Function
 
-        Public Function GetDefaultProperty() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty
+        Public Function GetDefaultProperty() As PropertyDescriptor Implements ICustomTypeDescriptor.GetDefaultProperty
             Return TypeDescriptor.GetDefaultProperty([GetType]())
         End Function
 
-        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As Type) As Object Implements ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor([GetType](), editorBaseType)
         End Function
 
-        Public Function GetEvents() As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents() As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents([GetType]())
         End Function
 
-        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As Attribute) As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents([GetType](), attributes)
         End Function
 
-        Public Function GetProperties() As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties() As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties([GetType]())
         End Function
 
-        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As Attribute) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties([GetType](), attributes)
         End Function
 
-        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As PropertyDescriptor) As Object Implements ICustomTypeDescriptor.GetPropertyOwner
             Return Me
         End Function
 #End Region
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' we only implement coverting from string...
-        Public Overrides Function CanConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, sourceType As System.Type) As Boolean
+        Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, sourceType As Type) As Boolean
             If sourceType Is GetType(String) Then
                 Return True
             End If
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting to string...
-        Public Overrides Function CanConvertTo(context As System.ComponentModel.ITypeDescriptorContext, destinationType As System.Type) As Boolean
+        Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, destinationType As Type) As Boolean
             If destinationType Is GetType(String) Then
                 Return True
             End If
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting from string...
-        Public Overrides Function ConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object) As Object
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
             If TypeOf value Is String Then
                 Dim stringValue As String = CStr(value)
                 For i As Integer = 0 To DisplayValues.Length - 1
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' we only implement coverting to string...
-        Public Overrides Function ConvertTo(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object, destinationType As System.Type) As Object
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object, destinationType As Type) As Object
             If destinationType Is GetType(String) Then
                 Dim type As UrlBehaviorType = CType(value, UrlBehaviorType)
                 Return DisplayValues(CInt(type))
@@ -263,11 +263,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' standard value collection... will be used in the dropdown of the propertyGrid
-        Public Overrides Function GetStandardValues(context As System.ComponentModel.ITypeDescriptorContext) As System.ComponentModel.TypeConverter.StandardValuesCollection
+        Public Overrides Function GetStandardValues(context As ITypeDescriptorContext) As StandardValuesCollection
             Return New StandardValuesCollection(New UrlBehaviorType() {UrlBehaviorType.Static, UrlBehaviorType.Dynamic})
         End Function
 
-        Public Overrides Function GetStandardValuesSupported(context As System.ComponentModel.ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
     End Class

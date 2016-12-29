@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         '''</summary>
         '''<remarks> We need handle OnClick to make Accessiblity work... </remarks>
-        Protected Overrides Sub OnClick(e As System.EventArgs)
+        Protected Overrides Sub OnClick(e As EventArgs)
             MyBase.OnClick(e)
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl
@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
+        Protected Overrides Sub OnMouseEnter(e As EventArgs)
             MyBase.OnMouseEnter(e)
             Dim parent As ProjectDesignerTabControl = ParentTabControl
             If parent IsNot Nothing Then
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
+        Protected Overrides Sub OnMouseLeave(e As EventArgs)
             MyBase.OnMouseLeave(e)
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(e As EventArgs)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ProjectDesignerTabButton.OnGotFocus - forwarding to parent")
             MyBase.OnGotFocus(e)
 

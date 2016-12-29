@@ -365,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "Application type"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New Generic.List(Of ApplicationTypeInfo)
+        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         ''' <summary>
         ''' Initialize the application types applicable to this page (logic is in the base class)
@@ -458,7 +458,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Function SetOutputTypeIntoUI(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value IsNot Nothing AndAlso Not PropertyControlData.IsSpecialValue(value) Then
-                Dim AppType As MyApplication.ApplicationTypes = ApplicationTypeFromOutputType(CType(value, VSLangProj.prjOutputType))
+                Dim AppType As ApplicationTypes = ApplicationTypeFromOutputType(CType(value, VSLangProj.prjOutputType))
                 ApplicationTypeComboBox.SelectedItem = s_applicationTypes.Find(ApplicationTypeInfo.ApplicationTypePredicate(AppType))
                 EnableApplicationIconAccordingToApplicationType(AppType)
                 EnableControl(ViewUACSettingsButton, UACSettingsButtonSupported(AppType))
@@ -1829,7 +1829,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End If
         End Sub
 
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             MyBase.WndProc(m)
 
             If m.Msg = Interop.win.WM_SETFOCUS Then

@@ -69,17 +69,17 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' file
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Shared Function EnvDTEProject(VsHierarchy As IVsHierarchy) As EnvDTE.Project
+        Friend Shared Function EnvDTEProject(VsHierarchy As IVsHierarchy) As Project
             Dim ProjectObj As Object = Nothing
             VSErrorHandler.ThrowOnFailure(VsHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ProjectObj))
-            Return CType(ProjectObj, EnvDTE.Project)
+            Return CType(ProjectObj, Project)
         End Function
 
         ''' <summary>
         ''' Get the current EnvDTE.Project instance for the project associated with the ProjectUniqueName
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Shared Function EnvDTEProjectFromProjectUniqueName(ProjectUniqueName As String) As EnvDTE.Project
+        Friend Shared Function EnvDTEProjectFromProjectUniqueName(ProjectUniqueName As String) As Project
 
             Dim SolutionService As IVsSolution = TryCast(Shell.Package.GetGlobalService(GetType(IVsSolution)), IVsSolution)
 
@@ -139,10 +139,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
-        Public Shared Function FileNameFromProjectItem(ProjectItem As EnvDTE.ProjectItem) As String
+        Public Shared Function FileNameFromProjectItem(ProjectItem As ProjectItem) As String
             If ProjectItem Is Nothing Then
                 Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Project">The DTE project</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetActiveDTEConfiguration(Project As Project) As EnvDTE.Configuration
+        Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
             Try
                 Return Project.ConfigurationManager.ActiveConfiguration
             Catch ex As ArgumentException
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' From a hierarchy and projectitem, return the item id
         ''' </summary>
-        Public Shared Function ItemIdOfProjectItem(Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem) As UInteger
+        Public Shared Function ItemIdOfProjectItem(Hierarchy As IVsHierarchy, ProjectItem As ProjectItem) As UInteger
             Dim FoundItemId As UInteger
             VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(ProjectItem.FileNames(1), FoundItemId))
             Return FoundItemId

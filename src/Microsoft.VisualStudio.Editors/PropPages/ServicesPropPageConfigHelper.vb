@@ -13,9 +13,9 @@ Imports Microsoft.VSDesigner
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class ServicesPropPageAppConfigHelper
-        Private Shared s_clientRoleManagerType As Type = GetType(System.Web.ClientServices.Providers.ClientRoleProvider)
-        Private Shared s_clientFormsMembershipProviderType As Type = GetType(System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider)
-        Private Shared s_clientWindowsMembershipProviderType As Type = GetType(System.Web.ClientServices.Providers.ClientWindowsAuthenticationMembershipProvider)
+        Private Shared s_clientRoleManagerType As Type = GetType(Web.ClientServices.Providers.ClientRoleProvider)
+        Private Shared s_clientFormsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider)
+        Private Shared s_clientWindowsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientWindowsAuthenticationMembershipProvider)
 
         Private Const s_systemWeb As String = "system.web"
         Private Const s_roleManager As String = "roleManager"
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not String.IsNullOrEmpty(contents) Then
                 doc = New XmlDocument()
                 Try
-                    Using reader As System.Xml.XmlReader = XmlReader.Create(New System.IO.StringReader(contents))
+                    Using reader As XmlReader = XmlReader.Create(New StringReader(contents))
                         doc.Load(reader)
                     End Using
                 Catch ex As XmlException
@@ -805,7 +805,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Friend Shared Function GetEffectiveHonorCookieExpiry(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Nullable(Of Boolean)
+        Friend Shared Function GetEffectiveHonorCookieExpiry(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean?
             Dim node As XmlNode
             Dim stringValue As String
             Dim roleManagerHonorCookieExpiry, appConfigHonorCookieExpiry As Boolean
@@ -1005,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function ClientSettingsProviderName() As String
-            Return GetType(System.Web.ClientServices.Providers.ClientSettingsProvider).FullName
+            Return GetType(Web.ClientServices.Providers.ClientSettingsProvider).FullName
         End Function
 
         Private Shared Function GetSupportedType(sourceType As Type, projectHierarchy As IVsHierarchy) As Type

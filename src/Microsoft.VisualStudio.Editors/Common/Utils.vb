@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage(ImageID As String) As Image
-            Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.Common.Utils).Assembly.GetManifestResourceStream(ImageID)
+            Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
             If Not BitmapStream Is Nothing Then
                 Dim Image As Image = Image.FromStream(BitmapStream)
                 If Not Image Is Nothing Then
@@ -694,8 +694,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 MaxPathName = (win.MAX_PATH + 1) * s_VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Shell.Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
@@ -722,7 +722,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Shell.Interop.VSOPENFILENAMEW(0) {}
+                vsOpenFileName = New VSOPENFILENAMEW(0) {}
                 vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
@@ -842,8 +842,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Optional DefaultFileName As String = Nothing,
                 Optional OverwritePrompt As Boolean = False) As String
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             InitialDirectory = NormalizeInitialDirectory(InitialDirectory)
             Filter = GetNativeFilter(Filter)
@@ -855,12 +855,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
             End If
 
-            Dim vsSaveFileName As Shell.Interop.VSSAVEFILENAMEW()
+            Dim vsSaveFileName As VSSAVEFILENAMEW()
             Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MAX_PATH_NAME * 2 + 2)
             Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsSaveFileName = New Shell.Interop.VSSAVEFILENAMEW(0) {}
+                vsSaveFileName = New VSSAVEFILENAMEW(0) {}
                 vsSaveFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsSaveFileName(0)))
                 vsSaveFileName(0).hwndOwner = ParentWindow
                 vsSaveFileName(0).pwzDlgTitle = DialogTitle
@@ -900,7 +900,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="path">The path to get to.</param>
         ''' <returns>A String contains the relative path, '.' if baseDirectory and path are the same, 
         '''          or the given path if there is no relative path.</returns>
-        ''' <exception cref="IO.Path.GetFullPath">See IO.Path.GetFullPath: If the input path is invalid.</exception>
+        ''' <exception cref="Path.GetFullPath">See IO.Path.GetFullPath: If the input path is invalid.</exception>
         ''' <remarks>
         '''  This works with UNC path. However, mapped drive will not be resolved to UNC path.
         '''  If baseDirectory / path exist, 8.3 paths will be resolved into long path format.
@@ -953,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             ' Otherwise, build the result.
-            Dim RelativePath As New System.Text.StringBuilder
+            Dim RelativePath As New StringBuilder
 
             ' Calculate how many directories to go up to common directory from base path.
             While (Index < BaseDirectory.Length)
@@ -1079,11 +1079,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="pHier"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As Microsoft.VisualStudio.Shell.ServiceProvider
+        Public Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As ServiceProvider
             If pHier IsNot Nothing Then
-                Dim OLEServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                Dim OLEServiceProvider As OLE.Interop.IServiceProvider = Nothing
                 VSErrorHandler.ThrowOnFailure(pHier.GetSite(OLEServiceProvider))
-                Return New Microsoft.VisualStudio.Shell.ServiceProvider(OLEServiceProvider)
+                Return New ServiceProvider(OLEServiceProvider)
             Else
                 Return Nothing
             End If
@@ -1095,15 +1095,15 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="hr">error code</param>
         '@ <param name="error message">error message</param>
         '@ <returns></returns>
-        Public Sub SetErrorInfo(sp As Microsoft.VisualStudio.Shell.ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
+        Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
+            Dim vsUIShell As IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackage.Instance IsNot Nothing Then
-                vsUIShell = CType(VBPackage.Instance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(VBPackage.Instance.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
@@ -1247,7 +1247,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         End If
                     End If
                 End If
-            Catch ex As System.ArgumentException
+            Catch ex As ArgumentException
                 ' Venus throws when trying to access the CustomToolNamespace property...
             Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils))
             End Try
@@ -1285,7 +1285,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                             DefaultNamespace = ""
                         End If
                     End If
-                Catch ex As System.ArgumentException
+                Catch ex As ArgumentException
                 Catch ex As Exception When ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils))
                 End Try
             End If
@@ -1309,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Throw New ArgumentNullException("Hierarchy")
             End If
 
-            If TryCast(Hierarchy, Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
+            If TryCast(Hierarchy, WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
                 Dim objIsServiceReferenceSupported As Object = Nothing
                 Try
                     VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, CInt(__VSHPROPID3.VSHPROPID_ServiceReferenceSupported), objIsServiceReferenceSupported))
@@ -1412,7 +1412,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
             ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
             ' before enabling server-specific functionality
-            Return Not (service.IsSupportedType(GetType(System.Web.ApplicationServices.AuthenticationService)))
+            Return Not (service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService)))
 
         End Function
 
@@ -1502,7 +1502,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Class Helper
 
-            Public Overridable Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As System.IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
+            Public Overridable Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
                 Return Utils.ServiceProviderFromHierarchy(pHier)
             End Function
 

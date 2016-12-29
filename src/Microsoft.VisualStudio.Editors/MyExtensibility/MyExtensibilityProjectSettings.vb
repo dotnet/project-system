@@ -559,7 +559,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             Dim myExtensionsFolderExistsBefore As Boolean = _extensionFolderProjectItem IsNot Nothing
-            Dim namesToCheck As String() = IIf(Of String())(myExtensionsFolderExistsBefore, rgszMkOldNames, rgszMkNewNames)
+            Dim namesToCheck As String() = IIf(myExtensionsFolderExistsBefore, rgszMkOldNames, rgszMkNewNames)
             For Each dirPath As String In namesToCheck
                 Dim dirName As String = GetDirectoryName(dirPath)
                 If StringEquals(dirName, s_EXTENSION_FOLDER_NAME) Then
@@ -679,12 +679,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private _projectService As MyExtensibilityProjectService
         Private _serviceProvider As IServiceProvider ' Usually VBPackage.
-        Private _project As EnvDTE.Project ' The associated project.
+        Private _project As Project ' The associated project.
         Private _projectHierarchy As IVsHierarchy ' The associated project hierarchy.
 
         Private _vsBuildPropertyStorage As IVsBuildPropertyStorage ' Used to set the item extension attributes.
 
-        Private _extensionFolderProjectItem As EnvDTE.ProjectItem ' "My Extensions" folder.
+        Private _extensionFolderProjectItem As ProjectItem ' "My Extensions" folder.
 
         ' The dictionary of MyExtensionProjectItemGroup, indexed by the triggering assemblies.
         Private _extProjItemGroups As AssemblyDictionary(Of MyExtensionProjectItemGroup)

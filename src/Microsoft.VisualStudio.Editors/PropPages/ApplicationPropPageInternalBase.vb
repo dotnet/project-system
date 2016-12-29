@@ -121,9 +121,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             targetFrameworkComboBox.SelectedIndex = -1
 
             Try
-                Dim siteServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                Dim siteServiceProvider As OLE.Interop.IServiceProvider = Nothing
                 VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetSite(siteServiceProvider))
-                Dim sp As New Microsoft.VisualStudio.Shell.ServiceProvider(siteServiceProvider)
+                Dim sp As New Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
                 If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then

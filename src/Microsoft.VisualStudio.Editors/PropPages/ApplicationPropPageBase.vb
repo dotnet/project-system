@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ApplicationIconCombobox.Items.Clear()
                 ApplicationIconCombobox.Items.Add(m_DefaultIconText)
                 If FindIconsInProject Then
-                    For Each ProjectItem As EnvDTE.ProjectItem In DTEProject.ProjectItems
+                    For Each ProjectItem As ProjectItem In DTEProject.ProjectItems
                         AddIconsFromProjectItem(ProjectItem, ApplicationIconCombobox)
                     Next
                 End If
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Verify it's actually a usable .ico before adding it to the project
                     Dim ValidIcon As Boolean = False
                     Try
-                        Dim Icon As New System.Drawing.Icon(sFileName)
+                        Dim Icon As New Icon(sFileName)
                         ValidIcon = True
                         Icon.Dispose()
                     Catch ex As ArgumentException
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return
                     End If
 
-                    Dim ProjectItem As EnvDTE.ProjectItem = Nothing
+                    Dim ProjectItem As ProjectItem = Nothing
                     Try
                         ProjectItem = AddIconFileToProject(sFileName)
                     Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
@@ -333,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If ApplicationIconCombobox.SelectedIndex = -1 Then
                     'Icon is not in the project, so add it, if requested
                     If AddToProject Then
-                        Dim ProjectItem As EnvDTE.ProjectItem = Nothing
+                        Dim ProjectItem As ProjectItem = Nothing
                         Try
                             ProjectItem = AddIconFileToProject(path)
                         Catch ex As Exception When ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon), NameOf(ApplicationPropPageBase))
@@ -404,7 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ProjectItem"></param>
         ''' <remarks></remarks>
-        Protected Sub AddIconsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationIconCombobox As ComboBox)
+        Protected Sub AddIconsFromProjectItem(ProjectItem As ProjectItem, ApplicationIconCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
                 Dim ext As String = IO.Path.GetExtension(FileName)
@@ -414,7 +414,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 'Recurse into folders (we definitely want stuff in the Resources
                 '  folder, for instance)
-                For Each Child As EnvDTE.ProjectItem In ProjectItem.ProjectItems
+                For Each Child As ProjectItem In ProjectItem.ProjectItems
                     AddIconsFromProjectItem(Child, ApplicationIconCombobox)
                 Next
             Next
@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ApplicationManifestCombobox.Items.Add(m_DefaultManifestText)
                 ApplicationManifestCombobox.Items.Add(m_NoManifestText)
                 If FindManifestInProject Then
-                    For Each ProjectItem As EnvDTE.ProjectItem In DTEProject.ProjectItems
+                    For Each ProjectItem As ProjectItem In DTEProject.ProjectItems
                         AddManifestsFromProjectItem(ProjectItem, ApplicationManifestCombobox)
                     Next
                 End If
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="ProjectItem"></param>
         ''' <remarks></remarks>
-        Protected Sub AddManifestsFromProjectItem(ProjectItem As EnvDTE.ProjectItem, ApplicationManifestCombobox As ComboBox)
+        Protected Sub AddManifestsFromProjectItem(ProjectItem As ProjectItem, ApplicationManifestCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
                 Dim ext As String = IO.Path.GetExtension(FileName)
@@ -528,7 +528,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 'Recurse into folders (we definitely want stuff in the Resources
                 '  folder, for instance)
-                For Each Child As EnvDTE.ProjectItem In ProjectItem.ProjectItems
+                For Each Child As ProjectItem In ProjectItem.ProjectItems
                     AddManifestsFromProjectItem(Child, ApplicationManifestCombobox)
                 Next
             Next

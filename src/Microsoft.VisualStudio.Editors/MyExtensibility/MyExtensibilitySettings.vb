@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If project Is Nothing Then
                 Return Nothing
             End If
-            assemblyFullName = IIf(Of String)(assemblyFullName Is Nothing, String.Empty, assemblyFullName.Trim())
+            assemblyFullName = IIf(assemblyFullName Is Nothing, String.Empty, assemblyFullName.Trim())
 
             InitializeProjectKindSettings(projectTypeID, project)
 
@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 Dim asmAutoOption As AssemblyAutoOption = _autoOptions(assemblyFullName)
                 Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
-                Return IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
+                Return IIf(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
             Else
                 Return AssemblyOption.Prompt
             End If
@@ -367,13 +367,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
             assemblyFullName = NormalizeAssemblyFullName(assemblyFullName)
-            Dim inputValue As AssemblyOption = IIf(Of AssemblyOption)(value, AssemblyOption.Yes, AssemblyOption.No)
+            Dim inputValue As AssemblyOption = IIf(value, AssemblyOption.Yes, AssemblyOption.No)
 
             Dim asmAutoOption As AssemblyAutoOption = Nothing
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 asmAutoOption = _autoOptions(assemblyFullName)
                 Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
-                Dim existingValue As AssemblyOption = IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
+                Dim existingValue As AssemblyOption = IIf(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
                 If existingValue = inputValue Then
                     Exit Sub
                 Else

@@ -142,14 +142,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             ' Get the EnvDTE.Project from the project hierarchy.
-            Dim project As EnvDTE.Project = Nothing
+            Dim project As Project = Nothing
             If projectHierarchy IsNot Nothing Then
                 Dim projectObject As Object = Nothing
                 Dim hr As Integer = projectHierarchy.GetProperty( _
                     VSITEMID.ROOT, CInt(__VSHPROPID.VSHPROPID_ExtObject), projectObject)
 
                 If VSErrorHandler.Succeeded(hr) AndAlso projectObject IsNot Nothing Then
-                    project = TryCast(projectObject, EnvDTE.Project)
+                    project = TryCast(projectObject, Project)
                 End If
             End If
 
@@ -254,16 +254,16 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     _solutionEvents = events.SolutionEvents
                     If _solutionEvents IsNot Nothing Then
                         AddHandler _solutionEvents.AfterClosing, _
-                            New EnvDTE._dispSolutionEvents_AfterClosingEventHandler( _
+                            New _dispSolutionEvents_AfterClosingEventHandler( _
                             AddressOf SolutionEvents_AfterClosing)
                         AddHandler _solutionEvents.ProjectRemoved, _
-                            New EnvDTE._dispSolutionEvents_ProjectRemovedEventHandler( _
+                            New _dispSolutionEvents_ProjectRemovedEventHandler( _
                             AddressOf SolutionEvents_ProjectRemoved)
                     End If
                     _DTEEvents = events.DTEEvents
                     If _DTEEvents IsNot Nothing Then
                         AddHandler _DTEEvents.OnBeginShutdown, _
-                            New EnvDTE._dispDTEEvents_OnBeginShutdownEventHandler( _
+                            New _dispDTEEvents_OnBeginShutdownEventHandler( _
                             AddressOf DTEEvents_OnBeginShutDown)
                     End If
                 End If
@@ -277,16 +277,16 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub RemoveEnvDTEEvents()
             If _solutionEvents IsNot Nothing Then
                 RemoveHandler _solutionEvents.AfterClosing, _
-                    New EnvDTE._dispSolutionEvents_AfterClosingEventHandler( _
+                    New _dispSolutionEvents_AfterClosingEventHandler( _
                     AddressOf SolutionEvents_AfterClosing)
                 RemoveHandler _solutionEvents.ProjectRemoved, _
-                    New EnvDTE._dispSolutionEvents_ProjectRemovedEventHandler( _
+                    New _dispSolutionEvents_ProjectRemovedEventHandler( _
                     AddressOf SolutionEvents_ProjectRemoved)
                 _solutionEvents = Nothing
             End If
             If _DTEEvents IsNot Nothing Then
                 RemoveHandler _DTEEvents.OnBeginShutdown, _
-                    New EnvDTE._dispDTEEvents_OnBeginShutdownEventHandler( _
+                    New _dispDTEEvents_OnBeginShutdownEventHandler( _
                     AddressOf DTEEvents_OnBeginShutDown)
                 _DTEEvents = Nothing
             End If
@@ -350,9 +350,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ' My Extensibility settings of the current VS. Lazy init.
         Private _extensibilitySettings As MyExtensibilitySettings
         ' Handle solution closing and project removal events.
-        Private _solutionEvents As EnvDTE.SolutionEvents
+        Private _solutionEvents As SolutionEvents
         ' Handle DTE closing events
-        Private _DTEEvents As EnvDTE.DTEEvents
+        Private _DTEEvents As DTEEvents
         ' lazy-init instance of TrackProjectDocumentsEventsHelper
         Private _trackProjectDocumentsEvents As TrackProjectDocumentsEventsHelper
 

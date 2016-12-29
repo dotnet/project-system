@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   OLECMDERR_E_CANCELED 
         '''     The user canceled the execution of the command. 
         ''' </remarks>
-        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As System.IntPtr, pvaOut As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.Exec
+        Private Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As IntPtr, pvaOut As IntPtr) As Integer Implements OleInterop.IOleCommandTarget.Exec
             Common.Switches.TracePDCmdTarget(TraceLevel.Info, "CmdTargetHelper.IOleCommandTarget.Exec: Guid=" & pguidCmdGroup.ToString & ", nCmdID=" & nCmdID)
 
             If _windowPane Is Nothing Then
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''
         ''' Callers use IOleCommandTarget::QueryStatus to determine which commands are supported by a target object. The caller can then disable unavailable commands that would otherwise be routed to the object. The caller can also use this method to get the name or status of a single command.
         ''' </remarks>
-        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As System.IntPtr) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
+        Private Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As Guid, cCmds As UInteger, prgCmds As OleInterop.OLECMD(), pCmdText As IntPtr) As Integer Implements OleInterop.IOleCommandTarget.QueryStatus
             'Grab certain commands and handle ourselves
 
             Const Supported As UInteger = CUInt(OleInterop.OLECMDF.OLECMDF_SUPPORTED)
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>
         ''' Implementers should develop code to notify users and prompt for save and close and relay those decisions to the environment through pgrfSaveOptions.
         ''' </remarks>
-        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnClose
+        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements IVsWindowFrameNotify3.OnClose
 
             'Note: For File.Close and CTRL+F4 (document close), we first get called in the Exec handling above.  Then we close the frame,
             '  which forces us down here (but since we passed in NoClose as the save options, we will exit out quickly).
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnDockableChange(fDockable As Integer, x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnDockableChange
+        Private Function OnDockableChange(fDockable As Integer, x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnDockableChange
             Return NativeMethods.S_OK
         End Function
 
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnMove(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnMove
+        Private Function OnMove(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnMove
             Return NativeMethods.S_OK
         End Function
 
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="fShow"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnShow(fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnShow
+        Private Function OnShow(fShow As Integer) As Integer Implements IVsWindowFrameNotify3.OnShow
             'NOTE: In error cases, m_WindowPane.AppDesignerView may be Nothing, so we must guard against
             '  its use.
 
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="h"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnSize(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify3.OnSize
+        Private Function OnSize(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnSize
             Return NativeMethods.S_OK
         End Function
 

@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Main loop - replace each invalid character with an underscore
-            Dim FileNameBuilder As New System.Text.StringBuilder(SuggestedFileName)
+            Dim FileNameBuilder As New StringBuilder(SuggestedFileName)
             Do
                 'Search for invalid characters
                 Dim CurrentFileName As String = FileNameBuilder.ToString

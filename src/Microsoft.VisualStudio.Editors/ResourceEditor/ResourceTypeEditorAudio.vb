@@ -17,10 +17,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _extensions() As String = {EXT_WAV}
 
         'The resource value type that is used for audio files
-        Friend Shared ReadOnly AudioFileValueType As System.Type = GetType(MemoryStream)
+        Friend Shared ReadOnly AudioFileValueType As Type = GetType(MemoryStream)
 
         'The resource value type that is used for binary files
-        Friend Shared ReadOnly BinaryFileValueType As System.Type = GetType(Byte())
+        Friend Shared ReadOnly BinaryFileValueType As Type = GetType(Byte())
 
         'The shared Thumbnail Image
         Private Shared s_thumbnailForAudio As Image

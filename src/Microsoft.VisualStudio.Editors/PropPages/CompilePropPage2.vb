@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             AddChangeHandlers()
 
-            Dim optionStrictErrors As New System.Collections.ArrayList
+            Dim optionStrictErrors As New ArrayList
             For Each ErrorInfo As ErrorInfo In _errorInfos
                 If ErrorInfo.ErrorOnOptionStrict Then
                     optionStrictErrors.AddRange(ErrorInfo.ErrList)
@@ -744,7 +744,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' We use an empty cell to indicate that levels conflict
         ''' </summary>
-        Private Sub WarningsGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
+        Private Sub WarningsGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
             If e.ColumnIndex = s_notifyColumnIndex Then
                 ' If either this is in an indeterminate state because we have different warning levels 
                 ' in different configurations, or if the current value is indeterminate (DBNull) because
@@ -1304,7 +1304,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Throw New System.Runtime.InteropServices.COMException("", Interop.win.OLE_E_PROMPTSAVECANCELLED)
                         End If
                     End If
-                Catch ex As System.ApplicationException
+                Catch ex As ApplicationException
                     ' The old behavior was to assume a secure path if exceptio occured...
                 End Try
             End If
@@ -1322,7 +1322,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Private Function CheckPath(path As String) As Boolean
             If path Is Nothing Then
-                Throw New System.ArgumentNullException("path")
+                Throw New ArgumentNullException("path")
             End If
 
 
@@ -1339,9 +1339,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' can get from our ServiceProvider can't Map URLs to zones...
             Dim localReg As ILocalRegistry2 = TryCast(ServiceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
             If localReg IsNot Nothing Then
-                Dim ObjectPtr As System.IntPtr = IntPtr.Zero
+                Dim ObjectPtr As IntPtr = IntPtr.Zero
                 Try
-                    Static CLSID_InternetSecurityManager As New System.Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
+                    Static CLSID_InternetSecurityManager As New Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
                     VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.win.CLSCTX_INPROC_SERVER, ObjectPtr))
                     internetSecurityManager = TryCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(ObjectPtr), Interop.IInternetSecurityManager)
                 Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2))
@@ -1354,7 +1354,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If internetSecurityManager Is Nothing Then
                 Debug.Fail("Failed to create an InternetSecurityManager")
-                Throw New System.ApplicationException
+                Throw New ApplicationException
             End If
 
             Dim zone As Integer
@@ -1365,17 +1365,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return True
             End If
 
-            Dim folderEvidence As System.Security.Policy.Evidence = New System.Security.Policy.Evidence()
-            folderEvidence.AddHostEvidence(New System.Security.Policy.Url("file:///" & absPath))
-            folderEvidence.AddHostEvidence(New System.Security.Policy.Zone(CType(zone, System.Security.SecurityZone)))
-            Dim folderPSet As System.Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
+            Dim folderEvidence As Security.Policy.Evidence = New Security.Policy.Evidence()
+            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & absPath))
+            folderEvidence.AddHostEvidence(New Security.Policy.Zone(CType(zone, Security.SecurityZone)))
+            Dim folderPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
 
             ' Get permission set that is granted to local code running on the local machine.
-            Dim localEvidence As New System.Security.Policy.Evidence()
-            localEvidence.AddHostEvidence(New System.Security.Policy.Zone(Security.SecurityZone.MyComputer))
+            Dim localEvidence As New Security.Policy.Evidence()
+            localEvidence.AddHostEvidence(New Security.Policy.Zone(Security.SecurityZone.MyComputer))
 
-            Dim localPSet As System.Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(localEvidence)
-            localPSet.RemovePermission((New System.Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer)).GetType())
+            Dim localPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(localEvidence)
+            localPSet.RemovePermission((New Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer)).GetType())
 
             ' Return true if permission set that would be granted to code in
             ' target folder is equal (or greater than) that granted to local code.
@@ -1531,7 +1531,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Friend ReadOnly Property ConfigExtendedPropertiesObjects() As Object()
                     Get
                         If _extendedObjects Is Nothing Then
-                            Dim aem As Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager
+                            Dim aem As AutomationExtenderManager
                             aem = AutomationExtenderManager.GetAutomationExtenderManager(_serviceProvider)
                             _extendedObjects = aem.GetExtendedObjects(ConfigRawPropertiesObjects)
                             Debug.Assert(_extendedObjects IsNot Nothing, "Extended objects unavailable")

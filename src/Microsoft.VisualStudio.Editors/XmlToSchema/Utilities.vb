@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Else
                     Debug.Fail("Can not find ServiceProvider")
                 End If
-            Catch ex As System.Exception
+            Catch ex As Exception
                 Debug.Fail("Unexpected exception during Help invocation " + ex.Message)
             End Try
         End Sub

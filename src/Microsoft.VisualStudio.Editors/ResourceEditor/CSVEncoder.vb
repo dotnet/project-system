@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="EncodingType"></param>
         ''' <remarks></remarks>
         Public Shared Function DecodeResources(Text As String, View As ResourceEditorView, EncodingType As EncodingType) As Resource()
-            Dim ResourceList As New Generic.List(Of Resource)
+            Dim ResourceList As New List(Of Resource)
 
             If Text Is Nothing Then
                 Text = ""
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Alphabetize the resources
-            Dim SortedResources As New Generic.SortedList(Of String, Resource)
+            Dim SortedResources As New SortedList(Of String, Resource)
             For Each resource As Resource In Resources
                 SortedResources.Add(resource.Name, resource)
             Next
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Delimiter = ","c
             End Select
 
-            For Each Pair As Generic.KeyValuePair(Of String, Resource) In SortedResources
+            For Each Pair As KeyValuePair(Of String, Resource) In SortedResources
                 Dim Resource As Resource = Pair.Value
 
                 If Resource.IsConvertibleFromToString() Then

@@ -228,16 +228,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  do the right thing when not hosted inside Visual Studio, and change according to the theme.
 
 
-                _controlBackgroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _controlBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
 
-                _buttonForegroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.ControlText)
-                _buttonBackgroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _buttonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.ControlText)
+                _buttonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
 
-                _selectedButtonForegroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
-                _selectedButtonBackgroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Highlight)
+                _selectedButtonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
+                _selectedButtonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Highlight)
 
-                _hoverButtonForegroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
-                _hoverButtonBackgroundColor = AppDesCommon.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+                _hoverButtonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
+                _hoverButtonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
 
                 'Get GDI objects
                 _controlBackgroundBrush = New SolidBrush(_controlBackgroundColor)

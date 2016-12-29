@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Private Shared ReadOnly Property DebuggerStepThroughAttribute() As Type
             Get
-                Return GetType(System.Diagnostics.DebuggerStepThroughAttribute)
+                Return GetType(DebuggerStepThroughAttribute)
             End Get
         End Property
 
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="pbstrDefaultExtension"></param>
         ''' <remarks></remarks>
-        Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements Shell.Interop.IVsSingleFileGenerator.DefaultExtension
+        Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
                 ' return the extension - some have a leading "." and some do not...
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
         ''' <remarks></remarks>
-        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
+        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
             Dim BufPtr As IntPtr
             Try
 
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyApplication">DesignTimeSettings class to generate a CodeCompileUnit from</param>
         ''' <param name="ProjectRootNamespace">The root namespace of the project.  If Nothing, the form will be non-fully qualified.</param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        Private Function Create(MyApplication As MyApplicationData, ProjectRootNamespace As String, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeCompileUnit
+        Private Function Create(MyApplication As MyApplicationData, ProjectRootNamespace As String, pGenerateProgress As IVsGeneratorProgress) As CodeCompileUnit
             Dim CompileUnit As New CodeCompileUnit
 
             'Set Option Strict On
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             ' Create a new namespace to put our class in
             '
-            Dim MyNamespace As New System.CodeDom.CodeNamespace(s_myNamespaceName)
+            Dim MyNamespace As New CodeDom.CodeNamespace(s_myNamespaceName)
 
             'MySubMain will be set to indicate a WindowsApplication sans MY, or non-WindowsApplication type
             If MyApplication.MySubMain AndAlso MyApplicationProperties.IsMySubMainSupported(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)) Then
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '  GENERATED CODE:
                 '    MyBase.New(ApplicationServices.AuthenticationMode.xxx)
                 '
-                Dim AuthenticationModeEnumType As Type = GetType(Microsoft.VisualBasic.ApplicationServices.AuthenticationMode)
+                Dim AuthenticationModeEnumType As Type = GetType(ApplicationServices.AuthenticationMode)
                 Dim AuthenticationModeValueName As String = [Enum].GetName(AuthenticationModeEnumType, MyApplication.AuthenticationMode)
                 Dim AuthenticationModeParameter As CodeExpression = New CodeFieldReferenceExpression( _
                     New CodeTypeReferenceExpression(New CodeTypeReference(AuthenticationModeEnumType, CodeTypeReferenceOptions.GlobalReference)), AuthenticationModeValueName)
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                 '
                 Dim EnumType As Type
-                EnumType = GetType(Microsoft.VisualBasic.ApplicationServices.ShutdownMode)
+                EnumType = GetType(ApplicationServices.ShutdownMode)
                 If MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterAllFormsClose Then
                     AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterAllFormsClose")
                 ElseIf MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterMainFormCloses Then
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, Expression As CodeExpression)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
-            Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
             Statement.Right = Expression
             Method.Statements.Add(Statement)
         End Sub
@@ -339,8 +339,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Shared Sub AddFieldPrimitiveAssignment(Method As CodeMemberMethod, FieldName As String, Value As Object)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
-            Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
-            Statement.Right = New CodeDom.CodePrimitiveExpression(Value)
+            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            Statement.Right = New CodePrimitiveExpression(Value)
             Method.Statements.Add(Statement)
         End Sub
 
@@ -348,7 +348,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, EnumType As Type, EnumFieldName As String)
             Dim Statement As CodeAssignStatement
             Statement = New CodeAssignStatement()
-            Statement.Left = New CodeDom.CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
 
             Dim TypeRef As CodeTypeReference
             TypeRef = New CodeTypeReference(EnumType)
@@ -391,7 +391,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeMyApplicationData(InputString As String, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As MyApplicationData
+        Private Function DeserializeMyApplicationData(InputString As String, GenerateProgress As IVsGeneratorProgress) As MyApplicationData
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Debug.Assert(Hierarchy IsNot Nothing, "Failed to get a Hierarchy item for item to generate code from")
             Dim data As MyApplicationData = Nothing
@@ -478,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 #End Region
 
 #Region "IObjectWithSite implementation"
-        Private Sub GetSite(ByRef riid As System.Guid, ByRef ppvSite As System.IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
+        Private Sub GetSite(ByRef riid As Guid, ByRef ppvSite As IntPtr) Implements IObjectWithSite.GetSite
             If _site Is Nothing Then
                 ' Throw E_FAIL
                 Throw New Win32Exception(NativeMethods.E_FAIL)
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Try
         End Sub
 
-        Private Sub SetSite(pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
+        Private Sub SetSite(pUnkSite As Object) Implements IObjectWithSite.SetSite
             _site = pUnkSite
         End Sub
 #End Region
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Dim applicationData As MyApplicationData = Nothing
-                Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                     applicationData = GetApplicationData(dd)
                 End Using
                 If (applicationData IsNot Nothing) Then
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If (designerPrjItem IsNot Nothing) Then
                 Try
-                    Using dd As New Microsoft.VisualStudio.Shell.Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                    Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                         Dim data As MyApplicationData = GetApplicationData(dd)
                         If (data IsNot Nothing) Then
                             Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                                 End If
 
                                 If (madeChanges) Then
-                                    Using myappWriter As New Microsoft.VisualStudio.Shell.Design.Serialization.DocDataTextWriter(dd)
+                                    Using myappWriter As New Design.Serialization.DocDataTextWriter(dd)
                                         MyApplicationSerializer.Serialize(data, myappWriter)
                                         myappWriter.Close()
                                     End Using
@@ -632,7 +632,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Protected Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Protected Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -747,11 +747,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="dd">the DocData to load the ApplicationData from</param>
         ''' <returns>the ApplicationData loaded from the ProjectItem</returns>
-        Private Function GetApplicationData(dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As MyApplicationData
+        Private Function GetApplicationData(dd As Shell.Design.Serialization.DocData) As MyApplicationData
             Dim data As MyApplicationData = Nothing
             If (dd IsNot Nothing) Then
                 ' read the content of this ProjectItem into a MyApplicationData object
-                Using myApplicationReader As New Microsoft.VisualStudio.Shell.Design.Serialization.DocDataTextReader(dd)
+                Using myApplicationReader As New Design.Serialization.DocDataTextReader(dd)
                     data = MyApplicationSerializer.Deserialize(myApplicationReader)
                 End Using
             End If
@@ -769,7 +769,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim symbolName As String = RenamingHelper.ParseRQName(rqName)
 
             ' if the symbol name starts with the current project's root namespace, remove it
-            Dim namespaceProperty As EnvDTE.Property = currentProject.Properties.Item("RootNamespace")
+            Dim namespaceProperty As [Property] = currentProject.Properties.Item("RootNamespace")
             If (namespaceProperty IsNot Nothing) Then
                 Dim rootNamespace As String = DirectCast(namespaceProperty.Value, String)
                 If (symbolName IsNot Nothing AndAlso symbolName.StartsWith(rootNamespace)) Then
@@ -790,7 +790,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="serviceType">The type of service requested</param>
         ''' <returns>An instance of the service, or nothing if service not found</returns>
         ''' <remarks></remarks>
-        Private Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
             Else
@@ -806,7 +806,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
-                    Dim OleSp As OLE.Interop.IServiceProvider = CType(_site, OLE.Interop.IServiceProvider)
+                    Dim OleSp As IServiceProvider = CType(_site, IServiceProvider)
                     _serviceProvider = New ServiceProvider(OleSp)
                 End If
                 Return _serviceProvider

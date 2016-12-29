@@ -38,8 +38,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''</remarks>
         <Serializable()> _
         Private NotInheritable Class PropertyPageSerializationStore
-            Inherits System.ComponentModel.Design.Serialization.SerializationStore
-            Implements System.Runtime.Serialization.ISerializable
+            Inherits Serialization.SerializationStore
+            Implements ISerializable
 
             'The set of properties that we wish to
             '  "serialize" into this store.  The actual values won't be serialized
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="info">Serialization info</param>
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
-            Private Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+            Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
                 info.AddValue(s_KEY_STATE, _serializedState)
             End Sub
 
@@ -160,10 +160,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' </summary>
             ''' <param name="stream">The stream to save to</param>
             ''' <remarks></remarks>
-            Public Overrides Sub Save(Stream As System.IO.Stream)
+            Public Overrides Sub Save(Stream As Stream)
                 Close()
 
-                Dim f As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                Dim f As New BinaryFormatter
                 f.Serialize(Stream, Me)
             End Sub
 

@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class ResourceEditorView
-        Inherits Microsoft.VisualStudio.Editors.DesignerFramework.BaseDesignerView
+        Inherits BaseDesignerView
         Implements Resource.ITypeResolutionContextProvider
         Implements IVsBroadcastMessageEvents
         Implements IVsWindowPaneCommit
@@ -156,10 +156,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'System, mscorlib, System.Drawing, System.Windows.Forms, System.Data
         Private Shared s_defaultAssemblyReferences() As AssemblyName =
             {
-                GetType(System.CodeDom.MemberAttributes).Assembly.GetName(),
+                GetType(CodeDom.MemberAttributes).Assembly.GetName(),
                 GetType(System.Int32).Assembly.GetName(),
-                 GetType(System.Drawing.Bitmap).Assembly.GetName(),
-                GetType(System.Windows.Forms.Form).Assembly.GetName(),
+                 GetType(Bitmap).Assembly.GetName(),
+                GetType(Form).Assembly.GetName(),
                 GetType(System.Data.DataSet).Assembly.GetName()
             }
 
@@ -170,10 +170,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Controls which *are* initialized in InitializeComponents"
 
         'An instance of the ResourceStringTable class.  Used for displaying strings.
-        Friend WithEvents StringTable As Microsoft.VisualStudio.Editors.ResourceEditor.ResourceStringTable
+        Friend WithEvents StringTable As ResourceStringTable
 
         'An instance of the ResourceListView class.  Used for displaying resources with thumbnails.
-        Private WithEvents _resourceListView As Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView
+        Private WithEvents _resourceListView As ResourceListView
 
         ' Hosting control for our commandbar
         Private _toolbarPanel As DesignerToolbarPanel
@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private _isInDevice20Project As Boolean
             Private Const s_framework_2_0 As Integer = 2
 
-            Public Sub New(useVbMyResXCodeGenerator As Boolean, allowNoCodeGeneration As Boolean, rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
+            Public Sub New(useVbMyResXCodeGenerator As Boolean, allowNoCodeGeneration As Boolean, rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
                 MyBase.New(rootDesigner, serviceProvider, projectItem, namespaceToOverrideIfCustomToolIsEmpty)
 
                 _isInDevice20Project = IsInDevice20Project(rootDesigner)
@@ -542,8 +542,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> 
         Private Sub InitializeComponent()
-            StringTable = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceStringTable
-            _resourceListView = New Microsoft.VisualStudio.Editors.ResourceEditor.ResourceListView
+            StringTable = New ResourceStringTable
+            _resourceListView = New ResourceListView
 
             SuspendLayout()
             '
@@ -559,10 +559,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             StringTable.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
                         Or AnchorStyles.Left) _
-                        Or AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            StringTable.Location = New System.Drawing.Point(71, 65)
+                        Or AnchorStyles.Right), AnchorStyles)
+            StringTable.Location = New Point(71, 65)
             StringTable.Name = "StringTable"
-            StringTable.Size = New System.Drawing.Size(690, 429)
+            StringTable.Size = New Size(690, 429)
             StringTable.TabIndex = 1
             StringTable.Text = "StringTable"
             StringTable.BackgroundColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
@@ -581,8 +581,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Controls.Add(_toolbarPanel)
             Name = "ResourceEditorView"
             Text = "ResourceEditorView"
-            Size = New System.Drawing.Size(740, 518)
-            Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
+            Size = New Size(740, 518)
+            Padding = New Padding(0, 0, 0, 0)
             BackColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, SystemColors.ButtonFace, UseVSTheme:=False)
 
             ResumeLayout(False)
@@ -992,7 +992,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="wParam"></param>
         ''' <param name="lParam"></param>
         ''' <remarks></remarks>
-        Public Function OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
+        Public Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
             If msg = Editors.Interop.win.WM_SETTINGCHANGE Then
                 If RootDesigner IsNot Nothing Then
                     SetFonts(RootDesigner)
@@ -1584,7 +1584,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub StringTable_CellEnter(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles StringTable.CellEnter
+        Private Sub StringTable_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles StringTable.CellEnter
             Try
                 PropertyGridUpdate()
                 RootDesigner.InvalidateFindLoop(ResourcesAddedOrRemoved:=False)
@@ -2946,7 +2946,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDragOver(e As System.Windows.Forms.DragEventArgs)
+        Protected Overrides Sub OnDragOver(e As DragEventArgs)
             MyBase.OnDragOver(e)
             SetDragDropEffect(e)
         End Sub
@@ -2957,7 +2957,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDragEnter(e As System.Windows.Forms.DragEventArgs)
+        Protected Overrides Sub OnDragEnter(e As DragEventArgs)
             MyBase.OnDragEnter(e)
             RootDesigner.DesignerHost.Activate()
             UnselectAllResources()
@@ -2968,7 +2968,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles a drag/drop drop.
         ''' </summary>
         ''' <remarks>Upon return of this function, e.Effect must be set to the action that was actually taken</remarks>
-        Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
+        Protected Overrides Sub OnDragDrop(e As DragEventArgs)
             MyBase.OnDragDrop(e)
 
             Try
@@ -2996,7 +2996,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ResourceListView_ItemDrag(sender As Object, e As System.Windows.Forms.ItemDragEventArgs) Handles _resourceListView.ItemDrag
+        Private Sub ResourceListView_ItemDrag(sender As Object, e As ItemDragEventArgs) Handles _resourceListView.ItemDrag
             Dim ResourcesToDrag() As Resource = GetSelectedResources()
             Dim Data As IDataObject = CreateDataObjectFromResources(ResourcesToDrag)
             Dim EffectThatTookPlace As DragDropEffects = _resourceListView.DoDragDrop(Data, DragDropEffects.Copy Or DragDropEffects.Move)
@@ -3358,11 +3358,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 Dim SoundResource As Resource = SelectedResources(0)
-                Dim Player As System.Media.SoundPlayer
+                Dim Player As Media.SoundPlayer
                 Dim AudioStream As MemoryStream = Nothing
 
                 If SoundResource.IsLink Then
-                    Player = New System.Media.SoundPlayer(SoundResource.AbsoluteLinkPathAndFileName)
+                    Player = New Media.SoundPlayer(SoundResource.AbsoluteLinkPathAndFileName)
                 Else
                     Dim SoundResourceValue As Object = SoundResource.GetValue()
                     If TypeOf SoundResourceValue Is Byte() Then
@@ -3377,7 +3377,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return
                     End If
 
-                    Player = New System.Media.SoundPlayer(AudioStream)
+                    Player = New Media.SoundPlayer(AudioStream)
                 End If
 
                 Player.Play()
@@ -3564,10 +3564,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
 
-            Dim OpenDocumentService As Shell.Interop.IVsUIShellOpenDocument = CType(RootDesigner.GetService(GetType(Shell.Interop.IVsUIShellOpenDocument)), Shell.Interop.IVsUIShellOpenDocument)
-            Dim Hierarchy As Shell.Interop.IVsUIHierarchy = Nothing
+            Dim OpenDocumentService As IVsUIShellOpenDocument = CType(RootDesigner.GetService(GetType(IVsUIShellOpenDocument)), IVsUIShellOpenDocument)
+            Dim Hierarchy As IVsUIHierarchy = Nothing
             Dim ItemId As UInteger
-            Dim WindowFrame As Shell.Interop.IVsWindowFrame = Nothing
+            Dim WindowFrame As IVsWindowFrame = Nothing
             Dim ServiceProvider As OLE.Interop.IServiceProvider = Nothing
 
             Try
@@ -3586,8 +3586,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'And those are the semantics that we want...
                 VSErrorHandler.ThrowOnFailure(OpenDocumentService.OpenDocumentViaProject(ResourceFullPathTolerant, OpenLogView, ServiceProvider, Hierarchy, ItemId, WindowFrame))
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(EditOrOpenWith), NameOf(ResourceEditorView))
-                If TypeOf ex Is System.Runtime.InteropServices.COMException Then
-                    If CType(ex, System.Runtime.InteropServices.COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED Then
+                If TypeOf ex Is COMException Then
+                    If CType(ex, COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED Then
                         'We get this error when the user cancels the Open With dialog.  Obviously, we ignore this error and cancel.
                         Exit Sub
                     End If
@@ -5080,7 +5080,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns>The ITypeResolutionService for the project the .resx file was opened in, or else Nothing if it was opened outside the context of a project.</returns>
         ''' <remarks></remarks>
-        Public Function GetTypeResolutionService() As System.ComponentModel.Design.ITypeResolutionService Implements Resource.ITypeResolutionContextProvider.GetTypeResolutionService
+        Public Function GetTypeResolutionService() As ITypeResolutionService Implements Resource.ITypeResolutionContextProvider.GetTypeResolutionService
             If _typeResolutionServiceIsCached Then
                 Return _typeResolutionServiceCache
             End If
@@ -5151,7 +5151,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Sub HandleViewHelperCommandExec(CommandGroupGuid As Guid, CommandId As UInteger, ByRef Handled As Boolean)
             If StringTable IsNot Nothing AndAlso StringTable.EditingControl IsNot Nothing Then
-                Dim EditingTextBox As System.Windows.Forms.TextBox = TryCast(StringTable.EditingControl, System.Windows.Forms.TextBox)
+                Dim EditingTextBox As TextBox = TryCast(StringTable.EditingControl, TextBox)
                 If EditingTextBox IsNot Nothing Then
                     'The user is currently editing text in the string table.  Take over UNDO/REDO execution from the
                     '  shell and hand it to the textbox instead.
@@ -5470,7 +5470,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not String.IsNullOrEmpty(CustomToolNamespace) Then
                 CustomToolNamespace = DesignUtil.GenerateValidLanguageIndependentNamespace(CustomToolNamespace)
 
-                Dim codeModel As EnvDTE.CodeModel = Project.CodeModel
+                Dim codeModel As CodeModel = Project.CodeModel
                 ' NOTE: VB will append the custom setting after the RootNamespace (which is done by compiler), but other language does not...
                 If codeModel IsNot Nothing AndAlso String.Compare(codeModel.Language, CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase) = 0 Then
                     'Build up the qualified name
@@ -5608,7 +5608,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Debugging code"
 
 #If DEBUG Then
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Switches.TracePDPerf("OnLayout BEGIN: ResourceEditorView.OnLayout()")
             MyBase.OnLayout(levent)
             Switches.TracePDPerf("   OnLayout END: ResourceEditorView.OnLayout()")

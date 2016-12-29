@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '''    property pages or the designer view for other designers).
     ''' </remarks>
     Public Class ApplicationDesignerPanel
-        Inherits System.Windows.Forms.TableLayoutPanel
+        Inherits TableLayoutPanel
         Implements IVsWindowFrameNotify, IVsWindowFrameNotify2
 
         'Information used to create the designer
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.
-        Private _docView As System.Windows.Forms.Control
+        Private _docView As Control
 
         'This is Nothing if we're not displaying a property page
         Private _propertyPageInfo As PropertyPageInfo
@@ -68,8 +68,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ' child controls...
         ' We put a label when screen reader is running to show the name of the page. We use the hosting panel to host the read docView
-        Private WithEvents _pageHostingPanel As System.Windows.Forms.Panel
-        Private WithEvents _pageNameLabel As System.Windows.Forms.Label
+        Private WithEvents _pageHostingPanel As Panel
+        Private WithEvents _pageNameLabel As Label
 
         'True while in the process of creating the designer
         Private _creatingDesigner As Boolean
@@ -423,12 +423,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocView, DocViewObject))
 
                             'Get the DocView for those we can
-                            Dim DesignerWindowPane As Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
-                            DesignerWindowPane = TryCast(DocViewObject, Microsoft.VisualStudio.Shell.Design.DesignerWindowPane)
+                            Dim DesignerWindowPane As Shell.Design.DesignerWindowPane
+                            DesignerWindowPane = TryCast(DocViewObject, Shell.Design.DesignerWindowPane)
                             If DesignerWindowPane IsNot Nothing Then
-                                Dim WindowPaneControl As System.Windows.Forms.Control = TryCast(DesignerWindowPane.Window, System.Windows.Forms.Control)
+                                Dim WindowPaneControl As Control = TryCast(DesignerWindowPane.Window, Control)
                                 If WindowPaneControl IsNot Nothing Then
-                                    _docView = DirectCast(WindowPaneControl, System.Windows.Forms.Control).Controls(0)
+                                    _docView = DirectCast(WindowPaneControl, Control).Controls(0)
                                 End If
                             End If
 
@@ -618,7 +618,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If VSErrorHandler.Failed(hr) OrElse FrameServiceProviderObject Is Nothing Then
                     Debug.Fail("Could not get VSFPROPID_SPFrame from frame (hr=0x" & VB.Hex(hr) & ")")
                 Else
-                    Dim FrameServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = DirectCast(FrameServiceProviderObject, Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                    Dim FrameServiceProvider As OLE.Interop.IServiceProvider = DirectCast(FrameServiceProviderObject, OLE.Interop.IServiceProvider)
 
                     'QueryService for IVsTrackSelectionEx
                     hr = FrameServiceProvider.QueryService(GetType(SVsTrackSelectionEx).GUID, GetType(IVsTrackSelectionEx).GUID, punkTrackSelection)
@@ -796,11 +796,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property DocView() As System.Windows.Forms.Control
+        Public Property DocView() As Control
             Get
                 Return _docView
             End Get
-            Set(Value As System.Windows.Forms.Control)
+            Set(Value As Control)
                 _docView = Value
             End Set
         End Property
@@ -967,7 +967,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Private Sub ApplicationDesignerPanel_VisibleChanged(sender As Object, e As System.EventArgs) Handles Me.VisibleChanged
+        Private Sub ApplicationDesignerPanel_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
             If VsWindowFrame IsNot Nothing Then
                 If Me.Visible Then
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=True - checking if should ShowWindowFrame")
@@ -1033,7 +1033,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PageHostingPanel_HandleCreated(sender As Object, e As System.EventArgs) Handles _pageHostingPanel.HandleCreated
+        Private Sub PageHostingPanel_HandleCreated(sender As Object, e As EventArgs) Handles _pageHostingPanel.HandleCreated
             If _vsWindowFrame IsNot Nothing Then
                 Debug.Fail("PageHostingPanel handle was recreated after the nested window frame's ParentHwnd property was set to its HWND.  " _
                     & "This is bad because now VS has a pointer to the wrong HWND, and the HWND VS was using has been destroyed.")
@@ -1073,17 +1073,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' Initilize layout...
         '''</summary>
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me._pageHostingPanel = New System.Windows.Forms.Panel
-            Me._pageNameLabel = New System.Windows.Forms.Label
+            Me._pageHostingPanel = New Panel
+            Me._pageNameLabel = New Label
             Me.SuspendLayout()
             '
             'PageHostingPanel
             '
             Me._pageHostingPanel.Dock = System.Windows.Forms.DockStyle.Fill
             Me._pageHostingPanel.Name = "PageHostingPanel"
-            Me._pageHostingPanel.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+            Me._pageHostingPanel.Margin = New Padding(0, 0, 0, 0)
             Me._pageHostingPanel.TabIndex = 1
             Me._pageHostingPanel.Text = "PageHostingPanel" 'For debugging
             '
@@ -1091,23 +1091,23 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             Me._pageNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left
             Me._pageNameLabel.AutoSize = True
-            Me._pageNameLabel.Location = New System.Drawing.Point(3, 3)
+            Me._pageNameLabel.Location = New Drawing.Point(3, 3)
             Me._pageNameLabel.Name = "PageNameLabel"
-            Me._pageNameLabel.Margin = New System.Windows.Forms.Padding(14, 14, 14, 3)
+            Me._pageNameLabel.Margin = New Padding(14, 14, 14, 3)
             Me._pageNameLabel.TabIndex = 0
             Me._pageNameLabel.Text = "Project Page"  ' it will get replaced with the real page name later...
             Me._pageNameLabel.Visible = False
             '
             'ApplicationDesignerPanel
             '
-            Me.ClientSize = New System.Drawing.Size(292, 266)
+            Me.ClientSize = New Drawing.Size(292, 266)
             Me.ColumnCount = 1
-            Me.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.Controls.Add(Me._pageNameLabel, 0, 0)
             Me.Controls.Add(Me._pageHostingPanel, 0, 1)
             Me.RowCount = 2
-            Me.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.RowStyles.Add(New RowStyle)
+            Me.RowStyles.Add(New RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.Name = "ApplicationDesignerPanel"
             Me.Text = "Application Designer Page"
             Me.ResumeLayout(False)
@@ -1115,7 +1115,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'PERF: Debug tracing of Layout handling...
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerPanel.OnLayout()")
             MyBase.OnLayout(levent)
             Common.Switches.TracePDPerfEnd("ApplicationDesignerPanel.OnLayout()")
@@ -1124,19 +1124,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #Region "IVsWindowFrameNotify implementation"
         'This interface is implemented only because IVsWindowFrame.Advise() requires an IVsWindowFrameNotify
         '  implementation, even though we only care about the IVsWindowFrameNotify2 methods.
-        Private Function IVsWindowFrameNotify_OnDockableChange(fDockable As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnDockableChange
+        Private Function IVsWindowFrameNotify_OnDockableChange(fDockable As Integer) As Integer Implements IVsWindowFrameNotify.OnDockableChange
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnMove() As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnMove
+        Private Function IVsWindowFrameNotify_OnMove() As Integer Implements IVsWindowFrameNotify.OnMove
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnShow(fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnShow
+        Private Function IVsWindowFrameNotify_OnShow(fShow As Integer) As Integer Implements IVsWindowFrameNotify.OnShow
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnSize() As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnSize
+        Private Function IVsWindowFrameNotify_OnSize() As Integer Implements IVsWindowFrameNotify.OnSize
             Return VSConstants.S_OK
         End Function
 #End Region
@@ -1149,7 +1149,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pgrfSaveOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements Shell.Interop.IVsWindowFrameNotify2.OnClose
+        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements IVsWindowFrameNotify2.OnClose
             If _inOnClose Then
                 Return NativeMethods.S_OK
             End If

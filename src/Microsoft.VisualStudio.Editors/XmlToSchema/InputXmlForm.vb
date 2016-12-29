@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FormOpened)
         End Sub
 
-        Protected Overrides Sub ScaleControl(factor As System.Drawing.SizeF, specified As System.Windows.Forms.BoundsSpecified)
+        Protected Overrides Sub ScaleControl(factor As Drawing.SizeF, specified As BoundsSpecified)
             'First do standard DPI scaling logic
             MyBase.ScaleControl(factor, specified)
 

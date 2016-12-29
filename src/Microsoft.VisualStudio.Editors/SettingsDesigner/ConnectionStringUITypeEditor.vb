@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context">The context parameter is ignored...</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetEditStyle(context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
+        Public Overrides Function GetEditStyle(context As ComponentModel.ITypeDescriptorContext) As UITypeEditorEditStyle
             Return UITypeEditorEditStyle.Modal
         End Function
 
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="oValue"></param>
         ''' <returns></returns>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
-        Public Overrides Function EditValue(context As System.ComponentModel.ITypeDescriptorContext, ServiceProvider As System.IServiceProvider, oValue As Object) As Object
+        Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, ServiceProvider As IServiceProvider, oValue As Object) As Object
             Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
             If dataConnectionDialogFactory Is Nothing Then
@@ -74,8 +74,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' should be a no-op, so we should be safe if we just try to get hold of the required services
             ' and give it a try...
             Dim dteProj As EnvDTE.Project = Nothing
-            Dim connectionStringConverter As Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService = _
-                DirectCast(ServiceProvider.GetService(GetType(Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService)), Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService)
+            Dim connectionStringConverter As IConnectionStringConverterService = _
+                DirectCast(ServiceProvider.GetService(GetType(IConnectionStringConverterService)), IConnectionStringConverterService)
             If connectionStringConverter IsNot Nothing Then
                 ' The SettingsDesignerLoader should have added the project item as a service in case someone needs to 
                 ' get hold of it....

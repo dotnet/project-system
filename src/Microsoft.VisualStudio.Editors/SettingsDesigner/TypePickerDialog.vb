@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'Inherits System.Windows.Forms.Form
         Inherits BaseDialog
 
-        Private Shared s_previousSize As System.Drawing.Size = Size.Empty
+        Private Shared s_previousSize As Size = Size.Empty
 
         Private _projectItemid As UInteger
         Private _vsHierarchy As IVsHierarchy
@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InitializeComponent()
 
             If Not s_previousSize.IsEmpty Then
-                Size = New System.Drawing.Size(Math.Min(CInt(MinimumSize.Width * 1.5), s_previousSize.Width), _
+                Size = New Size(Math.Min(CInt(MinimumSize.Width * 1.5), s_previousSize.Width), _
                                                   Math.Min(CInt(MinimumSize.Height * 1.5), s_previousSize.Height))
 
             End If
@@ -66,13 +66,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
             MyBase.Dispose(disposing)
         End Sub
-        Friend WithEvents TypeTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents m_CancelButton As System.Windows.Forms.Button
-        Friend WithEvents m_OkButton As System.Windows.Forms.Button
-        Friend WithEvents TreeViewPanel As System.Windows.Forms.Panel
-        Friend WithEvents SelectedTypeLabel As System.Windows.Forms.Label
-        Friend WithEvents okCancelTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents TypeTextBox As TextBox
+        Friend WithEvents m_CancelButton As Button
+        Friend WithEvents m_OkButton As Button
+        Friend WithEvents TreeViewPanel As Panel
+        Friend WithEvents SelectedTypeLabel As Label
+        Friend WithEvents okCancelTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents overarchingTableLayoutPanel As TableLayoutPanel
 
         'Required by the Windows Form Designer
         Private _components As System.ComponentModel.IContainer
@@ -80,15 +80,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
+        <DebuggerNonUserCode()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TypePickerDialog))
-            TypeTextBox = New System.Windows.Forms.TextBox
-            m_CancelButton = New System.Windows.Forms.Button
-            m_OkButton = New System.Windows.Forms.Button
-            TreeViewPanel = New System.Windows.Forms.Panel
-            SelectedTypeLabel = New System.Windows.Forms.Label
-            okCancelTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            TypeTextBox = New TextBox
+            m_CancelButton = New Button
+            m_OkButton = New Button
+            TreeViewPanel = New Panel
+            SelectedTypeLabel = New Label
+            okCancelTableLayoutPanel = New TableLayoutPanel
+            overarchingTableLayoutPanel = New TableLayoutPanel
             okCancelTableLayoutPanel.SuspendLayout()
             overarchingTableLayoutPanel.SuspendLayout()
             SuspendLayout()
@@ -98,60 +98,60 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             resources.ApplyResources(TypeTextBox, "TypeTextBox")
             TypeTextBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend
             TypeTextBox.AutoCompleteSource = AutoCompleteSource.CustomSource
-            TypeTextBox.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
+            TypeTextBox.Margin = New Padding(3, 3, 0, 3)
             TypeTextBox.Name = "TypeTextBox"
             '
             'm_CancelButton
             '
             resources.ApplyResources(m_CancelButton, "m_CancelButton")
             m_CancelButton.DialogResult = DialogResult.Cancel
-            m_CancelButton.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            m_CancelButton.Margin = New Padding(3, 0, 0, 0)
             m_CancelButton.Name = "m_CancelButton"
             '
             'm_OkButton
             '
             resources.ApplyResources(m_OkButton, "m_OkButton")
-            m_OkButton.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+            m_OkButton.Margin = New Padding(0, 0, 3, 0)
             m_OkButton.Name = "m_OkButton"
             '
             'TreeViewPanel
             '
             resources.ApplyResources(TreeViewPanel, "TreeViewPanel")
             overarchingTableLayoutPanel.SetColumnSpan(TreeViewPanel, 2)
-            TreeViewPanel.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
+            TreeViewPanel.Margin = New Padding(0, 0, 0, 3)
             TreeViewPanel.Name = "TreeViewPanel"
             '
             'SelectedTypeLabel
             '
             resources.ApplyResources(SelectedTypeLabel, "SelectedTypeLabel")
-            SelectedTypeLabel.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
+            SelectedTypeLabel.Margin = New Padding(0, 3, 3, 3)
             SelectedTypeLabel.Name = "SelectedTypeLabel"
             '
             'okCancelTableLayoutPanel
             '
             resources.ApplyResources(okCancelTableLayoutPanel, "okCancelTableLayoutPanel")
             overarchingTableLayoutPanel.SetColumnSpan(okCancelTableLayoutPanel, 2)
-            okCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 50.0!))
-            okCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 50.0!))
+            okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0!))
+            okCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0!))
             okCancelTableLayoutPanel.Controls.Add(m_OkButton, 0, 0)
             okCancelTableLayoutPanel.Controls.Add(m_CancelButton, 1, 0)
-            okCancelTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
+            okCancelTableLayoutPanel.Margin = New Padding(0, 3, 0, 0)
             okCancelTableLayoutPanel.Name = "okCancelTableLayoutPanel"
-            okCancelTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            okCancelTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 100.0!))
+            overarchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
+            overarchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
             overarchingTableLayoutPanel.Controls.Add(TreeViewPanel, 0, 0)
             overarchingTableLayoutPanel.Controls.Add(okCancelTableLayoutPanel, 0, 2)
             overarchingTableLayoutPanel.Controls.Add(SelectedTypeLabel, 0, 1)
             overarchingTableLayoutPanel.Controls.Add(TypeTextBox, 1, 1)
             overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(SizeType.Percent, 100.0!))
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle)
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'TypePickerDialog
             '
@@ -194,10 +194,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim Node As TypeTVNode = TryCast(e.Node, TypeTVNode)
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
                     Node.RemoveDummyNode()
-                    Using mtsrv As New Microsoft.VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
+                    Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
                         If (mtsrv IsNot Nothing) Then
-                            Dim typs As System.Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
-                            For Each availableType As System.Type In typs
+                            Dim typs As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
+                            For Each availableType As Type In typs
                                 'TypeTextBox.AutoCompleteCustomSource.Add(availableType.FullName)
                                 If availableType.FullName.Contains(".") AndAlso SettingTypeValidator.IsValidSettingType(mtsrv.GetRuntimeType(availableType)) Then
                                     _typeTreeView.AddTypeNode(Node, availableType.FullName)
@@ -247,10 +247,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Private Sub SetAvailableTypes(types As IEnumerable(Of System.Type))
+        Private Sub SetAvailableTypes(types As IEnumerable(Of Type))
             TypeTextBox.AutoCompleteCustomSource.Clear()
             If types IsNot Nothing Then
-                For Each availableType As System.Type In types
+                For Each availableType As Type In types
                     TypeTextBox.AutoCompleteCustomSource.Add(availableType.FullName)
                     If availableType.FullName.Contains(".") Then
                         _typeTreeView.AddTypeNode(Nothing, availableType.FullName)
@@ -271,7 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             If References IsNot Nothing Then
-                Using mtsrv As New Microsoft.VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
+                Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
                     For ReferenceNo As Integer = 1 To References.Count()
                         Dim reference As String = References.Item(ReferenceNo).Name()
                         If mtsrv Is Nothing OrElse mtsrv.IsSupportedAssembly(reference) Then
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Let's report the error and keep the dialog open!
                 ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
-            Catch ex As System.IO.FileLoadException
+            Catch ex As IO.FileLoadException
                 ' The type resolution may throw an argument exception if the type name contains an invalid assembly name 
                 ' (i.e. Foo,,)
                 ' Let's report the error and keep the dialog open!
@@ -376,9 +376,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 displayName = typeNameResolutionService.TypeDisplayNameToPersistedSettingTypeName(displayName)
             End If
 
-            Dim typeNameCache As System.Collections.Generic.Dictionary(Of String, Object) = Nothing
+            Dim typeNameCache As Dictionary(Of String, Object) = Nothing
             If Not typeNameResolutionService.IsCaseSensitive Then
-                typeNameCache = New System.Collections.Generic.Dictionary(Of String, Object)(StringComparison.OrdinalIgnoreCase)
+                typeNameCache = New Dictionary(Of String, Object)(StringComparison.OrdinalIgnoreCase)
                 For Each typeName As String In AvailableTypes
                     typeNameCache(typeName) = Nothing
                 Next
@@ -610,7 +610,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub TypePickerDialog_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        Private Sub TypePickerDialog_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
             s_previousSize = Size
         End Sub
 

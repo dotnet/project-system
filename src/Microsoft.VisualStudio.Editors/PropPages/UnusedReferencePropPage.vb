@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             theVSProject = CType(DTEProject.Object, VSLangProj.VSProject)
             ReferenceCount = theVSProject.References.Count
 
-            refsList = New System.Collections.ArrayList(ReferenceCount)
+            refsList = New ArrayList(ReferenceCount)
 
             For refIndex As Integer = 0 To ReferenceCount - 1
                 Dim ref As VSLangProj.Reference = theVSProject.References.Item(refIndex + 1) '1-based
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Using
                 End If
 
-            Catch ex As System.Exception When ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage))
                 Result = ReferenceUsageResult.ReferenceUsageError
             Finally
                 ' Report status
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Event Handlers "
 
-        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
+        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
 
             ' Since CheckIndicies is updated after this event, we enable remove button if
             ' there are more than one check references or there are none and one is being checked

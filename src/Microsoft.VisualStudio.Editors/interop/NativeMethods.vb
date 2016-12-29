@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     Friend NotInheritable Class NativeMethods
 
         Private Const s_VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
-        Friend Shared ReadOnly VBCompilerGuid As System.Guid = New System.Guid(s_VB_COMPILER_GUID)
+        Friend Shared ReadOnly VBCompilerGuid As Guid = New Guid(s_VB_COMPILER_GUID)
 
         '/ <summary>
         '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
@@ -365,28 +365,28 @@ Namespace Microsoft.VisualStudio.Editors.Interop
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
         <PreserveSig()> _
         Friend Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
         ' Windows theme
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function SetWindowTheme Lib "uxtheme" (Hwnd As IntPtr, appName As String, subIdList As String) As Integer
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
         <DllImport("user32", CharSet:=CharSet.Auto)> _
@@ -408,10 +408,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Public bottom As Integer
         End Structure
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<System.Runtime.InteropServices.PreserveSig()> _
@@ -421,10 +421,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         'Friend Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
         '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
-        <System.Runtime.InteropServices.PreserveSig()> _
+        <PreserveSig()> _
         Friend Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Friend Const GWL_EXSTYLE As Integer = -20
@@ -474,11 +474,11 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     '//
     '// ILangPropertyProvideBatchUpdate
     '//
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     Friend Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
-        Sub IsBatchModeEnabled(<InAttribute(), Out()> ByRef BatchModeEnabled As Boolean)
+        Sub IsBatchModeEnabled(<[In](), Out()> ByRef BatchModeEnabled As Boolean)
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 

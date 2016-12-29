@@ -11,12 +11,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' </summary>
     ''' <remarks></remarks>
     < _
-    Designer(GetType(SettingsDesigner), GetType(System.ComponentModel.Design.IRootDesigner)), _
+    Designer(GetType(SettingsDesigner), GetType(Design.IRootDesigner)), _
     DesignerCategory("Designer") _
     > _
     Friend NotInheritable Class DesignTimeSettings
         Inherits Component
-        Implements System.Collections.Generic.IEnumerable(Of DesignTimeSettingInstance)
+        Implements IEnumerable(Of DesignTimeSettingInstance)
 
         ' The namespace used the last time this instance was serialized
         Private _persistedNamespace As String
@@ -28,13 +28,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private _useSpecialClassName As Boolean
 
-        Private _settings As New System.Collections.Generic.List(Of DesignTimeSettingInstance)(16)
+        Private _settings As New List(Of DesignTimeSettingInstance)(16)
 
-        Private Function IEnumerableOfDesignTimeSettingInstance_GetEnumerator() As System.Collections.Generic.IEnumerator(Of DesignTimeSettingInstance) Implements System.Collections.Generic.IEnumerable(Of DesignTimeSettingInstance).GetEnumerator
+        Private Function IEnumerableOfDesignTimeSettingInstance_GetEnumerator() As IEnumerator(Of DesignTimeSettingInstance) Implements IEnumerable(Of DesignTimeSettingInstance).GetEnumerator
             Return _settings.GetEnumerator()
         End Function
 
-        Private Function IEnumerable_GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
+        Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
             Return IEnumerableOfDesignTimeSettingInstance_GetEnumerator()
         End Function
 
@@ -78,15 +78,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "Valid/unique name handling"
 
-        Private ReadOnly Property CodeProvider() As System.CodeDom.Compiler.CodeDomProvider
+        Private ReadOnly Property CodeProvider() As CodeDom.Compiler.CodeDomProvider
             Get
-                Dim codeProviderInstance As System.CodeDom.Compiler.CodeDomProvider = Nothing
+                Dim codeProviderInstance As CodeDom.Compiler.CodeDomProvider = Nothing
 
-                Dim mdCodeDomProvider As Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider = TryCast(GetService(GetType(Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)), _
-                                            Microsoft.VisualStudio.Designer.Interfaces.IVSMDCodeDomProvider)
+                Dim mdCodeDomProvider As Designer.Interfaces.IVSMDCodeDomProvider = TryCast(GetService(GetType(Designer.Interfaces.IVSMDCodeDomProvider)), _
+                                            Designer.Interfaces.IVSMDCodeDomProvider)
                 If mdCodeDomProvider IsNot Nothing Then
                     Try
-                        codeProviderInstance = TryCast(mdCodeDomProvider.CodeDomProvider, System.CodeDom.Compiler.CodeDomProvider)
+                        codeProviderInstance = TryCast(mdCodeDomProvider.CodeDomProvider, CodeDom.Compiler.CodeDomProvider)
                     Catch ex As System.Runtime.InteropServices.COMException
                         ' Some project systems (i.e. C++) throws if you try to get the CodeDomProvider
                         ' property :(
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Base = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DefaultSettingName
             End If
 
-            Dim ExistingNames As New System.Collections.Hashtable
+            Dim ExistingNames As New Hashtable
             For Each Instance As DesignTimeSettingInstance In _settings
                 ExistingNames.Item(Instance.Name) = Nothing
             Next

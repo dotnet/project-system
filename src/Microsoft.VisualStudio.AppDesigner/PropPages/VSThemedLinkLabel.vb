@@ -32,11 +32,11 @@ Public Class VSThemedLinkLabel
         LinkBehavior = LinkBehavior.HoverUnderline
     End Sub
 
-    Private Sub VsThemedLinkLabel_MouseEnter(sender As Object, e As System.EventArgs) Handles MyBase.MouseEnter
+    Private Sub VsThemedLinkLabel_MouseEnter(sender As Object, e As EventArgs) Handles MyBase.MouseEnter
         LinkColor = _vsThemedLinkColorHover
     End Sub
 
-    Private Sub VsThemedLinkLabel_MouseLeave(sender As Object, e As System.EventArgs) Handles MyBase.MouseLeave
+    Private Sub VsThemedLinkLabel_MouseLeave(sender As Object, e As EventArgs) Handles MyBase.MouseLeave
         LinkColor = _vsThemedLinkColor
     End Sub
 End Class

@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="proposedSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             If proposedSize.Width = 0 Then
                 Return MyBase.GetPreferredSize(proposedSize)
             End If

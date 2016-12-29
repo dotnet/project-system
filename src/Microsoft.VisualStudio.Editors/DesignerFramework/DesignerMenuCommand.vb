@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '       owned by the root designer after each Invoke.
     '**************************************************************************
     Friend Class DesignerMenuCommand
-        Inherits Microsoft.VisualStudio.Shell.OleMenuCommand
+        Inherits Shell.OleMenuCommand
 
         '= PUBLIC =============================================================
         ';Properties
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub 'Invoke
 
-        Public Overrides Sub Invoke(inArg As Object, outArg As System.IntPtr)
+        Public Overrides Sub Invoke(inArg As Object, outArg As IntPtr)
             MyBase.Invoke(inArg, outArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Shell.OleMenuCmdEventArgs)
             If e Is Nothing Then
                 Throw New ArgumentNullException
             End If
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
-            Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+            Dim oleEventArgs As Shell.OleMenuCmdEventArgs = TryCast(e, Shell.OleMenuCmdEventArgs)
             Dim cmdSender As DesignerCommandBarComboBoxFiller = TryCast(sender, DesignerCommandBarComboBoxFiller)
             If cmdSender Is Nothing OrElse oleEventArgs Is Nothing Then
                 Throw New InvalidOperationException()
@@ -285,7 +285,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Shell.OleMenuCmdEventArgs)
             If e.InValue Is Nothing Then
                 ' Request to get the current text...
                 Marshal.GetNativeVariantForObject(_currentTextGetter(), e.OutValue)
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
-            Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+            Dim oleEventArgs As Shell.OleMenuCmdEventArgs = TryCast(e, Shell.OleMenuCmdEventArgs)
             Dim cboSender As DesignerCommandBarComboBox = TryCast(sender, DesignerCommandBarComboBox)
 
             If oleEventArgs Is Nothing OrElse cboSender Is Nothing Then
@@ -374,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public ReadOnly Property Commands() As System.Collections.ICollection
+        Public ReadOnly Property Commands() As ICollection
             Get
                 Return _commands.Values
             End Get

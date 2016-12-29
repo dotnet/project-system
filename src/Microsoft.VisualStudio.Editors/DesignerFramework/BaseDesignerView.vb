@@ -5,7 +5,7 @@ Imports System.Windows.Forms
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
     Friend MustInherit Class BaseDesignerView
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
 
         'True if the designer's view was forcibly closed (by SCC) during an apply.  In this case, we want to
         '  delay disposing our controls, and exit the apply and events as soon as possible to avoid possible

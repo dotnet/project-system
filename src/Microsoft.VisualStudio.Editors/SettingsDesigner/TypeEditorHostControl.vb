@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class TypeEditorHostControl
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
         Implements IWindowsFormsEditorService, IServiceProvider
 
 #Region " Windows Form Designer generated code "
@@ -43,22 +43,22 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         'Required by the Windows Form Designer 
-        Private _components As System.ComponentModel.IContainer
+        Private _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer 
         'It can be modified using the Windows Form Designer. 
         'Do not modify it using the code editor. 
-        Private WithEvents _valueTextBox As System.Windows.Forms.TextBox
+        Private WithEvents _valueTextBox As TextBox
         Private WithEvents _showEditorButton As ComboBoxDotDotDotButton
-        Private WithEvents _valueComboBox As System.Windows.Forms.ComboBox
-        Private WithEvents _previewPanel As System.Windows.Forms.Panel
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        Private WithEvents _valueComboBox As ComboBox
+        Private WithEvents _previewPanel As Panel
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TypeEditorHostControl))
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(TypeEditorHostControl))
             _valueTextBox = New TypeEditorHostControlTextBox
             _showEditorButton = New ComboBoxDotDotDotButton
-            _previewPanel = New System.Windows.Forms.Panel
-            _valueComboBox = New System.Windows.Forms.ComboBox
+            _previewPanel = New Panel
+            _valueComboBox = New ComboBox
             SuspendLayout()
             '
             'ValueTextBox
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If _typeEditor Is Nothing Then
                     If Value Is GetType(String) Then
                         ' We'll use the multiline string editor for strings...
-                        _typeEditor = New System.ComponentModel.Design.MultilineStringEditor()
+                        _typeEditor = New Design.MultilineStringEditor()
                     Else
                         _typeEditor = CType(TypeDescriptor.GetEditor(Value, GetType(UITypeEditor)), UITypeEditor)
                     End If
@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PreviewPanel_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles _previewPanel.Paint
+        Private Sub PreviewPanel_Paint(sender As Object, e As PaintEventArgs) Handles _previewPanel.Paint
             If Not _typeEditor Is Nothing Then
                 If _typeEditor.GetPaintValueSupported Then
                     Using ForegroundPen As New Pen(ForeColor)
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Display the associated type editor if not already showing
         ''' </summary>
         ''' <remarks></remarks>
-        <System.Security.SecurityCritical()> _
+        <Security.SecurityCritical()> _
         <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions()> _
         Private Sub ShowUITypeEditor()
             If _typeEditor IsNot Nothing Then
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' look fine, but when closing the UITypeEditor, it will still return nothing :(
                     Dim passedNewInstanceToEditor As Boolean = False
                     Dim existingValue As Object = Value
-                    If Value Is Nothing AndAlso GetType(Collections.IList).IsAssignableFrom(ValueType) Then
+                    If Value Is Nothing AndAlso GetType(IList).IsAssignableFrom(ValueType) Then
                         Try
                             existingValue = Activator.CreateInstance(ValueType)
                             passedNewInstanceToEditor = True
@@ -353,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' If we created a new instance to pass to the UITypeEditor, and the user didn't add any 
                     ' items, then we set the value back to nothing...
                     If passedNewInstanceToEditor Then
-                        Dim valueAsIList As Collections.IList = TryCast(editedValue, Collections.IList)
+                        Dim valueAsIList As IList = TryCast(editedValue, IList)
                         If valueAsIList IsNot Nothing AndAlso valueAsIList.Count = 0 Then
                             editedValue = Nothing
                         End If
@@ -428,7 +428,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function IsInputKey(keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function IsInputKey(keyData As Keys) As Boolean
             If keyData = Keys.Enter Then
                 If _showEditorButton.Focused AndAlso _typeEditor IsNot Nothing AndAlso _typeEditor.GetEditStyle() = UITypeEditorEditStyle.Modal Then
                     Return True
@@ -441,7 +441,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "IWindowsFormsEditorService"
 
-        Public Sub CloseDropDown() Implements System.Windows.Forms.Design.IWindowsFormsEditorService.CloseDropDown
+        Public Sub CloseDropDown() Implements IWindowsFormsEditorService.CloseDropDown
             Debug.Assert(_dialog.Controls.Count = 1)
             _dialog.Hide()
         End Sub
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If _dialog IsNot Nothing AndAlso control IsNot Nothing Then
 
                 ' Calculate size & position
-                Dim currentScreen As System.Windows.Forms.Screen = Screen.FromControl(Me)
+                Dim currentScreen As Screen = Screen.FromControl(Me)
 
                 ' Get preferred size & position of control...
                 Dim dialogSize As Size = New Size(control.PreferredSize.Width + 2, control.PreferredSize.Height + 2)
@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Public Sub DropDownControl(control As Control) Implements System.Windows.Forms.Design.IWindowsFormsEditorService.DropDownControl
+        Public Sub DropDownControl(control As Control) Implements IWindowsFormsEditorService.DropDownControl
             If _dialog Is Nothing Then
                 _dialog = New DropDownHolder
             End If
@@ -508,7 +508,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             RemoveHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
         End Sub
 
-        Public Function ShowDialog(dialog As System.Windows.Forms.Form) As System.Windows.Forms.DialogResult Implements System.Windows.Forms.Design.IWindowsFormsEditorService.ShowDialog
+        Public Function ShowDialog(dialog As Form) As DialogResult Implements IWindowsFormsEditorService.ShowDialog
             Dim UiSvc As IUIService = DirectCast(GetService(GetType(IUIService)), IUIService)
             If Not UiSvc Is Nothing Then
                 Return UiSvc.ShowDialog(dialog)
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 #Region "IServiceProvider implementation"
-        Public Function IServiceProvider_GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Public Function IServiceProvider_GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
             If serviceType.Equals(GetType(IWindowsFormsEditorService)) Then
                 Return Me
             Else
@@ -634,7 +634,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="m"></param>
             ''' <remarks></remarks>
-            Protected Overrides Function ProcessKeyPreview(ByRef m As System.Windows.Forms.Message) As Boolean
+            Protected Overrides Function ProcessKeyPreview(ByRef m As Message) As Boolean
                 If m.Msg = Interop.NativeMethods.WM_KEYDOWN Then
                     If CType(m.WParam.ToInt32(), Keys) = Keys.Escape Then
                         HideForm()
@@ -806,7 +806,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Overridable ReadOnly Property Context() As System.ComponentModel.ITypeDescriptorContext
+        Public Overridable ReadOnly Property Context() As ITypeDescriptorContext
             Get
                 Return Nothing
             End Get
@@ -825,7 +825,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="m"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            <System.Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
+            <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
             Protected Overrides Function ProcessKeyEventArgs(ByRef m As Message) As Boolean
                 Select Case CType(CInt(m.WParam), Keys)
                     Case Keys.Enter
@@ -922,7 +922,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="pevent"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnPaint(pevent As System.Windows.Forms.PaintEventArgs)
+            Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
                 MyBase.OnPaint(pevent)
                 Select Case PaintStyle
                     Case PaintStyles.DotDotDot

@@ -96,9 +96,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Property ServiceProvider() As IServiceProvider
             Get
                 If m_serviceProvider Is Nothing AndAlso m_DTE IsNot Nothing Then
-                    Dim isp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = CType(m_DTE, Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                    Dim isp As OLE.Interop.IServiceProvider = CType(m_DTE, OLE.Interop.IServiceProvider)
                     If isp IsNot Nothing Then
-                        m_serviceProvider = New Microsoft.VisualStudio.Shell.ServiceProvider(isp)
+                        m_serviceProvider = New Shell.ServiceProvider(isp)
                     End If
                 End If
                 Return m_serviceProvider
@@ -228,12 +228,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Debug.Fail("Can not find ServiceProvider")
                     End If
 
-                Catch ex As System.Exception When Common.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(BuildEventCommandLineDialog))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(InvokeHelp), NameOf(BuildEventCommandLineDialog))
                 End Try
             End If
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As System.Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles MyBase.HelpRequested
+        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As System.Object, hlpevent As HelpEventArgs) Handles MyBase.HelpRequested
             InvokeHelp()
         End Sub
 

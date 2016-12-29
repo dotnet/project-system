@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         End If
 
                         'Verify that it handles the given event
-                        Dim IEventHandler As Microsoft.VisualStudio.IEventHandler = TryCast(Func, Microsoft.VisualStudio.IEventHandler)
+                        Dim IEventHandler As IEventHandler = TryCast(Func, IEventHandler)
                         If IEventHandler IsNot Nothing Then
                             If IEventHandler.HandlesEvent(EventName) Then
                                 'Yes, it does.  We have a match.
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 'Doesn't exist.  Let's add a handling method
 
                 HandlerFunction = CodeClass.AddFunction(EventHandlerFunctionName, vsCMFunction.vsCMFunctionSub, Nothing, , Access)
-                Dim IEventHandler As Microsoft.VisualStudio.IEventHandler = DirectCast(HandlerFunction, Microsoft.VisualStudio.IEventHandler)
+                Dim IEventHandler As IEventHandler = DirectCast(HandlerFunction, IEventHandler)
                 If IEventHandler IsNot Nothing Then
                     IEventHandler.AddHandler(EventName)
                     HandlerFunction.AddParameter("sender", "Object", 0)

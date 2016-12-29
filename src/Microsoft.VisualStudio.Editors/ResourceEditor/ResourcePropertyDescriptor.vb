@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>The Resource type.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property ComponentType() As System.Type
+        Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return GetType(Resource)
             End Get
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property PropertyType() As System.Type
+        Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType
             End Get

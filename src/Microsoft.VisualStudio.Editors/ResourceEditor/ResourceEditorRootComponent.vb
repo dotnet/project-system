@@ -262,12 +262,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Function IsInGlobalResourceFolderInASP() As Boolean
             Try
-                Dim projectItem As EnvDTE.ProjectItem = RootDesigner.DesignerLoader.ProjectItem
+                Dim projectItem As ProjectItem = RootDesigner.DesignerLoader.ProjectItem
                 If projectItem Is Nothing Then
                     Return False
                 End If
 
-                Dim project As EnvDTE.Project = projectItem.ContainingProject
+                Dim project As Project = projectItem.ContainingProject
                 If project Is Nothing Then
                     Return False
                 End If
@@ -280,9 +280,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 ' Check the file is under "App_GlobalResources" directory or any of its sub directory...
                 While projectItem IsNot Nothing AndAlso projectItem.Collection IsNot Nothing
-                    projectItem = TryCast(projectItem.Collection.Parent, EnvDTE.ProjectItem)
+                    projectItem = TryCast(projectItem.Collection.Parent, ProjectItem)
                     If projectItem IsNot Nothing Then
-                        Dim folderTypeProperty As EnvDTE.Property = projectItem.Properties.Item("FolderType")
+                        Dim folderTypeProperty As [Property] = projectItem.Properties.Item("FolderType")
                         If folderTypeProperty IsNot Nothing Then
                             Dim folderType As Integer = CInt(folderTypeProperty.Value)
                             If folderType = CInt(VsWebSite.webFolderType.webFolderTypeGlobalResources) Then

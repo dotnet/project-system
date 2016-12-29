@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim ShowAdvancedBuildIntValue As Integer = -1
 
             Dim ShowValue As Boolean
-            Dim ProjAndSolutionProperties As EnvDTE.Properties
+            Dim ProjAndSolutionProperties As Properties
             Const EnvironmentCategory As String = "Environment"
             Const ProjectsAndSolution As String = "ProjectsandSolution"
 
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim Obj As Object = Nothing
             hr = ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, Obj)
             If VSErrorHandler.Succeeded(hr) Then
-                Return TryCast(Obj, EnvDTE.Project)
+                Return TryCast(Obj, Project)
             End If
 
             Return Nothing
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             Try
-                Dim project As EnvDTE.Project = DTEProjectFromHierarchy(hierarchy)
+                Dim project As Project = DTEProjectFromHierarchy(hierarchy)
 
                 If project Is Nothing Then
                     Return False
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 ' VS SilverLight Projects are traditional vb/c# apps, but 'flavored' to add functionality
                 ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
                 ' Get the project type guid list
-                Dim guidList As New System.Collections.Generic.List(Of Guid)
+                Dim guidList As New List(Of Guid)
 
                 Dim SLPGuid As New Guid(SilverLightProjectGuid)
 
@@ -387,7 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 ' VS WAP Projects are traditional vb/c# apps, but 'flavored' to add functionality
                 ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
                 ' Get the project type guid list
-                Dim guidList As New System.Collections.Generic.List(Of Guid)
+                Dim guidList As New List(Of Guid)
 
                 Dim WAPGuid As New Guid(WebAppProjectGuid)
 
@@ -493,11 +493,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' The list of items that are to be checked out
         ''' </returns>
         ''' <remarks></remarks>
-        Friend Shared Function FileNameAndGeneratedFileName(projectitem As EnvDTE.ProjectItem,
+        Friend Shared Function FileNameAndGeneratedFileName(projectitem As ProjectItem,
                                                             Optional suffix As String = ".Designer",
                                                             Optional requireExactlyOneChild As Boolean = True,
                                                             Optional exclude As Predicate(Of String) = Nothing) _
-                               As Collections.Generic.List(Of String)
+                               As List(Of String)
 
             Dim result As New List(Of String)
 
@@ -601,7 +601,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="lParam"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
+            Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
                 OnBroadcastMessage(msg, wParam, lParam)
                 Return Interop.NativeMethods.S_OK
             End Function
@@ -613,7 +613,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
             ''' <remarks></remarks>
-            Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr)
+            Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 RaiseEvent BroadcastMessage(msg, wParam, lParam)
             End Sub
 
@@ -691,7 +691,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr)
+            Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 MyBase.OnBroadcastMessage(msg, wParam, lParam)
 
                 If _control IsNot Nothing Then
@@ -713,7 +713,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Friend Shared ReadOnly Property GetDialogFont(ServiceProvider As IServiceProvider) As Font
                 Get
                     If ServiceProvider IsNot Nothing Then
-                        Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(ServiceProvider.GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
+                        Dim uiSvc As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
                         If uiSvc IsNot Nothing Then
                             Return CType(uiSvc.Styles("DialogFont"), Font)
                         End If
@@ -751,7 +751,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim pbGeneratesDesignTimeSource As Integer
             Dim pbGeneratesSharedDesignTimeSource As Integer
             Dim pbUseTempPEFlag As Integer
-            Dim pguidGenerator As System.Guid
+            Dim pguidGenerator As Guid
 
             Dim hr As Integer = sfgFactory.GetGeneratorInformation(customToolName, pbGeneratesDesignTimeSource, pbGeneratesSharedDesignTimeSource, pbUseTempPEFlag, pguidGenerator)
 
@@ -763,7 +763,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Public Shared Function GetServiceProvider(dte As DTE) As IServiceProvider
-            Return New Microsoft.VisualStudio.Shell.ServiceProvider(DirectCast(dte, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+            Return New Shell.ServiceProvider(DirectCast(dte, OLE.Interop.IServiceProvider))
         End Function
         ''' <summary>
         ''' VSHPROPID_IsDefaultNamespaceRefactorNotify only exists in C#.  Other langs will not have this property
@@ -795,10 +795,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function CreateTypeResolutionService(serviceProvider As IServiceProvider, hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService =
+            Dim dynamicTypeService As Shell.Design.DynamicTypeService =
                     TryCast(serviceProvider.GetService(
-                    GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)),
-                    Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
+                    GetType(Shell.Design.DynamicTypeService)),
+                    Shell.Design.DynamicTypeService)
 
             Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing
 

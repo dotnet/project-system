@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class DesignerDataGridView
-        Inherits System.Windows.Forms.DataGridView
+        Inherits DataGridView
 
 
 
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="m">Windows message passed in by window.</param>
         ''' <remarks>Implementation based on sources\ndp\fx\src\WinForms\Managed\System\WinForms\Control.cs</remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             ' We only handle the context menu specially.
             Select Case m.Msg
                 Case Interop.win.WM_CONTEXTMENU
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
             Dim ht As HitTestInfo = HitTest(e.X, e.Y)
 
             If (ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function ProcessKeyMessage(ByRef m As System.Windows.Forms.Message) As Boolean
+        Protected Overrides Function ProcessKeyMessage(ByRef m As Message) As Boolean
             Dim ke As New KeyEventArgs(CType(CInt(m.WParam) Or ModifierKeys, Keys))
 
             If _
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <System.Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)> _
+        <Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)> _
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 

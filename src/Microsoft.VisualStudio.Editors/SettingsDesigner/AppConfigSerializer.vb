@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Indicate what changes were performed during deserialization
         ''' </summary>
         ''' <remarks></remarks>
-        <FlagsAttribute()> _
+        <Flags()> _
         Friend Enum DirtyState
             NoChange = 0            ' No changes made
             ValueAdded = 1          ' At least one value was modified
@@ -67,18 +67,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' We need to get our hands on a ConfigHelperService to deserialize the contents of the .config file...
             ' 
-            Dim ConfigHelperService As New Microsoft.VisualStudio.Shell.Design.Serialization.ConfigurationHelperService()
+            Dim ConfigHelperService As New ConfigurationHelperService()
 
             ' Let us get all settings that we know about, create SettingsPropeties for 'em
             ' and add 'em to a SettingsPropertyCollection.
-            Dim UserScopedSettingProps As New System.Configuration.SettingsPropertyCollection()
-            Dim AppScopedSettingProps As New System.Configuration.SettingsPropertyCollection()
+            Dim UserScopedSettingProps As New SettingsPropertyCollection()
+            Dim AppScopedSettingProps As New SettingsPropertyCollection()
 
             For Each Instance As DesignTimeSettingInstance In ExistingSettings.Values
-                Dim settingType As System.Type = typeCache.GetSettingType(Instance.SettingTypeName)
+                Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
                 ' We need a name and a type to be able to serialize this guy... unless it is a connection string, of course!
                 If Instance.Name <> "" AndAlso settingType IsNot Nothing AndAlso settingType IsNot GetType(SerializableConnectionString) Then
-                    Dim NewProp As New System.Configuration.SettingsProperty(Instance.Name)
+                    Dim NewProp As New SettingsProperty(Instance.Name)
                     NewProp.PropertyType = settingType
                     NewProp.SerializeAs = ConfigHelperService.GetSerializeAs(settingType)
                     If Instance.Scope = DesignTimeSettingInstance.SettingScope.Application Then
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim valueSerializer As New SettingsValueSerializer()
 
             ' Then we go through each read setting to see if we have to add/change the setting
-            For Each cs As System.Configuration.ConnectionStringSettings In DeserializedConnectionStrings
+            For Each cs As ConnectionStringSettings In DeserializedConnectionStrings
                 Dim scs As New SerializableConnectionString
                 scs.ConnectionString = cs.ConnectionString
                 If cs.ProviderName <> "" Then
@@ -147,13 +147,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Check if we need to add/change any application scoped settings
             '
-            For Each SettingsValue As System.Configuration.SettingsPropertyValue In DeserializedAppScopedSettingValues
+            For Each SettingsValue As SettingsPropertyValue In DeserializedAppScopedSettingValues
                 objectDirty = objectDirty Or MergeAndMaybeAddValue(Settings, SettingsValue, DesignTimeSettingInstance.SettingScope.Application, ExistingSettings, mergeMode, UIService)
             Next
 
             ' Check if we need to add/change any user scoped settings
             '
-            For Each SettingsValue As System.Configuration.SettingsPropertyValue In DeserializedUserScopedSettingValues
+            For Each SettingsValue As SettingsPropertyValue In DeserializedUserScopedSettingValues
                 objectDirty = objectDirty Or MergeAndMaybeAddValue(Settings, SettingsValue, DesignTimeSettingInstance.SettingScope.User, ExistingSettings, mergeMode, UIService)
             Next
 
@@ -200,8 +200,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
                 Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED
-                    Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout), ex)
-                Catch ex As Exception When Not TypeOf ex Is System.ComponentModel.Design.CheckoutException
+                    Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout), ex)
+                Catch ex As Exception When Not TypeOf ex Is ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
                     AppConfigItemId = VSITEMID.NIL
                     Debug.Fail(String.Format("ProjSpecialFiles.GetFile (create={0}) failed: {1}", CreateIfNotExists, ex))
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                         Try
                             AppConfigDocData = DocDataService.GetFileDocData(AppConfigFileName, Access, Nothing)
-                        Catch ex As System.ComponentModel.Design.CheckoutException
+                        Catch ex As ComponentModel.Design.CheckoutException
                             Throw
                         Catch Ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetAppConfigDocData), NameOf(AppConfigSerializer))
                             Throw
@@ -293,9 +293,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, ShouldSynchronizeUserConfig As Boolean)
             ' Populate settingspropertyvalue collections for user & application scoped settings respectively
-            Dim ExistingUserScopedSettings As New System.Configuration.SettingsPropertyValueCollection
-            Dim ExistingApplicationScopedSettings As New System.Configuration.SettingsPropertyValueCollection
-            Dim ExistingConnectionStringSettings As New System.Configuration.ConnectionStringSettingsCollection
+            Dim ExistingUserScopedSettings As New SettingsPropertyValueCollection
+            Dim ExistingApplicationScopedSettings As New SettingsPropertyValueCollection
+            Dim ExistingConnectionStringSettings As New ConnectionStringSettingsCollection
             Dim AddedInstances As New Specialized.StringCollection()
 
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
             For Each Instance As DesignTimeSettingInstance In Settings
-                Dim settingType As System.Type = typeCache.GetSettingType(Instance.SettingTypeName)
+                Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
                 Dim settingValue As Object = Nothing
                 If settingType IsNot Nothing Then
                     settingValue = valueCache.GetValue(settingType, Instance.SerializedValue)
@@ -366,7 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, Settings As DesignTimeSettings, AppConfigDocData As DocData)
             ' We list all the USER scoped settings that we know about and set the value to true or false depending
             ' on if the setting is roaming...
-            Dim SettingsTheDesignerKnownsAbout As New Generic.Dictionary(Of String, Boolean)
+            Dim SettingsTheDesignerKnownsAbout As New Dictionary(Of String, Boolean)
 
             For Each dsi As DesignTimeSettingInstance In Settings
                 If dsi.Scope = DesignTimeSettingInstance.SettingScope.User Then
@@ -388,7 +388,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="SettingsTheDesignerKnownsAbout"></param>
         ''' <param name="AppConfigDocData"></param>
         ''' <remarks></remarks>
-        Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Generic.Dictionary(Of String, Boolean), AppConfigDocData As DocData)
+        Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Dictionary(Of String, Boolean), AppConfigDocData As DocData)
             Dim hierSp As IServiceProvider = Common.ServiceProviderFromHierarchy(Hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
 
@@ -430,7 +430,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Else
                     ' If we have one or more settings, the section handler should have been added in app.config, so we should
                     ' be able to find any old settings hanging around in the user.config file
-                    Dim MergedViewSettings As System.Configuration.SettingsPropertyValueCollection = ConfigHelperService.ReadSettings(map, ConfigurationUserLevel.PerUserRoamingAndLocal, AppConfigDocData, SectionName, True, New SettingsPropertyCollection)
+                    Dim MergedViewSettings As SettingsPropertyValueCollection = ConfigHelperService.ReadSettings(map, ConfigurationUserLevel.PerUserRoamingAndLocal, AppConfigDocData, SectionName, True, New SettingsPropertyCollection)
 
                     ' Strip out any and all settings that are not included in our "known" set of settings...
                     For Each prop As SettingsPropertyValue In MergedViewSettings
@@ -489,7 +489,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="UIService"></param>
         ''' <returns>True if a new instance was added to the the root component</returns>
         ''' <remarks></remarks>
-        Private Shared Function MergeAndMaybeAddValue(Settings As DesignTimeSettings, DeserializedPropertyValue As SettingsPropertyValue, Scope As DesignTimeSettingInstance.SettingScope, ExistingSettings As Dictionary(Of String, DesignTimeSettingInstance), mergeMode As MergeValueMode, UIService As System.Windows.Forms.Design.IUIService) As DirtyState
+        Private Shared Function MergeAndMaybeAddValue(Settings As DesignTimeSettings, DeserializedPropertyValue As SettingsPropertyValue, Scope As DesignTimeSettingInstance.SettingScope, ExistingSettings As Dictionary(Of String, DesignTimeSettingInstance), mergeMode As MergeValueMode, UIService As IUIService) As DirtyState
             If Not ExistingSettings.ContainsKey(DeserializedPropertyValue.Name) Then
                 If Settings.IsValidName(DeserializedPropertyValue.Name) Then
                     ' This is a new setting - let's silently add it to our settings as new setting of type "string"

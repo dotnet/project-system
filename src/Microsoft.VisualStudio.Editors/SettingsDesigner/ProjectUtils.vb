@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Function FileName(ProjectItem As EnvDTE.ProjectItem) As String
             If ProjectItem Is Nothing Then
                 Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Friend Function IsFileInProject(project As IVsProject, FullFilePath As String) As Boolean
             Dim found As Integer
-            Dim prio(0) As Microsoft.VisualStudio.Shell.Interop.VSDOCUMENTPRIORITY
+            Dim prio(0) As VSDOCUMENTPRIORITY
             prio(0) = VSDOCUMENTPRIORITY.DP_Standard
             Dim itemId As UInteger
 
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ProjectItem"></param>
         ''' <param name="CodeProvider"></param>
         ''' <remarks></remarks>
-        Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As System.CodeDom.Compiler.CodeDomProvider, View As DesignerFramework.BaseDesignerView)
+        Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As CodeDomProvider, View As DesignerFramework.BaseDesignerView)
             Dim SettingClassElement As EnvDTE.CodeElement = FindElement(ProjectItem, False, True, New KnownClassName(ClassName))
 
             Dim cc2 As EnvDTE80.CodeClass2 = TryCast(SettingClassElement, EnvDTE80.CodeClass2)
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Debug.Assert(AddTo IsNot Nothing, "Must have a project items collection to add new item to!")
 
             ' Create new document...
-            Using Writer As New System.IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
+            Using Writer As New IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
                 Dim ExtendingNamespace As CodeNamespace = Nothing
                 If cc2.Namespace IsNot Nothing Then
                     Debug.Assert(cc2.Namespace.FullName IsNot Nothing, "Couldn't get a FullName from the CodeClass2.Namespace!?")
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
                 If ClassToExpand Is Nothing Then
                     Debug.Fail("Can't find a class that expands a NULL class...")
-                    Throw New System.ArgumentNullException()
+                    Throw New ArgumentNullException()
                 End If
                 _classToExpand = ClassToExpand
             End Sub
@@ -478,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Return False
                 End If
 
-                Dim comparisonType As System.StringComparison
+                Dim comparisonType As StringComparison
                 If Element.ProjectItem IsNot Nothing AndAlso _
                     Element.ProjectItem.ContainingProject IsNot Nothing _
                     AndAlso Not Element.ProjectItem.ContainingProject.CodeModel.IsCaseSensitive Then
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 ' Check name first...
-                Dim comparisonType As System.StringComparison
+                Dim comparisonType As StringComparison
                 If Element.ProjectItem IsNot Nothing AndAlso _
                     Element.ProjectItem.ContainingProject IsNot Nothing _
                     AndAlso Not Element.ProjectItem.ContainingProject.CodeModel.IsCaseSensitive Then
@@ -695,14 +695,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             changingStub.Name = SettingChangingEventHandlerName
             changingStub.ReturnType = Nothing
             changingStub.Parameters.Add(senderParam)
-            changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(System.Configuration.SettingChangingEventArgs), "e"))
+            changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
             changingStub.Statements.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_CHANGING)))
 
             Dim savingStub As New CodeMemberMethod()
             savingStub.Name = SettingsSavingEventHandlerName
             savingStub.ReturnType = Nothing
             savingStub.Parameters.Add(senderParam)
-            savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(System.ComponentModel.CancelEventArgs), "e"))
+            savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
             savingStub.Statements.Add(New CodeCommentStatement(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_SAVING)))
 
             ct.Members.Add(constr)
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             End If
 
             Dim sb As New System.Text.StringBuilder
-            Dim sw As New System.IO.StringWriter(sb)
+            Dim sw As New IO.StringWriter(sb)
 
             generator.GenerateCodeFromStatement(statement, sw, New CodeGeneratorOptions())
             sw.Flush()
@@ -776,12 +776,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="cc2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As System.Reflection.TypeAttributes
+        Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As TypeAttributes
             If cc2 Is Nothing Then
                 Throw New ArgumentNullException("cc2")
             End If
 
-            Dim returnValue As System.Reflection.TypeAttributes = 0
+            Dim returnValue As TypeAttributes = 0
 
             Select Case cc2.Access
                 Case EnvDTE.vsCMAccess.vsCMAccessProject

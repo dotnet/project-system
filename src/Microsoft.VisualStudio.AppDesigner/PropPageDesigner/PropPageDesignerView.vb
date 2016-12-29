@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerView
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
         Implements IVsProjectDesignerPageSite
         Implements IVsWindowPaneCommit
         Implements IVsEditWindowNotify
@@ -66,34 +66,34 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Me.PerformLayout()
         End Sub
 
-        Public WithEvents ConfigDividerLine As System.Windows.Forms.Label
-        Public WithEvents PlatformComboBox As System.Windows.Forms.ComboBox
-        Public WithEvents PlatformLabel As System.Windows.Forms.Label
-        Public WithEvents PropPageDesignerViewLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Public WithEvents ConfigurationFlowLayoutPanel As System.Windows.Forms.FlowLayoutPanel
-        Public WithEvents ConfigurationTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Public WithEvents PLatformTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Public WithEvents ConfigurationPanel As System.Windows.Forms.TableLayoutPanel
+        Public WithEvents ConfigDividerLine As Label
+        Public WithEvents PlatformComboBox As ComboBox
+        Public WithEvents PlatformLabel As Label
+        Public WithEvents PropPageDesignerViewLayoutPanel As TableLayoutPanel
+        Public WithEvents ConfigurationFlowLayoutPanel As FlowLayoutPanel
+        Public WithEvents ConfigurationTableLayoutPanel As TableLayoutPanel
+        Public WithEvents PLatformTableLayoutPanel As TableLayoutPanel
+        Public WithEvents ConfigurationPanel As TableLayoutPanel
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PropPageDesignerView))
-            Me.ConfigurationComboBox = New System.Windows.Forms.ComboBox
-            Me.PlatformLabel = New System.Windows.Forms.Label
-            Me.PlatformComboBox = New System.Windows.Forms.ComboBox
-            Me.ConfigDividerLine = New System.Windows.Forms.Label
-            Me.ConfigurationLabel = New System.Windows.Forms.Label
+        <DebuggerNonUserCode()> Private Sub InitializeComponent()
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(PropPageDesignerView))
+            Me.ConfigurationComboBox = New ComboBox
+            Me.PlatformLabel = New Label
+            Me.PlatformComboBox = New ComboBox
+            Me.ConfigDividerLine = New Label
+            Me.ConfigurationLabel = New Label
             Me.PropertyPagePanel = New ScrollablePanel
-            Me.PropPageDesignerViewLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.ConfigurationPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.ConfigurationFlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel
-            Me.ConfigurationTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            Me.PLatformTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            Me.PropPageDesignerViewLayoutPanel = New TableLayoutPanel
+            Me.ConfigurationPanel = New TableLayoutPanel
+            Me.ConfigurationFlowLayoutPanel = New FlowLayoutPanel
+            Me.ConfigurationTableLayoutPanel = New TableLayoutPanel
+            Me.PLatformTableLayoutPanel = New TableLayoutPanel
             Me.PropPageDesignerViewLayoutPanel.SuspendLayout()
             Me.ConfigurationPanel.SuspendLayout()
             Me.ConfigurationFlowLayoutPanel.SuspendLayout()
@@ -139,22 +139,22 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'PropPageDesignerViewLayoutPanel
             '
             resources.ApplyResources(Me.PropPageDesignerViewLayoutPanel, "PropPageDesignerViewLayoutPanel")
-            Me.PropPageDesignerViewLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.PropPageDesignerViewLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.PropPageDesignerViewLayoutPanel.Controls.Add(Me.ConfigurationPanel, 0, 0)
             Me.PropPageDesignerViewLayoutPanel.Controls.Add(Me.PropertyPagePanel, 0, 1)
             Me.PropPageDesignerViewLayoutPanel.Name = "PropPageDesignerViewLayoutPanel"
-            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New RowStyle)
+            Me.PropPageDesignerViewLayoutPanel.RowStyles.Add(New RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             '
             'ConfigurationPanel
             '
             resources.ApplyResources(Me.ConfigurationPanel, "ConfigurationPanel")
-            Me.ConfigurationPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.ConfigurationPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.ConfigurationPanel.Controls.Add(Me.ConfigDividerLine, 1, 1)
             Me.ConfigurationPanel.Controls.Add(Me.ConfigurationFlowLayoutPanel, 0, 0)
             Me.ConfigurationPanel.Name = "ConfigurationPanel"
-            Me.ConfigurationPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.ConfigurationPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.ConfigurationPanel.RowStyles.Add(New RowStyle)
+            Me.ConfigurationPanel.RowStyles.Add(New RowStyle)
             '
             'ConfigurationFlowLayoutPanel
             '
@@ -167,23 +167,23 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'ConfigurationTableLayoutPanel
             '
             resources.ApplyResources(Me.ConfigurationTableLayoutPanel, "ConfigurationTableLayoutPanel")
-            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
+            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
+            Me.ConfigurationTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
             Me.ConfigurationTableLayoutPanel.Controls.Add(Me.ConfigurationComboBox, 1, 0)
             Me.ConfigurationTableLayoutPanel.Controls.Add(Me.ConfigurationLabel, 0, 0)
             Me.ConfigurationTableLayoutPanel.Name = "ConfigurationTableLayoutPanel"
-            Me.ConfigurationTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.ConfigurationTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'PLatformTableLayoutPanel
             '
             resources.ApplyResources(Me.PLatformTableLayoutPanel, "PLatformTableLayoutPanel")
-            Me.PLatformTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.PLatformTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+            Me.PLatformTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
+            Me.PLatformTableLayoutPanel.ColumnStyles.Add(New ColumnStyle)
             Me.PLatformTableLayoutPanel.Controls.Add(Me.PlatformLabel, 0, 0)
             Me.PLatformTableLayoutPanel.Controls.Add(Me.PlatformComboBox, 1, 0)
             Me.PLatformTableLayoutPanel.Name = "PLatformTableLayoutPanel"
-            Me.PLatformTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.PLatformTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'PropPageDesignerView
             '
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         'The currently-loaded page and its site
         Private _loadedPage As OleInterop.IPropertyPage
-        Private _loadedPageSite As ApplicationDesigner.PropertyPageSite
+        Private _loadedPageSite As PropertyPageSite
 
         'True once we have been initialized completely.
         Private _fInitialized As Boolean = False
@@ -222,9 +222,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Const SW_SHOWNORMAL As Integer = 1
         Public Const SW_SHOW As Integer = 5
 
-        Public WithEvents ConfigurationLabel As System.Windows.Forms.Label
+        Public WithEvents ConfigurationLabel As Label
         Public WithEvents PropertyPagePanel As ScrollablePanel
-        Public WithEvents ConfigurationComboBox As System.Windows.Forms.ComboBox
+        Public WithEvents ConfigurationComboBox As ComboBox
 
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private _projectHierarchy As IVsHierarchy
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="IsConfigPage"></param>
         ''' <remarks></remarks>
-        Public Sub Init(DTEProject As EnvDTE.Project, PropPage As OleInterop.IPropertyPage, PropPageSite As ApplicationDesigner.PropertyPageSite, Hierarchy As IVsHierarchy, IsConfigPage As Boolean)
+        Public Sub Init(DTEProject As EnvDTE.Project, PropPage As OleInterop.IPropertyPage, PropPageSite As PropertyPageSite, Hierarchy As IVsHierarchy, IsConfigPage As Boolean)
             Debug.Assert(_DTEProject Is Nothing, "Init() called twice?")
 
             Debug.Assert(DTEProject IsNot Nothing, "DTEProject is Nothing")
@@ -415,8 +415,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             SetDialogFont()
 
-            Dim menuCommands As New Collections.ArrayList()
-            Dim cutCmd As New AppDesDesignerFramework.DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
+            Dim menuCommands As New ArrayList()
+            Dim cutCmd As New DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
             cutCmd.Enabled = False
             menuCommands.Add(cutCmd)
 
@@ -485,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_UndoEngine_Undone(sender As Object, e As System.EventArgs) Handles _undoEngine.Undone
+        Private Sub m_UndoEngine_Undone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
             'Tell the project designer it needs to refresh its dirty status
             If _loadedPageSite IsNot Nothing Then
                 Dim AppDesignerView As ApplicationDesignerView = TryCast(_loadedPageSite.GetService(GetType(ApplicationDesignerView)), ApplicationDesignerView)
@@ -815,7 +815,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="description">The localized description string to use for the transaction.  This will appear as the
         '''   description for the Undo/Redo unit.</param>
         ''' <returns></returns>
-        Public Function GetTransaction(Description As String) As System.ComponentModel.Design.DesignerTransaction Implements IVsProjectDesignerPageSite.GetTransaction
+        Public Function GetTransaction(Description As String) As DesignerTransaction Implements IVsProjectDesignerPageSite.GetTransaction
             Dim DesignerHost As IDesignerHost
             DesignerHost = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
             Return DesignerHost.CreateTransaction(Description)
@@ -937,7 +937,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub SelectedConfigurationOrPlatformIndexChanged(sender As Object, e As System.EventArgs) _
+        Private Sub SelectedConfigurationOrPlatformIndexChanged(sender As Object, e As EventArgs) _
                         Handles ConfigurationComboBox.SelectedIndexChanged, PlatformComboBox.SelectedIndexChanged, PlatformComboBox.SelectedIndexChanged
 
             If _fInitialized AndAlso Not _ignoreSelectedIndexChanged Then
@@ -1221,7 +1221,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ConfigurationComboBox_DropDown(sender As Object, e As System.EventArgs) Handles ConfigurationComboBox.DropDown
+        Private Sub ConfigurationComboBox_DropDown(sender As Object, e As EventArgs) Handles ConfigurationComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
             AppDesCommon.SetComboBoxDropdownWidth(ConfigurationComboBox)
         End Sub
@@ -1233,7 +1233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PlatformComboBox_DropDown(sender As Object, e As System.EventArgs) Handles PlatformComboBox.DropDown
+        Private Sub PlatformComboBox_DropDown(sender As Object, e As EventArgs) Handles PlatformComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
             AppDesCommon.SetComboBoxDropdownWidth(PlatformComboBox)
         End Sub
@@ -1550,7 +1550,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         'For debug tracing
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overrides Function PreProcessMessage(ByRef msg As System.Windows.Forms.Message) As Boolean
+        Public Overrides Function PreProcessMessage(ByRef msg As Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
             Return MyBase.PreProcessMessage(msg)
         End Function
@@ -1581,7 +1581,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     '  accept ALT accelerators.
                     If (Control.ModifierKeys And Keys.Alt) <> 0 Then
                         Dim PropertyPageHwnd As IntPtr = GetPropertyPageTopHwnd()
-                        Dim msg As OLE.Interop.MSG() = {New OLE.Interop.MSG}
+                        Dim msg As OleInterop.MSG() = {New OleInterop.MSG}
                         With msg(0)
                             .hwnd = PropertyPageHwnd
                             .message = win.WM_SYSCHAR
@@ -1660,7 +1660,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If UndoEngine IsNot Nothing Then
                 Debug.Assert(Not UndoEngine.UndoInProgress, "Trying to clear Undo stack while undo is in progress")
                 If Not UndoEngine.UndoInProgress Then
-                    Dim UndoManager As OLE.Interop.IOleUndoManager = TryCast(GetService(GetType(OLE.Interop.IOleUndoManager)), OLE.Interop.IOleUndoManager)
+                    Dim UndoManager As OleInterop.IOleUndoManager = TryCast(GetService(GetType(OleInterop.IOleUndoManager)), OleInterop.IOleUndoManager)
                     Debug.Assert(UndoManager IsNot Nothing, "Unable to get undo manager to clear the undo stack for the property page")
                     If UndoManager IsNot Nothing Then
                         Try
@@ -1678,7 +1678,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="m"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             Dim isSetFocusMessage As Boolean = False
             If m.Msg = AppDesInterop.win.WM_SETFOCUS Then
                 isSetFocusMessage = True
@@ -1826,15 +1826,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If UndoEngine IsNot Nothing Then
                 Debug.Assert(Not UndoEngine.UndoInProgress, "Trying to get undo units while undo in progress")
                 If Not UndoEngine.UndoInProgress Then
-                    Dim UndoManager As OLE.Interop.IOleUndoManager = TryCast(GetService(GetType(OLE.Interop.IOleUndoManager)), OLE.Interop.IOleUndoManager)
+                    Dim UndoManager As OleInterop.IOleUndoManager = TryCast(GetService(GetType(OleInterop.IOleUndoManager)), OleInterop.IOleUndoManager)
                     Debug.Assert(UndoManager IsNot Nothing, "Unable to get IOleUndoManager from UneoEngine")
                     If UndoManager IsNot Nothing Then
-                        Dim EnumUnits As Microsoft.VisualStudio.OLE.Interop.IEnumOleUndoUnits = Nothing
+                        Dim EnumUnits As OleInterop.IEnumOleUndoUnits = Nothing
                         UndoManager.EnumUndoable(EnumUnits)
                         If EnumUnits IsNot Nothing Then
                             Dim cUnits As Integer = 0
                             While True
-                                Dim Units(0) As Microsoft.VisualStudio.OLE.Interop.IOleUndoUnit
+                                Dim Units(0) As OleInterop.IOleUndoUnit
                                 Dim cReturned As UInteger
                                 If VSErrorHandler.Failed(EnumUnits.Next(1, Units, cReturned)) OrElse cReturned = 0 Then
                                     UndoUnitsAvailable = cUnits
@@ -1853,7 +1853,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
 #If DEBUG Then
-        Private Sub ConfigurationPanel_SizeChanged(sender As Object, e As System.EventArgs) Handles ConfigurationPanel.SizeChanged
+        Private Sub ConfigurationPanel_SizeChanged(sender As Object, e As EventArgs) Handles ConfigurationPanel.SizeChanged
             Common.Switches.TracePDFocus(TraceLevel.Info, "ConfigurationPanel_SizeChanged: " & ConfigurationPanel.Size.ToString())
         End Sub
 #End If
@@ -1864,7 +1864,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PropertyPagePanel_GotFocus(sender As Object, e As System.EventArgs) Handles PropertyPagePanel.GotFocus
+        Private Sub PropertyPagePanel_GotFocus(sender As Object, e As EventArgs) Handles PropertyPagePanel.GotFocus
             If _isNativeHostedPropertyPage Then
                 'Since PropertyPagePanel has no child controls that WinForms knows about, we need to
                 '  manually forward focus to the child.

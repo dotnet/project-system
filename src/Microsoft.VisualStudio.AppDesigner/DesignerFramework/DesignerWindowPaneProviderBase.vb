@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <remarks></remarks>
             Private ReadOnly Property GetDialogFont() As Font
                 Get
-                    Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
+                    Dim uiSvc As Design.IUIService = CType(GetService(GetType(Design.IUIService)), Design.IUIService)
                     If uiSvc IsNot Nothing Then
                         Return CType(uiSvc.Styles("DialogFont"), Font)
                     End If

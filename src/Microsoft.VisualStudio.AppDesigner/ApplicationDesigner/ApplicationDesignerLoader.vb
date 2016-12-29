@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <remarks></remarks>
     Public NotInheritable Class ApplicationDesignerLoader
         Inherits BasicDesignerLoader
-        Implements System.IDisposable
+        Implements IDisposable
 
         'We use the DesignerDocDataService class as a cheap way of getting check-in/out behavior.  See
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PerformFlush(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformFlush(serializationManager As IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' will automatically be added to the ErrorList by VSDesignerLoader.  If there
         ''' are more specific local exceptions, they can be added to ErrorList manually.
         '''</remarks>
-        Protected Overrides Sub PerformLoad(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformLoad(serializationManager As IDesignerSerializationManager)
 
             'Do nothing but add a root component
             '... BasicDesignerLoader requires that we call SetBaseComponentClassName() during load.
@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks>MyBase.Dispose called since base does not implement IDisposable</remarks>
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overloads Overrides Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             MyBase.Dispose() 'Necessary because the base does not implement IDisposable
             GC.SuppressFinalize(Me)

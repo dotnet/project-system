@@ -399,8 +399,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
         Public Sub ShowInXmlSchemaExplorer( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean) _
             Implements IXmlIntellisenseSchemas.ShowInXmlSchemaExplorer
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
             ' Find the XmlSchemaElement based on NamespaceName and LocalName provided.
             Dim element As XmlSchemaElement = Nothing
-            Dim ns As System.Xml.Linq.XNamespace = Nothing
+            Dim ns As Linq.XNamespace = Nothing
             If NamespaceName Is Nothing Then
                 NamespaceName = String.Empty
             End If
@@ -1086,7 +1086,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function ElementsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByNamespace
 
@@ -1098,8 +1098,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function ElementsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByName
 
@@ -1111,7 +1111,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function AttributesByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByNamespace
 
@@ -1123,8 +1123,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function AttributesByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByName
 
@@ -1136,7 +1136,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function DescendantsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByNamespace
 
@@ -1148,8 +1148,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function DescendantsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByName
 

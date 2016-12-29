@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The persistence mode of the resource to show in PropertyWindow.
         ''' </summary>
         ''' <remarks></remarks>
-        <TypeConverterAttribute(GetType(ResourcePersistenceModeEnumConverter))> _
+        <TypeConverter(GetType(ResourcePersistenceModeEnumConverter))> _
         Public Enum ResourcePersistenceMode
             'The resource is a link to a file on disk which is read and compiled into the manifest resources at compile time.
             Linked
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      The converted object.  This will throw an excetpion if the converson
             '''      could not be performed.
             ''' </returns>
-            ''' <seealso cref='System.ComponentModel.TypeConverter' />
+            ''' <seealso cref='TypeConverter' />
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As CultureInfo, value As Object) As Object
                 If TypeOf (value) Is String Then
                     Dim strValue As String = CStr(value)
@@ -488,7 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Note: The designer host calls this on each sited Resource (and its designer, which in our case is fabricated
         '''   for us) when it gets disposed.  Then it disposes the root component and root designer.
         ''' </remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
 
@@ -606,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  have an opportunity to commit a change caused via ComponentChangeService.ComponentRename
                     '  because there's only the one event (not a Renaming/Renamed).  So, we need to wrap this 
                     '  in a transaction ourselves for this to work properly.
-                    Using Transaction As ComponentModel.Design.DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_ChangeName))
+                    Using Transaction As DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_ChangeName))
                         s_propertyDescriptor_Name.SetValue(Me, Value)
                         Transaction.Commit()
                     End Using
@@ -1265,11 +1265,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   sited.  Thus, we need to keep these two versions of the name separate but
         '''   in sync.
         ''' </remarks>
-        Friend Property IComponent_Site() As System.ComponentModel.ISite Implements IComponent.Site
+        Friend Property IComponent_Site() As ISite Implements IComponent.Site
             Get
                 Return _site
             End Get
-            Set(Value As System.ComponentModel.ISite)
+            Set(Value As ISite)
                 _site = Value
                 Debug.Assert(_site Is Nothing OrElse _site.Name.Equals(Name, StringComparison.Ordinal), "Name property and ISite.Name are out of sync")
             End Set
@@ -2155,7 +2155,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function IsConvertibleFromToString(Value As Object, ValueTypeName As String, IsResXNullRef As Boolean) As Boolean
             Dim TC As TypeConverter = GetTypeConverter(Value, ValueTypeName, IsResXNullRef)
             If TC IsNot Nothing Then
-                If TC.GetType.Equals(GetType(System.Windows.Forms.CursorConverter)) Then
+                If TC.GetType.Equals(GetType(Windows.Forms.CursorConverter)) Then
                     'The CursorConverter lies to us - says it's convertible from/to string.  But this is only true from the
                     '  property sheet for the standard cursors that they support from the Windows Forms designer.  If we happen
                     '  upon a custom cursor in the resx file (possible but not likely), this would get us into trouble.
@@ -2200,7 +2200,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim HashKey As Object = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
 
             If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
-                Dim PropertyDescriptorArrayList As New System.Collections.ArrayList
+                Dim PropertyDescriptorArrayList As New ArrayList
 
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
@@ -2416,7 +2416,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
-        Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+        Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
             Info.AddValue(s_SERIALIZATIONKEY_RESXDATANODE, _resXDataNode)
             Info.AddValue(s_SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
             Info.AddValue(s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)

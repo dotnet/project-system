@@ -46,12 +46,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As System.Windows.Forms.DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object
+        Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
             If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso _
                 value IsNot Nothing AndAlso _
-                value.GetType().Equals(GetType(Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString)) Then
+                value.GetType().Equals(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString)) Then
                 'Begin
-                Return DirectCast(value, Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString).ConnectionString
+                Return DirectCast(value, VSDesigner.VSDesignerPackage.SerializableConnectionString).ConnectionString
             Else
                 Dim serializer As New SettingsValueSerializer()
                 Return serializer.Serialize(value, System.Threading.Thread.CurrentThread.CurrentCulture)
@@ -119,10 +119,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="constraintSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function GetPreferredSize(g As System.Drawing.Graphics, cellStyle As System.Windows.Forms.DataGridViewCellStyle, rowIndex As Integer, constraintSize As System.Drawing.Size) As System.Drawing.Size
+        Protected Overrides Function GetPreferredSize(g As Graphics, cellStyle As DataGridViewCellStyle, rowIndex As Integer, constraintSize As Size) As Size
             Dim FormattedValue As String = DirectCast(GetFormattedValue(GetValue(rowIndex), rowIndex, cellStyle, Nothing, Nothing, DataGridViewDataErrorContexts.Formatting Or DataGridViewDataErrorContexts.Display), String)
             Dim preferredStringSize As SizeF = g.MeasureString(FormattedValue, cellStyle.Font)
-            Return New System.Drawing.Size(CInt(preferredStringSize.Width + 40), CInt(preferredStringSize.Height))
+            Return New Size(CInt(preferredStringSize.Width + 40), CInt(preferredStringSize.Height))
         End Function
 
 
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="advancedBorderStyle"></param>
         ''' <param name="paintParts"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub Paint(graphics As System.Drawing.Graphics, clipBounds As System.Drawing.Rectangle, cellBounds As System.Drawing.Rectangle, rowIndex As Integer, cellState As System.Windows.Forms.DataGridViewElementStates, value As Object, formattedValue As Object, errorText As String, cellStyle As System.Windows.Forms.DataGridViewCellStyle, advancedBorderStyle As System.Windows.Forms.DataGridViewAdvancedBorderStyle, paintParts As System.Windows.Forms.DataGridViewPaintParts)
+        Protected Overrides Sub Paint(graphics As Graphics, clipBounds As Rectangle, cellBounds As Rectangle, rowIndex As Integer, cellState As DataGridViewElementStates, value As Object, formattedValue As Object, errorText As String, cellStyle As DataGridViewCellStyle, advancedBorderStyle As DataGridViewAdvancedBorderStyle, paintParts As DataGridViewPaintParts)
             MyBase.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle, paintParts)
 
 
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Public Overrides Function KeyEntersEditMode(e As System.Windows.Forms.KeyEventArgs) As Boolean
+        Public Overrides Function KeyEntersEditMode(e As KeyEventArgs) As Boolean
             ' This code was copied from the DataGridViewTextBoxCell 
             If (((Char.IsLetterOrDigit(ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse _
                  (e.KeyCode >= Keys.NumPad0 AndAlso e.KeyCode <= Keys.Divide) OrElse _

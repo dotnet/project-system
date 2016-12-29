@@ -60,8 +60,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         <Serializable()> _
         Private NotInheritable Class ResourceSerializationStore
-            Inherits System.ComponentModel.Design.Serialization.SerializationStore
-            Implements System.Runtime.Serialization.ISerializable
+            Inherits Design.Serialization.SerializationStore
+            Implements ISerializable
 
 
 
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="info">Serialization info</param>
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
-            Private Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+            Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
                 info.AddValue(s_KEY_STATE, _serializedState)
 
                 Trace("Serialized store (GetObjectData)")
@@ -198,10 +198,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="stream">The stream to save to</param>
             ''' <remarks></remarks>
-            Public Overrides Sub Save(Stream As System.IO.Stream)
+            Public Overrides Sub Save(Stream As Stream)
                 Close()
 
-                Dim f As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                Dim f As New BinaryFormatter
                 f.Serialize(Stream, Me)
 
                 Trace("Saved store")

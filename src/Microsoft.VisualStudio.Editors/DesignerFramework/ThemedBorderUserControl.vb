@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.Dispose(disposing)
         End Sub
 
-        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
             ' we have to get a new pen everytime
             _borderPen.Dispose()
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)
@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.OnPaint(e)
         End Sub
 
-        Protected Overrides ReadOnly Property DefaultPadding() As System.Windows.Forms.Padding
+        Protected Overrides ReadOnly Property DefaultPadding() As Padding
             Get
                 Return New Padding(1)
             End Get

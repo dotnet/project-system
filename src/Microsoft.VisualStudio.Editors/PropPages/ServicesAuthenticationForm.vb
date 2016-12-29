@@ -5,7 +5,7 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Partial Friend Class ServicesAuthenticationForm
-        Inherits System.Windows.Forms.Form
+        Inherits Form
 
         Private _serviceProvider As IServiceProvider
         Private _authenticationUrl As String
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Else
                     Debug.Fail("Can not find ServiceProvider")
                 End If
-            Catch ex As System.Exception When Common.ReportWithoutCrash(ex, NameOf(ShowHelp), NameOf(ServicesAuthenticationForm))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowHelp), NameOf(ServicesAuthenticationForm))
             End Try
         End Sub
 
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ShowHelp()
         End Sub
 
-        Private Sub ServiceAuthenticationForm_HelpRequested(sender As System.Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub ServiceAuthenticationForm_HelpRequested(sender As System.Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
             ShowHelp()
         End Sub
 
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             DialogResult = DialogResult.OK
         End Sub
 
-        Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             If keyData = Keys.Escape Then
                 Close()
             End If

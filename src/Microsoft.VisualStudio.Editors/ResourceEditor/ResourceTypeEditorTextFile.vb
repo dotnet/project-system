@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Inherits ResourceTypeEditorFileBase
 
         'The resource value type that is used for text files
-        Friend Shared ReadOnly TextFileValueType As System.Type = GetType(String)
+        Friend Shared ReadOnly TextFileValueType As Type = GetType(String)
 
         'All common file extensions handled by this resource type editor.
         '  This is just a suggested list of files likely to be intended as text files.

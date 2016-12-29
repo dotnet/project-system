@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   will automatically be added to the ErrorList by VSDesignerLoader.  If there
         '''   are more specific local exceptions, they can be added to ErrorList manually.
         ''' </remarks>
-        Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
             Dim NewResourceEditorRoot As ResourceEditorRootComponent = Nothing
             Using New WaitCursor
                 If LoaderHost IsNot Nothing Then

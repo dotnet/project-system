@@ -54,10 +54,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
-        Public Shared Function FileNameFromProjectItem(ProjectItem As EnvDTE.ProjectItem) As String
+        Public Shared Function FileNameFromProjectItem(ProjectItem As ProjectItem) As String
             If ProjectItem Is Nothing Then
                 System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Project">The DTE project</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetActiveDTEConfiguration(Project As Project) As EnvDTE.Configuration
+        Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
             Try
                 Return Project.ConfigurationManager.ActiveConfiguration
             Catch ex As ArgumentException

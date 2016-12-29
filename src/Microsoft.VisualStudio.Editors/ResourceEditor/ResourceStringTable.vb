@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim cells As DataGridViewSelectedCellCollection = SelectedCells
 
                 If cells.Count > 0 Then
-                    Dim rows As New Generic.Dictionary(Of Integer, Integer)
+                    Dim rows As New Dictionary(Of Integer, Integer)
                     For Each cell As DataGridViewCell In cells
                         If rows.ContainsKey(cell.RowIndex) Then
                             rows(cell.RowIndex) = rows(cell.RowIndex) + 1
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return DirectCast(Parent, ResourceEditorView)
                 Else
                     Debug.Fail("Not parented to a ResourceEditorView?")
-                    Throw New System.InvalidOperationException
+                    Throw New InvalidOperationException
                 End If
             End Get
         End Property
@@ -482,7 +482,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDataError(displayErrorDialogIfNoHandler As Boolean, e As System.Windows.Forms.DataGridViewDataErrorEventArgs)
+        Protected Overrides Sub OnDataError(displayErrorDialogIfNoHandler As Boolean, e As DataGridViewDataErrorEventArgs)
             MyBase.OnDataError(displayErrorDialogIfNoHandler, e)
 
             Debug.Fail("DataError fired - do we need to handle this somehow?")
@@ -539,7 +539,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellValidating(e As System.Windows.Forms.DataGridViewCellValidatingEventArgs)
+        Protected Overrides Sub OnCellValidating(e As DataGridViewCellValidatingEventArgs)
             MyBase.OnCellValidating(e)
 
             Dim originalValue As String = GetCellStringValue(e.RowIndex, e.ColumnIndex)
@@ -584,7 +584,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellBeginEdit(e As System.Windows.Forms.DataGridViewCellCancelEventArgs)
+        Protected Overrides Sub OnCellBeginEdit(e As DataGridViewCellCancelEventArgs)
             ' First of all, we should never enter edit mode if we are in read-only mode...
             If ParentView.ReadOnlyMode Then
                 e.Cancel = True
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellEndEdit(e As System.Windows.Forms.DataGridViewCellEventArgs)
+        Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
             ParentView.OnItemEndEdit()
             MyBase.OnCellEndEdit(e)
         End Sub
@@ -1110,7 +1110,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim value As Object = e.Value
 
-            If value Is Nothing OrElse TypeOf value Is System.DBNull Then
+            If value Is Nothing OrElse TypeOf value Is DBNull Then
                 value = String.Empty
             End If
 
@@ -1166,7 +1166,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnNewRowNeeded(e As System.Windows.Forms.DataGridViewRowEventArgs)
+        Protected Overrides Sub OnNewRowNeeded(e As DataGridViewRowEventArgs)
             MyBase.OnNewRowNeeded(e)
 
             'If we don't set a MinimumHeight of at least 20, the error glyphs won't
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnUserAddedRow(e As System.Windows.Forms.DataGridViewRowEventArgs)
+        Protected Overrides Sub OnUserAddedRow(e As DataGridViewRowEventArgs)
             MyBase.OnUserAddedRow(e)
 
             If Not AllowUserToAddRows Then
@@ -1277,7 +1277,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnUserDeletingRow(e As System.Windows.Forms.DataGridViewRowCancelEventArgs)
+        Protected Overrides Sub OnUserDeletingRow(e As DataGridViewRowCancelEventArgs)
             MyBase.OnUserDeletingRow(e)
 
             If Not AllowUserToAddRows Then
@@ -1646,7 +1646,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Compare two list items
             ''' </Summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> COLUMN_NAME Then
                     ret = String.Compare(GetColumnValue(x, COLUMN_NAME), GetColumnValue(y, COLUMN_NAME), StringComparison.CurrentCultureIgnoreCase)
@@ -1784,7 +1784,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  We override the EditType property to replace DataGridViewTextBoxEditingControl with ResourceStringTextBoxEditingControl
         ''' </summary>
         Friend Class ResourceStringTextBoxCell
-            Inherits DesignerFramework.DesignerDataGridView.EditOnClickDataGridViewTextBoxCell
+            Inherits EditOnClickDataGridViewTextBoxCell
 
             ''' <summary>
             ''' EditType returns the type of editor to edit one cell in the grid

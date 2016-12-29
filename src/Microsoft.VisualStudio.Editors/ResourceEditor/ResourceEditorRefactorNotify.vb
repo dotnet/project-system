@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rgszParamNames">the names of the parameters</param>
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
-        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code

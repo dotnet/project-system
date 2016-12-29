@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements OleInterop.IPropertyPageSite
         Implements IDisposable
         Implements IServiceProvider
-        Implements OLE.Interop.IServiceProvider
+        Implements OleInterop.IServiceProvider
 
         Private _propPage As OleInterop.IPropertyPage
         Private _appDesView As IPropertyPageSiteOwner
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Set(value As IServiceProvider)
 #If DEBUG Then
                 If value IsNot Nothing Then
-                    Dim NativeServiceProvider As OLE.Interop.IServiceProvider = TryCast(value.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
+                    Dim NativeServiceProvider As OleInterop.IServiceProvider = TryCast(value.GetService(GetType(OleInterop.IServiceProvider)), OleInterop.IServiceProvider)
                     Debug.Assert(NativeServiceProvider IsNot Nothing, "The managed IServiceProvider passed in to PropertyPageSite constructor does not wrap a native IServiceProvider")
                 End If
 #End If
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             _propPage.Apply()
                         Catch ex As Exception
                             successed = False
-                            If Not AppDesCommon.IsCheckoutCanceledException(ex) Then
+                            If Not Common.IsCheckoutCanceledException(ex) Then
                                 Debug.Assert(_appDesView IsNot Nothing, "No project designer - can't show error message: " & ex.ToString())
                                 If _appDesView IsNot Nothing Then
                                     _appDesView.DsMsgBox(ex)
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
-        Public Function TranslateAccelerator(pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer Implements OleInterop.IPropertyPageSite.TranslateAccelerator
+        Public Function TranslateAccelerator(pMsg() As OleInterop.MSG) As Integer Implements OleInterop.IPropertyPageSite.TranslateAccelerator
             Common.Switches.TracePDMessageRouting(TraceLevel.Error, "PropertyPageSite.TranslateAccelerator")
 
             'We're not currently interested in any message filtering from the property pages.
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of any the doc data
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
 
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="serviceType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Public Function GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
             'A couple of specific services we delegate to the application designer, but other than
             '  those exceptions, we want the services coming from the passed-in backing service (which
             '  will come from the PropPageDesignerView).
@@ -280,10 +280,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   like the IVsWindowFrame that the property page is hosted in, which is
         '''   necessary in order to hook up help.
         ''' </remarks>
-        Public Function QueryService(ByRef guidService As System.Guid, ByRef riid As System.Guid, ByRef ppvObject As System.IntPtr) As Integer Implements OLE.Interop.IServiceProvider.QueryService
+        Public Function QueryService(ByRef guidService As Guid, ByRef riid As Guid, ByRef ppvObject As IntPtr) As Integer Implements OleInterop.IServiceProvider.QueryService
             If _backingServiceProvider IsNot Nothing Then
                 'Get the native service provider which the managed IServiceProvider wraps
-                Dim NativeServiceProvider As OLE.Interop.IServiceProvider = TryCast(_backingServiceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
+                Dim NativeServiceProvider As OleInterop.IServiceProvider = TryCast(_backingServiceProvider.GetService(GetType(OleInterop.IServiceProvider)), OleInterop.IServiceProvider)
                 If NativeServiceProvider IsNot Nothing Then
                     Return NativeServiceProvider.QueryService(guidService, riid, ppvObject)
                 Else

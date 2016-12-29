@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 If Cfg IsNot Nothing Then
                     Dim ConfigName As String = ""
                     Dim PlatformName As String = ""
-                    AppDesCommon.ShellUtil.GetConfigAndPlatformFromIVsCfg(Cfg, ConfigName, PlatformName)
+                    Common.ShellUtil.GetConfigAndPlatformFromIVsCfg(Cfg, ConfigName, PlatformName)
 
 #If DEBUG Then
                     Dim Cfg2 As IVsCfg = Nothing

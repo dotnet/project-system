@@ -9,11 +9,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         ' We cache the values in a hashtable of hashtables:
         ' Type -> Serialized value -> Deserialized value
-        Private _cachedSettingValues As New System.Collections.Generic.Dictionary(Of System.Type, System.Collections.Generic.Dictionary(Of String, Object))
+        Private _cachedSettingValues As New Dictionary(Of Type, Dictionary(Of String, Object))
 
-        Private _culture As System.Globalization.CultureInfo
+        Private _culture As Globalization.CultureInfo
 
-        Public Sub New(culture As System.Globalization.CultureInfo)
+        Public Sub New(culture As Globalization.CultureInfo)
             _culture = culture
         End Sub
 
@@ -25,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="serializedValue"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetValue(settingType As System.Type, serializedValue As String) As Object
-            Dim valueDictionary As System.Collections.Generic.Dictionary(Of String, Object) = Nothing
+        Public Function GetValue(settingType As Type, serializedValue As String) As Object
+            Dim valueDictionary As Dictionary(Of String, Object) = Nothing
             If Not _cachedSettingValues.TryGetValue(settingType, valueDictionary) Then
                 ' Make sure we have a 1st level entry for this type
-                valueDictionary = New System.Collections.Generic.Dictionary(Of String, Object)
+                valueDictionary = New Dictionary(Of String, Object)
                 _cachedSettingValues(settingType) = valueDictionary
             End If
 

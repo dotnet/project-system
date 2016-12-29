@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ Returns the default visibility of this properties
         '@ </summary>
         '@ <value>MemberAttributes indicating what visibility to make the generated properties.</value>
-        Friend Overridable ReadOnly Property SettingsClassVisibility() As System.Reflection.TypeAttributes
+        Friend Overridable ReadOnly Property SettingsClassVisibility() As TypeAttributes
             Get
                 Return TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
             End Get
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ </summary>
         '@ <param name="pbstrDefaultExtension"></param>
         '@ <remarks></remarks>
-        Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements Shell.Interop.IVsSingleFileGenerator.DefaultExtension
+        Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
                 ' return the extension - some have a leading "." and some do not...
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="pcbOutput"></param>
         '@ <param name="pGenerateProgress"></param>
         '@ <remarks></remarks>
-        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As System.IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As Shell.Interop.IVsGeneratorProgress) As Integer Implements Shell.Interop.IVsSingleFileGenerator.Generate
+        Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
 
 
             Dim BufPtr As IntPtr = IntPtr.Zero
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                       DefaultNamespace As String,
                                       FilePath As String,
                                       IsDesignTime As Boolean,
-                                      GenerateProgress As Shell.Interop.IVsGeneratorProgress,
+                                      GenerateProgress As IVsGeneratorProgress,
                                       GeneratedClassVisibility As TypeAttributes,
                                       Optional GeneratorSupportsTryCatch As Boolean = True,
                                       Optional GenerateVBMyAutoSave As Boolean = False,
@@ -304,7 +304,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Tell FXCop that we are compiler generated stuff...
             Static toolName As String = GetType(SettingsSingleFileGenerator).FullName
             Static toolVersion As String = GetType(SettingsSingleFileGenerator).Assembly.GetName().Version.ToString()
-            Dim GeneratedCodeAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.CodeDom.Compiler.GeneratedCodeAttribute)),
+            Dim GeneratedCodeAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(GeneratedCodeAttribute)),
                                                                        New CodeAttributeArgument() {New CodeAttributeArgument(New CodePrimitiveExpression(toolName)),
                                                                                                      New CodeAttributeArgument(New CodePrimitiveExpression(toolVersion))})
             generatedType.CustomAttributes.Add(GeneratedCodeAttribute)
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeSettings(InputString As String, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As DesignTimeSettings
+        Private Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
             Dim Settings As New DesignTimeSettings()
             If InputString <> "" Then
                 ' We actually have some contents to deserialize.... 
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="SupportsTryCatch"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <remarks></remarks>
-        Private Shared Sub AddDefaultInstance(GeneratedType As CodeTypeDeclaration, GenerateProgress As Shell.Interop.IVsGeneratorProgress, Optional SupportsTryCatch As Boolean = True, Optional GenerateVBMyAutoSave As Boolean = False)
+        Private Shared Sub AddDefaultInstance(GeneratedType As CodeTypeDeclaration, GenerateProgress As IVsGeneratorProgress, Optional SupportsTryCatch As Boolean = True, Optional GenerateVBMyAutoSave As Boolean = False)
 
             ' type-reference that both the default-instance field and the property will be
             '
@@ -407,8 +407,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
                 '   Class <settings-name-goes-here>
                 '
-                Dim browsableStateTypeReference As CodeTypeReference = CreateGlobalCodeTypeReference(GetType(System.ComponentModel.EditorBrowsableState))
-                Dim browsableAttributeTypeReference As CodeTypeReference = CreateGlobalCodeTypeReference(GetType(System.ComponentModel.EditorBrowsableAttribute))
+                Dim browsableStateTypeReference As CodeTypeReference = CreateGlobalCodeTypeReference(GetType(EditorBrowsableState))
+                Dim browsableAttributeTypeReference As CodeTypeReference = CreateGlobalCodeTypeReference(GetType(EditorBrowsableAttribute))
 
                 Dim browsableAdvancedFieldReference As New CodeFieldReferenceExpression(New CodeTypeReferenceExpression(browsableStateTypeReference), "Advanced")
                 Dim parameters() As CodeAttributeArgument = {New CodeAttributeArgument(browsableAdvancedFieldReference)}
@@ -457,7 +457,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="GenerateProgress"></param>
         '@ <returns></returns>
         '@ <remarks></remarks>
-        Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As Shell.Interop.IVsGeneratorProgress) As CodeMemberProperty
+        Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As IVsGeneratorProgress) As CodeMemberProperty
             Dim CodeProperty As New CodeMemberProperty
             CodeProperty.Attributes = SettingsPropertyVisibility
             CodeProperty.Name = Instance.Name
@@ -482,20 +482,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Add scope attribute
             Dim ScopeAttribute As CodeAttributeDeclaration
             If Instance.Scope = DesignTimeSettingInstance.SettingScope.User Then
-                ScopeAttribute = New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.UserScopedSettingAttribute)))
+                ScopeAttribute = New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.UserScopedSettingAttribute)))
             Else
-                ScopeAttribute = New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.ApplicationScopedSettingAttribute)))
+                ScopeAttribute = New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.ApplicationScopedSettingAttribute)))
             End If
             CodeProperty.CustomAttributes.Add(ScopeAttribute)
 
             If Instance.Provider <> "" Then
-                Dim attr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SettingsProviderAttribute)))
+                Dim attr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsProviderAttribute)))
                 attr.Arguments.Add(New CodeAttributeArgument(New CodeTypeOfExpression(Instance.Provider)))
                 CodeProperty.CustomAttributes.Add(attr)
             End If
 
             If Instance.Description <> "" Then
-                Dim attr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SettingsDescriptionAttribute)))
+                Dim attr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsDescriptionAttribute)))
                 attr.Arguments.Add(New CodeAttributeArgument(New CodePrimitiveExpression(Instance.Description)))
                 CodeProperty.CustomAttributes.Add(attr)
 
@@ -505,21 +505,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             ' Add DebuggerNonUserCode attribute
-            CodeProperty.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Diagnostics.DebuggerNonUserCodeAttribute))))
+            CodeProperty.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(DebuggerNonUserCodeAttribute))))
 
             If String.Equals(Instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 ' Add connection string attribute if this is a connection string...
-                Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSetting)))
+                Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(Configuration.SpecialSetting)))
                 Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, Configuration.SpecialSetting.ConnectionString.ToString())
                 Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
-                Dim ConnectionStringAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSettingAttribute)), Parameters)
+                Dim ConnectionStringAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.SpecialSettingAttribute)), Parameters)
                 CodeProperty.CustomAttributes.Add(ConnectionStringAttribute)
             ElseIf String.Equals(Instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
                 ' Add web reference attribute if this is a web reference...
-                Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSetting)))
+                Dim SpecialSettingRefExp As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(Configuration.SpecialSetting)))
                 Dim FieldExp As New CodeFieldReferenceExpression(SpecialSettingRefExp, Configuration.SpecialSetting.WebServiceUrl.ToString())
                 Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
-                Dim WebReferenceAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SpecialSettingAttribute)), Parameters)
+                Dim WebReferenceAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.SpecialSettingAttribute)), Parameters)
                 CodeProperty.CustomAttributes.Add(WebReferenceAttribute)
             End If
 
@@ -541,15 +541,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Shared Sub AddDefaultValueAttribute(CodeProperty As CodeMemberProperty, Value As String)
             ' Add default value attribute
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(New CodePrimitiveExpression(Value))}
-            Dim DefaultValueAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.DefaultSettingValueAttribute)), Parameters)
+            Dim DefaultValueAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.DefaultSettingValueAttribute)), Parameters)
             CodeProperty.CustomAttributes.Add(DefaultValueAttribute)
         End Sub
 
-        Private Shared Sub AddManagebilityAttribue(CodeProperty As CodeMemberProperty, Value As System.Configuration.SettingsManageability)
-            Dim SettingsManageability As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(System.Configuration.SettingsManageability)))
+        Private Shared Sub AddManagebilityAttribue(CodeProperty As CodeMemberProperty, Value As Configuration.SettingsManageability)
+            Dim SettingsManageability As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsManageability)))
             Dim FieldExp As New CodeFieldReferenceExpression(SettingsManageability, Value.ToString)
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
-            Dim SettingsManageabilityAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Configuration.SettingsManageabilityAttribute)), Parameters)
+            Dim SettingsManageabilityAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsManageabilityAttribute)), Parameters)
             CodeProperty.CustomAttributes.Add(SettingsManageabilityAttribute)
         End Sub
 
@@ -560,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <remarks></remarks>
         Friend Shared ReadOnly Property SettingsBaseClass() As Type
             Get
-                Return GetType(System.Configuration.ApplicationSettingsBase)
+                Return GetType(Configuration.ApplicationSettingsBase)
             End Get
         End Property
 
@@ -655,7 +655,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ </summary>
         '@ <param name="GenerateProgress"></param>
         '@ <remarks></remarks>
-        Protected Overridable Sub AddRequiredReferences(GenerateProgress As Shell.Interop.IVsGeneratorProgress)
+        Protected Overridable Sub AddRequiredReferences(GenerateProgress As IVsGeneratorProgress)
             Dim CurrentProjectItem As EnvDTE.ProjectItem = CType(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
             If CurrentProjectItem Is Nothing Then
                 Debug.Fail("Failed to get EnvDTE.ProjectItem service")
@@ -736,7 +736,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Also add the help keyword attribute
             '
-            Dim helpKeywordAttr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.ComponentModel.Design.HelpKeywordAttribute)))
+            Dim helpKeywordAttr As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Design.HelpKeywordAttribute)))
             helpKeywordAttr.Arguments.Add(New CodeAttributeArgument(New CodePrimitiveExpression(HelpIDs.MySettingsHelpKeyword)))
             SettingProperty.CustomAttributes.Add(helpKeywordAttr)
 
@@ -753,8 +753,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim ModuleDecl As New CodeTypeDeclaration(s_mySettingsModuleName)
             ModuleDecl.UserData("Module") = True
             ModuleDecl.TypeAttributes = TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
-            ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(Microsoft.VisualBasic.HideModuleNameAttribute))))
-            ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Diagnostics.DebuggerNonUserCodeAttribute))))
+            ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(HideModuleNameAttribute))))
+            ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(DebuggerNonUserCodeAttribute))))
             ' add the CompilerGeneratedAttribute in order to support deploying VB apps in Yukon (where
             '   our shared/static fields make the code not "safe" according to Yukon's measure of what
             '   it means to deploy a safe assembly. VSWhidbey 320692.
@@ -907,7 +907,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _site IsNot Nothing Then
-                    Dim OleSp As OLE.Interop.IServiceProvider = CType(_site, OLE.Interop.IServiceProvider)
+                    Dim OleSp As IServiceProvider = CType(_site, IServiceProvider)
                     _serviceProvider = New ServiceProvider(OleSp)
                 End If
                 Return _serviceProvider
@@ -927,7 +927,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
 #Region "IObjectWithSite implementation"
-        Private Sub GetSite(ByRef riid As System.Guid, ByRef ppvSite As System.IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
+        Private Sub GetSite(ByRef riid As Guid, ByRef ppvSite As IntPtr) Implements IObjectWithSite.GetSite
             If _site Is Nothing Then
                 ' Throw E_FAIL
                 Throw New Win32Exception(NativeMethods.E_FAIL)
@@ -949,7 +949,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Try
         End Sub
 
-        Private Sub SetSite(pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
+        Private Sub SetSite(pUnkSite As Object) Implements IObjectWithSite.SetSite
             _site = pUnkSite
             ClearCachedServices()
         End Sub
@@ -984,11 +984,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' We need to tell all settings global object to update the default namespace as well... 
                     ' if we don't do this, they will have the old namespace cached and anyone who asks for a 
                     ' virtual type will get a type with a bogus namespace...
-                    Dim sp As Microsoft.VisualStudio.Shell.ServiceProvider = Common.ServiceProviderFromHierarchy(phier)
+                    Dim sp As ServiceProvider = Common.ServiceProviderFromHierarchy(phier)
                     Dim proj As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(phier)
-                    Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(sp, proj, GetType(System.ComponentModel.Design.Serialization.CodeDomSerializer))
+                    Dim objectService As Design.GlobalObjectService = New Design.GlobalObjectService(sp, proj, GetType(Design.Serialization.CodeDomSerializer))
                     If objectService IsNot Nothing Then
-                        Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(System.Configuration.ApplicationSettingsBase))
+                        Dim objectCollection As Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
                         If Not objectCollection Is Nothing Then
                             ' Note: We are currently calling refresh on all settings global objects for each
                             '   refactor notify, which effectively makes this an O(n^2) operation where n is the
@@ -997,7 +997,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             '   b) Once we have retreived the settings global object, it will be cached
                             '      and the retreival is just a hash table lookup.
                             '   c) The Refresh is a cheap operation
-                            For Each gob As Shell.Design.GlobalObject In objectCollection
+                            For Each gob As Design.GlobalObject In objectCollection
                                 Dim sgob As SettingsGlobalObjects.SettingsFileGlobalObject = TryCast(gob, SettingsGlobalObjects.SettingsFileGlobalObject)
                                 If sgob IsNot Nothing Then
                                     sgob.Refresh()
@@ -1040,7 +1040,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="rgszParamNames">the names of the parameters</param>
         '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         '@ <returns>error code</returns>
-        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As System.Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
+        Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported))
             ' Always return an error code to disable parameter modifications for generated code
@@ -1141,7 +1141,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <param name="serviceType">The type of service requested</param>
         '@ <returns>An instance of the service, or nothing if service not found</returns>
         '@ <remarks></remarks>
-        Private Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+        Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
             Else

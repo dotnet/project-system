@@ -108,8 +108,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Add any initialization after the InitializeComponent() call
             '
             Me.Name = "DesignerTabControl"
-            Me.Padding = New System.Windows.Forms.Padding(0)
-            Me.Size = New System.Drawing.Size(144, 754)
+            Me.Padding = New Padding(0)
+            Me.Size = New Size(144, 754)
             Me.TabIndex = 0
             Me.DoubleBuffered = True
             Me.Controls.Add(_hostingPanel)
@@ -179,8 +179,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            OverflowButton.FlatAppearance.BorderColor = AppDesCommon.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
-            OverflowButton.FlatAppearance.MouseOverBackColor = AppDesCommon.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
+            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
+            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
 
             If _broadcastMessageEventsHelper IsNot Nothing Then
                 _broadcastMessageEventsHelper.Dispose()
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowButton_Click(sender As Object, e As System.EventArgs) Handles OverflowButton.Click
+        Private Sub OverflowButton_Click(sender As Object, e As EventArgs) Handles OverflowButton.Click
             'Set up to use VS colors
             If _serviceProvider IsNot Nothing Then
                 Dim uiSvc As IUIService = DirectCast(_serviceProvider.GetService(GetType(IUIService)), IUIService)
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _overflowMenu.Renderer = Renderer
                     End If
 
-                    Dim NewFont As Font = DirectCast(uiSvc.Styles("DialogFont"), Drawing.Font)
+                    Dim NewFont As Font = DirectCast(uiSvc.Styles("DialogFont"), Font)
                     If NewFont IsNot Nothing Then
                         _overflowMenu.Font = NewFont
                     End If
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowMenuItemClick(sender As Object, e As System.EventArgs)
+        Private Sub OverflowMenuItemClick(sender As Object, e As EventArgs)
             Dim MenuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim Button As ProjectDesignerTabButton = DirectCast(MenuItem.Tag, ProjectDesignerTabButton)
             Debug.Assert(Button IsNot Nothing)
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
         ''' <remarks></remarks>
-        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
                     _renderer.CreateGDIObjects(True)
@@ -600,7 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Me.New()
 
                 'Get the image and make it transparent
-                Dim Image As Image = AppDesCommon.GetManifestBitmapTransparent(ImageResourceId, TransparentColor, GetType(Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl).Assembly)
+                Dim Image As Image = Common.GetManifestBitmapTransparent(ImageResourceId, TransparentColor, GetType(ProjectDesignerTabControl).Assembly)
                 MyBase.Image = Image
             End Sub
 
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
+            Protected Overrides Sub OnMouseEnter(e As EventArgs)
                 MyBase.OnMouseEnter(e)
 
                 'No border unless the mouse is over the button
@@ -623,7 +623,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
+            Protected Overrides Sub OnMouseLeave(e As EventArgs)
                 MyBase.OnMouseLeave(e)
 
                 'No border unless the mouse is over the button

@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Returns the default visibility of this properties
         ''' </summary>
         ''' <value>MemberAttributes indicating what visibility to make the generated properties.</value>
-        Friend Overrides ReadOnly Property SettingsClassVisibility() As System.Reflection.TypeAttributes
+        Friend Overrides ReadOnly Property SettingsClassVisibility() As TypeAttributes
             Get
                 Return TypeAttributes.Sealed Or TypeAttributes.Public
             End Get

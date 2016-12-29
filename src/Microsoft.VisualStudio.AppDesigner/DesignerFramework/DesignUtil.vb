@@ -112,9 +112,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks></remarks>
         Public Shared Function GetDefaultCaption(sp As IServiceProvider) As String
             Dim caption As String = ""
-            Dim uiShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
+            Dim uiShell As IVsUIShell = Nothing
             If sp IsNot Nothing Then
-                uiShell = DirectCast(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                uiShell = DirectCast(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If uiShell Is Nothing OrElse AppDesInterop.NativeMethods.Failed(uiShell.GetAppName(caption)) Then
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
             Try
                 vshelp.DisplayTopicFromF1Keyword(keyword)
-            Catch ex As System.Runtime.InteropServices.COMException
+            Catch ex As COMException
                 ' DisplayTopicFromF1Keyword may throw COM exceptions even though dexplore shows the appropriate error message
                 System.Diagnostics.Debug.Assert(System.Runtime.InteropServices.Marshal.GetHRForException(ex) = &H80040305, String.Format("Unknown COM Exception {0} when trying to show help topic {1}", ex, keyword))
             End Try
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ' each char must be Lu, Ll, Lt, Lm, Lo, Nd, Mn, Mc, Pc
             ' 
             For Each ch As Char In chars
-                Dim uc As System.Globalization.UnicodeCategory = Char.GetUnicodeCategory(ch)
+                Dim uc As Globalization.UnicodeCategory = Char.GetUnicodeCategory(ch)
                 Select Case uc
                     Case System.Globalization.UnicodeCategory.UppercaseLetter, _
                         System.Globalization.UnicodeCategory.LowercaseLetter, _
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="dd"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetEncoding(dd As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) As System.Text.Encoding
+        Public Shared Function GetEncoding(dd As Shell.Design.Serialization.DocData) As System.Text.Encoding
             ' Try to get the encoding of the textbuffer that we are going to write to...
             Try
                 Static GUID_VsBufferEncodingVSTFF As New Guid("{16417F39-A6B7-4c90-89FA-770D2C60440B}")

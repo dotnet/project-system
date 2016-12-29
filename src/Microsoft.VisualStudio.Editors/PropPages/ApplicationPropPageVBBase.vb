@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Called after a property is changed through UI on this property page
         ''' </summary>
-        Public Overrides Sub OnPropertyChanged(PropertyName As String, PropDesc As System.ComponentModel.PropertyDescriptor, OldValue As Object, NewValue As Object)
+        Public Overrides Sub OnPropertyChanged(PropertyName As String, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
             MyBase.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
 
             If PropertyName = "RootNamespace" Then
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(ServiceProvider, Project, GetType(Serialization.CodeDomSerializer))
                 If objectService IsNot Nothing Then
-                    Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(System.Configuration.ApplicationSettingsBase))
+                    Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
                     If Not objectCollection Is Nothing Then
                         For Each gob As Shell.Design.GlobalObject In objectCollection
                             Dim sgob As SettingsGlobalObjects.SettingsFileGlobalObject = TryCast(gob, SettingsGlobalObjects.SettingsFileGlobalObject)
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Class ApplicationTypeInfo
 
-            Private _applicationType As MyApplication.ApplicationTypes
+            Private _applicationType As ApplicationTypes
             Private _displayName As String
             Private _name As String 'Non-localized name
             Private _supportedInExpress As Boolean
@@ -342,15 +342,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <param name="DisplayName"></param>
             ''' <param name="SupportedInExpress"></param>
             ''' <remarks></remarks>
-            Public Sub New(ApplicationType As MyApplication.ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
+            Public Sub New(ApplicationType As ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
                 _applicationType = ApplicationType
                 _displayName = DisplayName
-                _name = [Enum].GetName(GetType(MyApplication.ApplicationTypes), ApplicationType)
+                _name = [Enum].GetName(GetType(ApplicationTypes), ApplicationType)
                 _supportedInExpress = SupportedInExpress
             End Sub
 
 #Region "Trivial property get:ers"
-            Public ReadOnly Property ApplicationType() As MyApplication.ApplicationTypes
+            Public ReadOnly Property ApplicationType() As ApplicationTypes
                 Get
                     Return _applicationType
                 End Get
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Match against a given semicolon separated list of (non-localized) names and optionally if the application type must be supported
             ''' by Express SKUs
             ''' </summary>
-            Public Shared Function GetSemicolonSeparatedNamesPredicate(SemicolonSeparatedNames As String, MustBeSupportedByExpressSKUs As Boolean) As System.Predicate(Of ApplicationTypeInfo)
+            Public Shared Function GetSemicolonSeparatedNamesPredicate(SemicolonSeparatedNames As String, MustBeSupportedByExpressSKUs As Boolean) As Predicate(Of ApplicationTypeInfo)
                 Dim pred As New SemicolonSeparatedNamesPredicate(SemicolonSeparatedNames, MustBeSupportedByExpressSKUs)
                 Return AddressOf pred.Compare
             End Function
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Matches application types
             ''' </summary>
-            Public Shared Function ApplicationTypePredicate(AppType As ApplicationTypes) As System.Predicate(Of ApplicationTypeInfo)
+            Public Shared Function ApplicationTypePredicate(AppType As ApplicationTypes) As Predicate(Of ApplicationTypeInfo)
                 Dim pred As New AppTypePredicate(AppType)
                 Return AddressOf pred.Compare
             End Function
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Public Delegate Function CompareFun(SemicolonSeparatedNames As String, Item As ApplicationTypeInfo) As Boolean
 
                 ' Non-localized name to match
-                Private _names As New Generic.Dictionary(Of String, Boolean)
+                Private _names As New Dictionary(Of String, Boolean)
                 Private _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>
@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Protected Function UACSettingsButtonSupported(appType As MyApplication.ApplicationTypes) As Boolean
+        Protected Function UACSettingsButtonSupported(appType As ApplicationTypes) As Boolean
             Return UACSettingsButtonSupported(CType(MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
         End Function
 
@@ -556,7 +556,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     Debug.Assert(ProjectHierarchy IsNot Nothing, "Hierarchy is nothing...")
-                    Dim SpecialProjectItems As Global.Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles = TryCast(ProjectHierarchy, IVsProjectSpecialFiles)
+                    Dim SpecialProjectItems As IVsProjectSpecialFiles = TryCast(ProjectHierarchy, IVsProjectSpecialFiles)
                     If SpecialProjectItems Is Nothing Then
                         Debug.Fail("Failed to get IVsProjectSpecialFiles from project")
                         Throw New InvalidOperationException()

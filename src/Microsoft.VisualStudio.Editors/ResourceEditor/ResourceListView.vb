@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return DirectCast(Parent, ResourceEditorView)
                 Else
                     Debug.Fail("Not parented to a ResourceEditorView?")
-                    Throw New System.InvalidOperationException()
+                    Throw New InvalidOperationException()
                 End If
             End Get
         End Property
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnBeforeLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnBeforeLabelEdit(e As LabelEditEventArgs)
             If ParentView.ReadOnlyMode Then
                 e.CancelEdit = True
                 Return
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We use this event to detect that the user has changed the name of a Resource by editing the label
         '''   on a listview item.
         ''' </remarks>
-        Protected Overrides Sub OnAfterLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnAfterLabelEdit(e As LabelEditEventArgs)
             MyBase.OnAfterLabelEdit(e)
             ParentView.OnItemEndEdit()
 
@@ -568,7 +568,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Index As Integer = IndexOf(Resource)
                 SelectResource(Index, True)
 
-                Dim HR As New System.Runtime.InteropServices.HandleRef(Me, Handle)
+                Dim HR As New HandleRef(Me, Handle)
                 If Interop.NativeMethods.IsWindowUnicode(Handle) Then
                     Interop.NativeMethods.SendMessage(HR, Interop.win.LVM_EDITLABELW, Index, 0)
                 Else
@@ -784,7 +784,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCacheVirtualItems(e As System.Windows.Forms.CacheVirtualItemsEventArgs)
+        Protected Overrides Sub OnCacheVirtualItems(e As CacheVirtualItemsEventArgs)
             MyBase.OnCacheVirtualItems(e)
 
             If _thumbnailCache IsNot Nothing Then
@@ -967,7 +967,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Retrieval arguments</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnRetrieveVirtualItem(e As System.Windows.Forms.RetrieveVirtualItemEventArgs)
+        Protected Overrides Sub OnRetrieveVirtualItem(e As RetrieveVirtualItemEventArgs)
             MyBase.OnRetrieveVirtualItem(e)
 
             If ResourceFile Is Nothing Then
@@ -1236,7 +1236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function GetSelectedResources() As Resource()
             Dim Selected() As Resource
             Dim i As Integer
-            Dim SelectedListIndices As ListView.SelectedIndexCollection = SelectedIndices
+            Dim SelectedListIndices As SelectedIndexCollection = SelectedIndices
             ReDim Selected(SelectedListIndices.Count - 1)
             For Each SelectedIndex As Integer In SelectedListIndices
                 Selected(i) = GetResourceFromVirtualIndex(SelectedIndex)
@@ -1274,7 +1274,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #If True Then 'CONSIDER rewriting now that virtualized listview has way to select/deselect
-        <System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)> _
         Private Structure LVITEM
             Public mask As Integer
             Public iItem As Integer
@@ -1470,7 +1470,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Compare two list items
             ''' </Summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> 0 Then
                     ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.CurrentCultureIgnoreCase)

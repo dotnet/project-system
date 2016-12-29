@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            Dim serviceProvider As New Microsoft.VisualStudio.Shell.ServiceProvider(Site)
+            Dim serviceProvider As New Shell.ServiceProvider(Site)
             Dim vsUIShellOpenDocument As IVsUIShellOpenDocument = TryCast(serviceProvider.GetService(GetType(SVsUIShellOpenDocument).GUID), IVsUIShellOpenDocument)
 
             If vsUIShellOpenDocument Is Nothing Then

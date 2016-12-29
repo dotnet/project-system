@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Enabled = True
 
             SavePasswordHashLocallyCheckbox.Checked = ServicesPropPageAppConfigHelper.GetSavePasswordHashLocally(_appConfigDocument, ProjectHierarchy)
-            Dim honorCookieExpiryValue As Nullable(Of Boolean) = ServicesPropPageAppConfigHelper.GetEffectiveHonorCookieExpiry(_appConfigDocument, ProjectHierarchy)
+            Dim honorCookieExpiryValue As Boolean? = ServicesPropPageAppConfigHelper.GetEffectiveHonorCookieExpiry(_appConfigDocument, ProjectHierarchy)
             If honorCookieExpiryValue.HasValue Then
                 HonorServerCookieExpirationCheckbox.Checked = CBool(honorCookieExpiryValue)
             Else
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 CustomConnectionString.Enabled = True
             End If
             UpdateCustomConnectionStringControlBasedOnCheckState()
-            Dim preferredHeight As Integer = CustomConnectionString.GetPreferredSize(New System.Drawing.Size(CustomConnectionString.Width, 0)).Height
+            Dim preferredHeight As Integer = CustomConnectionString.GetPreferredSize(New Drawing.Size(CustomConnectionString.Width, 0)).Height
             If CustomConnectionString.Height < preferredHeight Then CustomConnectionString.Height = preferredHeight
             SetDirtyFlag()
         End Sub

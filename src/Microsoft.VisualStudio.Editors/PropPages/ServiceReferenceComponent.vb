@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
-        <MergablePropertyAttribute(False)>
+        <MergableProperty(False)>
         <HelpKeyword("ServiceReference Properties.Namespace")>
         Public Property [Namespace]() As String
             Get
@@ -39,10 +39,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayNameAttribute(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
+        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
         <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
         <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
-        <MergablePropertyAttribute(False)>
+        <MergableProperty(False)>
         Public Property ServiceReferenceURL() As String
             Get
                 If _referenceGroup.GetReferenceCount() = 1 Then
@@ -120,39 +120,39 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' we overrite the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
         ' all other functions are implemented in its default way...
 
-        Public Function GetAttributes() As System.ComponentModel.AttributeCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetAttributes
+        Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
             Return TypeDescriptor.GetAttributes([GetType]())
         End Function
 
-        Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
+        Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
             Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceTypeName)
         End Function
 
-        Public Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
+        Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
             Return [Namespace]
         End Function
 
-        Public Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
+        Public Function GetConverter() As TypeConverter Implements ICustomTypeDescriptor.GetConverter
             Return TypeDescriptor.GetConverter([GetType]())
         End Function
 
-        Public Function GetDefaultEvent() As System.ComponentModel.EventDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultEvent
+        Public Function GetDefaultEvent() As EventDescriptor Implements ICustomTypeDescriptor.GetDefaultEvent
             Return TypeDescriptor.GetDefaultEvent([GetType]())
         End Function
 
-        Public Function GetDefaultProperty() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty
+        Public Function GetDefaultProperty() As PropertyDescriptor Implements ICustomTypeDescriptor.GetDefaultProperty
             Return TypeDescriptor.GetDefaultProperty([GetType]())
         End Function
 
-        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As Type) As Object Implements ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor([GetType](), editorBaseType)
         End Function
 
-        Public Function GetEvents() As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents() As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents([GetType]())
         End Function
 
-        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As Attribute) As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents([GetType](), attributes)
         End Function
 
@@ -179,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return New PropertyDescriptorCollection(modified)
         End Function
 
-        Public Function GetProperties() As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties() As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Dim orig As PropertyDescriptorCollection = TypeDescriptor.GetProperties([GetType]())
 
             If _referenceGroup.GetReferenceCount() > 1 Then
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As Attribute) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Dim orig As PropertyDescriptorCollection = TypeDescriptor.GetProperties([GetType](), attributes)
 
             If _referenceGroup.GetReferenceCount() > 1 Then
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As PropertyDescriptor) As Object Implements ICustomTypeDescriptor.GetPropertyOwner
             Return Me
         End Function
 #End Region

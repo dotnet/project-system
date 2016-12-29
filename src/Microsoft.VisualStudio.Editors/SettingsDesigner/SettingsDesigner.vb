@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="technology"></param>
         ''' <returns>The view for this root designer</returns>
         ''' <remarks></remarks>
-        Public Function GetView(technology As System.ComponentModel.Design.ViewTechnology) As Object Implements System.ComponentModel.Design.IRootDesigner.GetView
+        Public Function GetView(technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If technology <> ViewTechnology.Default Then
                 Debug.Fail("Unsupported view technology!")
                 Throw New NotSupportedException()
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public ReadOnly Property SupportedTechnologies() As System.ComponentModel.Design.ViewTechnology() Implements System.ComponentModel.Design.IRootDesigner.SupportedTechnologies
+        Public ReadOnly Property SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Overloads Sub ShowContextMenu(sender As Object, e As System.Windows.Forms.MouseEventArgs)
+        Public Overloads Sub ShowContextMenu(sender As Object, e As Windows.Forms.MouseEventArgs)
             ShowContextMenu(Constants.MenuConstants.SettingsDesignerContextMenuID, e.X, e.Y)
         End Sub
 
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             ' No settings class provided - let's crack open the .settings file... 
                             '
                             Settings = New DesignTimeSettings()
-                            Using Reader As New System.IO.StreamReader(FullPath)
+                            Using Reader As New IO.StreamReader(FullPath)
                                 SettingsSerializer.Deserialize(Settings, Reader, True)
                             End Using
                         End If
@@ -403,11 +403,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
             ' The path passed in to us is the path to the current active user.config file..
-            Dim currentApplicationVersionDirectoryInfo As New System.IO.DirectoryInfo(path)
+            Dim currentApplicationVersionDirectoryInfo As New IO.DirectoryInfo(path)
 
             ' The application may have scribbled user.config files in sibling directories to the current version's
             ' directory, so we'll start off from there...
-            Dim applicationRootDirectoryInfo As System.IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
+            Dim applicationRootDirectoryInfo As IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
 
             ' If the parent directory doesn't exist, we are fine...
             If Not applicationRootDirectoryInfo.Exists Then

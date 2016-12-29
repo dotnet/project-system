@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Dispose
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub Dispose() Implements System.IDisposable.Dispose
+        Public Sub Dispose() Implements IDisposable.Dispose
             UnadviseEventHandling()
             Me._project = Nothing
             Me._vsCfgProvider = Nothing
@@ -364,7 +364,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property IsSimplifiedConfigMode() As Boolean
             Get
-                Return AppDesCommon.ShellUtil.GetIsSimplifiedConfigMode(_projectHierarchy)
+                Return Common.ShellUtil.GetIsSimplifiedConfigMode(_projectHierarchy)
             End Get
         End Property
 
@@ -598,13 +598,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="pszCfgName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnCfgNameAdded(pszCfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameAdded
+        Public Function OnCfgNameAdded(pszCfgName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameAdded: Updating list")
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameAdded), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnCfgNameAdded), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -615,7 +615,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="CfgName"></param>
         ''' <remarks></remarks>
-        Public Function OnCfgNameDeleted(CfgName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameDeleted
+        Public Function OnCfgNameDeleted(CfgName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameDeleted: Clearing undo/redo stack")
 
@@ -625,7 +625,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameDeleted), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnCfgNameDeleted), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -637,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="OldName"></param>
         ''' <param name="NewName"></param>
         ''' <remarks></remarks>
-        Public Function OnCfgNameRenamed(OldName As String, NewName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnCfgNameRenamed
+        Public Function OnCfgNameRenamed(OldName As String, NewName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameRenamed
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameRenamed: Clearing undo/redo stack")
 
@@ -647,7 +647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnCfgNameRenamed), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnCfgNameRenamed), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -658,13 +658,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
         ''' <remarks></remarks>
-        Public Function OnPlatformNameAdded(pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameAdded
+        Public Function OnPlatformNameAdded(pszPlatformName As String) As Integer Implements IVsCfgProviderEvents.OnPlatformNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameAdded: Updating list")
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=True)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameAdded), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnPlatformNameAdded), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -675,7 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
         ''' <remarks></remarks>
-        Public Function OnPlatformNameDeleted(pszPlatformName As String) As Integer Implements Shell.Interop.IVsCfgProviderEvents.OnPlatformNameDeleted
+        Public Function OnPlatformNameDeleted(pszPlatformName As String) As Integer Implements IVsCfgProviderEvents.OnPlatformNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameDeleted: Clearing undo/redo stack")
 
@@ -685,7 +685,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateEntriesAndNotifyPages(KeepCurrentSelection:=False)
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnPlatformNameDeleted), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnPlatformNameDeleted), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="pIVsHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnActiveProjectCfgChange(pIVsHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.OnActiveProjectCfgChange
+        Public Function OnActiveProjectCfgChange(pIVsHierarchy As IVsHierarchy) As Integer Implements IVsUpdateSolutionEvents.OnActiveProjectCfgChange
             Try
                 If pIVsHierarchy Is Nothing OrElse pIVsHierarchy Is _projectHierarchy Then
                     Common.Switches.TracePDConfigs("OnActiveProjectCfgChange: Hierarchy matches or is Nothing, changing configs")
@@ -715,25 +715,25 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 CheckForModeChanges()
                 Return VSConstants.S_OK
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(OnActiveProjectCfgChange), NameOf(ConfigurationState))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnActiveProjectCfgChange), NameOf(ConfigurationState))
                 Throw
             End Try
         End Function
 
-        Public Function UpdateSolution_Begin(ByRef pfCancelUpdate As Integer) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_Begin
+        Public Function UpdateSolution_Begin(ByRef pfCancelUpdate As Integer) As Integer Implements IVsUpdateSolutionEvents.UpdateSolution_Begin
             Return VSConstants.S_OK
         End Function
 
-        Public Function UpdateSolution_Cancel() As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_Cancel
+        Public Function UpdateSolution_Cancel() As Integer Implements IVsUpdateSolutionEvents.UpdateSolution_Cancel
             Return VSConstants.S_OK
         End Function
 
-        Public Function UpdateSolution_Done(fSucceeded As Integer, fModified As Integer, fCancelCommand As Integer) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_Done
+        Public Function UpdateSolution_Done(fSucceeded As Integer, fModified As Integer, fCancelCommand As Integer) As Integer Implements IVsUpdateSolutionEvents.UpdateSolution_Done
             CheckForModeChanges()
             Return VSConstants.S_OK
         End Function
 
-        Public Function UpdateSolution_StartUpdate(ByRef pfCancelUpdate As Integer) As Integer Implements Shell.Interop.IVsUpdateSolutionEvents.UpdateSolution_StartUpdate
+        Public Function UpdateSolution_StartUpdate(ByRef pfCancelUpdate As Integer) As Integer Implements IVsUpdateSolutionEvents.UpdateSolution_StartUpdate
             Return VSConstants.S_OK
         End Function
 

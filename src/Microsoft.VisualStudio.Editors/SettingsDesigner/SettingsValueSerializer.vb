@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <remarks></remarks>
     Friend Class SettingsValueSerializer
 
-        Public Function Deserialize(ValueType As System.Type, serializedValue As String, culture As System.Globalization.CultureInfo) As Object
+        Public Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object
             If ValueType Is GetType(String) Then
                 ' VsWhidbey 270764:
                 ' Strings require special handling, since the ConfigHelper API assumes that all serialized representations
@@ -54,21 +54,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                     ' For some reason, enumerations' deserialization works even when the integer value is out of range...
                     ' Well, we know better - let's check for this funky case and return nothing :)
-                    If val IsNot Nothing AndAlso GetType(System.Enum).IsAssignableFrom(ValueType) AndAlso Not [Enum].IsDefined(ValueType, val) Then
+                    If val IsNot Nothing AndAlso GetType([Enum]).IsAssignableFrom(ValueType) AndAlso Not [Enum].IsDefined(ValueType, val) Then
                         ' If this is a flags attribute, we can't assume that the enum is defined
-                        If ValueType.GetCustomAttributes(GetType(System.FlagsAttribute), False).Length = 0 Then
+                        If ValueType.GetCustomAttributes(GetType(FlagsAttribute), False).Length = 0 Then
                             Return Nothing
                         End If
                     End If
                     Return val
-                Catch Ex As System.Exception
+                Catch Ex As Exception
                     ' Failed to convert - return NOTHING
                 End Try
             End If
 
             ' Yet again we have some special handling for connection strings...
-            If ValueType Is GetType(Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString) AndAlso serializedValue <> "" Then
-                Dim scs As New Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString
+            If ValueType Is GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString) AndAlso serializedValue <> "" Then
+                Dim scs As New VSDesigner.VSDesignerPackage.SerializableConnectionString
                 scs.ConnectionString = serializedValue
                 scs.ProviderName = ""
                 Return scs
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Nothing
         End Function
 
-        Public Function Serialize(value As Object, culture As System.Globalization.CultureInfo) As String
+        Public Function Serialize(value As Object, culture As Globalization.CultureInfo) As String
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Private Function SerializeImpl(value As Object, culture As System.Globalization.CultureInfo) As String
+        Private Function SerializeImpl(value As Object, culture As Globalization.CultureInfo) As String
             If value Is Nothing Then
                 Return ""
             ElseIf value.GetType().Equals(GetType(String)) Then
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Normalize(serializedValue As String, type As System.Type) As String
+        Public Function Normalize(serializedValue As String, type As Type) As String
             If SettingTypeValidator.IsTypeObsolete(type) Then
                 Return serializedValue
             Else

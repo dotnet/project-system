@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 #If DEBUG Then
-        Private Sub ApplicationDesignerWindowPaneControl_SizeChanged(sender As Object, e As System.EventArgs) Handles Me.SizeChanged
+        Private Sub ApplicationDesignerWindowPaneControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
             Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerWindowPaneControl_SizeChanged: " & Me.Size.ToString())
         End Sub
 #End If

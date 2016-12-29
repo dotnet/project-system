@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             Else
                 Debug.Fail("Unable to find resource from manifest: " & ManifestResourceId)
-                Throw New Package.InternalException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg))
+                Throw New InternalException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg))
             End If
         End Sub
 
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The IResource instance to validate</param>
         ''' <param name="ExpectedTypes">The type(s) which the resource is expected to be (optional).</param>
         ''' <remarks>Verifies that ResourceValue is not Nothing, and that it is of type ExpectedType.</remarks>
-        Protected Shared Sub ValidateResourceValue(Resource As IResource, ParamArray ExpectedTypes() As System.Type)
+        Protected Shared Sub ValidateResourceValue(Resource As IResource, ParamArray ExpectedTypes() As Type)
             If Resource Is Nothing Then
                 Debug.Fail("Resource should not be nothing")
                 Throw New InternalException

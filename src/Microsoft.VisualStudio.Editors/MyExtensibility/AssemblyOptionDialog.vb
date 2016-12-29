@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Me.InitializeComponent()
         End Sub
 #Else
-        Inherits Microsoft.VisualStudio.Editors.DesignerFramework.BaseDialog
+        Inherits DesignerFramework.BaseDialog
 
         ''' ;GetAssemblyOptionDialog
         ''' <summary>
@@ -109,23 +109,23 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 
 #Region "Windows Form Designer generated code"
-        Friend WithEvents labelQuestion As System.Windows.Forms.Label
-        Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents listBoxItems As System.Windows.Forms.ListBox
-        Friend WithEvents tableLayoutYesNoButtons As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents buttonYes As System.Windows.Forms.Button
+        Friend WithEvents labelQuestion As Windows.Forms.Label
+        Friend WithEvents tableLayoutOverarching As Windows.Forms.TableLayoutPanel
+        Friend WithEvents listBoxItems As Windows.Forms.ListBox
+        Friend WithEvents tableLayoutYesNoButtons As Windows.Forms.TableLayoutPanel
+        Friend WithEvents buttonYes As Windows.Forms.Button
         Friend WithEvents checkBoxOption As DesignerFramework.WrapCheckBox
-        Friend WithEvents buttonNo As System.Windows.Forms.Button
-        Private _components As System.ComponentModel.IContainer
+        Friend WithEvents buttonNo As Windows.Forms.Button
+        Private _components As IContainer
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AssemblyOptionDialog))
-            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            labelQuestion = New System.Windows.Forms.Label
-            listBoxItems = New System.Windows.Forms.ListBox
-            tableLayoutYesNoButtons = New System.Windows.Forms.TableLayoutPanel
-            buttonYes = New System.Windows.Forms.Button
-            buttonNo = New System.Windows.Forms.Button
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(AssemblyOptionDialog))
+            tableLayoutOverarching = New Windows.Forms.TableLayoutPanel
+            labelQuestion = New Windows.Forms.Label
+            listBoxItems = New Windows.Forms.ListBox
+            tableLayoutYesNoButtons = New Windows.Forms.TableLayoutPanel
+            buttonYes = New Windows.Forms.Button
+            buttonNo = New Windows.Forms.Button
             checkBoxOption = New DesignerFramework.WrapCheckBox
             tableLayoutOverarching.SuspendLayout()
             tableLayoutYesNoButtons.SuspendLayout()

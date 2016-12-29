@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ErrorText_GotFocus(sender As Object, e As System.EventArgs) Handles ErrorText.GotFocus
+        Private Sub ErrorText_GotFocus(sender As Object, e As EventArgs) Handles ErrorText.GotFocus
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
                 '  doesn't really make sense in this case, so set it back to no selection.
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="proposedSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             If proposedSize.Width = 0 Then
                 Return MyBase.GetPreferredSize(proposedSize)
             End If

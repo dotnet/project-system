@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub FileSystemWatcher_Changed(sender As Object, e As System.IO.FileSystemEventArgs) Handles _fileSystemWatcher.Changed
+            Private Sub FileSystemWatcher_Changed(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Changed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw changed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
@@ -425,7 +425,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub FileSystemWatcher_Renamed(sender As Object, e As System.IO.RenamedEventArgs) Handles _fileSystemWatcher.Renamed
+            Private Sub FileSystemWatcher_Renamed(sender As Object, e As RenamedEventArgs) Handles _fileSystemWatcher.Renamed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
 
                 'Both the old file and the new file might be interesting events.
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub FileSystemWatcher_Created(sender As Object, e As System.IO.FileSystemEventArgs) Handles _fileSystemWatcher.Created
+            Private Sub FileSystemWatcher_Created(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Created
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Private Sub FileSystemWatcher_Deleted(sender As Object, e As System.IO.FileSystemEventArgs) Handles _fileSystemWatcher.Deleted
+            Private Sub FileSystemWatcher_Deleted(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Deleted
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
         End Class
@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'A Windows Forms timer used to delay processing of the file changed
             '  event until it's likely that no more changes to the file are
             '  imminent.
-            Private WithEvents _timer As System.Windows.Forms.Timer
+            Private WithEvents _timer As Timer
 
             'The delay in milliseconds that we wait before fire the file changed
             '  notifications, so we receive a single notification rather than 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Directory">The DirectoryWatcher for the directory that this file is in.</param>
             ''' <param name="FileNameOnly">The filename (no path) of the file to watch.</param>
             ''' <remarks></remarks>
-            Friend Sub New(Directory As FileWatcher.DirectoryWatcher, FileNameOnly As String)
+            Friend Sub New(Directory As DirectoryWatcher, FileNameOnly As String)
                 Debug.Assert(Directory IsNot Nothing)
                 Debug.Assert(FileNameOnly <> "")
                 _fileNameOnly = FileNameOnly

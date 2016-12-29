@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If WindowFrame IsNot Nothing Then
                 _viewHelper = New CmdTargetHelper(Me)
                 'Must marshal ourselves as IUnknown wrapper
-                VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New System.Runtime.InteropServices.UnknownWrapper(_viewHelper)))
+                VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(_viewHelper)))
 
                 ' make sure scrollbars in the view are not themed
                 VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID5.VSFPROPID_NativeScrollbarThemeMode, __VSNativeScrollbarThemeMode.NSTM_None))
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Public Overrides ReadOnly Property Window() As System.Windows.Forms.IWin32Window
+        Public Overrides ReadOnly Property Window() As IWin32Window
             Get
                 Return _view
             End Get
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Else
                         Throw New InvalidOperationException("Only ApplicationDesignerView should be created by this window pane")
                     End If
-                Catch loadError As Exception When AppDesCommon.ReportWithoutCrash(loadError, "Got an exception trying to populate the project designer's view", NameOf(ApplicationDesignerWindowPane))
+                Catch loadError As Exception When Common.ReportWithoutCrash(loadError, "Got an exception trying to populate the project designer's view", NameOf(ApplicationDesignerWindowPane))
                     Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
                         loadError = loadError.InnerException
                     Loop
@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Public Function ActivateLogicalView(ByRef rguidLogicalView As System.Guid) As Integer Implements Shell.Interop.IVsMultiViewDocumentView.ActivateLogicalView
+        Public Function ActivateLogicalView(ByRef rguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.ActivateLogicalView
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
@@ -248,13 +248,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
         End Function
 
-        Public Function GetActiveLogicalView(ByRef pguidLogicalView As System.Guid) As Integer Implements Shell.Interop.IVsMultiViewDocumentView.GetActiveLogicalView
+        Public Function GetActiveLogicalView(ByRef pguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.GetActiveLogicalView
             ' We are only supposed to return logical views that are registered in the registry - we can't register our 
             ' logical views, because we don't know the GUID of the property page beforehand...
             pguidLogicalView = Guid.Empty
         End Function
 
-        Public Function IsLogicalViewActive(ByRef rguidLogicalView As System.Guid, ByRef pIsActive As Integer) As Integer Implements Shell.Interop.IVsMultiViewDocumentView.IsLogicalViewActive
+        Public Function IsLogicalViewActive(ByRef rguidLogicalView As Guid, ByRef pIsActive As Integer) As Integer Implements IVsMultiViewDocumentView.IsLogicalViewActive
             If rguidLogicalView.Equals(GetActiveView()) Then
                 pIsActive = 1
             Else
@@ -497,11 +497,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If WindowFrame IsNot Nothing Then
                 _viewHelper = Nothing
                 'Must marshal ourselves as IUnknown wrapper
-                VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New System.Runtime.InteropServices.UnknownWrapper(Nothing)))
+                VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Nothing)))
             End If
         End Sub
 
-        Protected Overrides Function PreProcessMessage(ByRef m As System.Windows.Forms.Message) As Boolean
+        Protected Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPane.PreProcessMessage", m)
             Return MyBase.PreProcessMessage(m)
         End Function

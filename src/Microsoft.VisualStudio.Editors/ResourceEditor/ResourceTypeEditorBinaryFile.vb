@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Inherits ResourceTypeEditorFileBase
 
         'The resource value type that is used for binary files
-        Friend Shared ReadOnly BinaryFileValueType As System.Type = GetType(Byte())
+        Friend Shared ReadOnly BinaryFileValueType As Type = GetType(Byte())
 
         ' file with those extension are safe to open 
         Private _safeExtensions() As String = {

@@ -47,12 +47,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.Dispose(disposing)
         End Sub
 
-        Friend WithEvents ButtonCancel As System.Windows.Forms.Button
-        Friend WithEvents ButtonAdd As System.Windows.Forms.Button
-        Friend WithEvents LabelDescription As System.Windows.Forms.Label
-        Friend WithEvents TextBoxName As System.Windows.Forms.TextBox
-        Friend WithEvents addCancelTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents ButtonCancel As Button
+        Friend WithEvents ButtonAdd As Button
+        Friend WithEvents LabelDescription As Label
+        Friend WithEvents TextBoxName As TextBox
+        Friend WithEvents addCancelTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents overarchingTableLayoutPanel As TableLayoutPanel
 
         'Required by the Windows Form Designer
         Private _components As System.ComponentModel.IContainer
@@ -60,14 +60,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerNonUserCode()> Private Sub InitializeComponent()
+        <DebuggerNonUserCode()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DialogQueryName))
-            LabelDescription = New System.Windows.Forms.Label
-            TextBoxName = New System.Windows.Forms.TextBox
-            ButtonCancel = New System.Windows.Forms.Button
-            ButtonAdd = New System.Windows.Forms.Button
-            addCancelTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-            overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+            LabelDescription = New Label
+            TextBoxName = New TextBox
+            ButtonCancel = New Button
+            ButtonAdd = New Button
+            addCancelTableLayoutPanel = New TableLayoutPanel
+            overarchingTableLayoutPanel = New TableLayoutPanel
             addCancelTableLayoutPanel.SuspendLayout()
             overarchingTableLayoutPanel.SuspendLayout()
             SuspendLayout()
@@ -86,45 +86,45 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             resources.ApplyResources(ButtonCancel, "ButtonCancel")
             ButtonCancel.DialogResult = DialogResult.Cancel
-            ButtonCancel.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            ButtonCancel.Margin = New Padding(3, 0, 0, 0)
             ButtonCancel.Name = "ButtonCancel"
             '
             'ButtonAdd
             '
             resources.ApplyResources(ButtonAdd, "ButtonAdd")
             ButtonCancel.DialogResult = DialogResult.OK
-            ButtonAdd.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+            ButtonAdd.Margin = New Padding(0, 0, 3, 0)
             ButtonAdd.Name = "ButtonAdd"
             '
             'addCancelTableLayoutPanel
             '
             resources.ApplyResources(addCancelTableLayoutPanel, "addCancelTableLayoutPanel")
-            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 100.0!))
-            addCancelTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Percent, 100.0!))
+            addCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
+            addCancelTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
             addCancelTableLayoutPanel.Controls.Add(ButtonAdd, 0, 0)
             addCancelTableLayoutPanel.Controls.Add(ButtonCancel, 1, 0)
             addCancelTableLayoutPanel.Name = "addCancelTableLayoutPanel"
-            addCancelTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            addCancelTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            overarchingTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(SizeType.Absolute, 280.0!))
+            overarchingTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 280.0!))
             overarchingTableLayoutPanel.Controls.Add(LabelDescription, 0, 0)
             overarchingTableLayoutPanel.Controls.Add(addCancelTableLayoutPanel, 0, 2)
             overarchingTableLayoutPanel.Controls.Add(TextBoxName, 0, 1)
-            overarchingTableLayoutPanel.Margin = New System.Windows.Forms.Padding(9)
+            overarchingTableLayoutPanel.Margin = New Padding(9)
             overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            overarchingTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle)
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle)
+            overarchingTableLayoutPanel.RowStyles.Add(New RowStyle)
             '
             'DialogQueryName
             '
             resources.ApplyResources(Me, "$this")
             Controls.Add(overarchingTableLayoutPanel)
             FormBorderStyle = FormBorderStyle.FixedDialog
-            Padding = New System.Windows.Forms.Padding(9, 9, 9, 0)
+            Padding = New Padding(9, 9, 9, 0)
             HelpButton = True
             MaximizeBox = False
             MinimizeBox = False

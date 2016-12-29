@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="msg"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function FormatWin32Message(msg As System.Windows.Forms.Message) As String
+        Private Shared Function FormatWin32Message(msg As Windows.Forms.Message) As String
             Dim str As New StringBuilder()
             Dim MsgType As String = Nothing
             Select Case msg.Msg
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Public Sub New(DisplayName As String, Description As String)
                 MyBase.New(DisplayName, Description)
-                Debug.Assert(GetType(System.Enum).IsAssignableFrom(GetType(T)), "EnumSwitch() requires an Enum as a type parameter")
+                Debug.Assert(GetType([Enum]).IsAssignableFrom(GetType(T)), "EnumSwitch() requires an Enum as a type parameter")
             End Sub
 
             ''' <summary>

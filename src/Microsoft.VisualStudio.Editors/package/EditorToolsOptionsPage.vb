@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
 
                 Dim prefs As LANGPREFERENCES = GetLanguagePrefs()
                 prefs.uIndentSize = CUInt(_dialog.IndentSize)
-                prefs.IndentStyle = CType(_dialog.IndentType, Microsoft.VisualStudio.TextManager.Interop.vsIndentStyle)
+                prefs.IndentStyle = CType(_dialog.IndentType, vsIndentStyle)
                 prefs.fLineNumbers = CUInt(_dialog.LineNumbers)
                 prefs.uTabSize = CUInt(_dialog.TabSize)
                 prefs.fWordWrap = CUInt(_dialog.WordWrap)
@@ -164,11 +164,11 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function GetLanguagePrefs() As LANGPREFERENCES
-            Dim myPrefs As New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES
+            Dim myPrefs As New LANGPREFERENCES
             Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 myPrefs.guidLang = s_VBLangGUID
-                Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}
+                Dim langPrefs() As LANGPREFERENCES = {New LANGPREFERENCES}
                 langPrefs(0) = myPrefs
                 If NativeMethods.Succeeded(textMgr.GetUserPreferences(Nothing, Nothing, langPrefs, Nothing)) Then
                     myPrefs = langPrefs(0)
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 prefs.guidLang = s_VBLangGUID
-                Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}
+                Dim langPrefs() As LANGPREFERENCES = {New LANGPREFERENCES}
                 langPrefs(0) = prefs
                 If Not NativeMethods.Succeeded(textMgr.SetUserPreferences(Nothing, Nothing, langPrefs, Nothing)) Then
                     Debug.Fail("textMgr.SetUserPreferences")

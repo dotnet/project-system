@@ -220,29 +220,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End If
 
 #Region "Windows Form Designer generated code"
-        Friend WithEvents labelDescription As System.Windows.Forms.Label
+        Friend WithEvents labelDescription As Label
         Friend WithEvents linkLabelHelp As VSThemedLinkLabel
         Friend WithEvents listViewExtensions As MyExtensionListView
-        Friend WithEvents colHeaderExtensionName As System.Windows.Forms.ColumnHeader
-        Friend WithEvents tableLayoutAddRemoveButtons As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents buttonRemove As System.Windows.Forms.Button
-        Friend WithEvents buttonAdd As System.Windows.Forms.Button
+        Friend WithEvents colHeaderExtensionName As ColumnHeader
+        Friend WithEvents tableLayoutAddRemoveButtons As TableLayoutPanel
+        Friend WithEvents buttonRemove As Button
+        Friend WithEvents buttonAdd As Button
         Private _components As System.ComponentModel.IContainer
-        Friend WithEvents colHeaderExtensionVersion As System.Windows.Forms.ColumnHeader
-        Friend WithEvents colHeaderExtensionDescription As System.Windows.Forms.ColumnHeader
+        Friend WithEvents colHeaderExtensionVersion As ColumnHeader
+        Friend WithEvents colHeaderExtensionDescription As ColumnHeader
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyExtensibilityPropPage))
-            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            labelDescription = New System.Windows.Forms.Label
+            tableLayoutOverarching = New TableLayoutPanel
+            labelDescription = New Label
             linkLabelHelp = New VSThemedLinkLabel
             listViewExtensions = New MyExtensionListView
-            colHeaderExtensionName = New System.Windows.Forms.ColumnHeader
-            colHeaderExtensionVersion = New System.Windows.Forms.ColumnHeader
-            colHeaderExtensionDescription = New System.Windows.Forms.ColumnHeader
-            tableLayoutAddRemoveButtons = New System.Windows.Forms.TableLayoutPanel
-            buttonRemove = New System.Windows.Forms.Button
-            buttonAdd = New System.Windows.Forms.Button
+            colHeaderExtensionName = New ColumnHeader
+            colHeaderExtensionVersion = New ColumnHeader
+            colHeaderExtensionDescription = New ColumnHeader
+            tableLayoutAddRemoveButtons = New TableLayoutPanel
+            buttonRemove = New Button
+            buttonAdd = New Button
             tableLayoutOverarching.SuspendLayout()
             tableLayoutAddRemoveButtons.SuspendLayout()
             SuspendLayout()
@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'listViewExtensions
             '
             listViewExtensions.AutoArrange = False
-            listViewExtensions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
+            listViewExtensions.Columns.AddRange(New ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
             resources.ApplyResources(listViewExtensions, "listViewExtensions")
             listViewExtensions.FullRowSelect = True
             listViewExtensions.HideSelection = False
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PerformLayout()
 
         End Sub
-        Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents tableLayoutOverarching As TableLayoutPanel
 #End Region
 
     End Class

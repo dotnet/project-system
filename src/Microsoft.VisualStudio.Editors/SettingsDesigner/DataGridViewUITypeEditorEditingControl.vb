@@ -81,11 +81,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property DataGridView() As System.Windows.Forms.DataGridView Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlDataGridView
+        Public Property DataGridView() As DataGridView Implements IDataGridViewEditingControl.EditingControlDataGridView
             Get
                 Return _dataGridView
             End Get
-            Set(Value As System.Windows.Forms.DataGridView)
+            Set(Value As DataGridView)
                 DisconnectDataGridViewEventHandlers()
                 _dataGridView = Value
                 ConnectDataGridViewEventHandlers()
@@ -97,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks>Will set my value to the deserialized value - nothing if deserialization fails</remarks>
-        Public Property FormattedValue() As Object Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlFormattedValue
+        Public Property FormattedValue() As Object Implements IDataGridViewEditingControl.EditingControlFormattedValue
             Get
                 Return GetFormattedValue(DataGridViewDataErrorContexts.Formatting)
             End Get
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        Public ReadOnly Property IDataGridViewEditingPanel_Cursor() As System.Windows.Forms.Cursor Implements System.Windows.Forms.IDataGridViewEditingControl.EditingPanelCursor
+        Public ReadOnly Property IDataGridViewEditingPanel_Cursor() As Cursor Implements IDataGridViewEditingControl.EditingPanelCursor
             Get
                 If _dataGridView IsNot Nothing Then
                     Return _dataGridView.Cursor
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Function GetFormattedValue(context As System.Windows.Forms.DataGridViewDataErrorContexts) As Object Implements System.Windows.Forms.IDataGridViewEditingControl.GetEditingControlFormattedValue
+        Public Function GetFormattedValue(context As DataGridViewDataErrorContexts) As Object Implements IDataGridViewEditingControl.GetEditingControlFormattedValue
             If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso ValueType.Equals(GetType(SerializableConnectionString)) Then
                 Dim scs As SerializableConnectionString = TryCast(Value, SerializableConnectionString)
                 If scs Is Nothing Then
@@ -131,13 +131,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Public ReadOnly Property RepositionOnValueChange() As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.RepositionEditingControlOnValueChange
+        Public ReadOnly Property RepositionOnValueChange() As Boolean Implements IDataGridViewEditingControl.RepositionEditingControlOnValueChange
             Get
                 Return False
             End Get
         End Property
 
-        Public Property RowIndex() As Integer Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlRowIndex
+        Public Property RowIndex() As Integer Implements IDataGridViewEditingControl.EditingControlRowIndex
             Get
                 Return _rowIndex
             End Get
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        Public Function IDataGridViewEditingControl_IsInputKey(keyData As Keys, dataGridViewWantsInputKey As Boolean) As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlWantsInputKey
+        Public Function IDataGridViewEditingControl_IsInputKey(keyData As Keys, dataGridViewWantsInputKey As Boolean) As Boolean Implements IDataGridViewEditingControl.EditingControlWantsInputKey
             ' This code was copied from the DataGridViewTextBoxEditingControl
             Select Case (keyData And Keys.KeyCode)
                 Case Keys.Right
@@ -214,19 +214,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Not dataGridViewWantsInputKey
         End Function
 
-        Public Sub PrepareForEdit(selectAll As Boolean) Implements System.Windows.Forms.IDataGridViewEditingControl.PrepareEditingControlForEdit
+        Public Sub PrepareForEdit(selectAll As Boolean) Implements IDataGridViewEditingControl.PrepareEditingControlForEdit
             If selectAll Then
                 Me.SelectAll()
             End If
         End Sub
 
-        Public Sub UseCellStyle(dataGridViewCellStyle As System.Windows.Forms.DataGridViewCellStyle) Implements System.Windows.Forms.IDataGridViewEditingControl.ApplyCellStyleToEditingControl
+        Public Sub UseCellStyle(dataGridViewCellStyle As DataGridViewCellStyle) Implements IDataGridViewEditingControl.ApplyCellStyleToEditingControl
             Font = dataGridViewCellStyle.Font
             BackColor = dataGridViewCellStyle.BackColor
             ForeColor = dataGridViewCellStyle.ForeColor
         End Sub
 
-        Public Property ValueChanged() As Boolean Implements System.Windows.Forms.IDataGridViewEditingControl.EditingControlValueChanged
+        Public Property ValueChanged() As Boolean Implements IDataGridViewEditingControl.EditingControlValueChanged
             Get
                 Return _valueChanged
             End Get
@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        Protected Overrides Function GetService(service As System.Type) As Object
+        Protected Overrides Function GetService(service As Type) As Object
             If _serviceProvider IsNot Nothing Then
                 Dim requestedService As Object = _serviceProvider.GetService(service)
                 If requestedService IsNot Nothing Then
@@ -300,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Protected Overrides Function GetSpecificEditorForType(KnownType As Type) As UITypeEditor
             If KnownType Is GetType(SerializableConnectionString) Then
                 Return New ConnectionStringUITypeEditor
-            ElseIf KnownType Is GetType(System.Collections.Specialized.StringCollection) Then
+            ElseIf KnownType Is GetType(Specialized.StringCollection) Then
                 Return New StringArrayEditorForStringCollections()
             Else
                 Return MyBase.GetSpecificEditorForType(KnownType)
@@ -390,7 +390,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="serviceType"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Function GetService(serviceType As System.Type) As Object Implements System.IServiceProvider.GetService
+            Public Function GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
                 Return Nothing
             End Function
         End Class

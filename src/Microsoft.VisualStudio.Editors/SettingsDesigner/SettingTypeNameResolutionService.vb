@@ -25,10 +25,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Private fields"
 
         ' Map from language specific names to the corresponding .NET FX type name
-        Private _languageSpecificToFxTypeName As System.Collections.Generic.Dictionary(Of String, String)
+        Private _languageSpecificToFxTypeName As Dictionary(Of String, String)
 
         ' Map from .NET FX type names to language specific type names
-        Private _fxTypeNameToLanguageSpecific As System.Collections.Generic.Dictionary(Of String, String)
+        Private _fxTypeNameToLanguageSpecific As Dictionary(Of String, String)
 
         ' Is the current language case-sensitive?
         Private _caseSensitive As Boolean
@@ -50,15 +50,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             _caseSensitive = caseSensitive
 
-            Dim comparer As System.Collections.Generic.IEqualityComparer(Of String)
+            Dim comparer As IEqualityComparer(Of String)
             If caseSensitive Then
                 comparer = StringComparer.Ordinal
             Else
                 comparer = StringComparer.OrdinalIgnoreCase
             End If
 
-            _languageSpecificToFxTypeName = New System.Collections.Generic.Dictionary(Of String, String)(16, comparer)
-            _fxTypeNameToLanguageSpecific = New System.Collections.Generic.Dictionary(Of String, String)(16, comparer)
+            _languageSpecificToFxTypeName = New Dictionary(Of String, String)(16, comparer)
+            _fxTypeNameToLanguageSpecific = New Dictionary(Of String, String)(16, comparer)
             If language <> language.UNKNOWN Then
                 ' add language specific type names for C#, VB, J# respectively
                 AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean", "boolean"}(language))

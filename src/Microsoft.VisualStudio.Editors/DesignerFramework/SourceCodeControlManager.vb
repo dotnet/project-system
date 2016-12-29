@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="checkOnly">Only check if it is OK to edit files (don't actually check out)</param>
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean) As Boolean
+        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean, checkOnly As Boolean) As Boolean
             Dim dummy As Boolean
             Return QueryEditableFiles(sp, files, throwOnFailure, checkOnly, dummy)
         End Function
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="throwOnFailure">If true, failure to check out will throw checkout exception</param>
         ''' <param name="fileReloaded">Out: Set to true if one or more files were reloaded...</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
-        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
+        Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
             If sp Is Nothing Then
                 Throw New ArgumentNullException("sp")
             End If
@@ -194,11 +194,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         ' check to see if the failure happened because the user canceled.
                         '
                         If Not allowFileReload AndAlso fileReloaded Then
-                            Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_OneOrMoreFilesReloaded))
+                            Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_OneOrMoreFilesReloaded))
                         ElseIf ((result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0) Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
-                            Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
+                            Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
                         End If
                     Else
                         Return False
@@ -207,8 +207,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Else
                 Dim result As Integer
                 Dim success As Integer
-                Dim txtManager As Microsoft.VisualStudio.TextManager.Interop.IVsTextManager = _
-                    TryCast(sp.GetService(GetType(Microsoft.VisualStudio.TextManager.Interop.VsTextManagerClass)), Microsoft.VisualStudio.TextManager.Interop.IVsTextManager)
+                Dim txtManager As TextManager.Interop.IVsTextManager = _
+                    TryCast(sp.GetService(GetType(TextManager.Interop.VsTextManagerClass)), TextManager.Interop.IVsTextManager)
 
                 If txtManager IsNot Nothing Then
                     For Each fileName As String In files
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                                 If (result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0 Then
                                     Throw ComponentModel.Design.CheckoutException.Canceled
                                 Else
-                                    Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
+                                    Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
                                 End If
                             Else
                                 Return False
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="throwOnFailure">Should we throw if the save fails?</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function QuerySave(sp As IServiceProvider, files As Collections.Generic.List(Of String), throwOnFailure As Boolean) As Boolean
+        Public Shared Function QuerySave(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean) As Boolean
             If sp Is Nothing Then
                 Throw New ArgumentNullException("sp")
             End If
@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         If ((result And CUInt(tagVSQuerySaveResult.QSR_NoSave_UserCanceled)) <> 0) Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
-                            Throw New System.ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
+                            Throw New ComponentModel.Design.CheckoutException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout))
                         End If
                     Else
                         Return False

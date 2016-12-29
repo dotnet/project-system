@@ -13,11 +13,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Implements IDisposable
 
         Private _multiTargetService As MultiTargetService
-        Private _typeResolutionService As System.ComponentModel.Design.ITypeResolutionService
+        Private _typeResolutionService As ComponentModel.Design.ITypeResolutionService
         Private _caseSensitive As Boolean
 
         ' The list of types that we always know how to find. 
-        Private ReadOnly _wellKnownTypes() As System.Type = { _
+        Private ReadOnly _wellKnownTypes() As Type = { _
                                                     GetType(Boolean), _
                                                     GetType(Byte), _
                                                     GetType(Char), _
@@ -34,12 +34,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                     GetType(UShort), _
                                                     GetType(UInteger), _
                                                     GetType(ULong), _
-                                                    GetType(System.Drawing.Color), _
-                                                    GetType(System.Drawing.Font), _
-                                                    GetType(System.Drawing.Point), _
-                                                    GetType(System.Drawing.Size), _
+                                                    GetType(Drawing.Color), _
+                                                    GetType(Drawing.Font), _
+                                                    GetType(Drawing.Point), _
+                                                    GetType(Drawing.Size), _
                                                     GetType(String), _
-                                                    GetType(Collections.Specialized.StringCollection) _
+                                                    GetType(Specialized.StringCollection) _
                                                             }
 
         ''' <summary>
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="typeResolutionService"></param>
         ''' <remarks></remarks>
-        Public Sub New(vsHierarchy As IVsHierarchy, ItemId As UInteger, typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, caseSensitive As Boolean)
+        Public Sub New(vsHierarchy As IVsHierarchy, ItemId As UInteger, typeResolutionService As ComponentModel.Design.ITypeResolutionService, caseSensitive As Boolean)
             If typeResolutionService Is Nothing OrElse vsHierarchy Is Nothing Then
                 Debug.Fail("We really need a type resolution service or IVsHierarchy in order to do anything interesting!")
                 Throw New ArgumentNullException()
@@ -82,9 +82,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetSettingType(typeName As String) As System.Type
+        Public Function GetSettingType(typeName As String) As Type
             ' First, check our list of well known types...
-            For Each wellKnownType As System.Type In GetWellKnownTypes()
+            For Each wellKnownType As Type In GetWellKnownTypes()
                 If String.Equals(wellKnownType.FullName, typeName) Then
                     Return wellKnownType
                 End If
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetWellKnownTypes() As System.Type()
+        Public Function GetWellKnownTypes() As Type()
             Return _multiTargetService.GetSupportedTypes(_wellKnownTypes)
         End Function
 
@@ -109,8 +109,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IsWellKnownType(type As System.Type) As Boolean
-            For Each wellKnownType As System.Type In GetWellKnownTypes()
+        Public Function IsWellKnownType(type As Type) As Boolean
+            For Each wellKnownType As Type In GetWellKnownTypes()
                 If wellKnownType Is type Then
                     Return True
                 End If
@@ -126,10 +126,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="caseSensitive"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As System.Type
-            Dim t As System.Type = Nothing
+        Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As Type
+            Dim t As Type = Nothing
             If System.String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
-                Return GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString)
+                Return GetType(VSDesignerPackage.SerializableConnectionString)
             ElseIf System.String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
                 t = GetType(String)
             Else
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim qualifiedAssemblyName As String = Nothing
 
             If Not String.IsNullOrEmpty(sourceTypeName) Then
-                Dim t As System.Type = _typeResolutionService.GetType(sourceTypeName, False, Not _caseSensitive)
+                Dim t As Type = _typeResolutionService.GetType(sourceTypeName, False, Not _caseSensitive)
                 If t IsNot Nothing Then
                     qualifiedAssemblyName = _multiTargetService.TypeNameConverter(t)
                 End If

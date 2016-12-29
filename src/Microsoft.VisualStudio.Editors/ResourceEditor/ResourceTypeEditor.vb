@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   expose it in a future version.
     ''' </summary>
     ''' <remarks></remarks>
-    <System.Security.Permissions.PermissionSetAttribute(Security.Permissions.SecurityAction.InheritanceDemand, Name:="FullTrust"),
-    System.Security.Permissions.PermissionSetAttribute(Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
+    <Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.InheritanceDemand, Name:="FullTrust"),
+    Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
     Friend MustInherit Class ResourceTypeEditor
 
         'Note: These comments aren't in the XML docs because I don't want it to accidentally end up in the public XML
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DummyStream = File.OpenRead(FilePath)
 
                 'Create a ResXFileRef with the file path and resource type
-                Dim DummyFileRef As New System.Resources.ResXFileRef(FilePath, GetDefaultResourceTypeName(ResourceContentFile))
+                Dim DummyFileRef As New Resources.ResXFileRef(FilePath, GetDefaultResourceTypeName(ResourceContentFile))
                 Dim Converter As TypeConverter = TypeDescriptor.GetConverter(DummyFileRef)
                 If Converter.CanConvertFrom(GetType(String)) Then
                     '... and then use it to fetch the resource from the file

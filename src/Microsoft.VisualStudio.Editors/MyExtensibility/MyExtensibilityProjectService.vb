@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #Region "Public methods"
 
         Public Shared Function CreateNew( _
-                vbPackage As VBPackage, project As EnvDTE.Project, _
+                vbPackage As VBPackage, project As Project, _
                 projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings) _
                 As MyExtensibilityProjectService
             If vbPackage Is Nothing Then
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Create a new project service.
         ''' </summary>
-        Private Sub New(vbPackage As VBPackage, project As EnvDTE.Project,
+        Private Sub New(vbPackage As VBPackage, project As Project,
                 projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             Debug.Assert(project IsNot Nothing, "project Is Nothing")
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ' Service provider, current project, project hierarchy and solution.
         Private _VBPackage As VBPackage
-        Private _project As EnvDTE.Project
+        Private _project As Project
         Private _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String
 

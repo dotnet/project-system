@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' Based on JFosler's code on http://blogs.msdn.com/jfoscoding/articles/492559.aspx
     ''' </summary>
     Friend Class WrapCheckBox
-        Inherits System.Windows.Forms.CheckBox
+        Inherits CheckBox
 
         Friend Sub New()
             MyBase.New()
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             CacheTextSize()
         End Sub
 
-        Public Overrides Function GetPreferredSize(proposedsize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedsize As Size) As Size
             Dim prefSize As Size = MyBase.GetPreferredSize(proposedsize)
             If (proposedsize.Width > 1) AndAlso _
                     (prefSize.Width > proposedsize.Width) AndAlso _
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-        Private _cachedSizeOfOneLineOfText As System.Drawing.Size = Size.Empty
+        Private _cachedSizeOfOneLineOfText As Size = Size.Empty
         Private _preferredSizeHash As New Dictionary(Of Size, Size)()
 
     End Class
