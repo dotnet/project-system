@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             lock (_lock)
             {
                 // In order to save, the editor must not be in the process of being updated.
-                Assumes.False(_currentState != EditorState.NoEditor);
+                Assumes.True(_currentState != EditorState.NoEditor);
                 if (_currentState != EditorState.EditorOpen)
                 {
                     return;

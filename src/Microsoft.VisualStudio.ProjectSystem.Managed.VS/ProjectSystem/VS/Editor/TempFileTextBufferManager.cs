@@ -86,15 +86,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             var projectXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
 
-            await _threadingService.SwitchToUIThread();
-
             // We compare the text we want to write with the text currently in the buffer, ignoring whitespace. If they're
-            // the same, then we don't write anything.
+            // the same, then we don't write anything. We ignore whitespace because of
+            // https://github.com/dotnet/roslyn-project-system/issues/743. Once we can read the whitespace correctly from
+            // the msbuild model, we can stop stripping whitespace for this comparison.
             var normalizedExistingText = _whitespaceRegex.Replace(await ReadBufferXmlAsync().ConfigureAwait(true), "");
             var normalizedProjectText = _whitespaceRegex.Replace(projectXml, "");
 
-            if (!normalizedExistingText.Equals(normalizedProjectText, StringComparison.InvariantCulture))
+            if (!normalizedExistingText.Equals(normalizedProjectText, StringComparison.Ordinal))
             {
+                await _threadingService.SwitchToUIThread();
                 // If the docdata is not dirty, we just update the buffer to avoid the file reload pop-up. Otherwise,
                 // we write to disk, to force the pop-up.
                 Verify.HResult(_docData.IsDocDataDirty(out int isDirty));

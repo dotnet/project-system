@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     {
         private readonly IProjectThreadingService _threadingService;
 
+        [ImportingConstructor]
         public VsShellUtilitiesHelper(IProjectThreadingService threadingService)
         {
             _threadingService = threadingService;
