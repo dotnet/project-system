@@ -58,7 +58,7 @@
     <Compile Include="Mocks\ExportFactoryFactory.cs" />
     <Compile Include="Mocks\IEditorStateModelFactory.cs" />
     <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
-    <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
+    <Compile Include="Mocks\IProjectXmlAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />

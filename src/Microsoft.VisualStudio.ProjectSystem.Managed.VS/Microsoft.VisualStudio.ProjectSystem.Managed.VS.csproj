@@ -35,7 +35,7 @@
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
-    <Compile Include="ProjectSystem\VS\Build\MsBuildAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\MsBuildXmlAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Editor\EditorStateModel.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IEditorStateModel.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
@@ -202,7 +202,7 @@
     <Compile Include="ProjectSystem\VS\Utilities\DelegateCommand.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverter.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\FocusAttacher.cs" />
-    <Compile Include="ProjectSystem\VS\Build\IMsBuildAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\IProjectXmlAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />

@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -24,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly Regex _whitespaceRegex = new Regex(@"\s");
 
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IMsBuildAccessor _msbuildAccessor;
+        private readonly IProjectXmlAccessor _msbuildAccessor;
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;
         private readonly ITextDocumentFactoryService _textDocumentService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         [ImportingConstructor]
         public TempFileTextBufferManager(UnconfiguredProject unconfiguredProject,
-            IMsBuildAccessor msbuildAccessor,
+            IProjectXmlAccessor msbuildAccessor,
             IVsEditorAdaptersFactoryService editorAdaptersService,
             ITextDocumentFactoryService textDocumentService,
             IVsShellUtilitiesHelper shellUtilities,

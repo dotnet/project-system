@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new TempFileTextBufferManager(
                 null,
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 new TestShellUtilitiesHelper(),
@@ -53,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("editorAdaptersService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 null,
                 ITextDocumentFactoryServiceFactory.Create(),
                 new TestShellUtilitiesHelper(),
@@ -67,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("textDocumentService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 null,
                 new TestShellUtilitiesHelper(),
@@ -81,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("shellUtilities", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 null,
@@ -95,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("fileSystem", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 new TestShellUtilitiesHelper(),
@@ -109,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 new TestShellUtilitiesHelper(),
@@ -123,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
-                IMsBuildAccessorFactory.Create(),
+                IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 new TestShellUtilitiesHelper(),
@@ -138,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath, projectEncoding: Encoding.Default);
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml("<Project />");
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml("<Project />");
 
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
@@ -166,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var encoding = Encoding.Default.Equals(Encoding.UTF8) ? Encoding.UTF32 : Encoding.UTF8;
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath, projectEncoding: encoding);
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml("<Project />");
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml("<Project />");
 
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
@@ -197,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml(() => xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(() => xml);
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(false, VSConstants.S_OK);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
@@ -242,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml(() => xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(() => xml);
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(true, VSConstants.S_OK);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
@@ -287,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml(xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(xml);
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(true, VSConstants.S_OK);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");
@@ -330,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml(xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(xml);
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferGetStateFlags(~(uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");
@@ -373,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IMsBuildAccessorFactory.ImplementGetProjectXml(xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(xml);
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferGetStateFlags(~(uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");

@@ -5,18 +5,17 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
-    [Export(typeof(IMsBuildAccessor))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class MsBuildAccessor : IMsBuildAccessor
+    [Export(typeof(IProjectXmlAccessor))]
+    internal class MSBuildXmlAccessor : IProjectXmlAccessor
     {
         private readonly IProjectLockService _projectLockService;
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IFileSystem _fileSystem;
 
         [ImportingConstructor]
-        public MsBuildAccessor(IProjectLockService projectLockService, UnconfiguredProject unconfiguredProject, IFileSystem fileSystem)
+        public MSBuildXmlAccessor(IProjectLockService projectLockService, UnconfiguredProject unconfiguredProject, IFileSystem fileSystem)
         {
             _projectLockService = projectLockService;
             _unconfiguredProject = unconfiguredProject;
@@ -36,10 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public async Task SaveProjectXmlAsync(string toSave)
         {
-            var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
             using (var access = await _projectLockService.WriteLockAsync())
             {
                 await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
                 _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
             }
         }
