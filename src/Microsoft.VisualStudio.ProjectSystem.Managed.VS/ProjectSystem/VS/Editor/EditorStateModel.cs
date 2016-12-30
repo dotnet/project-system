@@ -169,6 +169,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             // We can't switch to editor closing here because there's still the chance that some other action can cancel
             // the editor closing, without notifying us. A later callback will get hit once the close is guaranteed to happen.
+            // We do, however, assert that we're not in NoEditor, Initializing, or EditorClosing; being in any of those states
+            // here would indicate a bug.
+            lock (_lock)
+            {
+                Assumes.False(_currentState == EditorState.NoEditor ||
+                    _currentState == EditorState.Initializing ||
+                    _currentState == EditorState.EditorClosing);
+            }
             await _threadingService.SwitchToUIThread();
             return _windowFrame.CloseFrame((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave) == VSConstants.S_OK;
         }
@@ -180,7 +188,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             lock (_lock)
             {
-                if (_currentState == EditorState.NoEditor) return;
+                if (_currentState == EditorState.NoEditor)
+                {
+                    return;
+                }
 
                 // Checking for potential dirty state and asking if the user wants to save their changes will have already occurred at this point.
                 // Just go to EditorClosing.
@@ -221,7 +232,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 // If the current state is writing project file, we don't want to update now, as the project will not have been fully
                 // reloaded yet. We'll get called back again after the ProjectReloadManager is finished reloading the project.
                 // Additionally, if there is no editor open, or if the editor is closing, don't schedule an update
-                if (_currentState == EditorState.WritingProjectFile || _currentState == EditorState.NoEditor || _currentState == EditorState.EditorClosing) return null;
+                if (_currentState == EditorState.WritingProjectFile ||
+                    _currentState == EditorState.NoEditor ||
+                    _currentState == EditorState.EditorClosing)
+                {
+                    return null;
+                }
                 _currentState = EditorState.BufferUpdateScheduled;
                 return _threadingService.JoinableTaskFactory.RunAsync(UpdateProjectFileAsync);
             }
@@ -262,26 +278,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         // Save Project File Logic
 
         /// <summary>
-        /// Causes the dirty changes to the editor to be saved to the disk.
+        /// Causes the dirty changes to the editor to be saved to the disk. This is called by the <seealso cref="ITextBufferStateListener"/>
+        /// when it detects the user has saved the temp buffer.
         /// </summary>
         public async Task SaveProjectFileAsync()
         {
             lock (_lock)
             {
                 // In order to save, the editor must not be in the process of being updated.
-                if (_currentState != EditorState.EditorOpen) return;
+                Assumes.False(_currentState != EditorState.NoEditor);
+                if (_currentState != EditorState.EditorOpen)
+                {
+                    return;
+                }
                 _currentState = EditorState.WritingProjectFile;
             }
 
-            // While saving the file, we disallow edits to the project file for sync purposes.
-            await _textBufferManager.SetReadOnlyAsync(true).ConfigureAwait(false);
-            await _textBufferManager.SaveAsync().ConfigureAwait(false);
+            // While saving the file, we disallow edits to the project file for sync purposes. We also make sure
+            // that the buffer cannot get stuck in a read-only state if SaveAsync fails for some reason.
+            try
+            {
+                await _textBufferManager.SetReadOnlyAsync(true).ConfigureAwait(false);
+                await _textBufferManager.SaveAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+
+                await _textBufferManager.SetReadOnlyAsync(false).ConfigureAwait(false);
+            }
 
             lock (_lock)
             {
                 _currentState = EditorState.EditorOpen;
             }
-            await _textBufferManager.SetReadOnlyAsync(false).ConfigureAwait(false);
         }
     }
 }

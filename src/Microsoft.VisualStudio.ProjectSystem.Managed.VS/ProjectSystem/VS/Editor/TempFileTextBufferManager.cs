@@ -44,9 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             IFileSystem fileSystem,
             IProjectThreadingService threadingService,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) :
-#pragma warning disable IDE0030 // Use null propagation https://github.com/dotnet/roslyn/issues/161
             base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
-#pragma warning restore IDE0030 // Use null propagation
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
             Requires.NotNull(msbuildAccessor, nameof(msbuildAccessor));

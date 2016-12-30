@@ -34,9 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             IProjectThreadingService threadingService,
             IVsShellUtilitiesHelper shellUtilities,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider) :
-#pragma warning disable IDE0030 // Use null propagation https://github.com/dotnet/roslyn/issues/1611
             base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
-#pragma warning restore IDE0030 // Use null propagation
         {
             Requires.NotNull(editorState, nameof(editorState));
             Requires.NotNull(editorAdaptersService, nameof(editorAdaptersService));

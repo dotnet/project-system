@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [Fact]
         public void FrameOpenCloseListener_NullServiceProvider_Throws()
         {
-            Assert.Throws<ArgumentNullException>("helper", () => new FrameOpenCloseListener(null, IEditorStateModelFactory.Create(),
+            Assert.Throws<ArgumentNullException>("serviceProvider", () => new FrameOpenCloseListener(null, IEditorStateModelFactory.Create(),
                 IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create()));
         }
 
