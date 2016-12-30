@@ -27,18 +27,6 @@ Namespace My.Resources
             End If
         End Function
 
-
-    End Class
-
-    ''' <summary>
-    ''' String resource values for MS.VS.Editors.dll.  To edit the strings in this class,
-    '''   edit the Microsoft.VisualStudio.Editors.resx file.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    Friend Class Designer
-        Inherits Microsoft_VisualStudio_Editors_Designer
-
         ''' <summary>
         ''' These are some string resource IDs (just the resource ID name, not the 
         '''   actual string value).  These are not automatically kept up to date from
@@ -60,5 +48,6 @@ Namespace My.Resources
             Friend Const PPG_ServiceReferenceUrlDescription As String = "PPG_ServiceReferenceUrlDescription"
 
         End Class
+
     End Class
 End Namespace

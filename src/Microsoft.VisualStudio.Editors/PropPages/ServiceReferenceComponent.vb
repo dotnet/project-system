@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _referenceGroup = referenceGroup
         End Sub
 
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
+        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
         <MergableProperty(False)>
         <HelpKeyword("ServiceReference Properties.Namespace")>
         Public Property [Namespace]() As String
@@ -39,8 +39,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
+        <VBDisplayName(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
+        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
         <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
         <MergableProperty(False)>
         Public Property ServiceReferenceURL() As String
