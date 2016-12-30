@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IServiceProviderFactory.Create()));
         }
 
@@ -34,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 null,
                 ITextDocumentFactoryServiceFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IServiceProviderFactory.Create()));
         }
 
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 null,
                 IProjectThreadingServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IServiceProviderFactory.Create()));
         }
 
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 null,
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IServiceProviderFactory.Create()));
         }
 
@@ -79,13 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();
-            var getRdtCalled = false;
-            var shellUtilities = new TestShellUtilitiesHelper((serviceProvider, fullPath) =>
-            {
-                getRdtCalled = true;
-                Assert.Equal(tempFile, fullPath);
-                return (null, 0, docData, 0);
-            }, (provider, fullPath, editorType, logicalView) => null);
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(tempFile, docData);
             var textBuffer = ITextBufferFactory.Create();
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
@@ -96,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IServiceProviderFactory.Create());
 
             await watcher.InitializeListenerAsync(tempFile);
-            Assert.True(getRdtCalled);
+            Mock.Get(shellUtilities).Verify(u => u.GetRDTDocumentInfoAsync(It.IsAny<IServiceProvider>(), tempFile), Times.Once);
             Mock.Get(editorAdaptersService).Verify(e => e.GetDocumentBuffer((IVsTextBuffer)docData), Times.Once);
             Mock.Get(textDocFactoryService).Verify(t => t.TryGetTextDocument(textBuffer, out textDoc), Times.Once);
 
@@ -110,14 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();
-            var getRdtCalled = false;
-            var shellUtilities = new TestShellUtilitiesHelper((serviceProvider, fullPath) =>
-            {
-                getRdtCalled = true;
-                Assert.Equal(tempFile, fullPath);
-                return (null, 0, docData, 0);
-            }, (provider, fullPath, editorType, logicalView) => null);
             var textBuffer = ITextBufferFactory.Create();
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(tempFile, docData);
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
             var textDocFactoryService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDoc, true);
@@ -127,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IServiceProviderFactory.Create());
 
             await watcher.InitializeListenerAsync(tempFile);
-            Assert.True(getRdtCalled);
+            Mock.Get(shellUtilities).Verify(u => u.GetRDTDocumentInfoAsync(It.IsAny<IServiceProvider>(), tempFile), Times.Once);
             Mock.Get(editorAdaptersService).Verify(e => e.GetDocumentBuffer((IVsTextBuffer)docData), Times.Once);
             Mock.Get(textDocFactoryService).Verify(t => t.TryGetTextDocument(textBuffer, out textDoc), Times.Once);
 
@@ -149,13 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();
-            var getRdtCalled = false;
-            var shellUtilities = new TestShellUtilitiesHelper((serviceProvider, fullPath) =>
-            {
-                getRdtCalled = true;
-                Assert.Equal(tempFile, fullPath);
-                return (null, 0, docData, 0);
-            }, (provider, fullPath, editorType, logicalView) => null);
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(tempFile, docData);
             var textBuffer = ITextBufferFactory.Create();
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
@@ -166,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
                 IServiceProviderFactory.Create());
 
             await watcher.InitializeListenerAsync(tempFile);
-            Assert.True(getRdtCalled);
+            Mock.Get(shellUtilities).Verify(u => u.GetRDTDocumentInfoAsync(It.IsAny<IServiceProvider>(), tempFile), Times.Once);
             Mock.Get(editorAdaptersService).Verify(e => e.GetDocumentBuffer((IVsTextBuffer)docData), Times.Once);
             Mock.Get(textDocFactoryService).Verify(t => t.TryGetTextDocument(textBuffer, out textDoc), Times.Once);
 

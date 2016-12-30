@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -77,10 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+
+            (IVsHierarchy unusedHier, uint unusedId, IVsPersistDocData docData, uint unusedCookie) =
+                await _shellUtilities.GetRDTDocumentInfoAsync(_serviceProvider, _tempFilePath).ConfigureAwait(false);
+
             await _threadingService.SwitchToUIThread();
-
-            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, _tempFilePath, out IVsHierarchy unusedHier, out uint unusedId, out IVsPersistDocData docData, out uint unusedCookie);
-
             var textBuffer = _editorAdaptersService.GetDocumentBuffer((IVsTextBuffer)docData);
             Assumes.True(_textDocumentFactoryService.TryGetTextDocument(textBuffer, out _textDoc));
             Assumes.NotNull(_textDoc);

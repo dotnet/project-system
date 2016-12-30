@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -116,6 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// </summary>
         public async Task OpenEditorAsync()
         {
+            // We access _windowFrame inside the lock, so we must be on the UI thread in that case
             await _threadingService.SwitchToUIThread();
             lock (_lock)
             {
@@ -130,20 +132,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 _currentState = EditorState.Initializing;
             }
 
-            // Set up the buffer manager, which will create the temp file
+            // Set up the buffer manager, which will create the temp file. Nothing else in OpenEditor requires the UI thread (tasks aquire it as needed)
+            // so we don't need to resume on the same thread.
             _textBufferManager = _textBufferManagerFactory.CreateExport().Value;
             await _textBufferManager.InitializeBufferAsync().ConfigureAwait(false);
 
-            // Future calls need to be on the UI thread, as we're creating windows.
-            await _threadingService.SwitchToUIThread();
-
             // Open and show the editor frame.
-            _windowFrame = _shellHelper.OpenDocumentWithSpecificEditor(_serviceProvider, _textBufferManager.FilePath, XmlFactoryGuid, Guid.Empty);
+            _windowFrame = await _shellHelper.OpenDocumentWithSpecificEditorAsync(_serviceProvider, _textBufferManager.FilePath, XmlFactoryGuid, Guid.Empty).ConfigureAwait(false);
 
             // Set up the save listener
             _textBufferStateListener = _textBufferListenerFactory.CreateExport().Value;
-
-            // The frame has been setup, so we don't need the UI thread anymore.
             await _textBufferStateListener.InitializeListenerAsync(_textBufferManager.FilePath).ConfigureAwait(false);
 
             // Set up the listener that will check for when the frame is closed.

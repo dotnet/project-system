@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -156,10 +156,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         private async Task InitializeTextBufferAsync()
         {
-            await _threadingService.SwitchToUIThread();
-            _shellUtilities.GetRDTDocumentInfo(_serviceProvider, FilePath,
-                out IVsHierarchy unusedHier, out uint unusedId, out _docData, out uint unusedCookie);
+            (IVsHierarchy unusedHier, uint unusedId, IVsPersistDocData docData, uint unusedCookie) =
+                await _shellUtilities.GetRDTDocumentInfoAsync(_serviceProvider, FilePath).ConfigureAwait(false);
+            _docData = docData;
 
+            await _threadingService.SwitchToUIThread();
             _textBuffer = (IVsTextBuffer)_docData;
 
             var textBufferAdapter = _editorAdaptersService.GetDocumentBuffer(_textBuffer);

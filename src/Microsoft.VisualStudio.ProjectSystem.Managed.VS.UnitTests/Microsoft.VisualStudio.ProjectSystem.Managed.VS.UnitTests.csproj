@@ -80,6 +80,7 @@
     <Compile Include="Mocks\IVsProjectSpecialFilesFactory.cs" />
     <Compile Include="Mocks\IVsSettingsManagerFactory.cs" />
     <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
+    <Compile Include="Mocks\IVsShellUtilitiesHelperFactory.cs" />
     <Compile Include="Mocks\IVsUIShell7Factory.cs" />
     <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
@@ -154,7 +155,6 @@
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverterTests.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\TestShellUtilitiesHelper.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
   </ItemGroup>
   <ItemGroup>

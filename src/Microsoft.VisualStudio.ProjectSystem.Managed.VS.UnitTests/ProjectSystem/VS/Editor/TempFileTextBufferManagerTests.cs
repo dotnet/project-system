@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -27,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 IServiceProviderFactory.Create()));
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 null,
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 IServiceProviderFactory.Create()));
@@ -55,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 null,
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 IServiceProviderFactory.Create()));
@@ -69,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 null,
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 IServiceProviderFactory.Create()));
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 null,
                 IProjectThreadingServiceFactory.Create(),
                 IServiceProviderFactory.Create()));
@@ -111,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 null,
                 IServiceProviderFactory.Create()));
@@ -125,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectXmlAccessorFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 IFileSystemFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 null));
@@ -147,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 msbuildAccessor,
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 fileSystem,
                 new IProjectThreadingServiceMock(),
                 IServiceProviderFactory.Create());
@@ -175,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 msbuildAccessor,
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 fileSystem,
                 new IProjectThreadingServiceMock(),
                 IServiceProviderFactory.Create());
@@ -202,14 +203,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
             var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
 
-            var shellUtility = new TestShellUtilitiesHelper((sp, fullPath) => (null, 0, docData, 0),
-                (sp, fullPath, editorType, logicalView) => null);
-            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
-            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
-
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
             fileSystem.SetTempFile(tempFilePath);
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
 
             var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
                 msbuildAccessor,
@@ -247,14 +247,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
             var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
 
-            var shellUtility = new TestShellUtilitiesHelper((sp, fullPath) => (null, 0, docData, 0),
-                (sp, fullPath, editorType, logicalView) => null);
-            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
-            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
-
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
             fileSystem.SetTempFile(tempFilePath);
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
 
             var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
                 msbuildAccessor,
@@ -292,14 +291,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");
             var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
 
-            var shellUtility = new TestShellUtilitiesHelper((sp, fullPath) => (null, 0, docData, 0),
-                (sp, fullPath, editorType, logicalView) => null);
-            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
-            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
-
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
             fileSystem.SetTempFile(tempFilePath);
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
 
             var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
                 msbuildAccessor,
@@ -335,14 +333,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");
             var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
 
-            var shellUtility = new TestShellUtilitiesHelper((sp, fullPath) => (null, 0, docData, 0),
-                (sp, fullPath, editorType, logicalView) => null);
-            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
-            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
-
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
             fileSystem.SetTempFile(tempFilePath);
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
 
             var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
                 msbuildAccessor,
@@ -378,14 +375,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project></Project>");
             var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
 
-            var shellUtility = new TestShellUtilitiesHelper((sp, fullPath) => (null, 0, docData, 0),
-                (sp, fullPath, editorType, logicalView) => null);
-            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
-            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
-
             var fileSystem = new IFileSystemMock();
             var tempFilePath = @"C:\Temp\asdf.1234";
             fileSystem.SetTempFile(tempFilePath);
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
 
             var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
                 msbuildAccessor,

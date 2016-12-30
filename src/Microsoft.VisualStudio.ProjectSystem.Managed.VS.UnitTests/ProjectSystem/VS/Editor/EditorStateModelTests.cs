@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 null,
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 null,
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -51,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 null,
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -79,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 null,
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -93,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 null,
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -107,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 null,
@@ -121,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -145,13 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFileWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => projectFileWatcher);
 
             var windowFrame = IVsWindowFrameFactory.Create();
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -192,13 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFileWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => projectFileWatcher);
 
             var windowFrame = IVsWindowFrameFactory.Create();
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -244,13 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 Assert.Equal((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave, options);
                 return VSConstants.S_OK;
             });
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -288,13 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 Assert.Equal((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave, options);
                 return VSConstants.E_FAIL;
             });
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -332,13 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 Assert.Equal((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave, options);
                 return VSConstants.S_OK;
             });
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -378,13 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 Assert.Equal((uint)__FRAMECLOSE.FRAMECLOSE_PromptSave, options);
                 return VSConstants.S_OK;
             });
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var editorState = new EditorStateModelTester(
                 new IProjectThreadingServiceMock(),
@@ -426,13 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFileWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => projectFileWatcher);
 
             var windowFrame = IVsWindowFrameFactory.Create();
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
@@ -476,7 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
-                new TestShellUtilitiesHelper(),
+                IVsShellUtilitiesHelperFactory.Create(),
                 ExportFactoryFactory.CreateInstance<IProjectFileModelWatcher>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferStateListener>(),
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
@@ -505,13 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFileWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => projectFileWatcher);
 
             var windowFrame = IVsWindowFrameFactory.Create();
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
@@ -563,13 +516,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectFileWatcherFactory = ExportFactoryFactory.ImplementCreateValue(() => projectFileWatcher);
 
             var windowFrame = IVsWindowFrameFactory.Create();
-            var shellUtilities = new TestShellUtilitiesHelper((provider, fullPath) => (null, 0, null, 0), (provider, path, editorType, logicalView) =>
-            {
-                Assert.Equal(path, filePath);
-                Assert.Equal(XmlFactoryGuid, editorType);
-                Assert.Equal(Guid.Empty, logicalView);
-                return windowFrame;
-            });
+            var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
