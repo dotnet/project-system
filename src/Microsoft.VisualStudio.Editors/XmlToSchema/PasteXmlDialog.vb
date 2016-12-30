@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     _xml = XElement.Parse(_xmlTextBox.Text)
                 Catch ex As Exception
                     If FilterException(ex) Then
-                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_InvalidXMLFormat, ex.Message))
+                        ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_InvalidXMLFormat, ex.Message))
                         e.Cancel = True
                     Else
                         Throw

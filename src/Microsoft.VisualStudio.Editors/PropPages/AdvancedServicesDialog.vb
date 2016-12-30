@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 _appConfigDocument = ServicesPropPageAppConfigHelper.AppConfigXmlDocument(PropertyPageSite, ProjectHierarchy, False)
             Catch innerException As XmlException
-                Dim ex As New XmlException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidAppConfigXml)
+                Dim ex As New XmlException(My.Resources.Designer.PPG_Services_InvalidAppConfigXml)
                 DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                 Enabled = False
                 Return
@@ -55,10 +55,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub AddTimeUnitsToComboBox()
             If TimeUnitComboBox.Items.Count = 0 Then
-                TimeUnitComboBox.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Seconds)
-                TimeUnitComboBox.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Minutes)
-                TimeUnitComboBox.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Hours)
-                TimeUnitComboBox.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Days)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Seconds)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Minutes)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Hours)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Days)
             End If
         End Sub
 
@@ -99,13 +99,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Select Case unit
                 Case TimeUnit.Seconds
-                    TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Seconds
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Seconds
                 Case TimeUnit.Minutes
-                    TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Minutes
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Minutes
                 Case TimeUnit.Hours
-                    TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Hours
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Hours
                 Case TimeUnit.Days
-                    TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Days
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Days
             End Select
 
             TimeQuantity.Value = cacheTimeout
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'The default value
                 UseCustomConnectionStringCheckBox.Enabled = True
                 UseCustomConnectionStringCheckBox.CheckState = Windows.Forms.CheckState.Unchecked
-                CustomConnectionString.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_connectionStringValueDefaultDisplayValue
+                CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue
                 CustomConnectionString.Enabled = False
             Else
                 'Using a non-default connection string for all providers
@@ -147,18 +147,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Select Case UseCustomConnectionStringCheckBox.CheckState
                 Case Windows.Forms.CheckState.Indeterminate
                     'The connection strings don't match
-                    CustomConnectionString.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_ConnectionStringsDontMatch
+                    CustomConnectionString.Text = My.Resources.Designer.PPG_Services_ConnectionStringsDontMatch
                 Case Windows.Forms.CheckState.Checked
                     'We're using a custom connection string
                     'Either the text has already been set (in which case we're good), or it's the display default message, in which case we should
                     'change it to the default value.
-                    If CustomConnectionString.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_connectionStringValueDefaultDisplayValue Then
+                    If CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue Then
                         CustomConnectionString.Text = ServicesPropPageAppConfigHelper.connectionStringValueDefault
                     End If
                     ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, CustomConnectionString.Text, ProjectHierarchy)
                 Case Windows.Forms.CheckState.Unchecked
                     'We're using the default
-                    CustomConnectionString.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_connectionStringValueDefaultDisplayValue
+                    CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue
                     ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, Nothing, ProjectHierarchy)
             End Select
 

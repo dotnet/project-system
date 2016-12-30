@@ -812,7 +812,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     ElseIf _currentDebugMode = DBGMODE.DBGMODE_Design Then
                         _isReadOnlyInDesignMode = _view.ReadOnlyMode
-                        DesignerLoader.SetReadOnlyMode(True, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantEditInDebugMode)
+                        DesignerLoader.SetReadOnlyMode(True, My.Resources.Designer.RSE_Err_CantEditInDebugMode)
                         _view.ReadOnlyMode = True
                     End If
                 End If

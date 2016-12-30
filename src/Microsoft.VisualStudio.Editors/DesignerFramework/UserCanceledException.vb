@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits ApplicationException
 
         Public Sub New()
-            MyBase.New(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UserCancel)
+            MyBase.New(My.Resources.Designer.RSE_Err_UserCancel)
         End Sub
 
     End Class

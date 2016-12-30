@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
             _assemblyVersionTextBoxes = New TextBox(3) {
                 AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
-            _neutralLanguageNoneText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None
+            _neutralLanguageNoneText = My.Resources.Designer.PPG_NeutralLanguage_None
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
@@ -73,15 +73,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyTrademark, "Trademark", Trademark, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {TrademarkLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyVersion, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {AssemblyVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyFileVersion, "AssemblyFileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {FileVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", ComVisibleCheckBox, ControlDataFlags.PersistedInAssemblyInfoFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_AssemblyGuid, "AssemblyGuid", GuidTextBox, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {GuidLabel})
-                    data.DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyGuid
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyGuid
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_NeutralResourcesLanguage, "NeutralResourcesLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.PersistedInAssemblyInfoFile, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyVersion(ByRef Version As String)
-            ValidateVersion(_assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion, True, Version)
+            ValidateVersion(_assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyVersion, True, Version)
         End Sub
 
 
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyFileVersion(ByRef Version As String)
-            ValidateVersion(_fileVersionTextBoxes, s_maxFileVersionPartValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion, False, Version)
+            ValidateVersion(_fileVersionTextBoxes, s_maxFileVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyFileVersion, False, Version)
         End Sub
 
         ''' <summary>
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Try
                     Dim guid As New Guid(Trim(GuidTextBox.Text))
                 Catch e As FormatException
-                    message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadGuid
+                    message = My.Resources.Designer.PPG_Application_BadGuid
                     Return ValidationResult.Failed
                 End Try
             ElseIf controlData.FormControl Is AssemblyVersionLayoutPanel Then

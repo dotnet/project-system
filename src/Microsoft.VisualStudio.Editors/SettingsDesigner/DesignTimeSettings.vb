@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Friend Function CreateUniqueName(Optional Base As String = Nothing) As String
             If String.IsNullOrEmpty(Base) Then
-                Base = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DefaultSettingName
+                Base = My.Resources.Designer.SD_DefaultSettingName
             End If
 
             Dim ExistingNames As New Hashtable

@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let throw below
                 End Try
             End If
-            Throw New FormatException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString)
+            Throw New FormatException(My.Resources.Designer.PPG_InvalidHexString)
         End Function
 
         ''' <summary>

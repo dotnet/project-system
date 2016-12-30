@@ -423,7 +423,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If matchingEntry IsNot Nothing Then
                 currentValue = matchingEntry.DisplayName
             Else
-                currentValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_AccessModifier_Custom
+                currentValue = My.Resources.Designer.RSE_AccessModifier_Custom
             End If
 
             Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & [GetType].Name & ": " & currentValue)
@@ -499,7 +499,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(TrySetCustomToolValue), NameOf(AccessModifierCombobox))
                 DesignerMessageBox.Show(
                     _rootDesigner,
-                    My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace,
+                    My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace,
                     ex,
                     Nothing) 'Note: when we integrate the changes to DesignerMessageBox.Show, the caption property can be removed)
             End Try

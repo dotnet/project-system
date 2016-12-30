@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If LocalRegistry Is Nothing Then
                 Debug.Fail("Shell did not offer local registry, so we can't create a text buffer.")
-                Throw New COMException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_NoLocalRegistry, Interop.NativeMethods.E_FAIL)
+                Throw New COMException(My.Resources.Designer.DFX_NoLocalRegistry, Interop.NativeMethods.E_FAIL)
             End If
 
             Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(Guid.Empty), "EE has munched on text buffer guid.")
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ObjPtr = IntPtr.Zero
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
-                Throw New COMException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableCreateTextBuffer, Interop.NativeMethods.E_FAIL)
+                Throw New COMException(My.Resources.Designer.DFX_UnableCreateTextBuffer, Interop.NativeMethods.E_FAIL)
             End Try
 
             Return TextStreamInstance
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     'Existing data is not a IVSTextStream.  Throw VS_E_INCOMPATIBLEDOCDATA to have the shell
                     '  ask if it should close the existing editor.
-                    Throw New COMException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer, Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                    Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                 End If
             End If
 
@@ -241,17 +241,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   to continue without closing the document if it is currently open. VS_E_INCOMPATIBLEDOCDATA 
         '''   will ask if the open document should be closed. Any other return will stop the loop from continuing.                                                                                                                                                                                                                                                                                                                                                                         If the constructed object referenced by ppunkDocData supports IOleCommandTarget, the object is included in the command routing chain of the Environment after the command is routed to the active object referenced by ppunkDocView.
         '''   
-        Private Function IVsEditorFactory_CreateEditorInstance( _
-                vscreateeditorflags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                Itemid As UInteger, _
-                ExistingDocDataPtr As IntPtr, _
-                ByRef DocViewPtr As IntPtr, _
-                ByRef DocDataPtr As IntPtr, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As Guid, _
+        Private Function IVsEditorFactory_CreateEditorInstance(
+                vscreateeditorflags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                Itemid As UInteger,
+                ExistingDocDataPtr As IntPtr,
+                ByRef DocViewPtr As IntPtr,
+                ByRef DocDataPtr As IntPtr,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef FCanceled As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -308,16 +308,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                ItemId As UInteger, _
-                ExistingDocData As Object, _
-                ByRef DocView As Object, _
-                ByRef DocData As Object, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As Guid, _
+        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                ItemId As UInteger,
+                ExistingDocData As Object,
+                ByRef DocView As Object,
+                ByRef DocData As Object,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef Canceled As Boolean)
             Canceled = False
             CmdUIGuid = Guid.Empty
@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     Dim DesignerService As IVSMDDesignerService = CType(_serviceProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     ' Create our doc data if we don't have an existing one.
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New COMException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
+                Throw New COMException(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
             End Try
         End Sub
 

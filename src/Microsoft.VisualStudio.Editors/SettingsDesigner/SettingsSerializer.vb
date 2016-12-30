@@ -180,12 +180,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim RoamingAttr As XmlAttribute = SettingNode.Attributes("Roaming")
 
                 If typeAttr Is Nothing OrElse scopeAttr Is Nothing OrElse nameAttr Is Nothing Then
-                    Throw New SettingsSerializerException(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile)
+                    Throw New SettingsSerializerException(My.Resources.Designer.SD_Err_CantLoadSettingsFile)
                 End If
 
                 Dim newSettingName As String = Settings.CreateUniqueName(nameAttr.Value)
                 If Not Settings.IsValidName(newSettingName) Then
-                    Throw New SettingsSerializerException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidIdentifier_1Arg, nameAttr.Value))
+                    Throw New SettingsSerializerException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, nameAttr.Value))
                 End If
                 Dim Instance As DesignTimeSettingInstance = Settings.AddNew(typeAttr.Value, _
                                                                             newSettingName, _

@@ -9,7 +9,7 @@ Namespace My.Resources
     '  But then the class name gets generated as "Microsoft_VisualStudio_Editors_Designer".
     'So hide that one and introduce a "Designer" class instead.
     <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
-    Partial Friend Class Microsoft_VisualStudio_Editors_Designer
+    Partial Friend Class Designer
 
         ''' <summary>
         ''' Temporary compatibility function to make converting from Designer.txt to Designer.resx easier.

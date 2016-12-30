@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _projectItem = projectItem
         End Sub
 
-        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)>
         <MergableProperty(False)>
         <HelpKeyword("Folder Properties.FileName")>
         Public Property Name() As String
@@ -48,8 +48,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        <VBDisplayName(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
-        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
+        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
         <HelpKeyword("Folder Properties.UrlBehavior")>
         Public Property UrlBehavior() As UrlBehaviorType
             Get
@@ -77,8 +77,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayName(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)>
-        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)>
+        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlName)>
+        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)>
         <HelpKeyword("Folder Properties.WebReference")>
         <MergableProperty(False)>
         Public Property WebReferenceURL() As String
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
-            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebReferenceTypeName
+            Return My.Resources.Designer.PPG_WebReferenceTypeName
         End Function
 
         Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly Property DisplayValues() As String()
             Get
                 If s_displayValues Is Nothing Then
-                    s_displayValues = New String() {My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Static, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Dynamic}
+                    s_displayValues = New String() {My.Resources.Designer.PPG_UrlBehavior_Static, My.Resources.Designer.PPG_UrlBehavior_Dynamic}
                 End If
                 Return s_displayValues
             End Get

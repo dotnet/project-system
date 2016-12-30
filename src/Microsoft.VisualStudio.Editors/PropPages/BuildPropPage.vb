@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click
-            ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_Title, GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
+            ShowChildPage(My.Resources.Designer.PPG_AdvancedBuildSettings_Title, GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub OutputPathBrowse_Click(sender As Object, e As EventArgs) Handles btnOutputPathBrowse.Click
             Dim DirName As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(txtOutputPath.Text, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectOutputPathTitle, DirName) Then
+            If GetDirectoryViaBrowseRelativeToProject(txtOutputPath.Text, My.Resources.Designer.PPG_SelectOutputPathTitle, DirName) Then
                 txtOutputPath.Text = DirName
                 SetDirty(True) ' vswhidbey 276000 - textchanged events do not commit, lostfocus does
                 ' this code path should commit the change if the user selected a new outputpath via the picker

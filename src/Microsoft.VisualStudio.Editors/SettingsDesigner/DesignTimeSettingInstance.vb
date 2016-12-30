@@ -353,13 +353,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_GenerateDefaultValueInCode
+                    Return My.Resources.Designer.SD_UndoTran_GenerateDefaultValueInCode
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_GenerateDefaultValueInCode
+                    Return My.Resources.Designer.SD_DESCR_GenerateDefaultValueInCode
                 End Get
             End Property
         End Class
@@ -381,7 +381,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides ReadOnly Property IsReadOnly() As Boolean
                 Get
-                    Return IsNameReadOnly(owner)
+                    Return IsNameReadOnly(Owner)
                 End Get
             End Property
 
@@ -397,13 +397,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_NameChanged
+                    Return My.Resources.Designer.SD_UndoTran_NameChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Name
+                    Return My.Resources.Designer.SD_DESCR_Name
                 End Get
             End Property
         End Class
@@ -421,7 +421,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides ReadOnly Property IsReadOnly() As Boolean
                 Get
-                    Return IsRoamingReadOnly(owner)
+                    Return IsRoamingReadOnly(Owner)
                 End Get
             End Property
 
@@ -437,13 +437,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_RoamingChanged
+                    Return My.Resources.Designer.SD_UndoTran_RoamingChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Roaming
+                    Return My.Resources.Designer.SD_DESCR_Roaming
                 End Get
             End Property
         End Class
@@ -477,13 +477,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_DescriptionChanged
+                    Return My.Resources.Designer.SD_UndoTran_DescriptionChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Description
+                    Return My.Resources.Designer.SD_DESCR_Description
                 End Get
             End Property
         End Class
@@ -517,13 +517,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_ProviderChanged
+                    Return My.Resources.Designer.SD_UndoTran_ProviderChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Provider
+                    Return My.Resources.Designer.SD_DESCR_Provider
                 End Get
             End Property
         End Class
@@ -562,13 +562,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_ScopeChanged
+                    Return My.Resources.Designer.SD_UndoTran_ScopeChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Scope
+                    Return My.Resources.Designer.SD_DESCR_Scope
                 End Get
             End Property
 
@@ -610,13 +610,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged
+                    Return My.Resources.Designer.SD_UndoTran_TypeChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_SerializedSettingType
+                    Return My.Resources.Designer.SD_DESCR_SerializedSettingType
                 End Get
             End Property
         End Class
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_SerializedValueChanged
+                    Return My.Resources.Designer.SD_UndoTran_SerializedValueChanged
                 End Get
             End Property
 
@@ -661,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Value
+                    Return My.Resources.Designer.SD_DESCR_Value
                 End Get
             End Property
         End Class
@@ -699,10 +699,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
                 If TypeOf value Is String Then
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
+                    If String.Equals(DirectCast(value, String), My.Resources.Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
                         Return SettingScope.Application
                     End If
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
+                    If String.Equals(DirectCast(value, String), My.Resources.Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
                         Return SettingScope.User
                     End If
                 End If
@@ -734,13 +734,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If IsWebProvider(instance) Then
                             Static WebApplicationScopeString As String = Nothing
                             If WebApplicationScopeString Is Nothing Then
-                                WebApplicationScopeString = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_WebApplicationScope
+                                WebApplicationScopeString = My.Resources.Designer.SD_ComboBoxItem_WebApplicationScope
                             End If
                             Return WebApplicationScopeString
                         Else
                             Static ApplicationScopeString As String = Nothing
                             If ApplicationScopeString Is Nothing Then
-                                ApplicationScopeString = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope
+                                ApplicationScopeString = My.Resources.Designer.SD_ComboBoxItem_ApplicationScope
                             End If
                             Return ApplicationScopeString
                         End If
@@ -748,13 +748,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If IsWebProvider(instance) Then
                             Static WebUserScopeString As String = Nothing
                             If WebUserScopeString Is Nothing Then
-                                WebUserScopeString = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_WebUserScope
+                                WebUserScopeString = My.Resources.Designer.SD_ComboBoxItem_WebUserScope
                             End If
                             Return WebUserScopeString
                         Else
                             Static UserScopeString As String = Nothing
                             If UserScopeString Is Nothing Then
-                                UserScopeString = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope
+                                UserScopeString = My.Resources.Designer.SD_ComboBoxItem_UserScope
                             End If
                             Return UserScopeString
                         End If
@@ -791,23 +791,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Sub SetName(value As String)
             If value = "" Then
-                Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_NameEmpty)
+                Throw New ArgumentException(My.Resources.Designer.SD_ERR_NameEmpty)
             End If
             If Not DesignTimeSettings.EqualIdentifiers(Name, value) AndAlso Site IsNot Nothing Then
 
                 For Each probeComponent As IComponent In Site.Container.Components
                     Dim instance As DesignTimeSettingInstance = TryCast(probeComponent, DesignTimeSettingInstance)
                     If instance IsNot Nothing AndAlso DesignTimeSettings.EqualIdentifiers(instance.Name, value) Then
-                        Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_DuplicateName_1Arg, value))
+                        Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_DuplicateName_1Arg, value))
                     End If
                 Next
 
-                Dim nameCreationService As Design.Serialization.INameCreationService = TryCast( _
-                    Site.GetService(GetType(Design.Serialization.INameCreationService)), _
+                Dim nameCreationService As Design.Serialization.INameCreationService = TryCast(
+                    Site.GetService(GetType(Design.Serialization.INameCreationService)),
                     Design.Serialization.INameCreationService)
 
                 If nameCreationService IsNot Nothing AndAlso Not nameCreationService.IsValidName(value) Then
-                    Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidIdentifier_1Arg, value))
+                    Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, value))
                 End If
             End If
             _name = value

@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode AndAlso _
                             _rootComponent.IsDependentFile AndAlso Not _allowToUpdateDependentFile Then
 
-                            If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
+                            If ResourceView.DsMsgBox(My.Resources.Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
                                 _allowToUpdateDependentFile = True
                             End If
 
