@@ -4,7 +4,7 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), ComVisible(False), Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), System.Runtime.InteropServices.InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), ComVisible(False), Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     Friend Interface IInternetSecurityManager
         <PreserveSig()> Function SetSecuritySite() As Integer
         <PreserveSig()> Function GetSecuritySite() As Integer

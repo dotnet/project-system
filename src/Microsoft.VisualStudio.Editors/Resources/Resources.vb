@@ -8,7 +8,7 @@ Namespace My.Resources
     '  or else change the project's root namespace which I don't want to do at this point.
     '  But then the class name gets generated as "Microsoft_VisualStudio_Editors_Designer".
     'So hide that one and introduce a "Designer" class instead.
-    <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
     Partial Friend Class Microsoft_VisualStudio_Editors_Designer
     End Class
 
@@ -19,7 +19,7 @@ Namespace My.Resources
     ''' <remarks>
     ''' </remarks>
     Friend Class Designer
-        Inherits Global.My.Resources.Microsoft_VisualStudio_Editors_Designer
+        Inherits Microsoft_VisualStudio_Editors_Designer
 
         ''' <summary>
         ''' These are some string resource IDs (just the resource ID name, not the 
@@ -63,9 +63,9 @@ Namespace Microsoft.VisualStudio.Editors
     '''   arguments passed in, in which case String.Format() is called.
     ''' 
     ''' </remarks>
-    <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)> _
     Friend Class SR
-        Inherits Global.My.Resources.Microsoft_VisualStudio_Editors_Designer
+        Inherits My.Resources.Microsoft_VisualStudio_Editors_Designer
 
         ''' <summary>
         ''' Temporary compatibility function to make converting from Designer.txt to Designer.resx easier.
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="s"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+        <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)> _
         Friend Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then
                 Return s

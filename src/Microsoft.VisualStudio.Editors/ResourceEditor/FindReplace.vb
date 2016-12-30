@@ -329,7 +329,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                         If Text Is Nothing Then
                                             Text = ""
                                         End If
-                                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Find), NameOf(FindReplace))
+                                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Find), NameOf(FindReplace))
                                         Text = ""
                                     End Try
                                 End If
@@ -478,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _currentFieldInCurrentIndex = DirectCast(NextFieldIndex, Field)
 
             Debug.Assert(_currentIndex >= 0 AndAlso _currentIndex < _resourcesToSearch.Length)
-            Debug.Assert(System.Enum.IsDefined(GetType(Field), _currentFieldInCurrentIndex), "Field enum is not contiguous?")
+            Debug.Assert([Enum].IsDefined(GetType(Field), _currentFieldInCurrentIndex), "Field enum is not contiguous?")
         End Sub
 
 
@@ -619,7 +619,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If StartingResource IsNot Nothing Then
-                _currentIndex = System.Array.IndexOf(_resourcesToSearch, StartingResource)
+                _currentIndex = Array.IndexOf(_resourcesToSearch, StartingResource)
                 If _currentIndex < 0 Then
                     Debug.Fail("Couldn't find resource that we just had our fingers on")
                     _currentIndex = 0

@@ -23,12 +23,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'We don't want this localized, and the WinForms designer will do that automatically if
             '  we have it in InitializeComponent.
-            Me.DebugInfoComboBox.Items.AddRange(New Object() {"none", "full", "pdb-only", "portable", "embedded"})
+            DebugInfoComboBox.Items.AddRange(New Object() {"none", "full", "pdb-only", "portable", "embedded"})
 
-            Me.MinimumSize = Me.PreferredSize()
+            MinimumSize = PreferredSize()
 
             AddChangeHandlers()
-            MyBase.PageRequiresScaling = False
+            PageRequiresScaling = False
         End Sub
 
         Public Enum TreatWarningsSetting
@@ -43,21 +43,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     m_ControlData = New PropertyControlData() {
                     New PropertyControlData(
-                        VsProjPropId.VBPROJPROPID_RemoveIntegerChecks, "RemoveIntegerChecks", Me.RemoveIntegerChecks),
+                        VsProjPropId.VBPROJPROPID_RemoveIntegerChecks, "RemoveIntegerChecks", RemoveIntegerChecks),
                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", Me.Optimize),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_BaseAddress, "BaseAddress", Me.DllBaseTextbox, AddressOf Me.SetBaseAddress, AddressOf Me.GetBaseAddress, ControlDataFlags.None, New Control() {Me.DllBaseLabel}),
-                    New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, VsProjPropId.VBPROJPROPID_DebugSymbols, "DebugSymbols", Nothing, AddressOf Me.DebugSymbolsSet, AddressOf Me.DebugSymbolsGet),
+                        VsProjPropId.VBPROJPROPID_Optimize, "Optimize", Optimize),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_BaseAddress, "BaseAddress", DllBaseTextbox, AddressOf SetBaseAddress, AddressOf GetBaseAddress, ControlDataFlags.None, New Control() {DllBaseLabel}),
+                    New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, VsProjPropId.VBPROJPROPID_DebugSymbols, "DebugSymbols", Nothing, AddressOf DebugSymbolsSet, AddressOf DebugSymbolsGet),
                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId80.VBPROJPROPID_DebugInfo, "DebugInfo", DebugInfoComboBox, AddressOf DebugInfoSet, AddressOf DebugInfoGet, ControlDataFlags.UserHandledEvents, New Control() {Me.GenerateDebugInfoLabel}),
-                    New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, VsProjPropId.VBPROJPROPID_DefineDebug, "DefineDebug", Me.DefineDebug),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineTrace, "DefineTrace", Me.DefineTrace),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", Me.DefineConstantsTextbox, New Control() {Me.CustomConstantsLabel, Me.CustomConstantsExampleLabel}),
+                        VsProjPropId80.VBPROJPROPID_DebugInfo, "DebugInfo", DebugInfoComboBox, AddressOf DebugInfoSet, AddressOf DebugInfoGet, ControlDataFlags.UserHandledEvents, New Control() {GenerateDebugInfoLabel}),
+                    New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release, VsProjPropId.VBPROJPROPID_DefineDebug, "DefineDebug", DefineDebug),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineTrace, "DefineTrace", DefineTrace),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_DefineConstants, "DefineConstants", DefineConstantsTextbox, New Control() {CustomConstantsLabel, CustomConstantsExampleLabel}),
                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", Me.GenerateSerializationAssemblyComboBox, AssocControls:=New Control() {GenerateSerializationAssembliesLabel}),
+                        VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", GenerateSerializationAssemblyComboBox, AssocControls:=New Control() {GenerateSerializationAssembliesLabel}),
                     New PropertyControlData(VsProjPropId.VBPROJPROPID_OutputType, "OutputType", Nothing, ControlDataFlags.Hidden),
-                    New HiddenIfMissingPropertyControlData(1, "UseDotNetNativeToolchain", Me.CompileWithDotNetNative),
-                    New HiddenIfMissingPropertyControlData(1, "RunGatekeeperAudit", Me.EnableGatekeeperAnAlysis)
+                    New HiddenIfMissingPropertyControlData(1, "UseDotNetNativeToolchain", CompileWithDotNetNative),
+                    New HiddenIfMissingPropertyControlData(1, "RunGatekeeperAudit", EnableGatekeeperAnAlysis)
                     }
                 End If
                 Return m_ControlData
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Only enable the dll base adress for library type projects...
             Dim dllBaseEnabled As Boolean = False
-            Dim pcd As PropertyControlData = Me.GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputType)
+            Dim pcd As PropertyControlData = GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputType)
             If pcd IsNot Nothing Then
                 Dim oOutputType As Object = pcd.TryGetPropertyValueNative(m_ExtendedObjects)
                 If Not PropertyControlData.IsSpecialValue(oOutputType) Then
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 End If
             End If
-            Me.DllBaseTextbox.Enabled = dllBaseEnabled
+            DllBaseTextbox.Enabled = dllBaseEnabled
         End Sub
 
         ''' <summary>
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let throw below
                 End Try
             End If
-            Throw New FormatException(SR.GetString(SR.PPG_InvalidHexString))
+            Throw New FormatException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString))
         End Function
 
         ''' <summary>
@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Function DebugInfoSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
-                Me.DebugInfoComboBox.SelectedIndex = -1
+                DebugInfoComboBox.SelectedIndex = -1
             Else
                 Dim stValue As String = TryCast(value, String)
                 If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
@@ -179,12 +179,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '// displayed in the dialog with a dash.
 
                     If (String.Compare(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) <> 0) Then
-                        Me.DebugInfoComboBox.Text = stValue
+                        DebugInfoComboBox.Text = stValue
                     Else
-                        Me.DebugInfoComboBox.Text = "pdb-only"
+                        DebugInfoComboBox.Text = "pdb-only"
                     End If
                 Else
-                    Me.DebugInfoComboBox.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    DebugInfoComboBox.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
             End If
             Return True
@@ -193,10 +193,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function DebugInfoGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             ' Need to special case pdb-only because the display name has a dash while the actual property value
             ' doesn't have the dash.
-            If String.Equals(Me.DebugInfoComboBox.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) Then
+            If String.Equals(DebugInfoComboBox.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) Then
                 value = "pdbonly"
             Else
-                value = Me.DebugInfoComboBox.Text
+                value = DebugInfoComboBox.Text
             End If
             Return True
         End Function
@@ -226,12 +226,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' no cancellation, just normalizes value if not an error condition
         ''' </summary>
         Private Sub BaseAddress_Validating(sender As Object, e As CancelEventArgs) Handles DllBaseTextbox.Validating
-            Dim StringValue As String = Trim(Me.DllBaseTextbox.Text)
+            Dim StringValue As String = Trim(DllBaseTextbox.Text)
 
             Const DEFAULT_DLLBASEADDRESS As String = "&H11000000"
 
             If StringValue = "" Then
-                Me.DllBaseTextbox.Text = DEFAULT_DLLBASEADDRESS
+                DllBaseTextbox.Text = DEFAULT_DLLBASEADDRESS
 
             ElseIf String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Dim LongValue As ULong = CULng(StringValue)

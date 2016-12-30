@@ -35,13 +35,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
                 Dim activeProjects As Array = TryCast(dte.ActiveSolutionProjects, Array)
                 If activeProjects Is Nothing OrElse activeProjects.Length = 0 Then
-                    ShowWarning(SR.XmlToSchema_NoProjectSelected)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_NoProjectSelected)
                     Return
                 End If
 
                 Dim acitveProject = TryCast(activeProjects.GetValue(0), Project)
                 If acitveProject Is Nothing Then
-                    ShowWarning(SR.XmlToSchema_NoProjectSelected)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_NoProjectSelected)
                     Return
                 End If
 
@@ -56,14 +56,14 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     Catch 'Eat any exception
                     End Try
                     If Not Directory.Exists(savePath) Then
-                        ShowWarning(String.Format(SR.XmlToSchema_InvalidProjectPath, savePath))
+                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_InvalidProjectPath, savePath))
                         Return
                     End If
                 End If
 
                 Dim fileName = replacementsDictionary("$rootname$")
                 If String.IsNullOrEmpty(fileName) Then
-                    ShowWarning(SR.XmlToSchema_InvalidEmptyItemName)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_InvalidEmptyItemName)
                     Return
                 End If
 

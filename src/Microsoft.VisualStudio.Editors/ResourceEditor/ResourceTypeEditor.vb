@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   expose it in a future version.
     ''' </summary>
     ''' <remarks></remarks>
-    <System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.InheritanceDemand, Name:="FullTrust"),
-    System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
+    <Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.InheritanceDemand, Name:="FullTrust"),
+    Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
     Friend MustInherit Class ResourceTypeEditor
 
         'Note: These comments aren't in the XML docs because I don't want it to accidentally end up in the public XML
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
         Public NotOverridable Overrides Function Equals([Object] As Object) As Boolean
-            Return [Object].GetType Is Me.GetType
+            Return [Object].GetType Is [GetType]
         End Function
 
 
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>True if and only if both instances are of the same type.</returns>
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         Public Overloads Function Equals(Editor As ResourceTypeEditor) As Boolean
-            Return Me.Equals(CObj(Editor))
+            Return Equals(CObj(Editor))
         End Function
 
         ''' <summary>
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  somewhat expensive, so we cache it (it cannot change).
             If Not _isHashCodeCached Then
                 _isHashCodeCached = True
-                _hashCodeCache = Me.GetType.AssemblyQualifiedName.GetHashCode
+                _hashCodeCache = [GetType].AssemblyQualifiedName.GetHashCode
             End If
             Return _hashCodeCache
         End Function
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DummyStream = File.OpenRead(FilePath)
 
                 'Create a ResXFileRef with the file path and resource type
-                Dim DummyFileRef As New System.Resources.ResXFileRef(FilePath, GetDefaultResourceTypeName(ResourceContentFile))
+                Dim DummyFileRef As New Resources.ResXFileRef(FilePath, GetDefaultResourceTypeName(ResourceContentFile))
                 Dim Converter As TypeConverter = TypeDescriptor.GetConverter(DummyFileRef)
                 If Converter.CanConvertFrom(GetType(String)) Then
                     '... and then use it to fetch the resource from the file
@@ -330,11 +330,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return NewValue
                     Else
                         Debug.Fail("ResXFileRef conversion returned Nothing - should have thrown an exception instead")
-                        Throw NewException(SR.GetString(SR.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                        Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                     End If
                 Else
                     Debug.Fail("ResXFileRef can't convert from string?")
-                    Throw NewException(SR.GetString(SR.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                 End If
             Catch ex As TargetInvocationException
                 'Pull out the inner exception and rethrow that - the target invocation exception doesn't give us
@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Windows metafile (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overridable Function GetSaveFileDialogFilter(Extension As String) As String
-            Return SR.GetString(SR.RSE_Filter_All) & " (*.*)|*.*"
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_All) & " (*.*)|*.*"
         End Function
 
 
@@ -544,7 +544,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Function TryCanSaveResourceToFile(Resource As IResource) As Boolean
             Try
                 Return CanSaveResourceToFile(Resource)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(TryCanSaveResourceToFile), NameOf(ResourceTypeEditor))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryCanSaveResourceToFile), NameOf(ResourceTypeEditor))
             End Try
 
             Return False

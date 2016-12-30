@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("m_RootComponent is Nothing")
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Exception during flush", NameOf(ResourceEditorDesignerLoader))
                 Throw
             End Try
         End Sub
@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   will automatically be added to the ErrorList by VSDesignerLoader.  If there
         '''   are more specific local exceptions, they can be added to ErrorList manually.
         ''' </remarks>
-        Protected Overrides Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
             Dim NewResourceEditorRoot As ResourceEditorRootComponent = Nothing
             Using New WaitCursor
                 If LoaderHost IsNot Nothing Then
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim mtSvr As MultiTargetService
 
                     Try
-                        mtSvr = New MultiTargetService(Me.VsHierarchy, Me.ProjectItemid, isGlobalDTAR:=False)
+                        mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
                     Catch ex As ArgumentException
                         ' Can happen if there is no supported TargetFrameworkMoniker
                         mtSvr = Nothing
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Now that we know the load succeeded, we can try registering our view helper
                         NewResourceEditorRoot.RootDesigner.RegisterViewHelper()
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(HandleLoad), NameOf(ResourceEditorDesignerLoader))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(HandleLoad), NameOf(ResourceEditorDesignerLoader))
                         _rootComponent = Nothing
 
                         'No need to dispose the resource editor root, the host will do this for us.

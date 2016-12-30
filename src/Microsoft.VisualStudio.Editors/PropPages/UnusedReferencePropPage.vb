@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks>Called by ApplyPageChanges so project is in batch edit mode.</remarks>
         Protected Overrides Sub OnParentChanged(e As EventArgs)
-            m_HostDialog = TryCast(Me.ParentForm, PropPageHostDialog)
+            m_HostDialog = TryCast(ParentForm, PropPageHostDialog)
             If m_HostDialog IsNot Nothing Then
                 With m_HostDialog
                     AddHandler .FormClosed, AddressOf dialog_Close
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' Get reference usage provider interface
                 _refUsageProvider = CType(ServiceProvider.GetService(NativeMethods.VBCompilerGuid), IVBReferenceUsageProvider)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitDialog), NameOf(UnusedReferencePropPage))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InitDialog), NameOf(UnusedReferencePropPage))
                 Throw
             End Try
 
@@ -140,8 +140,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _refUsageProvider.StopGetUnusedReferences(_hier)
 
             ' Reset mouse cursor
-            Debug.Assert(Me.ParentForm IsNot Nothing)
-            Me.ParentForm.Cursor = Cursors.Default
+            Debug.Assert(ParentForm IsNot Nothing)
+            ParentForm.Cursor = Cursors.Default
         End Sub
 
         ''' <summary>
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             theVSProject = CType(DTEProject.Object, VSLangProj.VSProject)
             ReferenceCount = theVSProject.References.Count
 
-            refsList = New System.Collections.ArrayList(ReferenceCount)
+            refsList = New ArrayList(ReferenceCount)
 
             For refIndex As Integer = 0 To ReferenceCount - 1
                 Dim ref As VSLangProj.Reference = theVSProject.References.Item(refIndex + 1) '1-based
@@ -181,10 +181,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>Use when proppage is on a PropPageHostDialog</remarks>
         Private Sub EnableRemoveRefs(_enabled As Boolean)
 
-            If Me.ParentForm IsNot Nothing Then
-                Debug.Assert(TypeOf Me.ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
+            If ParentForm IsNot Nothing Then
+                Debug.Assert(TypeOf ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
 
-                Dim RemoveButton As Button = CType(Me.ParentForm, PropPageHostDialog).OK
+                Dim RemoveButton As Button = CType(ParentForm, PropPageHostDialog).OK
 
                 ' Enable/Disable group
                 RemoveButton.Enabled = _enabled
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' indicate if we have references to remove on apply()
                 If (_enabled) Then
                     SetDirty(Me)
-                    RemoveButton.DialogResult = System.Windows.Forms.DialogResult.OK
+                    RemoveButton.DialogResult = DialogResult.OK
                 Else
                     ClearIsDirty()
                 End If
@@ -214,11 +214,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _lastStatus = Status
 
                 ' Use a arrow and hourglass cursor if waiting
-                Debug.Assert(Me.ParentForm IsNot Nothing)
+                Debug.Assert(ParentForm IsNot Nothing)
                 If Status = ReferenceUsageResult.ReferenceUsageWaiting Then
-                    Me.ParentForm.Cursor = Cursors.AppStarting
+                    ParentForm.Cursor = Cursors.AppStarting
                 Else
-                    Me.ParentForm.Cursor = Cursors.Default
+                    ParentForm.Cursor = Cursors.Default
                 End If
 
                 ' Are there any unused references?
@@ -232,13 +232,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' Get a status string
                     Select Case Status
                         Case ReferenceUsageResult.ReferenceUsageOK
-                            StatusText = SR.GetString(SR.PropPage_UnusedReferenceNoUnusedReferences)
+                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceNoUnusedReferences)
                         Case ReferenceUsageResult.ReferenceUsageWaiting
-                            StatusText = SR.GetString(SR.PropPage_UnusedReferenceCompileWaiting)
+                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileWaiting)
                         Case ReferenceUsageResult.ReferenceUsageCompileFailed
-                            StatusText = SR.GetString(SR.PropPage_UnusedReferenceCompileFail)
+                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceCompileFail)
                         Case ReferenceUsageResult.ReferenceUsageError
-                            StatusText = SR.GetString(SR.PropPage_UnusedReferenceError)
+                            StatusText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceError)
                         Case Else
                             Debug.Fail("Unexpected status")
                             StatusText = ""
@@ -365,25 +365,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             For iRef As Integer = 0 To RefsList.Count - 1 Step 1
                                 Dim RefPath As String = CType(RefsList(iRef), VSLangProj.Reference).Path
                                 If RefPath <> "" Then
-                                    pathHash.Add(RefPath.ToUpper(System.Globalization.CultureInfo.InvariantCulture), iRef)
+                                    pathHash.Add(RefPath.ToUpper(Globalization.CultureInfo.InvariantCulture), iRef)
                                 End If
                             Next
 
                             For Each UnusedRefPath As String In UnusedRefPaths
                                 If UnusedRefPath.Length > 0 Then
 
-                                    Dim formatedPath As String = UnusedRefPath.ToUpper(System.Globalization.CultureInfo.InvariantCulture)
+                                    Dim formatedPath As String = UnusedRefPath.ToUpper(Globalization.CultureInfo.InvariantCulture)
                                     Dim refObj As Object = pathHash.Item(formatedPath)
 
                                     If refObj IsNot Nothing Then
                                         UnusedRefsList.Add(RefsList(CInt(refObj)))
                                         ' remove the one we matched, so we don't scan it and waste time to GetAssemblyName again...
                                         pathHash.Remove(formatedPath)
-                                    ElseIf System.IO.File.Exists(UnusedRefPath) Then
+                                    ElseIf IO.File.Exists(UnusedRefPath) Then
                                         ' If we haven't matched any path, we need collect the assembly name and use it to do match...
                                         Dim UnusedRefName As String = GetAssemblyName(UnusedRefPath).FullName
                                         If UnusedRefName <> "" Then
-                                            UnusedRefName = UnusedRefName.ToUpper(System.Globalization.CultureInfo.InvariantCulture)
+                                            UnusedRefName = UnusedRefName.ToUpper(Globalization.CultureInfo.InvariantCulture)
                                             If assemblyNameHash Is Nothing Then
                                                 assemblyNameHash = New Hashtable()
                                             End If
@@ -398,10 +398,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 For Each pathItem As DictionaryEntry In pathHash
                                     Dim RefPath As String = CStr(pathItem.Key)
                                     Dim iRef As Integer = CInt(pathItem.Value)
-                                    If System.IO.File.Exists(RefPath) Then
+                                    If IO.File.Exists(RefPath) Then
                                         Dim assemblyName As System.Reflection.AssemblyName = GetAssemblyName(RefPath)
                                         If assemblyName IsNot Nothing Then
-                                            Dim RefName As String = assemblyName.FullName.ToUpper(System.Globalization.CultureInfo.InvariantCulture)
+                                            Dim RefName As String = assemblyName.FullName.ToUpper(Globalization.CultureInfo.InvariantCulture)
                                             If assemblyNameHash.Contains(RefName) Then
                                                 UnusedRefsList.Add(RefsList(iRef))
 #If DEBUG Then
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Using
                 End If
 
-            Catch ex As System.Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetUnusedRefs), NameOf(UnusedReferencePropPage))
                 Result = ReferenceUsageResult.ReferenceUsageError
             Finally
                 ' Report status
@@ -485,13 +485,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             UnusedReferenceList.View = View.Details
 
             ' Use ReferencePropPage's helper function for the common columns.
-            ReferencePropPage.SetReferenceListColumnWidths(Me, Me.UnusedReferenceList, 0)
+            ReferencePropPage.SetReferenceListColumnWidths(Me, UnusedReferenceList, 0)
 
         End Sub
 
 #Region "Event Handlers "
 
-        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
+        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
 
             ' Since CheckIndicies is updated after this event, we enable remove button if
             ' there are more than one check references or there are none and one is being checked
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance
-                .OK.Text = SR.GetString(SR.PropPage_UnusedReferenceRemoveButton)
+                .OK.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceRemoveButton)
 
                 ' Allow dialog to be resized
                 .FormBorderStyle = FormBorderStyle.Sizable
@@ -544,7 +544,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub dialog_Close(sender As Object, e As FormClosedEventArgs)
 
             ' Stop getting unused references list
-            Me.Abort()
+            Abort()
 
             ' Clean up the list
             UnusedReferenceList.Items.Clear()

@@ -98,13 +98,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Implements IVsDocDataContainer
 #End If
 
-        Private _formType As System.Type
+        Private _formType As Type
         Private _propPage As Control
         Private _pageSite As IPropertyPageSite
         Private _isDirty As Boolean
         Private Const s_SW_HIDE As Integer = 0
-        Private _size As System.Drawing.Size
-        Private _defaultSize As System.Drawing.Size
+        Private _size As Drawing.Size
+        Private _defaultSize As Drawing.Size
         Private _docString As String
         Private _helpFile As String
         Private _helpContext As UInteger
@@ -153,13 +153,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Function TranslateAccelerator(msg As Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
             'Delegate to the actual site.
             If _pageSite IsNot Nothing Then
-                Dim _msg As Microsoft.VisualStudio.OLE.Interop.MSG
+                Dim _msg As MSG
                 _msg.hwnd = msg.HWnd
                 _msg.message = CType(msg.Msg, UInteger)
                 _msg.wParam = msg.WParam
                 _msg.lParam = msg.LParam
 
-                Return _pageSite.TranslateAccelerator(New Microsoft.VisualStudio.OLE.Interop.MSG(0) {_msg})
+                Return _pageSite.TranslateAccelerator(New MSG(0) {_msg})
             Else
                 'Returning S_FALSE indicates we have no handled the message
                 Return NativeMethods.S_FALSE
@@ -216,11 +216,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
 
-        Protected MustOverride ReadOnly Property ControlType() As System.Type
+        Protected MustOverride ReadOnly Property ControlType() As Type
 
         Protected Overridable ReadOnly Property ControlTypeForResources() As Type
             Get
-                Return Me.ControlType
+                Return ControlType
             End Get
         End Property
 
@@ -246,20 +246,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Protected Overridable Property DefaultSize() As System.Drawing.Size
+        Protected Overridable Property DefaultSize() As Drawing.Size
             Get
                 If _defaultSize.Width = 0 Then 'CONSIDER: Need a better mechanism than assuming the resources are available.  Perf hit?
                     Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(ControlTypeForResources)
-                    Dim mySize As System.Drawing.Size = CType(resources.GetObject("$this.Size"), System.Drawing.Size)
+                    Dim mySize As Drawing.Size = CType(resources.GetObject("$this.Size"), Drawing.Size)
                     If mySize.IsEmpty Then
                         'Check for ClientSize if Size is not found
-                        mySize = CType(resources.GetObject("$this.ClientSize"), System.Drawing.Size)
+                        mySize = CType(resources.GetObject("$this.ClientSize"), Drawing.Size)
                     End If
                     _defaultSize = mySize
                 End If
                 Return _defaultSize
             End Get
-            Set(value As System.Drawing.Size)
+            Set(value As Drawing.Size)
                 _defaultSize = value
             End Set
         End Property
@@ -272,10 +272,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
 
-        Private Sub IPropertyPage2_Activate(hWndParent As System.IntPtr, pRect() As Microsoft.VisualStudio.OLE.Interop.RECT, bModal As Integer) Implements IPropertyPage2.Activate, IPropertyPage.Activate
+        Private Sub IPropertyPage2_Activate(hWndParent As IntPtr, pRect() As RECT, bModal As Integer) Implements IPropertyPage2.Activate, IPropertyPage.Activate
 
             If _propPage IsNot Nothing Then
-                Debug.Assert(Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle).Equals(hWndParent), "Property page already Activated with different parent")
+                Debug.Assert(NativeMethods.GetParent(_propPage.Handle).Equals(hWndParent), "Property page already Activated with different parent")
                 Return
             End If
 
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function IPropertyPage_Apply() As Integer Implements IPropertyPage.Apply
             Apply()
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Return NativeMethods.S_OK
         End Function
 
         Private Sub IPropertyPage2_Apply() Implements IPropertyPage2.Apply
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _propPage.Parent = Nothing
                 ElseIf _wasSetParentCalled Then
                     'We sited ourselves via a native SetParent call
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetParent(_propPage.Handle, _prevParent)
+                    NativeMethods.SetParent(_propPage.Handle, _prevParent)
                 End If
 
                 _propPage.Dispose()
@@ -366,12 +366,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
-            pPageInfo(0).dwHelpContext = Me.HelpContext
-            pPageInfo(0).pszDocString = Me.DocString
-            pPageInfo(0).pszHelpFile = Me.HelpFile
-            pPageInfo(0).pszTitle = Me.Title
-            pPageInfo(0).SIZE.cx = Me.DefaultSize.Width
-            pPageInfo(0).SIZE.cy = Me.DefaultSize.Height
+            pPageInfo(0).dwHelpContext = HelpContext
+            pPageInfo(0).pszDocString = DocString
+            pPageInfo(0).pszHelpFile = HelpFile
+            pPageInfo(0).pszTitle = Title
+            pPageInfo(0).SIZE.cx = DefaultSize.Width
+            pPageInfo(0).SIZE.cy = DefaultSize.Height
 
         End Sub
 
@@ -398,32 +398,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable Function IsPageDirty() As Integer
 
             If _propPage Is Nothing Then
-                Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+                Return NativeMethods.S_FALSE
             End If
 
             Try
                 If CType(_propPage, IPropertyPageInternal).IsPageDirty() Then
-                    Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsPageDirty), NameOf(PropPageBase))
-                Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.E_FAIL
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsPageDirty), NameOf(PropPageBase))
+                Return NativeMethods.E_FAIL
             End Try
 
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+            Return NativeMethods.S_FALSE
 
         End Function
 
 
-        Private Sub IPropertyPage2_Move(pRect() As Microsoft.VisualStudio.OLE.Interop.RECT) Implements IPropertyPage2.Move, IPropertyPage.Move
+        Private Sub IPropertyPage2_Move(pRect() As RECT) Implements IPropertyPage2.Move, IPropertyPage.Move
             Move(pRect)
         End Sub
 
-        Private Sub Move(pRect() As Microsoft.VisualStudio.OLE.Interop.RECT)
+        Private Sub Move(pRect() As RECT)
             ' we need to adjust the size of the page if it's autosize or if we're native (in which
             ' case we're going to adjust the size of our secret usercontrol instead) See the Create
             ' for more info about the panel
             If _propPage IsNot Nothing AndAlso pRect IsNot Nothing AndAlso pRect.Length <> 0 AndAlso (_propPage.AutoSize OrElse _hostedInNative) Then
-                Dim minSize As System.Drawing.Size = _propPage.MinimumSize
+                Dim minSize As Drawing.Size = _propPage.MinimumSize
 
                 ' we have to preserve these to set the size of our scrolling panel
                 Dim height As Integer = pRect(0).bottom - pRect(0).top
@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' if we're in native, set our scrolling panel to be the exact size that we were
                 ' passed so if we need scroll bars, they show up properly
                 If _hostedInNative Then
-                    _propPage.Parent.Size = New System.Drawing.Size(width, height)
+                    _propPage.Parent.Size = New Drawing.Size(width, height)
                 End If
 
             End If
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetHelpContext()
-            If Me._pageSite IsNot Nothing Then
+            If _pageSite IsNot Nothing Then
                 Dim sp As System.IServiceProvider = TryCast(_pageSite, System.IServiceProvider)
                 'Note: we have to get the right help service - GetService through the property page's
                 '  accomplishes this (it goes through the PropPageDesignerRootDesigner).  There is a
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   S_NOTIMPL if the property page does not handle accelerators, or E_POINTER if the address in pMsg is not valid. For example, it may be NULL.
         ''' </returns>
         ''' <remarks></remarks>
-        Private Function IPropertyPage2_TranslateAccelerator(pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer Implements IPropertyPage2.TranslateAccelerator, IPropertyPage.TranslateAccelerator
+        Private Function IPropertyPage2_TranslateAccelerator(pMsg() As MSG) As Integer Implements IPropertyPage2.TranslateAccelerator, IPropertyPage.TranslateAccelerator
             Return TranslateAccelerator(pMsg)
         End Function
 
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   S_NOTIMPL if the property page does not handle accelerators, or E_POINTER if the address in pMsg is not valid. For example, it may be NULL.
         ''' </returns>
         ''' <remarks></remarks>
-        Protected Overridable Function TranslateAccelerator(pMsg() As Microsoft.VisualStudio.OLE.Interop.MSG) As Integer
+        Protected Overridable Function TranslateAccelerator(pMsg() As MSG) As Integer
             If pMsg Is Nothing Then
                 Return NativeMethods.E_POINTER
             End If
@@ -586,12 +586,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     pMsg(0).wParam = m.WParam
                     pMsg(0).lParam = m.LParam
                     'Returning S_OK indicates we handled the message ourselves
-                    Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
             End If
 
             'Returning S_FALSE indicates we have not handled the message
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_FALSE
+            Return NativeMethods.S_FALSE
         End Function
 
 
@@ -600,7 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function EditProperty(dispid As Integer) As Integer
-            Dim retVal As Integer = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Dim retVal As Integer = NativeMethods.S_OK
 
             _dispidFocus = dispid
 
@@ -627,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Not (TypeOf _propPage Is IPropertyPageInternal) Then
                     Throw New InvalidOperationException("Control must implement IPropertyPageInternal")
                 End If
-                _prevParent = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.GetParent(_propPage.Handle)
+                _prevParent = NativeMethods.GetParent(_propPage.Handle)
 
                 Common.Switches.TracePDPerf("PropPage.Create: Setting the property page's parent")
 
@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     sizingParent.AutoScroll = True
                     sizingParent.Text = "SizingParent" 'For debugging purposes (Spy++)
                     _propPage.Parent = sizingParent
-                    Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.SetParent(sizingParent.Handle, hWndParent)
+                    NativeMethods.SetParent(sizingParent.Handle, hWndParent)
                     _wasSetParentCalled = True
                     Debug.Assert(_propPage.Parent Is Nothing OrElse AlwaysUseSetParent, "Huh?  Deactivate() logic depends on this.")
                 End If
@@ -844,8 +844,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  property page will NOT show the help button. The F1 keyword is the real 
             '  help context
             MyBase.New()
-            Me.HelpContext = 1
-            Me.HelpFile = "VBREF.CHM"
+            HelpContext = 1
+            HelpFile = "VBREF.CHM"
         End Sub
 
     End Class

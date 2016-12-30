@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            m_IconBrowseText = SR.GetString(SR.PPG_BrowseText)
+            m_IconBrowseText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BrowseText)
         End Sub
 
 #Region "Icon combobox"
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'When the icon combobox is dropped down, update it with all current entries from the project
             PopulateIconList(True)
-            Common.SetComboBoxDropdownWidth(CType(sender, ComboBox))
+            SetComboBoxDropdownWidth(CType(sender, ComboBox))
         End Sub
 
         ''' <summary>
@@ -218,13 +218,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Called after a property is changed through UI on this property page
         ''' </summary>
-        Public Overrides Sub OnPropertyChanged(PropertyName As String, PropDesc As System.ComponentModel.PropertyDescriptor, OldValue As Object, NewValue As Object)
+        Public Overrides Sub OnPropertyChanged(PropertyName As String, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
             MyBase.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
 
             If PropertyName = "RootNamespace" Then
                 'The root namespace has changed.  We have changes to make to app.config files.
                 Dim NewRootNamespace As String = CurrentRootNamespace()
-                OnRootNamespaceChanged(DTEProject, Me.ServiceProvider, DirectCast(OldValue, String), DirectCast(NewValue, String))
+                OnRootNamespaceChanged(DTEProject, ServiceProvider, DirectCast(OldValue, String), DirectCast(NewValue, String))
             End If
         End Sub
 
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(ServiceProvider, Project, GetType(Serialization.CodeDomSerializer))
                 If objectService IsNot Nothing Then
-                    Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(System.Configuration.ApplicationSettingsBase))
+                    Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
                     If Not objectCollection Is Nothing Then
                         For Each gob As Shell.Design.GlobalObject In objectCollection
                             Dim sgob As SettingsGlobalObjects.SettingsFileGlobalObject = TryCast(gob, SettingsGlobalObjects.SettingsFileGlobalObject)
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnRootNamespaceChanged), NameOf(ApplicationPropPageBase))
             End Try
         End Sub
 
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim isExpressSKU As Boolean = VSProductSKU.IsExpress
 
             Dim objSupportedMyAppTypes As Object = Nothing
-            VSErrorHandler.ThrowOnFailure(Me.ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID2.VSHPROPID_SupportedMyApplicationTypes, objSupportedMyAppTypes))
+            VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID2.VSHPROPID_SupportedMyApplicationTypes, objSupportedMyAppTypes))
             Dim supportedMyAppTypes As String = TryCast(objSupportedMyAppTypes, String)
             Debug.Assert(supportedMyAppTypes IsNot Nothing, "Failed to get supported MyApplicationTypes")
             ApplicationTypeComboBox.Items.Clear()
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Class ApplicationTypeInfo
 
-            Private _applicationType As MyApplication.ApplicationTypes
+            Private _applicationType As ApplicationTypes
             Private _displayName As String
             Private _name As String 'Non-localized name
             Private _supportedInExpress As Boolean
@@ -342,15 +342,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <param name="DisplayName"></param>
             ''' <param name="SupportedInExpress"></param>
             ''' <remarks></remarks>
-            Public Sub New(ApplicationType As MyApplication.ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
+            Public Sub New(ApplicationType As ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
                 _applicationType = ApplicationType
                 _displayName = DisplayName
-                _name = System.Enum.GetName(GetType(MyApplication.ApplicationTypes), ApplicationType)
+                _name = [Enum].GetName(GetType(ApplicationTypes), ApplicationType)
                 _supportedInExpress = SupportedInExpress
             End Sub
 
 #Region "Trivial property get:ers"
-            Public ReadOnly Property ApplicationType() As MyApplication.ApplicationTypes
+            Public ReadOnly Property ApplicationType() As ApplicationTypes
                 Get
                     Return _applicationType
                 End Get
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <returns></returns>
             ''' <remarks>The current (localized) display name for the application type</remarks>
             Public Overrides Function ToString() As String
-                Return Me.DisplayName
+                Return DisplayName
             End Function
 
 #Region "Match predicates to get properties - used in IList(of ApplicationTypeInfo).Find() and FindAll"
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Match against a given semicolon separated list of (non-localized) names and optionally if the application type must be supported
             ''' by Express SKUs
             ''' </summary>
-            Public Shared Function GetSemicolonSeparatedNamesPredicate(SemicolonSeparatedNames As String, MustBeSupportedByExpressSKUs As Boolean) As System.Predicate(Of ApplicationTypeInfo)
+            Public Shared Function GetSemicolonSeparatedNamesPredicate(SemicolonSeparatedNames As String, MustBeSupportedByExpressSKUs As Boolean) As Predicate(Of ApplicationTypeInfo)
                 Dim pred As New SemicolonSeparatedNamesPredicate(SemicolonSeparatedNames, MustBeSupportedByExpressSKUs)
                 Return AddressOf pred.Compare
             End Function
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Matches application types
             ''' </summary>
-            Public Shared Function ApplicationTypePredicate(AppType As ApplicationTypes) As System.Predicate(Of ApplicationTypeInfo)
+            Public Shared Function ApplicationTypePredicate(AppType As ApplicationTypes) As Predicate(Of ApplicationTypeInfo)
                 Dim pred As New AppTypePredicate(AppType)
                 Return AddressOf pred.Compare
             End Function
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Public Delegate Function CompareFun(SemicolonSeparatedNames As String, Item As ApplicationTypeInfo) As Boolean
 
                 ' Non-localized name to match
-                Private _names As New Generic.Dictionary(Of String, Boolean)
+                Private _names As New Dictionary(Of String, Boolean)
                 Private _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>
@@ -516,8 +516,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Protected Function UACSettingsButtonSupported(appType As MyApplication.ApplicationTypes) As Boolean
-            Return UACSettingsButtonSupported(CType(MyApplication.MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
+        Protected Function UACSettingsButtonSupported(appType As ApplicationTypes) As Boolean
+            Return UACSettingsButtonSupported(CType(MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
         End Function
 
         Private Function AddApplicationManifestToProjectFromTemplate(SpecialProjectItems As IVsProjectSpecialFiles, ByRef ItemId As UInteger, ByRef MkDocument As String) As Boolean
@@ -556,7 +556,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     Debug.Assert(ProjectHierarchy IsNot Nothing, "Hierarchy is nothing...")
-                    Dim SpecialProjectItems As Global.Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles = TryCast(MyBase.ProjectHierarchy, IVsProjectSpecialFiles)
+                    Dim SpecialProjectItems As IVsProjectSpecialFiles = TryCast(ProjectHierarchy, IVsProjectSpecialFiles)
                     If SpecialProjectItems Is Nothing Then
                         Debug.Fail("Failed to get IVsProjectSpecialFiles from project")
                         Throw New InvalidOperationException()
@@ -597,7 +597,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ' It is ported from wizard\vsdesigner\designer\microsoft\vsdesigner\ProjectWizard\AppManifestTemplateWizard.cs
                         Dim appManifestPath As String = Nothing
 
-                        If ((Not String.IsNullOrEmpty(MkDocument)) AndAlso (System.IO.Path.IsPathRooted(MkDocument))) Then
+                        If ((Not String.IsNullOrEmpty(MkDocument)) AndAlso (IO.Path.IsPathRooted(MkDocument))) Then
 
                             Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                             If fullPathProperty IsNot Nothing AndAlso fullPathProperty.Value IsNot Nothing Then
@@ -605,7 +605,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim projectFullPath As String = CType(fullPathProperty.Value, String)
                                 If Not String.IsNullOrEmpty(projectFullPath) Then
 
-                                    If MkDocument.StartsWith(projectFullPath, True, System.Globalization.CultureInfo.InvariantCulture) Then
+                                    If MkDocument.StartsWith(projectFullPath, True, Globalization.CultureInfo.InvariantCulture) Then
                                         ' we really only expect app.manifest to be added somewhere under the root of the project, so the project's full-path
                                         ' should always be in the first part of the app.manifest file-path. However, if it's not, we don't want to suddenly
                                         ' strip some random part of the app.manifest full-path out, so we first check to see that the two paths overlap
@@ -659,7 +659,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim OleServiceProvider As OLE.Interop.IServiceProvider = CType(GetServiceFromPropertyPageSite(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                     Debug.Assert(VsUIShellOpenDocument IsNot Nothing, "Unable to get IVsUIShellOpenDocument")
 
-                    If Not System.IO.Path.IsPathRooted(MkDocument) Then
+                    If Not IO.Path.IsPathRooted(MkDocument) Then
                         Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                         Dim projectFullPath As String = CType(fullPathProperty.Value, String)
                         If Not String.IsNullOrEmpty(projectFullPath) Then
@@ -687,8 +687,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
                     End If
 
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
-                    If Not Me.ProjectReloadedDuringCheckout Then
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ViewUACSettings), NameOf(ApplicationPropPageVBBase))
+                    If Not ProjectReloadedDuringCheckout Then
                         ShowErrorMessage(ex)
                     End If
                 End Try

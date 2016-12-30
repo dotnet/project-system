@@ -76,13 +76,13 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <remarks>Will show message box if anything is wrong</remarks>
         Private Function ValidateSettings() As Boolean
             If _dialog.TabSize < 1 OrElse _dialog.TabSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(SR.OptionPage_Editor_InvalidTabSize))
+                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidTabSize))
                 _dialog._tabSizeTextBox.Focus()
                 Return False
             End If
 
             If _dialog.IndentSize < 1 OrElse _dialog.IndentSize > s_MAX_EDITOR_TAB_SIZE Then
-                ShowDialogBox(SR.GetString(SR.OptionPage_Editor_InvalidIndentSize))
+                ShowDialogBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.OptionPage_Editor_InvalidIndentSize))
                 _dialog._indentSizeTextBox.Focus()
                 Return False
             End If
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
                 _dialog.LineNumbers = CBool(textEditorProperties.Item(s_showLineNumbersItem).Value)
 
                 _dialog.Enabled = True
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(LoadSettings), NameOf(EditorToolsOptionsPage))
                 _dialog.Enabled = False
             Finally
                 fontsAndColorsProperties = Nothing
@@ -147,12 +147,12 @@ Namespace Microsoft.VisualStudio.Editors.Package
 
                 Dim prefs As LANGPREFERENCES = GetLanguagePrefs()
                 prefs.uIndentSize = CUInt(_dialog.IndentSize)
-                prefs.IndentStyle = CType(_dialog.IndentType, Microsoft.VisualStudio.TextManager.Interop.vsIndentStyle)
+                prefs.IndentStyle = CType(_dialog.IndentType, vsIndentStyle)
                 prefs.fLineNumbers = CUInt(_dialog.LineNumbers)
                 prefs.uTabSize = CUInt(_dialog.TabSize)
                 prefs.fWordWrap = CUInt(_dialog.WordWrap)
                 Apply(prefs)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(SaveSettings), NameOf(EditorToolsOptionsPage))
             End Try
             textEditorProperties = Nothing
             dte = Nothing
@@ -164,11 +164,11 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function GetLanguagePrefs() As LANGPREFERENCES
-            Dim myPrefs As New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES
-            Dim textMgr As IVsTextManager = DirectCast(Me.GetService(GetType(SVsTextManager)), IVsTextManager)
+            Dim myPrefs As New LANGPREFERENCES
+            Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 myPrefs.guidLang = s_VBLangGUID
-                Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}
+                Dim langPrefs() As LANGPREFERENCES = {New LANGPREFERENCES}
                 langPrefs(0) = myPrefs
                 If NativeMethods.Succeeded(textMgr.GetUserPreferences(Nothing, Nothing, langPrefs, Nothing)) Then
                     myPrefs = langPrefs(0)
@@ -185,10 +185,10 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub Apply(prefs As LANGPREFERENCES)
-            Dim textMgr As IVsTextManager = DirectCast(Me.GetService(GetType(SVsTextManager)), IVsTextManager)
+            Dim textMgr As IVsTextManager = DirectCast(GetService(GetType(SVsTextManager)), IVsTextManager)
             If textMgr IsNot Nothing Then
                 prefs.guidLang = s_VBLangGUID
-                Dim langPrefs() As Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES = {New Microsoft.VisualStudio.TextManager.Interop.LANGPREFERENCES}
+                Dim langPrefs() As LANGPREFERENCES = {New LANGPREFERENCES}
                 langPrefs(0) = prefs
                 If Not NativeMethods.Succeeded(textMgr.SetUserPreferences(Nothing, Nothing, langPrefs, Nothing)) Then
                     Debug.Fail("textMgr.SetUserPreferences")

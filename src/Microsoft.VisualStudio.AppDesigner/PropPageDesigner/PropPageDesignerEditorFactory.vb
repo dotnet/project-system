@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Property
 
         Private _site As Object 'The site that owns this editor factory
-        Private _siteProvider As Shell.ServiceProvider 'The service provider from m_Site
+        Private _siteProvider As ServiceProvider 'The service provider from m_Site
 
         ''' <summary>
         ''' Creates a new editor for the given pile of flags.  Helper function for the overload
@@ -68,10 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ByRef DocView As Object, _
                 ByRef DocData As Object, _
                 ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+                ByRef CmdUIGuid As Guid, _
                 ByRef Canceled As Boolean)
             Canceled = False
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As PropPageDesignerLoader = Nothing
 
@@ -84,19 +84,19 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(SR.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     If ExistingDocData Is Nothing Then
                         DocData = New PropPageDesignerDocData(_siteProvider)
                     Else
-                        Throw New COMException(SR.GetString(SR.DFX_IncompatibleBuffer), AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                        Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_IncompatibleBuffer), AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If
 
                     DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
                     DesignerLoader.InitializeEx(_siteProvider, Hierarchy, ItemId, DocData)
 
-                    Dim OleProvider As OLE.Interop.IServiceProvider = CType(_siteProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
+                    Dim OleProvider As IServiceProvider = CType(_siteProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
 
                     'Site the TextStream
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New System.Exception(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Sub
 
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Disconnect from the owning site
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function Close() As Integer Implements Shell.Interop.IVsEditorFactory.Close
+        Public Function Close() As Integer Implements IVsEditorFactory.Close
             _siteProvider = Nothing
             _site = Nothing
         End Function
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ByRef DocViewPtr As IntPtr, _
                 ByRef DocDataPtr As IntPtr, _
                 ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+                ByRef CmdUIGuid As Guid, _
                 ByRef FCanceled As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
         ''' <remarks></remarks>
-        Public Function MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) As Integer Implements Shell.Interop.IVsEditorFactory.MapLogicalView
+        Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
         End Function
 
@@ -202,15 +202,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Site"></param>
         ''' <remarks></remarks>
-        Public Function SetSite(Site As OLE.Interop.IServiceProvider) As Integer Implements Shell.Interop.IVsEditorFactory.SetSite
+        Public Function SetSite(Site As IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
+            If _site Is Site Then
                 Exit Function
             End If
             'Site is different - set it
-            Me._site = Site
-            If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _siteProvider = New ServiceProvider(CType(Site, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+            _site = Site
+            If TypeOf Site Is IServiceProvider Then
+                _siteProvider = New ServiceProvider(CType(Site, IServiceProvider))
             Else
                 Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
             End If

@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _undoEngine As UndoEngine
 
         ' Current Debug mode
-        Private _currentDebugMode As Shell.Interop.DBGMODE = DBGMODE.DBGMODE_Design
+        Private _currentDebugMode As DBGMODE = DBGMODE.DBGMODE_Design
 
         ' ReadOnlyMode in design mode, we should restore the original mode when we return to the design mode
         Private _isReadOnlyInDesignMode As Boolean
@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 Debug.Fail("Failed getting the DesignerLoader - this shouldn't happen")
-                Throw New System.InvalidOperationException
+                Throw New InvalidOperationException
             End Get
         End Property
 
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _view Is Nothing Then
                 'Need to create a view
 
-                If Me.RootComponent.IsTearingDown Then
+                If RootComponent.IsTearingDown Then
                     Debug.Fail("Creating new View while component is being disposed")
                     Throw New Package.InternalException
                 End If
@@ -345,17 +345,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If WindowFrame IsNot Nothing Then
                     Dim punkDocData As Object = __VSFPROPID.VSFPROPID_DocData
                     If punkDocData IsNot Nothing Then
-                        If TypeOf punkDocData Is TextManager.Interop.IVsUserData Then
-                            Dim Guid As Guid = GetType(TextManager.Interop.IVsUserData).GUID
+                        If TypeOf punkDocData Is IVsUserData Then
+                            Dim Guid As Guid = GetType(IVsUserData).GUID
                             Dim vt As Object = Nothing
-                            VSErrorHandler.ThrowOnFailure(CType(punkDocData, TextManager.Interop.IVsUserData).GetData(Guid, vt))
+                            VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
                             If TypeOf vt Is String Then
                                 Return IO.Path.GetFileName(CStr(vt))
                             End If
                         End If
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResXFileNameAndPath), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetResXFileNameAndPath), NameOf(ResourceEditorRootDesigner))
                 Return String.Empty
             End Try
 
@@ -369,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IsEditingResWFile() As Boolean
-            Return Utility.HasResWExtension(GetResXFileNameAndPath())
+            Return HasResWExtension(GetResXFileNameAndPath())
         End Function
 
 #End Region
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '
                         'So, nothing for us to do.
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner))
+                Catch ex As Exception When ReportWithoutCrash(ex, "Exception trying to persist editor state", NameOf(ResourceEditorRootDesigner))
                     'Ignore error
                 End Try
             End If
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If EditorState IsNot Nothing AndAlso EditorState.StatePersisted Then
                         EditorState.DepersistStateInto(_view)
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner))
+                Catch ex As Exception When ReportWithoutCrash(ex, "Exception trying to restore editor state after reload", NameOf(ResourceEditorRootDesigner))
                     'Now ignore the exception
                 End Try
             End If
@@ -478,13 +478,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 _view.CreateControl()
                             End If
 
-                            _view.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
+                            _view.BeginInvoke(New Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
                         End If
                     Else
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")
                     End If
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsWindowFrame IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(VsWindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Nothing)))
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UnRegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
         End Sub
 
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pfImage">Set to True if supporting GetSearchImage - seaching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
         ''' <remarks></remarks>
-        Private Function GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.GetCapabilities
+        Private Function GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger) As Integer Implements IVsFindTarget.GetCapabilities
             _findReplace.GetCapabilities(pfImage, pgrfOptions)
             Return NativeMethods.S_OK
         End Function
@@ -537,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pvar">Property value.</param>
         ''' <returns>S_OK if success, otherwise an error code.</returns>
         ''' <remarks></remarks>
-        Private Function GetProperty(propid As UInteger, ByRef pvar As Object) As Integer Implements TextManager.Interop.IVsFindTarget.GetProperty
+        Private Function GetProperty(propid As UInteger, ByRef pvar As Object) As Integer Implements IVsFindTarget.GetProperty
             Return _findReplace.GetProperty(propid, pvar)
         End Function
 
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns>m_FindState</returns>
         ''' <remarks>If m_FindState is set to Nothing, the shell will reset the next find loop.</remarks>
-        Private Function GetFindState(ByRef state As Object) As Integer Implements TextManager.Interop.IVsFindTarget.GetFindState
+        Private Function GetFindState(ByRef state As Object) As Integer Implements IVsFindTarget.GetFindState
             state = _findReplace.GetFindState()
             Return NativeMethods.S_OK
         End Function
@@ -558,7 +558,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="pUnk">The find state object to hold.</param>
         ''' <remarks></remarks>
-        Private Function SetFindState(pUnk As Object) As Integer Implements TextManager.Interop.IVsFindTarget.SetFindState
+        Private Function SetFindState(pUnk As Object) As Integer Implements IVsFindTarget.SetFindState
             _findReplace.SetFindState(pUnk)
             Return NativeMethods.S_OK
         End Function
@@ -604,8 +604,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''      If it's true, we don't do anything and let shell call our Find. The next time we will replace.
         ''' </remarks>
         Private Function Replace(pszSearch As String, pszReplace As String, grfOptions As UInteger, _
-                                fResetStartPoint As Integer, pHelper As TextManager.Interop.IVsFindHelper, ByRef pfReplaced As Integer) As Integer _
-                                Implements TextManager.Interop.IVsFindTarget.Replace
+                                fResetStartPoint As Integer, pHelper As IVsFindHelper, ByRef pfReplaced As Integer) As Integer _
+                                Implements IVsFindTarget.Replace
             'We don't currently support replace.  NOP
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -615,27 +615,27 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ' NOTE: HuyN: We don't implement the methods below since we handle the search / replace ourselves.
 
-        Private Function GetCurrentSpan(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.GetCurrentSpan
+        Private Function GetCurrentSpan(pts() As TextSpan) As Integer Implements IVsFindTarget.GetCurrentSpan
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function GetMatchRect(prc() As OLE.Interop.RECT) As Integer Implements TextManager.Interop.IVsFindTarget.GetMatchRect
+        Private Function GetMatchRect(prc() As OLE.Interop.RECT) As Integer Implements IVsFindTarget.GetMatchRect
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function GetSearchImage(grfOptions As UInteger, ppSpans() As TextManager.Interop.IVsTextSpanSet, ByRef ppTextImage As TextManager.Interop.IVsTextImage) As Integer Implements TextManager.Interop.IVsFindTarget.GetSearchImage
+        Private Function GetSearchImage(grfOptions As UInteger, ppSpans() As IVsTextSpanSet, ByRef ppTextImage As IVsTextImage) As Integer Implements IVsFindTarget.GetSearchImage
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function MarkSpan(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.MarkSpan
+        Private Function MarkSpan(pts() As TextSpan) As Integer Implements IVsFindTarget.MarkSpan
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function NavigateTo(pts() As TextManager.Interop.TextSpan) As Integer Implements TextManager.Interop.IVsFindTarget.NavigateTo
+        Private Function NavigateTo(pts() As TextSpan) As Integer Implements IVsFindTarget.NavigateTo
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        Private Function NotifyFindTarget(notification As UInteger) As Integer Implements TextManager.Interop.IVsFindTarget.NotifyFindTarget
+        Private Function NotifyFindTarget(notification As UInteger) As Integer Implements IVsFindTarget.NotifyFindTarget
             'Debug.WriteLine("DSRootDesigner.NotifyFindTarget: " + CType(notification, __VSFTNOTIFY).ToString)
             Return NativeMethods.E_NOTIMPL
         End Function
@@ -656,18 +656,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' See comments in ResourceEditorView.HandleViewHelperCommandExec for why we are implementing IOleCommandTarget.
         ''' </remarks>
-        Public Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As System.Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As System.IntPtr, pvaOut As System.IntPtr) As Integer _
+        Public Function IOleCommandTarget_Exec(ByRef pguidCmdGroup As Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As IntPtr, pvaOut As IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.Exec
             Dim View As ResourceEditorView = _view
             If View IsNot Nothing Then
                 Dim Handled As Boolean = False
                 View.HandleViewHelperCommandExec(pguidCmdGroup, nCmdID, Handled)
                 If Handled Then
-                    Return Interop.NativeMethods.S_OK
+                    Return NativeMethods.S_OK
                 End If
             End If
 
-            Return Interop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
 
 
@@ -680,10 +680,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pCmdText">[unique][in,out] Pointer to an OLECMDTEXT structure in which to return name and/or status information of a single command. Can be NULL to indicate that the caller does not need this information. </param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As System.Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As System.IntPtr) As Integer _
+        Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.QueryStatus
             'We don't implement this.
-            Return Interop.NativeMethods.OLECMDERR_E_NOTSUPPORTED
+            Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
         '
         ''' <summary>
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' it is already too late to hook up the event, and we lost the first UNDO start event. Here, we check whether the transaction
                 '  is caused by UNDO, and simulate the first UNDO start event.
                 If _undoEngine IsNot Nothing AndAlso _undoEngine.UndoInProgress Then
-                    UndoEngine_Undoing(Me, System.EventArgs.Empty)
+                    UndoEngine_Undoing(Me, EventArgs.Empty)
                 End If
             End If
         End Sub
@@ -802,7 +802,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' handle DebugMode change event, disable the designer when in debug mode...
         ''' </summary>
         ''' <param name="dbgmodeNew"></param>
-        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
+        Private Function OnModeChange(dbgmodeNew As DBGMODE) As Integer Implements IVsDebuggerEvents.OnModeChange
             Try
                 If _view IsNot Nothing Then
                     If dbgmodeNew = DBGMODE.DBGMODE_Design Then
@@ -812,7 +812,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     ElseIf _currentDebugMode = DBGMODE.DBGMODE_Design Then
                         _isReadOnlyInDesignMode = _view.ReadOnlyMode
-                        DesignerLoader.SetReadOnlyMode(True, SR.GetString(SR.RSE_Err_CantEditInDebugMode))
+                        DesignerLoader.SetReadOnlyMode(True, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantEditInDebugMode))
                         _view.ReadOnlyMode = True
                     End If
                 End If

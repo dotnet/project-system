@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Public Sub ShowWarning(ex As Exception)
-            ShowWarning(String.Format(SR.XmlToSchema_Error, ex.Message))
+            ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_Error, ex.Message))
         End Sub
 
         Public Function FilterException(ex As Exception) As Boolean
@@ -38,12 +38,12 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Private _serviceProvider As IServiceProvider
 
         Protected Sub New()
-            Me.HelpButton = True
+            HelpButton = True
         End Sub
 
         Protected Sub New(serviceProvider As IServiceProvider)
             _serviceProvider = serviceProvider
-            Me.HelpButton = True
+            HelpButton = True
         End Sub
 
         Public Property ServiceProvider() As IServiceProvider
@@ -65,14 +65,14 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     End If
                 End If
                 Debug.Fail("Couldn't get a IUIHostLocale2 ... cheating instead :)")
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
 
         Protected Overrides Sub OnLoad(e As EventArgs)
             Debug.Assert(_serviceProvider IsNot Nothing)
             If _serviceProvider IsNot Nothing Then
-                Me.Font = Me.DialogFont
+                Font = DialogFont
             End If
             MyBase.OnLoad(e)
         End Sub
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Else
                     Debug.Fail("Can not find ServiceProvider")
                 End If
-            Catch ex As System.Exception
+            Catch ex As Exception
                 Debug.Fail("Unexpected exception during Help invocation " + ex.Message)
             End Try
         End Sub

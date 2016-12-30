@@ -8,8 +8,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class PackagePropPage
         Inherits PropPageUserControlBase
 
-        Private _fileVersionTextBoxes As System.Windows.Forms.TextBox()
-        Private _assemblyVersionTextBoxes As System.Windows.Forms.TextBox()
+        Private _fileVersionTextBoxes As TextBox()
+        Private _assemblyVersionTextBoxes As TextBox()
 
         'After 65535, the project system doesn't complain, and in theory any value is allowed as
         '  the string version of this, but after this value the numeric version of the file version
@@ -42,12 +42,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             AddChangeHandlers()
 
-            MyBase.PageRequiresScaling = False
+            PageRequiresScaling = False
 
-            _fileVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
-                Me.FileVersionMajorTextBox, Me.FileVersionMinorTextBox, Me.FileVersionBuildTextBox, Me.FileVersionRevisionTextBox}
-            _assemblyVersionTextBoxes = New System.Windows.Forms.TextBox(3) {
-                Me.AssemblyVersionMajorTextBox, Me.AssemblyVersionMinorTextBox, Me.AssemblyVersionBuildTextBox, Me.AssemblyVersionRevisionTextBox}
+            _fileVersionTextBoxes = New TextBox(3) {
+                FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
+            _assemblyVersionTextBoxes = New TextBox(3) {
+                AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
         End Sub
 
         ''' <summary>
@@ -56,10 +56,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
-            If (control Is Me.FileVersionLayoutPanel) Then
+            If (control Is FileVersionLayoutPanel) Then
                 ValidateAssemblyFileVersion(Version)
             Else
-                Debug.Assert(control Is Me.AssemblyVersionLayoutPanel)
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 ValidateAssemblyVersion(Version)
             End If
 
@@ -89,12 +89,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Enforce 4 values 1.2.3.4
             ReDim Preserve Values(3)
 
-            Dim Textboxes As System.Windows.Forms.TextBox()
-            If (control Is Me.FileVersionLayoutPanel) Then
-                Textboxes = Me._fileVersionTextBoxes
+            Dim Textboxes As TextBox()
+            If (control Is FileVersionLayoutPanel) Then
+                Textboxes = _fileVersionTextBoxes
             Else
-                Debug.Assert(control Is Me.AssemblyVersionLayoutPanel)
-                Textboxes = Me._assemblyVersionTextBoxes
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                Textboxes = _assemblyVersionTextBoxes
             End If
             For index As Integer = 0 To 3
                 Textboxes(index).Text = Values(index)
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidatePackageVersion(ByRef Version As String)
-            ValidateVersion(Me.PackageVersion, s_maxFileVersionPartValue, SR.GetString(SR.PPG_Property_PackageVersion), False, Version)
+            ValidateVersion(PackageVersion, s_maxFileVersionPartValue, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_PackageVersion), False, Version)
         End Sub
 
         ''' <summary>
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyVersion(ByRef Version As String)
-            ValidateVersion(Me._assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyVersion), True, Version)
+            ValidateVersion(_assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion), True, Version)
         End Sub
 
         ''' <summary>
@@ -124,15 +124,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyFileVersion(ByRef Version As String)
-            ValidateVersion(Me._fileVersionTextBoxes, s_maxFileVersionPartValue, SR.GetString(SR.PPG_Property_AssemblyFileVersion), False, Version)
+            ValidateVersion(_fileVersionTextBoxes, s_maxFileVersionPartValue, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion), False, Version)
         End Sub
 
         Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
-            SetDirty(Me.AssemblyVersionLayoutPanel, False)
+            SetDirty(AssemblyVersionLayoutPanel, False)
         End Sub
 
         Private Sub FileVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles FileVersionMajorTextBox.TextChanged, FileVersionMinorTextBox.TextChanged, FileVersionBuildTextBox.TextChanged, FileVersionRevisionTextBox.TextChanged
-            SetDirty(Me.FileVersionLayoutPanel, False)
+            SetDirty(FileVersionLayoutPanel, False)
         End Sub
 
         ''' <summary>
@@ -175,47 +175,47 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If m_ControlData Is Nothing Then
 
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
-                    Dim data As PropertyControlData = New PropertyControlData(100, "GeneratePackageOnBuild", Me.GeneratePackageOnBuild, ControlDataFlags.None)
+                    Dim data As PropertyControlData = New PropertyControlData(100, "GeneratePackageOnBuild", GeneratePackageOnBuild, ControlDataFlags.None)
                     datalist.Add(data)
-                    data = New PropertyControlData(101, "PackageId", Me.PackageId, ControlDataFlags.None, New Control() {Me.PackageIdLabel})
+                    data = New PropertyControlData(101, "PackageId", PackageId, ControlDataFlags.None, New Control() {PackageIdLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(102, "Version", Me.PackageVersion, ControlDataFlags.None, New Control() {Me.PackageVersionLabel})
+                    data = New PropertyControlData(102, "Version", PackageVersion, ControlDataFlags.None, New Control() {PackageVersionLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(103, "Authors", Me.Authors, ControlDataFlags.None, New Control() {Me.AuthorsLabel})
+                    data = New PropertyControlData(103, "Authors", Authors, ControlDataFlags.None, New Control() {AuthorsLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(104, "Description", Me.Description, ControlDataFlags.None, New Control() {Me.DescriptionLabel})
+                    data = New PropertyControlData(104, "Description", Description, ControlDataFlags.None, New Control() {DescriptionLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(105, "Copyright", Me.Copyright, ControlDataFlags.None, New Control() {Me.CopyrightLabel})
+                    data = New PropertyControlData(105, "Copyright", Copyright, ControlDataFlags.None, New Control() {CopyrightLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(107, "PackageLicenseUrl", Me.PackageLicenseUrl, ControlDataFlags.None, New Control() {Me.PackageLicenseUrlLabel})
+                    data = New PropertyControlData(107, "PackageLicenseUrl", PackageLicenseUrl, ControlDataFlags.None, New Control() {PackageLicenseUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(108, "PackageProjectUrl", Me.PackageProjectUrl, ControlDataFlags.None, New Control() {Me.PackageProjectUrlLabel})
+                    data = New PropertyControlData(108, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(109, "PackageIconUrl", Me.PackageIconUrl, ControlDataFlags.None, New Control() {Me.PackageIconUrlLabel})
+                    data = New PropertyControlData(109, "PackageIconUrl", PackageIconUrl, ControlDataFlags.None, New Control() {PackageIconUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(110, "RepositoryUrl", Me.RepositoryUrl, ControlDataFlags.None, New Control() {Me.RepositoryUrlLabel})
+                    data = New PropertyControlData(110, "RepositoryUrl", RepositoryUrl, ControlDataFlags.None, New Control() {RepositoryUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(111, "RepositoryType", Me.RepositoryType, ControlDataFlags.None, New Control() {Me.RepositoryTypeLabel})
+                    data = New PropertyControlData(111, "RepositoryType", RepositoryType, ControlDataFlags.None, New Control() {RepositoryTypeLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(112, "PackageTags", Me.PackageTags, ControlDataFlags.None, New Control() {Me.PackageTagsLabel})
+                    data = New PropertyControlData(112, "PackageTags", PackageTags, ControlDataFlags.None, New Control() {PackageTagsLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(113, "PackageReleaseNotes", Me.PackageReleaseNotes, ControlDataFlags.None, New Control() {Me.PackageReleaseNotesLabel})
+                    data = New PropertyControlData(113, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(114, "PackageRequireLicenseAcceptance", Me.PackageRequireLicenseAcceptance, ControlDataFlags.None)
+                    data = New PropertyControlData(114, "PackageRequireLicenseAcceptance", PackageRequireLicenseAcceptance, ControlDataFlags.None)
                     datalist.Add(data)
-                    data = New PropertyControlData(115, "PackageReleaseNotes", Me.PackageReleaseNotes, ControlDataFlags.None, New Control() {Me.PackageReleaseNotesLabel})
+                    data = New PropertyControlData(115, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(116, "Company", Me.AssemblyCompany, ControlDataFlags.None, New Control() {Me.AssemblyCompanyLabel})
+                    data = New PropertyControlData(116, "Company", AssemblyCompany, ControlDataFlags.None, New Control() {AssemblyCompanyLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(117, "Product", Me.Product, ControlDataFlags.None, New Control() {Me.ProductLabel})
+                    data = New PropertyControlData(117, "Product", Product, ControlDataFlags.None, New Control() {ProductLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(118, "NeutralLanguage", Me.NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {Me.NeutralLanguageLabel})
+                    data = New PropertyControlData(118, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(119, "AssemblyVersion", Me.AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {Me.AssemblyVersionLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyVersion)
+                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel})
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion)
                     datalist.Add(data)
-                    data = New PropertyControlData(120, "FileVersion", Me.FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {Me.AssemblyFileVersionLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_AssemblyFileVersion)
+                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel})
+                    data.DisplayPropertyName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion)
                     datalist.Add(data)
                     m_ControlData = datalist.ToArray()
                 End If

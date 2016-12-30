@@ -34,9 +34,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_REFCOLUMN_PATH As Integer = 4
         Private Const s_REFCOLUMN_MAX As Integer = 4
 
-        Friend WithEvents AddUserImportButton As System.Windows.Forms.Button
-        Friend WithEvents UpdateUserImportButton As System.Windows.Forms.Button
-        Friend WithEvents UserImportTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AddUserImportButton As Button
+        Friend WithEvents UpdateUserImportButton As Button
+        Friend WithEvents UserImportTextBox As TextBox
         'To contain list of VSLangProj.Reference objects
         Private _refreshListsAfterApply As Boolean
 
@@ -53,10 +53,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _columnWidthUpdated As Boolean
 
         Private _ignoreImportEvent As Boolean
-        Friend WithEvents addRemoveButtonsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents referenceButtonsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents ReferencePageSplitContainer As System.Windows.Forms.SplitContainer
-        Friend WithEvents addUserImportTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents addRemoveButtonsTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents referenceButtonsTableLayoutPanel As TableLayoutPanel
+        Friend WithEvents ReferencePageSplitContainer As SplitContainer
+        Friend WithEvents addUserImportTableLayoutPanel As TableLayoutPanel
         Private _needRefreshImportList As Boolean
         Private _importListSelectedItem As String = Nothing
         Private _hidingImportListSelectedItem As Boolean
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
-            MyBase.PageRequiresScaling = False
+            PageRequiresScaling = False
 
             'support sorting
             _referenceSorter = New ListViewComparer()
@@ -94,10 +94,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Overrides Sub CleanupCOMReferences()
 
-            Me.UnadviseReferencesEvents()
-            Me.UnadviseWebReferencesEvents()
-            Me.UnadviseServiceReferencesEvents()
-            Me.UnadviseImportsEvents()
+            UnadviseReferencesEvents()
+            UnadviseWebReferencesEvents()
+            UnadviseServiceReferencesEvents()
+            UnadviseImportsEvents()
 
             MyBase.CleanupCOMReferences()
         End Sub
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                        New PropertyControlData(1, "ImportList", Me.ImportList, AddressOf Me.ImportListSet, AddressOf Me.ImportListGet, ControlDataFlags.UserPersisted)
+                        New PropertyControlData(1, "ImportList", ImportList, AddressOf ImportListSet, AddressOf ImportListGet, ControlDataFlags.UserPersisted)
                         }
                 End If
                 Return m_ControlData
@@ -213,10 +213,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="proposedSize"></param>
         ''' <remarks>We need implement this, because split panel doesn't support AutoSize well</remarks>
-        Public Overrides Function GetPreferredSize(proposedSize As System.Drawing.Size) As System.Drawing.Size
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             Dim preferredSize As Size = MyBase.GetPreferredSize(proposedSize)
-            Dim referenceAreaPreferredSize As Size = System.Drawing.Size.Empty
-            Dim importsAreaPreferredSize As Size = System.Drawing.Size.Empty
+            Dim referenceAreaPreferredSize As Size = Size.Empty
+            Dim importsAreaPreferredSize As Size = Size.Empty
 
             If ReferencePageTableLayoutPanel IsNot Nothing Then
                 referenceAreaPreferredSize = ReferencePageTableLayoutPanel.GetPreferredSize(New Size(proposedSize.Width, ReferencePageTableLayoutPanel.Height))
@@ -234,32 +234,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 Dim processedDelayRefreshMessage As Boolean = False
                 Select Case m.Msg
-                    Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_REFERENCES_REFRESH
+                    Case WmUserConstants.WM_REFPAGE_REFERENCES_REFRESH
                         ProcessDelayUpdateItems()
                         processedDelayRefreshMessage = True
-                    Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTCHANGED
-                        SetDirty(Me.ImportList)
+                    Case WmUserConstants.WM_REFPAGE_IMPORTCHANGED
+                        SetDirty(ImportList)
                         processedDelayRefreshMessage = True
-                    Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTS_REFRESH
+                    Case WmUserConstants.WM_REFPAGE_IMPORTS_REFRESH
                         Try
                             PopulateImportsList(True)
                         Finally
                             _needRefreshImportList = False
                         End Try
                         processedDelayRefreshMessage = True
-                    Case Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_SERVICEREFERENCES_REFRESH
+                    Case WmUserConstants.WM_REFPAGE_SERVICEREFERENCES_REFRESH
                         RefreshServiceReferences()
                         processedDelayRefreshMessage = True
                 End Select
 
                 If processedDelayRefreshMessage Then
-                    Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(Microsoft.Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
+                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
                 End If
             Catch ex As COMException
                 ' The message pump in the background compiler could process our pending message, and when the compiler is running, we would get E_PENDING failure
                 ' we want to post the message back to try it again.  To prevent spinning the main thread, we ask a background thread to post the message back after a short period of time
                 If ex.ErrorCode = NativeMethods.E_PENDING Then
-                    Dim delayMessage As New System.Threading.Timer(AddressOf DelayPostingMessage, m.Msg, 200, System.Threading.Timeout.Infinite)
+                    Dim delayMessage As New System.Threading.Timer(AddressOf DelayPostingMessage, m.Msg, 200, Timeout.Infinite)
                     Return
                 End If
                 Throw
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub DelayPostingMessage(messageId As Object)
             If Not IsDisposed Then
-                Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, CInt(messageId), 0, 0)
+                NativeMethods.PostMessage(Handle, CInt(messageId), 0, 0)
             End If
         End Sub
 
@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' We should put an error message there if we can not resolve the reference...
             Dim path As String = ref.Path
             If String.IsNullOrEmpty(path) Then
-                path = SR.GetString(SR.PropPage_ReferenceNotFound)
+                path = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ReferenceNotFound)
             End If
 
             lvi.SubItems.Add(path)
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
 
             If Not _columnWidthUpdated Then
-                SetReferenceListColumnWidths(Me, Me.ReferenceList, 0)
+                SetReferenceListColumnWidths(Me, ReferenceList, 0)
                 _columnWidthUpdated = True
             End If
 
@@ -460,7 +460,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             HoldSelectionChange(True)
             Try
-                Dim ReferenceListData As New System.Collections.ArrayList(ReferenceCount)
+                Dim ReferenceListData As New ArrayList(ReferenceCount)
 
                 For refIndex As Integer = 0 To ReferenceCount - 1
                     ref = theVSProject.References.Item(refIndex + 1) '1-based
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim referenceManagerFactory As IVsWCFReferenceManagerFactory = CType(ServiceProvider.GetService(GetType(SVsWCFReferenceManagerFactory)), IVsWCFReferenceManagerFactory)
                     If referenceManagerFactory IsNot Nothing Then
                         Dim vsHierarchy As IVsHierarchy = ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject)
-                        If vsHierarchy IsNot Nothing AndAlso Utils.IsServiceReferenceValidInProject(vsHierarchy) AndAlso referenceManagerFactory.IsReferenceManagerSupported(vsHierarchy) <> 0 Then
+                        If vsHierarchy IsNot Nothing AndAlso IsServiceReferenceValidInProject(vsHierarchy) AndAlso referenceManagerFactory.IsReferenceManagerSupported(vsHierarchy) <> 0 Then
                             _referenceGroupManager = referenceManagerFactory.GetReferenceManager(vsHierarchy)
                         End If
                     End If
@@ -539,8 +539,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                SR.GetString(SR.PropPage_ImportedNamespacesTitle),
-                SR.GetString(SR.PropPage_ComputingReferencedNamespacesMessage),
+                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ImportedNamespacesTitle),
+                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingReferencedNamespacesMessage),
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private ReadOnly _cancellationTokenSource As CancellationTokenSource
 
             Public Sub New(cancellationTokenSource As CancellationTokenSource)
-                Me._cancellationTokenSource = cancellationTokenSource
+                _cancellationTokenSource = cancellationTokenSource
             End Sub
 
             Public Sub OnCanceled() Implements IVsThreadedWaitDialogCallback.OnCanceled
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Gotta make a copy of the currently selected items so I can re-select 'em after
             ' I have repopulated the list...
-            Dim currentlySelectedItems As New System.Collections.Specialized.StringCollection
+            Dim currentlySelectedItems As New Specialized.StringCollection
             For Each SelectedItem As String In ImportList.SelectedItems
                 currentlySelectedItems.Add(SelectedItem)
             Next
@@ -755,13 +755,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
 
-            Me.PopulateReferenceList()
-            Me.PopulateImportsList(False)
+            PopulateReferenceList()
+            PopulateImportsList(False)
 
-            Me.AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
-            Me.AdviseWebReferencesEvents()
-            Me.AdviseServiceReferencesEvents()
-            Me.AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            AdviseReferencesEvents(CType(DTEProject.Object, VSLangProj.VSProject))
+            AdviseWebReferencesEvents()
+            AdviseServiceReferencesEvents()
+            AdviseImportsEvents(CType(DTEProject.Object, VSLangProj.VSProject))
         End Sub
 
         Private Function GetCurrentImports() As String()
@@ -774,8 +774,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                SR.GetString(SR.PropPage_CurrentImportsTitle),
-                SR.GetString(SR.PropPage_ComputingCurrentImportsMessage),
+                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_CurrentImportsTitle),
+                SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingCurrentImportsMessage),
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -838,7 +838,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' make the import-panel act as if it lost focus so that the selected-row color
             '   of the Imports CheckedListBox does not look like it is focused
             '
-            ImportPanel_Leave(Me, System.EventArgs.Empty)
+            ImportPanel_Leave(Me, EventArgs.Empty)
         End Sub
 
         ''' <summary>
@@ -877,7 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function TrimUserImports(ImportsSnapshot As IDictionary(Of String, Boolean)) As String()
             ' Let's give the compiler time to update the namespace list - it looks like we may
             ' have a race-condition here, but I can't find out why.... and o
-            System.Threading.Thread.Sleep(10)
+            Thread.Sleep(10)
 
             ' First, we get a collection of referenced namespaces that is fast to 
             ' search...
@@ -964,19 +964,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 'Remove from local storage
                                 ReferenceList.Items.RemoveAt(ItemIndex)
 
-                            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(RemoveSelectedReference), NameOf(ReferencePropPage))
+                            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RemoveSelectedReference), NameOf(ReferencePropPage))
                                 If ProjectReloadedDuringCheckout Then
                                     ' If the Project could be reloaded, we should return ASAP, because the designer has been disposed
                                     Return
                                 End If
 
-                                If Common.IsCheckoutCanceledException(ex) Then
+                                If IsCheckoutCanceledException(ex) Then
                                     'User already saw a message, no need to show an error message.  Also, don't
                                     '  want to continue trying to remove references.
                                     Exit For
                                 Else
                                     ' some reference can not be removed (like mscorlib)
-                                    err = SR.GetString(SR.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
+                                    err = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
                                 End If
                             Finally
                                 LeaveProjectCheckoutSection()
@@ -1021,7 +1021,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  the list, which might be a minor surprise to the user, but shouldn't be
                     '  too bad, and is the safest fix at this point in the schedule.
                     PopulateImportsList(InitSelections:=True, RemoveInvalidEntries:=True)
-                    SetDirty(Me.ImportList)
+                    SetDirty(ImportList)
                 End If
             End Using
 
@@ -1030,8 +1030,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub addContextMenuStrip_Opening(sender As Object, e As CancelEventArgs) Handles addContextMenuStrip.Opening
             Dim vsHierarchy As IVsHierarchy = ShellUtil.VsHierarchyFromDTEProject(ServiceProvider, DTEProject)
             If vsHierarchy IsNot Nothing Then
-                webReferenceToolStripMenuItem.Visible = Utils.IsWebReferenceSupportedByDefaultInProject(vsHierarchy)
-                serviceReferenceToolStripMenuItem.Visible = Utils.IsServiceReferenceValidInProject(vsHierarchy)
+                webReferenceToolStripMenuItem.Visible = IsWebReferenceSupportedByDefaultInProject(vsHierarchy)
+                serviceReferenceToolStripMenuItem.Visible = IsServiceReferenceValidInProject(vsHierarchy)
             End If
         End Sub
 
@@ -1049,7 +1049,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     cmd(0).cmdID = ECMD_ADDREFERENCE
                     cmd(0).cmdf = 0
-                    Dim guidVSStd2k As New System.Guid(&H1496A755, &H94DE, &H11D0, &H8C, &H3F, &H0, &HC0, &H4F, &HC2, &HAA, &HE2)
+                    Dim guidVSStd2k As New Guid(&H1496A755, &H94DE, &H11D0, &H8C, &H3F, &H0, &HC0, &H4F, &HC2, &HAA, &HE2)
 
                     VSErrorHandler.ThrowOnFailure(UIHier.QueryStatusCommand(VSITEMID.ROOT, guidVSStd2k, CmdCount, cmd, Nothing))
 
@@ -1061,8 +1061,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return
                     End If
 
-                    hr = UIHier.ExecCommand(VSITEMID.ROOT, guidVSStd2k, ECMD_ADDREFERENCE, 0, Nothing, System.IntPtr.Zero)
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(referenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
+                    hr = UIHier.ExecCommand(VSITEMID.ROOT, guidVSStd2k, ECMD_ADDREFERENCE, 0, Nothing, IntPtr.Zero)
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(referenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     ShowErrorMessage(ex)
                 End Try
 
@@ -1097,12 +1097,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If String.Compare(item.Name, newName, StringComparison.Ordinal) <> 0 Then
                         item.Name = newName
                     End If
-                    Me.PopulateReferenceList()
-                    Me.PopulateImportsList(True)
+                    PopulateReferenceList()
+                    PopulateImportsList(True)
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
-                If Not Common.IsCheckoutCanceledException(ex) Then
-                    ShowErrorMessage(SR.GetString(SR.PPG_Reference_AddWebReference, ex.Message))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
+                If Not IsCheckoutCanceledException(ex) Then
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                 End If
             End Try
         End Sub
@@ -1139,14 +1139,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             _updatingReferences = False
                         End Try
 
-                        Me.PopulateReferenceList()
-                        Me.PopulateImportsList(True)
+                        PopulateReferenceList()
+                        PopulateImportsList(True)
 
-                        Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(Microsoft.Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
+                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
                     End If
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
-                    If Not Common.IsCheckoutCanceledException(ex) Then
-                        ShowErrorMessage(SR.GetString(SR.PPG_Reference_AddWebReference, ex.Message))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
+                    If Not IsCheckoutCanceledException(ex) Then
+                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                     End If
                 End Try
             End If
@@ -1154,7 +1154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub EnableReferenceGroup()
-            Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+            Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
 
             Dim removeReferencesButtonEnabled As Boolean = (items.Count > 0)
 
@@ -1167,7 +1167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             'Enable/Disable Remove button
-            Me.RemoveReference.Enabled = removeReferencesButtonEnabled
+            RemoveReference.Enabled = removeReferencesButtonEnabled
 
             'Enable/Disable Update button (valid for Web references only)
             For i As Integer = 0 To items.Count - 1
@@ -1256,7 +1256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferenceList_ItemActivate(sender As Object, e As EventArgs) Handles ReferenceList.ItemActivate
-            Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+            Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
             If items.Count > 0 Then
                 DTE.ExecuteCommand("View.PropertiesWindow", String.Empty)
             End If
@@ -1264,7 +1264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub ReferenceList_KeyDown(sender As Object, e As KeyEventArgs) Handles ReferenceList.KeyDown
             If e.KeyCode = Keys.Delete Then
-                Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+                Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
                 If items.Count > 0 Then
                     RemoveSelectedReference()
                 End If
@@ -1272,7 +1272,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferenceList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ReferenceList.SelectedIndexChanged
-            Me.EnableReferenceGroup()
+            EnableReferenceGroup()
 
             PushSelection()
         End Sub
@@ -1292,15 +1292,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub UpdateReferences_Click(sender As Object, e As EventArgs) Handles UpdateReferences.Click
             Using New WaitCursor
-                Dim items As ListView.SelectedListViewItemCollection = Me.ReferenceList.SelectedItems
+                Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
                 For Each item As ListViewItem In items
                     Dim referenceComponent As IUpdatableReferenceComponent = TryCast(item.Tag, IUpdatableReferenceComponent)
                     If referenceComponent IsNot Nothing Then
                         Try
                             referenceComponent.Update()
-                        Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(UpdateReferences_Click), NameOf(ReferencePropPage))
-                            If Not Common.IsCheckoutCanceledException(ex) Then
-                                ShowErrorMessage(SR.GetString(SR.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
+                        Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UpdateReferences_Click), NameOf(ReferencePropPage))
+                            If Not IsCheckoutCanceledException(ex) Then
+                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
                             End If
                         End Try
                     End If
@@ -1321,19 +1321,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  the list, which might be a minor surprise to the user, but shouldn't be
                     '  too bad, and is the safest fix at this point in the schedule.
                     PopulateImportsList(InitSelections:=True, RemoveInvalidEntries:=True)
-                    SetDirty(Me.ImportList)
+                    SetDirty(ImportList)
                 End If
             End If
         End Sub
 
         Private Sub ReferencePathsButton_Click(sender As Object, e As EventArgs) Handles ReferencePathsButton.Click
-            ShowChildPage(SR.GetString(SR.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
+            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePaths_Title), GetType(ReferencePathsPropPage))
         End Sub
 
-        Private Sub ImportList_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles ImportList.ItemCheck
+        Private Sub ImportList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles ImportList.ItemCheck
             'Don't apply yet, this event is fired before the actual value has been updated
             If Not _updatingImportList Then
-                Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTCHANGED, e.Index, 0)
+                NativeMethods.PostMessage(Handle, WmUserConstants.WM_REFPAGE_IMPORTCHANGED, e.Index, 0)
             End If
         End Sub
 
@@ -1391,7 +1391,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub ImportPanel_Leave(sender As Object, e As EventArgs) Handles addUserImportTableLayoutPanel.Leave
             _hidingImportListSelectedItem = True
             Try
-                _importListSelectedItem = DirectCast(Me.ImportList.SelectedItem, String)
+                _importListSelectedItem = DirectCast(ImportList.SelectedItem, String)
                 ImportList.SelectedItem = Nothing
             Finally
                 _hidingImportListSelectedItem = False
@@ -1435,15 +1435,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Try
                             _Imports.Remove(index)
                             valueUpdated = True
-                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
-                            If Common.IsCheckoutCanceledException(ex) Then
+                        Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
+                            If IsCheckoutCanceledException(ex) Then
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated
                             ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(SR.GetString(SR.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
+                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
                                 Debug.Fail("Unexpected error when removing imports")
                             Else
-                                ShowErrorMessage(SR.GetString(SR.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
+                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
                                 Debug.Fail("Unexpected error when removing imports")
                             End If
                         End Try
@@ -1460,15 +1460,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Try
                             _Imports.Add(_Namespace)
                             valueUpdated = True
-                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
-                            If Common.IsCheckoutCanceledException(ex) Then
+                        Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
+                            If IsCheckoutCanceledException(ex) Then
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated
                             ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(SR.GetString(SR.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
+                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
                                 Debug.Fail("Unexpected error when removing imports")
                             Else
-                                ShowErrorMessage(SR.GetString(SR.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
+                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
                                 Debug.Fail("Unexpected error when removing imports")
                             End If
                         End Try
@@ -1513,7 +1513,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_fInsideInit = True
             Try
                 'Uncheck previously checked
-                Dim selectedItem As New System.Collections.Specialized.StringCollection
+                Dim selectedItem As New Specialized.StringCollection
                 Try
                     _updatingImportList = True
                     For Each Index As Integer In ImportList.CheckedIndices
@@ -1566,8 +1566,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Refress the lists
             m_fInsideInit = True
             Try
-                Me.PopulateReferenceList()
-                Me.PopulateImportsList(True)
+                PopulateReferenceList()
+                PopulateImportsList(True)
             Finally
                 m_fInsideInit = False
             End Try
@@ -1587,7 +1587,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim _handle As IntPtr = ReferenceList.Handle
 
             ' By default size all columns by size of column header text
-            Dim AutoSizeMethod As Integer() = New Integer(s_REFCOLUMN_MAX) {Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE_USEHEADER, Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE_USEHEADER, Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE_USEHEADER, Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE_USEHEADER, Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE_USEHEADER}
+            Dim AutoSizeMethod As Integer() = New Integer(s_REFCOLUMN_MAX) {NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER}
 
             If ReferenceList.Items.Count > 0 Then
                 ' If there are elements in the listview, size the name, version, and path columns by item text if not empty
@@ -1595,29 +1595,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' For the first column, if not offset, check the .text property, otherwise check the subitems
                     If (ColOffset = 0 AndAlso .Text <> "") OrElse
                         (ColOffset > 0 AndAlso .SubItems(s_REFCOLUMN_NAME + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_NAME) = Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE
+                        AutoSizeMethod(s_REFCOLUMN_NAME) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
                     If (.SubItems.Count > s_REFCOLUMN_VERSION + ColOffset AndAlso .SubItems(s_REFCOLUMN_VERSION + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_VERSION) = Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE
+                        AutoSizeMethod(s_REFCOLUMN_VERSION) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
                     If (.SubItems.Count > s_REFCOLUMN_PATH + ColOffset AndAlso .SubItems(s_REFCOLUMN_PATH + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_PATH) = Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVSCW_AUTOSIZE
+                        AutoSizeMethod(s_REFCOLUMN_PATH) = NativeMethods.LVSCW_AUTOSIZE
                     End If
                 End With
             End If
 
             ' Do actual sizing
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(owner, _handle), Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_NAME + ColOffset, AutoSizeMethod(s_REFCOLUMN_NAME))
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(owner, _handle), Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_TYPE + ColOffset, AutoSizeMethod(s_REFCOLUMN_TYPE))
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(owner, _handle), Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_VERSION + ColOffset, AutoSizeMethod(s_REFCOLUMN_VERSION))
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(owner, _handle), Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_COPYLOCAL + ColOffset, AutoSizeMethod(s_REFCOLUMN_COPYLOCAL))
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(owner, _handle), Microsoft.VisualStudio.Editors.Interop.NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_PATH + ColOffset, AutoSizeMethod(s_REFCOLUMN_PATH))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_NAME + ColOffset, AutoSizeMethod(s_REFCOLUMN_NAME))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_TYPE + ColOffset, AutoSizeMethod(s_REFCOLUMN_TYPE))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_VERSION + ColOffset, AutoSizeMethod(s_REFCOLUMN_VERSION))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_COPYLOCAL + ColOffset, AutoSizeMethod(s_REFCOLUMN_COPYLOCAL))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_PATH + ColOffset, AutoSizeMethod(s_REFCOLUMN_PATH))
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If Me.ImportList.Focused Then
+            If ImportList.Focused Then
                 Return HelpKeywords.VBProjPropImports
             End If
             Return HelpKeywords.VBProjPropReference
@@ -1656,7 +1656,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 PopulateImportsList(True)
-                SetDirty(Me.ImportList)
+                SetDirty(ImportList)
 
                 ' Let's make sure the new item is visible & selected!
                 Dim newIndex As Integer = ImportList.Items.IndexOf(ScrubbedUserImport)
@@ -1723,7 +1723,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 PopulateImportsList(True)
-                SetDirty(Me.ImportList)
+                SetDirty(ImportList)
             End If
 
             ' Let's make sure the updated item is still selected...
@@ -1776,20 +1776,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ' We post a message to refresh our UI later, because the project's reference list hasn't been updated when we get message from them.
         Private Sub PostRefreshReferenceListMessage()
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_REFERENCES_REFRESH, 0, 0)
+            NativeMethods.PostMessage(Handle, WmUserConstants.WM_REFPAGE_REFERENCES_REFRESH, 0, 0)
         End Sub
 
         ' We post a message to refresh the imports list
         Private Sub PostRefreshImportListMessage()
             If Not _needRefreshImportList Then
                 _needRefreshImportList = True
-                Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_IMPORTS_REFRESH, 0, 0)
+                NativeMethods.PostMessage(Handle, WmUserConstants.WM_REFPAGE_IMPORTS_REFRESH, 0, 0)
             End If
         End Sub
 
         ' We post a message to refresh our UI later, because the project's reference list hasn't been updated when we get message from them.
         Private Sub PostRefreshServiceReferenceListMessage()
-            Microsoft.VisualStudio.Editors.Interop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.Common.WmUserConstants.WM_REFPAGE_SERVICEREFERENCES_REFRESH, 0, 0)
+            NativeMethods.PostMessage(Handle, WmUserConstants.WM_REFPAGE_SERVICEREFERENCES_REFRESH, 0, 0)
         End Sub
 
 #Region "VSLangProj._dispReferencesEvents"
@@ -2371,7 +2371,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shadows Function Equals(other As ImportIdentity) As Boolean Implements IEquatable(Of ImportIdentity).Equals
             Return _kind = other._kind AndAlso
                 _identity.Equals(other._identity,
-                    Utils.IIf(_kind = ImportKind.XmlNamespace, StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase))
+                    IIf(_kind = ImportKind.XmlNamespace, StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase))
         End Function
     End Structure
 End Namespace

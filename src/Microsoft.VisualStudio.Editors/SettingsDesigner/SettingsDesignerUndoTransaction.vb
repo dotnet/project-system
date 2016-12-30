@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Cancel the transaction (if any)
         ''' </summary>
         ''' <remarks>Allows for a "using" statement</remarks>
-        Public Sub Dispose() Implements System.IDisposable.Dispose
+        Public Sub Dispose() Implements IDisposable.Dispose
             If _transaction IsNot Nothing AndAlso Not _transaction.Committed() Then
                 _transaction.Cancel()
             End If

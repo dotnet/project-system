@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     <Serializable> _
     Friend NotInheritable Class GenericComponentSerializationStore
         Inherits SerializationStore
-        Implements System.Runtime.Serialization.ISerializable
+        Implements ISerializable
 
 
         'The set of objects (IComponent instances or properties) that we wish to
@@ -93,8 +93,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="info">Serialization info</param>
         ''' <param name="context">Serialization context</param>
         ''' <remarks></remarks>
-        <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
-        Public Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
+        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
+        Public Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
             info.AddValue(s_KEY_STATE, _serializedState)
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Stream">The stream to load from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function Load(Stream As IO.Stream) As GenericComponentSerializationStore
+        Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
             Dim f As New BinaryFormatter
             Return DirectCast(f.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
@@ -133,10 +133,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="stream">The stream to save to</param>
         ''' <remarks></remarks>
-        Public Overrides Sub Save(Stream As System.IO.Stream)
+        Public Overrides Sub Save(Stream As Stream)
             Close()
 
-            Dim f As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            Dim f As New BinaryFormatter
             f.Serialize(Stream, Me)
         End Sub
 

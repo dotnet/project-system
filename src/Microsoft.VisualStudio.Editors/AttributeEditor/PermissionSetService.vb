@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
             ' Load the XML
             Dim document As New XmlDocument
-            Using xmlReader As System.Xml.XmlReader = System.Xml.XmlReader.Create(New System.IO.StringReader(strPermissionSet))
+            Using xmlReader As XmlReader = XmlReader.Create(New StringReader(strPermissionSet))
                 document.Load(xmlReader)
             End Using
 
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                     projectPermissionSet,
                     identityList)
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
             End Try
 
             Return Nothing
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             Return NativeMethods.S_OK
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                             strTip &= vbCrLf
                         Else
 
-                            strTip &= SR.GetString(PermissionSet_Requires) & vbCrLf
+                            strTip &= GetString(PermissionSet_Requires) & vbCrLf
 
                             hasTip = True
                             isFirstPermission = False
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             If hasTip Then

@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Inherits ResourceTypeEditorFileBase
 
         'The resource value type that is used for text files
-        Friend Shared ReadOnly TextFileValueType As System.Type = GetType(String)
+        Friend Shared ReadOnly TextFileValueType As Type = GetType(String)
 
         'All common file extensions handled by this resource type editor.
         '  This is just a suggested list of files likely to be intended as text files.
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, TextFileValueType)
             Debug.Assert(Resource.IsLink)
-            Return SR.GetString(SR.RSE_Type_TextFile)
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_TextFile)
         End Function
 
 
@@ -290,7 +290,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
             'Too many text file extensions to show them all.  Just use *.txt
-            Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Text), New String() {EXT_TXT})
+            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text), New String() {EXT_TXT})
         End Function
 
 
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
             'Too many text file extensions to show them all.  Just use *.txt
-            Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Text), New String() {EXT_TXT})
+            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text), New String() {EXT_TXT})
         End Function
 
 

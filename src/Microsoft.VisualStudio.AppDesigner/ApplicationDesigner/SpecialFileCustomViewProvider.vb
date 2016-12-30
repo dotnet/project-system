@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Else
                 Debug.Fail("Why did the call to IVsProjectSpecialFiles fail?  We shouldn't have created a SpecialFileCustomDocumentMonikerProvider instance in the first place if the project didn't support this special file id" _
                     & vbCrLf & "Hr = 0x" & Hex(hr))
-                Throw New InvalidOperationException(SR.GetString(SR.APPDES_SpecialFileNotSupported))
+                Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_SpecialFileNotSupported))
             End If
         End Function
 

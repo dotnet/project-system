@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private ReadOnly Property EffectiveMaximumSuggestedCacheSize() As Integer
             Get
-                Return System.Math.Max(_minimumSizeBeforeRecycling, _maximumSuggestedCacheSize)
+                Return Math.Max(_minimumSizeBeforeRecycling, _maximumSuggestedCacheSize)
             End Get
         End Property
 
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _imageList.Images.Add(Thumbnail)
                     Debug.Assert(ThumbnailCount - 1 + _reservedImagesCount = Index)
                     ThumbnailInserted = True
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Add), NameOf(ThumbnailCache))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Add), NameOf(ThumbnailCache))
                     'Hmmm, can't add a new index?  Let's try again, requesting that we recycle an
                     '  old image if possible.  If it still fails, we can't do anything else
                     '  to thwart the exception.

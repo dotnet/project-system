@@ -5,7 +5,6 @@ Imports System.Windows.Forms
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports VB = Microsoft.VisualBasic
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
@@ -21,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '''    property pages or the designer view for other designers).
     ''' </remarks>
     Public Class ApplicationDesignerPanel
-        Inherits System.Windows.Forms.TableLayoutPanel
+        Inherits TableLayoutPanel
         Implements IVsWindowFrameNotify, IVsWindowFrameNotify2
 
         'Information used to create the designer
@@ -54,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.
-        Private _docView As System.Windows.Forms.Control
+        Private _docView As Control
 
         'This is Nothing if we're not displaying a property page
         Private _propertyPageInfo As PropertyPageInfo
@@ -68,8 +67,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ' child controls...
         ' We put a label when screen reader is running to show the name of the page. We use the hosting panel to host the read docView
-        Private WithEvents _pageHostingPanel As System.Windows.Forms.Panel
-        Private WithEvents _pageNameLabel As System.Windows.Forms.Label
+        Private WithEvents _pageHostingPanel As Panel
+        Private WithEvents _pageNameLabel As Label
 
         'True while in the process of creating the designer
         Private _creatingDesigner As Boolean
@@ -95,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Debug.Assert(View IsNot Nothing)
             _view = View
 
-            Me._editorGuid = GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID
+            _editorGuid = GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID
         End Sub
 
 
@@ -121,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             SuspendLayout()
 
             InitializeComponent()
-            Me._pageNameLabel.Visible = AppDesCommon.Utils.IsScreenReaderRunning()
+            _pageNameLabel.Visible = Common.IsScreenReaderRunning()
 
             ResumeLayout(False)
 
@@ -184,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Close anything currently showing
                 CloseFrame()
                 _customViewProvider = value
-                If Me.Visible Then
+                If Visible Then
                     ShowDesigner()
                 End If
             End Set
@@ -197,12 +196,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             If Show Then
-                If Me.Parent Is Nothing OrElse Not Me.Parent.Visible Then
+                If Parent Is Nothing OrElse Not Parent.Visible Then
                     'Debug.Fail("Showing designer when parent is not visible?")
                     Common.Switches.TracePDFocus(TraceLevel.Info, "ShowDesigner() - Parent is nothing or not visible - ignoring")
                     Return
                 End If
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(True) on panel """ & Me.TabAutomationName & "/" & Me.TabTitle & """")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(True) on panel """ & TabAutomationName & "/" & TabTitle & """")
 
                 If _vsWindowFrame Is Nothing Then
                     CreateDesigner()
@@ -216,19 +215,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Else
                 'Hide
                 If (_vsWindowFrame IsNot Nothing) Then
-                    Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(False) on panel """ & Me.TabAutomationName & "/" & Me.TabTitle & """ (WindowFrame.Hide)")
+                    Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(False) on panel """ & TabAutomationName & "/" & TabTitle & """ (WindowFrame.Hide)")
                     Dim WindowFrameIsVisible As Boolean = (_vsWindowFrame.IsVisible() = NativeMethods.S_OK)
                     If WindowFrameIsVisible Then
                         Dim hr As Integer = _vsWindowFrame.Hide()
-                        Debug.Assert(VSErrorHandler.Succeeded(hr), "Failure trying to hide WindowFrame, hr=0x" & VB.Hex(hr))
+                        Debug.Assert(VSErrorHandler.Succeeded(hr), "Failure trying to hide WindowFrame, hr=0x" & Hex(hr))
                     End If
                 End If
 
                 'PERF: calling Visible = false when Visible = false does real work.
-                If Me.Visible Then
+                If Visible Then
                     'PERF: setting a child to be visible false performs layout on the parent.
                     SuspendLayout()
-                    Me.Visible = False
+                    Visible = False
                     ResumeLayout(False)
                 End If
                 _windowFrameShown = False
@@ -242,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _customViewProvider.CreateView()
                     _customViewProvider.View.Dock = DockStyle.Fill
                     _customViewProvider.View.Visible = True
-                    Me._pageHostingPanel.Controls.Add(_customViewProvider.View)
+                    _pageHostingPanel.Controls.Add(_customViewProvider.View)
                 End If
             End If
         End Sub
@@ -255,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Using New Common.WaitCursor()
                 Common.Switches.TracePDPerfBegin("CreateDesigner")
-                Common.Switches.TracePDFocus(TraceLevel.Warning, "CreateDesigner() on panel """ & Me.TabAutomationName & "/" & Me.TabTitle & """")
+                Common.Switches.TracePDFocus(TraceLevel.Warning, "CreateDesigner() on panel """ & TabAutomationName & "/" & TabTitle & """")
                 _creatingDesigner = True
                 Try
                     If _customViewProvider IsNot Nothing Then
@@ -280,8 +279,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Throw New ArgumentException("Invalid Document moniker")
                         End If
 
-                        If Me.DocData IsNot Nothing Then
-                            ExistingDocDataPtr = Marshal.GetIUnknownForObject(Me.DocData)
+                        If DocData IsNot Nothing Then
+                            ExistingDocDataPtr = Marshal.GetIUnknownForObject(DocData)
                         End If
                         OleServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                         Debug.Assert(OleServiceProvider IsNot Nothing, "Unable to get OleServiceProvider")
@@ -296,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.IsDocumentInAProject(MkDocument, VsUIHierarchy, ItemId, OleServiceProvider, pDocInProj))
                             If pDocInProj <> 0 Then
                                 'Document was found so open it with the specified editor
-                                If EditorGuid.Equals(System.Guid.Empty) Then
+                                If EditorGuid.Equals(Guid.Empty) Then
                                     VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenDocumentViaProject(MkDocument, (LogicalViewGuid), OleServiceProvider, VsUIHierarchy, ItemId, WindowFrame))
                                 Else
                                     Dim OpenHierachy As IVsUIHierarchy = Nothing
@@ -311,11 +310,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                     If VSErrorHandler.Succeeded(hr) Then
                                         If fOpen <> 0 Then
                                             'Already open - show an error message asking them to close it first.
-                                            Throw New ArgumentException(SR.GetString(SR.APPDES_EditorAlreadyOpen_1Arg, MkDocument))
+                                            Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_EditorAlreadyOpen_1Arg, MkDocument))
                                         End If
                                     End If
 
-                                    VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenDocumentViaProjectWithSpecific(MkDocument, CUInt(__VSSPECIFICEDITORFLAGS.VSSPECIFICEDITOR_DoOpen Or __VSSPECIFICEDITORFLAGS.VSSPECIFICEDITOR_UseEditor) Or Me.EditFlags, (EditorGuid), PhysicalView, (LogicalViewGuid), OleServiceProvider, VsUIHierarchy, ItemId, WindowFrame))
+                                    VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenDocumentViaProjectWithSpecific(MkDocument, CUInt(__VSSPECIFICEDITORFLAGS.VSSPECIFICEDITOR_DoOpen Or __VSSPECIFICEDITORFLAGS.VSSPECIFICEDITOR_UseEditor) Or EditFlags, (EditorGuid), PhysicalView, (LogicalViewGuid), OleServiceProvider, VsUIHierarchy, ItemId, WindowFrame))
                                 End If
                                 'Save the values returned
                                 _itemId = ItemId
@@ -328,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 '  It's not the same as what we're using to service requests via the property page site.
                                 OleServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                                 'Parens required around EditorGuid, LogicalGuid to prevent copyback assignment generated by VB compiler
-                                If EditorGuid.Equals(System.Guid.Empty) Then
+                                If EditorGuid.Equals(Guid.Empty) Then
                                     VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenStandardEditor(0, _
                                             MkDocument, _
                                             (EditorGuid), _
@@ -339,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                             OleServiceProvider, _
                                             WindowFrame))
                                 ElseIf IsPropertyPage() OrElse IO.File.Exists(MkDocument) Then
-                                    VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenSpecificEditor(Me.EditFlags, _
+                                    VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenSpecificEditor(EditFlags, _
                                             MkDocument, _
                                             (EditorGuid), _
                                             _physicalView, _
@@ -352,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                             WindowFrame))
                                 Else
                                     'The file doesn't exist (must have been deleted), so don't try to open it.
-                                    Throw New ArgumentException(SR.GetString(SR.APPDES_FileNotFound_1Arg, MkDocument))
+                                    Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_FileNotFound_1Arg, MkDocument))
                                 End If
 
                                 Dim Value As Object = Nothing
@@ -366,9 +365,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             'We must make the panel visible before creating the window frame, because the control's HWND must be
                             '  created before passing it to devenv to use as a DocView.
                             Common.Switches.TracePDPerfBegin("Making ApplicationDesignerPanel visible and laying it out")
-                            Me.SuspendLayout()
-                            Me._pageHostingPanel.SuspendLayout()
-                            Me.BringToFront()
+                            SuspendLayout()
+                            _pageHostingPanel.SuspendLayout()
+                            BringToFront()
 
                             'Force handle creation of this ApplicationDesignerPanel and its PageHostingPanel.
                             '  We can't use CreateControl because that only works if the control is already
@@ -378,17 +377,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Dim DummyHandle As IntPtr
                             'Must create the PageHostingPanel's parent's handle first ("Me"), because otherwise
                             '  its handle will get re-created later when it's re-parented
-                            Debug.Assert(Me._pageHostingPanel.Parent Is Me)
-                            DummyHandle = Me._pageHostingPanel.Parent.Handle
-                            Dim PageHostingPanelHandle As IntPtr = Me._pageHostingPanel.Handle
+                            Debug.Assert(_pageHostingPanel.Parent Is Me)
+                            DummyHandle = _pageHostingPanel.Parent.Handle
+                            Dim PageHostingPanelHandle As IntPtr = _pageHostingPanel.Handle
 
                             'Since the ApplicationDesignerPanel starts out intentionally hidden, PerformLayout()
                             '  will not dock it to its parent size.  So we do that manually here to minimize
                             '  size changes.
-                            Debug.Assert(Me.Parent.Size.Width <> 0 AndAlso Me.Parent.Size.Height <> 0)
-                            Me.Size = Me.Parent.Size
-                            Me._pageHostingPanel.ResumeLayout(False)
-                            Me.ResumeLayout(True) 'Must give the PageHostingPanel a chance to dock properly to its parent
+                            Debug.Assert(Parent.Size.Width <> 0 AndAlso Parent.Size.Height <> 0)
+                            Size = Parent.Size
+                            _pageHostingPanel.ResumeLayout(False)
+                            ResumeLayout(True) 'Must give the PageHostingPanel a chance to dock properly to its parent
                             Common.Switches.TracePDPerfEnd("Making ApplicationDesignerPanel visible and laying it out")
 
                             'Parent window and parent frame must be set before the WindowFrame.Show call
@@ -396,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID2.VSFPROPID_ParentHwnd, CurrentParentHwnd))
                             If CInt(CurrentParentHwnd) = 0 Then
                                 '... But only try to set the parent hwnd/frame if they haven't been set already, otherwise this will fail
-                                Debug.Assert(Me._pageHostingPanel.IsHandleCreated AndAlso Me._pageHostingPanel.Parent.IsHandleCreated, _
+                                Debug.Assert(_pageHostingPanel.IsHandleCreated AndAlso _pageHostingPanel.Parent.IsHandleCreated, _
                                     "The panel which will host the nested designer has not had its handle created yet, that should have already happened. " _
                                     & "It will be force created now by get_Handle(), but when the window's parent hierarchy is created later, this may cause the panel's window " _
                                     & "to be re-created later, and Visual Studio will have the wrong HWND.")
@@ -423,19 +422,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocView, DocViewObject))
 
                             'Get the DocView for those we can
-                            Dim DesignerWindowPane As Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
-                            DesignerWindowPane = TryCast(DocViewObject, Microsoft.VisualStudio.Shell.Design.DesignerWindowPane)
+                            Dim DesignerWindowPane As Shell.Design.DesignerWindowPane
+                            DesignerWindowPane = TryCast(DocViewObject, Shell.Design.DesignerWindowPane)
                             If DesignerWindowPane IsNot Nothing Then
-                                Dim WindowPaneControl As System.Windows.Forms.Control = TryCast(DesignerWindowPane.Window, System.Windows.Forms.Control)
+                                Dim WindowPaneControl As Control = TryCast(DesignerWindowPane.Window, Control)
                                 If WindowPaneControl IsNot Nothing Then
-                                    _docView = DirectCast(WindowPaneControl, System.Windows.Forms.Control).Controls(0)
+                                    _docView = DirectCast(WindowPaneControl, Control).Controls(0)
                                 End If
                             End If
 
                             'Get the editor caption to use as the tab text
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_EditorCaption, EditorCaptionObject))
                             If TypeOf EditorCaptionObject Is String Then '(might be Nothing)
-                                Me.EditorCaption = DirectCast(EditorCaptionObject, String)
+                                EditorCaption = DirectCast(EditorCaptionObject, String)
                             End If
 
                             If _propertyPageInfo IsNot Nothing AndAlso _propertyPageInfo.Site IsNot Nothing Then
@@ -465,7 +464,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             End If
 
                             'Make the window frame visible
-                            Me.VsWindowFrame = WindowFrame
+                            VsWindowFrame = WindowFrame
                             ShowWindowFrame()
 
                             _view.DelayRefreshDirtyIndicators()
@@ -510,7 +509,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'End If
 
                 Dim hr As Integer = VsWindowFrame.Show()
-                Debug.Assert(VSErrorHandler.Succeeded(hr), "VsWindowFrame.Show() failed with hr=" & VB.Hex(hr))
+                Debug.Assert(VSErrorHandler.Succeeded(hr), "VsWindowFrame.Show() failed with hr=" & Hex(hr))
                 _windowFrameShown = True
 #If DEBUG Then
                 m_Debug_cWindowFrameShow += 1
@@ -525,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  and settings its size/location because we can't control where the window frame first 
                 '  shows up when make visible.
                 Common.Switches.TracePDPerfBegin("Setting ApplicationDesignerPanel.Visible = True")
-                Me.Visible = True
+                Visible = True
 
                 'Because of the way we've initialized things so that the panel is not visible until
                 '  after the window frame is activated, the focus on the window pane control will have
@@ -538,10 +537,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
 
                 Common.Switches.TracePDPerfEnd("Setting ApplicationDesignerPanel.Visible = True")
-                Debug.Assert(Me._pageHostingPanel.Visible)
+                Debug.Assert(_pageHostingPanel.Visible)
             ElseIf CustomViewProvider IsNot Nothing Then
                 CreateCustomView()
-                Me.Visible = True
+                Visible = True
                 UpdateSelection()
                 UpdateWindowFrameBounds()
 
@@ -563,7 +562,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ' frame needs to be activated so that it can handle commands while the
             ' CustomView is showing.
             ' See Dev10 Bug 641849.
-            Dim parentFrame As IVsWindowFrame2 = TryCast(Me._view.WindowFrame, IVsWindowFrame2)
+            Dim parentFrame As IVsWindowFrame2 = TryCast(_view.WindowFrame, IVsWindowFrame2)
             If parentFrame Is Nothing Then
                 Return False
             End If
@@ -596,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Try
                 'Determine which VsWindowFrame we're using
                 Dim WindowFrame As IVsWindowFrame = Nothing
-                WindowFrame = Me.VsWindowFrame
+                WindowFrame = VsWindowFrame
                 If WindowFrame Is Nothing Then
                     'We're not showing a nested window frame, so use the windowframe for the application 
                     '  designer.
@@ -616,14 +615,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Dim hr As Integer
                 hr = WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_SPFrame, FrameServiceProviderObject)
                 If VSErrorHandler.Failed(hr) OrElse FrameServiceProviderObject Is Nothing Then
-                    Debug.Fail("Could not get VSFPROPID_SPFrame from frame (hr=0x" & VB.Hex(hr) & ")")
+                    Debug.Fail("Could not get VSFPROPID_SPFrame from frame (hr=0x" & Hex(hr) & ")")
                 Else
-                    Dim FrameServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = DirectCast(FrameServiceProviderObject, Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                    Dim FrameServiceProvider As OLE.Interop.IServiceProvider = DirectCast(FrameServiceProviderObject, OLE.Interop.IServiceProvider)
 
                     'QueryService for IVsTrackSelectionEx
                     hr = FrameServiceProvider.QueryService(GetType(SVsTrackSelectionEx).GUID, GetType(IVsTrackSelectionEx).GUID, punkTrackSelection)
                     If VSErrorHandler.Failed(hr) OrElse punkTrackSelection.Equals(IntPtr.Zero) Then
-                        Debug.Fail("Could not get IVsTrackSelectionEx from frame's service provider (hr=0x" & VB.Hex(hr) & ")")
+                        Debug.Fail("Could not get IVsTrackSelectionEx from frame's service provider (hr=0x" & Hex(hr) & ")")
                     Else
                         Dim TrackSelection As IVsTrackSelectionEx = DirectCast(Marshal.GetObjectForIUnknown(punkTrackSelection), IVsTrackSelectionEx)
 
@@ -669,7 +668,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _vsWindowFrame = Value
 
                     'If we're already visible, show with the new window frame
-                    If Me.Visible And Not _creatingDesigner Then
+                    If Visible And Not _creatingDesigner Then
                         ShowWindowFrame()
                     End If
 
@@ -796,11 +795,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property DocView() As System.Windows.Forms.Control
+        Public Property DocView() As Control
             Get
                 Return _docView
             End Get
-            Set(Value As System.Windows.Forms.Control)
+            Set(Value As Control)
                 _docView = Value
             End Set
         End Property
@@ -833,12 +832,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 ' We set Window.Text to be the page Title to help screen reader.
                 If String.IsNullOrEmpty(value) Then
-                    Me.Text = String.Empty
+                    Text = String.Empty
                 Else
-                    Me.Text = SR.GetString(SR.APPDES_PageName, value)
+                    Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_PageName, value)
                 End If
 
-                Me._pageNameLabel.Text = Me.Text
+                _pageNameLabel.Text = Text
             End Set
         End Property
 
@@ -879,7 +878,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim nullGuid As Guid
                     Dim hr As Integer = VsWindowFrame.SetFramePos(VSSETFRAMEPOS.SFP_fSize Or VSSETFRAMEPOS.SFP_fMove, nullGuid, 0, 0, _pageHostingPanel.Width, _pageHostingPanel.Height)
                     If VSErrorHandler.Failed(hr) Then
-                        Common.Switches.TracePDFocus(TraceLevel.Error, "VsWindowFrame.SetFramePos() failed with hr=" & VB.Hex(hr))
+                        Common.Switches.TracePDFocus(TraceLevel.Error, "VsWindowFrame.SetFramePos() failed with hr=" & Hex(hr))
                     End If
                     _windowFrameLastSize = _pageHostingPanel.Size
                     Common.Switches.TracePDPerfEnd("UpdateWindowFrameSize: setting window frame position/size: " & _pageHostingPanel.Size.ToString())
@@ -931,7 +930,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 CloseFrameInternal(Frame, __FRAMECLOSE.FRAMECLOSE_NoSave)
             End If
             If _customViewProvider IsNot Nothing AndAlso _customViewProvider.View IsNot Nothing Then
-                Me._pageHostingPanel.Controls.Remove(_customViewProvider.View)
+                _pageHostingPanel.Controls.Remove(_customViewProvider.View)
                 _customViewProvider.CloseView()
             End If
             _windowFrameShown = False
@@ -967,12 +966,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Private Sub ApplicationDesignerPanel_VisibleChanged(sender As Object, e As System.EventArgs) Handles Me.VisibleChanged
+        Private Sub ApplicationDesignerPanel_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
             If VsWindowFrame IsNot Nothing Then
-                If Me.Visible Then
+                If Visible Then
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=True - checking if should ShowWindowFrame")
                     If Not _windowFrameShown And Not _creatingDesigner Then
-                        Me.ShowWindowFrame()
+                        ShowWindowFrame()
                     End If
                 Else
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=False => WindowFrame.Hide()")
@@ -1006,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  page should be queried for dirty state.
 
                 Dim PropPageView As PropPageDesigner.PropPageDesignerView
-                PropPageView = TryCast(Me.DocView, PropPageDesigner.PropPageDesignerView)
+                PropPageView = TryCast(DocView, PropPageDesigner.PropPageDesignerView)
                 If PropPageView IsNot Nothing Then
                     Return PropPageView.ShouldShowDirtyIndicator()
                 Else
@@ -1033,7 +1032,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub PageHostingPanel_HandleCreated(sender As Object, e As System.EventArgs) Handles _pageHostingPanel.HandleCreated
+        Private Sub PageHostingPanel_HandleCreated(sender As Object, e As EventArgs) Handles _pageHostingPanel.HandleCreated
             If _vsWindowFrame IsNot Nothing Then
                 Debug.Fail("PageHostingPanel handle was recreated after the nested window frame's ParentHwnd property was set to its HWND.  " _
                     & "This is bad because now VS has a pointer to the wrong HWND, and the HWND VS was using has been destroyed.")
@@ -1073,49 +1072,49 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' Initilize layout...
         '''</summary>
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me._pageHostingPanel = New System.Windows.Forms.Panel
-            Me._pageNameLabel = New System.Windows.Forms.Label
-            Me.SuspendLayout()
+            _pageHostingPanel = New Panel
+            _pageNameLabel = New Label
+            SuspendLayout()
             '
             'PageHostingPanel
             '
-            Me._pageHostingPanel.Dock = System.Windows.Forms.DockStyle.Fill
-            Me._pageHostingPanel.Name = "PageHostingPanel"
-            Me._pageHostingPanel.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
-            Me._pageHostingPanel.TabIndex = 1
-            Me._pageHostingPanel.Text = "PageHostingPanel" 'For debugging
+            _pageHostingPanel.Dock = DockStyle.Fill
+            _pageHostingPanel.Name = "PageHostingPanel"
+            _pageHostingPanel.Margin = New Padding(0, 0, 0, 0)
+            _pageHostingPanel.TabIndex = 1
+            _pageHostingPanel.Text = "PageHostingPanel" 'For debugging
             '
             'PageNameLabel
             '
-            Me._pageNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left
-            Me._pageNameLabel.AutoSize = True
-            Me._pageNameLabel.Location = New System.Drawing.Point(3, 3)
-            Me._pageNameLabel.Name = "PageNameLabel"
-            Me._pageNameLabel.Margin = New System.Windows.Forms.Padding(14, 14, 14, 3)
-            Me._pageNameLabel.TabIndex = 0
-            Me._pageNameLabel.Text = "Project Page"  ' it will get replaced with the real page name later...
-            Me._pageNameLabel.Visible = False
+            _pageNameLabel.Anchor = AnchorStyles.Left
+            _pageNameLabel.AutoSize = True
+            _pageNameLabel.Location = New Drawing.Point(3, 3)
+            _pageNameLabel.Name = "PageNameLabel"
+            _pageNameLabel.Margin = New Padding(14, 14, 14, 3)
+            _pageNameLabel.TabIndex = 0
+            _pageNameLabel.Text = "Project Page"  ' it will get replaced with the real page name later...
+            _pageNameLabel.Visible = False
             '
             'ApplicationDesignerPanel
             '
-            Me.ClientSize = New System.Drawing.Size(292, 266)
-            Me.ColumnCount = 1
-            Me.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.Controls.Add(Me._pageNameLabel, 0, 0)
-            Me.Controls.Add(Me._pageHostingPanel, 0, 1)
-            Me.RowCount = 2
-            Me.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.Name = "ApplicationDesignerPanel"
-            Me.Text = "Application Designer Page"
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            ClientSize = New Drawing.Size(292, 266)
+            ColumnCount = 1
+            ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
+            Controls.Add(_pageNameLabel, 0, 0)
+            Controls.Add(_pageHostingPanel, 0, 1)
+            RowCount = 2
+            RowStyles.Add(New RowStyle)
+            RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+            Name = "ApplicationDesignerPanel"
+            Text = "Application Designer Page"
+            ResumeLayout(False)
+            PerformLayout()
         End Sub
 
         'PERF: Debug tracing of Layout handling...
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ApplicationDesignerPanel.OnLayout()")
             MyBase.OnLayout(levent)
             Common.Switches.TracePDPerfEnd("ApplicationDesignerPanel.OnLayout()")
@@ -1124,19 +1123,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #Region "IVsWindowFrameNotify implementation"
         'This interface is implemented only because IVsWindowFrame.Advise() requires an IVsWindowFrameNotify
         '  implementation, even though we only care about the IVsWindowFrameNotify2 methods.
-        Private Function IVsWindowFrameNotify_OnDockableChange(fDockable As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnDockableChange
+        Private Function IVsWindowFrameNotify_OnDockableChange(fDockable As Integer) As Integer Implements IVsWindowFrameNotify.OnDockableChange
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnMove() As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnMove
+        Private Function IVsWindowFrameNotify_OnMove() As Integer Implements IVsWindowFrameNotify.OnMove
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnShow(fShow As Integer) As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnShow
+        Private Function IVsWindowFrameNotify_OnShow(fShow As Integer) As Integer Implements IVsWindowFrameNotify.OnShow
             Return VSConstants.S_OK
         End Function
 
-        Private Function IVsWindowFrameNotify_OnSize() As Integer Implements Shell.Interop.IVsWindowFrameNotify.OnSize
+        Private Function IVsWindowFrameNotify_OnSize() As Integer Implements IVsWindowFrameNotify.OnSize
             Return VSConstants.S_OK
         End Function
 #End Region
@@ -1149,7 +1148,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="pgrfSaveOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements Shell.Interop.IVsWindowFrameNotify2.OnClose
+        Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements IVsWindowFrameNotify2.OnClose
             If _inOnClose Then
                 Return NativeMethods.S_OK
             End If
@@ -1162,7 +1161,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         '  NoSave.  At any rate, we're not the owner of the frame, we're just hooked up
                         '  for notifications, and the save options that get passed in are meaningless
                         '  anyway.
-                        Return parentFrame.CloseFrame(CUInt(Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave))
+                        Return parentFrame.CloseFrame(CUInt(__FRAMECLOSE.FRAMECLOSE_NoSave))
                     End If
                 Else
                     Return NativeMethods.S_OK

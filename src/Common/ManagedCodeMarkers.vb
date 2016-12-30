@@ -99,7 +99,7 @@ Namespace Microsoft.Internal.Performance
                         Else
                             ' if CodeMarkers are explictly enabled in the registry then try to
                             ' use the test DLL, otherwise fall back to trying to use the product DLL
-                            _fShouldUseTestDll = CodeMarkers.UsePrivateCodeMarkers(_regroot)
+                            _fShouldUseTestDll = UsePrivateCodeMarkers(_regroot)
                         End If
                     Catch ex As Exception
                         _fShouldUseTestDll = True

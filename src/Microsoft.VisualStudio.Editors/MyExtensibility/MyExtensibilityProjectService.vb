@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #Region "Public methods"
 
         Public Shared Function CreateNew( _
-                vbPackage As VBPackage, project As EnvDTE.Project, _
+                vbPackage As VBPackage, project As Project, _
                 projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings) _
                 As MyExtensibilityProjectService
             If vbPackage Is Nothing Then
@@ -73,13 +73,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Public Sub AddExtensionsFromPropPage()
             Dim addExtensionsDialog As New AddMyExtensionsDialog( _
-                _VBPackage, _extensibilitySettings.GetExtensionTemplates(Me.ProjectTypeID, _project))
+                _VBPackage, _extensibilitySettings.GetExtensionTemplates(ProjectTypeID, _project))
             If addExtensionsDialog.ShowDialog() = DialogResult.OK Then
                 _excludedTemplates = addExtensionsDialog.ExtensionTemplatesToAdd
                 Try
                     Dim extensionsAddedSB As New StringBuilder()
-                    Me.AddTemplates(addExtensionsDialog.ExtensionTemplatesToAdd, extensionsAddedSB)
-                    Me.SetExtensionsStatus(extensionsAddedSB, Nothing)
+                    AddTemplates(addExtensionsDialog.ExtensionTemplatesToAdd, extensionsAddedSB)
+                    SetExtensionsStatus(extensionsAddedSB, Nothing)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(AddExtensionsFromPropPage), NameOf(MyExtensibilityProjectService))
                 Finally
                     _excludedTemplates = Nothing
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' _dispReferencesEvents.ReferenceAdded also calls this method when a reference is added into the current project.
         ''' </summary>
         Public Sub ReferenceAdded(assemblyFullName As String)
-            Me.HandleReferenceChanged(AddRemoveAction.Add, NormalizeAssemblyFullName(assemblyFullName))
+            HandleReferenceChanged(AddRemoveAction.Add, NormalizeAssemblyFullName(assemblyFullName))
         End Sub
 
         ''' ;ReferenceRemoved
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' VB Compiler calls this method (through VBReferenceChangedService) when a reference is removed from the current project.
         ''' </summary>
         Public Sub ReferenceRemoved(assemblyFullName As String)
-            Me.HandleReferenceChanged(AddRemoveAction.Remove, NormalizeAssemblyFullName(assemblyFullName))
+            HandleReferenceChanged(AddRemoveAction.Remove, NormalizeAssemblyFullName(assemblyFullName))
         End Sub
 
         ''' ;RemoveExtensionsFromPropPage
@@ -118,8 +118,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Public Sub RemoveExtensionsFromPropPage(extensionProjectItemGroups As List(Of MyExtensionProjectItemGroup))
             Dim projectFilesRemovedSB As New StringBuilder()
-            Me.RemoveExtensionProjectItemGroups(extensionProjectItemGroups, projectFilesRemovedSB)
-            Me.SetExtensionsStatus(Nothing, projectFilesRemovedSB)
+            RemoveExtensionProjectItemGroups(extensionProjectItemGroups, projectFilesRemovedSB)
+            SetExtensionsStatus(Nothing, projectFilesRemovedSB)
         End Sub
 
         ''' ;GetExtensionTemplateNameAndDescription
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Sub GetExtensionTemplateNameAndDescription(
                 id As String, version As Version, assemblyName As String,
                 ByRef name As String, ByRef description As String)
-            _extensibilitySettings.GetExtensionTemplateNameAndDescription(Me.ProjectTypeID, _project,
+            _extensibilitySettings.GetExtensionTemplateNameAndDescription(ProjectTypeID, _project,
                 id, version, assemblyName,
                 name, description)
         End Sub
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Create a new project service.
         ''' </summary>
-        Private Sub New(vbPackage As VBPackage, project As EnvDTE.Project,
+        Private Sub New(vbPackage As VBPackage, project As Project,
                 projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             Debug.Assert(project IsNot Nothing, "project Is Nothing")
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             If Not pendingChangesExist AndAlso _pendingAssemblyChangesList IsNot Nothing Then
-                AddHandler Application.Idle, AddressOf Me.HandleReferenceChangedOnIdle
+                AddHandler Application.Idle, AddressOf HandleReferenceChangedOnIdle
             End If
         End Sub
 
@@ -260,7 +260,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             ' Check if the assembly has any extension templates associated with it.
             Dim extensionTemplates As List(Of MyExtensionTemplate) = _
-                _extensibilitySettings.GetExtensionTemplates(Me.ProjectTypeID, _project, assemblyFullName)
+                _extensibilitySettings.GetExtensionTemplates(ProjectTypeID, _project, assemblyFullName)
             ' Check the list of templates being added directly from My Extension property page.
             ' These should be excluded from adding again due to references being added.
             If _excludedTemplates IsNot Nothing AndAlso extensionTemplates IsNot Nothing AndAlso _excludedTemplates.Count > 0 Then
@@ -387,7 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' When VS is idle, loop through the pending activities list and add / remove extensions.
         ''' </summary>
         Private Sub HandleReferenceChangedOnIdle(sender As Object, e As EventArgs)
-            RemoveHandler Application.Idle, AddressOf Me.HandleReferenceChangedOnIdle
+            RemoveHandler Application.Idle, AddressOf HandleReferenceChangedOnIdle
 
             Debug.Assert(_pendingAssemblyChangesList IsNot Nothing, "Invalid pending assembly changes list!")
 
@@ -397,15 +397,15 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             While _pendingAssemblyChangesList.Count > 0
                 Dim asmActivity As AssemblyChange = _pendingAssemblyChangesList(0)
                 If asmActivity.ChangeType = AddRemoveAction.Add Then
-                    Me.AddTemplates(asmActivity.ExtensionTemplates, extensionAddedSB)
+                    AddTemplates(asmActivity.ExtensionTemplates, extensionAddedSB)
                 Else
-                    Me.RemoveExtensionProjectItemGroups(asmActivity.ExtensionProjectItemGroups, extensionRemovedSB)
+                    RemoveExtensionProjectItemGroups(asmActivity.ExtensionProjectItemGroups, extensionRemovedSB)
                 End If
                 _pendingAssemblyChangesList.RemoveAt(0)
             End While
 
             _pendingAssemblyChangesList = Nothing
-            Me.SetExtensionsStatus(extensionAddedSB, extensionRemovedSB)
+            SetExtensionsStatus(extensionAddedSB, extensionRemovedSB)
         End Sub
 
         ''' ;AddTemplates
@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         If extensionsAddedSB.Length = 0 Then
                             extensionsAddedSB.Append(extensionTemplate.DisplayName)
                         Else
-                            extensionsAddedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionTemplate.DisplayName)
+                            extensionsAddedSB.Append(Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionTemplate.DisplayName)
                         End If
                     End If
                 Next
@@ -478,9 +478,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                         If projectFilesRemovedSB.Length = 0 Then
                             projectFilesRemovedSB.Append(extensionProjectItemGroup.DisplayName)
                         Else
-                            projectFilesRemovedSB.Append(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
+                            projectFilesRemovedSB.Append(Globalization.CultureInfo.CurrentUICulture.TextInfo.ListSeparator & extensionProjectItemGroup.DisplayName)
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RemoveExtensionProjectItemGroups), NameOf(MyExtensibilityProjectService))
                         ' Ignore exceptions.
                     End Try
                 Next
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ' Service provider, current project, project hierarchy and solution.
         Private _VBPackage As VBPackage
-        Private _project As EnvDTE.Project
+        Private _project As Project
         Private _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String
 

@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''      to return our own ResourceTypeDescriptor.
     ''' </remarks>
     Friend NotInheritable Class ResourceTypeDescriptionProvider
-        Inherits System.ComponentModel.TypeDescriptionProvider
+        Inherits TypeDescriptionProvider
 
         ''' <summary>
         '''  Returns ResourceTypeDescriptor as the ICustomTypeDescriptor for the specified Resource instance.

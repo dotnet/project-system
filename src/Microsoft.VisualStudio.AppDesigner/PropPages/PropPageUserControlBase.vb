@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <remarks></remarks>
     <ComVisible(False)>
     Public Class PropPageUserControlBase
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
         Implements IPropertyPageInternal
         Implements IVsProjectDesignerPage
         Implements IVsDebuggerEvents
@@ -34,29 +34,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region " Windows Form Designer generated code "
 
-        Private _UIShell5Service As Microsoft.VisualStudio.Shell.Interop.IVsUIShell5
+        Private _UIShell5Service As IVsUIShell5
 
         Public Sub New()
             Me.New(Nothing)
         End Sub
 
-        Protected Sub New(serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider)
+        Protected Sub New(serviceProvider As ServiceProvider)
             MyBase.New()
-            Me.SuspendLayout()
+            SuspendLayout()
 
-            Me.Text = SR.GetString(SR.PPG_PropertyPageControlName)
-            Me.AccessibleRole = System.Windows.Forms.AccessibleRole.PropertyPage
-            Me._serviceProvider = serviceProvider
+            Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_PropertyPageControlName)
+            AccessibleRole = AccessibleRole.PropertyPage
+            _serviceProvider = serviceProvider
 
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            Me.BackColor = PropPageBackColor
+            BackColor = PropPageBackColor
 
             'Add any initialization after the InitializeComponent() call
             AddToRunningTable()
 
-            Me.ResumeLayout(False) 'False: layout will happen later, not needed here
+            ResumeLayout(False) 'False: layout will happen later, not needed here
         End Sub
 
         'Form overrides dispose to clean up the component list.
@@ -122,23 +122,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-            Me.SuspendLayout()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
+            SuspendLayout()
 
             '
             'PropPageUserControlBase
             '
-            Me.Name = "PropPageUserControlBase"
-            Me.Size = New System.Drawing.Size(528, 296)
-            Me.AutoSize = False
+            Name = "PropPageUserControlBase"
+            Size = New Size(528, 296)
+            AutoSize = False
 
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
+            ResumeLayout(False)
+            PerformLayout()
         End Sub
 
 #End Region
@@ -220,12 +220,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Cached result from RawPropertiesObjectsOfAllProperties
         Private _cachedRawPropertiesSuperset As Object()
 
-        Private _serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider 'Cached service provider
+        Private _serviceProvider As ServiceProvider 'Cached service provider
         Private _projectHierarchy As IVsHierarchy 'The IVsHierarchy for the current project
 
         'Debug mode stuff
 
-        Private _currentDebugMode As Shell.Interop.DBGMODE
+        Private _currentDebugMode As DBGMODE
 
         ' Cached IVsDebugger from shell in case we don't have a service provider at
         ' shutdown so we can undo our event handler
@@ -251,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _manualPageScaling As Boolean = False
 
         'Backcolor for all property pages
-        Public Shared ReadOnly PropPageBackColor As Color = System.Drawing.SystemColors.Control
+        Public Shared ReadOnly PropPageBackColor As Color = SystemColors.Control
 
         Private _activated As Boolean = True
         Private _inDelayValidation As Boolean
@@ -579,7 +579,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return New Object() {}
                     End If
                     Dim Superset As New Hashtable(m_Objects.Length)
-                    For Each Data As PropertyControlData In Me.ControlData
+                    For Each Data As PropertyControlData In ControlData
                         Dim RawObjects As Object() = Data.RawPropertiesObjects
                         Debug.Assert(RawObjects IsNot Nothing)
                         If RawObjects IsNot Nothing Then
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The property name and DISPIDs must both refer to the same property.
         ''' </remarks>
         Protected Function GetCurrentProperty(dispid As Integer, PropertyName As String, ByRef obj As Object) As Boolean
-            PropertyName = Common.Utils.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
+            PropertyName = Common.NothingToEmptyString(PropertyName) 'Nothing not allowed in GetCommonPropertyDescriptor()
 
             'Check current property pages
             If GetPropertyFromRunningPages(Me, dispid, obj) Then
@@ -713,12 +713,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Public Overridable Sub RefreshPropertyValues()
-            Common.Switches.TracePDProperties(TraceLevel.Warning, "*** [" & Me.GetType.Name & "] Refreshing all property values")
+            Common.Switches.TracePDProperties(TraceLevel.Warning, "*** [" & [GetType].Name & "] Refreshing all property values")
 
             Dim InsideInitSave As Boolean = m_fInsideInit
             m_fInsideInit = True
             Try
-                For Each Data As PropertyControlData In Me.ControlData
+                For Each Data As PropertyControlData In ControlData
                     Data.RefreshValue()
                 Next
             Finally
@@ -746,20 +746,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <value></value>
         ''' <remarks></remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected ReadOnly Property ServiceProvider() As Microsoft.VisualStudio.Shell.ServiceProvider
+        Protected ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
-                    Dim isp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                    Dim isp As OLE.Interop.IServiceProvider = Nothing
 
                     If _site IsNot Nothing Then
                         isp = TryCast(_site.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                     End If
 
                     If isp Is Nothing AndAlso DTE IsNot Nothing Then
-                        isp = TryCast(DTE, Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                        isp = TryCast(DTE, OLE.Interop.IServiceProvider)
                     End If
                     If isp IsNot Nothing Then
-                        _serviceProvider = New Microsoft.VisualStudio.Shell.ServiceProvider(isp)
+                        _serviceProvider = New ServiceProvider(isp)
                     End If
                 End If
                 Return _serviceProvider
@@ -831,7 +831,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            For Each pcd As PropertyControlData In Me.ControlData
+            For Each pcd As PropertyControlData In ControlData
                 If pcd.FormControl Is control OrElse
                 (pcd.AssociatedControls IsNot Nothing AndAlso Array.IndexOf(pcd.AssociatedControls, control) >= 0) Then
                     'The control is associated with this property control data
@@ -898,7 +898,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                     Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), "We should have a handle still.  Without it, BeginInvoke will fail.")
                     BeginInvoke(New MethodInvoker(AddressOf DelayedDispose))
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the property page", NameOf(PropPageUserControlBase))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the property page", NameOf(PropPageUserControlBase))
                     ' At this point, all we can do is to avoid crashing the shell. 
                 End Try
             End If
@@ -1076,12 +1076,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 For i As Integer = 1 To objects.Length - 1
                     NextProj = GetProjectHierarchyFromObject(objects(i))
                     If (NextProj Is Nothing OrElse NextProj IsNot FirstProj) Then
-                        Me._multiProjectSelect = True
+                        _multiProjectSelect = True
                         Return
                     End If
                 Next
             End If
-            Me._multiProjectSelect = False
+            _multiProjectSelect = False
         End Sub
 
         ''' <summary>
@@ -1136,7 +1136,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Trace.WriteLine("PDExtenders: " & DebugMessage)
                 Trace.Indent()
                 For Each Prop As PropertyDescriptor In Properties
-                    Trace.WriteLine(Prop.Name & " [" & VB.TypeName(Prop) & "]" & ": " & Prop.PropertyType.Name)
+                    Trace.WriteLine(Prop.Name & " [" & TypeName(Prop) & "]" & ": " & Prop.PropertyType.Name)
                 Next
                 Trace.Unindent()
             End If
@@ -1214,7 +1214,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' However, the child page should never pop error message, but wrap all failure message to an exception.
                 ' The page starting the transaction should merge error messages, and show to the user one time.
                 If IsDirty Then
-                    Me.ApplyPageChanges()
+                    ApplyPageChanges()
                 End If
 
                 For Each page As PropPageUserControlBase In _childPages.Values
@@ -1327,8 +1327,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Get the Extender Objects for the properties
                 'This must done after getting the DTE so that ServiceProvider can be obtained
 
-                Dim aem As Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager =
-                    Microsoft.VisualStudio.Editors.PropertyPages.AutomationExtenderManager.GetAutomationExtenderManager(ServiceProvider)
+                Dim aem As AutomationExtenderManager =
+                    AutomationExtenderManager.GetAutomationExtenderManager(ServiceProvider)
 
                 '... First for the actual objects passed in to SetObjects
                 Try
@@ -1349,11 +1349,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             TraceTypeDescriptorCollection("*** Extended properties collection for objects #" & i, m_ObjectsPropertyDescriptorsArray(i))
                         Else
                             'No extenders
-                            m_ObjectsPropertyDescriptorsArray(i) = System.ComponentModel.TypeDescriptor.GetProperties(objects(i))
+                            m_ObjectsPropertyDescriptorsArray(i) = TypeDescriptor.GetProperties(objects(i))
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Properties collection #" & i & " does not contain extended properties.")
                         End If
                     Next i
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties", NameOf(PropPageUserControlBase))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties", NameOf(PropPageUserControlBase))
                     Throw
                 End Try
 
@@ -1378,10 +1378,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             TraceTypeDescriptorCollection("*** Extended common properties collection", m_CommonPropertyDescriptors)
                         Else
                             'No extenders
-                            m_CommonPropertyDescriptors = System.ComponentModel.TypeDescriptor.GetProperties(CommonPropertiesObject)
+                            m_CommonPropertyDescriptors = TypeDescriptor.GetProperties(CommonPropertiesObject)
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Common properties collection does not contain extended properties.")
                         End If
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the common properties", NameOf(PropPageUserControlBase))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the common properties", NameOf(PropPageUserControlBase))
                         Throw
                     End Try
                 End If
@@ -1474,7 +1474,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' To determine if a property is supported by the project system, use GetControlDataFromXXX().IsMissing
         ''' </remarks>
         Protected Overridable Function GetPropertyControlData(PropertyName As String) As PropertyControlData
-            For Each pcd As PropertyControlData In Me.ControlData
+            For Each pcd As PropertyControlData In ControlData
                 If pcd.PropertyName.Equals(PropertyName, StringComparison.Ordinal) Then
                     Return pcd
                 End If
@@ -1685,7 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If canThrow Then
                         Throw New ValidationException(finalResult, finalMessage, firstControl)
                     Else
-                        Dim caption As String = SR.GetString(SR.APPDES_Title)
+                        Dim caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
                         Dim dialogResult As DialogResult = AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, finalMessage, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         If firstControl IsNot Nothing Then
                             firstControl.Focus()
@@ -1728,7 +1728,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' the event handler to handle focus leaving
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub OnLeavingControlGroup(sender As Object, e As System.EventArgs)
+        Private Sub OnLeavingControlGroup(sender As Object, e As EventArgs)
             PostValidation()
         End Sub
 
@@ -1739,7 +1739,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub PostValidation()
             ' NOTE: We always post the message, but start validation only the focus is really out.
             ' We delay check this, so we don't get into the problem when winForm hasn't sync status correctly, which IS a problem in some cases (tab).
-            Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.PostMessage(Handle, Microsoft.VisualStudio.Editors.AppDesCommon.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
+            Interop.NativeMethods.PostMessage(Handle, Common.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
         End Sub
 
 #End Region
@@ -1875,7 +1875,7 @@ NextControl:
                                     End If
                                 End If
 
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue", NameOf(PropPageUserControlBase))
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failure trying to compare old/new values in PropertyControlDataSetValueHelper.SetValue", NameOf(PropPageUserControlBase))
                                 ValueHasChanged = True
                             End Try
 
@@ -1950,9 +1950,9 @@ NextControl:
         ''' </summary>
         ''' <remarks>Properties are only flushed if they are marked as dirty.</remarks>
         Protected Overridable Sub ApplyPageChanges()
-            Debug.Assert(Not Me.MultiProjectSelect, "Apply should not be occuring with multiple projects selected")
+            Debug.Assert(Not MultiProjectSelect, "Apply should not be occuring with multiple projects selected")
             Debug.Assert(Not _projectReloadedDuringCheckout)
-            Dim control As System.Windows.Forms.Control = Nothing
+            Dim control As Control = Nothing
             Dim Transaction As DesignerTransaction = Nothing
             Dim Succeeded As Boolean = False
             Dim ProjectReloadWasValid As Boolean = False
@@ -1962,7 +1962,7 @@ NextControl:
             'The objects which we have called ILangPropertyProvideBatchUpdate.BeginBatch on (and which need a corresponding
             '  EndBatch).  This could be a superset of m_Objects because individual properties can proffer objects not in
             '  m_Objects.  Entries which have not called BeginBatch or which do not support it will be Nothing.
-            Dim BatchObjects() As AppDesInterop.ILangPropertyProvideBatchUpdate = Nothing
+            Dim BatchObjects() As Interop.ILangPropertyProvideBatchUpdate = Nothing
             Dim vsProjectBuildSystem As IVsProjectBuildSystem = Nothing
 
             Debug.Assert(Not _fIsApplying)
@@ -2009,28 +2009,28 @@ NextControl:
                     '  to wait until all changes have been made before notifying the compiler of the changes.  This keeps the compiler from
                     '  doing things like restarting compilation several times in a row, if multiple properties have been changed.
                     'Note that this must happen before PreApplyPageChanges
-                    BatchObjects = New AppDesInterop.ILangPropertyProvideBatchUpdate(RawPropertiesObjectsOfAllProperties.Length - 1 + 1) {} '+1 for CommonPropertiesObject
+                    BatchObjects = New Interop.ILangPropertyProvideBatchUpdate(RawPropertiesObjectsOfAllProperties.Length - 1 + 1) {} '+1 for CommonPropertiesObject
                     Dim i As Integer = 0
-                    Dim BatchObject As AppDesInterop.ILangPropertyProvideBatchUpdate
+                    Dim BatchObject As Interop.ILangPropertyProvideBatchUpdate
 
                     'First the common properties object
-                    BatchObject = TryCast(CommonPropertiesObject, AppDesInterop.ILangPropertyProvideBatchUpdate)
+                    BatchObject = TryCast(CommonPropertiesObject, Interop.ILangPropertyProvideBatchUpdate)
                     If BatchObject IsNot Nothing Then
                         Try
                             BatchObject.BeginBatch()
                             BatchObjects(i) = BatchObject
-                        Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
                         End Try
                     End If
                     '... then individual objects from SetObjects
                     i += 1
                     For Each Obj As Object In RawPropertiesObjectsOfAllProperties
-                        BatchObject = TryCast(Obj, AppDesInterop.ILangPropertyProvideBatchUpdate)
+                        BatchObject = TryCast(Obj, Interop.ILangPropertyProvideBatchUpdate)
                         If BatchObject IsNot Nothing Then
                             Try
                                 BatchObject.BeginBatch()
                                 BatchObjects(i) = BatchObject
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.BeginBatch() failed", NameOf(PropPageUserControlBase))
                             End Try
                         End If
                         i += 1
@@ -2069,7 +2069,7 @@ NextControl:
                             '  project reload).
                             For Each cd As PropertyControlData In ControlData
                                 If cd IsNot _controlData AndAlso cd.IsDirty Then
-                                    ShowErrorMessage(SR.GetString(SR.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
+                                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
                                     Exit For
                                 End If
                             Next
@@ -2119,11 +2119,11 @@ NextControl:
 
                         'Notify batch update that we're done changing property values.
                         If BatchObjects IsNot Nothing Then
-                            For Each BatchObject As AppDesInterop.ILangPropertyProvideBatchUpdate In BatchObjects
+                            For Each BatchObject As Interop.ILangPropertyProvideBatchUpdate In BatchObjects
                                 If BatchObject IsNot Nothing Then
                                     Try
                                         BatchObject.EndBatch()
-                                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatch failed", NameOf(PropPageUserControlBase))
+                                    Catch ex As Exception When Common.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatch failed", NameOf(PropPageUserControlBase))
 
                                         'This will fail if there are build problems or validation problems when the project system
                                         '  tries to persist the requested property changes to the build system.  Sometimes this indicates
@@ -2152,7 +2152,7 @@ NextControl:
                                 'If m_DeactivateDuringApply = True, then the following may assert about the project being uninitialized.
                                 '  In reality, it is zombied, and in this scenario the assertion can be ignored.
                                 vsProjectBuildSystem.EndBatchEdit()
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatchEdit failed", NameOf(PropPageUserControlBase))
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "ILangPropertyProvideBatchUpdate.EndBatchEdit failed", NameOf(PropPageUserControlBase))
 
                                 'This will fail if there are build problems or validation problems when the project system
                                 '  tries to persist the requested property changes to the build system.  Sometimes this indicates
@@ -2209,7 +2209,7 @@ NextControl:
                         If _site.IsImmediateApply Then
                             Try
                                 RestoreInitialValues()
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception occurred trying to refresh all properties' UI", NameOf(PropPageUserControlBase))
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception occurred trying to refresh all properties' UI", NameOf(PropPageUserControlBase))
                             End Try
                         End If
                     End If
@@ -2249,17 +2249,17 @@ NextControl:
                     End If
 #If DEBUG Then
                     If Common.Switches.PDUndo.TraceWarning Then
-                        PropertyNames &= " [OldValue=" & Common.Utils.DebugToString(_controlData.InitialValue) & "] "
+                        PropertyNames &= " [OldValue=" & Common.DebugToString(_controlData.InitialValue) & "] "
                     End If
 #End If
                 End If
             Next _controlData
-            Description = SR.GetString(SR.PPG_UndoTransaction, New String() {PropertyNames})
+            Description = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_UndoTransaction, New String() {PropertyNames})
             Return Description
         End Function
 
         Public Overridable Function GetTransaction() As DesignerTransaction
-            If Me._propPageUndoSite IsNot Nothing Then
+            If _propPageUndoSite IsNot Nothing Then
                 Dim Description As String = GetTransactionDescription()
                 Return _propPageUndoSite.GetTransaction(Description)
             End If
@@ -2283,7 +2283,7 @@ NextControl:
         ''' <param name="PropDesc"></param>
         ''' <remarks></remarks>
         Public Overridable Sub OnPropertyChanging(PropertyName As String, PropDesc As PropertyDescriptor)
-            If Me._propPageUndoSite IsNot Nothing Then
+            If _propPageUndoSite IsNot Nothing Then
                 _propPageUndoSite.OnPropertyChanging(PropertyName, PropDesc)
             End If
         End Sub
@@ -2298,7 +2298,7 @@ NextControl:
         ''' <param name="PropertyName"></param>
         ''' <remarks></remarks>
         Public Overridable Sub OnPropertyChanged(PropertyName As String, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
-            If Me._propPageUndoSite IsNot Nothing Then
+            If _propPageUndoSite IsNot Nothing Then
                 _propPageUndoSite.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
             End If
         End Sub
@@ -2462,7 +2462,7 @@ NextControl:
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
         Protected Function GetCommonPropertyValue(prop As PropertyDescriptor) As Object
-            Return PropertyControlData.GetCommonPropertyValue(prop, Me.CommonPropertiesObject)
+            Return PropertyControlData.GetCommonPropertyValue(prop, CommonPropertiesObject)
         End Function
 
 
@@ -2524,7 +2524,7 @@ NextControl:
         Protected Sub SetCommonPropertyValueNative(prop As PropertyDescriptor, Value As Object)
             SuspendPropertyChangeListening(DISPID_UNKNOWN)
             Try
-                PropertyControlData.SetCommonPropertyValueNative(prop, Value, Me.CommonPropertiesObject)
+                PropertyControlData.SetCommonPropertyValueNative(prop, Value, CommonPropertiesObject)
             Finally
                 ResumePropertyChangeListening(DISPID_UNKNOWN)
             End Try
@@ -2585,7 +2585,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function TryGetNonCommonPropertyValue(Descriptor As PropertyDescriptor) As Object
-            Dim extenders As Object() = Me.m_ExtendedObjects
+            Dim extenders As Object() = m_ExtendedObjects
             Return PropertyControlData.TryGetNonCommonPropertyValueNative(Descriptor, extenders)
         End Function
 #End Region
@@ -2602,7 +2602,7 @@ NextControl:
             If m_fInsideInit Then
                 Return
             End If
-            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
+            Debug.Assert(TypeOf sender Is Control, "Unexpected object type")
 
             Common.Switches.TracePDProperties(TraceLevel.Info, "ApplyChanges(" & sender.GetType.Name & ")")
 
@@ -2668,7 +2668,7 @@ NextControl:
             If m_fInsideInit Then
                 Return
             End If
-            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
+            Debug.Assert(TypeOf sender Is Control, "Unexpected object type")
 
             Common.Switches.TracePDProperties(TraceLevel.Info, "SetDirty(<sender>, ReadyToApply:=" & ReadyToApply & ")")
 
@@ -2763,7 +2763,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function GetDirty(sender As Object) As Boolean
-            Debug.Assert(TypeOf sender Is System.Windows.Forms.Control, "Unexpected object type")
+            Debug.Assert(TypeOf sender Is Control, "Unexpected object type")
 
             For Each _controlData As PropertyControlData In ControlData
                 If _controlData.FormControl Is sender Then
@@ -2930,7 +2930,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(ex As Exception, HelpLink As String)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, "", ex, Caption, HelpLink)
         End Sub
 
@@ -2950,7 +2950,7 @@ NextControl:
         ''' <param name="ex">The exception to include in the message.  The exception's message will be on a second line after errorMessage.</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, ex As Exception)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, ex, Caption)
         End Sub
 
@@ -2961,7 +2961,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, HelpLink As String)
-            Dim Caption As String = SR.GetString(SR.APPDES_Title)
+            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, HelpLink)
         End Sub
 
@@ -2992,8 +2992,8 @@ NextControl:
             Get
                 If (_UIShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
-                    If Common.Utils.VBPackageInstance IsNot Nothing Then
-                        VsUiShell = TryCast(Common.Utils.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
@@ -3014,8 +3014,8 @@ NextControl:
             Get
                 If (_UIShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
-                    If Common.Utils.VBPackageInstance IsNot Nothing Then
-                        VsUiShell = TryCast(Common.Utils.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
@@ -3055,10 +3055,10 @@ NextControl:
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         ''' <remarks>Will throw an exception on failure.</remarks>
         Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
-            Debug.Assert(IO.Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
+            Debug.Assert(Path.IsPathRooted(FileName), "FileName passed to AddFileToProject should be a full path")
 
             'Canonicalize the file name
-            FileName = IO.Path.GetFullPath(FileName)
+            FileName = Path.GetFullPath(FileName)
 
 
             'First see if it is already in the project
@@ -3087,7 +3087,7 @@ NextControl:
         Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean, BuildAction As VSLangProj.prjBuildAction) As EnvDTE.ProjectItem
             Dim NewProjectItem As EnvDTE.ProjectItem = AddFileToProject(ProjectItems, FileName, CopyFile)
             If NewProjectItem IsNot Nothing Then
-                AppDesCommon.DTEUtils.SetBuildAction(NewProjectItem, BuildAction)
+                Common.DTEUtils.SetBuildAction(NewProjectItem, BuildAction)
             End If
 
             Return NewProjectItem
@@ -3111,7 +3111,7 @@ NextControl:
         ''' <param name="PageType">Type of property page class to be instantiated.</param>
         ''' <returns>DialogResult returned from the host dialog.</returns>
         ''' <remarks></remarks>
-        Protected Function ShowChildPage(Title As String, PageType As System.Type) As DialogResult
+        Protected Function ShowChildPage(Title As String, PageType As Type) As DialogResult
             Return ShowChildPage(Title, PageType, Nothing)
         End Function
 
@@ -3123,12 +3123,12 @@ NextControl:
         ''' <param name="F1Keyword">Help keyword.  If empty or Nothing, the property page itself will be queried for the help topic.</param>
         ''' <returns>DialogResult returned from the host dialog.</returns>
         ''' <remarks></remarks>
-        Protected Function ShowChildPage(Title As String, PageType As System.Type, F1Keyword As String) As DialogResult
+        Protected Function ShowChildPage(Title As String, PageType As Type, F1Keyword As String) As DialogResult
             Dim Page As PropPageUserControlBase
 
             If _site Is Nothing Then
                 Debug.Fail("Can't show a child page if we're not sited")
-                Throw New System.InvalidOperationException
+                Throw New InvalidOperationException
             End If
 
             If _childPages.ContainsKey(PageType) Then
@@ -3139,14 +3139,14 @@ NextControl:
                 '  can be an issue)
                 Try
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
-                    ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             Else
                 'Not yet created, create, site and initialize
                 Try
-                    Page = CType(System.Activator.CreateInstance(PageType), PropPageUserControlBase)
+                    Page = CType(Activator.CreateInstance(PageType), PropPageUserControlBase)
                     _childPages.Add(PageType, Page)
                     Dim ChildPageSite As New ChildPageSite(Page, _site, _propPageUndoSite)
                     Page.SetPageSite(ChildPageSite)
@@ -3154,9 +3154,9 @@ NextControl:
                         DirectCast(Page, IVsProjectDesignerPage).SetSite(ChildPageSite)
                     End If
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, SR.GetString(SR.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
                     _childPages.Remove(PageType)
-                    ShowErrorMessage(SR.GetString(SR.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             End If
@@ -3230,7 +3230,7 @@ NextControl:
                     NewRelativePath = GetRelativeDirectoryPath(BasePath, NewRelativePath)
                 End If
 
-                NewRelativePath = Common.Utils.AppendBackslash(NewRelativePath)
+                NewRelativePath = Common.AppendBackslash(NewRelativePath)
                 Return True
             End If
 
@@ -3268,8 +3268,8 @@ NextControl:
             'Const BIF_BROWSEINCLUDEFILES As Integer = &H4000   '    Browsing for Everything
             'Const BIF_SHAREABLE As Integer = &H8000            '    sharable resources displayed (remote shares, requires BIF_USENEWUI)
             '
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Shell.Interop.IVsUIShell).GUID), Shell.Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell).GUID), IVsUIShell)
 
             Dim DirName As String
 
@@ -3279,19 +3279,19 @@ NextControl:
             Else
                 Try
                     'Path needs a backslash at the end, or it will be interpreted as a directory + filename
-                    InitialDirectory = Path.GetFullPath(Common.Utils.AppendBackslash(InitialDirectory))
+                    InitialDirectory = Path.GetFullPath(Common.AppendBackslash(InitialDirectory))
                 Catch ex As Exception
                     InitialDirectory = ""
                 End Try
             End If
 
             Const MAX_DIR_NAME As Integer = 512
-            Dim browseinfo As Shell.Interop.VSBROWSEINFOW()
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MAX_DIR_NAME * 2 + 2)
+            Dim browseinfo As VSBROWSEINFOW()
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MAX_DIR_NAME * 2 + 2)
             Try
-                browseinfo = New Shell.Interop.VSBROWSEINFOW(0) {}
-                browseinfo(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(browseinfo(0)))
-                browseinfo(0).hwndOwner = Me.Handle
+                browseinfo = New VSBROWSEINFOW(0) {}
+                browseinfo(0).lStructSize = CUInt(Marshal.SizeOf(browseinfo(0)))
+                browseinfo(0).hwndOwner = Handle
                 browseinfo(0).pwzInitialDir = InitialDirectory
                 browseinfo(0).pwzDlgTitle = DialogTitle
                 browseinfo(0).nMaxDirName = MAX_DIR_NAME
@@ -3300,9 +3300,9 @@ NextControl:
 
                 Dim hr As Integer = uishell.GetDirectoryViaBrowseDlg(browseinfo)
                 If VSErrorHandler.Succeeded(hr) Then
-                    DirName = System.Runtime.InteropServices.Marshal.PtrToStringUni(stringMemPtr)
-                    If Microsoft.VisualBasic.Right(DirName, 1) <> System.IO.Path.DirectorySeparatorChar Then
-                        DirName &= System.IO.Path.DirectorySeparatorChar
+                    DirName = Marshal.PtrToStringUni(stringMemPtr)
+                    If VB.Right(DirName, 1) <> Path.DirectorySeparatorChar Then
+                        DirName &= Path.DirectorySeparatorChar
                     End If
                     NewValue = DirName
                     Success = True
@@ -3310,7 +3310,7 @@ NextControl:
                     'User cancelled out of dialog
                 End If
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return Success
@@ -3326,7 +3326,7 @@ NextControl:
         ''' <returns>True if the user selected a file, otherwise False.</returns>
         ''' <remarks></remarks>
         Protected Function GetFileViaBrowse(InitialDirectory As String, ByRef NewValue As String, Filter As String) As Boolean
-            Dim fileNames As ArrayList = Common.Utils.GetFilesViaBrowse(ServiceProvider, Me.Handle, InitialDirectory, SR.GetString(SR.PPG_SelectFileTitle), Filter, 0, False)
+            Dim fileNames As ArrayList = Common.GetFilesViaBrowse(ServiceProvider, Handle, InitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_SelectFileTitle), Filter, 0, False)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 NewValue = CStr(fileNames(0))
                 Return True
@@ -3389,8 +3389,8 @@ NextControl:
         Protected Function GetRelativeDirectoryPath(BasePath As String, DirectoryPath As String) As String
             Dim RelativePath As String = ""
 
-            BasePath = Common.Utils.AppendBackslash(BasePath)
-            DirectoryPath = Common.Utils.AppendBackslash(DirectoryPath)
+            BasePath = Common.AppendBackslash(BasePath)
+            DirectoryPath = Common.AppendBackslash(DirectoryPath)
 
             If DirectoryPath = "" Then
                 DirectoryPath = ""
@@ -3401,9 +3401,9 @@ NextControl:
             End If
 
             ' Remove the project directory path
-            If String.Compare(BasePath, Microsoft.VisualBasic.Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) = 0 Then
+            If String.Compare(BasePath, Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) = 0 Then
                 Dim ch As Char = CChar(Mid(DirectoryPath, Len(BasePath), 1))
-                If ch = System.IO.Path.DirectorySeparatorChar OrElse ch = System.IO.Path.AltDirectorySeparatorChar Then
+                If ch = Path.DirectorySeparatorChar OrElse ch = Path.AltDirectorySeparatorChar Then
                     RelativePath = Mid(DirectoryPath, Len(BasePath) + 1)
                 ElseIf ch = ChrW(0) Then
                     RelativePath = ""
@@ -3428,7 +3428,7 @@ NextControl:
             Debug.Assert(VB.Right(FilePath, 1) <> Path.DirectorySeparatorChar AndAlso VB.Right(FilePath, 1) <> Path.AltDirectorySeparatorChar, "Passed in a directory instead of a file to RelativeFilePath")
 
             If Len(FilePath) > 0 Then
-                Dim FileDirectory As String = System.IO.Path.GetDirectoryName(FilePath)
+                Dim FileDirectory As String = Path.GetDirectoryName(FilePath)
                 Return Path.Combine(GetRelativeDirectoryPath(BasePath, FileDirectory), Path.GetFileName(FilePath))
             Else
                 Return ""
@@ -3564,7 +3564,7 @@ NextControl:
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
                 Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException("PropertyName")
             End If
 
             Dim Value As Object = Data.InitialValue
@@ -3614,7 +3614,7 @@ NextControl:
             Dim _ControlData As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If _ControlData Is Nothing Then
                 Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException("PropertyName")
             End If
 
 
@@ -3681,7 +3681,7 @@ NextControl:
         Protected Overridable Function IVsProjectDesignerPage_GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException("PropertyName")
             End If
 
             If Not SupportsMultipleValueUndo(Data) Then
@@ -3715,12 +3715,12 @@ NextControl:
         Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValueMultipleValues(PropertyName As String, Objects() As Object, Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
             If Objects Is Nothing OrElse Objects.Length = 0 OrElse Values Is Nothing OrElse Values.Length <> Objects.Length Then
                 Debug.Fail("unexpected")
-                Throw AppDesCommon.CreateArgumentException("Objects, Values")
+                Throw Common.CreateArgumentException("Objects, Values")
             End If
 
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
-                Throw AppDesCommon.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException("PropertyName")
             End If
 
             If Not SupportsMultipleValueUndo(Data) Then
@@ -3786,8 +3786,8 @@ NextControl:
 
 #End Region
 
-        Private Function OnModeChange(dbgmodeNew As Shell.Interop.DBGMODE) As Integer Implements Shell.Interop.IVsDebuggerEvents.OnModeChange
-            Me.UpdateDebuggerStatus(dbgmodeNew)
+        Private Function OnModeChange(dbgmodeNew As DBGMODE) As Integer Implements IVsDebuggerEvents.OnModeChange
+            UpdateDebuggerStatus(dbgmodeNew)
         End Function
 
         ''' <summary>
@@ -3806,7 +3806,7 @@ NextControl:
 
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
 
@@ -3827,9 +3827,9 @@ NextControl:
         ''' <param name="lParam"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = AppDesInterop.win.WM_SETTINGCHANGE Then
-                If Me.IsHandleCreated Then
+        Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
+            If msg = Interop.win.WM_SETTINGCHANGE Then
+                If IsHandleCreated Then
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
@@ -3862,10 +3862,10 @@ NextControl:
             End If
 
             If Dialog.Controls.Count() >= 1 Then
-                Dim OldFont As Font = Me.Font
+                Dim OldFont As Font = Font
                 Dim NewFont As Font = GetDialogFont()
 
-                If Not OldFont.Equals(NewFont) OrElse Me.ManualPageScaling Then
+                If Not OldFont.Equals(NewFont) OrElse ManualPageScaling Then
                     If ScaleDialog Then
                         'WARNING: This is no longer the recommended code path for a property
                         'WARNING:   page.  This code manually tries to scale controls on the
@@ -3899,8 +3899,8 @@ NextControl:
                         ' Adjust Minimum/MaximunSize
                         Dim maxSize As Size = MaximumSize
 
-                        If Me.AutoSize Then
-                            MinimumSize = GetPreferredSize(System.Drawing.Size.Empty)
+                        If AutoSize Then
+                            MinimumSize = GetPreferredSize(Size.Empty)
                         Else
                             MinimumSize = ScaleSize(MinimumSize, dx, dy)
                         End If
@@ -3993,13 +3993,13 @@ NextControl:
                     If TypeOf ExtendedObjects(i) Is ICustomTypeDescriptor Then
                         ObjectsPropertyDescriptorsArray(i) = CType(ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(New Attribute() {})
                     Else
-                        ObjectsPropertyDescriptorsArray(i) = System.ComponentModel.TypeDescriptor.GetProperties(ExtendedObjects(i))
+                        ObjectsPropertyDescriptorsArray(i) = TypeDescriptor.GetProperties(ExtendedObjects(i))
                     End If
 
                     'We don't actually need to do anything with the properties that we got, we can throw them away.
                     '  Just the act of retrieving them causes all property descriptors for that object to refresh
                 Next i
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties to refresh their standard values", NameOf(PropPageUserControlBase))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "An exception was thrown trying to get extended objects for the properties to refresh their standard values", NameOf(PropPageUserControlBase))
                 'Ignore
             End Try
         End Sub
@@ -4012,7 +4012,7 @@ NextControl:
         ''' The method performs no processing on keys that include the ALT or
         '''     CONTROL modifiers.
         ''' </devdoc>
-        Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             If (keyData And (Keys.Alt Or Keys.Control)) = Keys.None Then
                 Dim keyCode As Keys = keyData And Keys.KeyCode
 
@@ -4038,7 +4038,7 @@ NextControl:
                         AndAlso ActiveControl.Enabled _
                         AndAlso Not CType(ActiveControl, TextBox).Multiline _
                         Then
-                            If Me.IsDirty Then
+                            If IsDirty Then
                                 Common.Switches.TracePDProperties(TraceLevel.Warning, "*** ENTER pressed, calling SetDirty(True) on page")
                                 SetDirty(True)
                             End If
@@ -4054,7 +4054,7 @@ NextControl:
 
         <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = Microsoft.VisualStudio.Editors.AppDesCommon.WmUserConstants.WM_PAGE_POSTVALIDATION Then
+            If m.Msg = Common.WmUserConstants.WM_PAGE_POSTVALIDATION Then
 
                 If _delayValidationGroup >= 0 AndAlso _activated AndAlso Not _inDelayValidation AndAlso Not IsFocusInControlGroup(_delayValidationGroup) Then
                     ProcessDelayValidationQueue(False)
@@ -4222,15 +4222,15 @@ NextControl:
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub ConnectBuildEvents()
-            If Me.DisableOnBuild Then
+            If DisableOnBuild Then
                 If _DTE IsNot Nothing Then
-                    _buildEvents = Me._DTE.Events.BuildEvents
+                    _buildEvents = _DTE.Events.BuildEvents
                     ' We only hook up build events if we have to...
                     Dim monSel As IVsMonitorSelection = DirectCast(GetServiceFromPropertyPageSite(GetType(IVsMonitorSelection)), IVsMonitorSelection)
 
                     If monSel IsNot Nothing Then
                         Dim solutionBuildingCookie As UInteger
-                        monSel.GetCmdUIContextCookie(New System.Guid(UIContextGuids.SolutionBuilding), solutionBuildingCookie)
+                        monSel.GetCmdUIContextCookie(New Guid(UIContextGuids.SolutionBuilding), solutionBuildingCookie)
                         Dim isActiveFlag As Integer
                         monSel.IsCmdUIContextActive(solutionBuildingCookie, isActiveFlag)
                         _pageEnabledPerBuildMode = Not CBool(isActiveFlag)
@@ -4283,7 +4283,7 @@ NextControl:
                         If Cfg IsNot Nothing Then
                             Cfg.get_DisplayName(DebugSourceName)
                         End If
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(ConnectPropertyNotify), NameOf(PropPageUserControlBase))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ConnectPropertyNotify), NameOf(PropPageUserControlBase))
                     End Try
                 Else
                     DebugSourceName &= " (Common Properties - non-config page)"
@@ -4344,7 +4344,7 @@ NextControl:
         '''   in the future. Such semantics are not part of this interface.
         ''' </remarks>
         Public Sub OnExternalPropertyChanged(DISPID As Integer, DebugSourceName As String)
-            Common.Switches.TracePDProperties(TraceLevel.Verbose, "[" & Me.GetType.Name & "] External property changed: DISPID=" & DISPID & ", Source=" & DebugSourceName)
+            Common.Switches.TracePDProperties(TraceLevel.Verbose, "[" & [GetType].Name & "] External property changed: DISPID=" & DISPID & ", Source=" & DebugSourceName)
             If m_fInsideInit Then
                 Exit Sub
             End If
@@ -4354,13 +4354,13 @@ NextControl:
             Dim SuspendAllChanges As Boolean = _suspendPropertyChangeListeningDispIds.Contains(DISPID_UNKNOWN)
             Dim ChangeIsDirect As Boolean = SuspendAllChanges _
                 OrElse (DISPID <> DISPID_UNKNOWN AndAlso _suspendPropertyChangeListeningDispIds.Contains(DISPID))
-            Debug.Assert(Common.Utils.Implies(_fIsApplying, PropertyOnPageBeingChanged()), "If we're applying, the change should have come through a PropertyControlData")
+            Debug.Assert(Common.Implies(_fIsApplying, PropertyOnPageBeingChanged()), "If we're applying, the change should have come through a PropertyControlData")
 
             Dim Source As PropertyChangeSource = PropertyChangeSource.External
 
-            Dim IsInternalToPage As Boolean = ChangeIsDirect OrElse Me.PropertyOnPageBeingChanged() OrElse _fIsApplying
+            Dim IsInternalToPage As Boolean = ChangeIsDirect OrElse PropertyOnPageBeingChanged() OrElse _fIsApplying
             If ChangeIsDirect Then
-                Debug.Assert(Me.PropertyOnPageBeingChanged() OrElse _fIsApplying)
+                Debug.Assert(PropertyOnPageBeingChanged() OrElse _fIsApplying)
                 Common.Switches.TracePDProperties(TraceLevel.Verbose, "  (Direct - property is being changed by this page itself)")
                 Source = PropertyChangeSource.Direct
             Else
@@ -4450,7 +4450,7 @@ NextControl:
                         'These are all internal to the page, since they were
                         '  queued up because they occurred during an apply
                         OnExternalPropertyChanged(Change.DispId, Change.Source)
-                    Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CheckPlayCachedPropertyChanges), NameOf(PropPageUserControlBase))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(CheckPlayCachedPropertyChanges), NameOf(PropPageUserControlBase))
                         ShowErrorMessage(ex)
                     End Try
                 Next
@@ -4492,10 +4492,10 @@ NextControl:
         ''' </summary>
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
-            AppDesCommon.Switches.TracePDPerfBegin(levent, "PropPageUserControlBase.OnLayout()")
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
+            Common.Switches.TracePDPerfBegin(levent, "PropPageUserControlBase.OnLayout()")
             MyBase.OnLayout(levent)
-            AppDesCommon.Switches.TracePDPerfEnd("PropPageUserControlBase.OnLayout()")
+            Common.Switches.TracePDPerfEnd("PropPageUserControlBase.OnLayout()")
         End Sub
 
     End Class

@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         ProjectReloaded = View.ProjectReloadedDuringCheckout
                     End If
                 End Try
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Checkout failed", NameOf(BaseDesignerLoader))
                 Switches.TraceSCC("Checkout failed: " & ex.Message)
 
                 'Check-out has failed.  We need to handle this gracefully at all places in the UI where this could happen.
@@ -129,10 +129,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Overridable ReadOnly Property FilesToCheckOut() As System.Collections.Generic.List(Of String)
+        Friend Overridable ReadOnly Property FilesToCheckOut() As List(Of String)
             Get
                 Dim projItem As EnvDTE.ProjectItem = ProjectItem
-                Return Common.ShellUtil.FileNameAndGeneratedFileName(projItem)
+                Return ShellUtil.FileNameAndGeneratedFileName(projItem)
             End Get
         End Property
 
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _deferredLoaderService = DirectCast(GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
                 If _deferredLoaderService Is Nothing Then
                     Debug.Fail("Deferred load doc data requires support for IDesignerLoaderService")
-                    Throw New NotSupportedException(SR.GetString(SR.DFX_IncompatibleBuffer))
+                    Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer))
                 End If
 
                 Debug.Assert(_deferredLoadManager Is Nothing)
@@ -224,10 +224,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <returns>A window pane provider service or NULL to indicate that no provider should be registered</returns>
         ''' <remarks></remarks>
-        Protected Overridable Function GetWindowPaneProviderService() As Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService
+        Protected Overridable Function GetWindowPaneProviderService() As Shell.Design.WindowPaneProviderService
             Try
                 If _paneProviderService Is Nothing Then
-                    _paneProviderService = New DeferrableWindowPaneProviderServiceBase(LoaderHost, Me.SupportToolbox)
+                    _paneProviderService = New DeferrableWindowPaneProviderServiceBase(LoaderHost, SupportToolbox)
                 End If
             Catch Ex As ObjectDisposedException
                 ' There is a slight possibility that the loader host is killed before we get a chance to try 
@@ -236,9 +236,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Return _paneProviderService
         End Function
 
-        Protected MustOverride Sub HandleFlush(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected MustOverride Sub HandleFlush(SerializationManager As IDesignerSerializationManager)
 
-        Protected MustOverride Sub HandleLoad(SerializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected MustOverride Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
 
         'This must be overloaded to return the assembly-qualified name of the base component that is 
         '  being designed by this editor.  This information is required by the managed VSIP classes.
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Friend ReadOnly Property ProjectItem() As EnvDTE.ProjectItem
             Get
-                Return Common.DTEUtils.ProjectItemFromItemId(Me.VsHierarchy, Me.ProjectItemid)
+                Return DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             End Get
         End Property
 
@@ -349,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '
                 'Note: LoaderHost.RemoveService does not raise any exceptions if the service we're trying to
                 '  remove isn't already there, so there's no need for a try/catch.
-                LoaderHost.RemoveService(GetType(Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService))
+                LoaderHost.RemoveService(GetType(Shell.Design.WindowPaneProviderService))
                 LoaderHost.RemoveService(GetType(EnvDTE.ProjectItem))
                 LoaderHost.RemoveService(GetType(IVsHierarchy))
             End If
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Private Function GetDocDataState(BitFlagToTest As TextManager.Interop.BUFFERSTATEFLAGS) As Boolean
+        Private Function GetDocDataState(BitFlagToTest As BUFFERSTATEFLAGS) As Boolean
             If m_DocData IsNot Nothing AndAlso m_DocData.Buffer IsNot Nothing Then
                 Dim State As UInteger
                 VSErrorHandler.ThrowOnFailure(m_DocData.Buffer.GetStateFlags(State))
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If Status = EditorCaptionState.ReadOnly Then
                 'Append "[Read Only]" to the caption so far
-                Caption = SR.GetString(SR.DFX_DesignerReadOnlyCaption, Caption)
+                Caption = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerReadOnlyCaption, Caption)
             End If
 
             Return Caption
@@ -431,9 +431,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             m_DocDataService = New DesignerDocDataService(LoaderHost, _vsHierarchy, _projectItemid, _punkDocData)
             m_DocData = m_DocDataService.PrimaryDocData
 
-            Dim WindowPaneProviderSvc As Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService = GetWindowPaneProviderService()
+            Dim WindowPaneProviderSvc As Shell.Design.WindowPaneProviderService = GetWindowPaneProviderService()
             If WindowPaneProviderSvc IsNot Nothing Then
-                LoaderHost.AddService(GetType(Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService), WindowPaneProviderSvc)
+                LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService), WindowPaneProviderSvc)
             End If
 
             'Add the extender object as a service so we can query for it from the component/designer
@@ -473,12 +473,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' to detect this.
             '
             If TypeOf punkDocData Is IVsTextBufferProvider Then
-                Dim VsTextLines As TextManager.Interop.IVsTextLines = Nothing
+                Dim VsTextLines As IVsTextLines = Nothing
                 VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsTextBufferProvider).GetTextBuffer(VsTextLines))
                 punkDocData = VsTextLines
             End If
 
-            If TypeOf punkDocData Is TextManager.Interop.IVsTextStream Then
+            If TypeOf punkDocData Is IVsTextStream Then
                 Dim TextStream As IVsTextStream = DirectCast(punkDocData, IVsTextStream)
                 If TextStream IsNot Nothing Then
                     _vsTextBufferDataEventsCookie = New Interop.NativeMethods.ConnectionPointCookie(TextStream, Me, GetType(IVsTextBufferDataEvents))
@@ -489,10 +489,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 'Nope, this doc data is not in a format that we understand.  Throw an 
                 '  intelligent error message (need to get the filename for the message)
                 Dim FileName As String = String.Empty
-                If TypeOf punkDocData Is TextManager.Interop.IVsUserData Then
-                    Dim Guid As Guid = GetType(TextManager.Interop.IVsUserData).GUID
+                If TypeOf punkDocData Is IVsUserData Then
+                    Dim Guid As Guid = GetType(IVsUserData).GUID
                     Dim vt As Object = Nothing
-                    VSErrorHandler.ThrowOnFailure(CType(punkDocData, TextManager.Interop.IVsUserData).GetData(Guid, vt))
+                    VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
                     If TypeOf vt Is String Then
                         FileName = CStr(vt)
                         FileName = Path.GetFileName(FileName)
@@ -500,9 +500,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If FileName.Length > 0 Then
-                    Throw New Exception(SR.GetString(SR.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
+                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
                 Else
-                    Throw New Exception(SR.GetString(SR.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile))
+                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile))
                 End If
             End If
 
@@ -535,7 +535,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _baseEditorCaption = Caption
         End Sub
 
-        Public Sub OnFileChanged(grfChange As UInteger, dwFileAttrs As UInteger) Implements TextManager.Interop.IVsTextBufferDataEvents.OnFileChanged
+        Public Sub OnFileChanged(grfChange As UInteger, dwFileAttrs As UInteger) Implements IVsTextBufferDataEvents.OnFileChanged
             Dim Frame As IVsWindowFrame = CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
             If Frame IsNot Nothing Then
                 Dim Caption As String = GetEditorCaption(EditorCaptionState.AutoDetect)
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' IVsPersistDocData::LoadDocData, IPersistStream::Load, IVsTextBuffer::InitializeContent, IPersistFile::Load, or
         ' IPersistFile::InitNew. This event is also fired if the text buffer executes a reload of its file in response to
         ' an IVsTextBufferDataEvents::OnFileChanged event, as when a file is edited outside of the environment.
-        Public Function OnLoadCompleted(fReload As Integer) As Integer Implements TextManager.Interop.IVsTextBufferDataEvents.OnLoadCompleted
+        Public Function OnLoadCompleted(fReload As Integer) As Integer Implements IVsTextBufferDataEvents.OnLoadCompleted
             If _loadDeferred Then
                 Debug.Assert(_deferredLoaderService IsNot Nothing)
 
@@ -556,7 +556,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ' And now request the load.  We don't care about reloads here
                 ' because we're not loaded yet.
                 ' 
-                Dim Errors As Collections.ICollection = Nothing
+                Dim Errors As ICollection = Nothing
                 Dim Successful As Boolean = True
 
                 Try
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '  still be available after the reload.
 
             ' NoFlush: Causes the designer loader to anbandon any changes before reloading.
-            Me.Reload(ReloadOptions.NoFlush)
+            Reload(ReloadOptions.NoFlush)
         End Sub
 
 
@@ -639,7 +639,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         vsProj.RunCustomTool()
                     End If
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
             End Try
         End Sub
 
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim GotFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     GotFocusProjectItem = GotFocus.ProjectItem
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
                 End Try
 
                 If GotFocusProjectItem Is ThisProjectItem Then

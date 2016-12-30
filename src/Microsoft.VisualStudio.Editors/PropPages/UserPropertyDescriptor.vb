@@ -15,11 +15,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public Class UserPropertyDescriptor
         Inherits PropertyDescriptor
 
-        Private _propertyType As System.Type
+        Private _propertyType As Type
         Private _isReadOnly As Boolean
 
-        Public Sub New(Name As String, PropertyType As System.Type)
-            MyBase.New(Name, New System.Attribute() {})
+        Public Sub New(Name As String, PropertyType As Type)
+            MyBase.New(Name, New Attribute() {})
             _propertyType = PropertyType
         End Sub
 
@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Public Overrides ReadOnly Property ComponentType() As System.Type
+        Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return Nothing
             End Get
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Public Overrides ReadOnly Property PropertyType() As System.Type
+        Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType
             End Get

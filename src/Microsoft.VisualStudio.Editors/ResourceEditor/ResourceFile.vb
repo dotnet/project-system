@@ -13,7 +13,6 @@ Imports System.ComponentModel.Design
 Imports System.Resources
 Imports System.IO
 Imports System.Windows.Forms
-Imports VB = Microsoft.VisualBasic
 
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
@@ -128,15 +127,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim hierarchy As IVsHierarchy = DirectCast(ServiceProvider.GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If hierarchy IsNot Nothing Then
                 Dim project As IVsProject = DirectCast(hierarchy, IVsProject)
-                Dim sp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                Dim sp As OLE.Interop.IServiceProvider = Nothing
 
                 Dim hr As Integer = project.GetItemContext(VSITEMID.ROOT, sp) '0xFFFFFFFE VSITEMID_ROOT
                 If Interop.NativeMethods.Succeeded(hr) Then
-                    Dim pUnk As System.IntPtr
-                    Dim g As System.Guid = GetType(IResXResourceService).GUID
-                    Dim g2 As System.Guid = New System.Guid("00000000-0000-0000-C000-000000000046") 'IUnKnown
+                    Dim pUnk As IntPtr
+                    Dim g As Guid = GetType(IResXResourceService).GUID
+                    Dim g2 As Guid = New Guid("00000000-0000-0000-C000-000000000046") 'IUnKnown
                     hr = sp.QueryService(g, g2, pUnk)
-                    If Interop.NativeMethods.Succeeded(hr) AndAlso Not pUnk = System.IntPtr.Zero Then
+                    If Interop.NativeMethods.Succeeded(hr) AndAlso Not pUnk = IntPtr.Zero Then
                         _resxService = DirectCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(pUnk), IResXResourceService)
                         System.Runtime.InteropServices.Marshal.Release(pUnk)
                     End If
@@ -366,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Fail("Bad unique name prefix - localization bug?")
                     UniqueNamePrefix = ""
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetUniqueName), NameOf(ResourceFile))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetUniqueName), NameOf(ResourceFile))
                 UniqueNamePrefix = ""
             End Try
 
@@ -494,10 +493,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub AddResource(NewResource As Resource)
             If NewResource.Name = "" Then
                 Debug.Fail("Resource Name is blank - we shouldn't reach here with that condition")
-                Throw NewException(SR.GetString(SR.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
+                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
             End If
             If Contains(NewResource.Name) Then
-                Throw NewException(SR.GetString(SR.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
+                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
             End If
 
             'Set up a type resolution context for the resource in case this hasn't
@@ -573,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         ''' Here we do the actual adding of the resource to our list.
         ''' </remarks>
-        Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentAdded
+        Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentAdded
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Fail("How could we be adding a component that's not a Resource?")
@@ -641,7 +640,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As System.ComponentModel.Design.ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
+        Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
             Dim ResourceObject As Object = e.Component
             If Not TypeOf ResourceObject Is Resource Then
                 Debug.Assert(TypeOf ResourceObject Is ResourceEditorRootComponent, "How could we be removing a component that's not a Resource?")
@@ -731,7 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  the same as Resource, since we find case-insensitively).
                 Dim ExistingResource As Resource = FindResource(NewName)
                 If ExistingResource IsNot Nothing AndAlso ExistingResource IsNot Resource Then
-                    Throw NewException(SR.GetString(SR.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
+                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
                 End If
 
                 'Make sure the resx file is checked out if it isn't yet.  Otherwise this failure might
@@ -760,7 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentRename(sender As Object, e As System.ComponentModel.Design.ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
+        Private Sub ComponentChangeService_ComponentRename(sender As Object, e As ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -783,7 +782,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 'Whoops.  Something's wrong.
                 Debug.Fail("Got a RenameComponent event to a name that's already in use - shouldn't have happened")
-                Throw Common.CreateArgumentException("NewName")
+                Throw CreateArgumentException("NewName")
             End If
 
             'Go ahead and make the change
@@ -798,7 +797,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _resourcesHash.Remove(Resource.Name.ToUpperInvariant())
             Try
                 Resource.NameRawWithoutUndo = e.NewName
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile))
             End Try
             _resourcesHash.Add(Resource.Name.ToUpperInvariant(), Resource)
 
@@ -808,7 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Fix up the project to use the new name, if we're creating strongly typed resource classes            
             Try
                 View.CallGlobalRename(OldName, e.NewName)
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ComponentChangeService_ComponentRename), NameOf(ResourceFile))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ComponentChangeService_ComponentRename), NameOf(ResourceFile))
                 RootComponent.RootDesigner.GetView().DsMsgBox(ex)
             End Try
         End Sub
@@ -822,7 +821,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As System.ComponentModel.Design.ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
+        Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
             If Not TypeOf e.Component Is Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
@@ -844,7 +843,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetEnumerator() As Collections.IDictionaryEnumerator
+        Public Function GetEnumerator() As IDictionaryEnumerator
             Return _resourcesHash.GetEnumerator
         End Function
 
@@ -868,7 +867,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ResXReader.Close()
         End Sub
 
-        Public Function TypeNameConverter(runtimeType As System.Type) As String
+        Public Function TypeNameConverter(runtimeType As Type) As String
             Debug.Assert(runtimeType IsNot Nothing, "runtimeType cannot be Nothing!")
             If _multiTargetService Is Nothing Then
                 Return runtimeType.AssemblyQualifiedName
@@ -940,7 +939,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     lastName = Resource.Name
                                 End If
                             End If
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ReadResources), NameOf(ResourceFile))
+                        Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ReadResources), NameOf(ResourceFile))
                             If Resource IsNot Nothing Then
                                 Resource.Dispose()
                             End If
@@ -1006,19 +1005,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Dim resource As Resource = resourceList(i)
                         Try
                             ResXWriter.AddResource(resource.ResXDataNode.Name, resourceList(i).ResXDataNode)
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(WriteResources), NameOf(ResourceFile))
+                        Catch ex As Exception When ReportWithoutCrash(ex, NameOf(WriteResources), NameOf(ResourceFile))
                             resource.SetTaskFromGetValueException(ex, ex)
                             If failedList IsNot Nothing Then
-                                failedList = SR.GetString(SR.RSE_Err_NameList, failedList, resource.Name)
+                                failedList = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameList, failedList, resource.Name)
                             Else
-                                failedList = SR.GetString(SR.RSE_Err_Name, resource.Name)
+                                failedList = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Name, resource.Name)
                                 extraMessage = ex.Message
                             End If
                         End Try
                     Next
 
                     If failedList IsNot Nothing Then
-                        RootComponent.RootDesigner.GetView().DsMsgBox(SR.GetString(SR.RSE_Err_CantSaveResouce_1Arg, failedList) & VB.vbCrLf & VB.vbCrLf & extraMessage,
+                        RootComponent.RootDesigner.GetView().DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResouce_1Arg, failedList) & vbCrLf & vbCrLf & extraMessage,
                             MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantSaveBadResouceItem)
                     End If
                 End If
@@ -1103,12 +1102,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <remarks></remarks>
             Shared Sub New()
-                s_errorTypeCount = System.Enum.GetValues(GetType(ResourceTaskType)).Length
+                s_errorTypeCount = [Enum].GetValues(GetType(ResourceTaskType)).Length
 
 #If DEBUG Then
                 'Verify that the enums start with zero and are contiguous
                 For Index As Integer = 0 To s_errorTypeCount - 1
-                    Debug.Assert(CInt(System.Enum.GetValues(GetType(ResourceTaskType)).GetValue(Index)) = Index,
+                    Debug.Assert(CInt([Enum].GetValues(GetType(ResourceTaskType)).GetValue(Index)) = Index,
                         "The values in ResourceErrorType must start at 0 and be contiguous")
                 Next
 #End If
@@ -1249,7 +1248,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             For i As Integer = 0 To TaskSet.Tasks.Length - 1
                 If TaskSet.Tasks(i) IsNot Nothing Then
                     If Messages <> "" Then
-                        Messages &= Microsoft.VisualBasic.vbCrLf
+                        Messages &= vbCrLf
                     End If
 
                     Messages &= TaskSet.Tasks(i).Text
@@ -1457,7 +1456,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _resourcesToDelayCheckForErrors.Count = 0 AndAlso Not _delayCheckSuspended Then
                 'We need to hook up for idle-time processing so we can delay-check this resource.
                 Debug.WriteLineIf(Switches.RSEDelayCheckErrors.TraceVerbose, "Delay-check errors: Hooking up idle-time processing")
-                AddHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayCheckForErrors
+                AddHandler Application.Idle, AddressOf OnDelayCheckForErrors
             End If
 
             'Add the resource to the list
@@ -1502,7 +1501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If _resourcesToDelayCheckForErrors.Count = 0 Then
                     'No more resources to check right now, so we should un-hook our idle-time processing.
                     Debug.WriteLineIf(Switches.RSEDelayCheckErrors.TraceVerbose, "Delay-check errors: Unhooking idle-time processing")
-                    RemoveHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayCheckForErrors
+                    RemoveHandler Application.Idle, AddressOf OnDelayCheckForErrors
                 End If
             End If
         End Sub
@@ -1545,7 +1544,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 RemoveResourceToDelayCheckForErrors(Resource)
             Else
                 Debug.Fail("Why didn't we unhook our idle-time processing if there were no more resources to process?")
-                RemoveHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayCheckForErrors
+                RemoveHandler Application.Idle, AddressOf OnDelayCheckForErrors
             End If
         End Sub
 
@@ -1572,9 +1571,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _delayCheckSuspended = suspendIt
                 If _resourcesToDelayCheckForErrors.Count > 0 Then
                     If _delayCheckSuspended Then
-                        RemoveHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayCheckForErrors
+                        RemoveHandler Application.Idle, AddressOf OnDelayCheckForErrors
                     Else
-                        AddHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayCheckForErrors
+                        AddHandler Application.Idle, AddressOf OnDelayCheckForErrors
                     End If
                 End If
             End If
@@ -1640,8 +1639,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Dim vsLangProj As VSLangProj.VSProject = Nothing
 
-                Dim typeNameCollection As New System.Collections.Specialized.StringCollection
-                Dim assemblyCollection As New System.Collections.Specialized.StringCollection
+                Dim typeNameCollection As New Specialized.StringCollection
+                Dim assemblyCollection As New Specialized.StringCollection
 
                 For Each Resource As Resource In Resources
                     Dim resourceType As Type = Nothing
@@ -1686,7 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 End If
                             Catch ex As CheckoutException
                                 ' Ignore CheckoutException
-                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile))
+                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile))
                                 ' We should ignore the error if the project system failed to do so..
 
                                 ' NOTE: we need consider to prompt the user an waring message. But it could be very annoying if we pop up many message boxes in one transaction.
@@ -1741,12 +1740,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If RootComponent IsNot Nothing AndAlso RootComponent.IsGlobalResourceInASP() Then
                 ' Venus project always use C# CodeDomProvider to generate StrongType code for the resource file.
-                Return New Microsoft.CSharp.CSharpCodeProvider()
+                Return New CSharp.CSharpCodeProvider()
             End If
 
             If ServiceProvider IsNot Nothing Then
                 Try
-                    Dim VsmdCodeDomProvider As Designer.Interfaces.IVSMDCodeDomProvider = TryCast(ServiceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
+                    Dim VsmdCodeDomProvider As IVSMDCodeDomProvider = TryCast(ServiceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
                     If VsmdCodeDomProvider IsNot Nothing Then
                         Return TryCast(VsmdCodeDomProvider.CodeDomProvider, CodeDomProvider)
                     End If
@@ -1765,8 +1764,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub DelayFlushAndRunCustomTool()
             If Not _delayFlushAndRunCustomToolQueued Then
-                If Me.View IsNot Nothing AndAlso Me.View.IsHandleCreated Then
-                    Me.View.BeginInvoke(New MethodInvoker(AddressOf Me.DelayFlushAndRunCustomToolImpl))
+                If View IsNot Nothing AndAlso View.IsHandleCreated Then
+                    View.BeginInvoke(New MethodInvoker(AddressOf DelayFlushAndRunCustomToolImpl))
                     _delayFlushAndRunCustomToolQueued = True
                 End If
             End If
@@ -1781,10 +1780,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If View IsNot Nothing AndAlso View.GetDesignerLoader() IsNot Nothing Then
                 Try
                     View.GetDesignerLoader().RunSingleFileGenerator(True)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile))
                     Try
                         View.DsMsgBox(ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Catch ex2 As exception When Common.Utils.ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl))
+                    Catch ex2 As exception When ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl))
                     End Try
                 End Try
             End If

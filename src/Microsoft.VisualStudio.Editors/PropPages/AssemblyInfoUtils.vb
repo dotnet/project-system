@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PropertyName">The (localized) name of the property that is being validated.  Used for error messages.</param>
         ''' <param name="WildcardsAllowed">Whether or not wildcards are allowed.</param>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
-        Public Sub ValidateVersion(VersionTextboxes As System.Windows.Forms.TextBox(), MaxVersionPartValue As UInteger, PropertyName As String, WildcardsAllowed As Boolean, ByRef version As String)
+        Public Sub ValidateVersion(VersionTextboxes As Windows.Forms.TextBox(), MaxVersionPartValue As UInteger, PropertyName As String, WildcardsAllowed As Boolean, ByRef version As String)
             Dim Major As String = Trim(VersionTextboxes(0).Text)
             Dim Minor As String = Trim(VersionTextboxes(1).Text)
             Dim Build As String = Trim(VersionTextboxes(2).Text)
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PropertyName">The (localized) name of the property that is being validated.  Used for error messages.</param>
         ''' <param name="WildcardsAllowed">Whether or not wildcards are allowed.</param>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
-        Public Sub ValidateVersion(VersionTextBox As System.Windows.Forms.TextBox, MaxVersionPartValue As UInteger, PropertyName As String, WildcardsAllowed As Boolean, ByRef version As String)
+        Public Sub ValidateVersion(VersionTextBox As Windows.Forms.TextBox, MaxVersionPartValue As UInteger, PropertyName As String, WildcardsAllowed As Boolean, ByRef version As String)
             ' Validate the semantic version prefix (i.e. "1.0.0" prefix of "1.0.0-beta1")
             Dim CombinedVersion = Split(VersionTextBox.Text, Delimiter:="-")(0).TrimStart()
             InternalParseVersion(CombinedVersion, PropertyName, MaxVersionPartValue, WildcardsAllowed, version)
@@ -118,10 +118,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Select Case Field
                             Case 0, 1
                                 'Wildcards never allowed in this field
-                                Throw New ArgumentException(SR.GetString(SR.PPG_AssemblyInfo_BadWildcard))
+                                Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard))
                             Case 2, 3
                                 If Not WildcardsAllowed Then
-                                    Throw New ArgumentException(SR.GetString(SR.PPG_AssemblyInfo_BadWildcard))
+                                    Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard))
                                 End If
                             Case Else
                                 Debug.Fail("Unexpected case")
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Else
                         'If not an asterisk, it had better be numeric in the accepted range
                         If Not ValidateIsNumericVersionPart(Fields(Field), MaxVersionPartValue) Then
-                            Throw New ArgumentException(SR.GetString(SR.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
+                            Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
                         End If
                     End If
                 Next
@@ -139,20 +139,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If IsValid Then
                 FormattedVersion = CombinedVersion
             Else
-                Throw New ArgumentException(SR.GetString(SR.PPG_AssemblyInfo_InvalidVersion))
+                Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_InvalidVersion))
             End If
         End Sub
 
 
 #Region "Neutral Language Combobox"
 
-        Private _neutralLanguageNoneText As String = SR.GetString(SR.PPG_NeutralLanguage_None) 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private _neutralLanguageNoneText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None) 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Populate the neutral language combobox with cultures
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub PopulateNeutralLanguageComboBox(NeutralLanguageComboBox As System.Windows.Forms.ComboBox)
+        Public Sub PopulateNeutralLanguageComboBox(NeutralLanguageComboBox As Windows.Forms.ComboBox)
             'The list of cultures can't change on us, no reason to
             '  re-populate every time it's dropped down.
             If NeutralLanguageComboBox.Items.Count = 0 Then
@@ -173,8 +173,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Converts a value for neutral language into the display string used in the
         '''   combobox.
         ''' </summary>
-        Public Function NeutralLanguageSet(control As System.Windows.Forms.Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Dim NeutralLanguageComboBox = DirectCast(control, System.Windows.Forms.ComboBox)
+        Public Function NeutralLanguageSet(control As Windows.Forms.Control, prop As PropertyDescriptor, value As Object) As Boolean
+            Dim NeutralLanguageComboBox = DirectCast(control, Windows.Forms.ComboBox)
 
             'Value is the abbreviation of a culture, e.g. "de-ch"
             If PropertyControlData.IsSpecialValue(value) Then
@@ -204,8 +204,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Convert the value displayed in the neutral language combobox into the string format to actually
         '''   be stored in the project.
         ''' </summary>
-        Public Function NeutralLanguageGet(control As System.Windows.Forms.Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            Dim NeutralLanguageComboBox = DirectCast(control, System.Windows.Forms.ComboBox)
+        Public Function NeutralLanguageGet(control As Windows.Forms.Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+            Dim NeutralLanguageComboBox = DirectCast(control, Windows.Forms.ComboBox)
             If NeutralLanguageComboBox.SelectedIndex < 0 Then
                 'Nothing selected, return the typed-in text - we will try to accept it as is
                 '  (i.e., they might have entered just a culture abbrevation, such as "de-ch", and

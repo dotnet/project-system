@@ -7,8 +7,8 @@ Imports System.Xml.Serialization
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
     Friend Class MyApplicationDataSerializationWriter
-        Inherits System.Xml.Serialization.XmlSerializationWriter
-        Public Sub Write2_MyApplicationData(n As String, ns As String, o As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData, isNullable As Boolean, needType As Boolean)
+        Inherits XmlSerializationWriter
+        Public Sub Write2_MyApplicationData(n As String, ns As String, o As MyApplicationData, isNullable As Boolean, needType As Boolean)
             If o Is Nothing Then
                 If isNullable Then
                     WriteNullTagLiteral(n, ns)
@@ -16,8 +16,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return
             End If
             If Not needType Then
-                Dim t As System.Type = o.GetType()
-                If Type.Equals(t, GetType(Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData)) Then
+                Dim t As Type = o.GetType()
+                If Equals(t, GetType(MyApplicationData)) Then
                 Else
                     Throw CreateUnknownTypeException(o)
                 End If
@@ -27,14 +27,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             If needType Then
                 WriteXsiType("MyApplicationData", "")
             End If
-            WriteElementStringRaw("MySubMain", "", System.Xml.XmlConvert.ToString(CType(o.MySubMain, System.Boolean)))
+            WriteElementStringRaw("MySubMain", "", Xml.XmlConvert.ToString(CType(o.MySubMain, System.Boolean)))
             WriteElementString("MainForm", "", o.MainFormNoRootNS)
-            WriteElementStringRaw("SingleInstance", "", System.Xml.XmlConvert.ToString(CType(o.SingleInstance, System.Boolean)))
-            WriteElementStringRaw("ShutdownMode", "", System.Xml.XmlConvert.ToString(CType(o.ShutdownMode, System.Int32)))
-            WriteElementStringRaw("EnableVisualStyles", "", System.Xml.XmlConvert.ToString(CType(o.EnableVisualStyles, System.Boolean)))
-            WriteElementStringRaw("AuthenticationMode", "", System.Xml.XmlConvert.ToString(CType(o.AuthenticationMode, System.Int32)))
+            WriteElementStringRaw("SingleInstance", "", Xml.XmlConvert.ToString(CType(o.SingleInstance, System.Boolean)))
+            WriteElementStringRaw("ShutdownMode", "", Xml.XmlConvert.ToString(CType(o.ShutdownMode, System.Int32)))
+            WriteElementStringRaw("EnableVisualStyles", "", Xml.XmlConvert.ToString(CType(o.EnableVisualStyles, System.Boolean)))
+            WriteElementStringRaw("AuthenticationMode", "", Xml.XmlConvert.ToString(CType(o.AuthenticationMode, System.Int32)))
             WriteElementString("SplashScreen", "", o.SplashScreenNoRootNS)
-            WriteElementStringRaw("SaveMySettingsOnExit", "", System.Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, System.Boolean)))
+            WriteElementStringRaw("SaveMySettingsOnExit", "", Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, System.Boolean)))
             WriteEndElement(o)
         End Sub 'Write2_MyApplicationData
 
@@ -50,30 +50,30 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return
             End If
             TopLevelElement()
-            Write2_MyApplicationData("MyApplicationData", "", CType(o, Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData), True, False)
+            Write2_MyApplicationData("MyApplicationData", "", CType(o, MyApplicationData), True, False)
         End Sub 'Write3_MyApplicationData 
 
-        Private _publicMethods As System.Collections.Hashtable = Nothing
+        Private _publicMethods As Hashtable = Nothing
         Private _hashTableLock As New Object
 
-        Public Function GetPublicMethods() As System.Collections.Hashtable
+        Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
-                _publicMethods = New System.Collections.Hashtable()
+                _publicMethods = New Hashtable()
             End If
             Return _publicMethods
         End Function 'GetPublicMethods
 
-        Public Shared Function CanSerialize(type As System.Type) As System.Boolean
+        Public Shared Function CanSerialize(type As Type) As System.Boolean
             Return False
         End Function 'CanSerialize 
     End Class 'MyApplicationDataSerializationWriter
 
 
     Friend Class MyApplicationDataSerializationReader
-        Inherits System.Xml.Serialization.XmlSerializationReader
+        Inherits XmlSerializationReader
 
-        Public Function Read2_MyApplicationData(isNullable As Boolean, checkType As Boolean) As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData
-            Dim xsiType As System.Xml.XmlQualifiedName = Nothing
+        Public Function Read2_MyApplicationData(isNullable As Boolean, checkType As Boolean) As MyApplicationData
+            Dim xsiType As Xml.XmlQualifiedName = Nothing
             If (checkType) Then xsiType = GetXsiType()
 
             Dim isNull As Boolean = False
@@ -84,11 +84,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             If checkType Then
                 If isNull AndAlso Not (xsiType Is Nothing) Then
-                    Return CType(ReadTypedNull(xsiType), Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData)
+                    Return CType(ReadTypedNull(xsiType), MyApplicationData)
                 End If
-                If (xsiType Is Nothing) OrElse (CType(xsiType, System.Xml.XmlQualifiedName).Name = _id1_MyApplicationData AndAlso CType(xsiType, System.Xml.XmlQualifiedName).Namespace = _id2_Item) Then
+                If (xsiType Is Nothing) OrElse (CType(xsiType, Xml.XmlQualifiedName).Name = _id1_MyApplicationData AndAlso CType(xsiType, Xml.XmlQualifiedName).Namespace = _id2_Item) Then
                 Else
-                    Throw CreateUnknownTypeException(CType(xsiType, System.Xml.XmlQualifiedName))
+                    Throw CreateUnknownTypeException(CType(xsiType, Xml.XmlQualifiedName))
                 End If
             End If
 
@@ -97,8 +97,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
             DecodeName = True
 
-            Dim o As Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData
-            o = New Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData()
+            Dim o As MyApplicationData
+            o = New MyApplicationData()
             Dim paramsRead(8) As Boolean
 
             While Reader.MoveToNextAttribute()
@@ -117,10 +117,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Reader.ReadStartElement()
             Reader.MoveToContent()
 
-            While Reader.NodeType <> System.Xml.XmlNodeType.EndElement AndAlso Reader.NodeType <> System.Xml.XmlNodeType.None
+            While Reader.NodeType <> Xml.XmlNodeType.EndElement AndAlso Reader.NodeType <> Xml.XmlNodeType.None
                 If Reader.NodeType = System.Xml.XmlNodeType.Element Then
                     If Not paramsRead(0) AndAlso (Reader.LocalName = _id3_MySubMain AndAlso Reader.NamespaceURI = _id2_Item) Then
-                        o.MySubMain = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
+                        o.MySubMain = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(0) = True
 
                     ElseIf Not paramsRead(1) AndAlso (Reader.LocalName = _id4_MainForm AndAlso Reader.NamespaceURI = _id2_Item) Then
@@ -128,19 +128,19 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         paramsRead(1) = True
 
                     ElseIf Not paramsRead(2) AndAlso (Reader.LocalName = _id5_SingleInstance AndAlso Reader.NamespaceURI = _id2_Item) Then
-                        o.SingleInstance = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
+                        o.SingleInstance = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(2) = True
 
                     ElseIf Not paramsRead(3) AndAlso (Reader.LocalName = _id6_ShutdownMode AndAlso Reader.NamespaceURI = _id2_Item) Then
-                        o.ShutdownMode = System.Xml.XmlConvert.ToInt32(Reader.ReadElementString())
+                        o.ShutdownMode = Xml.XmlConvert.ToInt32(Reader.ReadElementString())
                         paramsRead(3) = True
 
                     ElseIf Not paramsRead(4) AndAlso Reader.LocalName = _id7_EnableVisualStyles AndAlso Reader.NamespaceURI = _id2_Item Then
-                        o.EnableVisualStyles = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
+                        o.EnableVisualStyles = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(4) = True
 
                     ElseIf Not paramsRead(5) AndAlso Reader.LocalName = _id8_AuthenticationMode AndAlso Reader.NamespaceURI = _id2_Item Then
-                        o.AuthenticationMode = System.Xml.XmlConvert.ToInt32(Reader.ReadElementString())
+                        o.AuthenticationMode = Xml.XmlConvert.ToInt32(Reader.ReadElementString())
                         paramsRead(5) = True
 
                     ElseIf Not paramsRead(6) AndAlso Reader.LocalName = _id9_SplashScreen AndAlso Reader.NamespaceURI = _id2_Item Then
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         paramsRead(7) = True
 
                     ElseIf Not paramsRead(8) AndAlso Reader.LocalName = _id12_SaveMySettingsOnExit AndAlso Reader.NamespaceURI = _id2_Item Then
-                        o.SaveMySettingsOnExit = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
+                        o.SaveMySettingsOnExit = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(8) = True
 
                     Else
@@ -233,12 +233,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             _id12_SaveMySettingsOnExit = Reader.NameTable.Add("SaveMySettingsOnExit")
         End Sub 'InitIDs 
 
-        Private _publicMethods As System.Collections.Hashtable = Nothing
+        Private _publicMethods As Hashtable = Nothing
         private _lockObject as New Object
 
-        Public Function GetPublicMethods() As System.Collections.Hashtable
+        Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
-                _publicMethods = New System.Collections.Hashtable()
+                _publicMethods = New Hashtable()
             End If
             Return _publicMethods
         End Function 'GetPublicMethods 
@@ -258,14 +258,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function 'CreateWriter
 
 
-        Public Overrides Function CanDeserialize(xmlReader As System.Xml.XmlReader) As Boolean
+        Public Overrides Function CanDeserialize(xmlReader As Xml.XmlReader) As Boolean
             Return xmlReader.IsStartElement("MyApplicationData", "")
         End Function 'CanDeserialize
 
 
         Protected Overrides Sub Serialize(objectToSerialize As [Object], writer As XmlSerializationWriter)
 
-            If Not (objectToSerialize Is Nothing) AndAlso Not Type.Equals(objectToSerialize.GetType(), GetType(Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData)) Then
+            If Not (objectToSerialize Is Nothing) AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")
                 Throw New Package.InternalException()
             End If

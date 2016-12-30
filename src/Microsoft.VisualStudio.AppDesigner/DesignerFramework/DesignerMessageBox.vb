@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 ex = ex.InnerException
             End If
 
-            If AppDesCommon.Utils.IsCheckoutCanceledException(ex) Then
+            If AppDesCommon.IsCheckoutCanceledException(ex) Then
                 'The user knows he just canceled the checkout.  We don't have to tell him.  (Yes, other editors and the
                 '  Fx framework itself does it this way, too.)
                 Return
@@ -116,10 +116,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Public Shared Function Show(ServiceProvider As IServiceProvider, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional HelpLink As String = Nothing _
+        Public Shared Function Show(ServiceProvider As IServiceProvider, Message As String,
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing
         ) As DialogResult
             Return ShowHelper(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
@@ -136,10 +136,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional HelpLink As String = Nothing _
+        Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String,
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing
         ) As DialogResult
 
             If HelpLink = "" Then
@@ -187,12 +187,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   So instead of this we cut this feature. When no help is needed, a standard MessageBox will be shown 
         '   but parented using the service provider if available, the caption will also be shown normally.
         '**************************************************************************
-        Protected Shared Function ShowInternal(UIService As IUIService, VsUIShell As IVsUIShell, _
-                Message As String, Caption As String, Buttons As MessageBoxButtons, _
+        Protected Shared Function ShowInternal(UIService As IUIService, VsUIShell As IVsUIShell,
+                Message As String, Caption As String, Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon, DefaultButton As MessageBoxDefaultButton, HelpLink As String) _
         As DialogResult
             If VsUIShell IsNot Nothing Then
-                Dim Guid As Guid = System.Guid.Empty
+                Dim Guid As Guid = Guid.Empty
 
                 Dim OLEButtons As OLEMSGBUTTON = CType(Buttons, OLEMSGBUTTON)
                 Dim OLEDefaultButton As OLEMSGDEFBUTTON = OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST

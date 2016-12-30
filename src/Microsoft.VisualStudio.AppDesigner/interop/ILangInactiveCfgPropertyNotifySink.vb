@@ -5,8 +5,8 @@ Imports System.Runtime.InteropServices
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
 
-    <ComImport(), System.Runtime.InteropServices.Guid("20bd130e-bcd6-4977-a7da-121555dca33b"), _
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown), _
+    <ComImport(), Guid("20bd130e-bcd6-4977-a7da-121555dca33b"), _
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown), _
     CLSCompliant(False), ComVisible(False)> _
     Public Interface ILangInactiveCfgPropertyNotifySink
 

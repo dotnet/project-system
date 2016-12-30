@@ -28,27 +28,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Add any initialization after the InitializeComponent() call
 
             ' Scale the width of the overarching table layout panel
-            Me.overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
+            overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
 
-            Me.MinimumSize = Me.PreferredSize()
+            MinimumSize = PreferredSize()
 
             AddChangeHandlers()
 
-            Me.AutoScaleMode = AutoScaleMode.Font
-            MyBase.PageRequiresScaling = False
+            AutoScaleMode = AutoScaleMode.Font
+            PageRequiresScaling = False
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                    New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Me.cboLanguageVersion, AddressOf LanguageVersionSet, AddressOf LanguageVersionGet, ControlDataFlags.None, New Control() {Me.lblLanguageVersion}),
-                    New PropertyControlData(CSharpProjPropId.CSPROJPROPID_ErrorReport, "ErrorReport", Me.cboReportCompilerErrors, AddressOf ErrorReportSet, AddressOf ErrorReportGet, ControlDataFlags.None, New Control() {Me.lblReportCompilerErrors}),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_CheckForOverflowUnderflow, "CheckForOverflowUnderflow", Me.chkOverflow, AddressOf OverflowUnderflowSet, AddressOf OverflowUnderflowGet),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_FileAlignment, "FileAlignment", Me.cboFileAlignment, AddressOf FileAlignmentSet, AddressOf FileAlignmentGet, ControlDataFlags.None, New Control() {Me.lblFileAlignment}),
-                    New PropertyControlData(VsProjPropId.VBPROJPROPID_BaseAddress, "BaseAddress", Me.txtDLLBase, AddressOf BaseAddressSet, AddressOf BaseAddressGet, ControlDataFlags.None, New Control() {Me.lblDLLBase}),
+                    New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", cboLanguageVersion, AddressOf LanguageVersionSet, AddressOf LanguageVersionGet, ControlDataFlags.None, New Control() {lblLanguageVersion}),
+                    New PropertyControlData(CSharpProjPropId.CSPROJPROPID_ErrorReport, "ErrorReport", cboReportCompilerErrors, AddressOf ErrorReportSet, AddressOf ErrorReportGet, ControlDataFlags.None, New Control() {lblReportCompilerErrors}),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_CheckForOverflowUnderflow, "CheckForOverflowUnderflow", chkOverflow, AddressOf OverflowUnderflowSet, AddressOf OverflowUnderflowGet),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_FileAlignment, "FileAlignment", cboFileAlignment, AddressOf FileAlignmentSet, AddressOf FileAlignmentGet, ControlDataFlags.None, New Control() {lblFileAlignment}),
+                    New PropertyControlData(VsProjPropId.VBPROJPROPID_BaseAddress, "BaseAddress", txtDLLBase, AddressOf BaseAddressSet, AddressOf BaseAddressGet, ControlDataFlags.None, New Control() {lblDLLBase}),
                     New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
-                        VsProjPropId80.VBPROJPROPID_DebugInfo, "DebugInfo", Me.cboDebugInfo, AddressOf DebugInfoSet, AddressOf DebugInfoGet, ControlDataFlags.None, New Control() {Me.lblDebugInfo}),
+                        VsProjPropId80.VBPROJPROPID_DebugInfo, "DebugInfo", cboDebugInfo, AddressOf DebugInfoSet, AddressOf DebugInfoGet, ControlDataFlags.None, New Control() {lblDebugInfo}),
                     New PropertyControlData(VsProjPropId.VBPROJPROPID_DebugSymbols, "DebugSymbols", Nothing, AddressOf DebugSymbolsSet, AddressOf DebugSymbolsGet)}
                 End If
                 Return m_ControlData
@@ -67,10 +67,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
 
-            Me.cboLanguageVersion.Items.Clear()
+            cboLanguageVersion.Items.Clear()
 
-            Me.cboLanguageVersion.Items.AddRange(CSharpLanguageVersionUtilities.GetAllLanguageVersions())
-            Me.cboLanguageVersion.SelectedIndex = 0
+            cboLanguageVersion.Items.AddRange(CSharpLanguageVersionUtilities.GetAllLanguageVersions())
+            cboLanguageVersion.SelectedIndex = 0
 
         End Sub
 
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function LanguageVersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
-            Me.cboLanguageVersion.SelectedIndex = -1
+            cboLanguageVersion.SelectedIndex = -1
 
             If PropertyControlData.IsSpecialValue(value) Then
                 'Leave it unselected
@@ -99,9 +99,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     stValue = CSharpLanguageVersion.Default.Value
                 End If
 
-                For Each entry As CSharpLanguageVersion In Me.cboLanguageVersion.Items
+                For Each entry As CSharpLanguageVersion In cboLanguageVersion.Items
                     If entry.Value = stValue Then
-                        Me.cboLanguageVersion.SelectedItem = entry
+                        cboLanguageVersion.SelectedItem = entry
                         Exit For
                     End If
                 Next
@@ -127,19 +127,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
-                    Me.cboReportCompilerErrors.Text = stValue
+                    cboReportCompilerErrors.Text = stValue
                 Else
-                    Me.cboReportCompilerErrors.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboReportCompilerErrors.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
                 Return True
             Else
-                Me.cboReportCompilerErrors.SelectedIndex = -1        '// Indeterminate state
+                cboReportCompilerErrors.SelectedIndex = -1        '// Indeterminate state
             End If
         End Function
 
         Private Function ErrorReportGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (Me.cboReportCompilerErrors.SelectedIndex <> -1) Then
-                value = Me.cboReportCompilerErrors.Text
+            If (cboReportCompilerErrors.SelectedIndex <> -1) Then
+                value = cboReportCompilerErrors.Text
                 Return True
             Else
                 Return False         '// Indeterminate - let the architecture handle it
@@ -165,11 +165,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '// EXE's don't support base addresses so just disable the control and set the disabled text to the default for 
                 '// EXE's.
 
-                Me.txtDLLBase.Enabled = False
-                Me.txtDLLBase.Text = "0x00400000"
+                txtDLLBase.Enabled = False
+                txtDLLBase.Text = "0x00400000"
             Else
                 '// The default for DLL projects is 0x11000000
-                Me.txtDLLBase.Enabled = True
+                txtDLLBase.Enabled = True
 
                 Dim iBaseAddress As UInteger
 
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If value Is PropertyControlData.Indeterminate Then
                     stHexValue = ""
                 End If
-                Me.txtDLLBase.Text = stHexValue
+                txtDLLBase.Text = stHexValue
             End If
 
             Return True
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'DLL Baseaddress must be 0xNNNNNNNN format
             If String.Compare(VBStrings.Left(StringValue, 2), "0x", StringComparison.OrdinalIgnoreCase) = 0 Then
-                StringValue = "&h" + VBStrings.Mid(StringValue, 3)
+                StringValue = "&h" + Mid(StringValue, 3)
                 If IsNumeric(StringValue) Then
                     Dim LongValue As ULong
                     Try
@@ -233,13 +233,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End Try
                 End If
             End If
-            Throw New Exception(SR.GetString(SR.PPG_AdvancedBuildSettings_InvalidBaseAddress))
+            Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_InvalidBaseAddress))
 
         End Function
 
         Private Function DebugInfoSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
-                Me.cboDebugInfo.SelectedIndex = -1
+                cboDebugInfo.SelectedIndex = -1
             Else
                 Dim stValue As String = TryCast(value, String)
                 If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
@@ -248,12 +248,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '// displayed in the dialog with a dash.
 
                     If (String.Compare(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) <> 0) Then
-                        Me.cboDebugInfo.Text = stValue
+                        cboDebugInfo.Text = stValue
                     Else
-                        Me.cboDebugInfo.Text = "pdb-only"
+                        cboDebugInfo.Text = "pdb-only"
                     End If
                 Else
-                    Me.cboDebugInfo.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboDebugInfo.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
             End If
             Return True
@@ -263,8 +263,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             '// Need to special case pdb-only because the display name has a dash while the actual property value
             '// doesn't have the dash.
-            If (String.Compare(Me.cboDebugInfo.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) <> 0) Then
-                value = Me.cboDebugInfo.Text
+            If (String.Compare(cboDebugInfo.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) <> 0) Then
+                value = cboDebugInfo.Text
             Else
                 value = "pdbonly"
             End If
@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub DebugInfo_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
-            If Me.cboDebugInfo.SelectedIndex = 0 Then
+            If cboDebugInfo.SelectedIndex = 0 Then
                 '// user selcted none
                 m_bDebugSymbols = False
             Else
@@ -287,34 +287,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function FileAlignmentSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
-                Me.cboFileAlignment.SelectedIndex = -1
+                cboFileAlignment.SelectedIndex = -1
             Else
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
-                    Me.cboFileAlignment.Text = stValue
+                    cboFileAlignment.Text = stValue
                 Else
-                    Me.cboFileAlignment.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboFileAlignment.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
             End If
             Return True
         End Function
 
         Private Function FileAlignmentGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = Me.cboFileAlignment.Text
+            value = cboFileAlignment.Text
             Return True
         End Function
 
         Private Function OverflowUnderflowSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate Then
-                Me.chkOverflow.CheckState = CheckState.Indeterminate
+                chkOverflow.CheckState = CheckState.Indeterminate
             Else
-                Me.chkOverflow.Checked = CType(value, Boolean)
+                chkOverflow.Checked = CType(value, Boolean)
             End If
             Return True
         End Function
 
         Private Function OverflowUnderflowGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = Me.chkOverflow.Checked
+            value = chkOverflow.Checked
             Return True
         End Function
 

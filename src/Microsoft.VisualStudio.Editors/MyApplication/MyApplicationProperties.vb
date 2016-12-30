@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <remarks>
     ''' This interface is defined in vseditors.idl
     ''' </remarks>
-    <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     Friend Interface IVsMyAppManager
         <PreserveSig()> _
         Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Our implementation of IVsMyAppManager
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliantAttribute(False)> _
+    <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)> _
     Public NotInheritable Class MyApplicationManager
         Implements IVsMyAppManager
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="ProjectHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function Init(ProjectHierarchy As Shell.Interop.IVsHierarchy) As Integer Implements IVsMyAppManager.Init
+        Private Function Init(ProjectHierarchy As IVsHierarchy) As Integer Implements IVsMyAppManager.Init
             If ProjectHierarchy Is Nothing Then
                 Throw New ArgumentNullException("ProjectHierarchy")
             End If
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 #End Region
 
 
@@ -269,12 +269,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const s_PROPNAME_AuthenticationMode As String = "AuthenticationMode"
         Private Const s_PROPNAME_SplashScreen As String = "SplashScreen"
 
-        Private _projectHierarchy As Shell.Interop.IVsHierarchy
+        Private _projectHierarchy As IVsHierarchy
         Private WithEvents _myAppDocData As DocData 'The DocData which backs the MyApplication.myapp file
-        Private _projectDesignerProjectItem As EnvDTE.ProjectItem
-        Private _serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider
+        Private _projectDesignerProjectItem As ProjectItem
+        Private _serviceProvider As Shell.ServiceProvider
         Private _docDataService As DesignerDocDataService
-        Private _myAppData As MyApplication.MyApplicationData
+        Private _myAppData As MyApplicationData
 
         'The filename for the XML file where we store the MyApplication properties
         Private Const s_const_MyApplicationFileName As String = "Application.myapp"
@@ -321,10 +321,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             hr = _projectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, obj)
             If NativeMethods.Succeeded(hr) Then
-                Dim DTEProject As EnvDTE.Project = TryCast(obj, EnvDTE.Project)
+                Dim DTEProject As Project = TryCast(obj, Project)
                 Debug.Assert(DTEProject IsNot Nothing)
                 If DTEProject IsNot Nothing Then
-                    _serviceProvider = New Microsoft.VisualStudio.Shell.ServiceProvider(TryCast(DTEProject.DTE, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+                    _serviceProvider = New Shell.ServiceProvider(TryCast(DTEProject.DTE, OLE.Interop.IServiceProvider))
                 End If
             End If
 
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             'BEGIN Beta 1 Backwards compatibility
             If Not File.Exists(MyAppFileNameWithPath) Then
-                Dim FileNameCompat As String = IO.Path.Combine(ProjectDesignerProjectItem.FileNames(1), s_const_MyApplicationFileName_B1Compat)
+                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.FileNames(1), s_const_MyApplicationFileName_B1Compat)
                 If File.Exists(FileNameCompat) Then
                     'The new version of the filename does not exist, but the old one does - use it instead
                     _myAppFileName = s_const_MyApplicationFileName_B1Compat
@@ -349,14 +349,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The .myapp file exists - try to read it in
                 PrepareMyAppDocData()
                 Using Reader As TextReader = GetMyAppTextReader()
-                    _myAppData = MyApplication.MyApplicationSerializer.Deserialize(Reader)
+                    _myAppData = MyApplicationSerializer.Deserialize(Reader)
                     Reader.Close()
                 End Using
                 _myAppData.IsDirty = False
             Else
                 'The .myapp file doesn't exist.  Just use default properties.  Don't force create the .myapp file until
                 '  a property is changed that forces us to write to it.
-                _myAppData = New MyApplication.MyApplicationData()
+                _myAppData = New MyApplicationData()
                 _myAppData.IsDirty = False
             End If
         End Sub
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(_myAppDocData IsNot Nothing, "m_MyAppDocData is nothing")
             If _myAppDocData IsNot Nothing Then
                 Using Writer As TextWriter = GetMyAppTextWriter()
-                    MyApplication.MyApplicationSerializer.Serialize(_myAppData, Writer)
+                    MyApplicationSerializer.Serialize(_myAppData, Writer)
                     Writer.Close()
                 End Using
 
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub RunCustomTool() Implements IMyApplicationPropertiesInternal.RunCustomTool
-            Dim item As EnvDTE.ProjectItem = MyAppProjectItem
+            Dim item As ProjectItem = MyAppProjectItem
             If item IsNot Nothing Then
                 Dim VsProjectItem As VSLangProj.VSProjectItem = TryCast(item.Object, VSLangProj.VSProjectItem)
                 If VsProjectItem IsNot Nothing Then
@@ -415,8 +415,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-        Protected Overloads Function AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
-            Dim ProjectItem As EnvDTE.ProjectItem = MyAppProjectItem
+        Protected Overloads Function AddFileToProject(ProjectItems As ProjectItems, FileName As String, CopyFile As Boolean) As ProjectItem
+            Dim ProjectItem As ProjectItem = MyAppProjectItem
 
             'First see if it is already in the project
             If ProjectItem IsNot Nothing Then
@@ -431,13 +431,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return ProjectItem
         End Function
 
-        Private ReadOnly Property ServiceProvider() As Microsoft.VisualStudio.Shell.ServiceProvider
+        Private ReadOnly Property ServiceProvider() As Shell.ServiceProvider
             Get
                 Return _serviceProvider
             End Get
         End Property
 
-        Private ReadOnly Property ProjectDesignerProjectItem() As EnvDTE.ProjectItem
+        Private ReadOnly Property ProjectDesignerProjectItem() As ProjectItem
             Get
                 Return _projectDesignerProjectItem
             End Get
@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
             End Get
             Set(value As String)
-                Me.MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
+                MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
 
@@ -558,8 +558,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses, _
-                    Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterAllFormsClose
+                    ApplicationServices.ShutdownMode.AfterMainFormCloses, _
+                    ApplicationServices.ShutdownMode.AfterAllFormsClose
                         'Valid - continue
                     Case Else
                         Throw New ArgumentOutOfRangeException("value")
@@ -615,8 +615,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows, _
-                    Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.ApplicationDefined
+                    ApplicationServices.AuthenticationMode.Windows, _
+                    ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
                         Throw New ArgumentOutOfRangeException("value")
@@ -706,7 +706,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     stream = File.Create(FullPath)
                     writer = New StreamWriter(stream)
                     'Initialize the file with a default MyApplicationData
-                    MyApplication.MyApplicationSerializer.Serialize(New MyApplication.MyApplicationData(), writer)
+                    MyApplicationSerializer.Serialize(New MyApplicationData(), writer)
                     stream = Nothing 'Writer will now close
 
                     _myAppDocData = Nothing
@@ -724,7 +724,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
 
             'Add the file to the project
-            Dim Item As EnvDTE.ProjectItem = MyAppProjectItem
+            Dim Item As ProjectItem = MyAppProjectItem
             If Item Is Nothing Then
                 Item = AddFileToProject(ProjectDesignerProjectItem.ProjectItems, MyAppFileNameWithPath, False)
 
@@ -732,7 +732,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 SetCustomTool(Item, s_MYAPPCUSTOMTOOL)
 
                 'BuildAction should be None so the file doesn't get published
-                Common.DTEUtils.SetBuildAction(Item, VSLangProj.prjBuildAction.prjBuildActionNone)
+                SetBuildAction(Item, VSLangProj.prjBuildAction.prjBuildActionNone)
             End If
 
             'Create the DocData for the file
@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Debug.Assert(_docDataService Is Nothing)
                 _myAppDocData = New DocData(ServiceProvider, Item.FileNames(1))
 
-                Dim ItemId As UInteger = DTEUtils.ItemIdOfProjectItem(_projectHierarchy, Item)
+                Dim ItemId As UInteger = ItemIdOfProjectItem(_projectHierarchy, Item)
                 _docDataService = New DesignerDocDataService(ServiceProvider, _projectHierarchy, ItemId, MyAppDocData)
             End If
         End Sub
@@ -764,7 +764,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MyAppFileNameWithPath() As String
-            Return IO.Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
+            Return Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
         End Function
 
 
@@ -773,10 +773,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Private ReadOnly Property MyAppProjectItem() As EnvDTE.ProjectItem
+        Private ReadOnly Property MyAppProjectItem() As ProjectItem
             Get
                 'First see if it is already in the project
-                For Each ProjectItem As EnvDTE.ProjectItem In ProjectDesignerProjectItem.ProjectItems
+                For Each ProjectItem As ProjectItem In ProjectDesignerProjectItem.ProjectItems
                     If ProjectItem.FileNames(1).Equals(MyAppFileNameWithPath, StringComparison.OrdinalIgnoreCase) Then
                         Return ProjectItem
                     End If
@@ -809,9 +809,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Private ReadOnly Property MyAppData() As MyApplication.MyApplicationData
+        Private ReadOnly Property MyAppData() As MyApplicationData
             Get
-                Return Me._myAppData
+                Return _myAppData
             End Get
         End Property
 
@@ -850,12 +850,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectItemProperty(ProjectItem As EnvDTE.ProjectItem, PropertyName As String) As EnvDTE.Property
+        Private Function GetProjectItemProperty(ProjectItem As ProjectItem, PropertyName As String) As [Property]
             If ProjectItem.Properties Is Nothing Then
                 Return Nothing
             End If
 
-            For Each Prop As EnvDTE.Property In ProjectItem.Properties
+            For Each Prop As [Property] In ProjectItem.Properties
                 If Prop.Name.Equals(PropertyName, StringComparison.OrdinalIgnoreCase) Then
                     Return Prop
                 End If
@@ -869,9 +869,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   generation is hooked up.
         ''' </summary>
         ''' <remarks>Caller is responsible for catching exceptions</remarks>
-        Private Sub SetCustomTool(ProjectItem As EnvDTE.ProjectItem, Value As String)
-            Dim ToolProperty As EnvDTE.Property = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOL)
-            Dim NamespaceProperty As EnvDTE.Property = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
+        Private Sub SetCustomTool(ProjectItem As ProjectItem, Value As String)
+            Dim ToolProperty As [Property] = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOL)
+            Dim NamespaceProperty As [Property] = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
             Try
                 If ToolProperty Is Nothing Then
@@ -889,11 +889,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The COM exception don't give us much to go on.  In the SCC case, for instance, if 
                 '  project check-out fails, the message is simply "Exception occurred".  We'd rather
                 '  simply throw a general exception of our own text than propagate this to the user.
-                Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), ex)
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace), ex)
 
             Catch ex As Exception
                 'For anything else, combine our error messages.
-                Throw New Exception(SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace & Microsoft.VisualBasic.vbCrLf & ex.Message))
+                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message))
             End Try
         End Sub
 
@@ -906,12 +906,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyEventsClassName">The name of the partial class to use</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CreateNewMyEventsFile(DestinationProjectItems As EnvDTE.ProjectItems, MyEventsFileName As String, MyEventsNamespaceName As String, MyEventsClassName As String) As EnvDTE.ProjectItem
-            Debug.Assert(IO.Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
+        Private Function CreateNewMyEventsFile(DestinationProjectItems As ProjectItems, MyEventsFileName As String, MyEventsNamespaceName As String, MyEventsClassName As String) As ProjectItem
+            Debug.Assert(Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
 
             'Create the new file
-            Dim NewFilePath As String = IO.Path.Combine(Common.DTEUtils.GetFolderNameFromProjectItems(DestinationProjectItems), MyEventsFileName)
-            Dim filestream As IO.FileStream = IO.File.Create(NewFilePath)
+            Dim NewFilePath As String = Path.Combine(GetFolderNameFromProjectItems(DestinationProjectItems), MyEventsFileName)
+            Dim filestream As FileStream = File.Create(NewFilePath)
 
             'Write out the UTF-8 BOM so that the code model will treat it as a UTF-8 file.
             Dim BOM() As Byte = System.Text.Encoding.UTF8.GetPreamble()
@@ -922,7 +922,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             filestream.Close()
 
             'Add it to the project
-            Dim MyEventsProjectItem As EnvDTE.ProjectItem = ProjectDesignerProjectItem.ProjectItems.AddFromFile(NewFilePath)
+            Dim MyEventsProjectItem As ProjectItem = ProjectDesignerProjectItem.ProjectItems.AddFromFile(NewFilePath)
 
             'Now generate the class guts, it should look simply like this:
             '
@@ -945,8 +945,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 For iIteration As Integer = 1 To MaxSleepIterations
                     Try
                         'DoEvents for 500 milliseconds
-                        Dim Start As Double = Microsoft.VisualBasic.Timer
-                        While Microsoft.VisualBasic.Timer < Start + 0.5
+                        Dim Start As Double = Timer
+                        While Timer < Start + 0.5
                             System.Windows.Forms.Application.DoEvents()
                         End While
 
@@ -970,13 +970,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     'Add comments
                     Dim Comments As String = _
-                        SR.GetString(SR.PPG_Application_AppEventsCommentLine1) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine2) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine3) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine4) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine5) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine6) _
-                        & vbCrLf & SR.GetString(SR.PPG_Application_AppEventsCommentLine7)
+                        SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine1) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine2) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine3) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine4) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine5) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine6) _
+                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine7)
                     MyEventsClass.Comment = Comments
                 End If
             End If
@@ -996,11 +996,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Const Const_MyEventsClassName As String = "MyApplication"
             Const Const_MyEventsDefaultEventHandlerName As String = "MyApplication_StartUp"
             Const Const_MyEventsDefaultEventName As String = "Me.StartUp"
-            Dim Const_MyEventsDefaultEventEventArgsType As Type = GetType(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
+            Dim Const_MyEventsDefaultEventEventArgsType As Type = GetType(ApplicationServices.StartupEventArgs)
 
             'Search for the Application.vb (used to be MyEvents.vb) file
             Dim FileIsNew As Boolean
-            Dim MyEventsProjectItem As EnvDTE.ProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, s_const_MyEventsFileName)
+            Dim MyEventsProjectItem As ProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, s_const_MyEventsFileName)
             If MyEventsProjectItem Is Nothing Then
                 'The file doesn't exist in the My Application folder.  Let's also look in the root folder, in case the user
                 '  moved it there.
@@ -1032,7 +1032,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     '  for this file).
 
                     ' First, make sure that the project file is checked out...
-                    Dim filesToCheckOut As New Generic.List(Of String)
+                    Dim filesToCheckOut As New List(Of String)
                     Dim fileReloaded As Boolean
                     Dim projectFileName As String = ProjectDesignerProjectItem.ContainingProject.FullName
                     filesToCheckOut.Add(projectFileName)
@@ -1094,7 +1094,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="ProjectHierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetProjectItemForProjectDesigner(ProjectHierarchy As IVsHierarchy) As EnvDTE.ProjectItem
+        Friend Shared Function GetProjectItemForProjectDesigner(ProjectHierarchy As IVsHierarchy) As ProjectItem
             Dim SpecialFiles As IVsProjectSpecialFiles = CType(ProjectHierarchy, IVsProjectSpecialFiles)
             Dim ProjectDesignerItemId As UInteger
             Dim ProjectDesignerDirName As String = Nothing
@@ -1108,7 +1108,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                 hr = ProjectHierarchy.GetProperty(ProjectDesignerItemId, __VSHPROPID.VSHPROPID_ExtObject, obj)
                 If NativeMethods.Succeeded(hr) Then
-                    Return TryCast(obj, EnvDTE.ProjectItem)
+                    Return TryCast(obj, ProjectItem)
                 End If
             End If
             Return Nothing
@@ -1137,7 +1137,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             If _myAppDocData IsNot Nothing Then
                 'Make sure the doc data is up to date (in reality in our current model, we shouldn't ever be in a dirty state
                 '  like this).
-                If Me._myAppData.IsDirty Then
+                If _myAppData.IsDirty Then
                     FlushToDocData()
                 End If
 
@@ -1155,7 +1155,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     '  property change, this isn't currently necessary.  If we've made changes, either our doc
                     '  data will be dirty or the file on disk will have been changed.
 
-                    Dim Item As EnvDTE.ProjectItem = MyAppProjectItem
+                    Dim Item As ProjectItem = MyAppProjectItem
                     Debug.Assert(Item IsNot Nothing)
                     If Item IsNot Nothing Then
                         'We could go through the running doc table, or through ProjectItem.Save.  We choose to use
@@ -1176,7 +1176,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
 
@@ -1228,7 +1228,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Sub MyAppDocDataChanged(sender As Object, e As EventArgs) Handles _myAppDocData.DataChanged
             'Now read the data 
             Using Reader As TextReader = GetMyAppTextReader()
-                Dim NewValues As MyApplicationData = MyApplication.MyApplicationSerializer.Deserialize(Reader)
+                Dim NewValues As MyApplicationData = MyApplicationSerializer.Deserialize(Reader)
                 Reader.Close()
 
                 'Remember the old values
@@ -1249,7 +1249,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="OldValues"></param>
         ''' <param name="NewValues"></param>
         ''' <remarks></remarks>
-        Private Sub FireChangeNotificationsForNewValues(OldValues As MyApplication.MyApplicationData, NewValues As MyApplication.MyApplicationData)
+        Private Sub FireChangeNotificationsForNewValues(OldValues As MyApplicationData, NewValues As MyApplicationData)
             'AuthenticationMode
             If OldValues.AuthenticationMode <> NewValues.AuthenticationMode Then
                 OnPropertyChanged(s_PROPNAME_AuthenticationMode)
@@ -1300,7 +1300,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
-            Return Utils.NothingToEmptyString(String1).Equals(Utils.NothingToEmptyString(String2), StringComparison.Ordinal)
+            Return NothingToEmptyString(String1).Equals(NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
 
 
@@ -1477,7 +1477,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                                 CUInt(props3.OutputType),
                                 props3.MyType) = ApplicationTypes.WindowsApp
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
             End Try
             Return False
         End Function

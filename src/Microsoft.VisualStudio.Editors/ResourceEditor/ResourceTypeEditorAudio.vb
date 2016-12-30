@@ -17,10 +17,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _extensions() As String = {EXT_WAV}
 
         'The resource value type that is used for audio files
-        Friend Shared ReadOnly AudioFileValueType As System.Type = GetType(MemoryStream)
+        Friend Shared ReadOnly AudioFileValueType As Type = GetType(MemoryStream)
 
         'The resource value type that is used for binary files
-        Friend Shared ReadOnly BinaryFileValueType As System.Type = GetType(Byte())
+        Friend Shared ReadOnly BinaryFileValueType As Type = GetType(Byte())
 
         'The shared Thumbnail Image
         Private Shared s_thumbnailForAudio As Image
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetImageForThumbnail(Resource As IResource, background As Color) As Image
             ValidateResourceValue(Resource, GetType(Byte()), GetType(MemoryStream))
             If s_thumbnailForAudio Is Nothing Then
-                s_thumbnailForAudio = Common.Utils.GetImageFromImageService(KnownMonikers.Sound, 48, 48, background)
+                s_thumbnailForAudio = Common.GetImageFromImageService(KnownMonikers.Sound, 48, 48, background)
             End If
             Return s_thumbnailForAudio
         End Function
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, GetType(Byte()), GetType(MemoryStream))
-            Return SR.GetString(SR.RSE_Type_Wave)
+            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_Wave)
         End Function
 
 
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     SourceStream.Seek(0, SeekOrigin.Begin) 'Reset to beginning
                 Else
                     Debug.Fail("Unexpected audio resource type")
-                    Throw NewException(SR.GetString(SR.RSE_Err_UnexpectedResourceType), HelpIDs.Err_UnexpectedResourceType)
+                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType), HelpIDs.Err_UnexpectedResourceType)
                 End If
 
                 DestStream = New FileStream(FilePath, FileMode.Create, FileAccess.Write)
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
-            Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Audio), _extensions)
+            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Audio), _extensions)
         End Function
 
 
@@ -260,7 +260,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Windows metafile (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
-            Return CreateSingleDialogFilter(SR.GetString(SR.RSE_Filter_Audio), New String() {EXT_WAV})
+            Return CreateSingleDialogFilter(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Audio), New String() {EXT_WAV})
         End Function
 
 

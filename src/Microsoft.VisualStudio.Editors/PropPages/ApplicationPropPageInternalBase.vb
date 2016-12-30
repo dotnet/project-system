@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim propertyValue As Object = Nothing
 
             ' See if the project wants to override the defaults
-            If Me.ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID5.VSHPROPID_SupportedOutputTypes, propertyValue) = NativeMethods.S_OK Then
+            If ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID5.VSHPROPID_SupportedOutputTypes, propertyValue) = NativeMethods.S_OK Then
 
                 ' Verify that the value is of the expected type and add the output types to the combo box
                 Dim arrayValue As UInteger() = TryCast(propertyValue, UInteger())
@@ -121,9 +121,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             targetFrameworkComboBox.SelectedIndex = -1
 
             Try
-                Dim siteServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
-                VSErrorHandler.ThrowOnFailure(MyBase.ProjectHierarchy.GetSite(siteServiceProvider))
-                Dim sp As New Microsoft.VisualStudio.Shell.ServiceProvider(siteServiceProvider)
+                Dim siteServiceProvider As OLE.Interop.IServiceProvider = Nothing
+                VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetSite(siteServiceProvider))
+                Dim sp As New Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
                 If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     targetFrameworkSupported = True
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
                 Switches.TracePDProperties(TraceLevel.Warning, ": {0}", ex.ToString())
                 targetFrameworkSupported = False
                 targetFrameworkComboBox.Items.Clear()

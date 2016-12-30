@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If Not _replaced Then
                     _replaced = True
-                    DisplayNameValue = SR.ResourceManager.GetString(MyBase.DisplayNameValue)
+                    DisplayNameValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.ResourceManager.GetString(DisplayNameValue)
                 End If
                 Return DisplayNameValue
             End Get

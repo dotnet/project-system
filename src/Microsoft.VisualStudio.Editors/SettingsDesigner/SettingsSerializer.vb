@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' CONSIDER, should I throw here to prevent the designer loader from blowing up / loading only part
             ' of the file and clobber it on the next write
 
-            Dim xmlReader As System.Xml.XmlTextReader = New System.Xml.XmlTextReader(Reader)
+            Dim xmlReader As XmlTextReader = New XmlTextReader(Reader)
             xmlReader.Normalization = False
 
             XmlDoc.Load(xmlReader)
@@ -180,17 +180,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim RoamingAttr As XmlAttribute = SettingNode.Attributes("Roaming")
 
                 If typeAttr Is Nothing OrElse scopeAttr Is Nothing OrElse nameAttr Is Nothing Then
-                    Throw New SettingsSerializer.SettingsSerializerException(SR.GetString(SR.SD_Err_CantLoadSettingsFile))
+                    Throw New SettingsSerializerException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile))
                 End If
 
                 Dim newSettingName As String = Settings.CreateUniqueName(nameAttr.Value)
                 If Not Settings.IsValidName(newSettingName) Then
-                    Throw New SettingsSerializer.SettingsSerializerException(SR.GetString(SR.SD_ERR_InvalidIdentifier_1Arg, nameAttr.Value))
+                    Throw New SettingsSerializerException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidIdentifier_1Arg, nameAttr.Value))
                 End If
                 Dim Instance As DesignTimeSettingInstance = Settings.AddNew(typeAttr.Value, _
                                                                             newSettingName, _
                                                                             True)
-                If scopeAttr.Value.Equals(SettingsDesigner.ApplicationScopeName, System.StringComparison.Ordinal) Then
+                If scopeAttr.Value.Equals(SettingsDesigner.ApplicationScopeName, StringComparison.Ordinal) Then
                     Instance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
                 Else
                     Instance.SetScope(DesignTimeSettingInstance.SettingScope.User)
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             SettingsWriter.WriteProcessingInstruction("xml", "version='1.0' " & EncodingString)
             SettingsWriter.WriteStartElement("SettingsFile")
-            SettingsWriter.WriteAttributeString("xmlns", Nothing, SettingsSerializer.SettingsSchemaUri)
+            SettingsWriter.WriteAttributeString("xmlns", Nothing, SettingsSchemaUri)
             SettingsWriter.WriteAttributeString("CurrentProfile", SettingsDesigner.CultureInvariantDefaultProfileName)
             If Settings.Count > 0 Then
                 ' We only want to scribble this into the file if we actually have some settings to generate.
@@ -310,13 +310,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' If this is a connection string, we have different values at design time and runtim.
                 ' We serialize the design time value in the DesignTimeValue node, and add a Value node
                 ' that contain the value that's going to be used at runtime...
-                If String.Equals(Instance.SettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
+                If String.Equals(Instance.SettingTypeName, CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                     designTimeValue = Instance.SerializedValue
-                    Dim scs As Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString
-                    scs = DirectCast(valueSerializer.Deserialize(GetType(Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString),
+                    Dim scs As VSDesigner.VSDesignerPackage.SerializableConnectionString
+                    scs = DirectCast(valueSerializer.Deserialize(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString),
                                                                 designTimeValue,
                                                                 Globalization.CultureInfo.InvariantCulture),
-                                    Microsoft.VSDesigner.VSDesignerPackage.SerializableConnectionString)
+                                    VSDesigner.VSDesignerPackage.SerializableConnectionString)
                     If scs IsNot Nothing AndAlso scs.ConnectionString IsNot Nothing Then
                         defaultValue = scs.ConnectionString
                     Else

@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class DesignerListView
-        Inherits System.Windows.Forms.ListView
+        Inherits ListView
 
 
 
@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="m">Windows message passed in by window.</param>
         ''' <remarks>Implementation based on sources\ndp\fx\src\WinForms\Managed\System\WinForms\Control.cs</remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             ' We only handle the context menu specially.
             Select Case m.Msg
                 Case Interop.win.WM_CONTEXTMENU

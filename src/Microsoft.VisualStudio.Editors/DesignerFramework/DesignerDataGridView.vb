@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class DesignerDataGridView
-        Inherits System.Windows.Forms.DataGridView
+        Inherits DataGridView
 
 
 
@@ -54,10 +54,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            Me.BackColor = SystemColors.Window
-            Me.ForeColor = SystemColors.WindowText
+            BackColor = SystemColors.Window
+            ForeColor = SystemColors.WindowText
             ' Make sure the row headers have enough space to display the glyphs in HDPI
-            Me.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(MyBase.RowHeadersWidth)
+            RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(RowHeadersWidth)
         End Sub
 
         ''' <summary>
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="m">Windows message passed in by window.</param>
         ''' <remarks>Implementation based on sources\ndp\fx\src\WinForms\Managed\System\WinForms\Control.cs</remarks>
-        Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Protected Overrides Sub WndProc(ByRef m As Message)
             ' We only handle the context menu specially.
             Select Case m.Msg
                 Case Interop.win.WM_CONTEXTMENU
@@ -102,10 +102,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
-            Dim ht As HitTestInfo = Me.HitTest(e.X, e.Y)
+        Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
+            Dim ht As HitTestInfo = HitTest(e.X, e.Y)
 
-            If (Control.ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
+            If (ModifierKeys And (Keys.Control Or Keys.Shift)) <> 0 Then
                 _inMultiSelectionMode = True
             End If
 
@@ -117,23 +117,23 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Try
                         If ht.Type = DataGridViewHitTestType.Cell Then
                             ' Select new cell 
-                            Dim clickedCell As DataGridViewCell = Me.Rows(ht.RowIndex).Cells(ht.ColumnIndex)
+                            Dim clickedCell As DataGridViewCell = Rows(ht.RowIndex).Cells(ht.ColumnIndex)
                             If Not clickedCell.Selected Then
-                                Me.CurrentCell = clickedCell
+                                CurrentCell = clickedCell
                             End If
                         ElseIf ht.Type = DataGridViewHitTestType.RowHeader Then
                             If IsCurrentCellInEditMode _
-                                OrElse (Not _inMultiSelectionMode AndAlso Not Me.Rows(ht.RowIndex).Selected) _
+                                OrElse (Not _inMultiSelectionMode AndAlso Not Rows(ht.RowIndex).Selected) _
                             Then
                                 ' Clear the current cell so we make sure that we have validated it...
-                                Me.CurrentCell = Nothing
+                                CurrentCell = Nothing
                                 ClearSelection()
                             End If
-                            Me.Rows(ht.RowIndex).Selected = True
+                            Rows(ht.RowIndex).Selected = True
                         Else
                             ' We didn't click on any cell - let's select no cell. This makes sure that we commit
                             ' the current cell before we show the context menu
-                            Me.CurrentCell = Nothing
+                            CurrentCell = Nothing
                         End If
                     Catch ex As InvalidOperationException
                         ' We don't really care if we failed to set the current cell... If we didn't
@@ -149,11 +149,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         If e.Button = Windows.Forms.MouseButtons.Left Then
                             If ht.Type = DataGridViewHitTestType.None Then
                                 ' Clear the current cell so we make sure that we have validated it...
-                                Me.CurrentCell = Nothing
+                                CurrentCell = Nothing
                             ElseIf ht.Type = DataGridViewHitTestType.RowHeader Then
-                                If ht.RowIndex = Me.CurrentCell.RowIndex Then
-                                    Me.CurrentCell = Nothing
-                                    Me.Rows(ht.RowIndex).Selected = True
+                                If ht.RowIndex = CurrentCell.RowIndex Then
+                                    CurrentCell = Nothing
+                                    Rows(ht.RowIndex).Selected = True
                                 ElseIf Not IsCurrentCellDirty Then
                                     EndEdit(DataGridViewDataErrorContexts.CurrentCellChange)
                                 End If
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overrides Function ProcessKeyMessage(ByRef m As System.Windows.Forms.Message) As Boolean
+        Protected Overrides Function ProcessKeyMessage(ByRef m As Message) As Boolean
             Dim ke As New KeyEventArgs(CType(CInt(m.WParam) Or ModifierKeys, Keys))
 
             If _
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <System.Security.Permissions.UIPermission(System.Security.Permissions.SecurityAction.LinkDemand, Window:=System.Security.Permissions.UIPermissionWindow.AllWindows)> _
+        <Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)> _
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 
@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Inherits DataGridViewComboBoxCell
 
             Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
-                Dim dfxdgv As DesignerDataGridView = TryCast(Me.DataGridView, DesignerDataGridView)
+                Dim dfxdgv As DesignerDataGridView = TryCast(DataGridView, DesignerDataGridView)
                 Dim e As New System.ComponentModel.CancelEventArgs(False)
 
                 If dfxdgv IsNot Nothing Then
@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Inherits DataGridViewTextBoxCell
 
             Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
-                Dim dfxdgv As DesignerDataGridView = TryCast(Me.DataGridView, DesignerDataGridView)
+                Dim dfxdgv As DesignerDataGridView = TryCast(DataGridView, DesignerDataGridView)
                 Dim e As New System.ComponentModel.CancelEventArgs(False)
 
                 If dfxdgv IsNot Nothing Then
