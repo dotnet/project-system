@@ -165,12 +165,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
 
                     childView = New ErrorControl()
-                    childView.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, message)
+                    childView.Text = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, message)
                 End Try
 
                 If (childView Is Nothing) Then
                     childView = New ErrorControl()
-                    childView.Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, "")
+                    childView.Text = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoading_Msg, "")
                 End If
 
                 'If we haven't added the viewChild to m_View yet, do so now.

@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     If ExistingDocData Is Nothing Then
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Sub
 

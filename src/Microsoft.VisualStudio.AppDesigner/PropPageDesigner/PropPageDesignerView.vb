@@ -1147,7 +1147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(SelectedConfigItem.Name, SelectedPlatformItem.Name, Cfg)) Then
                         ConfigObjects = New Object() {Cfg}
                     Else
-                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                     End If
                 Else
                     'Use the DTE to find all the configs with a certain config name or platform name, then
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(DTEConfig.ConfigurationName, DTEConfig.PlatformName, Cfg)) Then
                             ConfigObjects(i) = Cfg
                         Else
-                            ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                             ConfigObjects = Nothing
                             Exit For
                         End If

@@ -777,7 +777,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Get
                     Select Case SelectionType
                         Case SelectionTypes.Active
-                            Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ActiveConfigOrPlatformFormatString_1Arg, Name)
+                            Return My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ActiveConfigOrPlatformFormatString_1Arg, Name)
                         Case SelectionTypes.All, SelectionTypes.Normal
                             Return Name
                         Case Else

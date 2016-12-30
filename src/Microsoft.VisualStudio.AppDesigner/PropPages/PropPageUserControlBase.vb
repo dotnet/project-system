@@ -2254,7 +2254,7 @@ NextControl:
 #End If
                 End If
             Next _controlData
-            Description = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_UndoTransaction, New String() {PropertyNames})
+            Description = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_UndoTransaction, New String() {PropertyNames})
             Return Description
         End Function
 
