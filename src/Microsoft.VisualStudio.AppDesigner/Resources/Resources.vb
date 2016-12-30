@@ -30,37 +30,6 @@ Namespace My.Resources
 
     End Class
 
-    ''' <summary>
-    ''' String resource values for MS.VS.Editors.dll.  To edit the strings in this class,
-    '''   edit the Microsoft.VisualStudio.Editors.resx file.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    Friend Class Designer
-        Inherits Microsoft_VisualStudio_AppDesigner_Designer
-
-        ''' <summary>
-        ''' These are some string resource IDs (just the resource ID name, not the 
-        '''   actual string value).  These are not automatically kept up to date from
-        '''   the .resx file, so they must be edited manually.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Class ConstantResourceIDs
-
-            'IMPORTANT: These must be kept manually up to date, they are not automatically
-            '  synchronized with the .resx file.
-
-            Public Const PPG_WebReferenceNameDescription As String = "PPG_WebReferenceNameDescription"
-            Public Const PPG_ServiceReferenceNamespaceDescription As String = "PPG_ServiceReferenceNamespaceDescription"
-            Public Const PPG_UrlBehaviorName As String = "PPG_UrlBehaviorName"
-            Public Const PPG_UrlBehaviorDescription As String = "PPG_UrlBehaviorDescription"
-            Public Const PPG_WebReferenceUrlName As String = "PPG_WebReferenceUrlName"
-            Public Const PPG_WebReferenceUrlDescription As String = "PPG_WebReferenceUrlDescription"
-            Public Const PPG_ServiceReferenceUrlName As String = "PPG_ServiceReferenceUrlName"
-            Public Const PPG_ServiceReferenceUrlDescription As String = "PPG_ServiceReferenceUrlDescription"
-
-        End Class
-    End Class
 End Namespace
 
 
