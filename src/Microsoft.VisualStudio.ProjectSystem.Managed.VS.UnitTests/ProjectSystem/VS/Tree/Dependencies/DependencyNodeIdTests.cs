@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Web;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -21,45 +22,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
-        [InlineData("MyProviderType", "MyItemSpec", "MyItemType", "MyUniqueToken",
-                    "file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]")]
-        [InlineData("MyProviderType", "MyItemSpec", "MyItemType", null,
-                    "file:///[MyProviderType;MyItemSpec;MyItemType;]")]
-        [InlineData("MyProviderType", "MyItemSpec", "", null,
-                    "file:///[MyProviderType;MyItemSpec;;]")]
-        [InlineData("MyProviderType", null, null, null,
-                    "file:///[MyProviderType;;;]")]
-        [InlineData("MyProviderType", null, "MyItemType", null,
-                    "file:///[MyProviderType;;MyItemType;]")]
-        [InlineData("MyProviderType", null, null, "MyUniqueToken",
-                    "file:///[MyProviderType;;;MyUniqueToken]")]
+        [InlineData("MyProviderType", "MyItemSpec", "MyItemType", "MyUniqueToken", "MyContextProject",
+                    "file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken;MyContextProject]")]
+        [InlineData("MyProviderType", "MyItemSpec", "MyItemType", null, null,
+                    "file:///[MyProviderType;MyItemSpec;MyItemType;;]")]
+        [InlineData("MyProviderType", "MyItemSpec", "", null, null,
+                    "file:///[MyProviderType;MyItemSpec;;;]")]
+        [InlineData("MyProviderType", null, null, null, null,
+                    "file:///[MyProviderType;;;;]")]
+        [InlineData("MyProviderType", null, "MyItemType", null, null,
+                    "file:///[MyProviderType;;MyItemType;;]")]
+        [InlineData("MyProviderType", null, null, "MyUniqueToken", null,
+                    "file:///[MyProviderType;;;MyUniqueToken;]")]
         public void DependencyNodeId_ToString(string providerType,
-                                                   string itemSpec,
-                                                   string itemType,
-                                                   string uniqueToken,
-                                                   string expectedResult)
+                                              string itemSpec,
+                                              string itemType,
+                                              string uniqueToken,
+                                              string contextProject,
+                                              string expectedResult)
         {
             var id = new DependencyNodeId(providerType, itemSpec, itemType, uniqueToken);
+            if (!string.IsNullOrEmpty(contextProject))
+            {
+                id.ContextProject = contextProject;
+            }
 
-            Assert.Equal(expectedResult, id.ToString());
+            Assert.Equal(HttpUtility.UrlEncode(expectedResult), id.ToString());
         }
 
         [Theory]
-        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", "c:/otherfolder/otherpath",
-                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;c:\otherfolder\otherpath]")]
-        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", null,
-                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;]")]
-        [InlineData("MyProviderType", null, null, null,
-                    "file:///[MyProviderType;;;]")]
+        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", "c:/otherfolder/otherpath", @"c:/mycontextproject/path",
+                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;c:\otherfolder\otherpath;c:\mycontextproject\path]")]
+        [InlineData("MyProviderType", @"c:/somepath/xxx", "MyItemType", null, null,
+                    @"file:///[MyProviderType;c:\somepath\xxx;MyItemType;;]")]
+        [InlineData("MyProviderType", null, null, null, null,
+                    "file:///[MyProviderType;;;;]")]
         public void DependencyNodeId_ToNormalizedId(string providerType,
                                                    string itemSpec,
                                                    string itemType,
                                                    string uniqueToken,
+                                                   string contextProject,
                                                    string expectedResult)
         {
             var id = new DependencyNodeId(providerType, itemSpec, itemType, uniqueToken);
+            if (!string.IsNullOrEmpty(contextProject))
+            {
+                id.ContextProject = contextProject;
+            }
 
-            Assert.Equal(expectedResult, id.ToNormalizedId().ToString());
+            Assert.Equal(HttpUtility.UrlEncode(expectedResult), id.ToNormalizedId().ToString());
         }
 
         [Theory]

@@ -99,8 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,
                                           itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType,
-                                          uniqueToken: projectPath);
-
+                                          uniqueToken: null)
+            {
+                ContextProject = projectPath
+            };
             return CreateDependencyNode(id, priority, properties, resolved);
         }
 
@@ -147,12 +149,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            if (string.IsNullOrEmpty(nodeId.UniqueToken))
+            if (string.IsNullOrEmpty(nodeId.ContextProject))
             {
                 return node;
             }
 
-            var projectPath = nodeId.UniqueToken;
+            var projectPath = nodeId.ContextProject;
             var projectContext = ProjectContextProvider.GetProjectContext(projectPath);
             if (projectContext == null)
             {
