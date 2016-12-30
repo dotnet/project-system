@@ -478,11 +478,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate --skip-backup -s -p &quot;{1}&quot; -x &quot;{2}&quot;&apos; exited with error code {3}..
+        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate --skip-backup -s -x &quot;{1}&quot; &quot;{2}&quot; -r &quot;{3}&quot; --format-report-file-json&apos; exited with error code {4}..
         /// </summary>
         internal static string XprojMigrationFailed {
             get {
                 return ResourceManager.GetString("XprojMigrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not read post-migration report at &apos;{0}&apos;..
+        /// </summary>
+        internal static string XprojMigrationFailedCannotReadReport {
+            get {
+                return ResourceManager.GetString("XprojMigrationFailedCannotReadReport", resourceCulture);
             }
         }
         

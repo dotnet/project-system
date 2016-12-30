@@ -247,7 +247,7 @@ In order to debug this project, add an executable project to this solution which
     <value>Expected to find migrated cpsroj in {0}, but did not find any.</value>
   </data>
   <data name="XprojMigrationFailed" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</value>
+    <value>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -x "{1}" "{2}" -r "{3}" --format-report-file-json' exited with error code {4}.</value>
   </data>
   <data name="MigrationBackupFile" xml:space="preserve">
     <value>Backing up {0} to {1}.</value>
@@ -269,5 +269,8 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="PackSelectedProjectCommand" xml:space="preserve">
     <value>&amp;Pack {0}</value>
+  </data>
+  <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
+    <value>Could not read post-migration report at '{0}'.</value>
   </data>
 </root>
