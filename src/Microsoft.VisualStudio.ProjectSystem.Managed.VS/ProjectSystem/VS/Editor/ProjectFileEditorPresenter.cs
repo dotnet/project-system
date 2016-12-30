@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     /// This class maintains the state machine that controls the in-memory project file editor. It manages
     /// the subscriptions to project events and the current state of the buffer.
     /// </summary>
-    [Export(typeof(IEditorStateModel))]
-    internal class EditorStateModel : IEditorStateModel
+    [Export(typeof(IProjectFileEditorPresenter))]
+    internal class ProjectFileEditorPresenter : IProjectFileEditorPresenter
     {
         /// <summary>
         /// The different states that the editor can be in.
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private ITextBufferStateListener _textBufferStateListener;
 
         [ImportingConstructor]
-        public EditorStateModel(IProjectThreadingService threadingService,
+        public ProjectFileEditorPresenter(IProjectThreadingService threadingService,
             UnconfiguredProject unconfiguredProject,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IVsShellUtilitiesHelper shellHelper,

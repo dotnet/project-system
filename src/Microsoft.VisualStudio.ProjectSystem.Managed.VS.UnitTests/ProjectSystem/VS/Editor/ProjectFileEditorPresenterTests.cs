@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
@@ -13,14 +12,14 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
     [ProjectSystemTrait]
-    public class EditorStateModelTests
+    public class ProjectFileEditorPresenterTests
     {
         private static readonly Guid XmlFactoryGuid = Guid.Parse("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
-        public void EditorStateModel_NullThreadingService_Throws()
+        public void ProjectFileEditorPresenter_NullThreadingService_Throws()
         {
-            Assert.Throws<ArgumentNullException>("threadingService", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("threadingService", () => new ProjectFileEditorPresenter(
                 null,
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -32,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullUnconfiguredProject_Throws()
+        public void ProjectFileEditorPresenter_NullUnconfiguredProject_Throws()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 null,
                 IServiceProviderFactory.Create(),
@@ -46,9 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullServiceProvider_Throws()
+        public void ProjectFileEditorPresenter_NullServiceProvider_Throws()
         {
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("serviceProvider", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 null,
@@ -60,9 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullShellHelper_Throws()
+        public void ProjectFileEditorPresenter_NullShellHelper_Throws()
         {
-            Assert.Throws<ArgumentNullException>("shellHelper", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("shellHelper", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -74,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullProjectFileModelWatcherFactory_Throws()
+        public void ProjectFileEditorPresenter_NullProjectFileModelWatcherFactory_Throws()
         {
-            Assert.Throws<ArgumentNullException>("projectFileModelWatcherFactory", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("projectFileModelWatcherFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -88,9 +87,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullTextBufferListenerFactory_Throws()
+        public void ProjectFileEditorPresenter_NullTextBufferListenerFactory_Throws()
         {
-            Assert.Throws<ArgumentNullException>("textBufferListenerFactory", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("textBufferListenerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -102,9 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullFrameEventsListenerFactory_Throws()
+        public void ProjectFileEditorPresenter_NullFrameEventsListenerFactory_Throws()
         {
-            Assert.Throws<ArgumentNullException>("frameEventsListenerFactory", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("frameEventsListenerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -116,9 +115,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void EditorStateModel_NullTextBufferManagerFactory_Throws()
+        public void ProjectFileEditorPresenter_NullTextBufferManagerFactory_Throws()
         {
-            Assert.Throws<ArgumentNullException>("textBufferManagerFactory", () => new EditorStateModel(
+            Assert.Throws<ArgumentNullException>("textBufferManagerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -130,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task EditorStateModel_OpenEditor_SetsUpListeners()
+        public async Task ProjectFileEditorPresenter_OpenEditor_SetsUpListeners()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -148,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var windowFrame = IVsWindowFrameFactory.Create();
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -160,18 +159,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             // Mock textBufferManager.InitializeBufferAsync so it can verify the editor is actually in Initializing
             Mock.Get(textBufferManager).Setup(t => t.InitializeBufferAsync()).Callback(() =>
-                Assert.Equal(EditorStateModel.EditorState.Initializing, editorState.CurrentState)).Returns(Task.CompletedTask);
+                Assert.Equal(ProjectFileEditorPresenter.EditorState.Initializing, editorState.CurrentState)).Returns(Task.CompletedTask);
 
             await editorState.OpenEditorAsync();
             Mock.Get(textBufferManager).Verify(t => t.InitializeBufferAsync(), Times.Once);
             Mock.Get(textBufferListener).Verify(t => t.InitializeListenerAsync(filePath), Times.Once);
             Mock.Get(frameListener).Verify(f => f.InitializeEventsAsync(windowFrame), Times.Once);
             Mock.Get(projectFileWatcher).Verify(p => p.InitializeModelWatcher(), Times.Once);
-            Assert.Equal(editorState.CurrentState, EditorStateModel.EditorState.EditorOpen);
+            Assert.Equal(editorState.CurrentState, ProjectFileEditorPresenter.EditorState.EditorOpen);
         }
 
         [Fact]
-        public async Task EditorStateModel_MultipleOpen_CallsShowSecondTime()
+        public async Task ProjectFileEditorPresenter_MultipleOpen_CallsShowSecondTime()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -189,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var windowFrame = IVsWindowFrameFactory.Create();
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -209,11 +208,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Mock.Get(textBufferListener).Verify(t => t.InitializeListenerAsync(filePath), Times.Once);
             Mock.Get(frameListener).Verify(f => f.InitializeEventsAsync(windowFrame), Times.Once);
             Mock.Get(projectFileWatcher).Verify(p => p.InitializeModelWatcher(), Times.Once);
-            Assert.Equal(editorState.CurrentState, EditorStateModel.EditorState.EditorOpen);
+            Assert.Equal(editorState.CurrentState, ProjectFileEditorPresenter.EditorState.EditorOpen);
         }
 
         [Fact]
-        public async Task EditorStateModel_CloseWindowSuccess_ReturnsContinueClose()
+        public async Task ProjectFileEditorPresenter_CloseWindowSuccess_ReturnsContinueClose()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -235,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             });
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -251,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task EditorStateModel_CloseWindowFail_ReturnsStopClose()
+        public async Task ProjectFileEditorPresenter_CloseWindowFail_ReturnsStopClose()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -273,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             });
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -289,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task EditorStateModel_DisposeWithoutOpen_DoesNothing()
+        public async Task ProjectFileEditorPresenter_DisposeWithoutOpen_DoesNothing()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -311,7 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             });
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -329,7 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task EditorStateModel_DisposeWithOpen_DisposesListeners()
+        public async Task ProjectFileEditorPresenter_DisposeWithOpen_DisposesListeners()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -351,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             });
             var shellUtilities = IVsShellUtilitiesHelperFactory.ImplementOpenDocument(filePath, XmlFactoryGuid, Guid.Empty, windowFrame);
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -363,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             // Mock dispose for one of the listeners so it can verify the editor is actually in EditorClosing
             Mock.Get(textBufferListener).Setup(t => t.Dispose()).Callback(() =>
-                Assert.Equal(EditorStateModel.EditorState.EditorClosing, editorState.CurrentState));
+                Assert.Equal(ProjectFileEditorPresenter.EditorState.EditorClosing, editorState.CurrentState));
 
             await editorState.OpenEditorAsync();
             await editorState.DisposeEditorAsync();
@@ -371,11 +370,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Mock.Get(textBufferListener).Verify(t => t.Dispose(), Times.Once);
             Mock.Get(frameListener).Verify(f => f.DisposeAsync(), Times.Once);
             Mock.Get(projectFileWatcher).Verify(p => p.Dispose(), Times.Once);
-            Assert.Equal(EditorStateModel.EditorState.NoEditor, editorState.CurrentState);
+            Assert.Equal(ProjectFileEditorPresenter.EditorState.NoEditor, editorState.CurrentState);
         }
 
         [Fact]
-        public async Task EditorStateModel_UpdateProjectFile_SchedulesUpdate()
+        public async Task ProjectFileEditorPresenter_UpdateProjectFile_SchedulesUpdate()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -395,7 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 threadingService,
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -410,7 +409,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var textBufferMock = Mock.Get(textBufferManager);
             textBufferMock.Setup(t => t.ResetBufferAsync()).Callback(() =>
             {
-                Assert.Equal(EditorStateModel.EditorState.BufferUpdateScheduled, editorState.CurrentState);
+                Assert.Equal(ProjectFileEditorPresenter.EditorState.BufferUpdateScheduled, editorState.CurrentState);
                 textBufferMock.Verify(t => t.SetReadOnlyAsync(true), Times.Once);
             }).Returns(Task.CompletedTask);
 
@@ -426,12 +425,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Theory]
-        [InlineData((int)EditorStateModel.EditorState.NoEditor)]
-        [InlineData((int)EditorStateModel.EditorState.EditorClosing)]
-        [InlineData((int)EditorStateModel.EditorState.WritingProjectFile)]
-        public void EditorStateModel_UpdateProjectFileIncorrectEditorState_DoesNothing(int state)
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.NoEditor)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.EditorClosing)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.WritingProjectFile)]
+        public void ProjectFileEditorPresenter_UpdateProjectFileIncorrectEditorState_DoesNothing(int state)
         {
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 IProjectThreadingServiceFactory.Create(),
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -441,14 +440,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 ExportFactoryFactory.CreateInstance<IFrameOpenCloseListener>(),
                 ExportFactoryFactory.CreateInstance<ITextBufferManager>())
             {
-                CurrentState = (EditorStateModel.EditorState)state
+                CurrentState = (ProjectFileEditorPresenter.EditorState)state
             };
 
             Assert.Null(editorState.ScheduleProjectFileUpdate());
         }
 
         [Fact]
-        public async Task EditorStateModel_SaveProjectFile_SavesFile()
+        public async Task ProjectFileEditorPresenter_SaveProjectFile_SavesFile()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -468,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 threadingService,
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -482,7 +481,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             // Implement textBufferManager.SaveAsync to verify the editor is in WritingProjectFile while saving
             textBufferMock.Setup(t => t.SaveAsync()).Callback(() =>
             {
-                Assert.Equal(EditorStateModel.EditorState.WritingProjectFile, editorState.CurrentState);
+                Assert.Equal(ProjectFileEditorPresenter.EditorState.WritingProjectFile, editorState.CurrentState);
                 textBufferMock.Verify(t => t.SetReadOnlyAsync(true), Times.Once);
             }).Returns(Task.CompletedTask);
 
@@ -495,12 +494,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Theory]
-        [InlineData((int)EditorStateModel.EditorState.BufferUpdateScheduled)]
-        [InlineData((int)EditorStateModel.EditorState.EditorClosing)]
-        [InlineData((int)EditorStateModel.EditorState.Initializing)]
-        [InlineData((int)EditorStateModel.EditorState.NoEditor)]
-        [InlineData((int)EditorStateModel.EditorState.WritingProjectFile)]
-        public async Task EditorStateModel_SaveProjectFile_OnlySavesInEditorOpen(int state)
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.BufferUpdateScheduled)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.EditorClosing)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.Initializing)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.NoEditor)]
+        [InlineData((int)ProjectFileEditorPresenter.EditorState.WritingProjectFile)]
+        public async Task ProjectFileEditorPresenter_SaveProjectFile_OnlySavesInEditorOpen(int state)
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -520,7 +519,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var editorState = new EditorStateModelTester(
+            var editorState = new ProjectFileEditorPresenterTester(
                 threadingService,
                 UnconfiguredProjectFactory.Create(),
                 IServiceProviderFactory.Create(),
@@ -530,10 +529,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 frameListenerFactory,
                 textBufferManagerFactory)
             {
-                CurrentState = (EditorStateModel.EditorState)state
+                CurrentState = (ProjectFileEditorPresenter.EditorState)state
             };
 
-            await editorState.SaveProjectFileAsync();
+            // When SaveAsync is called, we should hit an assert in the NoEditor case.
+            bool assertHit = false;
+            try
+            {
+                await editorState.SaveProjectFileAsync();
+            }
+            catch (Exception)
+            {
+                assertHit = true;
+            }
+
+            Assert.True(state != (int)ProjectFileEditorPresenter.EditorState.NoEditor || assertHit);
 
             var textBufferMock = Mock.Get(textBufferManager);
 
@@ -542,11 +552,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         /// <summary>
-        /// Simple subclass of EditorStateModel that exposes the current state so we can verify it.
+        /// Simple subclass of <see cref="ProjectFileEditorPresenter"/> that exposes the current state so we can verify it.
         /// </summary>
-        private class EditorStateModelTester : EditorStateModel
+        private class ProjectFileEditorPresenterTester : ProjectFileEditorPresenter
         {
-            public EditorStateModelTester(IProjectThreadingService threadingService,
+            public ProjectFileEditorPresenterTester(IProjectThreadingService threadingService,
                 UnconfiguredProject unconfiguredProject,
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                 IVsShellUtilitiesHelper shellHelper,

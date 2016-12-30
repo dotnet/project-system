@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
-    interface IEditorStateModel
+    interface IProjectFileEditorPresenter
     {
         Task OpenEditorAsync();
 

@@ -18,13 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [Fact]
         public void ProjectFileModelWatcher_NullUnconfiguredProject_Throws()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new ProjectFileModelWatcher(IEditorStateModelFactory.Create(), null));
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new ProjectFileModelWatcher(IProjectFileEditorPresenterFactory.Create(), null));
         }
 
         [Fact]
         public void ProjectFileModelWatcher_Initialize_SubscribesAndCausesCallback()
         {
-            var editorState = IEditorStateModelFactory.Create();
+            var editorState = IProjectFileEditorPresenterFactory.Create();
             var unconfiguredProject = UnconfiguredProjectFactory.CreateWithUnconfiguredProjectAdvanced();
 
             var watcher = new ProjectFileModelWatcher(editorState, unconfiguredProject);
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [Fact]
         public void ProjectFileModelWatcher_Dispose_Unsubscribes()
         {
-            var editorState = IEditorStateModelFactory.Create();
+            var editorState = IProjectFileEditorPresenterFactory.Create();
             var unconfiguredProject = UnconfiguredProjectFactory.CreateWithUnconfiguredProjectAdvanced();
 
             var watcher = new ProjectFileModelWatcher(editorState, unconfiguredProject);

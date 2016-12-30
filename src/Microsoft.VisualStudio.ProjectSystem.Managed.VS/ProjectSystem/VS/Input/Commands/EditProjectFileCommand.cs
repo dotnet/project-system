@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IEditorStateModel _editorState;
+        private readonly Lazy<IProjectFileEditorPresenter> _editorState;
 
         [ImportingConstructor]
-        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, IEditorStateModel editorState)
+        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, Lazy<IProjectFileEditorPresenter> editorState)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
             Requires.NotNull(editorState, nameof(editorState));
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
             if (!ShouldHandle(node)) return false;
-            await _editorState.OpenEditorAsync().ConfigureAwait(false);
+            await _editorState.Value.OpenEditorAsync().ConfigureAwait(false);
             return true;
         }
 

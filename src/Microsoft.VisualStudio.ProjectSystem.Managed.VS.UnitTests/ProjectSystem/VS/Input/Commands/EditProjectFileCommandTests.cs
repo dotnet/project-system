@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void EditProjectFileCommand_NullProject_Throws()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, IEditorStateModelFactory.Create()));
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, IProjectFileEditorPresenterFactory.CreateLazy()));
         }
 
         [Fact]
@@ -40,7 +40,7 @@ Root (flags: {ProjectRoot})
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
 
-            var command = new EditProjectFileCommand(unconfiguredProject, IEditorStateModelFactory.Create());
+            var command = new EditProjectFileCommand(unconfiguredProject, IProjectFileEditorPresenterFactory.CreateLazy());
 
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
@@ -60,7 +60,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var command = new EditProjectFileCommand(unconfiguredProject, IEditorStateModelFactory.Create());
+            var command = new EditProjectFileCommand(unconfiguredProject, IProjectFileEditorPresenterFactory.CreateLazy());
 
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.False(result.Handled);
@@ -77,9 +77,9 @@ Root (flags: {ProjectRoot})
             var nodes = ImmutableHashSet.Create(tree);
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
-            var editorStateModel = IEditorStateModelFactory.Create();
+            var editorStateModel = IProjectFileEditorPresenterFactory.Create();
 
-            var command = new EditProjectFileCommand(unconfiguredProject, editorStateModel);
+            var command = new EditProjectFileCommand(unconfiguredProject, new Lazy<IProjectFileEditorPresenter>(() => editorStateModel));
 
             var result = await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
             Assert.True(result);
@@ -98,9 +98,9 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var editorStateModel = IEditorStateModelFactory.Create();
+            var editorStateModel = IProjectFileEditorPresenterFactory.Create();
 
-            var command = new EditProjectFileCommand(unconfiguredProject, editorStateModel);
+            var command = new EditProjectFileCommand(unconfiguredProject, new Lazy<IProjectFileEditorPresenter>(() => editorStateModel));
 
             var result = await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
             Assert.False(result);

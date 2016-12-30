@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [Fact]
         public void FrameOpenCloseListener_NullServiceProvider_Throws()
         {
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => new FrameOpenCloseListener(null, IEditorStateModelFactory.Create(),
+            Assert.Throws<ArgumentNullException>("serviceProvider", () => new FrameOpenCloseListener(null, IProjectFileEditorPresenterFactory.Create(),
                 IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create()));
         }
 
@@ -29,14 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         public void FrameOpenCloseListener_NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new FrameOpenCloseListener(IServiceProviderFactory.Create(),
-                IEditorStateModelFactory.Create(), null, UnconfiguredProjectFactory.Create()));
+                IProjectFileEditorPresenterFactory.Create(), null, UnconfiguredProjectFactory.Create()));
         }
 
         [Fact]
         public void FrameOpenCloseListener_NullProject_Throws()
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new FrameOpenCloseListener(IServiceProviderFactory.Create(),
-                IEditorStateModelFactory.Create(), IProjectThreadingServiceFactory.Create(), null));
+                IProjectFileEditorPresenterFactory.Create(), IProjectThreadingServiceFactory.Create(), null));
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             await Assert.ThrowsAsync<ArgumentNullException>("frame", async () =>
             {
-                var listener = new FrameOpenCloseListener(IServiceProviderFactory.Create(), IEditorStateModelFactory.Create(),
+                var listener = new FrameOpenCloseListener(IServiceProviderFactory.Create(), IProjectFileEditorPresenterFactory.Create(),
                     IProjectThreadingServiceFactory.Create(), UnconfiguredProjectFactory.Create());
                 await listener.InitializeEventsAsync(null);
             });
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var serviceProvider = IServiceProviderFactory.ImplementGetService(ServiceTypeChecker(uiShell, solution));
 
             var listener = new FrameOpenCloseListener(serviceProvider,
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create());
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var serviceProvider = IServiceProviderFactory.ImplementGetService(ServiceTypeChecker(uiShell, solution));
 
             var listener = new FrameOpenCloseListener(serviceProvider,
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 new IProjectThreadingServiceMock(),
                 UnconfiguredProjectFactory.Create());
 
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(ServiceTypeChecker(uiShell, solution));
 
-            var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(true);
+            var editorState = IProjectFileEditorPresenterFactory.ImplementCloseWindowAsync(true);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(ServiceTypeChecker(uiShell, solution));
 
-            var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(false);
+            var editorState = IProjectFileEditorPresenterFactory.ImplementCloseWindowAsync(false);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(ServiceTypeChecker(uiShell, solution));
 
-            var editorState = IEditorStateModelFactory.ImplementCloseWindowAsync(false);
+            var editorState = IProjectFileEditorPresenterFactory.ImplementCloseWindowAsync(false);
 
             var projPath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projPath);

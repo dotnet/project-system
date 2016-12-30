@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         public void TempFileBufferStateListener_NullEditorAdaptersFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("editorAdaptersService", () => new TempFileBufferStateListener(
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 null,
                 ITextDocumentFactoryServiceFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         public void TempFileBufferStateListener_NullTextDocumentFactoryService_Throws()
         {
             Assert.Throws<ArgumentNullException>("textDocumentFactoryService", () => new TempFileBufferStateListener(
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 null,
                 IProjectThreadingServiceFactory.Create(),
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         public void TempFileBufferStateListener_NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new TempFileBufferStateListener(
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 null,
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         public void TempFileBufferStateListener_NullShellUtilities_Throws()
         {
             Assert.Throws<ArgumentNullException>("shellUtilities", () => new TempFileBufferStateListener(
-                IEditorStateModelFactory.Create(),
+                IProjectFileEditorPresenterFactory.Create(),
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
                 ITextDocumentFactoryServiceFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
             var textDocFactoryService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDoc, true);
-            var editorModel = IEditorStateModelFactory.Create();
+            var editorModel = IProjectFileEditorPresenterFactory.Create();
 
             var watcher = new TempFileBufferStateListener(editorModel, editorAdaptersService, textDocFactoryService, new IProjectThreadingServiceMock(), shellUtilities,
                 IServiceProviderFactory.Create());
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
             var textDocFactoryService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDoc, true);
-            var editorModel = IEditorStateModelFactory.Create();
+            var editorModel = IProjectFileEditorPresenterFactory.Create();
 
             var watcher = new TempFileBufferStateListener(editorModel, editorAdaptersService, textDocFactoryService, new IProjectThreadingServiceMock(), shellUtilities,
                 IServiceProviderFactory.Create());
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
             var editorAdaptersService = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
             var textDoc = ITextDocumentFactory.Create();
             var textDocFactoryService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDoc, true);
-            var editorModel = IEditorStateModelFactory.Create();
+            var editorModel = IProjectFileEditorPresenterFactory.Create();
 
             var watcher = new TempFileBufferStateListener(editorModel, editorAdaptersService, textDocFactoryService, new IProjectThreadingServiceMock(), shellUtilities,
                 IServiceProviderFactory.Create());

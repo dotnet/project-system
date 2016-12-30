@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
     [Export(typeof(ITextBufferStateListener))]
     internal class TempFileBufferStateListener : OnceInitializedOnceDisposedAsync, ITextBufferStateListener
     {
-        private readonly IEditorStateModel _editorState;
+        private readonly IProjectFileEditorPresenter _editorState;
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
         private readonly IProjectThreadingService _threadingService;
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
 
         [ImportingConstructor]
         public TempFileBufferStateListener(
-            IEditorStateModel editorState,
+            IProjectFileEditorPresenter editorState,
             IVsEditorAdaptersFactoryService editorAdaptersService,
             ITextDocumentFactoryService textDocumentFactoryService,
             IProjectThreadingService threadingService,
