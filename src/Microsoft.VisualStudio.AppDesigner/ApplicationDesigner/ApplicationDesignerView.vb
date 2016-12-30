@@ -304,7 +304,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)
                     Dim pPackage As IVsPackage = Nothing
                     If shell IsNot Nothing Then
-                        Dim hr As Integer = shell.IsPackageLoaded(New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.VBPackage_GUID), pPackage)
+                        Dim hr As Integer = shell.IsPackageLoaded(New Guid(My.Resources.Designer.VBPackage_GUID), pPackage)
                         Debug.Assert(NativeMethods.Succeeded(hr) AndAlso pPackage IsNot Nothing, "VB editors package not loaded?!?")
                     End If
 
@@ -527,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If Common.Switches.PDAddVBWPFApplicationPageToAllProjects.Enabled Then
                 Dim commonList As New List(Of Guid)
                 commonList.AddRange(CommonPageGuids)
-                Dim wpfPage As Guid = New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.WPFApplicationWithMyPropPageComClass_GUID)
+                Dim wpfPage As Guid = New Guid(My.Resources.Designer.WPFApplicationWithMyPropPageComClass_GUID)
                 commonList.Add(wpfPage)
                 CommonPageGuids = commonList.ToArray()
             End If
@@ -769,8 +769,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
                         If System.String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .resx file with a known editor so user config cannot change
-                            .EditorGuid = New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID)
-                            .EditorCaption = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ResourceTabTitle)
+                            .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
+                            .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
                             .TabAutomationName = s_RESOURCES_AUTOMATION_TAB_NAME
 
                             'If the resx file doesn't actually exist yet, we have to display the "Click here
@@ -782,12 +782,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 '  SpecialFileCustomDocumentMonikerProvider).
                                 .CustomMkDocumentProvider = New SpecialFileCustomDocumentMonikerProvider(Me, __PSFFILEID2.PSFFILEID_AssemblyResource)
                             Else
-                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ClickHereCreateResx))
+                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
                         ElseIf System.String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .settings file with a known editor so user config cannot change
-                            .EditorGuid = New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID)
-                            .EditorCaption = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_SettingsTabTitle)
+                            .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
+                            .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle
                             .TabAutomationName = s_SETTINGS_AUTOMATION_TAB_NAME
 
                             'If the settings file doesn't actually exist yet, we have to display the "Click here
@@ -799,7 +799,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 '  SpecialFileCustomDocumentMonikerProvider).
                                 .CustomMkDocumentProvider = New SpecialFileCustomDocumentMonikerProvider(Me, __PSFFILEID2.PSFFILEID_AppSettings)
                             Else
-                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ClickHereCreateSettings))
+                                .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, My.Resources.Designer.APPDES_ClickHereCreateSettings)
                             End If
                         Else
                             Debug.Fail("Unexpected file in list of intended tabs")
@@ -865,9 +865,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.KnownPropertyPageGuids.GuidDebugPage,
                 Common.KnownPropertyPageGuids.GuidDebugPage_VSD,
                 Common.KnownPropertyPageGuids.GuidReferencesPage_VB,
-                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.SettingsDesignerEditorFactory_GUID),
+                New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID),
                 Common.KnownPropertyPageGuids.GuidServicesPropPage,
-                New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.ResourceEditorFactory_GUID),
+                New Guid(My.Resources.Designer.ResourceEditorFactory_GUID),
                 Common.KnownPropertyPageGuids.GuidReferencePathsPage,
                 Common.KnownPropertyPageGuids.GuidSigningPage,
                 Common.KnownPropertyPageGuids.GuidSecurityPage,
@@ -1061,10 +1061,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                                 If .PropertyPageInfo.LoadException IsNot Nothing Then
                                     Common.Switches.TracePDFocus(TraceLevel.Error, "  ... LoadException: " & .PropertyPageInfo.LoadException.Message)
-                                    ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.LoadException.Message
+                                    ErrorMessage = My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & .PropertyPageInfo.LoadException.Message
                                 ElseIf .PropertyPageInfo.ComPropPageInstance Is Nothing OrElse .PropertyPageInfo.Site Is Nothing Then
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... ComPropPageInstance or the site is Nothing")
-                                    ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & .PropertyPageInfo.Guid.ToString()
+                                    ErrorMessage = My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & .PropertyPageInfo.Guid.ToString()
                                 Else
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling CreateDesigner")
                                     HostingPanel.SuspendLayout()
@@ -1135,7 +1135,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     If ErrorMessage = "" Then
-                        ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex)
+                        ErrorMessage = My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & Common.DebugMessageFromException(ex)
                     End If
                 End Try
 
@@ -1165,7 +1165,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'Standard title for messageboxes, etc.
-        Private ReadOnly _messageBoxCaption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+        Private ReadOnly _messageBoxCaption As String = My.Resources.Designer.APPDES_Title
 
         ''' <summary>
         ''' Displays a message box using the Visual Studio-approved manner.

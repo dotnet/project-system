@@ -39,8 +39,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     With StartupObject
                         .DropDownStyle = ComboBoxStyle.DropDownList
                         .Items.Clear()
-                        .SelectedItem = .Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet))
-                        .Text = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
+                        .SelectedItem = .Items.Add(My.Resources.Designer.PPG_Application_StartupObjectNotSet)
+                        .Text = My.Resources.Designer.PPG_Application_StartupObjectNotSet
                         .SelectedIndex = 0  '// Set it to NotSet
                     End With
 
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         .Items.Clear()
 
                         ' (Not Set) should always be available in the list
-                        .Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet))
+                        .Items.Add(My.Resources.Designer.PPG_Application_StartupObjectNotSet)
 
                         If PopulateDropdown Then
                             RefreshPropertyStandardValues()
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         '(Okay to use InitialValue because we checked against IsMissing above)
                         Dim SelectedItemText As String = CStr(StartupObjectPropertyControlData.InitialValue)
                         If IsNothing(SelectedItemText) OrElse (SelectedItemText = "") Then
-                            SelectedItemText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
+                            SelectedItemText = My.Resources.Designer.PPG_Application_StartupObjectNotSet
                         End If
 
                         .SelectedItem = SelectedItemText
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim StartupObjectText As String = TryCast(StartupObject.SelectedItem, String)
 
                     If Not IsNothing(StartupObjectText) Then
-                        If String.Compare(StartupObjectText, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)) <> 0 Then
+                        If String.Compare(StartupObjectText, My.Resources.Designer.PPG_Application_StartupObjectNotSet) <> 0 Then
                             value = StartupObjectText
                         Else
                             '// the value is (Not Set) so just leave it empty

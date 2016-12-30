@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             Else
                 Debug.Fail("Unable to find resource from manifest: " & ManifestResourceId)
-                Throw New InternalException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg))
+                Throw New InternalException(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg)
             End If
         End Sub
 
@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim typeName As String = CType(NewResource, Resource).ValueTypeNameWithoutAssemblyInfo
                 'CONSIDER: We should consider a general way to check whether the type is supported or not.
                 If String.Equals(typeName, GetType(MemoryStream).FullName, StringComparison.Ordinal) Then
-                    Message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_TypeIsNotSupported_1Arg, GetType(UnmanagedMemoryStream).Name)
+                    Message = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_TypeIsNotSupported_1Arg, GetType(UnmanagedMemoryStream).Name)
                     HelpID = HelpIDs.Err_TypeIsNotSupported
                     Return False
                 End If

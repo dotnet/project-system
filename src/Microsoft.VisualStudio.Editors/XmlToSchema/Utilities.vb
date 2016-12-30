@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Public Sub ShowWarning(ex As Exception)
-            ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_Error, ex.Message))
+            ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_Error, ex.Message))
         End Sub
 
         Public Function FilterException(ex As Exception) As Boolean

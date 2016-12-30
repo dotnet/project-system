@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ValidateResourceValue(Resource)
 
             'Show a message indicating the value can't be edited.
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_NonEditableValue)
+            Return My.Resources.Designer.RSE_NonEditableValue
         End Function
 
     End Class

@@ -330,11 +330,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return NewValue
                     Else
                         Debug.Fail("ResXFileRef conversion returned Nothing - should have thrown an exception instead")
-                        Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                        Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                     End If
                 Else
                     Debug.Fail("ResXFileRef can't convert from string?")
-                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                    Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                 End If
             Catch ex As TargetInvocationException
                 'Pull out the inner exception and rethrow that - the target invocation exception doesn't give us
@@ -447,7 +447,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   "Windows metafile (*.wmf, *.emf)|*.wmf;*.emf"
         ''' </remarks>
         Public Overridable Function GetSaveFileDialogFilter(Extension As String) As String
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_All) & " (*.*)|*.*"
+            Return My.Resources.Designer.RSE_Filter_All & " (*.*)|*.*"
         End Function
 
 

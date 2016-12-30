@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ex.HelpLink = HelpIDs.Err_LoadingSettingsFile
                         SerializationManager.ReportError(ex)
                     End If
-                    Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile), ex)
+                    Throw New InvalidOperationException(My.Resources.Designer.SD_Err_CantLoadSettingsFile, ex)
                 Finally
                     If SettingsReader IsNot Nothing Then
                         SettingsReader.Close()
@@ -401,17 +401,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     End Try
 
                     ' We only rename the symbol if the current custom tool is our file generator...
-                    If CurrentCustomTool IsNot Nothing AndAlso _
-                        ( _
+                    If CurrentCustomTool IsNot Nothing AndAlso
+                        (
                             CurrentCustomTool.Equals(SettingsSingleFileGenerator.SingleFileGeneratorName, StringComparison.OrdinalIgnoreCase) _
-                            OrElse CurrentCustomTool.Equals(PublicSettingsSingleFileGenerator.SingleFileGeneratorName, StringComparison.OrdinalIgnoreCase) _
+                            OrElse CurrentCustomTool.Equals(PublicSettingsSingleFileGenerator.SingleFileGeneratorName, StringComparison.OrdinalIgnoreCase)
                         ) _
                     Then
                         Dim GeneratedClassName As String = SettingsDesigner.FullyQualifiedGeneratedTypedSettingsClassName(VsHierarchy, ProjectItemid, RootComponent, SettingsFileProjectItem)
                         Dim FindSettingClassFilter As New ProjectUtils.KnownClassName(GeneratedClassName)
-                        Dim ce As EnvDTE.CodeElement = ProjectUtils.FindElement(SettingsFileProjectItem, _
-                                                                        False, _
-                                                                        True, _
+                        Dim ce As EnvDTE.CodeElement = ProjectUtils.FindElement(SettingsFileProjectItem,
+                                                                        False,
+                                                                        True,
                                                                         FindSettingClassFilter)
 
                         If ce Is Nothing Then
@@ -525,8 +525,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Catch ex As Configuration.ConfigurationErrorsException
                 ' We failed to load the app config xml document....
-                DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FailedToLoadAppConfigValues), HelpIDs.Err_LoadingAppConfigFile)
-            Catch Ex As Exception When ReportWithoutCrash(ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
+                DesignerFramework.DesignUtil.ReportError(_serviceProvider, My.Resources.Designer.SD_FailedToLoadAppConfigValues, HelpIDs.Err_LoadingAppConfigFile)
+            Catch Ex As Exception When ReportWithoutCrash(Ex, "Failed to load app.config", NameOf(SettingsDesignerLoader))
                 Throw
             End Try
         End Sub
@@ -578,7 +578,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 True)
                 Catch Ex As Exception When ReportWithoutCrash(Ex, "Failed to flush values to the app config document", NameOf(SettingsDesignerLoader))
                     ' We failed to flush values to the app config document....
-                    DesignerFramework.DesignUtil.ReportError(_serviceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FailedToSaveAppConfigValues), HelpIDs.Err_SavingAppConfigFile)
+                    DesignerFramework.DesignUtil.ReportError(_serviceProvider, My.Resources.Designer.SD_FailedToSaveAppConfigValues, HelpIDs.Err_SavingAppConfigFile)
                 End Try
             End If
         End Sub
@@ -637,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' The DesignerDocDataService that normally handles this will not save dependent files unless the primary
                     ' docdata is modified...
                     '
-                    If m_docData IsNot Nothing AndAlso (Not m_docData.Modified) AndAlso _appConfigDocData.Modified Then
+                    If m_DocData IsNot Nothing AndAlso (Not m_DocData.Modified) AndAlso _appConfigDocData.Modified Then
                         _appConfigDocData.Dispose()
                     Else
                         ' 
@@ -853,7 +853,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If dbgmodeNew = DBGMODE.DBGMODE_Design Then
                     SetReadOnlyMode(False, String.Empty)
                 ElseIf _currentDebugMode = DBGMODE.DBGMODE_Design Then
-                    SetReadOnlyMode(True, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_CantEditInDebugMode))
+                    SetReadOnlyMode(True, My.Resources.Designer.SD_ERR_CantEditInDebugMode)
                 End If
             Finally
                 _currentDebugMode = dbgmodeNew

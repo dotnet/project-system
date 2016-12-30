@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return Bitmap
             Else
                 Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
+                Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
         End Function
 
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             End If
 
-            Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
+            Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
@@ -560,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function GetAllFilesDialogFilter() As String
             'We don't use CreateDialogFilter because we don't want *.* to be part of the user-friendly portion.
             '  We only want:  All Files|*.*
-            Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.CMN_AllFilesFilter) & "|*.*"
+            Return My.Resources.Designer.CMN_AllFilesFilter & "|*.*"
         End Function
 
 

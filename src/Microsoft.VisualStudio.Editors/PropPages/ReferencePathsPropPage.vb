@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ReferencePath.SelectedIndex = ReferencePath.Items.Add(FolderText)
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                 Else
-                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath))
+                    ShowErrorMessage(My.Resources.Designer.PPG_InvalidFolderPath)
                 End If
             End If
         End Sub
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                     UpdateFolder.Enabled = False
                 Else
-                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath))
+                    ShowErrorMessage(My.Resources.Designer.PPG_InvalidFolderPath)
                 End If
             End If
         End Sub
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub FolderBrowse_Click(sender As Object, e As EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectReferencePath), value) Then
+            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), My.Resources.Designer.PPG_SelectReferencePath, value) Then
                 Folder.Text = GetProjectRelativeDirectoryPath(value)
             End If
         End Sub

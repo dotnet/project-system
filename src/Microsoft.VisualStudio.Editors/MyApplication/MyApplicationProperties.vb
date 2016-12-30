@@ -889,11 +889,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The COM exception don't give us much to go on.  In the SCC case, for instance, if 
                 '  project check-out fails, the message is simply "Exception occurred".  We'd rather
                 '  simply throw a general exception of our own text than propagate this to the user.
-                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace), ex)
+                Throw New Exception(My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace, ex)
 
             Catch ex As Exception
                 'For anything else, combine our error messages.
-                Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message))
+                Throw New Exception(My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message)
             End Try
         End Sub
 
@@ -969,14 +969,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     End If
 
                     'Add comments
-                    Dim Comments As String = _
-                        SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine1) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine2) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine3) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine4) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine5) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine6) _
-                        & vbCrLf & SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine7)
+                    Dim Comments As String =
+                        My.Resources.Designer.PPG_Application_AppEventsCommentLine1 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine2 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine3 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine4 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine5 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine6 _
+                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine7
                     MyEventsClass.Comment = Comments
                 End If
             End If

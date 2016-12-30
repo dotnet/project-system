@@ -72,8 +72,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Private Sub SetLocalizedProperties()
-            Dim nonlabelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelText)
-            Dim labelText As String = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_HelpLabelLink)
+            Dim nonlabelText As String = My.Resources.Designer.PPG_Services_HelpLabelText
+            Dim labelText As String = My.Resources.Designer.PPG_Services_HelpLabelLink
             HelpLabel.Text = nonlabelText & labelText
             HelpLabel.LinkArea = New LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
@@ -90,12 +90,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'an error stating that the functionality is only available for 3.5 or greater.
             'Also, uncheck the checkbox
             If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < s_requiredFrameworkVersion Then
-                DesignerFramework.DesignerMessageBox.Show(ServiceProvider, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_VersionWarning), Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                DesignerFramework.DesignerMessageBox.Show(ServiceProvider, My.Resources.Designer.PPG_Services_VersionWarning, Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 _ignoreCheckedChanged = True
                 EnableApplicationServices.Checked = False
             ElseIf Not EnableApplicationServices.Checked Then
                 Dim result As DialogResult = DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
-                    SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_ConfirmRemoveServices), SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_ConfirmRemoveServices_Caption),
+                    My.Resources.Designer.PPG_Services_ConfirmRemoveServices, My.Resources.Designer.PPG_Services_ConfirmRemoveServices_Caption,
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2)
                 If result = DialogResult.Cancel Then
                     _ignoreCheckedChanged = True
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'NOTE: when the messagebox returns, we'll re-read app config and see if it's better.
                     'If we didn't want to do this, we'd set ignoreCheckedChanged to true before the call
                     'and false afterward.
-                    Dim ex As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidAppConfigXml))
+                    Dim ex As New XmlException(My.Resources.Designer.PPG_Services_InvalidAppConfigXml)
                     DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                 Else
                     ServicesPropPageAppConfigHelper.EnsureApplicationServicesEnabled(CurrentAppConfigDocument, enable, ProjectHierarchy)
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Catch ex As InvalidOperationException
                     _appConfigError = True
                     SetControlsProperties(False)
-                    Dim xmlException As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrls))
+                    Dim xmlException As New XmlException(My.Resources.Designer.PPG_Services_InvalidUrls)
                     DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", xmlException, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                     Exit Sub
                 End Try
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub AdvancedSettings_Click(sender As Object, e As EventArgs) Handles AdvancedSettings.Click
-            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServicesAdvancedPage_Title), GetType(AdvancedServicesDialog))
+            ShowChildPage(My.Resources.Designer.PPG_ServicesAdvancedPage_Title, GetType(AdvancedServicesDialog))
         End Sub
 
         Private Sub UrlTextBox_Validating(sender As Object, e As CancelEventArgs) Handles RolesServiceUrl.Validating, AuthenticationServiceUrl.Validating, WebSettingsUrl.Validating
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Sub ShowInvalidUrlError()
             _ignoreLostFocus = True
-            Dim ex As New XmlException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_InvalidUrl))
+            Dim ex As New XmlException(My.Resources.Designer.PPG_Services_InvalidUrl)
             DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
             _ignoreLostFocus = False
         End Sub

@@ -237,12 +237,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim RawConnectionString As String = DataProtection.DecryptString(Dialog.EncryptedConnectionString)
             If ContainsSensitiveData(ServiceProvider, Dialog.SelectedProvider, RawConnectionString) Then
-                If Not PromptIfContainsSensitiveData OrElse _
-                       DesignerFramework.DesignerMessageBox.Show(ServiceProvider, _
-                                                             SR.GetString(SR.SD_IncludeSensitiveInfoInConnectionStringWarning), _
-                                                             DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), _
-                                                             Windows.Forms.MessageBoxButtons.YesNo, _
-                                                             Windows.Forms.MessageBoxIcon.Warning, _
+                If Not PromptIfContainsSensitiveData OrElse
+                       DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
+                                                             My.Resources.Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
+                                                             DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
+                                                             Windows.Forms.MessageBoxButtons.YesNo,
+                                                             Windows.Forms.MessageBoxIcon.Warning,
                                                              Windows.Forms.MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes _
                 Then
                     Return RawConnectionString

@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle)
+                Return My.Resources.Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle)
+                Return My.Resources.Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle)
+                Return My.Resources.Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle)
+                Return My.Resources.Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PackageTitle)
+                Return My.Resources.Designer.PPG_PackageTitle
             End Get
         End Property
 
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CompileTitle)
+                Return My.Resources.Designer.PPG_CompileTitle
             End Get
         End Property
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services)
+                Return My.Resources.Designer.PPG_Services
             End Get
         End Property
 
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_DebugTitle)
+                Return My.Resources.Designer.PPG_DebugTitle
             End Get
         End Property
 
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencesTitle)
+                Return My.Resources.Designer.PPG_ReferencesTitle
             End Get
         End Property
 
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildTitle)
+                Return My.Resources.Designer.PPG_BuildTitle
             End Get
         End Property
 
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildEventsTitle)
+                Return My.Resources.Designer.PPG_BuildEventsTitle
             End Get
         End Property
 
@@ -339,7 +339,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePathsTitle)
+                Return My.Resources.Designer.PPG_ReferencePathsTitle
             End Get
         End Property
 

@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return Bitmap
             Else
                 Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
+                Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
         End Function
 
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Else
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             End If
-            Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
+            Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
 

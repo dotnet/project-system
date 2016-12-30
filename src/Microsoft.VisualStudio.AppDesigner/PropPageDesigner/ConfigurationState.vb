@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Next
 
                 '... followed by "All Configurations" (but only if there's more than one)
-                _configurationDropdownEntries(ConfigIndex) = New DropdownItem(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_AllConfigurations), SelectionTypes.All)
+                _configurationDropdownEntries(ConfigIndex) = New DropdownItem(My.Resources.Designer.PPG_AllConfigurations, SelectionTypes.All)
                 ConfigIndex += 1
             End If
             ReDim Preserve _configurationDropdownEntries(ConfigIndex - 1)
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Next
 
                 '... followed by "All platforms" (but only if there's more than one)
-                _platformDropdownEntries(PlatformIndex) = New DropdownItem(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_AllPlatforms), SelectionTypes.All)
+                _platformDropdownEntries(PlatformIndex) = New DropdownItem(My.Resources.Designer.PPG_AllPlatforms, SelectionTypes.All)
                 PlatformIndex += 1
             End If
             ReDim Preserve _platformDropdownEntries(PlatformIndex - 1)
@@ -777,7 +777,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Get
                     Select Case SelectionType
                         Case SelectionTypes.Active
-                            Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ActiveConfigOrPlatformFormatString_1Arg, Name)
+                            Return My.Resources.Designer.GetString(My.Resources.Designer.PPG_ActiveConfigOrPlatformFormatString_1Arg, Name)
                         Case SelectionTypes.All, SelectionTypes.Normal
                             Return Name
                         Case Else

@@ -601,7 +601,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If TypeOf (ex) Is PropertyPageException AndAlso Not DirectCast(ex, PropertyPageException).ShowHeaderAndFooterInErrorControl Then
                 _errorControl = New ErrorControl(ex.Message)
             Else
-                _errorControl = New ErrorControl(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & DebugMessageFromException(ex))
+                _errorControl = New ErrorControl(My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & DebugMessageFromException(ex))
             End If
             _errorControl.Dock = DockStyle.Fill
             _errorControl.Visible = True
@@ -850,7 +850,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
         'Standard title for messageboxes, etc.
-        Private ReadOnly _messageBoxCaption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+        Private ReadOnly _messageBoxCaption As String = My.Resources.Designer.APPDES_Title
 
 
         ''' <summary>
@@ -899,9 +899,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Non-configuration pages should have the configuration panel visible but disabled, and the text should be "N/A"
                 ConfigurationPanel.Enabled = False
 
-                ConfigurationComboBox.Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_NotApplicable))
+                ConfigurationComboBox.Items.Add(My.Resources.Designer.PPG_NotApplicable)
                 ConfigurationComboBox.SelectedIndex = 0
-                PlatformComboBox.Items.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_NotApplicable))
+                PlatformComboBox.Items.Add(My.Resources.Designer.PPG_NotApplicable)
                 PlatformComboBox.SelectedIndex = 0
             End If
 
@@ -1147,7 +1147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(SelectedConfigItem.Name, SelectedPlatformItem.Name, Cfg)) Then
                         ConfigObjects = New Object() {Cfg}
                     Else
-                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                        ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                     End If
                 Else
                     'Use the DTE to find all the configs with a certain config name or platform name, then
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(DTEConfig.ConfigurationName, DTEConfig.PlatformName, Cfg)) Then
                             ConfigObjects(i) = Cfg
                         Else
-                            ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
+                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_ConfigNotFound_2Args, SelectedConfigItem.Name, SelectedPlatformItem.Name))
                             ConfigObjects = Nothing
                             Exit For
                         End If

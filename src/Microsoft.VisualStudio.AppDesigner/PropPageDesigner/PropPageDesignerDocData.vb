@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     localRegistry = DirectCast(_baseProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
                 End If
                 If localRegistry Is Nothing Then
-                    Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_NoLocalRegistry), NativeMethods.E_FAIL)
+                    Throw New COMException(My.Resources.Designer.DFX_NoLocalRegistry, NativeMethods.E_FAIL)
                 End If
 
                 'CONSIDER: Need to check with FX team about removing assert in MS.VS.Shell.Design.DesignerWindowPane.RegisterView
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         End If
                     End If
                 Catch ex As Exception
-                    Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_UnableCreateTextBuffer), NativeMethods.E_FAIL)
+                    Throw New COMException(My.Resources.Designer.DFX_UnableCreateTextBuffer, NativeMethods.E_FAIL)
                 End Try
                 Return _vsTextBuffer
             End Get

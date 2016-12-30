@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceNameColumn)
+                .Name = My.Resources.Designer.RSE_ResourceNameColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_NAME = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_TypeColumn)
+                .Name = My.Resources.Designer.RSE_TypeColumn
                 .ReadOnly = True 'Can't modify the Type column - just for info
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_TYPE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceColumn)
+                .Name = My.Resources.Designer.RSE_ResourceColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_VALUE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_CommentColumn)
+                .Name = My.Resources.Designer.RSE_CommentColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_COMMENT = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -410,10 +410,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="HelpLink"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DsMsgBox(Message As String, _
-                    Buttons As MessageBoxButtons, _
-                    Icon As MessageBoxIcon, _
-                    Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
+        Public Function DsMsgBox(Message As String,
+                    Buttons As MessageBoxButtons,
+                    Icon As MessageBoxIcon,
+                    Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                     Optional HelpLink As String = Nothing) As DialogResult
             If ParentView IsNot Nothing Then
                 Return ParentView.DsMsgBox(Message, Buttons, Icon, DefaultButton, HelpLink)
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     CancelEdit()
                     EndEdit(DataGridViewDataErrorContexts.InitialValueRestoration)
                 End If
-            Else If IsCurrentCellInEditMode Then
+            ElseIf IsCurrentCellInEditMode Then
                 ' We should leave EditMode anyway (we could be in ReadOnly mode after F5)
                 EndEdit(DataGridViewDataErrorContexts.InitialValueRestoration)
             End If
@@ -546,7 +546,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Exception As Exception = Nothing
 
             ' we should ignore the problem if it is the original value, or the cursor will be locked inside such cell
-            If String.Compare(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) = 0 OrElse _
+            If String.Compare(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) = 0 OrElse
                 ValidateCell(e.RowIndex, e.ColumnIndex, CStr(e.FormattedValue), Exception) Then
                 'Validation succeeded
                 e.Cancel = False
@@ -882,7 +882,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks>Marked invisible so it's less likely to be accidentally used.</remarks>
-        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Public Shadows ReadOnly Property RowCount() As Integer
             Get
                 Debug.Fail("Don't use this function - use RowCountVirtual instead - it doesn't include the add/new row at the bottom, just the actual entries")
@@ -1708,10 +1708,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If failedCount > 0 Then
                 If failedCount = cells.Count Then
                     ' throw an exception to abort the transaction...
-                    Throw New InvalidOperationException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty))
+                    Throw New InvalidOperationException(My.Resources.Designer.RSE_Err_CantBeEmpty)
                 End If
 
-                DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DsMsgBox(My.Resources.Designer.RSE_Err_CantBeEmpty, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             Refresh()

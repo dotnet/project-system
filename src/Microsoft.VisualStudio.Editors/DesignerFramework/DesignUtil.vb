@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
 
             If uiShell Is Nothing OrElse Interop.NativeMethods.Failed(uiShell.GetAppName(caption)) Then
-                caption = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_Error_Default_Caption)
+                caption = My.Resources.Designer.DFX_Error_Default_Caption
             End If
 
             Return caption

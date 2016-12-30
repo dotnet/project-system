@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     _xml = XElement.Load(_url)
                 Catch ex As Exception
                     If FilterException(ex) Then
-                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
+                        ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
                         e.Cancel = True
                     Else
                         Throw

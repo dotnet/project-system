@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New()
             SuspendLayout()
 
-            Text = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_PropertyPageControlName)
+            Text = My.Resources.Designer.PPG_PropertyPageControlName
             AccessibleRole = AccessibleRole.PropertyPage
             _serviceProvider = serviceProvider
 
@@ -1685,7 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If canThrow Then
                         Throw New ValidationException(finalResult, finalMessage, firstControl)
                     Else
-                        Dim caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+                        Dim caption As String = My.Resources.Designer.APPDES_Title
                         Dim dialogResult As DialogResult = AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, finalMessage, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         If firstControl IsNot Nothing Then
                             firstControl.Focus()
@@ -2069,7 +2069,7 @@ NextControl:
                             '  project reload).
                             For Each cd As PropertyControlData In ControlData
                                 If cd IsNot _controlData AndAlso cd.IsDirty Then
-                                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet))
+                                    ShowErrorMessage(My.Resources.Designer.PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet)
                                     Exit For
                                 End If
                             Next
@@ -2254,7 +2254,7 @@ NextControl:
 #End If
                 End If
             Next _controlData
-            Description = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_UndoTransaction, New String() {PropertyNames})
+            Description = My.Resources.Designer.GetString(My.Resources.Designer.PPG_UndoTransaction, New String() {PropertyNames})
             Return Description
         End Function
 
@@ -2930,7 +2930,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(ex As Exception, HelpLink As String)
-            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+            Dim Caption As String = My.Resources.Designer.APPDES_Title
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, "", ex, Caption, HelpLink)
         End Sub
 
@@ -2950,7 +2950,7 @@ NextControl:
         ''' <param name="ex">The exception to include in the message.  The exception's message will be on a second line after errorMessage.</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, ex As Exception)
-            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+            Dim Caption As String = My.Resources.Designer.APPDES_Title
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, ex, Caption)
         End Sub
 
@@ -2961,7 +2961,7 @@ NextControl:
         ''' <param name="HelpLink">The help link to use</param>
         ''' <remarks></remarks>
         Protected Sub ShowErrorMessage(errorMessage As String, HelpLink As String)
-            Dim Caption As String = SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_Title)
+            Dim Caption As String = My.Resources.Designer.APPDES_Title
             AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, errorMessage, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, HelpLink)
         End Sub
 
@@ -3139,8 +3139,8 @@ NextControl:
                 '  can be an issue)
                 Try
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
-                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, My.Resources.Designer.APPDES_ErrorLoadingPropPage, NameOf(PropPageUserControlBase))
+                    ShowErrorMessage(My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             Else
@@ -3154,9 +3154,9 @@ NextControl:
                         DirectCast(Page, IVsProjectDesignerPage).SetSite(ChildPageSite)
                     End If
                     Page.SetObjects(m_Objects)
-                Catch ex As Exception When Common.ReportWithoutCrash(ex, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage), NameOf(PropPageUserControlBase))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, My.Resources.Designer.APPDES_ErrorLoadingPropPage, NameOf(PropPageUserControlBase))
                     _childPages.Remove(PageType)
-                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_ErrorLoadingPropPage) & vbCrLf & Common.DebugMessageFromException(ex))
+                    ShowErrorMessage(My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & Common.DebugMessageFromException(ex))
                     Return DialogResult.Cancel
                 End Try
             End If
@@ -3326,7 +3326,7 @@ NextControl:
         ''' <returns>True if the user selected a file, otherwise False.</returns>
         ''' <remarks></remarks>
         Protected Function GetFileViaBrowse(InitialDirectory As String, ByRef NewValue As String, Filter As String) As Boolean
-            Dim fileNames As ArrayList = Common.GetFilesViaBrowse(ServiceProvider, Handle, InitialDirectory, SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_SelectFileTitle), Filter, 0, False)
+            Dim fileNames As ArrayList = Common.GetFilesViaBrowse(ServiceProvider, Handle, InitialDirectory, My.Resources.Designer.PPG_SelectFileTitle, Filter, 0, False)
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 NewValue = CStr(fileNames(0))
                 Return True

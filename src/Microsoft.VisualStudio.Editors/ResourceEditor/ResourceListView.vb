@@ -329,11 +329,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If Not _columnInitialized Then
 
-                Columns.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Name), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthName), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Filename), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthFilename), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_ImageType), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthImageType), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Size), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthSize), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Comment), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthComment), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthName), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthFilename), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthImageType), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthSize), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthComment), HorizontalAlignment.Left)
 
                 _columnInitialized = True
             End If

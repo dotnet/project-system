@@ -68,9 +68,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-            _notifyError = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_Error)
-            _notifyNone = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_None)
-            _notifyWarning = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_Notification_Warning)
+            _notifyError = My.Resources.Designer.PPG_Compile_Notification_Error
+            _notifyNone = My.Resources.Designer.PPG_Compile_Notification_None
+            _notifyWarning = My.Resources.Designer.PPG_Compile_Notification_Warning
             PageRequiresScaling = False
             AutoScaleMode = AutoScaleMode.Font
 
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
 
-            _optionStrictCustomText = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_OptionStrict_Custom)
+            _optionStrictCustomText = My.Resources.Designer.PPG_Compile_OptionStrict_Custom
 
             Dim PlatformEntries As New List(Of String)
 
@@ -639,16 +639,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Class
 
         Private _errorInfos As ErrorInfo() = {
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42016), "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42017_42018_42019), "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42020), "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42104), "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42105_42106_42107), "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42353_42354_42355), "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42024), "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42025), "42025", ErrorNotification.None, False, New Integer() {42025}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42004), "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}),
-            New ErrorInfo(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42029), "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42016, "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42017_42018_42019, "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42020, "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42104, "42104,42108,42109,42030", ErrorNotification.None, False, New Integer() {42104, 42108, 42109, 42030}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42105_42106_42107, "42105,42106,42107", ErrorNotification.None, False, New Integer() {42105, 42106, 42107}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42353_42354_42355, "42353,42354,42355", ErrorNotification.None, False, New Integer() {42353, 42354, 42355}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42024, "42024,42099", ErrorNotification.None, False, New Integer() {42024, 42099}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42025, "42025", ErrorNotification.None, False, New Integer() {42025}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42004, "41998,42004,42026,", ErrorNotification.None, False, New Integer() {41998, 42004, 42026}),
+            New ErrorInfo(My.Resources.Designer.PPG_Compile_42029, "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
             Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
@@ -1074,16 +1074,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
         Private Sub AdvancedOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedOptionsButton.Click
-            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedCompilerSettings_Title), GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
+            ShowChildPage(My.Resources.Designer.PPG_AdvancedCompilerSettings_Title, GetType(AdvCompilerSettingsPropPage), HelpKeywords.VBProjPropAdvancedCompile)
         End Sub
 
         Private Sub BuildEventsButton_Click(sender As Object, e As EventArgs) Handles BuildEventsButton.Click
-            ShowChildPage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildEventsTitle), GetType(BuildEventsPropPage))
+            ShowChildPage(My.Resources.Designer.PPG_BuildEventsTitle, GetType(BuildEventsPropPage))
         End Sub
 
         Private Sub BuildOutputPathButton_Click(sender As Object, e As EventArgs) Handles BuildOutputPathButton.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowseRelativeToProject(BuildOutputPathTextBox.Text, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectOutputPathTitle), value) Then
+            If GetDirectoryViaBrowseRelativeToProject(BuildOutputPathTextBox.Text, My.Resources.Designer.PPG_SelectOutputPathTitle, value) Then
                 BuildOutputPathTextBox.Text = value
                 SetDirty(BuildOutputPathTextBox, True)
             End If
@@ -1293,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim absPath As String = Path.Combine(GetProjectPath(), GetProjectRelativeDirectoryPath(Trim(BuildOutputPathTextBox.Text)))
                     If Not CheckPath(absPath) Then
                         If DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
-                                                                    SR.GetString(SR.PPG_OutputPathNotSecure),
+                                                                    My.Resources.Designer.PPG_OutputPathNotSecure,
                                                                     DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
                                                                     MessageBoxButtons.OKCancel,
                                                                     MessageBoxIcon.Warning) = DialogResult.Cancel _
@@ -1412,7 +1412,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub EnsureNotConflictingSettings(sender As Object, e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
             If IndeterminateWarningsState Then
                 'Prompt user for resetting settings...
-                If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, SR.GetString(SR.PPG_Compile_ResetIndeterminateWarningLevels), DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
+                If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, My.Resources.Designer.PPG_Compile_ResetIndeterminateWarningLevels, DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
                     _noWarn = _optionStrictIDs
                     _specWarnAsError = New Integer() {}
                     UpdateWarningList()

@@ -493,10 +493,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub AddResource(NewResource As Resource)
             If NewResource.Name = "" Then
                 Debug.Fail("Resource Name is blank - we shouldn't reach here with that condition")
-                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank), HelpIDs.Err_NameBlank)
+                Throw NewException(My.Resources.Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
             End If
             If Contains(NewResource.Name) Then
-                Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
+                Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
             End If
 
             'Set up a type resolution context for the resource in case this hasn't
@@ -730,7 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  the same as Resource, since we find case-insensitively).
                 Dim ExistingResource As Resource = FindResource(NewName)
                 If ExistingResource IsNot Nothing AndAlso ExistingResource IsNot Resource Then
-                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
+                    Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
                 End If
 
                 'Make sure the resx file is checked out if it isn't yet.  Otherwise this failure might
@@ -1008,16 +1008,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Catch ex As Exception When ReportWithoutCrash(ex, NameOf(WriteResources), NameOf(ResourceFile))
                             resource.SetTaskFromGetValueException(ex, ex)
                             If failedList IsNot Nothing Then
-                                failedList = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameList, failedList, resource.Name)
+                                failedList = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_NameList, failedList, resource.Name)
                             Else
-                                failedList = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Name, resource.Name)
+                                failedList = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_Name, resource.Name)
                                 extraMessage = ex.Message
                             End If
                         End Try
                     Next
 
                     If failedList IsNot Nothing Then
-                        RootComponent.RootDesigner.GetView().DsMsgBox(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResouce_1Arg, failedList) & vbCrLf & vbCrLf & extraMessage,
+                        RootComponent.RootDesigner.GetView().DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantSaveResouce_1Arg, failedList) & vbCrLf & vbCrLf & extraMessage,
                             MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantSaveBadResouceItem)
                     End If
                 End If
@@ -1783,7 +1783,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(DelayFlushAndRunCustomToolImpl), NameOf(ResourceFile))
                     Try
                         View.DsMsgBox(ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Catch ex2 As exception When ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl))
+                    Catch ex2 As Exception When ReportWithoutCrash(ex2, "Unable to show exception message for exception", NameOf(DelayFlushAndRunCustomToolImpl))
                     End Try
                 End Try
             End If

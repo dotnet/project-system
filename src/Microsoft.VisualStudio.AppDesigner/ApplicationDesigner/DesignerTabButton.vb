@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property DefaultAction() As String
                 Get
-                    Return SR.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_TabButtonDefaultAction)
+                    Return My.Resources.Designer.APPDES_TabButtonDefaultAction
                 End Get
             End Property
 
