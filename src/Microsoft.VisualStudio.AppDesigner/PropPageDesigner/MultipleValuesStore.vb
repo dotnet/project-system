@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(ConfigNames(i), PlatformNames(i), Cfg)) Then
                     Objects(i) = Cfg
                 Else
-                    Throw New Exception(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.PPG_ConfigNotFound_2Args, ConfigNames(i), PlatformNames(i)))
+                    Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.PPG_ConfigNotFound_2Args, ConfigNames(i), PlatformNames(i)))
                 End If
             Next
 

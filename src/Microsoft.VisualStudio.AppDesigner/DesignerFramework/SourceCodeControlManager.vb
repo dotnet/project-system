@@ -194,11 +194,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         ' check to see if the failure happened because the user canceled.
                         '
                         If Not allowFileReload AndAlso fileReloaded Then
-                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_OneOrMoreFilesReloaded)
+                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_OneOrMoreFilesReloaded)
                         ElseIf ((result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0) Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
-                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_UnableToCheckout)
+                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout)
                         End If
                     Else
                         Return False
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                                 If (result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0 Then
                                     Throw ComponentModel.Design.CheckoutException.Canceled
                                 Else
-                                    Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_UnableToCheckout)
+                                    Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout)
                                 End If
                             Else
                                 Return False
@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         If ((result And CUInt(tagVSQuerySaveResult.QSR_NoSave_UserCanceled)) <> 0) Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
-                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_UnableToCheckout)
+                            Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout)
                         End If
                     Else
                         Return False

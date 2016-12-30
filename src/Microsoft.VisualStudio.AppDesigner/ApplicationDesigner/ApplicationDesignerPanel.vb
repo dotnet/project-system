@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                     If VSErrorHandler.Succeeded(hr) Then
                                         If fOpen <> 0 Then
                                             'Already open - show an error message asking them to close it first.
-                                            Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_EditorAlreadyOpen_1Arg, MkDocument))
+                                            Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.APPDES_EditorAlreadyOpen_1Arg, MkDocument))
                                         End If
                                     End If
 
@@ -351,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                             WindowFrame))
                                 Else
                                     'The file doesn't exist (must have been deleted), so don't try to open it.
-                                    Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_FileNotFound_1Arg, MkDocument))
+                                    Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.APPDES_FileNotFound_1Arg, MkDocument))
                                 End If
 
                                 Dim Value As Object = Nothing
@@ -834,7 +834,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If String.IsNullOrEmpty(value) Then
                     Text = String.Empty
                 Else
-                    Text = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.APPDES_PageName, value)
+                    Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_PageName, value)
                 End If
 
                 _pageNameLabel.Text = Text

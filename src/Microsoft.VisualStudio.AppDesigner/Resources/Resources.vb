@@ -2,7 +2,6 @@
 
 Namespace My.Resources
 
-
     'Hide the Microsoft_VisualStudio_AppDesigner_Designer class.  To keep the .resources file
     '  with the same fully-qualified name in the assembly manifest, we need to have the
     '  Designer.resx file actually named "Microsoft.VisualStudio.Editors.Designer.resx",
@@ -10,7 +9,7 @@ Namespace My.Resources
     '  But then the class name gets generated as "Microsoft_VisualStudio_AppDesigner_Designer".
     'So hide that one and introduce a "Designer" class instead.
     <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
-    Partial Friend Class Microsoft_VisualStudio_AppDesigner_Designer
+    Partial Friend Class Designer
 
         ''' <summary>
         ''' Temporary compatibility function to make converting from Designer.txt to Designer.resx easier.

@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 End Try
 
                 If (viewChild Is Nothing) Then
-                    Dim er As String = My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_WindowPane_UnknownError
+                    Dim er As String = My.Resources.Designer.DFX_WindowPane_UnknownError
                     Dim errors As ArrayList = New ArrayList()
                     errors.Add(er)
                     viewChild = New ErrorControl(errors)

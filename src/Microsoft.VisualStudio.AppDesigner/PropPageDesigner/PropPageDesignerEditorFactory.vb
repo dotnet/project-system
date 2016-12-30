@@ -84,13 +84,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     If ExistingDocData Is Nothing Then
                         DocData = New PropPageDesignerDocData(_siteProvider)
                     Else
-                        Throw New COMException(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                        Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If
 
                     DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New Exception(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.GetString(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Sub
 
