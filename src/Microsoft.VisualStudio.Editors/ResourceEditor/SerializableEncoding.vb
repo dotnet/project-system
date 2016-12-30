@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Function DisplayName() As String
             If _encoding IsNot Nothing Then
-                Return SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
             Else
                 'Default
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DefaultEncoding

@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Else
                     'Cancel here prevents swithing to another window
                     'e.Cancel = True
-                    'Throw New Exception(SR.GetString(SR.PPG_InvalidHexString))
+                    'Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString))
                 End If
 
             Else

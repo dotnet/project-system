@@ -758,7 +758,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Can this resource type be saved to a file?
                         If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                            Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
                         'First, get the path to save the file to.
@@ -831,7 +831,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         'Can this resource type be saved to a file?  We don't want to allow changing
                         '  to non-linked if the user couldn't change it back again.
                         If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                            Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
                         'Changed linked to non-linked
@@ -1472,11 +1472,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim HelpLink As String
             If Not IsLink OrElse File.Exists(AbsoluteLinkPathAndFileName) Then
                 'Regular message - not caused by a broken link.
-                ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantInstantiate_2Args, Name, ExceptionToRethrow.Message)
+                ErrorMessage = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantInstantiate_2Args, Name, ExceptionToRethrow.Message)
                 HelpLink = HelpIDs.Task_CantInstantiate
             Else
                 'Broken link
-                ErrorMessage = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_BadLink_2Args, Name, AbsoluteLinkPathAndFileName)
+                ErrorMessage = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_BadLink_2Args, Name, AbsoluteLinkPathAndFileName)
                 HelpLink = HelpIDs.Task_BadLink
             End If
 
@@ -1992,7 +1992,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim CodeDomProvider As CodeDomProvider = _parentResourceFile.GetCodeDomProvider
                 If CodeDomProvider IsNot Nothing Then
                     If Not CodeDomProvider.IsValidIdentifier(Name) Then
-                        SetTask(ResourceFile.ResourceTaskType.BadName, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
+                        SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
                         Exit Sub
                     End If
                 Else
@@ -2002,7 +2002,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Is it in our list of unrecommended names?
             If UnrecommendedResourceNamesHash.ContainsKey(Name) Then
-                SetTask(ResourceFile.ResourceTaskType.BadName, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
+                SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
                 Exit Sub
             End If
 
@@ -2614,7 +2614,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If FixedName = "" Then
                     'ResGen wasn't able to create a valid identifier out of the ID (e.g. something like "$")
                     If CheckForFatallyInvalidIDs Then
-                        Exception = NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadIdentifier_2Arg, TrimmedName, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
+                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadIdentifier_2Arg, TrimmedName, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
                         Return False
                     End If
                 Else
@@ -2633,7 +2633,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If CheckForDuplicateNames Then
                 If ResourceFile IsNot Nothing Then
                     If ResourceFile.Contains(TrimmedName) Then
-                        Exception = NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, TrimmedName), HelpIDs.Err_DuplicateName)
+                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, TrimmedName), HelpIDs.Err_DuplicateName)
                         Return False
                     End If
                 End If
@@ -2729,13 +2729,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If FailureException IsNot Nothing Then
                 'We failed the validation somewhere along the way.  Return a friendly error message, in case
                 '  it's needed, and return failure.
-                Exception = NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantConvertFromString_2Args, FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantConvertFromString_2Args, FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If
 
             If ConvertedValue Is Nothing Then
-                Exception = NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantUseEmptyValue, FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantUseEmptyValue, FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If

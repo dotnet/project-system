@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     Dim DesignerService As IVSMDDesignerService = CType(_serviceProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     ' Create our doc data if we don't have an existing one.
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New COMException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
+                Throw New COMException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
             End Try
         End Sub
 

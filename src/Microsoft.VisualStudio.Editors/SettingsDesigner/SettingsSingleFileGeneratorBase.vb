@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Catch argEx As ArgumentException
                     ' We have an invalid identifier here...
                     If pGenerateProgress IsNot Nothing Then
-                        VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, argEx.Message), 0, 0))
+                        VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, argEx.Message), 0, 0))
                         Return NativeMethods.E_FAIL
                     Else
                         Throw
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return NativeMethods.S_OK
             Catch e As Exception
                 If pGenerateProgress IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
+                    VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0, 1, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, e.Message), 0, 0))
                 End If
             Finally
                 If Not BufPtr.Equals(IntPtr.Zero) Then

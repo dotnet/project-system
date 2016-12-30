@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     _displayName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AppContainerExe
 
                 Case Else
-                    _displayName = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UnknownOutputType, _value)
+                    _displayName = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UnknownOutputType, _value)
 
             End Select
         End Sub

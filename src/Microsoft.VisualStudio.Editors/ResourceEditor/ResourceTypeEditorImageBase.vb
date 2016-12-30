@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Dim Image As Image = DirectCast(Resource.GetValue(), Image)
-            Return String.Format(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_GraphicSizeFormat, Image.Width, Image.Height))
+            Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_GraphicSizeFormat, Image.Width, Image.Height))
         End Function
 
 
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If String.Compare(Extension, EXT_TIF, StringComparison.OrdinalIgnoreCase) = 0 OrElse _
                     String.Compare(Extension, EXT_TIFF, StringComparison.OrdinalIgnoreCase) = 0 Then
 
-                    Message = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddFileToDeviceProject_1Arg, Extension)
+                    Message = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddFileToDeviceProject_1Arg, Extension)
                     HelpID = HelpIDs.Err_CantAddFileToDeviceProject
                     Return False
                 End If

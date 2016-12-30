@@ -330,11 +330,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return NewValue
                     Else
                         Debug.Fail("ResXFileRef conversion returned Nothing - should have thrown an exception instead")
-                        Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                        Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                     End If
                 Else
                     Debug.Fail("ResXFileRef can't convert from string?")
-                    Throw NewException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
+                    Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_LoadingResource_1Arg, FilePath), HelpIDs.Err_LoadingResource)
                 End If
             Catch ex As TargetInvocationException
                 'Pull out the inner exception and rethrow that - the target invocation exception doesn't give us

@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Dim Icon As Icon = DirectCast(Resource.GetValue(), Icon)
-            Return String.Format(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_GraphicSizeFormat, Icon.Width, Icon.Height))
+            Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_GraphicSizeFormat, Icon.Width, Icon.Height))
         End Function
 
 

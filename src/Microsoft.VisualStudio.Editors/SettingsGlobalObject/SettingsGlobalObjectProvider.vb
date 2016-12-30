@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If (dts Is Nothing) Then
-                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
+                Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
             End If
 
             Dim hierarchy As IVsHierarchy = ProjectUtilities.GetVsHierarchy(Me, project)
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         If itemid <> VSITEMID.NIL Then
                             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
                             If (dts Is Nothing) Then
-                                Throw New NotSupportedException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
+                                Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
                             End If
 
                             Dim typeResolver As ITypeResolutionService = dts.GetTypeResolutionService(hierarchy, itemid)

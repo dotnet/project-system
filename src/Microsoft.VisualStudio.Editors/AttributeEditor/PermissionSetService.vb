@@ -11,8 +11,6 @@ Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
 
-Imports Microsoft.VisualStudio.Editors.SR
-
 Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
     '--------------------------------------------------------------------------
@@ -20,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
     '   Builder Service Class. Implements SVbPermissionSetService 
     '   exposed via the IVbPermissionSetService interface.
     '--------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend NotInheritable Class PermissionSetService
         Implements Interop.IVbPermissionSetService
 
@@ -43,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             ' Add the child nodes
             For Each node As XmlNode In element.ChildNodes
                 If node.NodeType = XmlNodeType.Element Then
-                    securityElement.AddChild(CreateSecurityElementFromXmlElement(CType(node, XMLElement)))
+                    securityElement.AddChild(CreateSecurityElementFromXmlElement(CType(node, XmlElement)))
                 End If
             Next
 
@@ -172,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                             strTip &= vbCrLf
                         Else
 
-                            strTip &= PermissionSet_Requires & vbCrLf
+                            strTip &= My.Resources.Microsoft_VisualStudio_Editors_Designer.PermissionSet_Requires & vbCrLf
 
                             hasTip = True
                             isFirstPermission = False

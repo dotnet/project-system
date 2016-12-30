@@ -1293,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim absPath As String = Path.Combine(GetProjectPath(), GetProjectRelativeDirectoryPath(Trim(BuildOutputPathTextBox.Text)))
                     If Not CheckPath(absPath) Then
                         If DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
-                                                                    SR.PPG_OutputPathNotSecure,
+                                                                    My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_OutputPathNotSecure,
                                                                     DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
                                                                     MessageBoxButtons.OKCancel,
                                                                     MessageBoxIcon.Warning) = DialogResult.Cancel _
@@ -1412,7 +1412,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub EnsureNotConflictingSettings(sender As Object, e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
             If IndeterminateWarningsState Then
                 'Prompt user for resetting settings...
-                If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, SR.PPG_Compile_ResetIndeterminateWarningLevels, DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
+                If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_ResetIndeterminateWarningLevels, DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
                     _noWarn = _optionStrictIDs
                     _specWarnAsError = New Integer() {}
                     UpdateWarningList()

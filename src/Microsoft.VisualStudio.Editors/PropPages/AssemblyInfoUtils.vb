@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Else
                         'If not an asterisk, it had better be numeric in the accepted range
                         If Not ValidateIsNumericVersionPart(Fields(Field), MaxVersionPartValue) Then
-                            Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
+                            Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
                         End If
                     End If
                 Next

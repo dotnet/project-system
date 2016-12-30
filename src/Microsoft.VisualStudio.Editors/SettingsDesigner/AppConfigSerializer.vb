@@ -547,9 +547,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Case Else
                     Debug.Assert(mergeMode = MergeValueMode.Prompt, "Unknown MergeValueMode: " & mergeMode)
                     If UIService IsNot Nothing Then
-                        ReplaceValue = (UIService.ShowMessage(SR.GetString(SR.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), SR.GetString(SR.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
+                        ReplaceValue = (UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
                     Else
-                        ReplaceValue = (System.Windows.Forms.MessageBox.Show(SR.GetString(SR.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name) & VisualBasic.vbNewLine & VisualBasic.vbNewLine & SR.GetString(SR.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
+                        ReplaceValue = (System.Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name) & VisualBasic.vbNewLine & VisualBasic.vbNewLine & My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
                     End If
             End Select
 

@@ -976,7 +976,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                     Exit For
                                 Else
                                     ' some reference can not be removed (like mscorlib)
-                                    err = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
+                                    err = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
                                 End If
                             Finally
                                 LeaveProjectCheckoutSection()
@@ -1102,7 +1102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                 If Not IsCheckoutCanceledException(ex) Then
-                    ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                 End If
             End Try
         End Sub
@@ -1146,7 +1146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not IsCheckoutCanceledException(ex) Then
-                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                     End If
                 End Try
             End If
@@ -1300,7 +1300,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             referenceComponent.Update()
                         Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UpdateReferences_Click), NameOf(ReferencePropPage))
                             If Not IsCheckoutCanceledException(ex) Then
-                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
                             End If
                         End Try
                     End If
@@ -1313,7 +1313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
-            If ShowChildPage(SR.PropPage_UnusedReferenceTitle, GetType(UnusedReferencePropPage)) = DialogResult.OK Then
+            If ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceTitle, GetType(UnusedReferencePropPage)) = DialogResult.OK Then
                 If SaveImportedNamespaces(TrimUserImports(ImportsSnapshot)) Then
                     'RemoveInvalidEntries=True here because so that we can remove imports
                     '  that correspond to the removed references, instead of just unchecking
@@ -1440,10 +1440,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated
                             ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
                                 Debug.Fail("Unexpected error when removing imports")
                             Else
-                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
                                 Debug.Fail("Unexpected error when removing imports")
                             End If
                         End Try
@@ -1465,10 +1465,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 'Exit early - no need to show any UI, they've already seen it
                                 Return valueUpdated
                             ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
                                 Debug.Fail("Unexpected error when removing imports")
                             Else
-                                ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
                                 Debug.Fail("Unexpected error when removing imports")
                             End If
                         End Try

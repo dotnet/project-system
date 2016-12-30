@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ValidIcon = True
                         Icon.Dispose()
                     Catch ex As ArgumentException
-                        ShowErrorMessage(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadIcon_1Arg, sFileName))
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadIcon_1Arg, sFileName))
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(BrowseForAppIcon), NameOf(ApplicationPropPageBase))
                         ShowErrorMessage(ex)
                     End Try

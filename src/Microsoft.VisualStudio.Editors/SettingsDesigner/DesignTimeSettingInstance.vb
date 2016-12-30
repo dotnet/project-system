@@ -798,7 +798,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 For Each probeComponent As IComponent In Site.Container.Components
                     Dim instance As DesignTimeSettingInstance = TryCast(probeComponent, DesignTimeSettingInstance)
                     If instance IsNot Nothing AndAlso DesignTimeSettings.EqualIdentifiers(instance.Name, value) Then
-                        Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_DuplicateName_1Arg, value))
+                        Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_DuplicateName_1Arg, value))
                     End If
                 Next
 
@@ -807,7 +807,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Design.Serialization.INameCreationService)
 
                 If nameCreationService IsNot Nothing AndAlso Not nameCreationService.IsValidName(value) Then
-                    Throw New ArgumentException(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidIdentifier_1Arg, value))
+                    Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidIdentifier_1Arg, value))
                 End If
             End If
             _name = value

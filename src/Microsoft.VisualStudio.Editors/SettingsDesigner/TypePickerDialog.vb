@@ -323,16 +323,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' This shouldn't normally happen - if we were able to figure out what the
                     ' display name is, we should be able to figure out what the type is...
                     ' We failed to resolve the type...
-                    ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UnknownType, TypeName), TypeName)
+                    ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UnknownType, TypeName), TypeName)
                     ShouldClose = False
                 ElseIf resolvedType.IsGenericType Then
-                    ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_GenericTypesNotSupported_1Arg, TypeName))
+                    ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_GenericTypesNotSupported_1Arg, TypeName))
                     ShouldClose = False
                 ElseIf resolvedType.IsAbstract Then
-                    ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_AbstractTypesNotSupported_1Arg, TypeName))
+                    ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_AbstractTypesNotSupported_1Arg, TypeName))
                     ShouldClose = False
                 ElseIf Not SettingTypeValidator.IsValidSettingType(resolvedType) Then
-                    ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UnknownType, TypeName), TypeName)
+                    ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UnknownType, TypeName), TypeName)
                     ShouldClose = False
                 Else
                     ' Everything is cool'n froody!
@@ -343,18 +343,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Catch ex As ArgumentException
                 ' The type resolution may throw an argument exception if the type name was invalid...
                 ' Let's report the error and keep the dialog open!
-                ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
+                ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
             Catch ex As IO.FileLoadException
                 ' The type resolution may throw an argument exception if the type name contains an invalid assembly name 
                 ' (i.e. Foo,,)
                 ' Let's report the error and keep the dialog open!
-                ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
+                ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
             Catch ex As Exception When ReportWithoutCrash(ex, $"Unexpected exception caught when resolving type {TypeName}", NameOf(TypePickerDialog))
                 ' We don't know what happened here - let's assume that the type name was bad...
                 ' Let's report the error and keep the dialog open!
-                ReportError(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
+                ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
             End Try
             Return ShouldClose

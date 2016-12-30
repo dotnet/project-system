@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If Status = EditorCaptionState.ReadOnly Then
                 'Append "[Read Only]" to the caption so far
-                Caption = SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerReadOnlyCaption, Caption)
+                Caption = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerReadOnlyCaption, Caption)
             End If
 
             Return Caption
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If FileName.Length > 0 Then
-                    Throw New Exception(SR.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
+                    Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
                 Else
                     Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile)
                 End If
