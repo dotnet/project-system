@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -10,21 +12,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     /// </summary>
     internal class MigrationReport
     {
+        [JsonProperty]
         public List<ProjectMigrationReport> ProjectMigrationReports { get; set; }
 
-        public int MigratedProjectsCount { get; set; }
+        [JsonProperty]
+        public int MigratedProjectsCount { get; private set; }
 
-        public int SucceededProjectsCount { get; set; }
+        [JsonProperty]
+        public int SucceededProjectsCount { get; private set; }
 
-        public int FailedProjectsCount{ get; set; }
+        [JsonProperty]
+        public int FailedProjectsCount { get; private set; }
 
-        public bool AllSucceeded { get; set; }
+        [JsonProperty]
+        public bool AllSucceeded { get; private set; }
+
+        public MigrationReport() { }
+
+        public MigrationReport(int succeededProjectsCount, List<ProjectMigrationReport> reports)
+        {
+            SucceededProjectsCount = succeededProjectsCount;
+            ProjectMigrationReports = reports;
+        }
 
         public override bool Equals(object obj)
         {
             if (obj is MigrationReport report)
             {
-                return Equals(ProjectMigrationReports, report.ProjectMigrationReports) &&
+                return (report.ProjectMigrationReports?.SequenceEqual(ProjectMigrationReports) ?? ProjectMigrationReports == null) &&
                     Equals(MigratedProjectsCount, report.MigratedProjectsCount) &&
                     Equals(SucceededProjectsCount, report.SucceededProjectsCount) &&
                     Equals(FailedProjectsCount, report.FailedProjectsCount) &&
@@ -35,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public override int GetHashCode()
         {
-            int hash = ProjectMigrationReports?.GetHashCode() ?? 1 * 67;
+            int hash = ProjectMigrationReports?.Sum(p => p.GetHashCode() * 17) ?? 1 * 67;
             hash += (MigratedProjectsCount * 67);
             hash += (SucceededProjectsCount * 67);
             hash += (FailedProjectsCount * 67);

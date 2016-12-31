@@ -102,8 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var logFile = _fileSystem.GetTempDirectoryOrFileName();
 
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe",
-                $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\" -r \"{logFile}\" --format-report-file-json")
+            var pInfo = new ProcessStartInfo("dotnet.exe", GetDotnetArguments(xprojLocation, projectDirectory, logFile))
             {
                 UseShellExecute = false,
                 RedirectStandardError = true,
@@ -136,9 +135,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             process.WaitForExit();
 
-            // TODO: we need to read the output from the migration report in addition to console output.
-            // We'll still want to read console output in case of a bug in the dotnet cli, and it errors with some exception
-            // https://github.com/dotnet/roslyn-project-system/issues/507
             var output = outputBuilder.ToString().Trim();
             var err = errBuilder.ToString().Trim();
 
@@ -163,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
                     string.Format(VSResources.XprojMigrationFailedCannotReadReport, logFile));
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
-                    string.Format(VSResources.XprojMigrationFailed, projectName, Path.GetDirectoryName(xprojLocation), xprojLocation, logFile, processExitCode));
+                    GetDotnetGeneralErrorString(projectName, xprojLocation, Path.GetDirectoryName(xprojLocation), logFile, processExitCode));
                 return (string.Empty, false);
             }
 
@@ -184,20 +180,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             if (report.Failed)
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
-                    string.Format(VSResources.XprojMigrationFailed, projectName, report.ProjectDirectory, xprojLocation, logFile, processExitCode));
+                    GetDotnetGeneralErrorString(projectName, xprojLocation, report.ProjectDirectory, logFile, processExitCode));
             }
 
-            // Note: this format is the same format that is used when dotnet migrate prints to the console. These messages should already be
-            // as localized as the cli is, as they come from the cli.
-            report.Errors.ForEach(error => pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
-                $"{error.ErrorCode}::{error.GeneralErrorReason}: {error.Message}"));
+            report.Errors.ForEach(error => pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, error.FormattedErrorMessage));
             report.Warnings.ForEach(warn => pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, warn));
 
             _fileSystem.RemoveFile(logFile);
             return (report.OutputMSBuildProject, report.Succeeded);
         }
 
-        public int UpgradeProject_CheckOnly(string xprojLocation, IVsUpgradeLogger logger, out int upgradeRequired, out Guid migratedProjectFactory, out uint upgradeProjectCapabilityFlags)
+        public int UpgradeProject_CheckOnly(string xprojLocation,
+            IVsUpgradeLogger logger,
+            out int upgradeRequired,
+            out Guid migratedProjectFactory,
+            out uint upgradeProjectCapabilityFlags)
         {
             var isXproj = xprojLocation.EndsWith(".xproj");
 
@@ -219,7 +216,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return VSConstants.S_OK;
         }
 
-        public void UpgradeProject_CheckOnly(string xprojLocation, IVsUpgradeLogger logger, out uint upgradeRequired, out Guid migratedProjectFactory, out uint upgradeProjectCapabilityFlags)
+        private string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>
+            $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\" -r \"{logFile}\" --format-report-file-json";
+
+        private string GetDotnetGeneralErrorString(string projectName, string xprojLocation, string projectDirectory, string logFile, int exitCode) =>
+            string.Format(VSResources.XprojMigrationGeneralFailure,
+                projectName,
+                $"dotnet {GetDotnetArguments(xprojLocation, projectDirectory, logFile)}",
+                exitCode);
+
+        public void UpgradeProject_CheckOnly(string xprojLocation,
+            IVsUpgradeLogger logger,
+            out uint upgradeRequired,
+            out Guid migratedProjectFactory,
+            out uint upgradeProjectCapabilityFlags)
         {
             UpgradeProject_CheckOnly(xprojLocation, logger, out int iUpgradeRequired, out migratedProjectFactory, out upgradeProjectCapabilityFlags);
             upgradeRequired = unchecked((uint)iUpgradeRequired);
