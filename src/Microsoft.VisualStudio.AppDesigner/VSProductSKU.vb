@@ -186,8 +186,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Shared Sub EnsureInited()
             If s_productSKU = VSASKUEdition.None Then
-                If Common.Utils.VBPackageInstance IsNot Nothing Then
-                    Init(DirectCast(Common.Utils.VBPackageInstance, IServiceProvider))
+                If Common.VBPackageInstance IsNot Nothing Then
+                    Init(DirectCast(Common.VBPackageInstance, IServiceProvider))
                 End If
             End If
         End Sub

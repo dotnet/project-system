@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <Summary>
         '@  Compare two list items
         '@ </Summary>
-        Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+        Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
             Dim ret As Integer = String.Compare(GetColumnValue(x, _sortColumn), GetColumnValue(y, _sortColumn), StringComparison.OrdinalIgnoreCase)
             If ret = 0 AndAlso _sortColumn <> 0 Then
                 ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.OrdinalIgnoreCase)

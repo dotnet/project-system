@@ -82,9 +82,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function IsPrefer32BitSupportedForTargetFramework() As Boolean
 
-            Return IsTargetingDotNetFramework45OrAbove(Me.ProjectHierarchy) OrElse
-                   IsAppContainerProject(Me.ProjectHierarchy) OrElse
-                   IsTargetingDotNetCore(Me.ProjectHierarchy)
+            Return IsTargetingDotNetFramework45OrAbove(ProjectHierarchy) OrElse
+                   IsAppContainerProject(ProjectHierarchy) OrElse
+                   IsTargetingDotNetCore(ProjectHierarchy)
 
         End Function
 
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim enabledBefore As Boolean = control.Enabled
 
             If control.Enabled Then
-                Me._lastPrefer32BitValue = control.Checked
+                _lastPrefer32BitValue = control.Checked
             End If
 
             EnableControl(control, IsPrefer32BitSupported())
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ElseIf Not enabledBefore AndAlso control.Enabled Then
 
                 ' If transitioning from disabled to enabled, restore the value of the checkbox.
-                control.Checked = Me._lastPrefer32BitValue
+                control.Checked = _lastPrefer32BitValue
 
             End If
 
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 ' The project is setting the property value while the control is disabled, so store the
                 ' value for when the control is enabled
-                Me._lastPrefer32BitValue = CBool(value)
+                _lastPrefer32BitValue = CBool(value)
             End If
 
             Return True

@@ -7,7 +7,6 @@ Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Runtime.InteropServices
-Imports VB = Microsoft.VisualBasic
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -18,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <remarks></remarks>
     Public Class PropertyListener
         Implements OLE.Interop.IPropertyNotifySink
-        Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink
+        Implements ILangInactiveCfgPropertyNotifySink
         Implements IDisposable
 
         Private _cookieActiveCfg As NativeMethods.ConnectionPointCookie 'The connection cookie for IPropertyNotifySink
@@ -59,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Shared Function TryCreate(PropPage As PropPageUserControlBase, EventSource As Object, DebugSourceName As String, ProjectHierarchy As IVsHierarchy, ListenToInactiveConfigs As Boolean) As PropertyListener
             Debug.Assert(ProjectHierarchy IsNot Nothing)
-            Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & VB.TypeName(EventSource))
+            Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & TypeName(EventSource))
 
             If TypeOf EventSource Is IVsCfg Then
                 'We need to get an IDispatch for the configuration, which we can do through IVsExtensibleObject off
@@ -103,18 +102,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     If ListenToInactiveConfigs Then
                         Try
-                            CookieInactiveCfg = New NativeMethods.ConnectionPointCookie(EventSource, Listener, GetType(AppDesInterop.ILangInactiveCfgPropertyNotifySink))
+                            CookieInactiveCfg = New NativeMethods.ConnectionPointCookie(EventSource, Listener, GetType(ILangInactiveCfgPropertyNotifySink))
                             Listener._cookieInactiveCfg = CookieInactiveCfg
                             CookieInactiveCfg = Nothing
                             Common.Switches.TracePDProperties(TraceLevel.Info, "... Succeeded for inactive configurations")
-                        Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unable to get connection point cookie for ILangInactiveCfgPropertyNotifySink", NameOf(PropertyListener))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unable to get connection point cookie for ILangInactiveCfgPropertyNotifySink", NameOf(PropertyListener))
                             'We ignore if this happens
                             Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown for inactive configurations: " & ex.Message)
                         End Try
                     End If
 
                     Return Listener
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryCreate), NameOf(PropertyListener))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryCreate), NameOf(PropertyListener))
                     Common.Switches.TracePDProperties(TraceLevel.Info, "...  Exception thrown: " & ex.ToString)
                 Finally
                     If CookieActiveCfg IsNot Nothing Then
@@ -256,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="wszConfigName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function OnChanged(dispid As Integer, wszConfigName As String) As Integer Implements AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged
+        Public Function OnChanged(dispid As Integer, wszConfigName As String) As Integer Implements ILangInactiveCfgPropertyNotifySink.OnChanged
             Dim DebugSourceName As String = Nothing
 #If DEBUG Then
             DebugSourceName = "[Inactive Config '" & wszConfigName & "'] : " & _debugSourceName

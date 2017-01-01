@@ -20,14 +20,14 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <remarks></remarks>
         Private ReadOnly Property GetDialogFont() As Font
             Get
-                Dim uiSvc As IUIService = CType(Me.Site.GetService(GetType(IUIService)), IUIService)
+                Dim uiSvc As IUIService = CType(Site.GetService(GetType(IUIService)), IUIService)
                 If uiSvc IsNot Nothing Then
                     Return CType(uiSvc.Styles("DialogFont"), Font)
                 End If
 
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                Return Form.DefaultFont
+                Return Control.DefaultFont
             End Get
         End Property
 
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <remarks></remarks>
         Public Overrides Sub LoadSettingsFromStorage()
-            If Not _settingsLoaded OrElse Not Me.Dirty Then
+            If Not _settingsLoaded OrElse Not Dirty Then
                 LoadSettings()
                 _settingsLoaded = True
                 Dirty = False
@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <remarks></remarks>
         Public Overrides Sub SaveSettingsToStorage()
-            If _settingsLoaded AndAlso Me.Dirty Then
+            If _settingsLoaded AndAlso Dirty Then
                 SaveSettings()
                 _settingsLoaded = False
                 Dirty = False
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
             LoadSettingsFromStorage()
 
             ' Update font & scale accordingly...
-            Dim Dialog As Control = CType(Me.Window, Control)
+            Dim Dialog As Control = CType(Window, Control)
 
             If Dialog Is Nothing Then
                 Debug.Fail("Couldn't get Control to display to the user")
@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <param name="Message">The message to be shown</param>
         ''' <remarks></remarks>
         Protected Sub ShowDialogBox(Message As String)
-            DesignerFramework.DesignerMessageBox.Show(Me.Site, Message, DesignerFramework.DesignUtil.GetDefaultCaption(Site), MessageBoxButtons.OK, MessageBoxIcon.Information)
+            DesignerFramework.DesignerMessageBox.Show(Site, Message, DesignerFramework.DesignUtil.GetDefaultCaption(Site), MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Sub
 
 
@@ -166,18 +166,18 @@ Namespace Microsoft.VisualStudio.Editors.Package
             For Each child As Control In ctrl.Controls
                 If child.GetType() Is GetType(CheckBox) Then
                     Dim cb As CheckBox = DirectCast(child, CheckBox)
-                    AddHandler cb.CheckedChanged, AddressOf Me.SetDirty
+                    AddHandler cb.CheckedChanged, AddressOf SetDirty
                 ElseIf child.GetType() Is GetType(TextBox) Then
-                    AddHandler child.TextChanged, AddressOf Me.SetDirty
+                    AddHandler child.TextChanged, AddressOf SetDirty
                 ElseIf child.GetType() Is GetType(ComboBox) Then
                     Dim cb As ComboBox = DirectCast(child, ComboBox)
-                    AddHandler cb.SelectedValueChanged, AddressOf Me.SetDirty
+                    AddHandler cb.SelectedValueChanged, AddressOf SetDirty
                 ElseIf child.GetType() Is GetType(RadioButton) Then
                     Dim rb As RadioButton = DirectCast(child, RadioButton)
-                    AddHandler rb.CheckedChanged, AddressOf Me.SetDirty
+                    AddHandler rb.CheckedChanged, AddressOf SetDirty
                 ElseIf child.GetType() Is GetType(Button) Then
                     Dim btn As Button = DirectCast(child, Button)
-                    AddHandler btn.Click, AddressOf Me.SetDirty
+                    AddHandler btn.Click, AddressOf SetDirty
                 End If
 
                 AttachHandlers(child)
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
 
         Private Sub SetDirty(sender As Object, e As EventArgs)
             Debug.WriteLine(String.Format("Control {0} dirtied", DirectCast(sender, Control).Name))
-            Me.Dirty = True
+            Dirty = True
         End Sub
 
     End Class

@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'We simply display a value indicating to the user that this is a Nothing/null value.
-            Return SR.GetString(SR.RSE_NothingValue)
+            Return My.Resources.Designer.RSE_NothingValue
         End Function
 
     End Class

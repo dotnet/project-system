@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     Friend NotInheritable Class NativeMethods
 
         Private Const s_VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
-        Public Shared ReadOnly VBCompilerGuid As System.Guid = New System.Guid(s_VB_COMPILER_GUID)
+        Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(s_VB_COMPILER_GUID)
 
         '/ <summary>
         '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         Public Shared Function HRESULT_FROM_WIN32(x As Integer) As Integer
             If x <> 0 Then
-                Return (x And &HFFFF) Or (AppDesInterop.win.FACILITY_WIN32 * &H10000) Or &H80000000
+                Return (x And &HFFFF) Or (win.FACILITY_WIN32 * &H10000) Or &H80000000
             Else
                 Return 0
             End If
@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
 #If DEBUG Then
                 _callStack = Environment.StackTrace
-                Me._eventInterface = eventInterface
+                _eventInterface = eventInterface
 #End If
             End Sub 'New
 
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Protected Overrides Sub Finalize()
 
 #If DEBUG Then
-                System.Diagnostics.Debug.Assert(_cookie = 0, "We should never finalize an active connection point. (Interface = " & _eventInterface.FullName & "), allocating code (see stack) is responsible for unhooking the ConnectionPoint by calling Disconnect.  Hookup Stack =" & Microsoft.VisualBasic.vbNewLine & _callStack)
+                Debug.Assert(_cookie = 0, "We should never finalize an active connection point. (Interface = " & _eventInterface.FullName & "), allocating code (see stack) is responsible for unhooking the ConnectionPoint by calling Disconnect.  Hookup Stack =" & vbNewLine & _callStack)
 #End If
                 ' We can't call Disconnect here, because connectionPoint could be finalized earlier
                 MyBase.Finalize()
@@ -395,11 +395,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     '//
     '// ILangPropertyProvideBatchUpdate
     '//
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     Public Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
-        Sub IsBatchModeEnabled(<InAttribute(), Out()> ByRef BatchModeEnabled As Boolean)
+        Sub IsBatchModeEnabled(<[In](), Out()> ByRef BatchModeEnabled As Boolean)
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 

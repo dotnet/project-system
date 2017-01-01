@@ -46,8 +46,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Me.SelectedConfigName = SelectedConfigName
             Me.SelectedPlatformName = SelectedPlatformName
 
-            Me.ConfigNames = New String(Objects.Length - 1) {}
-            Me.PlatformNames = New String(Objects.Length - 1) {}
+            ConfigNames = New String(Objects.Length - 1) {}
+            PlatformNames = New String(Objects.Length - 1) {}
             Me.Values = New Object(Objects.Length - 1) {}
 
             For i As Integer = 0 To Objects.Length - 1
@@ -55,15 +55,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 If Cfg IsNot Nothing Then
                     Dim ConfigName As String = ""
                     Dim PlatformName As String = ""
-                    AppDesCommon.ShellUtil.GetConfigAndPlatformFromIVsCfg(Cfg, ConfigName, PlatformName)
+                    Common.ShellUtil.GetConfigAndPlatformFromIVsCfg(Cfg, ConfigName, PlatformName)
 
 #If DEBUG Then
                     Dim Cfg2 As IVsCfg = Nothing
                     VsCfgProvider.GetCfgOfName(ConfigName, PlatformName, Cfg2)
                     Debug.Assert(Cfg2 IsNot Nothing AndAlso Cfg2 Is Cfg, "Unable to correctly decode config name and map it back to the config")
 #End If
-                    Me.ConfigNames(i) = ConfigName
-                    Me.PlatformNames(i) = PlatformName
+                    ConfigNames(i) = ConfigName
+                    PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 If VSErrorHandler.Succeeded(VsCfgProvider.GetCfgOfName(ConfigNames(i), PlatformNames(i), Cfg)) Then
                     Objects(i) = Cfg
                 Else
-                    Throw New Exception(SR.GetString(SR.PPG_ConfigNotFound_2Args, ConfigNames(i), PlatformNames(i)))
+                    Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.PPG_ConfigNotFound_2Args, ConfigNames(i), PlatformNames(i)))
                 End If
             Next
 

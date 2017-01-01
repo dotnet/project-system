@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Name
         End Function
 
-        Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
+        Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
             Dim y As ReferenceComponent = CType(obj, ReferenceComponent)
             If y IsNot Nothing Then
                 Return String.Compare(Name, y.Name)

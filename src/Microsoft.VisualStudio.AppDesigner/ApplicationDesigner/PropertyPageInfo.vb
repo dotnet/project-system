@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Public Class PropertyPageInfo
-        Implements System.IDisposable
+        Implements IDisposable
 
         Private _guid As Guid 'The GUID for the property page
         Private _isConfigPage As Boolean 'True if the page's properties can have different values in different configurations
@@ -37,11 +37,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="IsConfigurationDependentPage">Whether or not the page has different values for each configuration (e.g. the Debug page)</param>
         ''' <remarks></remarks>
         Public Sub New(ParentView As ApplicationDesignerView, Guid As Guid, IsConfigurationDependentPage As Boolean)
-            Debug.Assert(Not Guid.Equals(System.Guid.Empty), "Empty guid?")
+            Debug.Assert(Not Guid.Equals(Guid.Empty), "Empty guid?")
             Debug.Assert(ParentView IsNot Nothing)
-            Me._parentView = ParentView
-            Me._guid = Guid
-            Me._isConfigPage = IsConfigurationDependentPage
+            _parentView = ParentView
+            _guid = Guid
+            _isConfigPage = IsConfigurationDependentPage
         End Sub
 
 
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of any the doc data
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
 
@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _site.Dispose()
                         _site = Nothing
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropertyPageInfo))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropertyPageInfo))
                     'Ignore everything else
                 End Try
 
@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Cache the title for future use
                 CachedTitle = _info.pszTitle
 
-            Catch Ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(TryLoadPropertyPage), NameOf(PropertyPageInfo))
+            Catch Ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryLoadPropertyPage), NameOf(PropertyPageInfo))
                 If _comPropPageInstance IsNot Nothing Then
                     'IPropertyPage.GetPageInfo probably failed - if that didn't 
                     ' succeed, then nothing much else will likely work on the page either
@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Return DirectCast(ValueObject, String)
                         End If
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()
@@ -329,7 +329,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If Key IsNot Nothing Then
                         Key.SetValue(CachedTitleValueName, value, Win32.RegistryValueKind.String)
                     End If
-                Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
                 Finally
                     If Key IsNot Nothing Then
                         Key.Close()

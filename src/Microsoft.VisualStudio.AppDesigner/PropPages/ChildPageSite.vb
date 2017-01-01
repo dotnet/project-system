@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ServiceType"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetService(ServiceType As System.Type) As Object Implements IPropertyPageSiteInternal.GetService
+        Public Function GetService(ServiceType As Type) As Object Implements IPropertyPageSiteInternal.GetService
             Return _wrappedInternalSite.GetService(ServiceType)
         End Function
 
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
-        Public Function TranslateAccelerator(msg As System.Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
+        Public Function TranslateAccelerator(msg As Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
             Return _wrappedInternalSite.TranslateAccelerator(msg)
         End Function
 
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="description"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetTransaction(description As String) As System.ComponentModel.Design.DesignerTransaction Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.GetTransaction
+        Public Function GetTransaction(description As String) As ComponentModel.Design.DesignerTransaction Implements IVsProjectDesignerPageSite.GetTransaction
             If _wrappedUndoSite IsNot Nothing Then
                 Return _wrappedUndoSite.GetTransaction(description)
             End If
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="oldValue"></param>
         ''' <param name="newValue"></param>
         ''' <remarks></remarks>
-        Public Sub OnPropertyChanged(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor, oldValue As Object, newValue As Object) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanged
+        Public Sub OnPropertyChanged(propertyName As String, propertyDescriptor As ComponentModel.PropertyDescriptor, oldValue As Object, newValue As Object) Implements IVsProjectDesignerPageSite.OnPropertyChanged
             If _wrappedUndoSite IsNot Nothing Then
                 _wrappedUndoSite.OnPropertyChanged(MungePropertyName(propertyName), propertyDescriptor, oldValue, newValue)
             End If
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="propertyName"></param>
         ''' <param name="propertyDescriptor"></param>
         ''' <remarks></remarks>
-        Public Sub OnPropertyChanging(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor) Implements ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanging
+        Public Sub OnPropertyChanging(propertyName As String, propertyDescriptor As ComponentModel.PropertyDescriptor) Implements IVsProjectDesignerPageSite.OnPropertyChanging
             If _wrappedUndoSite IsNot Nothing Then
                 _wrappedUndoSite.OnPropertyChanging(MungePropertyName(propertyName), propertyDescriptor)
             End If

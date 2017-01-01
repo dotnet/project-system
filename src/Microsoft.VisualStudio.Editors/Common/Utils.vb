@@ -16,7 +16,6 @@ Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 Imports Microsoft.VSDesigner
 Imports GelUtilities = Microsoft.Internal.VisualStudio.PlatformUI.Utilities
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.Common
 
@@ -174,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return Bitmap
             Else
                 Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(SR.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
+                Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
         End Function
 
@@ -197,9 +196,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>The retrieved bitmap</returns>
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage(ImageID As String) As Image
-            Dim BitmapStream As Stream = GetType(Microsoft.VisualStudio.Editors.Common.Utils).Assembly.GetManifestResourceStream(ImageID)
+            Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
             If Not BitmapStream Is Nothing Then
-                Dim Image As Image = Drawing.Image.FromStream(BitmapStream)
+                Dim Image As Image = Image.FromStream(BitmapStream)
                 If Not Image Is Nothing Then
                     Return Image
                 Else
@@ -209,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)
             End If
 
-            Throw New Package.InternalException(String.Format(SR.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
+            Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
@@ -344,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 
-            Debug.Fail(exceptionEventDescription & VB.vbCrLf & $"Exception: {ex.ToString}")
+            Debug.Fail(exceptionEventDescription & vbCrLf & $"Exception: {ex.ToString}")
             Return True
         End Function
 
@@ -356,7 +355,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED) _
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED) _
             Then
                 Return True
             End If
@@ -518,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim Filter As New StringBuilder
             Dim i As Integer
 
-            Debug.Assert(VB.InStr(FilterText, "|") = 0, "FilterText for CreateDialogFilter should not contain '|'")
+            Debug.Assert(InStr(FilterText, "|") = 0, "FilterText for CreateDialogFilter should not contain '|'")
 
             'Build the user-friendly portion of the filter
             Filter.Append(FilterText & " (")
@@ -528,8 +527,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
 
                 Dim Extension As String = Extensions(i)
-                Debug.Assert(VB.Left(Extension, 1) <> "*", "Extension should not include the '*'")
-                If VB.Left(Extension, 1) <> "." Then
+                Debug.Assert(Left(Extension, 1) <> "*", "Extension should not include the '*'")
+                If Left(Extension, 1) <> "." Then
                     Extension = "." & Extension
                 End If
                 Filter.Append("*" & Extension)
@@ -543,7 +542,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
 
                 Dim Extension As String = Extensions(i)
-                If VB.Left(Extension, 1) <> "." Then
+                If Left(Extension, 1) <> "." Then
                     Extension = "." & Extension
                 End If
                 Filter.Append("*" & Extension)
@@ -561,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function GetAllFilesDialogFilter() As String
             'We don't use CreateDialogFilter because we don't want *.* to be part of the user-friendly portion.
             '  We only want:  All Files|*.*
-            Return SR.GetString(SR.CMN_AllFilesFilter) & "|*.*"
+            Return My.Resources.Designer.CMN_AllFilesFilter & "|*.*"
         End Function
 
 
@@ -668,7 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Function AppendBackslash(Path As String) As String
-            If Path <> "" AndAlso VB.Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso VB.Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
+            If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
             Else
                 Return Path
@@ -694,8 +693,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -706,24 +705,24 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Filter = GetNativeFilter(Filter)
 
-            Dim MaxPathName As Integer = Interop.win.MAX_PATH + 1
+            Dim MaxPathName As Integer = win.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (Interop.win.MAX_PATH + 1) * s_VSDPLMAXFILES
+                MaxPathName = (win.MAX_PATH + 1) * s_VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Shell.Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
                 DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
             End If
 
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MaxPathName * 2 + 2)
-            System.Runtime.InteropServices.Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MaxPathName * 2 + 2)
+            Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Shell.Interop.VSOPENFILENAMEW(0) {}
-                vsOpenFileName(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(vsOpenFileName(0)))
+                vsOpenFileName = New VSOPENFILENAMEW(0) {}
+                vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
                 vsOpenFileName(0).nMaxFileName = CUInt(MaxPathName)
@@ -744,7 +743,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Dim hr As Integer = uishell.GetOpenFileNameViaDlg(vsOpenFileName)
                 If VSErrorHandler.Succeeded(hr) Then
                     Dim buffer(MaxPathName) As Char
-                    System.Runtime.InteropServices.Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
+                    Marshal.Copy(stringMemPtr, buffer, 0, buffer.Length)
                     Dim path As String = Nothing
                     Dim i As Integer = 0
                     For j As Integer = 0 To buffer.Length - 1
@@ -765,14 +764,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         fileNames.Add(path)
                     End If
                 ElseIf NeedThrowError Then
-                    If hr = Interop.win.OLE_E_PROMPTSAVECANCELLED Then
+                    If hr = win.OLE_E_PROMPTSAVECANCELLED Then
                         'We shouldn't thrown error, if User cancelled out of dialog
                     Else
                         VSErrorHandler.ThrowOnFailure(hr)
                     End If
                 End If
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return fileNames
@@ -842,8 +841,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Optional DefaultFileName As String = Nothing,
                 Optional OverwritePrompt As Boolean = False) As String
 
-            Dim uishell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             InitialDirectory = NormalizeInitialDirectory(InitialDirectory)
             Filter = GetNativeFilter(Filter)
@@ -855,13 +854,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
             End If
 
-            Dim vsSaveFileName As Shell.Interop.VSSAVEFILENAMEW()
-            Dim stringMemPtr As IntPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(MAX_PATH_NAME * 2 + 2)
-            System.Runtime.InteropServices.Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
+            Dim vsSaveFileName As VSSAVEFILENAMEW()
+            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MAX_PATH_NAME * 2 + 2)
+            Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsSaveFileName = New Shell.Interop.VSSAVEFILENAMEW(0) {}
-                vsSaveFileName(0).lStructSize = CUInt(System.Runtime.InteropServices.Marshal.SizeOf(vsSaveFileName(0)))
+                vsSaveFileName = New VSSAVEFILENAMEW(0) {}
+                vsSaveFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsSaveFileName(0)))
                 vsSaveFileName(0).hwndOwner = ParentWindow
                 vsSaveFileName(0).pwzDlgTitle = DialogTitle
                 vsSaveFileName(0).nMaxFileName = MAX_PATH_NAME
@@ -882,12 +881,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                 Dim hr As Integer = uishell.GetSaveFileNameViaDlg(vsSaveFileName)
                 If VSErrorHandler.Succeeded(hr) Then
-                    Dim sFileName As String = System.Runtime.InteropServices.Marshal.PtrToStringUni(stringMemPtr)
+                    Dim sFileName As String = Marshal.PtrToStringUni(stringMemPtr)
                     Return sFileName
                 End If
 
             Finally
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(stringMemPtr)
+                Marshal.FreeHGlobal(stringMemPtr)
             End Try
 
             Return Nothing
@@ -900,7 +899,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="path">The path to get to.</param>
         ''' <returns>A String contains the relative path, '.' if baseDirectory and path are the same, 
         '''          or the given path if there is no relative path.</returns>
-        ''' <exception cref="IO.Path.GetFullPath">See IO.Path.GetFullPath: If the input path is invalid.</exception>
+        ''' <exception cref="Path.GetFullPath">See IO.Path.GetFullPath: If the input path is invalid.</exception>
         ''' <remarks>
         '''  This works with UNC path. However, mapped drive will not be resolved to UNC path.
         '''  If baseDirectory / path exist, 8.3 paths will be resolved into long path format.
@@ -940,7 +939,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Exit While
                 Else
                     ' Update CommonSeparatorPosition if both paths have a separator at an index.
-                    If BaseDirectory.Chars(Index) = System.IO.Path.DirectorySeparatorChar Then
+                    If BaseDirectory.Chars(Index) = IO.Path.DirectorySeparatorChar Then
                         CommonSeparatorPosition = Index
                     End If
                 End If
@@ -953,12 +952,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             ' Otherwise, build the result.
-            Dim RelativePath As New System.Text.StringBuilder
+            Dim RelativePath As New StringBuilder
 
             ' Calculate how many directories to go up to common directory from base path.
             While (Index < BaseDirectory.Length)
-                If BaseDirectory.Chars(Index) = System.IO.Path.DirectorySeparatorChar Then
-                    RelativePath.Append(".." & System.IO.Path.DirectorySeparatorChar)
+                If BaseDirectory.Chars(Index) = IO.Path.DirectorySeparatorChar Then
+                    RelativePath.Append(".." & IO.Path.DirectorySeparatorChar)
                 End If
                 Index += 1
             End While
@@ -1015,7 +1014,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Friend Function IsScreenReaderRunning() As Boolean
             Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
             Try
-                If Interop.NativeMethods.SystemParametersInfo(Interop.win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
+                If NativeMethods.SystemParametersInfo(win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
                     Dim result As Integer = Marshal.ReadInt32(pvParam)
                     Return result <> 0
                 End If
@@ -1050,7 +1049,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                     g.DrawImage(unmappedBitmap, r, 0, 0, size.Width, size.Height, GraphicsUnit.Pixel, imageAttributes)
                 End Using
-            Catch e As Exception When Common.ReportWithoutCrash(e, NameOf(MapBitmapColor), NameOf(Utils))
+            Catch e As Exception When ReportWithoutCrash(e, NameOf(MapBitmapColor), NameOf(Utils))
                 ' fall-back is to use the unmapped bitmap
                 Return unmappedBitmap
             End Try
@@ -1079,11 +1078,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="pHier"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As Microsoft.VisualStudio.Shell.ServiceProvider
+        Public Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As ServiceProvider
             If pHier IsNot Nothing Then
-                Dim OLEServiceProvider As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = Nothing
+                Dim OLEServiceProvider As OLE.Interop.IServiceProvider = Nothing
                 VSErrorHandler.ThrowOnFailure(pHier.GetSite(OLEServiceProvider))
-                Return New Microsoft.VisualStudio.Shell.ServiceProvider(OLEServiceProvider)
+                Return New ServiceProvider(OLEServiceProvider)
             Else
                 Return Nothing
             End If
@@ -1095,21 +1094,21 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="hr">error code</param>
         '@ <param name="error message">error message</param>
         '@ <returns></returns>
-        Public Sub SetErrorInfo(sp As Microsoft.VisualStudio.Shell.ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell = Nothing
+        Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
+            Dim vsUIShell As IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackage.Instance IsNot Nothing Then
-                vsUIShell = CType(VBPackage.Instance.GetService(GetType(Microsoft.VisualStudio.Shell.Interop.IVsUIShell)), Microsoft.VisualStudio.Shell.Interop.IVsUIShell)
+                vsUIShell = CType(VBPackage.Instance.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
                 vsUIShell.SetErrorInfo(hr, errorMessage, 0, Nothing, Nothing)
             Else
-                System.Diagnostics.Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
+                Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
             End If
         End Sub
 
@@ -1146,7 +1145,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             'Use standard Win32 function for native dialog pages
-            Dim FirstTabStop As IntPtr = Interop.NativeMethods.GetNextDlgTabItem(HwndParent, IntPtr.Zero, False)
+            Dim FirstTabStop As IntPtr = NativeMethods.GetNextDlgTabItem(HwndParent, IntPtr.Zero, False)
             If FirstTabStop.Equals(IntPtr.Zero) Then
                 Return False
             End If
@@ -1155,14 +1154,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
             If First Then
                 NextTabStop = FirstTabStop
             Else
-                NextTabStop = Interop.NativeMethods.GetNextDlgTabItem(HwndParent, FirstTabStop, True)
+                NextTabStop = NativeMethods.GetNextDlgTabItem(HwndParent, FirstTabStop, True)
             End If
 
             If NextTabStop.Equals(IntPtr.Zero) Then
                 Return False
             End If
 
-            Interop.NativeMethods.SetFocus(NextTabStop)
+            NativeMethods.SetFocus(NextTabStop)
             Return True
         End Function
 
@@ -1172,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="ch">a character to check</param>
         '@ <returns>True if it is a high-surrogate character</returns>
         Public Function IsHighSurrogate(ch As Char) As Boolean
-            Return VB.AscW(ch) >= &HD800 AndAlso VB.AscW(ch) <= &HDBFF
+            Return AscW(ch) >= &HD800 AndAlso AscW(ch) <= &HDBFF
         End Function
 
         '@ <summary>
@@ -1181,7 +1180,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '@ <param name="ch">a character to check</param>
         '@ <returns>True if it is a low-surrogate character</returns>
         Public Function IsLowSurrogate(ch As Char) As Boolean
-            Return VB.AscW(ch) >= &HDC00 AndAlso VB.AscW(ch) <= &HDFFF
+            Return AscW(ch) >= &HDC00 AndAlso AscW(ch) <= &HDFFF
         End Function
 
         '@ <summary>
@@ -1225,7 +1224,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         DefaultNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DirectCast(objDefaultNamespace, String))
                     End If
                 Else
-                    Dim item As EnvDTE.ProjectItem = Common.DTEUtils.ProjectItemFromItemId(Hierarchy, ItemId)
+                    Dim item As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(Hierarchy, ItemId)
                     Debug.Assert(item IsNot Nothing, "Failed to get EnvDTE.ProjectItem from given hierarchy/itemid")
                     If item IsNot Nothing AndAlso item.Properties IsNot Nothing Then
                         Dim prop As EnvDTE.Property = Nothing
@@ -1247,9 +1246,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         End If
                     End If
                 End If
-            Catch ex As System.ArgumentException
+            Catch ex As ArgumentException
                 ' Venus throws when trying to access the CustomToolNamespace property...
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get item.Properties('CustomToolNamespace')", NameOf(Utils))
             End Try
 
             ' If we have a custom tool namespace, then we will return this unless we also have a root namespace (VB only)
@@ -1285,8 +1284,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
                             DefaultNamespace = ""
                         End If
                     End If
-                Catch ex As System.ArgumentException
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils))
+                Catch ex As ArgumentException
+                Catch ex As Exception When ReportWithoutCrash(ex, "Exception when trying to get the root namespace", NameOf(Utils))
                 End Try
             End If
             Try
@@ -1309,7 +1308,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Throw New ArgumentNullException("Hierarchy")
             End If
 
-            If TryCast(Hierarchy, Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
+            If TryCast(Hierarchy, WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
                 Dim objIsServiceReferenceSupported As Object = Nothing
                 Try
                     VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, CInt(__VSHPROPID3.VSHPROPID_ServiceReferenceSupported), objIsServiceReferenceSupported))
@@ -1370,7 +1369,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Not langService = Guid.Empty Then
                     Return langService.Equals(New Guid("{E34ACDC0-BAAE-11D0-88BF-00A0C9110049}"))
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(IsVbProject), NameOf(Utils))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsVbProject), NameOf(Utils))
             End Try
             Return False
         End Function
@@ -1412,7 +1411,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
             ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
             ' before enabling server-specific functionality
-            Return Not (service.IsSupportedType(GetType(System.Web.ApplicationServices.AuthenticationService)))
+            Return Not (service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService)))
 
         End Function
 
@@ -1502,8 +1501,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Class Helper
 
-            Public Overridable Function ServiceProviderFromHierarchy(pHier As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) As System.IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
-                Return Microsoft.VisualStudio.Editors.Common.Utils.ServiceProviderFromHierarchy(pHier)
+            Public Overridable Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
+                Return Utils.ServiceProviderFromHierarchy(pHier)
             End Function
 
         End Class
@@ -1678,7 +1677,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If Reference3 IsNot Nothing AndAlso Reference3.AutoReferenced Then
                     Return True
                 End If
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Reference3.AutoReferenced threw an exception", NameOf(Utils))
             End Try
 
             Return False

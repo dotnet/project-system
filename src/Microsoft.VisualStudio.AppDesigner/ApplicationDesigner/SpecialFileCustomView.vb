@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Public Class SpecialFileCustomView
-        Inherits System.Windows.Forms.UserControl
+        Inherits Windows.Forms.UserControl
 
         'The SpecialFileCustomViewProvider which created this class instance
         Private _viewProvider As SpecialFileCustomViewProvider
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub LinkLabel_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
+        Private Sub LinkLabel_LinkClicked(sender As System.Object, e As Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
             CreateNewSpecialFile()
         End Sub
 

@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)
                     Dim pPackage As IVsPackage = Nothing
                     If shell IsNot Nothing Then
-                        Dim hr As Integer = shell.IsPackageLoaded(New Guid(My.Resources.Microsoft_VisualStudio_AppDesigner_Designer.VBPackage_GUID), pPackage)
+                        Dim hr As Integer = shell.IsPackageLoaded(New Guid(My.Resources.Designer.VBPackage_GUID), pPackage)
                         Debug.Assert(NativeMethods.Succeeded(hr) AndAlso pPackage IsNot Nothing, "VB editors package not loaded?!?")
                     End If
 
