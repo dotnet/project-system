@@ -15,8 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         /// </summary>
         /// <param name="oldFilePath">The original path and name of the file</param>
         /// <param name="newFilePath">The new path and name of the file</param>
+        /// <param name="isCaseSensitive">Is language case sensitive</param>
         /// <returns>True if the strategy is applicable. False otherwise.</returns>
-        bool CanHandleRename(string oldFilePath, string newFilePath);
+        bool CanHandleRename(string oldFilePath, string newFilePath, bool isCaseSensitive);
 
         /// <summary>
         /// Performs refactors to the given project, given that a file is being renamed from oldFilePath to newFilePath.

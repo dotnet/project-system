@@ -75,17 +75,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public Task RenameAsync(Project project)
+        public async Task RenameAsync(Project project)
         {
-            return GetStrategy()?.RenameAsync(project, _oldFilePath, _newFilePath) ?? Task.CompletedTask;
+            var renameStrategy = await GetStrategyAsync(project).ConfigureAwait(false);
+            if (renameStrategy != null)
+                await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath).ConfigureAwait(false);
         }
 
-        private IRenameStrategy GetStrategy()
+        private async Task<IRenameStrategy> GetStrategyAsync(Project project)
         {
             IRenameStrategy[] strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _optionsSettings, _roslynServices)
             };
-            return strategies.FirstOrDefault(s => s.CanHandleRename(_oldFilePath, _newFilePath));
+
+            var isCaseSensitive = false;
+            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            if (compilation != null)
+            {
+                isCaseSensitive = compilation.IsCaseSensitive;
+            }
+            return strategies.FirstOrDefault(s => s.CanHandleRename(_oldFilePath, _newFilePath, isCaseSensitive));
         }
     }
 }

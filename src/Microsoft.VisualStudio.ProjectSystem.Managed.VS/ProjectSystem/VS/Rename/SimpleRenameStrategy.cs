@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -19,11 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         }
 
         // For the SimpleRename, it can attempt to handle any situtation
-        public override bool CanHandleRename(string oldFileName, string newFileName)
+        public override bool CanHandleRename(string oldFileName, string newFileName, bool isCaseSensitive)
         {
             var oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
             var newNameBase = Path.GetFileNameWithoutExtension(newFileName);
-            return SyntaxFacts.IsValidIdentifier(oldNameBase) && SyntaxFacts.IsValidIdentifier(newNameBase) && (string.Compare(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase),false)!=0);
+            return SyntaxFacts.IsValidIdentifier(oldNameBase) && SyntaxFacts.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive?StringComparison.Ordinal:StringComparison.OrdinalIgnoreCase));
         }
 
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName)
