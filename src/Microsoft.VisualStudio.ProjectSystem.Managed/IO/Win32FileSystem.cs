@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.IO
             return Directory.GetDirectories(path, searchPattern, searchOption);
         }
 
-        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
         {
             return Directory.EnumerateFiles(path, searchPattern, searchOption);
         }

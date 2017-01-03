@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var values = await generator.GetListedValuesAsync();
             
             Assert.Equal(3, values.Count);
-            Assert.Equal<string>(new List<string> { "0", "1", "2" }, values.Select(v => v.DisplayName));
+            Assert.Equal(new List<string> { "0", "1", "2" }, values.Select(v => v.DisplayName));
         }
 
         [Theory]

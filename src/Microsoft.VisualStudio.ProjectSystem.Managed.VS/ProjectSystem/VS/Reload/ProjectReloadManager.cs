@@ -438,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
             }
 
-            uint parentItemid  = (uint)project.VsHierarchy.GetProperty<int>(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
+            uint parentItemid  = (uint)project.VsHierarchy.GetProperty(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
             if (parentItemid == VSConstants.VSITEMID_NIL)
             {
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);

@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public virtual Task<IProperty> GetPropertyAsync(string name)
         {
             var properties = GetPropertiesForRule(ConfigurationGeneral.SchemaName);
-            return Task.FromResult<IProperty>(properties[name] as IProperty);
+            return Task.FromResult(properties[name] as IProperty);
         }
 
         public virtual Task DeletePropertyAsync(string schema, string name)

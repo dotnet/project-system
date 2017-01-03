@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             base.OnCollectionChanged(e);
         }
 
-        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             HasChanged = true;
             base.OnPropertyChanged(e);

@@ -823,7 +823,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(newActiveConfiguredProject, nameof(newActiveConfiguredProject));
 
-            return base.GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
+            return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
         }
 
         #region IDependenciesGraphProjectContext

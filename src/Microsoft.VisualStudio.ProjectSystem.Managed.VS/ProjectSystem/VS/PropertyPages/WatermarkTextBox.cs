@@ -1,7 +1,6 @@
 ﻿//Ported from "vset\qtools\testmanagement\ui\controls\wpf\controls" as this follows the simplest option so far
 //Some unused properties are removed such as "Hitting Enter" support, etc.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
