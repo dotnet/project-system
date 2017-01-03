@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string propertyName = null)
         {
-            if (!Object.Equals(propertyRef, value))
+            if (!object.Equals(propertyRef, value))
             {
                 propertyRef = value;
                 OnPropertyChanged(propertyName, suppressInvalidation);

@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             viewModel = CreatePropertyPageViewModel();
-            viewModel.UnconfiguredProject = base.UnconfiguredProject;
+            viewModel.UnconfiguredProject = UnconfiguredProject;
             await viewModel.Initialize().ConfigureAwait(false);
             control.InitializePropertyPage(viewModel);
         }

@@ -263,11 +263,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (pMsg == null)
                 return VSConstants.E_POINTER;
 
-            System.Windows.Forms.Message m = System.Windows.Forms.Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
+            System.Windows.Forms.Message m = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
             bool used = false;
 
             // Preprocessing should be passed to the control whose handle the message refers to.
-            Control target = Control.FromChildHandle(m.HWnd);
+            Control target = FromChildHandle(m.HWnd);
             if (target != null)
                 used = target.PreProcessMessage(ref m);
 
