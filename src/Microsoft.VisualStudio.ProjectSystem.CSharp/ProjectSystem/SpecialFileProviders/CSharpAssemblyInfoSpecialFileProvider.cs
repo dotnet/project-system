@@ -11,11 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     internal class CSharpAssemblyInfoSpecialFileProvider : AbstractSpecialFileProvider
     {
         [ImportingConstructor]
-        public CSharpAssemblyInfoSpecialFileProvider([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTreeService,
-                                               [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
-                                               IFileSystem fileSystem) :
-            base(projectTreeService, sourceItemsProvider, templateFileCreationService, fileSystem)
+        public CSharpAssemblyInfoSpecialFileProvider(IPhysicalProjectTree projectTree,
+                                                     [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+                                                     [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
+                                                     IFileSystem fileSystem) :
+            base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem)
         {
         }
 

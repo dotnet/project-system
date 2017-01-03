@@ -5,137 +5,137 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/PackagePropPage.resx" />
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="new">&amp;Assembly version:</target>
+        <target state="translated">Versione dell'&amp;assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="new">&amp;Copyright:</target>
+        <target state="translated">&amp;Copyright:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="new">&amp;Description:</target>
+        <target state="translated">&amp;Descrizione:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="new">&amp;Icon URL:</target>
+        <target state="translated">&amp;URL icona:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
-        <target state="new">Package &amp;version:</target>
+        <target state="translated">&amp;Versione del pacchetto:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseUrlLabel.Text">
         <source>&amp;License URL:</source>
-        <target state="new">&amp;License URL:</target>
+        <target state="translated">UR&amp;L della licenza:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="new">&amp;Tags:</target>
+        <target state="translated">&amp;Tag:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="new">&amp;Repository URL:</target>
+        <target state="translated">URL del &amp;repository:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
         <source>Release &amp;notes:</source>
-        <target state="new">Release &amp;notes:</target>
+        <target state="translated">N&amp;ote sulla versione:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="new">&amp;Repository type:</target>
+        <target state="translated">&amp;Tipo di repository:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="new">&amp;Project URL:</target>
+        <target state="translated">URL del pro&amp;getto:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="new">&amp;Generate NuGet package on build</target>
+        <target state="translated">&amp;Genera pacchetto NuGet durante la compilazione</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="new">Assembly &amp;neutral language:</target>
+        <target state="translated">&amp;Lingua di sistema dell'assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
+        <target state="translated">Revisione</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Compilazione</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
+        <target state="translated">Secondaria</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
+        <target state="translated">Principale</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
+        <target state="translated">Revisione</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Compilazione</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
+        <target state="translated">Secondaria</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
+        <target state="translated">Principale</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="new">Require &amp;license acceptance</target>
+        <target state="translated">Richiedi accettazione della &amp;licenza</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="new">Package &amp;id:</target>
+        <target state="translated">&amp;ID pacchetto:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
         <source>&amp;Authors:</source>
-        <target state="new">&amp;Authors:</target>
+        <target state="translated">&amp;Autori:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">
         <source>Compan&amp;y:</source>
-        <target state="new">Compan&amp;y:</target>
+        <target state="translated">S&amp;ocietà:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="new">&amp;Product:</target>
+        <target state="translated">&amp;Prodotto:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="new">Assembly &amp;file version:</target>
+        <target state="translated">Versione del &amp;file di assembly:</target>
         <note />
       </trans-unit>
     </body>

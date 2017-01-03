@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
-            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+            var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
                 serviceProvider,
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
-            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+            var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
                 serviceProvider,
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
-            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+            var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
                 serviceProvider,
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
-            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+            var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
                 serviceProvider,
@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
-            var activeConfiguredProjectWithLaunchProviders = IActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
+            var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
                 serviceProvider,

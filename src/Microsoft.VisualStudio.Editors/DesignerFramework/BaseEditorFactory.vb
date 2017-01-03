@@ -9,7 +9,6 @@ Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
-Imports VB = Microsoft.VisualBasic
 Imports VsTextBufferClass = Microsoft.VisualStudio.TextManager.Interop.VsTextBufferClass
 
 
@@ -101,13 +100,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If LocalRegistry Is Nothing Then
                 Debug.Fail("Shell did not offer local registry, so we can't create a text buffer.")
-                Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), Interop.NativeMethods.E_FAIL)
+                Throw New COMException(My.Resources.Designer.DFX_NoLocalRegistry, Interop.NativeMethods.E_FAIL)
             End If
 
-            Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(System.Guid.Empty), "EE has munched on text buffer guid.")
+            Debug.Assert(Not GetType(VsTextBufferClass).GUID.Equals(Guid.Empty), "EE has munched on text buffer guid.")
 
             Try
-                Dim GuidTemp As System.Guid = GetType(IVsTextStream).GUID
+                Dim GuidTemp As Guid = GetType(IVsTextStream).GUID
                 Dim ObjPtr As IntPtr = IntPtr.Zero
                 VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, GuidTemp, Interop.win.CLSCTX_INPROC_SERVER, ObjPtr))
 
@@ -120,8 +119,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Marshal.Release(ObjPtr)
                     ObjPtr = IntPtr.Zero
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
-                Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), Interop.NativeMethods.E_FAIL)
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to create VSTextBuffer Class", NameOf(BaseEditorFactory))
+                Throw New COMException(My.Resources.Designer.DFX_UnableCreateTextBuffer, Interop.NativeMethods.E_FAIL)
             End Try
 
             Return TextStreamInstance
@@ -153,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     'Existing data is not a IVSTextStream.  Throw VS_E_INCOMPATIBLEDOCDATA to have the shell
                     '  ask if it should close the existing editor.
-                    Throw New COMException(SR.GetString(SR.DFX_IncompatibleBuffer), Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
+                    Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, Interop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                 End If
             End If
 
@@ -178,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Must be overridden.  Be sure to use the same GUID on the GUID attribute
         '''   attached to the inheriting class.
         ''' </remarks>
-        Protected MustOverride ReadOnly Property EditorGuid() As System.Guid
+        Protected MustOverride ReadOnly Property EditorGuid() As Guid
 
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.  This is the guid used in the
@@ -186,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Protected MustOverride ReadOnly Property CommandUIGuid() As System.Guid
+        Protected MustOverride ReadOnly Property CommandUIGuid() As Guid
 
 
 #Region "Private implementation"
@@ -242,17 +241,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   to continue without closing the document if it is currently open. VS_E_INCOMPATIBLEDOCDATA 
         '''   will ask if the open document should be closed. Any other return will stop the loop from continuing.                                                                                                                                                                                                                                                                                                                                                                         If the constructed object referenced by ppunkDocData supports IOleCommandTarget, the object is included in the command routing chain of the Environment after the command is routed to the active object referenced by ppunkDocView.
         '''   
-        Private Function IVsEditorFactory_CreateEditorInstance( _
-                vscreateeditorflags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                Itemid As UInteger, _
-                ExistingDocDataPtr As IntPtr, _
-                ByRef DocViewPtr As IntPtr, _
-                ByRef DocDataPtr As IntPtr, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+        Private Function IVsEditorFactory_CreateEditorInstance(
+                vscreateeditorflags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                Itemid As UInteger,
+                ExistingDocDataPtr As IntPtr,
+                ByRef DocViewPtr As IntPtr,
+                ByRef DocDataPtr As IntPtr,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef FCanceled As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -309,19 +308,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                ItemId As UInteger, _
-                ExistingDocData As Object, _
-                ByRef DocView As Object, _
-                ByRef DocData As Object, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+        Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                ItemId As UInteger,
+                ExistingDocData As Object,
+                ByRef DocView As Object,
+                ByRef DocData As Object,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef Canceled As Boolean)
             Canceled = False
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As BaseDesignerLoader = Nothing
 
@@ -332,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' perform parameter validation and initialization.
                     '
                     If (VsCreateEditorFlags And CType(__VSCREATEEDITORFLAGS.CEF_OPENFILE Or __VSCREATEEDITORFLAGS.CEF_SILENT, UInteger)) = 0 Then
-                        Throw Common.CreateArgumentException("vscreateeditorflags")
+                        Throw CreateArgumentException("vscreateeditorflags")
                     End If
 
                     DocView = Nothing
@@ -341,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     Dim DesignerService As IVSMDDesignerService = CType(_serviceProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(SR.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     ' Create our doc data if we don't have an existing one.
@@ -368,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If Not TypeOf (DesignerLoaderObject) Is BaseDesignerLoader Then
                         Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
-                            & VB.vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
+                            & vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
                     End If
                     DesignerLoader = CType(DesignerLoaderObject, BaseDesignerLoader)
 
@@ -379,7 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     'Now slam the two together and make a designer
 
                     '... Get a managed Designer (this will expose an IVsWindowPane to the shell)
-                    Dim OleProvider As OLE.Interop.IServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
+                    Dim OleProvider As IServiceProvider = CType(_serviceProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
                     Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
 
@@ -391,10 +390,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '  read only or not)
                     Dim CaptionReadOnlyStatus As BaseDesignerLoader.EditorCaptionState = BaseDesignerLoader.EditorCaptionState.NotReadOnly
                     Try
-                        If ((New IO.FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
+                        If ((New FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
+                    Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
                     End Try
                     Caption = DesignerLoader.GetEditorCaption(CaptionReadOnlyStatus)
 
@@ -413,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New COMException(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex))
+                Throw New COMException(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex))
             End Try
         End Sub
 
@@ -447,11 +446,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' {...LOGVIEWID_Debugging...} = s ''
         ''' {...LOGVIEWID_Designer...} = s 'Form'
         ''' </summary>
-        Private Function IVsEditorFactory_MapLogicalView(ByRef LogicalView As System.Guid, ByRef PhysicalViewOut As String) As Integer Implements IVsEditorFactory.MapLogicalView
+        Private Function IVsEditorFactory_MapLogicalView(ByRef LogicalView As Guid, ByRef PhysicalViewOut As String) As Integer Implements IVsEditorFactory.MapLogicalView
             Return MapLogicalView(LogicalView, PhysicalViewOut)
         End Function
 
-        Protected MustOverride Function MapLogicalView(ByRef LogicalView As System.Guid, ByRef PhysicalViewOut As String) As Integer
+        Protected MustOverride Function MapLogicalView(ByRef LogicalView As Guid, ByRef PhysicalViewOut As String) As Integer
 
         ''' <summary>
         ''' Returns the ServiceProvider
@@ -470,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         '''     Called by the VS shell when it first initializes us.
         ''' </summary>
-        Private Function IVsEditorFactory_SetSite(site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
+        Private Function IVsEditorFactory_SetSite(site As IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             SetSiteInternal(site)
         End Function
 
@@ -482,7 +481,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Private Sub SetSiteInternal(Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
+            If _site Is Site Then
                 Debug.Fail("Why is this EditorFactory site:ed twice?")
                 Exit Sub
             End If
@@ -493,12 +492,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider.Dispose()
                 _serviceProvider = Nothing
             End If
-            Me._site = Site
-            If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _serviceProvider = New Shell.ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
+            _site = Site
+            If TypeOf Site Is IServiceProvider Then
+                _serviceProvider = New Shell.ServiceProvider(CType(Site, IServiceProvider))
             End If
 
-            Me.OnSited()
+            OnSited()
         End Sub
 
 
@@ -507,7 +506,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Dispose my resources
         ''' </summary>
         ''' <remarks>Standard implementation pattern for IDisposable</remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub

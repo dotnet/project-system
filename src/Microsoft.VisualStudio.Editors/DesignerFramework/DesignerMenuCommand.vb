@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '       owned by the root designer after each Invoke.
     '**************************************************************************
     Friend Class DesignerMenuCommand
-        Inherits Microsoft.VisualStudio.Shell.OleMenuCommand
+        Inherits Shell.OleMenuCommand
 
         '= PUBLIC =============================================================
         ';Properties
@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub 'Invoke
 
-        Public Overrides Sub Invoke(inArg As Object, outArg As System.IntPtr)
+        Public Overrides Sub Invoke(inArg As Object, outArg As IntPtr)
             MyBase.Invoke(inArg, outArg)
 
             If Not (_rootDesigner Is Nothing) Then
@@ -115,13 +115,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             MyBase.New(CommandHandler, CommandID)
 
-            Me._rootDesigner = RootDesigner
-            Me._commandEnabledHandler = CommandEnabledHandler
-            Me._commandCheckedHandler = CommandCheckedHandler
-            Me._commandVisibleHandler = CommandVisibleHandler
-            Me._alwaysCheckStatus = AlwaysCheckStatus
+            _rootDesigner = RootDesigner
+            _commandEnabledHandler = CommandEnabledHandler
+            _commandCheckedHandler = CommandCheckedHandler
+            _commandVisibleHandler = CommandVisibleHandler
+            _alwaysCheckStatus = AlwaysCheckStatus
             If CommandText <> "" Then
-                Me.Text = CommandText
+                Text = CommandText
             End If
             Visible = True
             Enabled = True
@@ -154,13 +154,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   Calls the command status handlers (if any) to set the status of the command.
         '**************************************************************************
         Private Sub UpdateStatus()
-            If Not (Me._commandEnabledHandler Is Nothing) Then
+            If Not (_commandEnabledHandler Is Nothing) Then
                 Enabled = _commandEnabledHandler(Me)
             End If
-            If Not (Me._commandCheckedHandler Is Nothing) Then
+            If Not (_commandCheckedHandler Is Nothing) Then
                 Checked = _commandCheckedHandler(Me)
             End If
-            If Not (Me._commandVisibleHandler Is Nothing) Then
+            If Not (_commandVisibleHandler Is Nothing) Then
                 Visible = _commandVisibleHandler(Me)
             End If
             _statusValid = True
@@ -204,8 +204,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Debug.Fail("You must specify a getter for this to work...")
                 Throw New ArgumentNullException()
             End If
-            Me.Visible = True
-            Me.Enabled = True
+            Visible = True
+            Enabled = True
             _getter = getter
         End Sub
 
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Shell.OleMenuCmdEventArgs)
             If e Is Nothing Then
                 Throw New ArgumentNullException
             End If
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
-            Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+            Dim oleEventArgs As Shell.OleMenuCmdEventArgs = TryCast(e, Shell.OleMenuCmdEventArgs)
             Dim cmdSender As DesignerCommandBarComboBoxFiller = TryCast(sender, DesignerCommandBarComboBoxFiller)
             If cmdSender Is Nothing OrElse oleEventArgs Is Nothing Then
                 Throw New InvalidOperationException()
@@ -274,8 +274,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Debug.Fail("You must specify a getter and setter method")
                 Throw New ArgumentNullException()
             End If
-            Me.Visible = True
-            Me.Enabled = True
+            Visible = True
+            Enabled = True
             _currentTextGetter = currentTextGetter
             _currentTextSetter = currentTextSetter
         End Sub
@@ -285,7 +285,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub InstanceCommandHandler(e As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+        Private Sub InstanceCommandHandler(e As Shell.OleMenuCmdEventArgs)
             If e.InValue Is Nothing Then
                 ' Request to get the current text...
                 Marshal.GetNativeVariantForObject(_currentTextGetter(), e.OutValue)
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Shared Sub CommandHandler(sender As Object, e As EventArgs)
-            Dim oleEventArgs As Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs = TryCast(e, Microsoft.VisualStudio.Shell.OleMenuCmdEventArgs)
+            Dim oleEventArgs As Shell.OleMenuCmdEventArgs = TryCast(e, Shell.OleMenuCmdEventArgs)
             Dim cboSender As DesignerCommandBarComboBox = TryCast(sender, DesignerCommandBarComboBox)
 
             If oleEventArgs Is Nothing OrElse cboSender Is Nothing Then
@@ -336,8 +336,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>Sets the command invisible and disabled.</remarks>
         Public Sub New(commandId As CommandID)
             MyBase.New(Nothing, commandId, AddressOf CommandHandler)
-            Me.Visible = False
-            Me.Enabled = False
+            Visible = False
+            Enabled = False
         End Sub
 
         ''' <summary>        
@@ -374,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public ReadOnly Property Commands() As System.Collections.ICollection
+        Public ReadOnly Property Commands() As ICollection
             Get
                 Return _commands.Values
             End Get

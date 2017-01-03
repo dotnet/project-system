@@ -21,10 +21,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 cp.Style = cp.Style And Not s_WS_BORDER
                 If Not UseVisualStyles Then
 
-                    Select Case Me.BorderStyle
-                        Case System.Windows.Forms.BorderStyle.Fixed3D
+                    Select Case BorderStyle
+                        Case BorderStyle.Fixed3D
                             cp.ExStyle = cp.ExStyle Or s_WS_EX_CLIENTEDGE
-                        Case System.Windows.Forms.BorderStyle.FixedSingle
+                        Case BorderStyle.FixedSingle
                             cp.Style = cp.Style Or s_WS_BORDER
                     End Select
                 End If
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.Dispose(disposing)
         End Sub
 
-        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
             ' we have to get a new pen everytime
             _borderPen.Dispose()
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)
@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.OnPaint(e)
         End Sub
 
-        Protected Overrides ReadOnly Property DefaultPadding() As System.Windows.Forms.Padding
+        Protected Overrides ReadOnly Property DefaultPadding() As Padding
             Get
                 Return New Padding(1)
             End Get
@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private ReadOnly Property UseVisualStyles() As Boolean
             Get
-                Return VisualStyles.VisualStyleRenderer.IsSupported
+                Return VisualStyleRenderer.IsSupported
             End Get
         End Property
 

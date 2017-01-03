@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Property
 
         Private _site As Object 'The site that owns this editor factory
-        Private _siteProvider As Shell.ServiceProvider 'The service provider from m_Site
+        Private _siteProvider As ServiceProvider 'The service provider from m_Site
 
         ''' <summary>
         ''' Creates a new editor for the given pile of flags.  Helper function for the overload
@@ -68,10 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ByRef DocView As Object,
                 ByRef DocData As Object,
                 ByRef Caption As String,
-                ByRef CmdUIGuid As System.Guid,
+                ByRef CmdUIGuid As Guid,
                 ByRef pgrfCDW As Integer) As Integer
             pgrfCDW = 0
-            CmdUIGuid = System.Guid.Empty
+            CmdUIGuid = Guid.Empty
 
             Dim DesignerLoader As ApplicationDesignerLoader = Nothing
 
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                     Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
                     If DesignerService Is Nothing Then
-                        Throw New Exception(SR.GetString(SR.DFX_EditorNoDesignerService, FileName))
+                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, FileName))
                     End If
 
                     If ExistingDocData Is Nothing Then
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     DesignerLoader.Dispose()
                 End If
 
-                Throw New System.Exception(SR.GetString(SR.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
+                Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Function
 
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disconnect from the owning site
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function Close() As Integer Implements Shell.Interop.IVsEditorFactory.Close
+        Public Function Close() As Integer Implements IVsEditorFactory.Close
             _siteProvider = Nothing
             _site = Nothing
         End Function
@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ByRef DocViewPtr As IntPtr, _
                 ByRef DocDataPtr As IntPtr, _
                 ByRef Caption As String, _
-                ByRef CmdUIGuid As System.Guid, _
+                ByRef CmdUIGuid As Guid, _
                 ByRef pgrfCDW As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -213,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
         ''' <remarks></remarks>
-        Public Function MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) As Integer Implements Shell.Interop.IVsEditorFactory.MapLogicalView
+        Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
 
             ' Normal logic for MapLogicalView is to return E_NOTIMPL for any rguidLogicalView values
@@ -230,7 +230,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             'Debug.Assert(rguidLogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary), "NYI: Project Designer does not yet support choosing the initial property page thru the logical-view passed to our editor factory.")
 
-            Return Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods.S_OK
+            Return NativeMethods.S_OK
         End Function
 
         ''' <summary>
@@ -238,15 +238,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Site"></param>
         ''' <remarks></remarks>
-        Public Function SetSite(Site As OLE.Interop.IServiceProvider) As Integer Implements Shell.Interop.IVsEditorFactory.SetSite
+        Public Function SetSite(Site As OLE.Interop.IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
-            If Me._site Is Site Then
+            If _site Is Site Then
                 Exit Function
             End If
             'Site is different - set it
-            Me._site = Site
+            _site = Site
             If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _siteProvider = New ServiceProvider(CType(Site, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+                _siteProvider = New ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
             Else
                 Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
             End If

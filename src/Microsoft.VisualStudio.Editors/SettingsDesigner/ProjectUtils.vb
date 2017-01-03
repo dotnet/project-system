@@ -16,8 +16,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
         Friend Function FileName(ProjectItem As EnvDTE.ProjectItem) As String
             If ProjectItem Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Debug.Fail("Can't get file name for NULL project item!")
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -51,8 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Friend Function IsFileInProject(project As IVsProject, FullFilePath As String) As Boolean
             Dim found As Integer
-            Dim prio(0) As Microsoft.VisualStudio.Shell.Interop.VSDOCUMENTPRIORITY
-            prio(0) = Microsoft.VisualStudio.Shell.Interop.VSDOCUMENTPRIORITY.DP_Standard
+            Dim prio(0) As VSDOCUMENTPRIORITY
+            prio(0) = VSDOCUMENTPRIORITY.DP_Standard
             Dim itemId As UInteger
 
             VSErrorHandler.ThrowOnFailure(project.IsDocumentInProject(FullFilePath, found, prio, itemId))
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Function PersistedNamespaceIncludesRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As Boolean
-            If Common.Utils.IsVbProject(Hierarchy) Then
+            If Common.IsVbProject(Hierarchy) Then
                 Return False
             Else
                 Return True
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean) As String
-            Return Common.Utils.GeneratedCodeNamespace(Hierarchy, ItemId, IncludeRootNamespace, True)
+            Return Common.GeneratedCodeNamespace(Hierarchy, ItemId, IncludeRootNamespace, True)
         End Function
 
         ''' <summary>
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ProjectItem"></param>
         ''' <param name="CodeProvider"></param>
         ''' <remarks></remarks>
-        Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As System.CodeDom.Compiler.CodeDomProvider, View As DesignerFramework.BaseDesignerView)
+        Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As CodeDomProvider, View As DesignerFramework.BaseDesignerView)
             Dim SettingClassElement As EnvDTE.CodeElement = FindElement(ProjectItem, False, True, New KnownClassName(ClassName))
 
             Dim cc2 As EnvDTE80.CodeClass2 = TryCast(SettingClassElement, EnvDTE80.CodeClass2)
@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 If IsFileInProject(vsproj, NewFilePath & NewItemName) Then
-                    VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, System.IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
+                    VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
                 End If
                 ' CONSIDER: Using different mechanism to figure out if this is VB than checking the file extension...
                 Dim supportsDeclarativeEventHandlers As Boolean = (CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase))
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Debug.Assert(AddTo IsNot Nothing, "Must have a project items collection to add new item to!")
 
             ' Create new document...
-            Using Writer As New System.IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
+            Using Writer As New IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
                 Dim ExtendingNamespace As CodeNamespace = Nothing
                 If cc2.Namespace IsNot Nothing Then
                     Debug.Assert(cc2.Namespace.FullName IsNot Nothing, "Couldn't get a FullName from the CodeClass2.Namespace!?")
@@ -326,9 +326,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                             If projProp IsNot Nothing Then
                                 rootNamespace = CStr(projProp.Value)
                             End If
-                        Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to get root namespace to remove from class name", NameOf(ProjectUtils))
+                        Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get root namespace to remove from class name", NameOf(ProjectUtils))
                         End Try
-                        ExtendingNamespace = New CodeNamespace(Common.Utils.RemoveRootNamespace(cc2.Namespace.FullName, rootNamespace))
+                        ExtendingNamespace = New CodeNamespace(Common.RemoveRootNamespace(cc2.Namespace.FullName, rootNamespace))
                     Else
                         ExtendingNamespace = New CodeNamespace(cc2.Namespace.FullName)
                     End If
@@ -339,11 +339,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 ExtendingType.TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2)
                 ExtendingType.IsPartial = True
 
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_COMMON1)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_COMMON2)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_COMMON3)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_COMMON4)))
-                ExtendingType.Comments.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_COMMON5)))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON1))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON2))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON3))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON4))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON5))
                 If Not supportsDeclarativeEventHandlers Then
                     GenerateExtendingClassInstructions(ExtendingType, Generator)
                 End If
@@ -429,14 +429,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
                 If ClassToExpand Is Nothing Then
                     Debug.Fail("Can't find a class that expands a NULL class...")
-                    Throw New System.ArgumentNullException()
+                    Throw New ArgumentNullException()
                 End If
                 _classToExpand = ClassToExpand
             End Sub
 
             Public Function IsMatch(Element As EnvDTE.CodeElement) As Boolean Implements IFindFilter.IsMatch
-                If Element.Kind = EnvDTE.vsCMElement.vsCMElementClass AndAlso _
-                    (Not FileName(_classToExpand.ProjectItem).Equals(FileName(Element.ProjectItem), System.StringComparison.Ordinal)) AndAlso _
+                If Element.Kind = EnvDTE.vsCMElement.vsCMElementClass AndAlso
+                    (Not FileName(_classToExpand.ProjectItem).Equals(FileName(Element.ProjectItem), StringComparison.Ordinal)) AndAlso
                     _classToExpand.FullName.Equals(Element.FullName) _
                 Then
                     Dim cc2 As EnvDTE80.CodeClass2 = TryCast(Element, EnvDTE80.CodeClass2)
@@ -478,8 +478,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Return False
                 End If
 
-                Dim comparisonType As System.StringComparison
-                If Element.ProjectItem IsNot Nothing AndAlso _
+                Dim comparisonType As StringComparison
+                If Element.ProjectItem IsNot Nothing AndAlso
                     Element.ProjectItem.ContainingProject IsNot Nothing _
                     AndAlso Not Element.ProjectItem.ContainingProject.CodeModel.IsCaseSensitive Then
                     'BEGIN
@@ -540,8 +540,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 ' Check name first...
-                Dim comparisonType As System.StringComparison
-                If Element.ProjectItem IsNot Nothing AndAlso _
+                Dim comparisonType As StringComparison
+                If Element.ProjectItem IsNot Nothing AndAlso
                     Element.ProjectItem.ContainingProject IsNot Nothing _
                     AndAlso Not Element.ProjectItem.ContainingProject.CodeModel.IsCaseSensitive Then
                     'BEGIN
@@ -681,7 +681,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
             Dim stmts As New CodeStatementCollection()
-            stmts.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_HOWTO_ATTACHEVTS)))
+            stmts.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS))
             stmts.Add(New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)))
             stmts.Add(New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName)))
 
@@ -695,15 +695,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             changingStub.Name = SettingChangingEventHandlerName
             changingStub.ReturnType = Nothing
             changingStub.Parameters.Add(senderParam)
-            changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(System.Configuration.SettingChangingEventArgs), "e"))
-            changingStub.Statements.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_HANDLE_CHANGING)))
+            changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
+            changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_CHANGING))
 
             Dim savingStub As New CodeMemberMethod()
             savingStub.Name = SettingsSavingEventHandlerName
             savingStub.ReturnType = Nothing
             savingStub.Parameters.Add(senderParam)
-            savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(System.ComponentModel.CancelEventArgs), "e"))
-            savingStub.Statements.Add(New CodeCommentStatement(SR.GetString(SR.SD_CODEGENCMT_HANDLE_SAVING)))
+            savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
+            savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_SAVING))
 
             ct.Members.Add(constr)
             ct.Members.Add(changingStub)
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             End If
 
             Dim sb As New System.Text.StringBuilder
-            Dim sw As New System.IO.StringWriter(sb)
+            Dim sw As New IO.StringWriter(sb)
 
             generator.GenerateCodeFromStatement(statement, sw, New CodeGeneratorOptions())
             sw.Flush()
@@ -776,12 +776,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="cc2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As System.Reflection.TypeAttributes
+        Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As TypeAttributes
             If cc2 Is Nothing Then
                 Throw New ArgumentNullException("cc2")
             End If
 
-            Dim returnValue As System.Reflection.TypeAttributes = 0
+            Dim returnValue As TypeAttributes = 0
 
             Select Case cc2.Access
                 Case EnvDTE.vsCMAccess.vsCMAccessProject
@@ -789,7 +789,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 Case EnvDTE.vsCMAccess.vsCMAccessPublic
                     returnValue = TypeAttributes.Public
                 Case Else
-                    System.Diagnostics.Debug.Fail("Unexpected access for settings class: " & cc2.Access.ToString())
+                    Debug.Fail("Unexpected access for settings class: " & cc2.Access.ToString())
                     returnValue = TypeAttributes.NestedAssembly
             End Select
 

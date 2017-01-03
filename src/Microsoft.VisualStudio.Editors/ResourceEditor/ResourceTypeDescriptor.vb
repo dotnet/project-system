@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   Window to display.
     ''' </remarks>
     Friend NotInheritable Class ResourceTypeDescriptor
-        Inherits System.ComponentModel.CustomTypeDescriptor
+        Inherits CustomTypeDescriptor
 
 
         ' The instance of the Resource that we're providing type description information for.

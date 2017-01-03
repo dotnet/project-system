@@ -4,8 +4,8 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), System.Runtime.InteropServices.Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"), _
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown), _
+    <ComImport(), Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"), _
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown), _
     CLSCompliant(False)> _
     Friend Interface IVBEntryPointProvider
         'Lists all Form classes with an entry point. If called with cItems = 0 and

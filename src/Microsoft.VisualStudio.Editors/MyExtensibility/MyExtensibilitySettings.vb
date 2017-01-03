@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Catch ex As ArgumentException
             End Try
 
-            Me.LoadAssemblySettings()
+            LoadAssemblySettings()
         End Sub
 
         ''' ;GetExtensionTemplates
@@ -41,15 +41,15 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Get the list of extension templates associated with the given assembly for the given project's type.
         ''' This list will contains only extensions with the latest version.
         ''' </summary>
-        Public Function GetExtensionTemplates( _
+        Public Function GetExtensionTemplates(
                 projectTypeID As String, project As Project, assemblyFullName As String) _
                 As List(Of MyExtensionTemplate)
             If project Is Nothing Then
                 Return Nothing
             End If
-            assemblyFullName = IIf(Of String)(assemblyFullName Is Nothing, String.Empty, assemblyFullName.Trim())
+            assemblyFullName = IIf(assemblyFullName Is Nothing, String.Empty, assemblyFullName.Trim())
 
-            Me.InitializeProjectKindSettings(projectTypeID, project)
+            InitializeProjectKindSettings(projectTypeID, project)
 
             If _extensionInfos.ContainsKey(projectTypeID) Then
                 Debug.Assert(_extensionInfos(projectTypeID) IsNot Nothing, "Corruped m_ExtensionInfos!")
@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return Nothing
             End If
 
-            Me.InitializeProjectKindSettings(projectTypeID, project)
+            InitializeProjectKindSettings(projectTypeID, project)
 
             Dim result As New List(Of MyExtensionTemplate)
 
@@ -115,8 +115,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' CONSIDER: (HuyN) What to do with partial match (i.e id but not version).
         '''     Behavior now is to return nothing.
         ''' </remarks>
-        Public Sub GetExtensionTemplateNameAndDescription(projectTypeID As String, project As Project, _
-                id As String, version As Version, assemblyName As String, _
+        Public Sub GetExtensionTemplateNameAndDescription(projectTypeID As String, project As Project,
+                id As String, version As Version, assemblyName As String,
                 ByRef name As String, ByRef description As String)
             name = Nothing
             description = Nothing
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
             assemblyName = NormalizeAssemblyFullName(assemblyName)
 
-            Me.InitializeProjectKindSettings(projectTypeID, project)
+            InitializeProjectKindSettings(projectTypeID, project)
 
             If Not _extensionInfos.ContainsKey(projectTypeID) Then
                 Exit Sub
@@ -163,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' with the assembly.
         ''' </summary>
         Public Function GetAssemblyAutoAdd(assemblyFullName As String) As AssemblyOption
-            Return Me.GetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName)
+            Return GetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName)
         End Function
 
         ''' ;GetAssemblyAutoRemove
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' with the assembly.
         ''' </summary>
         Public Function GetAssemblyAutoRemove(assemblyFullName As String) As AssemblyOption
-            Return Me.GetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName)
+            Return GetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName)
         End Function
 
         ''' ;SetAssemblyAutoAdd
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' with the assembly.
         ''' </summary>
         Public Sub SetAssemblyAutoAdd(assemblyFullName As String, autoAdd As Boolean)
-            Me.SetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName, autoAdd)
+            SetAssemblyAutoOption(AddRemoveAction.Add, assemblyFullName, autoAdd)
         End Sub
 
         ''' ;SetAssemblyAutoRemove
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' with the assembly.
         ''' </summary>
         Public Sub SetAssemblyAutoRemove(assemblyFullName As String, autoRemove As Boolean)
-            Me.SetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName, autoRemove)
+            SetAssemblyAutoOption(AddRemoveAction.Remove, assemblyFullName, autoRemove)
         End Sub
 
 #End Region
@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 Dim asmAutoOption As AssemblyAutoOption = _autoOptions(assemblyFullName)
                 Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
-                Return IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
+                Return IIf(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
             Else
                 Return AssemblyOption.Prompt
             End If
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim templatesWithCustomData As Templates = Nothing
             Try
                 templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, s_CUSTOM_DATA_SIGNATURE)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
                 ' Ignore exceptions.
             End Try
             If templatesWithCustomData Is Nothing OrElse templatesWithCustomData.Count = 0 Then
@@ -301,12 +301,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
             For Each childNode As XmlNode In xmlElement.ChildNodes
                 Dim assemblyElement As XmlElement = TryCast(childNode, XmlElement)
-                If assemblyElement Is Nothing OrElse _
+                If assemblyElement Is Nothing OrElse
                         Not StringEquals(assemblyElement.LocalName, s_ASSEMBLY_ELEMENT) Then
                     Continue For
                 End If
 
-                Dim assemblyFullName As String = NormalizeAssemblyFullName( _
+                Dim assemblyFullName As String = NormalizeAssemblyFullName(
                     GetAttributeValue(assemblyElement, s_ASSEMBLY_FULLNAME_ATTRIBUTE))
                 If StringIsNullEmptyOrBlank(assemblyFullName) OrElse _autoOptions.ContainsKey(assemblyFullName) Then
                     Continue For
@@ -347,7 +347,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
                 xmlWriter.WriteEndElement()
                 xmlWriter.WriteEndDocument()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SaveAssemblySettings), NameOf(MyExtensibilitySettings))
                 ' Ignore write exceptions.
             Finally
                 If xmlWriter IsNot Nothing Then
@@ -367,13 +367,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
             assemblyFullName = NormalizeAssemblyFullName(assemblyFullName)
-            Dim inputValue As AssemblyOption = IIf(Of AssemblyOption)(value, AssemblyOption.Yes, AssemblyOption.No)
+            Dim inputValue As AssemblyOption = IIf(value, AssemblyOption.Yes, AssemblyOption.No)
 
             Dim asmAutoOption As AssemblyAutoOption = Nothing
             If _autoOptions.ContainsKey(assemblyFullName) Then
                 asmAutoOption = _autoOptions(assemblyFullName)
                 Debug.Assert(asmAutoOption IsNot Nothing, "Corrupted m_AutoOptions!")
-                Dim existingValue As AssemblyOption = IIf(Of AssemblyOption)(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
+                Dim existingValue As AssemblyOption = IIf(addOrRemove = AddRemoveAction.Add, asmAutoOption.AutoAdd, asmAutoOption.AutoRemove)
                 If existingValue = inputValue Then
                     Exit Sub
                 Else
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _autoOptions.Add(assemblyFullName, asmAutoOption)
             End If
 
-            Me.SaveAssemblySettings()
+            SaveAssemblySettings()
         End Sub
 
 #End Region
@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If Not StringIsNullEmptyOrBlank(attributeValue) Then
                 Try
                     result = DirectCast(AssemblyOptionConverter.ConvertFromInvariantString(attributeValue), AssemblyOption)
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ReadAssemblyOptionAttribute), NameOf(MyExtensibilitySettings))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ReadAssemblyOptionAttribute), NameOf(MyExtensibilitySettings))
                 End Try
             End If
             Return result
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim text As String = Nothing
             Try
                 text = AssemblyOptionConverter.ConvertToInvariantString(value)
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Could not convert to invariant string", NameOf(MyExtensibilitySettings))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Could not convert to invariant string", NameOf(MyExtensibilitySettings))
             End Try
             If text Is Nothing Then
                 text = CInt(value).ToString()
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ' The auto options dictionary:
         ' - key is assembly full name without culture / public key - case insensitive.
         ' - value is AssemblyAutoOption.
-        Private _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(System.StringComparer.OrdinalIgnoreCase)
+        Private _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(StringComparer.OrdinalIgnoreCase)
 
         ' Assembly settings file path
         Private _settingsFilePath As String

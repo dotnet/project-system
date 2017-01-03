@@ -5,137 +5,137 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/PackagePropPage.resx" />
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="new">&amp;Assembly version:</target>
+        <target state="translated">&amp;Bütünleştirilmiş kod sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="new">&amp;Copyright:</target>
+        <target state="translated">&amp;Telif Hakkı:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="new">&amp;Description:</target>
+        <target state="translated">&amp;Açıklama:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="new">&amp;Icon URL:</target>
+        <target state="translated">&amp;Simge URL’si:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
-        <target state="new">Package &amp;version:</target>
+        <target state="translated">Paket &amp;sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseUrlLabel.Text">
         <source>&amp;License URL:</source>
-        <target state="new">&amp;License URL:</target>
+        <target state="translated">&amp;Lisans URL’si:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="new">&amp;Tags:</target>
+        <target state="translated">&amp;Etiketler:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="new">&amp;Repository URL:</target>
+        <target state="translated">&amp;Depo URL’si:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
         <source>Release &amp;notes:</source>
-        <target state="new">Release &amp;notes:</target>
+        <target state="translated">Sürüm &amp;notları:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="new">&amp;Repository type:</target>
+        <target state="translated">&amp;Depo türü:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="new">&amp;Project URL:</target>
+        <target state="translated">&amp;Proje URL’si:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="new">&amp;Generate NuGet package on build</target>
+        <target state="translated">&amp;Derlemede NuGet paketi oluştur</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="new">Assembly &amp;neutral language:</target>
+        <target state="translated">Bütünleştirilmiş kod &amp;bağımsız dili:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
+        <target state="translated">Düzeltme</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
+        <target state="translated">İkincil</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
+        <target state="translated">Birincil</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Revision</source>
-        <target state="new">Revision</target>
+        <target state="translated">Düzeltme</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="new">Minor</target>
+        <target state="translated">İkincil</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Major</source>
-        <target state="new">Major</target>
+        <target state="translated">Birincil</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="new">Require &amp;license acceptance</target>
+        <target state="translated">&amp;Lisans kabulü gerektir</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="new">Package &amp;id:</target>
+        <target state="translated">Paket &amp;kimliği:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
         <source>&amp;Authors:</source>
-        <target state="new">&amp;Authors:</target>
+        <target state="translated">&amp;Yazanlar:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">
         <source>Compan&amp;y:</source>
-        <target state="new">Compan&amp;y:</target>
+        <target state="translated">Şirk&amp;et:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="new">&amp;Product:</target>
+        <target state="translated">Ü&amp;rün:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="new">Assembly &amp;file version:</target>
+        <target state="translated">Bütünleştirilmiş kod &amp;dosya sürümü:</target>
         <note />
       </trans-unit>
     </body>

@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     Friend Interface IVsAppId
 
         ' HRESULT SetSite([in] IServiceProvider *pSP);
-        Sub SetSite(<MarshalAs(UnmanagedType.Interface)> pSP As Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+        Sub SetSite(<MarshalAs(UnmanagedType.Interface)> pSP As OLE.Interop.IServiceProvider)
 
         ' HRESULT GetProperty([in] VSAPROPID propid,
         '                     [out] VARIANT *pvar);

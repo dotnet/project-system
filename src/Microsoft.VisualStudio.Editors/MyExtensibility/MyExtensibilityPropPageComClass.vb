@@ -17,13 +17,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public Class MyExtensibilityPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property ControlType() As System.Type
+        Protected Overrides ReadOnly Property ControlType() As Type
             Get
                 Return GetType(MyExtensibilityPropPage)
             End Get
         End Property
 
-        Protected Overrides Function CreateControl() As System.Windows.Forms.Control
+        Protected Overrides Function CreateControl() As Windows.Forms.Control
             Return New MyExtensibilityPropPage()
         End Function
 

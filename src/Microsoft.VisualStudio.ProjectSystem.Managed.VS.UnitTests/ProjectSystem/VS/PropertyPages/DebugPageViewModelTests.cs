@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Setup the debug profiles
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
             var mockProfiles = new Mock<ILaunchSettings>();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new Mock<DebugPageViewModel>(false, unconfiguredProject);
 
             mockSourceBlock.Setup<IDisposable>(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public void DebugPageViewModel_UICommands()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new DebugPageViewModel(false, unconfiguredProject);
 
             Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);

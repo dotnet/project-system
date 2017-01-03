@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [Fact]
         public void UnconfiguredProject_CanGetSet()
         {
-            var unconfiguedProject = IUnconfiguredProjectFactory.Create();
+            var unconfiguedProject = UnconfiguredProjectFactory.Create();
             var provider = CreateInstance();
 
             provider.UnconfiguredProject = unconfiguedProject;

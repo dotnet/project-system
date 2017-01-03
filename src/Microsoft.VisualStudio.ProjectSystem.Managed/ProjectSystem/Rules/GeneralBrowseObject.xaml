@@ -44,12 +44,12 @@
   <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" Visible="True"/>
   <EnumProperty Name="OutputTypeEx" DisplayName="Output Type" Visible="True">
     <EnumValue Name="winexe" DisplayName="0" />
-    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="Exe" DisplayName="1" />
     <EnumValue Name="library" DisplayName="2" />
     <EnumValue Name="appcontainerexe" DisplayName="3" />
     <EnumValue Name="winmdobj" DisplayName="4" />
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="OutputType" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False"/>
     </EnumProperty.DataSource>
   </EnumProperty>
   <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" Visible="True"/>
@@ -65,8 +65,8 @@
   </StringProperty>
   <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="True"/>
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="True"/>
-  <StringProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="True"/>
-  <StringProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="True"/>
+  <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="True"/>
+  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="True"/>
   <StringProperty Name="Optimize" DisplayName="Optimize" Visible="True"/>
   <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="True"/>
   <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="True"/>
@@ -184,8 +184,8 @@
       <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="SignAssembly" DisplayName="Sign the assembly" Visible="True"/>
-  <StringProperty Name="DelaySign" DisplayName="Delay sign only" Visible="True"/>
+  <BoolProperty Name="SignAssembly" DisplayName="Sign the assembly" Visible="True"/>
+  <BoolProperty Name="DelaySign" DisplayName="Delay sign only" Visible="True"/>
   <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Strong name key file" Visible="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />

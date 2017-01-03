@@ -79,6 +79,7 @@
     <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
     <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorage.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeProviderExtensions.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
     <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
     <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
@@ -135,6 +136,8 @@
     </Compile>
     <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="Collections\DictionaryEqualityComparer.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProvider.cs" />
+    <Compile Include="ProjectSystem\SpecialFileProviders\ISpecialFilesManager.cs" />
     <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
     <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />

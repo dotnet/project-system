@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 Value = activeProfileValue.Object
             };
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(null, null, @"c:\\test\Project1\Project1.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(null, null, @"c:\\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData, appDesignerData  });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null,  new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create(CancellationToken.None));

@@ -4,14 +4,14 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), System.Runtime.InteropServices.Guid("ED895476-EF59-46fc-A985-581F58343E61"), _
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsDual), _
+    <ComImport(), Guid("ED895476-EF59-46fc-A985-581F58343E61"), _
+    InterfaceType(ComInterfaceType.InterfaceIsDual), _
     CLSCompliant(False)> _
     Friend Interface IVsBuildEventMacroProvider
         Function GetCount() As Integer
-        Sub GetExpandedMacro(<InAttribute()> Index As Integer, _
-           <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef MacroName As String, _
-           <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef MacroValue As String)
+        Sub GetExpandedMacro(<[In]()> Index As Integer, _
+           <Out(), MarshalAs(UnmanagedType.BStr)> ByRef MacroName As String, _
+           <Out(), MarshalAs(UnmanagedType.BStr)> ByRef MacroValue As String)
     End Interface
 
 End Namespace

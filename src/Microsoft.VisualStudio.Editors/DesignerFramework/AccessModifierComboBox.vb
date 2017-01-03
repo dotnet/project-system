@@ -42,22 +42,22 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="accessibility"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ConvertToString(accessibility As AccessModifierConverter.Access) As String
+        Public Function ConvertToString(accessibility As Access) As String
             Select Case accessibility
-                Case AccessModifierConverter.Access.Friend
+                Case Access.Friend
                     If _converter IsNot Nothing Then
                         Return _converter.ConvertToString(MemberAttributes.Assembly)
                     Else
                         Return "Internal"
                     End If
-                Case AccessModifierConverter.Access.Public
+                Case Access.Public
                     If _converter IsNot Nothing Then
                         Return _converter.ConvertToString(MemberAttributes.Public)
                     Else
                         Return "Public"
                     End If
                 Case Else
-                    Throw Common.CreateArgumentException("AccessModifier")
+                    Throw CreateArgumentException("AccessModifier")
             End Select
         End Function
     End Class
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' The states are True (registered), False (not registerd) or Missing (we haven't 
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
-        Private _customToolsRegistered As Nullable(Of Boolean)
+        Private _customToolsRegistered As Boolean?
 
         Public Enum Access
             [Public]
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="customToolValue"></param>
         ''' <remarks></remarks>
         Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierConverter.Access, customToolValue As String)
-            Debug.Assert(System.Enum.IsDefined(GetType(AccessModifierConverter.Access), accessibility))
+            Debug.Assert([Enum].IsDefined(GetType(AccessModifierConverter.Access), accessibility))
 
             Dim entry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
             _codeGeneratorEntries.Add(entry)
@@ -370,7 +370,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _recognizedCustomToolValues.Add(customToolValue)
                 ' We also make sure to reset the cached value for if the custom tool(s)
                 ' is/are registered...
-                _customToolsRegistered = New Nullable(Of Boolean)
+                _customToolsRegistered = New Boolean?
             End If
         End Sub
 
@@ -423,10 +423,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If matchingEntry IsNot Nothing Then
                 currentValue = matchingEntry.DisplayName
             Else
-                currentValue = SR.GetString(SR.RSE_AccessModifier_Custom)
+                currentValue = My.Resources.Designer.RSE_AccessModifier_Custom
             End If
 
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & Me.GetType.Name & ": " & currentValue)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & [GetType].Name & ": " & currentValue)
             Return currentValue
         End Function
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="value"></param>
         Private Sub SetCurrentValue(value As String)
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & Me.GetType.Name & ": " & value)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & [GetType].Name & ": " & value)
 
             For Each entry As CodeGenerator In _codeGeneratorEntries
                 If entry.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
@@ -496,11 +496,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     Debug.Fail("Couldn't find CustomTool property.  Dropdown shouldn't have been enabled.")
                 End If
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(TrySetCustomToolValue), NameOf(AccessModifierCombobox))
-                DesignerFramework.DesignerMessageBox.Show( _
-                    _rootDesigner, _
-                    SR.GetString(SR.RSE_Task_CantChangeCustomToolOrNamespace), _
-                    ex, _
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(TrySetCustomToolValue), NameOf(AccessModifierCombobox))
+                DesignerMessageBox.Show(
+                    _rootDesigner,
+                    My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace,
+                    ex,
                     Nothing) 'Note: when we integrate the changes to DesignerMessageBox.Show, the caption property can be removed)
             End Try
         End Sub
@@ -523,8 +523,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Function EnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Try
                 Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
-                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & Me.GetType.Name & ": Enabled=" & shouldBeEnabled)
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
+                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & [GetType].Name & ": Enabled=" & shouldBeEnabled)
+            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try
             Return shouldBeEnabled
@@ -594,7 +594,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Protected Overridable ReadOnly Property Hierarchy() As IVsHierarchy
             Get
-                Return Common.ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
+                Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
             End Get
         End Property
 

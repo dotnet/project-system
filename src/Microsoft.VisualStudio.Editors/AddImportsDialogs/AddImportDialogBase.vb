@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
         Protected Overrides Sub OnLoad(e As EventArgs)
             ' Set the Font according to the system settings.
-            Me.Font = DialogFont
+            Font = DialogFont
             MyBase.OnLoad(e)
         End Sub
 
@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                     End If
                 End If
                 Debug.Fail("Couldn't get a IUIService... cheating instead :)")
-                Return Form.DefaultFont
+                Return DefaultFont
             End Get
         End Property
     End Class
