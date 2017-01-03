@@ -138,11 +138,6 @@
         <target state="translated">項目やプロジェクト テンプレート内で保持される言語を表します</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
-        <source>Save assembly info attribute values in source</source>
-        <target state="translated">ソースにアセンブリ情報の属性値を保存する</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>
