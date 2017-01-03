@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClassTemplateName" xml:space="preserve">
+    <value>Klasa</value>
+  </data>
+  <data name="ProjectModificationsPrompt" xml:space="preserve">
+    <value>Projekt „{0}” został zmodyfikowany poza środowiskiem.
+
+Naciśnij pozycję Załaduj ponownie, aby załadować zaktualizowany projekt z dysku.
+Naciśnij pozycję Ignoruj, aby zignorować zewnętrzne zmiany. Zmiany zostaną użyte podczas następnego otwarcia projektu.
+    </value>
+  </data>
+  <data name="ConflictingModificationsPrompt" xml:space="preserve">
+    <value>Projekt „{0}” został zmodyfikowany poza środowiskiem, a niektóre zmiany w projekcie nie zostały zapisane.
+
+Naciśnij pozycję Zapisz jako, aby zapisać niezapisane zmiany i załadować zaktualizowany projekt z dysku.
+Naciśnij pozycję Odrzuć, aby odrzucić niezapisane zmiany i załadować zaktualizowany projekt z dysku.
+Naciśnij pozycję Zastąp, aby zastąpić zewnętrzne zmiany Twoimi zmianami.
+Naciśnij pozycję Ignoruj, aby zignorować zewnętrzne zmiany. Twoje zmiany mogą zostać utracone, jeśli zamkniesz i ponownie otworzysz projekt.
+    </value>
+  </data>
+  <data name="ConflictingProjectModificationTitle" xml:space="preserve">
+    <value>Wykryto sprzeczną modyfikację projektu</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>_Odrzuć</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>_Ignoruj</value>
+  </data>
+  <data name="IgnoreAll" xml:space="preserve">
+    <value>Ignoruj w_szystkie</value>
+  </data>
+  <data name="Overwrite" xml:space="preserve">
+    <value>_Zastąp</value>
+  </data>
+  <data name="ProjectModificationDlgTitle" xml:space="preserve">
+    <value>Wykryto modyfikację projektu</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Załaduj _ponownie</value>
+  </data>
+  <data name="ReloadAll" xml:space="preserve">
+    <value>Załaduj ponownie w_szystkie</value>
+  </data>
+  <data name="RenameSymbolFailed" xml:space="preserve">
+    <value>Zmiana nazwy elementu kodu „{0}” nie powiodła się.</value>
+  </data>
+  <data name="RenameSymbolPrompt" xml:space="preserve">
+    <value>Zmieniasz nazwę pliku. Czy chcesz także zmienić nazwy w tym projekcie dla wszystkich odwołań do elementu kodu „{0}”?</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>_Zapisz jako</value>
+  </data>
+  <data name="FailedToWatchProject" xml:space="preserve">
+    <value>Podczas próby obejrzenia pliku projektu „{0}” wystąpił nieoczekiwany błąd.</value>
+  </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>Zestawy platformy</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Zestawy</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (Ładowanie...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(Błędy — zobacz listę błędów)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Zależności</value>
+  </data>
+  <data name="GraphNodeCategoryDependency" xml:space="preserve">
+    <value>Zależność</value>
+  </data>
+  <data name="NoItemTypeForRule" xml:space="preserve">
+    <value>Oczekiwano znalezienia typu elementu dla reguły {0}. Brakuje pliku reguły lub jest on nieprawidłowy.</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projekty</value>
+  </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>Analizatory</value>
+  </data>
+  <data name="DotNetCoreProjectsNotSupported" xml:space="preserve">
+    <value>Projekty .NET Core nie są obsługiwane w tej wersji programu Visual Studio. Obsługa będzie dostępna w nowszej wersji.</value>
+  </data>
+  <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
+    <value>Brak skonfigurowanych aktywnych profilów uruchamiania dla tego projektu.</value>
+  </data>
+  <data name="DontKnowHowToRunProfile" xml:space="preserve">
+    <value>Projekt nie ma informacji dotyczących uruchamiania profilu {0}.</value>
+  </data>
+  <data name="ErrorInProfilesFile" xml:space="preserve">
+    <value>Przed uruchomieniem projektu „{0}” należy skorygować błąd w pliku ustawień uruchamiania. Zobacz listę błędów, aby uzyskać szczegółowe informacje.</value>
+  </data>
+  <data name="ErrorInProfilesFile2" xml:space="preserve">
+    <value>Przed uruchomieniem projektu „{0}” należy skorygować błąd w pliku ustawień uruchamiania. {1}. Zobacz listę błędów, aby uzyskać szczegółowe informacje.</value>
+  </data>
+  <data name="ProjectNotRunnableDirectly" xml:space="preserve">
+    <value>Projekt z typem wyjściowym biblioteki klasy nie może być bezpośrednio uruchomiony.
+
+Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, które odwołuje się do projektu biblioteki. Ustaw projekt wykonywalny jako projekt startowy.</value>
+  </data>
+  <data name="NoUrlSpecified" xml:space="preserve">
+    <value>Profil debugowania „{0}” zażądał uruchomienia przeglądarki sieci Web, ale nie określono adresu URL.</value>
+  </data>
+  <data name="InvalidAbsoluteUrlSpecified" xml:space="preserve">
+    <value>Profil debugowania „{0}” zażądał uruchomienia przeglądarki sieci Web, ale określony adres URL nie jest prawidłowym bezwzględnym adresem URL. {1}</value>
+  </data>
+  <data name="NoDebugExecutableSpecified" xml:space="preserve">
+    <value>W profilu debugowania „{0}” brakuje ścieżki pliku wykonywalnego do debugowania.</value>
+  </data>
+  <data name="DebugExecutableNotFound" xml:space="preserve">
+    <value>Plik wykonywalny debugowania „{0}” określony w profilu debugowania „{1}” nie istnieje.</value>
+  </data>
+  <data name="WorkingDirecotryInvalid" xml:space="preserve">
+    <value>Katalog roboczy „{0}” określony w profilu debugowania „{1}” nie istnieje.</value>
+  </data>
+  <data name="NoMigratedCSProjFound" xml:space="preserve">
+    <value>Oczekiwano znalezienia zmigrowanego pliku cpsroj w katalogu {0}, ale nie odnaleziono go.</value>
+  </data>
+  <data name="XprojMigrationFailed" xml:space="preserve">
+    <value>Migracja projektu XProj {0} nie powiodła się. Element „dotnet migrate --skip-backup -s -p "{1}" -x "{2}"” został zakończony z kodem błędu {3}.</value>
+  </data>
+  <data name="MigrationBackupFile" xml:space="preserve">
+    <value>Tworzenie kopii zapasowej elementu {0} do {1}.</value>
+  </data>
+  <data name="XprojMigrationFailedProjectJsonFileNotFound" xml:space="preserve">
+    <value>Migracja projektu XProj {0} nie powiodła się. Nie można odnaleźć pliku project.json w katalogu {1}.</value>
+  </data>
+  <data name="EditProjectFileCommand" xml:space="preserve">
+    <value>Edytuj element {0}</value>
+  </data>
+  <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
+    <value>Nie można uruchomić projektu. Właściwość „RunCommand” nie została określona.</value>
+  </data>
+  <data name="MultiTFEditNotSupported" xml:space="preserve">
+    <value>Edytowanie wielu platform docelowych nie jest obsługiwane.</value>
+  </data>
+  <data name="PackCommand" xml:space="preserve">
+    <value>&amp;Spakuj</value>
+  </data>
+  <data name="PackSelectedProjectCommand" xml:space="preserve">
+    <value>&amp;Spakuj element {0}</value>
+  </data>
+</root>

@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
+    <value>此项目不包含默认的资源文件。单击此处可进行创建。</value>
+  </data>
+  <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
+    <value>此项目不包含默认的设置文件。单击此处可进行创建。</value>
+  </data>
+  <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
+    <value>由于从未加载设计器的文档，因此无法显示设计器。</value>
+  </data>
+  <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
+    <value>文件“{0}”已在某个编辑器中打开。请关闭文件并重试。</value>
+  </data>
+  <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
+    <value>尝试加载该页时出错。</value>
+  </data>
+  <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
+    <value>尝试加载项目属性窗口时出错。请关闭窗口并重试。
+{0}</value>
+  </data>
+  <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
+    <value>未能找到文件“{0}”。</value>
+  </data>
+  <data name="APPDES_HostingPanelName" xml:space="preserve">
+    <value>项目设计器页容器</value>
+  </data>
+  <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
+    <value>所有项目设计器页</value>
+  </data>
+  <data name="APPDES_OverflowButton_Tooltip" xml:space="preserve">
+    <value>更多设置</value>
+  </data>
+  <data name="APPDES_PageName" xml:space="preserve">
+    <value>{0} 页:</value>
+  </data>
+  <data name="APPDES_ResourceTabTitle" xml:space="preserve">
+    <value>资源</value>
+  </data>
+  <data name="APPDES_SettingsTabTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="APPDES_SpecialFileNotSupported" xml:space="preserve">
+    <value>此类项目中不支持所请求的文件类型。</value>
+  </data>
+  <data name="APPDES_TabButtonDefaultAction" xml:space="preserve">
+    <value>切换项目设计器页</value>
+  </data>
+  <data name="APPDES_TabListDescription" xml:space="preserve">
+    <value>允许在项目设计器的活动页之间进行切换(使用 Ctrl+PageUp 和 Ctrl+PageDown)</value>
+  </data>
+  <data name="APPDES_Title" xml:space="preserve">
+    <value>项目设计器</value>
+  </data>
+  <data name="CMN_AllFilesFilter" xml:space="preserve">
+    <value>所有文件</value>
+  </data>
+  <data name="DFX_BufferReadOnly" xml:space="preserve">
+    <value>缓冲区为只读。</value>
+  </data>
+  <data name="DFX_CreateEditorInstanceFailed_Ex" xml:space="preserve">
+    <value>无法创建设计器。 {0}</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFound" xml:space="preserve">
+    <value>编辑器未能获取文件 {0} 的 IVsTextStream。</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile" xml:space="preserve">
+    <value>编辑器未能获取 IVsTextStream。</value>
+  </data>
+  <data name="DFX_DesignerReadOnlyCaption" xml:space="preserve">
+    <value>{0} [只读]</value>
+  </data>
+  <data name="DFX_EditorNoDesignerService" xml:space="preserve">
+    <value>没有用于文件“{0}”的 DesignerService。</value>
+  </data>
+  <data name="DFX_Error_Default_Caption" xml:space="preserve">
+    <value>Microsoft Visual Studio</value>
+  </data>
+  <data name="DFX_IncompatibleBuffer" xml:space="preserve">
+    <value>已经在不兼容的编辑器中打开了文件。</value>
+  </data>
+  <data name="DFX_InvalidPhysicalViewName" xml:space="preserve">
+    <value>物理视图名无效。</value>
+  </data>
+  <data name="DFX_NoLocalRegistry" xml:space="preserve">
+    <value>无 LocalRegistry 服务。</value>
+  </data>
+  <data name="DFX_NotSupported" xml:space="preserve">
+    <value>不支持的格式。</value>
+  </data>
+  <data name="DFX_OneOrMoreFilesReloaded" xml:space="preserve">
+    <value>签出期间重新加载了一个或多个文件。请重试操作。</value>
+  </data>
+  <data name="DFX_ReplaceTextStreamFailed" xml:space="preserve">
+    <value>替换文本流失败: {0}</value>
+  </data>
+  <data name="DFX_UnableCreateTextBuffer" xml:space="preserve">
+    <value>无法创建文本缓冲区。</value>
+  </data>
+  <data name="DFX_UnableToCheckout" xml:space="preserve">
+    <value>无法签出当前文件。该文件可能为只读或已锁定，或者可能需要手动签出文件。</value>
+  </data>
+  <data name="DFX_WindowPane_UnknownError" xml:space="preserve">
+    <value>未知错误。</value>
+  </data>
+  <data name="General_InvalidArgument_1Arg" xml:space="preserve">
+    <value>参数“{0}”无效</value>
+  </data>
+  <data name="General_MissingService" xml:space="preserve">
+    <value>无法找到服务“{0}”。请确保已正确安装该应用程序。</value>
+  </data>
+  <data name="PermissionSet_Requires" xml:space="preserve">
+    <value>要求:</value>
+  </data>
+  <data name="PPG_ActiveConfigOrPlatformFormatString_1Arg" xml:space="preserve">
+    <value>活动({0})</value>
+  </data>
+  <data name="PPG_AllConfigurations" xml:space="preserve">
+    <value>所有配置</value>
+  </data>
+  <data name="PPG_AllPlatforms" xml:space="preserve">
+    <value>所有平台</value>
+  </data>
+  <data name="PPG_ApplicationTitle" xml:space="preserve">
+    <value>应用程序</value>
+  </data>
+  <data name="PPG_ComboBoxSelect_None" xml:space="preserve">
+    <value>(无)</value>
+  </data>
+  <data name="PPG_ConfigNotFound_2Args" xml:space="preserve">
+    <value>未能找到平台“{1}”的配置“{0}”。</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_ApplicationDefined" xml:space="preserve">
+    <value>由应用程序定义</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_Windows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_AppExits" xml:space="preserve">
+    <value>当最后一个窗体关闭时</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_FormCloses" xml:space="preserve">
+    <value>当启动窗体关闭时</value>
+  </data>
+  <data name="PPG_NeutralLanguage_None" xml:space="preserve">
+    <value>(无)</value>
+  </data>
+  <data name="PPG_NonePermissionSet" xml:space="preserve">
+    <value>(无)</value>
+  </data>
+  <data name="PPG_NotApplicable" xml:space="preserve">
+    <value>不可用</value>
+  </data>
+  <data name="PPG_OutputPathNotSecure" xml:space="preserve">
+    <value>输出路径不受信任。
+如果应用程序尝试执行需要完全信任的操作，可能会引发安全异常。
+单击“确定”可忽略并继续。单击“取消”可选择其他输出路径。</value>
+  </data>
+  <data name="PPG_PostBuildCommandLineTitle" xml:space="preserve">
+    <value>后期生成事件命令行</value>
+  </data>
+  <data name="PPG_PreBuildCommandLineTitle" xml:space="preserve">
+    <value>预先生成事件命令行</value>
+  </data>
+  <data name="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet" xml:space="preserve">
+    <value>项目已重新加载，此页上的一些更改可能已经丢失。</value>
+  </data>
+  <data name="PPG_PropertyPageControlName" xml:space="preserve">
+    <value>属性页</value>
+  </data>
+  <data name="PPG_SelectFileTitle" xml:space="preserve">
+    <value>选择文件</value>
+  </data>
+  <data name="PPG_SelectOutputPathTitle" xml:space="preserve">
+    <value>选择输出路径</value>
+  </data>
+  <data name="PPG_SelectReferencePath" xml:space="preserve">
+    <value>选择引用路径</value>
+  </data>
+  <data name="PPG_SelectWorkingDirectoryTitle" xml:space="preserve">
+    <value>选择工作目录</value>
+  </data>
+  <data name="PPG_StartupObjectNone" xml:space="preserve">
+    <value>(无)</value>
+  </data>
+  <data name="PPG_UndoTransaction" xml:space="preserve">
+    <value>更改属性: {0}</value>
+  </data>
+  <data name="SingleFileGenerator_FailedToGenerateFile_1Arg" xml:space="preserve">
+    <value>未能生成文件: {0}</value>
+  </data>
+  <data name="RSE_Err_InternalException" xml:space="preserve">
+    <value>意外错误。</value>
+  </data>
+  <data name="RSE_Err_Unexpected_NoResource_1Arg" xml:space="preserve">
+    <value>无法加载内部本地化资源“{0}”。</value>
+  </data>
+</root>

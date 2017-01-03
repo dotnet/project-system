@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
+    <value>Dieses Projekt enthält keine Standardressourcendatei.  Klicken Sie hier, um eine solche Datei zu erstellen.</value>
+  </data>
+  <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
+    <value>Dieses Projekt enthält keine Standardeinstellungsdatei.  Klicken Sie hier, um eine solche Datei zu erstellen.</value>
+  </data>
+  <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
+    <value>Der Designer kann nicht angezeigt werden, weil das entsprechende Dokument nie geladen wurde.</value>
+  </data>
+  <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
+    <value>Die Datei "{0}" ist bereits in einem Editor geöffnet.  Schließen Sie die Datei, und wiederholen Sie den Vorgang.</value>
+  </data>
+  <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
+    <value>Fehler beim Laden der Seite.</value>
+  </data>
+  <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
+    <value>Fehler beim Laden des Projekteigenschaftenfensters.  Schließen Sie das Fenster, und wiederholen Sie den Vorgang.
+{0}</value>
+  </data>
+  <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
+    <value>Die Datei "{0}" wurde nicht gefunden.</value>
+  </data>
+  <data name="APPDES_HostingPanelName" xml:space="preserve">
+    <value>Container für Projekt-Designer-Seite</value>
+  </data>
+  <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
+    <value>Alle Projekt-Designer-Seiten</value>
+  </data>
+  <data name="APPDES_OverflowButton_Tooltip" xml:space="preserve">
+    <value>Weitere Einstellungen</value>
+  </data>
+  <data name="APPDES_PageName" xml:space="preserve">
+    <value>{0}-Seite:</value>
+  </data>
+  <data name="APPDES_ResourceTabTitle" xml:space="preserve">
+    <value>Ressourcen</value>
+  </data>
+  <data name="APPDES_SettingsTabTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="APPDES_SpecialFileNotSupported" xml:space="preserve">
+    <value>Der angeforderte Dateityp wird in Projekten dieses Typs nicht unterstützt.</value>
+  </data>
+  <data name="APPDES_TabButtonDefaultAction" xml:space="preserve">
+    <value>Projekt-Designer-Seite wechseln</value>
+  </data>
+  <data name="APPDES_TabListDescription" xml:space="preserve">
+    <value>Wechseln zwischen aktiven Seiten des Projekt-Designers zulassen (mit STRG+PageUp und STRG+PageDown)</value>
+  </data>
+  <data name="APPDES_Title" xml:space="preserve">
+    <value>Projekt-Designer</value>
+  </data>
+  <data name="CMN_AllFilesFilter" xml:space="preserve">
+    <value>Alle Dateien</value>
+  </data>
+  <data name="DFX_BufferReadOnly" xml:space="preserve">
+    <value>Der Puffer ist schreibgeschützt.</value>
+  </data>
+  <data name="DFX_CreateEditorInstanceFailed_Ex" xml:space="preserve">
+    <value>Designer kann nicht erstellt werden. {0}</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFound" xml:space="preserve">
+    <value>Der Editor konnte den IVsTextStream für die Datei "{0}" nicht abrufen.</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile" xml:space="preserve">
+    <value>Der Editor konnte den IVsTextStream nicht abrufen.</value>
+  </data>
+  <data name="DFX_DesignerReadOnlyCaption" xml:space="preserve">
+    <value>{0} [schreibgeschützt]</value>
+  </data>
+  <data name="DFX_EditorNoDesignerService" xml:space="preserve">
+    <value>Kein DesignerService für die Datei "{0}".</value>
+  </data>
+  <data name="DFX_Error_Default_Caption" xml:space="preserve">
+    <value>Microsoft Visual Studio</value>
+  </data>
+  <data name="DFX_IncompatibleBuffer" xml:space="preserve">
+    <value>Die Datei ist bereits in einem inkompatiblen Editor geöffnet.</value>
+  </data>
+  <data name="DFX_InvalidPhysicalViewName" xml:space="preserve">
+    <value>Ungültiger Name für physische Ansicht.</value>
+  </data>
+  <data name="DFX_NoLocalRegistry" xml:space="preserve">
+    <value>Kein LocalRegistry-Dienst.</value>
+  </data>
+  <data name="DFX_NotSupported" xml:space="preserve">
+    <value>Nicht unterstütztes Format.</value>
+  </data>
+  <data name="DFX_OneOrMoreFilesReloaded" xml:space="preserve">
+    <value>Mindestens eine Datei wurde beim Auschecken neu geladen. Wiederholen Sie den Vorgang.</value>
+  </data>
+  <data name="DFX_ReplaceTextStreamFailed" xml:space="preserve">
+    <value>Fehler beim Ersetzen des Textstreams: {0}</value>
+  </data>
+  <data name="DFX_UnableCreateTextBuffer" xml:space="preserve">
+    <value>Textpuffer kann nicht erstellt werden.</value>
+  </data>
+  <data name="DFX_UnableToCheckout" xml:space="preserve">
+    <value>Die aktuelle Datei konnte nicht ausgecheckt werden.  Die Datei ist unter Umständen schreibgeschützt oder gesperrt oder muss manuell ausgecheckt werden.</value>
+  </data>
+  <data name="DFX_WindowPane_UnknownError" xml:space="preserve">
+    <value>Unbekannter Fehler.</value>
+  </data>
+  <data name="General_InvalidArgument_1Arg" xml:space="preserve">
+    <value>Ungültiges Argument: {0}</value>
+  </data>
+  <data name="General_MissingService" xml:space="preserve">
+    <value>Der Dienst "{0}" wurde nicht gefunden.  Vergewissern Sie sich, dass die Anwendung korrekt installiert ist.</value>
+  </data>
+  <data name="PermissionSet_Requires" xml:space="preserve">
+    <value>Voraussetzungen:</value>
+  </data>
+  <data name="PPG_ActiveConfigOrPlatformFormatString_1Arg" xml:space="preserve">
+    <value>Aktiv ({0})</value>
+  </data>
+  <data name="PPG_AllConfigurations" xml:space="preserve">
+    <value>Alle Konfigurationen</value>
+  </data>
+  <data name="PPG_AllPlatforms" xml:space="preserve">
+    <value>Alle Plattformen</value>
+  </data>
+  <data name="PPG_ApplicationTitle" xml:space="preserve">
+    <value>Anwendung</value>
+  </data>
+  <data name="PPG_ComboBoxSelect_None" xml:space="preserve">
+    <value>(Keine)</value>
+  </data>
+  <data name="PPG_ConfigNotFound_2Args" xml:space="preserve">
+    <value>Die Konfiguration "{0}" für die Plattform "{1}" wurde nicht gefunden.</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_ApplicationDefined" xml:space="preserve">
+    <value>Anwendungsdefiniert</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_Windows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_AppExits" xml:space="preserve">
+    <value>Beim Schließen des letzten Formulars</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_FormCloses" xml:space="preserve">
+    <value>Beim Schließen des Startformulars</value>
+  </data>
+  <data name="PPG_NeutralLanguage_None" xml:space="preserve">
+    <value>(Keine)</value>
+  </data>
+  <data name="PPG_NonePermissionSet" xml:space="preserve">
+    <value>(Keine)</value>
+  </data>
+  <data name="PPG_NotApplicable" xml:space="preserve">
+    <value>Nicht zutreffend</value>
+  </data>
+  <data name="PPG_OutputPathNotSecure" xml:space="preserve">
+    <value>Der Ausgabepfad ist nicht vertrauenswürdig.
+Bei Aktionen, die volle Vertrauenswürdigkeit erfordern, treten für die Anwendung unter Umständen Sicherheitsausnahmen auf.
+Klicken Sie auf "OK", um diese Meldung zu ignorieren und den Vorgang fortzusetzen. Klicken Sie auf "ABBRECHEN", um einen anderen Ausgabepfad zu wählen.</value>
+  </data>
+  <data name="PPG_PostBuildCommandLineTitle" xml:space="preserve">
+    <value>Befehlszeile für Postbuildereignis</value>
+  </data>
+  <data name="PPG_PreBuildCommandLineTitle" xml:space="preserve">
+    <value>Befehlszeile für Präbuildereignis</value>
+  </data>
+  <data name="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet" xml:space="preserve">
+    <value>Das Projekt wurde neu geladen, und einige Änderungen auf dieser Seite sind möglicherweise verloren gegangen.</value>
+  </data>
+  <data name="PPG_PropertyPageControlName" xml:space="preserve">
+    <value>Eigenschaftenseite</value>
+  </data>
+  <data name="PPG_SelectFileTitle" xml:space="preserve">
+    <value>Datei auswählen</value>
+  </data>
+  <data name="PPG_SelectOutputPathTitle" xml:space="preserve">
+    <value>Ausgabepfad auswählen</value>
+  </data>
+  <data name="PPG_SelectReferencePath" xml:space="preserve">
+    <value>Verweispfad auswählen</value>
+  </data>
+  <data name="PPG_SelectWorkingDirectoryTitle" xml:space="preserve">
+    <value>Arbeitsverzeichnis auswählen</value>
+  </data>
+  <data name="PPG_StartupObjectNone" xml:space="preserve">
+    <value>(Keine)</value>
+  </data>
+  <data name="PPG_UndoTransaction" xml:space="preserve">
+    <value>Eigenschaft ändern: {0}</value>
+  </data>
+  <data name="SingleFileGenerator_FailedToGenerateFile_1Arg" xml:space="preserve">
+    <value>Fehler beim Generieren der Datei: {0}</value>
+  </data>
+  <data name="RSE_Err_InternalException" xml:space="preserve">
+    <value>Unerwarteter Fehler.</value>
+  </data>
+  <data name="RSE_Err_Unexpected_NoResource_1Arg" xml:space="preserve">
+    <value>Die interne lokalisierte Ressource "{0}" kann nicht geladen werden.</value>
+  </data>
+</root>
