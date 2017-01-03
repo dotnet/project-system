@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ///     - dependency sub tree nodes
         ///     - dependency sub tree top level nodes
         /// (deeper levels will be graph nodes with additional info, not direct dependencies
-        /// specified in the project file or project.json)
+        /// specified in the project file)
         /// </summary>
         public override IProjectTree FindByPath(IProjectTree root, string path)
         {
@@ -237,11 +237,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            // Note: all dependency nodes file path starts with file:/// to make sure we have 
-            // valid absolute path everytime.
+            // Note: all dependency nodes file path starts with file:///, but FindByPath is called eventually 
+            // from ParseCanonicalName, which in turn called from progression's SourceFileToHierarchyItem where
+            // LocalPath of the Uri is passed, not full Uri during search. Thus here we need to append file:/// 
+            // if it is not there.
             if (!path.StartsWith("file:///"))
             {
-                // just in case if given path is not in uri format
                 path = "file:///" + path.Trim('/');
             }
 

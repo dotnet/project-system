@@ -28,9 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     public class DependencyNodeId : IEquatable<DependencyNodeId>
     {
-        public DependencyNodeId(string providerType, 
-                                string itemSpec = null, 
-                                string itemType = null, 
+        public DependencyNodeId(string providerType,
+                                string itemSpec = null,
+                                string itemType = null,
                                 string uniqueToken = null)
         {
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ItemSpec = itemSpec ?? string.Empty;
             ItemType = itemType ?? string.Empty;
             UniqueToken = uniqueToken ?? string.Empty;
+            ContextProject = string.Empty;
         }
 
         /// <summary>
@@ -57,6 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string ItemType { get; private set; }
 
         /// <summary>
+        /// Returns a path to the project this node originates from. If empty current project is assumed.
+        /// </summary>
+        public string ContextProject { get; internal set; }
+
+        /// <summary>
         /// When providers need to make sure that id is unique and itemSpec + itemType is not enough,
         /// they can provide a unique token.
         /// </summary>
@@ -73,7 +79,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return new DependencyNodeId(ProviderType,
                                         ItemSpec?.Replace('/', '\\'),
                                         ItemType,
-                                        UniqueToken?.Replace('/', '\\'));
+                                        UniqueToken?.Replace('/', '\\'))
+            {
+                ContextProject = string.IsNullOrEmpty(ContextProject)
+                                    ? string.Empty
+                                    : ContextProject.Replace('/', '\\')
+            };
         }
 
         public override string ToString()
@@ -88,13 +99,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             builder.Append(ProviderType);
 
             builder.Append(";");
-            builder.Append(ItemSpec);
+            builder.Append(Escape(ItemSpec));
 
             builder.Append(";");
             builder.Append(ItemType);
             
             builder.Append(";");
             builder.Append(UniqueToken);
+
+            builder.Append(";");
+            builder.Append(Escape(ContextProject));
 
             builder.Append("]");
 
@@ -134,15 +148,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var providerType = parts[0];
-            var itemSpec = parts.Length > 1 ? parts[1] : string.Empty;
+            var itemSpec = parts.Length > 1 ? Unescape(parts[1]) : string.Empty;
             var itemType = parts.Length > 2 ? parts[2] : string.Empty;
             var uniqueToken = parts.Length > 3 ? parts[3] : string.Empty;
+            var contextProject = parts.Length > 4 ? Unescape(parts[4]) : string.Empty;
 
-            var id = new DependencyNodeId(providerType,
-                                          itemSpec,
-                                          itemType,
-                                          uniqueToken);
-            return id;
+            return new DependencyNodeId(providerType,
+                                        itemSpec,
+                                        itemType,
+                                        uniqueToken)
+            {
+                ContextProject = contextProject
+            };
         }
 
         public override int GetHashCode()
@@ -169,6 +186,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Since progression code relies on Uri LocalPath it could break our id string when project's 
+        /// ItemSpec has deep relative path like ..\..\..\myproject.csproj, it would convert it to just 
+        /// myproject.csproj and cut first half of the id string, which would leave it broken and would 
+        /// prevent graph nodes provider from recognizing node. Thus we escape . with * (since it is not 
+        /// allowed in paths and can not be faced in real scenarios).
+        /// </summary>
+        private static string Escape(string str)
+        {
+            return str.Replace('.', '*');
+        }
+
+        /// <summary>
+        /// Convert escaped string back to original (see comment for Escape method)
+        /// </summary>
+        private static string Unescape(string str)
+        {
+            return str.Replace('*', '.');
         }
     }
 }
