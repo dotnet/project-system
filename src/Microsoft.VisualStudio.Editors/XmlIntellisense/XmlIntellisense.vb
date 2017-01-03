@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 ' Reset event and start background thread
                 _data.m_SchemasCompilationCallBackDoneEvent.Reset()
 
-                ThreadPool.QueueUserWorkItem(Sub() CompileCallback(_data))
+                ThreadPool.QueueUserWorkItem(Sub() CompileCallBackAsync(_data))
             End If
 
             If _data.m_CompilationLevel > 0 Then
@@ -257,7 +257,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End Get
         End Property
 
-        Private Shared Async Sub CompileCallBack(data As XmlIntellisenseSchemasData)
+        Private Shared Async Sub CompileCallBackAsync(data As XmlIntellisenseSchemasData)
             Dim ProjectSchemas As IList(Of XmlSchemaReference)
             Dim pollInterval As Integer = s_minPollInterval
             Dim iteration As Integer = 0
